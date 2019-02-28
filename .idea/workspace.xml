@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="491e16b1-c901-4dc3-93f7-4bd724f1c9fb" name="Default Changelist" comment="Added a gradle wrapper for the main directory">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-    </list>
+    <list default="true" id="491e16b1-c901-4dc3-93f7-4bd724f1c9fb" name="Default Changelist" comment="Added a gradle wrapper for the main directory" />
     <ignored path="$PROJECT_DIR$/Buddler-Joe/.gradle/" />
     <ignored path="$PROJECT_DIR$/Buddler-Joe/build/" />
     <ignored path="$PROJECT_DIR$/Buddler-Joe/out/" />
