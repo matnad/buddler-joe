@@ -12,7 +12,7 @@ import engine.textures.ModelTexture;
 import engine.textures.TerrainTexture;
 import engine.textures.TerrainTexturePack;
 import entities.*;
-import entities.blocks.Block;
+import entities.blocks.*;
 import gui.Chat;
 import gui.FPS;
 import gui.GuiTexture;
@@ -60,7 +60,7 @@ public class Game extends Thread {
     private List<NetPlayer> loadedNetPlayers = new ArrayList<>();
 
     private List<Entity> entities = new ArrayList<>();
-    private List<Block> blocks = new ArrayList<>();
+    private List<AbstractBlock> blocks = new ArrayList<>();
 
     @Override
     public synchronized void start() {
@@ -74,9 +74,9 @@ public class Game extends Thread {
                 break;
             case 2:
                 //Person
-                myModel = "person";
-                myTexture = "person";
-                myModelSize = .5f;
+                myModel = "joe";
+                myTexture = "male";
+                myModelSize = 3f;
                 break;
             case 3:
                 //Rabbit
@@ -151,6 +151,8 @@ public class Game extends Thread {
         TexturedModel fern = new TexturedModel(rawFern, fernAtlas);
         fern.getTexture().setHasTransparency(true);
 
+
+
         //Place some vegetation
         Random random = new Random(676451);
         for (int i = 0; i < 200; i++) {
@@ -165,16 +167,20 @@ public class Game extends Thread {
         }
 
 
-        //Blocks ->> TODO: make texture atlas
-        RawModel rawStone = loader.loadToVAO(OBJFileLoader.loadOBJ("cube"));
-        TexturedModel stone = new TexturedModel(rawStone, new ModelTexture(loader.loadTexture("rocks")));
+//        //Blocks ->> TODO: make texture atlas
+//        RawModel rawStone = loader.loadToVAO(OBJFileLoader.loadOBJ("cube"));
+//        TexturedModel stone = new TexturedModel(rawStone, new ModelTexture(loader.loadTexture("rocks")));
+//
+//        RawModel rawBox = loader.loadToVAO(OBJFileLoader.loadOBJ("cube"));
+//        TexturedModel box = new TexturedModel(rawBox, new ModelTexture(loader.loadTexture("box")));
+//
+//        RawModel rawDirt = loader.loadToVAO(OBJFileLoader.loadOBJ("cube"));
+//        TexturedModel dirt = new TexturedModel(rawDirt, new ModelTexture(loader.loadTexture("mud")));
+//        //Later we can calculate position and index of a block to optimize, for now we search by looping
 
-        RawModel rawBox = loader.loadToVAO(OBJFileLoader.loadOBJ("cube"));
-        TexturedModel box = new TexturedModel(rawBox, new ModelTexture(loader.loadTexture("box")));
 
-        RawModel rawDirt = loader.loadToVAO(OBJFileLoader.loadOBJ("cube"));
-        TexturedModel dirt = new TexturedModel(rawDirt, new ModelTexture(loader.loadTexture("mud")));
-        //Later we can calculate position and index of a block to optimize, for now we search by looping
+        AbstractBlock.loadBlockModels(loader);
+
 
         //Generate blocks
         float padding = .0f;
@@ -183,12 +189,12 @@ public class Game extends Thread {
         for (int i = 0; i < 33; i++) {
             for (int j = 0; j < 33; j++) {
                 float k = random.nextFloat();
-                if (k < .4f) {
-                    blocks.add(new Block(stone, new Vector3f(i * m + 3f, -j * m - size*2-1, size), 0, 0, 0, size));
-                } else if (k < .6f) {
-                    blocks.add(new Block(box, new Vector3f(i * m + 3f, -j * m - size*2-1, size), 0, 0, 0, size));
+                if (k < .5f) {
+                    blocks.add(new DirtBlock(new Vector3f(i * m + 3f, -j * m - size*2-1, size),0, 0, 0, size));
                 } else if (k < .8f) {
-                    blocks.add(new Block(dirt, new Vector3f(i * m + 3f, -j * m - size*2-1, size), 0, 0, 0, size));
+                    blocks.add(new StoneBlock(new Vector3f(i * m + 3f, -j * m - size*2-1, size), 0, 0, 0, size));
+                } else if (k < .85f) {
+                    blocks.add(new GoldBlock(new Vector3f(i * m + 3f, -j * m - size*2-1, size), 0, 0, 0, size));
                 }
             }
         }
@@ -230,11 +236,21 @@ public class Game extends Thread {
                 if(InputHandler.isKeyPressed(GLFW_KEY_ESCAPE))
                     window.stop();
 
+                //Remove destroyed blocks
+                List<AbstractBlock> blocksToRemove = new ArrayList<>();
+                for (AbstractBlock block : blocks) {
+                    if(block.isDestroyed()) {
+                        blocksToRemove.add(block);
+                    }
+                }
+                blocks.removeAll(blocksToRemove);
+                entities.removeAll(blocksToRemove);
+
+
                 checkAndLoadNetPlayers(loader);
                 window.update();
 
                 //Update positions of entities
-                player.setBlocksToDig(blocks);
                 player.updateCloseBlocks(blocks);
 
                 camera.move();

@@ -32,6 +32,7 @@ public class Entity {
             this.textureIndex = index;
 
         this.model = model;
+        
         this.position = position;
         this.rotX = rotX;
         this.rotY = rotY;
@@ -192,4 +193,6 @@ public class Entity {
     public void setPositionZ(float z) {
         setPosition(new Vector3f(getPosition().x, getPosition().y, z));
     }
+
+
 }
