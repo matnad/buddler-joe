@@ -13,6 +13,7 @@ import engine.textures.TerrainTexture;
 import engine.textures.TerrainTexturePack;
 import entities.*;
 import entities.blocks.*;
+import entities.items.Dynamite;
 import gui.Chat;
 import gui.FPS;
 import gui.GuiTexture;
@@ -33,8 +34,8 @@ import static org.lwjgl.glfw.GLFW.*;
 public class Game extends Thread {
 //    public static final int WIDTH = 2560/2, HEIGHT = 1600/2, FPS = 60; //Mac Book Pro Half
 //    public static final int WIDTH = 2560, HEIGHT = 1600, FPS = 60; //Mac Book Pro
-    public static final int WIDTH = 800, HEIGHT = 600, FPS = 60; //Desktop Dev
-//    public static final int WIDTH = 1920, HEIGHT = 1080, FPS = 60; //Desktop Native
+//    public static final int WIDTH = 800, HEIGHT = 600, FPS = 60; //Desktop Dev
+    public static final int WIDTH = 1920, HEIGHT = 1080, FPS = 60; //Desktop Native
     public static Window window = new Window(WIDTH, HEIGHT, FPS, "LWJGL Engine");
 
     private static boolean fullscreen = false;
@@ -59,8 +60,9 @@ public class Game extends Thread {
     private List<NetPlayer> netPlayers = new ArrayList<>();
     private List<NetPlayer> loadedNetPlayers = new ArrayList<>();
 
-    private List<Entity> entities = new ArrayList<>();
-    private List<AbstractBlock> blocks = new ArrayList<>();
+    private static List<Entity> entities = new ArrayList<>();
+    private static List<Block> blocks = new ArrayList<>();
+    private static List<Dynamite> dynamites = new ArrayList<>();
 
     @Override
     public synchronized void start() {
@@ -154,7 +156,7 @@ public class Game extends Thread {
 
 
         //Place some vegetation
-        Random random = new Random(676451);
+        Random random = new Random(676453);
         for (int i = 0; i < 200; i++) {
             if (i % 3 == 0) {
                 entities.add(new Entity(fern, random.nextInt(4), getNextRandomVector3f(terrain2, random), 0, 0, 0, .9f));
@@ -179,7 +181,8 @@ public class Game extends Thread {
 //        //Later we can calculate position and index of a block to optimize, for now we search by looping
 
 
-        AbstractBlock.loadBlockModels(loader);
+        Block.loadBlockModels(loader);
+        Dynamite.loadModel(loader);
 
 
         //Generate blocks
@@ -199,6 +202,7 @@ public class Game extends Thread {
             }
         }
         entities.addAll(blocks);
+
 
         //Initiate the master renderer class
         MasterRenderer renderer = new MasterRenderer(window);
@@ -237,20 +241,38 @@ public class Game extends Thread {
                     window.stop();
 
                 //Remove destroyed blocks
-                List<AbstractBlock> blocksToRemove = new ArrayList<>();
-                for (AbstractBlock block : blocks) {
-                    if(block.isDestroyed()) {
-                        blocksToRemove.add(block);
+//                List<Block> blocksToRemove = new ArrayList<>();
+//                for (Block block : blocks) {
+//                    if(block.isDestroyed()) {
+//                        blocksToRemove.add(block);
+//                    }
+//                }
+//                blocks.removeAll(blocksToRemove);
+//                entities.removeAll(blocksToRemove);
+
+                List<Entity> entitiesToRemove = new ArrayList<>();
+                for (Entity entity : entities) {
+                    if(entity.isDestroyed()) {
+                        entitiesToRemove.add(entity);
+                        if (entity instanceof Block) {
+                            blocks.remove(entity);
+                        } else if (entity instanceof Dynamite) {
+                            dynamites.remove(entity);
+                        }
                     }
                 }
-                blocks.removeAll(blocksToRemove);
-                entities.removeAll(blocksToRemove);
+                entities.removeAll(entitiesToRemove);
 
 
                 checkAndLoadNetPlayers(loader);
                 window.update();
 
-                //Update positions of entities
+                //Can't do foreach since and explosion could spawn a dynamite (concurrent modification exception)
+                for (int i = 0; i < dynamites.size(); i++) {
+                    dynamites.get(i).move();
+                }
+
+
                 player.updateCloseBlocks(blocks);
 
                 camera.move();
@@ -427,6 +449,23 @@ public class Game extends Thread {
         return loadedNetPlayers;
     }
 
+    public static void addEntity(Entity entity) {
+        entities.add(entity);
+        if (entity instanceof Dynamite) {
+            dynamites.add((Dynamite) entity);
+        }
+    }
 
+    public static void removeEntity(Entity entity) {
+        entities.remove(entity);
+        if (entity instanceof Dynamite) {
+            dynamites.remove(entity);
+        }
+    }
+
+
+    public static List<Block> getBlocks() {
+        return blocks;
+    }
 }
 

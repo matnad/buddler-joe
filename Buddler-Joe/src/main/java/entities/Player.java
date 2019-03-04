@@ -5,7 +5,7 @@ import collision.BoundingBox;
 import engine.io.InputHandler;
 import engine.io.Window;
 import engine.models.TexturedModel;
-import entities.blocks.AbstractBlock;
+import entities.blocks.Block;
 import net.packets.Packet01Move;
 import org.joml.Vector3f;
 
@@ -33,7 +33,7 @@ public class Player extends NetPlayer {
     private float currentTurnSpeed = 0;
     private float upwardsSpeed = 0;
 
-    private List<AbstractBlock> closeBlocks;
+    private List<Block> closeBlocks;
 
     private boolean isInAir = false;
     private float digDelay;
@@ -65,7 +65,7 @@ public class Player extends NetPlayer {
 
         //Handle collisions, we only check close blocks to optimize performance
         //Distance is much cheaper to check than overlap
-        for (AbstractBlock closeBlock : closeBlocks) {
+        for (Block closeBlock : closeBlocks) {
             handleCollision(closeBlock);
         }
 
@@ -98,8 +98,8 @@ public class Player extends NetPlayer {
                     if (upwardsSpeed < 0)
                         upwardsSpeed = 0;
                     isInAir = false;
-                    if (InputHandler.isKeyDown(GLFW_KEY_S) && entity instanceof AbstractBlock) {
-                        digBlock((AbstractBlock) entity);
+                    if (InputHandler.isKeyDown(GLFW_KEY_S) && entity instanceof Block) {
+                        digBlock((Block) entity);
                     }
                 } else { // from below
                      setPositionY(b.getMinY()-a.getDimY());
@@ -117,14 +117,14 @@ public class Player extends NetPlayer {
                     currentSpeed = 0;
                     isInAir = false;
                 }
-                if (entity instanceof AbstractBlock) {
-                    digBlock((AbstractBlock) entity);
+                if (entity instanceof Block) {
+                    digBlock((Block) entity);
                 }
             }
         }
     }
 
-    private void digBlock(AbstractBlock block) {
+    private void digBlock(Block block) {
         block.increaseDamage((float) (digDamage * window.getFrameTimeSeconds()));
     }
 
@@ -136,10 +136,10 @@ public class Player extends NetPlayer {
         }
     }
 
-    public void updateCloseBlocks(List<AbstractBlock> blocks, float minDistance) {
-        List<AbstractBlock> closeBlocks = new ArrayList<>();
+    public void updateCloseBlocks(List<Block> blocks, float minDistance) {
+        List<Block> closeBlocks = new ArrayList<>();
         //Only 2D (XY) for performance
-        for (AbstractBlock block : blocks) {
+        for (Block block : blocks) {
             if(block.get2DDistanceFrom(super.getPositionXY()) < block.getDim()+minDistance) {
                 closeBlocks.add(block);
             }
@@ -147,7 +147,7 @@ public class Player extends NetPlayer {
         this.closeBlocks =  closeBlocks;
     }
 
-    public void updateCloseBlocks(List<AbstractBlock> blocks) {
+    public void updateCloseBlocks(List<Block> blocks) {
         updateCloseBlocks(blocks, 5);
     }
 

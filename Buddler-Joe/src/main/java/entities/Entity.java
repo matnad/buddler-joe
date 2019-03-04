@@ -19,6 +19,8 @@ public class Entity {
     private float scale;
     private int textureIndex = 0;
 
+    private boolean destroyed;
+
     private BoundingBox bBox;
 
     public Entity(TexturedModel model, Vector3f position, float rotX, float rotY, float rotZ, float scale) {
@@ -194,5 +196,11 @@ public class Entity {
         setPosition(new Vector3f(getPosition().x, getPosition().y, z));
     }
 
+    public boolean isDestroyed() {
+        return destroyed;
+    }
 
+    public void setDestroyed(boolean destroyed) {
+        this.destroyed = destroyed;
+    }
 }

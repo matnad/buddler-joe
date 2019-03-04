@@ -3,7 +3,7 @@ package entities.blocks;
 import org.joml.Vector3f;
 
 
-public class StoneBlock extends AbstractBlock {
+public class StoneBlock extends Block {
 
     public StoneBlock(Vector3f position, float rotX, float rotY, float rotZ, float scale) {
         super(11, position, rotX, rotY, rotZ, scale);
@@ -15,4 +15,8 @@ public class StoneBlock extends AbstractBlock {
 
     }
 
+    @Override
+    protected void onDestroy() {
+
+    }
 }

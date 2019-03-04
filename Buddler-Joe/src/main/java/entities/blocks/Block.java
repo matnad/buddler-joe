@@ -10,19 +10,17 @@ import entities.Entity;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 
-public class AbstractBlock extends Entity {
+public abstract class Block extends Entity {
 
 
     private float hardness;
     private float damage;
     private float dim;
 
-    private boolean destroyed;
-
     private static TexturedModel blockModel;
 
 
-    public AbstractBlock(int index, Vector3f position, float rotX, float rotY, float rotZ, float scale) {
+    public Block(int index, Vector3f position, float rotX, float rotY, float rotZ, float scale) {
         super(blockModel, index, position, rotX, rotY, rotZ, scale);
 
         if (blockModel == null) {
@@ -85,11 +83,12 @@ public class AbstractBlock extends Entity {
         this.dim = dim;
     }
 
-    public boolean isDestroyed() {
-        return destroyed;
+    public void setDestroyed(boolean destroyed) {
+        super.setDestroyed(destroyed);
+        if(destroyed) {
+            onDestroy();
+        }
     }
 
-    public void setDestroyed(boolean destroyed) {
-        this.destroyed = destroyed;
-    }
+    protected abstract void onDestroy();
 }

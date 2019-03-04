@@ -3,7 +3,7 @@ package entities.blocks;
 import org.joml.Vector3f;
 
 
-public class DirtBlock extends AbstractBlock {
+public class DirtBlock extends Block {
 
     public DirtBlock(Vector3f position, float rotX, float rotY, float rotZ, float scale) {
         super(31, position, rotX, rotY, rotZ, scale);
@@ -15,4 +15,8 @@ public class DirtBlock extends AbstractBlock {
 
     }
 
+    @Override
+    protected void onDestroy() {
+
+    }
 }
