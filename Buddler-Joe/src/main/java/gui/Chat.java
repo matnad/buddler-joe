@@ -38,7 +38,7 @@ public class Chat {
         chatGui = new GuiTexture(loader.loadTexture("chat"), new Vector2f(-.6f, -.6f), new Vector2f(.4f, .4f), ALPHA_OFF);
         chatText = "";
 
-        font = new FontType(loader.loadFontTexture("Buddler-Joe/src/main/resources/assets/fonts/verdana"), new File("Buddler-Joe/src/main/resources/assets/fonts/verdana.fnt"));
+        font = new FontType(loader.loadFontTexture("src/main/resources/assets/fonts/verdana"), new File("src/main/resources/assets/fonts/verdana.fnt"));
         textColour = new Vector3f(1f,1f,1f);
         guiText = new ChatText(chatText, 1, new Vector3f(textColour.x, textColour.y, textColour.z), alpha, font,  new Vector2f(.06f,.91f), 1f, false, false);
 

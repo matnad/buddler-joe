@@ -101,7 +101,7 @@ public class Loader {
     public int loadTexture(String fileName) {
         Texture texture = null;
         try {
-            texture = TextureLoader.getTexture("Buddler-Joe/src/main/resources/assets/textures/" + fileName + ".png");
+            texture = TextureLoader.getTexture("src/main/resources/assets/textures/" + fileName + ".png");
             glGenerateMipmap(GL_TEXTURE_2D);
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
             glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_LOD_BIAS, -.4f);

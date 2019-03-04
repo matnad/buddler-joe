@@ -9,7 +9,7 @@ import java.util.List;
 
 public class OBJFileLoader {
 
-    private static final String RES_LOC = "Buddler-Joe/src/main/resources/assets/models/";
+    private static final String RES_LOC = "src/main/resources/assets/models/";
 
     public static ModelData loadOBJ(String objFileName) {
         FileReader isr = null;

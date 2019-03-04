@@ -59,7 +59,7 @@ public class Terrain extends TerrainFlat{
     private RawModel generateTerrain(Loader loader, String heightMap){
         BufferedImage image = null;
         try {
-            image = ImageIO.read(new File("Buddler-Joe/src/main/resources/assets/textures/"+heightMap+".png"));
+            image = ImageIO.read(new File("src/main/resources/assets/textures/"+heightMap+".png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
