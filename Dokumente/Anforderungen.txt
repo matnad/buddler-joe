@@ -1,0 +1,38 @@
+Anforderungen:
+
+Allgemein:
+* Spieler sollen den Namen ihrer Avatare „ndern k”nnen.
+* Es soll verhindert werden das zwei Avatare den gleichen Namen haben.
+* Es sollen Namensvorschl„ge auf Grund des System-Nutzernamens gemacht werden.
+* Es soll einen Chatraum fr Clients geben.
+* Es sollen sich beliebig viele Clients auf dem Server anmelden k”nnen.
+* Der Server soll Login und Logouts von Clients sinnvoll behandeln.
+* Es sollen Pings zwischen Server und Clients gesendet werden.
+* Der Server soll Verbindungsprobleme sinnvoll behandeln.
+* Es soll eine GUI fr den Chat geben.
+* Es soll eine Liste ber momentane und Vergangene Spiele gefhrt werden.
+* Es sollen mehrere Lobbys mit eigenem Chatraum m”glich sein.
+* Es soll m”glich sein alle Clients aufzulisten die gerade mit dem Server verbunden sind.
+* Es soll einen Flster-Chat von Client zu Client m”glich sein.
+* Das Spiel soll ber eine grafische Benutzeroberfl„che verfgen.
+* Es soll geprft werden dass die Spielregeln eingehalten werden.
+	(Diese Punkte sind direkt aus den Meilensteinanforderungen)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Anforderungen:
+
+Spezifisch fr unser Spiel:
+Echtzeit SpielEs mssen Massnamen getroffen werden um ein Flssiges spielen trotz Verz”gerung zum Server zu Erm”glichen.
+( Client-Side Prediction,  Server Reconciliation, Dead Reckoning, Entity Interpolation)SpielweltDie Spielwelt muss zuf„llig generiert werden k”nnen (nach gewissen Regeln).Position Server muss Position aller Spieler verwalten und ®broadcasten¯.KollisionserkennungEs muss verhindert werden, dass zwei Spielfiguren zur selben Zeit am selben Ort sind.SchwerkraftSteine und Spielfiguren sollen fallen k”nnen, wenn sich nichts unter ihnen befindet.FragezeichenZufallsgenerator um denn Inhalt der Fragezeichenboxen zu bestimmenHighscoreServer muss in Echtzeit die Punktzahl aller Spieler berechnen und vergleichen.LebensanzeigeMuss fr jeden Spieler vom Server verwaltet und ®gebroadcastet¯ werden. (Wann ist ein Spieler Game-Over)Globaler-CountdownSpielzeit muss vom Server ®gebroadcastet¯ werdenAnimationEs soll eine Animation abgespielt werden. Wenn die Spielfigur die Position wechselt.SoundDie Interaktionen der Spielfigur mit der Umwelt sollen Ger„usche erzeugen.
