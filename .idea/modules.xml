@@ -2,10 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Buddler Joe.Test.iml" filepath="$PROJECT_DIR$/.idea/modules/Buddler Joe.Test.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Buddler_Joe.Test.iml" filepath="$PROJECT_DIR$/.idea/modules/Buddler_Joe.Test.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Buddler_Joe.Test.main.iml" filepath="$PROJECT_DIR$/.idea/modules/Buddler_Joe.Test.main.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Buddler_Joe.Test.test.iml" filepath="$PROJECT_DIR$/.idea/modules/Buddler_Joe.Test.test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Buddler_Joe.Buddler-Joe.iml" filepath="$PROJECT_DIR$/.idea/modules/Buddler_Joe.Buddler-Joe.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Buddler_Joe.Buddler-Joe.main.iml" filepath="$PROJECT_DIR$/.idea/modules/Buddler_Joe.Buddler-Joe.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Buddler_Joe.Buddler-Joe.test.iml" filepath="$PROJECT_DIR$/.idea/modules/Buddler_Joe.Buddler-Joe.test.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/gruppe-8.iml" filepath="$PROJECT_DIR$/.idea/gruppe-8.iml" />
     </modules>
   </component>

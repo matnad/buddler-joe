@@ -19,7 +19,7 @@ import static org.lwjgl.system.MemoryUtil.memAlloc;
 import static org.lwjgl.system.MemoryUtil.memFree;
 import static util.IOUtil.ioResourceToByteBuffer;
 
-public class TextureLoader implements Texture{
+public class TextureLoader implements Texture {
 
     private final ByteBuffer image;
 

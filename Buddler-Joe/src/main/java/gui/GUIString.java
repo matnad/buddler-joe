@@ -25,7 +25,7 @@ public abstract class GUIString {
 
     public GUIString (Loader loader) {
         this.loader = loader;
-        font = new FontType(loader.loadFontTexture("src/main/resources/assets/fonts/verdana"), new File("src/main/resources/assets/fonts/verdana.fnt"));
+        font = new FontType(loader.loadFontTexture("Buddler-Joe/src/main/resources/assets/fonts/verdana"), new File("Buddler-Joe/src/main/resources/assets/fonts/verdana.fnt"));
         position = new Vector2f(0,0);
         textColour = new Vector3f(1,1,1);
         alpha = 0;

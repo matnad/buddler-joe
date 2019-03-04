@@ -2,15 +2,99 @@ plugins {
     id 'java'
 }
 
+sourceCompatibility = 1.11
+targetCompatibility = 1.11
+
 group 'Buddler Joe'
 version '1.0-SNAPSHOT'
 
-sourceCompatibility = 1.8
+import org.gradle.internal.os.OperatingSystem
+
+switch (OperatingSystem.current()) {
+    case OperatingSystem.LINUX:
+        project.ext.lwjglNatives = "natives-linux"
+        break
+    case OperatingSystem.MAC_OS:
+        project.ext.lwjglNatives = "natives-macos"
+        break
+    case OperatingSystem.WINDOWS:
+        project.ext.lwjglNatives = "natives-windows"
+        break
+}
 
 repositories {
     mavenCentral()
 }
 
 dependencies {
-    testCompile group: 'junit', name: 'junit', version: '4.12'
+    implementation "org.lwjgl:lwjgl:3.2.1"
+    implementation "org.lwjgl:lwjgl-assimp:3.2.1"
+    implementation "org.lwjgl:lwjgl-bgfx:3.2.1"
+    implementation "org.lwjgl:lwjgl-cuda:3.2.1"
+    implementation "org.lwjgl:lwjgl-egl:3.2.1"
+    implementation "org.lwjgl:lwjgl-glfw:3.2.1"
+    implementation "org.lwjgl:lwjgl-jawt:3.2.1"
+    implementation "org.lwjgl:lwjgl-jemalloc:3.2.1"
+    implementation "org.lwjgl:lwjgl-libdivide:3.2.1"
+    implementation "org.lwjgl:lwjgl-llvm:3.2.1"
+    implementation "org.lwjgl:lwjgl-lmdb:3.2.1"
+    implementation "org.lwjgl:lwjgl-lz4:3.2.1"
+    implementation "org.lwjgl:lwjgl-meow:3.2.1"
+    implementation "org.lwjgl:lwjgl-nanovg:3.2.1"
+    implementation "org.lwjgl:lwjgl-nfd:3.2.1"
+    implementation "org.lwjgl:lwjgl-nuklear:3.2.1"
+    implementation "org.lwjgl:lwjgl-odbc:3.2.1"
+    implementation "org.lwjgl:lwjgl-openal:3.2.1"
+    implementation "org.lwjgl:lwjgl-opencl:3.2.1"
+    implementation "org.lwjgl:lwjgl-opengl:3.2.1"
+    implementation "org.lwjgl:lwjgl-opengles:3.2.1"
+    implementation "org.lwjgl:lwjgl-openvr:3.2.1"
+    implementation "org.lwjgl:lwjgl-opus:3.2.1"
+    implementation "org.lwjgl:lwjgl-ovr:3.2.1"
+    implementation "org.lwjgl:lwjgl-par:3.2.1"
+    implementation "org.lwjgl:lwjgl-remotery:3.2.1"
+    implementation "org.lwjgl:lwjgl-rpmalloc:3.2.1"
+    implementation "org.lwjgl:lwjgl-sse:3.2.1"
+    implementation "org.lwjgl:lwjgl-stb:3.2.1"
+    implementation "org.lwjgl:lwjgl-tinyexr:3.2.1"
+    implementation "org.lwjgl:lwjgl-tinyfd:3.2.1"
+    implementation "org.lwjgl:lwjgl-tootle:3.2.1"
+    implementation "org.lwjgl:lwjgl-vma:3.2.1"
+    implementation "org.lwjgl:lwjgl-vulkan:3.2.1"
+    implementation "org.lwjgl:lwjgl-xxhash:3.2.1"
+    implementation "org.lwjgl:lwjgl-yoga:3.2.1"
+    implementation "org.lwjgl:lwjgl-zstd:3.2.1"
+    runtimeOnly "org.lwjgl:lwjgl:3.2.1:$lwjglNatives"
+    runtimeOnly "org.lwjgl:lwjgl-assimp:3.2.1:$lwjglNatives"
+    runtimeOnly "org.lwjgl:lwjgl-bgfx:3.2.1:$lwjglNatives"
+    runtimeOnly "org.lwjgl:lwjgl-glfw:3.2.1:$lwjglNatives"
+    runtimeOnly "org.lwjgl:lwjgl-jemalloc:3.2.1:$lwjglNatives"
+    runtimeOnly "org.lwjgl:lwjgl-libdivide:3.2.1:$lwjglNatives"
+    runtimeOnly "org.lwjgl:lwjgl-llvm:3.2.1:$lwjglNatives"
+    runtimeOnly "org.lwjgl:lwjgl-lmdb:3.2.1:$lwjglNatives"
+    runtimeOnly "org.lwjgl:lwjgl-lz4:3.2.1:$lwjglNatives"
+    runtimeOnly "org.lwjgl:lwjgl-meow:3.2.1:$lwjglNatives"
+    runtimeOnly "org.lwjgl:lwjgl-nanovg:3.2.1:$lwjglNatives"
+    runtimeOnly "org.lwjgl:lwjgl-nfd:3.2.1:$lwjglNatives"
+    runtimeOnly "org.lwjgl:lwjgl-nuklear:3.2.1:$lwjglNatives"
+    runtimeOnly "org.lwjgl:lwjgl-openal:3.2.1:$lwjglNatives"
+    runtimeOnly "org.lwjgl:lwjgl-opengl:3.2.1:$lwjglNatives"
+    runtimeOnly "org.lwjgl:lwjgl-opengles:3.2.1:$lwjglNatives"
+    runtimeOnly "org.lwjgl:lwjgl-openvr:3.2.1:$lwjglNatives"
+    runtimeOnly "org.lwjgl:lwjgl-opus:3.2.1:$lwjglNatives"
+    runtimeOnly "org.lwjgl:lwjgl-ovr:3.2.1:$lwjglNatives"
+    runtimeOnly "org.lwjgl:lwjgl-par:3.2.1:$lwjglNatives"
+    runtimeOnly "org.lwjgl:lwjgl-remotery:3.2.1:$lwjglNatives"
+    runtimeOnly "org.lwjgl:lwjgl-rpmalloc:3.2.1:$lwjglNatives"
+    runtimeOnly "org.lwjgl:lwjgl-sse:3.2.1:$lwjglNatives"
+    runtimeOnly "org.lwjgl:lwjgl-stb:3.2.1:$lwjglNatives"
+    runtimeOnly "org.lwjgl:lwjgl-tinyexr:3.2.1:$lwjglNatives"
+    runtimeOnly "org.lwjgl:lwjgl-tinyfd:3.2.1:$lwjglNatives"
+    runtimeOnly "org.lwjgl:lwjgl-tootle:3.2.1:$lwjglNatives"
+    runtimeOnly "org.lwjgl:lwjgl-vma:3.2.1:$lwjglNatives"
+    if (lwjglNatives == "natives-macos") runtimeOnly "org.lwjgl:lwjgl-vulkan:3.2.1:$lwjglNatives"
+    runtimeOnly "org.lwjgl:lwjgl-xxhash:3.2.1:$lwjglNatives"
+    runtimeOnly "org.lwjgl:lwjgl-yoga:3.2.1:$lwjglNatives"
+    runtimeOnly "org.lwjgl:lwjgl-zstd:3.2.1:$lwjglNatives"
+    implementation "org.joml:joml:1.9.13"
 }

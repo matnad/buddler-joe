@@ -17,7 +17,7 @@ import static org.lwjgl.opengl.GL20.glUniformMatrix4fv;
 
 public abstract class ShaderProgram {
 
-    private static final String PATH_TO_GLSL = "src/main/java/engine/shaders/glsl/";
+    private static final String PATH_TO_GLSL = "Buddler-Joe/src/main/java/engine/shaders/glsl/";
 
     private int programID;
     private int vertexShaderID;
