@@ -127,7 +127,7 @@ public class Dynamite extends Item {
             float distance = block.get2DDistanceFrom(getPositionXY());
             if(distance < 15) {
                 //Damage blocks inverse to distance (closer = more damage)
-                block.increaseDamage(1/distance * 50);
+                block.increaseDamage(1/distance * 50, this);
             }
         }
         //Destroy the dynamite object

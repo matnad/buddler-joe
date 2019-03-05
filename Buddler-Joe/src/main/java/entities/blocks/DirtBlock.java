@@ -1,6 +1,13 @@
 package entities.blocks;
 
+import engine.particles.Particle;
+import engine.particles.systems.Debris;
+import entities.NetPlayer;
+import entities.Player;
 import org.joml.Vector3f;
+import util.RandomName;
+
+import java.util.Random;
 
 
 public class DirtBlock extends Block {
@@ -18,5 +25,25 @@ public class DirtBlock extends Block {
     @Override
     protected void onDestroy() {
 
+        //Experimental Debris generation
+        if(getDestroyedBy() instanceof Player || getDestroyedBy() instanceof NetPlayer ) {
+            Random r = new Random();
+            for (int i = 0; i < generateValue(r, 10, 1f); i++) {
+                new Particle(Debris.getParticleTexture(), new Vector3f(
+                        getPosition().x + (r.nextFloat() * getDim() * 2) - getDim(),
+                        getPosition().y + (r.nextFloat() * getDim() * 2) - getDim(),
+                        getPosition().z + (r.nextFloat() * getDim() * 2) - getDim()),
+                        new Vector3f(0, 0, generateValue(r, 15, .2f)),
+                        generateValue(r, 0.3f, .05f),
+                        generateValue(r, 2, .5f),
+                        r.nextFloat() * 360,
+                        generateValue(r, 1, .5f));
+            }
+        }
+    }
+
+    private float generateValue(Random r, float average, float errorMargin) {
+        float offset = (r.nextFloat() - 0.5f) * 2f * errorMargin;
+        return average + offset;
     }
 }

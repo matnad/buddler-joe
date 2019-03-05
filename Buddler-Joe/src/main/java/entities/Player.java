@@ -130,7 +130,7 @@ public class Player extends NetPlayer {
     }
 
     private void digBlock(Block block) {
-        block.increaseDamage((float) (digDamage * window.getFrameTimeSeconds()));
+        block.increaseDamage((float) (digDamage * window.getFrameTimeSeconds()), this);
     }
 
 

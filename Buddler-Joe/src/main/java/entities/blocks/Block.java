@@ -17,6 +17,8 @@ public abstract class Block extends Entity {
     private float damage;
     private float dim;
 
+    private Entity destroyedBy;
+
     private static TexturedModel blockModel;
 
 
@@ -66,9 +68,10 @@ public abstract class Block extends Entity {
         return damage;
     }
 
-    public void increaseDamage(float damage) {
+    public void increaseDamage(float damage, Entity entity) {
         this.damage += damage;
         if (this.damage > this.hardness) {
+            destroyedBy = entity;
             setDestroyed(true);
             //Send server packet
         }
@@ -88,6 +91,10 @@ public abstract class Block extends Entity {
         if(destroyed) {
             onDestroy();
         }
+    }
+
+    public Entity getDestroyedBy() {
+        return destroyedBy;
     }
 
     protected abstract void onDestroy();

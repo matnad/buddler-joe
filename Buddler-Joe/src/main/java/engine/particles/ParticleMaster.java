@@ -1,5 +1,6 @@
 package engine.particles;
 
+import engine.particles.systems.Debris;
 import engine.particles.systems.Explosion;
 import engine.particles.systems.Fire;
 import engine.particles.systems.Smoke;
@@ -20,6 +21,7 @@ public class ParticleMaster {
         Fire.init(loader);
         Explosion.init(loader);
         Smoke.init(loader);
+        Debris.init(loader);
     }
 
     public static void update(Camera camera) {

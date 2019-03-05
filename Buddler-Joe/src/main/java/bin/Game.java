@@ -37,9 +37,9 @@ import static org.lwjgl.glfw.GLFW.*;
 public class Game extends Thread {
 //    public static final int WIDTH = 2560/2, HEIGHT = 1600/2, FPS = 60; //Mac Book Pro Half
 //    public static final int WIDTH = 2560, HEIGHT = 1600, FPS = 60; //Mac Book Pro
-//    public static final int WIDTH = 800, HEIGHT = 600, FPS = 60; //Desktop Dev
-    public static final int WIDTH = 1920, HEIGHT = 1080, FPS = 60; //Desktop Native
-    public static Window window = new Window(WIDTH, HEIGHT, FPS, "LWJGL Engine");
+    public static final int WIDTH = 800, HEIGHT = 600, FPS = 60; //Desktop Dev
+//    public static final int WIDTH = 1920, HEIGHT = 1080, FPS = 60; //Desktop Native
+    public static Window window = new Window(WIDTH, HEIGHT, FPS, "Buddler Joe");
 
     private static boolean fullscreen = false;
 
