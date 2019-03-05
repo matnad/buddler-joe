@@ -75,8 +75,8 @@ public class NetPlayer extends Entity {
         return modelSize;
     }
 
-    public void loadDirectionalUsername(Loader loader) {
-        this.directionalUsername = new DirectionalUsername(this, loader);
+    public void loadDirectionalUsername() {
+        this.directionalUsername = new DirectionalUsername(this);
     }
 
     public DirectionalUsername getDirectionalUsername() {

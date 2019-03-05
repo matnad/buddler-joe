@@ -6,8 +6,10 @@ import engine.io.InputHandler;
 import engine.io.Window;
 import engine.models.TexturedModel;
 import entities.blocks.Block;
+import entities.items.Dynamite;
 import net.packets.Packet01Move;
 import org.joml.Vector3f;
+import util.MousePlacer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -79,7 +81,7 @@ public class Player extends NetPlayer {
 
     private void handleCollision(Entity entity) {
 
-        super.updateBoundingBox();
+        //super.updateBoundingBox();
         //Entities are static for now
 
         //Make this mess readable
@@ -158,6 +160,10 @@ public class Player extends NetPlayer {
             return;
         }
 
+        if (InputHandler.isKeyPressed(GLFW_KEY_Q)) {
+            placeItem(new Dynamite(getPosition()));
+        }
+
         if (InputHandler.isKeyDown(GLFW_KEY_A)) {
             this.currentSpeed = -RUN_SPEED;
             this.currentTurnSpeed = -TURN_SPEED;
@@ -177,6 +183,10 @@ public class Player extends NetPlayer {
             super.setPosition(new Vector3f(100, 0,getPosition().z ));
         }
 
+    }
+
+    private void placeItem(Entity entity) {
+        MousePlacer.setEntity(entity);
     }
 
     /* HORIZONTAL PLANE (XZ) STUFF */

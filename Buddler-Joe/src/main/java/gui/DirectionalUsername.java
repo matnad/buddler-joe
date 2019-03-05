@@ -31,15 +31,15 @@ public class DirectionalUsername extends GUIString{
 
 
 
-    public DirectionalUsername(NetPlayer player, Loader loader) {
-        super(loader);
+    public DirectionalUsername(NetPlayer player) {
+        super();
         this.player = player;
-        setGuiStringString(player.getUsername());
 
-        setFont(new FontType(loader.loadFontTexture("src/main/resources/assets/fonts/verdana"), new File("src/main/resources/assets/fonts/verdana.fnt")));
         setAlpha(.5f);
         setTextColour(new Vector3f(1,1,1));
         setFontSize(.5f);
+
+        setGuiStringString(player.getUsername());
     }
 
 

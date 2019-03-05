@@ -16,6 +16,7 @@ import entities.blocks.*;
 import entities.items.Dynamite;
 import gui.Chat;
 import gui.FPS;
+import gui.GUIString;
 import gui.GuiTexture;
 import net.ClientLogic;
 import net.packets.Packet00Login;
@@ -23,6 +24,7 @@ import net.packets.Packet99Disconnect;
 import org.joml.Vector3f;
 import terrains.Terrain;
 import terrains.TerrainFlat;
+import util.MousePlacer;
 import util.RandomName;
 
 import java.util.ArrayList;
@@ -34,8 +36,8 @@ import static org.lwjgl.glfw.GLFW.*;
 public class Game extends Thread {
 //    public static final int WIDTH = 2560/2, HEIGHT = 1600/2, FPS = 60; //Mac Book Pro Half
 //    public static final int WIDTH = 2560, HEIGHT = 1600, FPS = 60; //Mac Book Pro
-//    public static final int WIDTH = 800, HEIGHT = 600, FPS = 60; //Desktop Dev
-    public static final int WIDTH = 1920, HEIGHT = 1080, FPS = 60; //Desktop Native
+    public static final int WIDTH = 800, HEIGHT = 600, FPS = 60; //Desktop Dev
+//    public static final int WIDTH = 1920, HEIGHT = 1080, FPS = 60; //Desktop Native
     public static Window window = new Window(WIDTH, HEIGHT, FPS, "LWJGL Engine");
 
     private static boolean fullscreen = false;
@@ -213,9 +215,11 @@ public class Game extends Thread {
         Player player = new Player(playerModel, new Vector3f(97, 0, 3), 0, 0, 0, myModelSize);
 
         //Light, Cameras, GUI, etc initialization
+        GUIString.loadFont(loader);
+
         Light light = new Light(new Vector3f(2e4f,4e4f,2e4f), new Vector3f(.5f,1, 1));
         camera = new Camera(player, window);
-        FPS fpsCounter = new FPS(loader);
+        FPS fpsCounter = new FPS();
         TextMaster.init(loader);
         chat = new Chat(loader);
         List<GuiTexture> guis = new ArrayList<>();
@@ -272,11 +276,12 @@ public class Game extends Thread {
                     dynamites.get(i).move();
                 }
 
-
                 player.updateCloseBlocks(blocks);
 
                 camera.move();
                 player.move();
+
+                MousePlacer.move();
 
                 //Prepare and render the entities
                 renderer.processEntity(player);
@@ -285,7 +290,7 @@ public class Game extends Thread {
                 for (Entity entity : entities) {
                     if (entity != null) {
                         if(entity instanceof NetPlayer) {
-                            entity.updateBoundingBox();
+                            //entity.updateBoundingBox();
                             ((NetPlayer) entity).getDirectionalUsername().updateString();
                         }
                         renderer.processEntity(entity);
@@ -396,7 +401,7 @@ public class Game extends Thread {
                     TexturedModel defaultModel = new TexturedModel(rawPlayer, new ModelTexture(loader.loadTexture(enteringPlayer.getTextureStr())));
                     enteringPlayer.setModel(defaultModel);
                 }
-                enteringPlayer.loadDirectionalUsername(loader);
+                enteringPlayer.loadDirectionalUsername();
                 entities.add(enteringPlayer);
                 loadedNetPlayers.add(enteringPlayer);
             }

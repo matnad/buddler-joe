@@ -47,7 +47,7 @@ public class TextMaster {
     }
 
 
-
-
-
+    public static Map<FontType, List<GUIText>> getTexts() {
+        return texts;
+    }
 }

@@ -187,7 +187,7 @@ public class Camera {
         return (float) (distanceFromPlayer * Math.sin(Math.toRadians(pitch+4)));
     }
 
-    public static Vector3f getPosition() {
+    public Vector3f getPosition() {
         return position;
     }
 
@@ -195,15 +195,17 @@ public class Camera {
         this.pitch = -pitch;
     }
 
-    public static float getPitch() {
+    public float getPitch() {
         return pitch;
     }
 
-    public static float getYaw() {
+    public float getYaw() {
         return yaw;
     }
 
     public float getRoll() {
         return roll;
     }
+
+
 }

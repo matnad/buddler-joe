@@ -1,12 +1,15 @@
 package engine.io;
 
 import bin.Game;
+import engine.render.MasterRenderer;
+import org.joml.*;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.glfw.GLFWCursorPosCallback;
 import org.lwjgl.glfw.GLFWKeyCallback;
 import org.lwjgl.glfw.GLFWMouseButtonCallback;
 import org.lwjgl.glfw.GLFWScrollCallback;
 
+import java.lang.Math;
 import java.nio.DoubleBuffer;
 
 import static org.lwjgl.glfw.GLFW.*;
@@ -26,6 +29,10 @@ public class InputHandler {
     private static double cursorPosDY;
 
     private static double mouseScrollY;
+
+    private static Vector3f mouseRay = new Vector3f();
+    private static Vector3f wallIntersection = new Vector3f();
+    private static boolean pickerMode = false;
 
     private long window;
 
@@ -62,12 +69,53 @@ public class InputHandler {
             cursorPosY = ypos;
             cursorPosDX = xpos - cursorPosLX;
             cursorPosDY = ypos - cursorPosLY;
-            //System.out.println("dx: "+cursorPosDX+" dy: "+cursorPosDY);
+
+            if(pickerMode) {
+                //Proabably need to move this to the main loop since moving the player moves the cursor and doesn't update this
+                updateRaycasting(xpos, ypos);
+            }
         }
     };
 
+    public static void updateRaycasting(double xpos, double ypos) {
+        int[] viewport = new int[4];
+        viewport[2] = Game.window.getWidth();
+        viewport[3] = Game.window.getHeight();
 
+        //Unproject mouseRay with the projection Matrix, Viewport data and the cursor position
+        MasterRenderer.getProjectionMatrix()
+                .unprojectRay((float) xpos, (float) (Game.window.getHeight() - ypos), viewport, new Vector3f(), mouseRay);
 
+        //Rotate mouseRay with camera
+        new Matrix3f()
+                .rotateY((float) Math.toRadians(-Game.camera.getYaw()))
+                .rotateX((float) Math.toRadians(-Game.camera.getPitch()))
+                .transform(mouseRay);
+
+        //Calculate the intersection point of mouseRay and plane x=0, y=0, z=3 (a plane that goes through the center of the blocks)
+        //This is done with binary search, always choosing the part of the ray with the plane in it
+        float distance = Intersectionf.intersectRayPlane(Game.camera.getPosition(), mouseRay, new Vector3f(0, 0, 3), new Vector3f(0, 0, 1), 1e-5f);
+        wallIntersection = getPointOnRay(Game.camera.getPosition(), mouseRay, distance);
+    }
+
+    public static Vector3f getPointOnRay(Vector3f origin, Vector3f ray, float distance) {
+        Vector3f camPos = origin;
+        Vector3f start = new Vector3f(camPos.x, camPos.y, camPos.z);
+        Vector3f scaledRay = new Vector3f(ray.x * distance, ray.y * distance, ray.z * distance);
+        return start.add(scaledRay);
+    }
+
+    public static boolean isPickerMode() {
+        return pickerMode;
+    }
+
+    public static void setPickerMode(boolean pickerMode) {
+        InputHandler.pickerMode = pickerMode;
+    }
+
+    public static Vector3f getWallIntersection() {
+        return wallIntersection;
+    }
 
     //Update
     static void update() {
