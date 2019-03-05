@@ -20,7 +20,7 @@ public class Player extends NetPlayer {
 
     private static final float RUN_SPEED = 20; //Units per second
     private static final float TURN_SPEED = 720; //Degrees per second
-    private static final float GRAVITY = -45; //Units per second
+    public static final float GRAVITY = -45; //Units per second
     private static final float JUMP_POWER = 25; //Units per second
     private static final float DIG_TIME = 1.2f; //In seconds
 
@@ -96,7 +96,10 @@ public class Player extends NetPlayer {
 
             if(Math.abs(w) < Math.abs(h)) {
                 if (h > 0) { //from above
-                    setPositionY(b.getMaxY());
+                    //setPositionY(b.getMaxY());
+                    super.increasePosition(0, (float) -(upwardsSpeed * window.getFrameTimeSeconds()), 0);
+                    if(getPosition().y+0.1 < b.getMaxY())
+                        setPositionY(b.getMaxY());
                     if (upwardsSpeed < 0)
                         upwardsSpeed = 0;
                     isInAir = false;

@@ -18,7 +18,7 @@ public class GoldBlock extends Block {
 
     @Override
     protected void onDestroy() {
-        Dynamite dynamite = new Dynamite(getPosition());
-        dynamite.setActive(true);
+//        Dynamite dynamite = new Dynamite(getPosition());
+//        dynamite.setActive(true);
     }
 }

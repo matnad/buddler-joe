@@ -143,10 +143,10 @@ public class Camera {
         if(InputHandler.isMouseDown(GLFW_MOUSE_BUTTON_2)){
             float yawChange = (float) (InputHandler.getCursorPosDX() * 0.2f);
             yaw += yawChange;
-            if(yaw < -25){
-                yaw = -25;
-            }else if(yaw > 25){
-                yaw = 25;
+            if(yaw < -75){
+                yaw = -75;
+            }else if(yaw > 75){
+                yaw = 75;
             }
         }
     }

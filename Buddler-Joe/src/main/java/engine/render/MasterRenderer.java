@@ -127,6 +127,6 @@ public class MasterRenderer {
     }
 
     public static Matrix4f getProjectionMatrix() {
-        return projectionMatrix;
+        return new Matrix4f().set(projectionMatrix);
     }
 }

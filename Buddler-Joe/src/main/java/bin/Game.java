@@ -4,6 +4,7 @@ import engine.io.InputHandler;
 import engine.io.Window;
 import engine.models.RawModel;
 import engine.models.TexturedModel;
+import engine.particles.*;
 import engine.render.*;
 import engine.render.fontRendering.TextMaster;
 import engine.render.objConverter.ModelData;
@@ -36,8 +37,8 @@ import static org.lwjgl.glfw.GLFW.*;
 public class Game extends Thread {
 //    public static final int WIDTH = 2560/2, HEIGHT = 1600/2, FPS = 60; //Mac Book Pro Half
 //    public static final int WIDTH = 2560, HEIGHT = 1600, FPS = 60; //Mac Book Pro
-    public static final int WIDTH = 800, HEIGHT = 600, FPS = 60; //Desktop Dev
-//    public static final int WIDTH = 1920, HEIGHT = 1080, FPS = 60; //Desktop Native
+//    public static final int WIDTH = 800, HEIGHT = 600, FPS = 60; //Desktop Dev
+    public static final int WIDTH = 1920, HEIGHT = 1080, FPS = 60; //Desktop Native
     public static Window window = new Window(WIDTH, HEIGHT, FPS, "LWJGL Engine");
 
     private static boolean fullscreen = false;
@@ -53,7 +54,7 @@ public class Game extends Thread {
     public static Camera camera;
 
     //Temp Player model
-    private int skin = 1;
+    private int skin = 2;
     public static  String myModel;
     public static String myTexture;
     public static float myModelSize;
@@ -78,9 +79,9 @@ public class Game extends Thread {
                 break;
             case 2:
                 //Person
-                myModel = "joe";
-                myTexture = "male";
-                myModelSize = 3f;
+                myModel = "person";
+                myTexture = "person";
+                myModelSize = .5f;
                 break;
             case 3:
                 //Rabbit
@@ -191,15 +192,20 @@ public class Game extends Thread {
         float padding = .0f;
         float size = 3;
         float m = size*2+padding;
+
+        for (int i = 0; i < 33; i++) {
+            blocks.add(new GrassBlock(new Vector3f(i * m + 3f, -size, size),0, 0, 0, size));
+        }
+
         for (int i = 0; i < 33; i++) {
             for (int j = 0; j < 33; j++) {
                 float k = random.nextFloat();
                 if (k < .5f) {
-                    blocks.add(new DirtBlock(new Vector3f(i * m + 3f, -j * m - size*2-1, size),0, 0, 0, size));
+                    blocks.add(new DirtBlock(new Vector3f(i * m + 3f, -j * m - size*3, size),0, 0, 0, size));
                 } else if (k < .8f) {
-                    blocks.add(new StoneBlock(new Vector3f(i * m + 3f, -j * m - size*2-1, size), 0, 0, 0, size));
+                    blocks.add(new StoneBlock(new Vector3f(i * m + 3f, -j * m - size*3, size), 0, 0, 0, size));
                 } else if (k < .85f) {
-                    blocks.add(new GoldBlock(new Vector3f(i * m + 3f, -j * m - size*2-1, size), 0, 0, 0, size));
+                    blocks.add(new GoldBlock(new Vector3f(i * m + 3f, -j * m - size*3, size), 0, 0, 0, size));
                 }
             }
         }
@@ -226,6 +232,9 @@ public class Game extends Thread {
         guis.add(chat.getChatGui());
         GuiRenderer guiRenderer = new GuiRenderer(loader);
 
+        //Particles
+        ParticleMaster.init(loader, MasterRenderer.getProjectionMatrix());
+
         /********************************************************
          * HERE STARTS THE GAME LOOP!
          ********************************************************/
@@ -244,16 +253,8 @@ public class Game extends Thread {
                 if(InputHandler.isKeyPressed(GLFW_KEY_ESCAPE))
                     window.stop();
 
-                //Remove destroyed blocks
-//                List<Block> blocksToRemove = new ArrayList<>();
-//                for (Block block : blocks) {
-//                    if(block.isDestroyed()) {
-//                        blocksToRemove.add(block);
-//                    }
-//                }
-//                blocks.removeAll(blocksToRemove);
-//                entities.removeAll(blocksToRemove);
 
+                //Maybe rework with iterators?
                 List<Entity> entitiesToRemove = new ArrayList<>();
                 for (Entity entity : entities) {
                     if(entity.isDestroyed()) {
@@ -280,8 +281,10 @@ public class Game extends Thread {
 
                 camera.move();
                 player.move();
-
                 MousePlacer.move();
+
+//                system.generateParticles(new Vector3f(0,15,0).add(player.getPosition()));
+                ParticleMaster.update(camera);
 
                 //Prepare and render the entities
                 renderer.processEntity(player);
@@ -300,7 +303,8 @@ public class Game extends Thread {
                 //Render the light and gui and text
                 renderer.render(light, camera);
                 chat.checkInputs();
-                guiRenderer.render(guis);
+                ParticleMaster.renderParticles(camera);
+//                guiRenderer.render(guis);
                 TextMaster.render();
 
                 window.swapBuffers();
@@ -314,6 +318,7 @@ public class Game extends Thread {
         guiRenderer.cleanUp();
         renderer.cleanUp();
         loader.cleanUp();
+        ParticleMaster.cleanUp();
 
         //Close and disconnect (still need a window close callback)
         window.kill();
