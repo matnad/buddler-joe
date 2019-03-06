@@ -4,6 +4,10 @@ import engine.shaders.ShaderProgram;
 import org.joml.Matrix4f;
 import org.joml.Vector2f;
 
+/**
+ * Shader programm for particles
+ * Just passing some variables to the shader
+ */
 public class ParticleShader extends ShaderProgram {
 
 	private static final String SHADER_NAME = "particle";

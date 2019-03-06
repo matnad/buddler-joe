@@ -10,6 +10,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Manage the text objects that appear on screen, organized by font type.
+ * When a new text object is added, the text mesh is loaded and a VAO is generated to store the text model.
+ * Will pass the text objects to the renderer.
+ *
+ */
 public class TextMaster {
 
     private static Loader loader;
@@ -25,6 +31,10 @@ public class TextMaster {
         renderer.render(texts);
     }
 
+    /**
+     * Load text to a VAO and store the ID.
+     * The text can now be rendered.
+     */
     public static void loadText(GUIText text) {
         FontType font = text.getFont();
         TextMeshData data = font.loadText(text);

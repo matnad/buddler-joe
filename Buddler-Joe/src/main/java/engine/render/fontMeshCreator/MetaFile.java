@@ -6,10 +6,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.TreeMap;
 
-import engine.io.Window;
-//import org.lwjgl.opengl.Display;
 
 /**
  * Provides functionality for getting the values from a font file.

@@ -2,6 +2,11 @@ package engine.models;
 
 import engine.textures.ModelTexture;
 
+/**
+ * Contains a raw model and a texture.
+ * See these classes for more details.
+ *
+ */
 public class TexturedModel {
 
     private RawModel rawModel;

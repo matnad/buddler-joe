@@ -42,7 +42,6 @@ public class Dynamite extends Item {
         exploded = false;
         timerGUI = new DynamiteTimer();
         timerGUI.setAlpha(1);
-        Game.addEntity(this);
 //        timerGUI = new DynamiteTimer();
 
         //Generate Fuse Effect

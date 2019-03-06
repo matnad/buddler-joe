@@ -9,6 +9,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * Set rules of phsysics for particles and emits them.
+ * The physics "simulation" (transformation) is done in the Particle Renderer and the shaders
+ *
+ * This class generates and emits particles and sets rules how they behave in the 3D world.
+ *
+ * Can set texture, amount per second, speed, gravity compliance, lifeduration and scale of the particles including
+ * a value for how much these values can deviate among particles of this system.
+ *
+ */
 public class ParticleSystem {
 
     private float pps, averageSpeed, gravityComplient, averageLifeLength, averageScale;
@@ -22,6 +32,14 @@ public class ParticleSystem {
 
     private Random random = new Random();
 
+    /**
+     * @param texture ParticleTexture Object
+     * @param pps Particles per second. Will be probabistically rounded each frame.
+     * @param speed Distance travelled per second.
+     * @param gravityComplient Effect of the gravity constant. 0 means no gravity, negative numbers mean negative gravity.
+     * @param lifeLength Duration before the particle is removed in seconds.
+     * @param scale Size of the particle.
+     */
     public ParticleSystem(ParticleTexture texture, float pps, float speed, float gravityComplient, float lifeLength, float scale) {
         this.texture = texture;
         this.pps = pps;
@@ -32,8 +50,8 @@ public class ParticleSystem {
     }
 
     /**
-     * @param direction - The average direction in which particles are emitted.
-     * @param deviation - A value between 0 and 1 indicating how far from the chosen direction particles can deviate.
+     * @param direction The average direction in which particles are emitted.
+     * @param deviation A value between 0 and 1 indicating how far from the chosen direction particles can deviate.
      */
     public void setDirection(Vector3f direction, float deviation) {
         this.direction = new Vector3f(direction);
@@ -45,39 +63,48 @@ public class ParticleSystem {
     }
 
     /**
-     * @param error
-     *            - A number between 0 and 1, where 0 means no error margin.
+     * @param error A number between 0 and 1, where 0 means no error margin.
      */
     public void setSpeedError(float error) {
         this.speedError = error * averageSpeed;
     }
 
     /**
-     * @param error
-     *            - A number between 0 and 1, where 0 means no error margin.
+     * @param error A number between 0 and 1, where 0 means no error margin.
      */
     public void setLifeError(float error) {
         this.lifeError = error * averageLifeLength;
     }
 
     /**
-     * @param error
-     *            - A number between 0 and 1, where 0 means no error margin.
+     * @param error A number between 0 and 1, where 0 means no error margin.
      */
     public void setScaleError(float error) {
         this.scaleError = error * averageScale;
     }
 
+    /**
+     * Emits and returns a list of these particles. Length of list will not be constant since it is scaled with time delta
+     *
+     * @param systemCenter position of emittance
+     * @return list of particles emitted with this call
+     */
     public List<Particle> generateParticles(Vector3f systemCenter) {
         List<Particle> particles = new ArrayList<>();
         float delta = (float) Game.window.getFrameTimeSeconds();
         float particlesToCreate = pps * delta;
+
+        //Full particles
         int count = (int) Math.floor(particlesToCreate);
+
+        //Chance to create another particle
         float partialParticle = particlesToCreate % 1;
+
         for (int i = 0; i < count; i++) {
             particles.add(emitParticle(systemCenter));
         }
         if (Math.random() < partialParticle) {
+            //Chance equal to fraction of particle
             particles.add(emitParticle(systemCenter));
         }
         return particles;
@@ -110,6 +137,10 @@ public class ParticleSystem {
         }
     }
 
+
+    /**
+     * Returns a direction vector randomized over a cone area
+     */
     private static Vector3f generateRandomUnitVectorWithinCone(Vector3f coneDirection, float angle) {
         float cosAngle = (float) Math.cos(angle);
         Random random = new Random();

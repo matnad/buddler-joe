@@ -1,12 +1,7 @@
 package entities;
 
 import collision.BoundingBox;
-import engine.models.RawModel;
 import engine.models.TexturedModel;
-import engine.render.Loader;
-import engine.render.objConverter.ModelData;
-import engine.render.objConverter.OBJFileLoader;
-import engine.textures.ModelTexture;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 
@@ -41,8 +36,8 @@ public class Entity {
         this.rotZ = rotZ;
         this.scale = scale;
 
-        if(model != null && model.getRawModel().getBB().length == 6) {
-            bBox = new BoundingBox(model.getRawModel().getBB());
+        if(model != null && model.getRawModel().getBoundingCoords().length == 6) {
+            bBox = new BoundingBox(model.getRawModel().getBoundingCoords());
             bBox.scale(scale);
             updateBoundingBox();
         }
@@ -122,7 +117,7 @@ public class Entity {
 
     public void setModel(TexturedModel model) {
         this.model = model;
-        bBox = new BoundingBox(model.getRawModel().getBB());
+        bBox = new BoundingBox(model.getRawModel().getBoundingCoords());
     }
 
     public void setPosition(Vector3f position) {

@@ -9,6 +9,9 @@ public class Debris extends ParticleSystem {
 
     private static ParticleTexture particleTexture;
 
+    /**
+     * ParticleSystem with texture for dirt debris pre-loaded. See ParticleSystem.java for more details.
+     */
     public Debris(float pps, float speed, float gravityComplient, float lifeLength, float scale) {
         super(particleTexture, pps, speed, gravityComplient, lifeLength, scale);
     }

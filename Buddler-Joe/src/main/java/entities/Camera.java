@@ -109,7 +109,7 @@ public class Camera {
 
 
     private void calculateZoom() {
-        float zoomLevel = (float) (window.getMouseScrollY() * 2f);
+        float zoomLevel = (float) (InputHandler.getMouseScrollY() * 2f);
         offsetZ -= zoomLevel;
         if (offsetZ < 5) {
             offsetZ = 5;
@@ -120,7 +120,7 @@ public class Camera {
     }
 
     private void calculateZoomTPP() {
-        float zoomLevel = (float) (window.getMouseScrollY() * 2f);
+        float zoomLevel = (float) (InputHandler.getMouseScrollY() * 2f);
         distanceFromPlayer -= zoomLevel;
         if(distanceFromPlayer<5){
             distanceFromPlayer = 5;

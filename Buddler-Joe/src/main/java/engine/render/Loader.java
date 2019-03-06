@@ -9,11 +9,8 @@ import engine.models.RawModel;
 import engine.render.objConverter.ModelData;
 import engine.textures.Texture;
 import org.lwjgl.BufferUtils;
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL14;
 import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL20;
-import org.lwjgl.opengl.GL30;
 
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL14.*;
@@ -47,7 +44,7 @@ public class Loader {
     public RawModel loadToVAO(ModelData data) {
         RawModel rawModel = loadToVAO(data.getVertices(), data.getTextureCoords(), data.getNormals(), data.getIndices());
         if (data.getBB().length == 6)
-            rawModel.setBB(data.getBB());
+            rawModel.setBoundingCoords(data.getBB());
         return rawModel;
     }
 
