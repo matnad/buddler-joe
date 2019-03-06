@@ -78,9 +78,6 @@ public class ServerLogic extends Thread {
                 packet = new Packet01Move(data);
 //                System.out.println(""+((Packet01Move)packet).getUsername()+" has moved to "+((Packet01Move)packet).getMoveCoords());
                 handleMove((Packet01Move)packet, address, port);
-            //case PING:
-              //  packet = new Packet02Ping(data);
-                //System.out.println("["+address.getHostAddress()+":"+port+"] "+ ((Packet02Ping) packet).getUsername()+" Ping.")
         }
     }
 
