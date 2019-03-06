@@ -12,6 +12,7 @@ public abstract class Packet {
         INVALID(-1),
         LOGIN(00),
         MOVE(01),
+        //PING(02);
         DISCONNECT(99);
 
         private int packetId;

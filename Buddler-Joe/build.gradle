@@ -1,5 +1,6 @@
 plugins {
     id 'java'
+    id 'checkstyle'
 }
 
 sourceCompatibility = 1.11
@@ -24,6 +25,10 @@ switch (OperatingSystem.current()) {
 
 sourceSets {
     main
+}
+
+checkstyle { 
+    toolVersion = '8.5'
 }
 
 
