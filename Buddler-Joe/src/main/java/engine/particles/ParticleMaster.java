@@ -1,9 +1,6 @@
 package engine.particles;
 
-import engine.particles.systems.Debris;
-import engine.particles.systems.Explosion;
-import engine.particles.systems.Fire;
-import engine.particles.systems.Smoke;
+import engine.particles.systems.*;
 import engine.render.Loader;
 import entities.Camera;
 import org.joml.Matrix4f;
@@ -36,6 +33,7 @@ public class ParticleMaster {
         Explosion.init(loader);
         Smoke.init(loader);
         Debris.init(loader);
+        Cosmic.init(loader);
     }
 
     /**

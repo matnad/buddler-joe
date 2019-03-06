@@ -46,8 +46,8 @@ public class Game extends Thread {
      */
 //    public static final int WIDTH = 2560/2, HEIGHT = 1600/2, FPS = 60; //Mac Book Pro Half
 //    public static final int WIDTH = 2560, HEIGHT = 1600, FPS = 60; //Mac Book Pro
-    public static final int WIDTH = 800, HEIGHT = 600, FPS = 60; //Desktop Dev
-//    public static final int WIDTH = 1920, HEIGHT = 1080, FPS = 60; //Desktop Native
+//    public static final int WIDTH = 800, HEIGHT = 600, FPS = 60; //Desktop Dev
+    public static final int WIDTH = 1920, HEIGHT = 1080, FPS = 60; //Desktop Native
 
 
     //Set up GLFW Window
@@ -256,7 +256,7 @@ public class Game extends Thread {
                 chat.checkInputs();
                 //GUI goes over everything else and then text on top of GUI
                 ParticleMaster.renderParticles(camera);
-                guiRenderer.render(guis);
+//                guiRenderer.render(guis);
                 TextMaster.render();
 
                 //Done with one frame

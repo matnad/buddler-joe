@@ -1,10 +1,9 @@
 package engine.particles;
 
 import bin.Game;
-import org.joml.Matrix4f;
-import org.joml.Vector3f;
-import org.joml.Vector4f;
+import org.joml.*;
 
+import java.lang.Math;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -27,6 +26,8 @@ public class ParticleSystem {
     private boolean randomRotation = false;
     private Vector3f direction;
     private float directionDeviation = 0;
+    private Vector3f rotationAxis;
+    private float rotationDeviation = 0; //TODO (Matthias): Add some rotation noise
 
     private  ParticleTexture texture;
 
@@ -56,6 +57,11 @@ public class ParticleSystem {
     public void setDirection(Vector3f direction, float deviation) {
         this.direction = new Vector3f(direction);
         this.directionDeviation = (float) (deviation * Math.PI);
+    }
+
+    public void setRotationAxis(Vector3f rotationAxis, float deviation) {
+        this.rotationAxis = rotationAxis;
+        this.rotationDeviation = (float) (deviation * Math.PI);
     }
 
     public void randomizeRotation() {
@@ -113,8 +119,16 @@ public class ParticleSystem {
     private Particle emitParticle(Vector3f center) {
         Vector3f velocity = null;
         if(direction!=null){
+            //Cone style random vectors
             velocity = generateRandomUnitVectorWithinCone(direction, directionDeviation);
+
+            if (rotationAxis != null) {
+                //Random in a plane described by direction
+                velocity = generateRandomUnitVectorWithinPlane(velocity, rotationAxis);
+
+            }
         }else{
+            //Completely random vectors
             velocity = generateRandomUnitVector();
         }
         velocity.normalize();
@@ -137,6 +151,19 @@ public class ParticleSystem {
         }
     }
 
+    /**
+     * Returns a direction vector randomized over a plane area (rotate direction vector around axis by a random theta)
+     */
+    private static Vector3f generateRandomUnitVectorWithinPlane(Vector3f direction, Vector3f axis) {
+
+        Random random = new Random();
+        float theta = (float) (random.nextFloat() * 2f * Math.PI);
+
+        return new Vector3f()
+                .set(direction)
+                .rotateAxis(theta, axis.x, axis.y, axis.z);
+
+    }
 
     /**
      * Returns a direction vector randomized over a cone area

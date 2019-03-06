@@ -63,8 +63,8 @@ public class ParticleRenderer {
 				//Draw the actual particle
 				GL11.glDrawArrays(GL11.GL_TRIANGLE_STRIP, 0, quad.getVertexCount());
 			}
-			finishRendering();
 		}
+		finishRendering();
 	}
 
 	void cleanUp(){

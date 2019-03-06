@@ -17,6 +17,7 @@ import org.joml.Vector3f;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class Dynamite extends Item {
     private  final float GRAVITY = 20;
@@ -29,10 +30,10 @@ public class Dynamite extends Item {
     private DynamiteTimer timerGUI;
 
     private Fire particleFuse;
-    private List<Particle> fuseParticles;
-    private Explosion particleExplosion1;
-    private Explosion particleExplosion2;
+    private Explosion particleExplosion;
+    private Explosion particleShrapnel;
     private Smoke particleSmoke;
+    private Explosion particleShockwave;
 
     public Dynamite(Vector3f position, float rotX, float rotY, float rotZ, float scale) {
         super(ItemMaster.ItemTypes.DYNAMITE, getPreloadedModel(), position, rotX, rotY, rotZ, scale);
@@ -42,7 +43,6 @@ public class Dynamite extends Item {
         exploded = false;
         timerGUI = new DynamiteTimer();
         timerGUI.setAlpha(1);
-//        timerGUI = new DynamiteTimer();
 
         //Generate Fuse Effect
         particleFuse = new Fire(70, 1, .01f, 1, 3);
@@ -51,25 +51,34 @@ public class Dynamite extends Item {
         particleFuse.setSpeedError(.1f);
         particleFuse.setScaleError(.5f);
         particleFuse.randomizeRotation();
-        fuseParticles = new ArrayList<>();
 
         //Generate Explosion Effect
-        particleExplosion1 = new Explosion(200, 13, 0, .5f, 15);
-        particleExplosion1.setScaleError(.4f);
-        particleExplosion1.setSpeedError(.3f);
-        particleExplosion1.setLifeError(.2f);
+        particleExplosion = new Explosion(200, 11, 0, .4f, 15);
+        particleExplosion.setScaleError(.4f);
+        particleExplosion.setSpeedError(.3f);
+        particleExplosion.setLifeError(.2f);
 
-        particleExplosion2 = new Explosion(250, 20, 0, 1f, 3);
-        particleExplosion2.setScaleError(.2f);
-        particleExplosion2.setLifeError(.5f);
-        particleExplosion2.setSpeedError(.3f);
+        //Generate Shrapnel Effect
+        particleShrapnel = new Explosion(1200, 70, 0, 1.5f, .85f);
+        particleShrapnel.setScaleError(.2f);
+        particleShrapnel.setLifeError(.5f);
+        particleShrapnel.setSpeedError(.3f);
 
         //Generate Smoke Effect
-//        particleSmoke = new Smoke(100, 5, .1f, 4f, 10f);
-//        particleSmoke.setScaleError(.2f);
-//        particleSmoke.setLifeError(.5f);
-//        particleSmoke.setSpeedError(.3f);
-//        particleSmoke.randomizeRotation();
+        particleSmoke = new Smoke(40, 5, -.1f, 6f, 20f);
+        particleSmoke.setScaleError(.2f);
+        particleSmoke.setLifeError(.8f);
+        particleSmoke.setSpeedError(.3f);
+        particleSmoke.randomizeRotation();
+
+        //Generate Shockwave effect
+        //We can vary pps by graphic setting, but it looks very nice with a lot of particles!
+        Random rnd = new Random(); //Give the shockwave a slight random tilt
+        particleShockwave = new Explosion(3000, 40, 0f, .8f, 5f);
+        particleShockwave.setScaleError(.1f);
+        particleShockwave.setLifeError(.1f);
+        particleShockwave.setDirection(new Vector3f(1,0,0), 0);
+        particleShockwave.setRotationAxis(new Vector3f(rnd.nextFloat()*.4f-.2f,1,rnd.nextFloat()*.4f-.2f), 0);
     }
 
     public Dynamite(Vector3f position) {
@@ -87,7 +96,6 @@ public class Dynamite extends Item {
 
         if(!active)
             return;
-
         time += Game.window.getFrameTimeSeconds();
         if(time < FUSE_TIMER) {
             boolean collision = false;
@@ -102,16 +110,20 @@ public class Dynamite extends Item {
             }
 
             float offset = getbBox().getDimY() * 2 * (FUSE_TIMER-time)/FUSE_TIMER;
-            fuseParticles.addAll(particleFuse.generateParticles(new Vector3f(0,offset, 0).add(getPosition())));
+            particleFuse.generateParticles(new Vector3f(0,offset, 0).add(getPosition()));
         } else if (time >= FUSE_TIMER + EXPLOSION_TIME) {
             setDestroyed(true); //Remove Object
         } else if (time >= FUSE_TIMER) {
             explode();
-            for (Particle fuseParticle : fuseParticles) {
-                fuseParticle.kill();
+
+            particleExplosion.generateParticles(getPosition());
+
+            particleSmoke.generateParticles(getPosition());
+            if(time <= FUSE_TIMER+0.1) {
+                particleShrapnel.generateParticles(getPosition());
+                particleShockwave.generateParticles(getPosition());
             }
-            particleExplosion1.generateParticles(getPosition());
-            particleExplosion2.generateParticles(getPosition());
+
 
         }
     }

@@ -34,6 +34,8 @@ public class Particle {
     private float distance;
 
     /**
+     * Creates a single particle. Only called by the particle system.
+     *
      * @param texture ParticleTexture Object.
      * @param position Initial 3D world position of the particle.
      * @param velocity Distance traveled per second.
