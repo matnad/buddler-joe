@@ -1,6 +1,5 @@
 package engine.render;
 
-import engine.io.Window;
 import engine.models.RawModel;
 import engine.models.TexturedModel;
 import engine.shaders.StaticShader;
@@ -14,13 +13,13 @@ import java.util.Map;
 
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL20.*;
-import static org.lwjgl.opengl.GL30.*;
+import static org.lwjgl.opengl.GL30.glBindVertexArray;
 
 public class EntityRenderer {
 
     private StaticShader shader;
 
-    public EntityRenderer(StaticShader shader, Matrix4f projectionMatrix) {
+    EntityRenderer(StaticShader shader, Matrix4f projectionMatrix) {
         this.shader = shader;
         shader.start();
         shader.loadProjectionMatrix(projectionMatrix);

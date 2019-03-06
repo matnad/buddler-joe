@@ -7,10 +7,23 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * .obj file parser.
+ * Loads a model and parses the data into arrays.
+ * Is fully static and should be called as such.
+ */
 public class OBJFileLoader {
 
     private static final String RES_LOC = "src/main/resources/assets/models/";
 
+    /**
+     * Open a .obj model file and parse the content to write vertices, texture coords, normals, indices and bounding
+     * box coordinates in a ModelData object
+     *
+     * @param objFileName just the name of the file without path or extension. File must be .obj and located in the
+     *                    models folder
+     * @return ModelData contains all the info of an obj file, parsed into arrays
+     */
     public static ModelData loadOBJ(String objFileName) {
         FileReader isr = null;
         File objFile = new File(RES_LOC + objFileName + ".obj");
@@ -19,13 +32,17 @@ public class OBJFileLoader {
         } catch (FileNotFoundException e) {
             System.err.println("File not found in res; don't use any extention");
         }
-        BufferedReader reader = new BufferedReader(isr);
+        BufferedReader reader = null;
+        if (isr != null) {
+            reader = new BufferedReader(isr);
+        }
         String line;
-        List<Vertex> vertices = new ArrayList<Vertex>();
-        List<Vector2f> textures = new ArrayList<Vector2f>();
-        List<Vector3f> normals = new ArrayList<Vector3f>();
-        List<Integer> indices = new ArrayList<Integer>();
+        List<Vertex> vertices = new ArrayList<>();
+        List<Vector2f> textures = new ArrayList<>();
+        List<Vector3f> normals = new ArrayList<>();
+        List<Integer> indices = new ArrayList<>();
 
+        //For Bounding Box
         float minX = Float.POSITIVE_INFINITY;
         float maxX = Float.NEGATIVE_INFINITY;
         float minY = Float.POSITIVE_INFINITY;
@@ -35,12 +52,13 @@ public class OBJFileLoader {
 
         try {
             while (true) {
+                //Parse line by line. Obj files have an identifier as the first 1 or 2 characters on each line
                 line = reader.readLine();
-                if (line.startsWith("v ")) {
+                if (line.startsWith("v ")) { //Vertices
                     String[] currentLine = line.split(" ");
-                    Vector3f vertex = new Vector3f((float) Float.valueOf(currentLine[1]),
-                            (float) Float.valueOf(currentLine[2]),
-                            (float) Float.valueOf(currentLine[3]));
+                    Vector3f vertex = new Vector3f(Float.valueOf(currentLine[1]),
+                            Float.valueOf(currentLine[2]),
+                            Float.valueOf(currentLine[3]));
                     Vertex newVertex = new Vertex(vertices.size(), vertex);
                     vertices.add(newVertex);
 
@@ -52,21 +70,22 @@ public class OBJFileLoader {
                     if (vertex.z < minZ) minZ = vertex.z;
                     if (vertex.z > maxZ) maxZ = vertex.z;
 
-                } else if (line.startsWith("vt ")) {
+                } else if (line.startsWith("vt ")) { //Textures
                     String[] currentLine = line.split(" ");
-                    Vector2f texture = new Vector2f((float) Float.valueOf(currentLine[1]),
-                            (float) Float.valueOf(currentLine[2]));
+                    Vector2f texture = new Vector2f(Float.valueOf(currentLine[1]),
+                            Float.valueOf(currentLine[2]));
                     textures.add(texture);
-                } else if (line.startsWith("vn ")) {
+                } else if (line.startsWith("vn ")) { //Normals
                     String[] currentLine = line.split(" ");
-                    Vector3f normal = new Vector3f((float) Float.valueOf(currentLine[1]),
-                            (float) Float.valueOf(currentLine[2]),
-                            (float) Float.valueOf(currentLine[3]));
+                    Vector3f normal = new Vector3f(Float.valueOf(currentLine[1]),
+                            Float.valueOf(currentLine[2]),
+                            Float.valueOf(currentLine[3]));
                     normals.add(normal);
                 } else if (line.startsWith("f ")) {
                     break;
                 }
             }
+            //Add info to vertex objects
             while (line != null && line.startsWith("f ")) {
                 String[] currentLine = line.split(" ");
                 String[] vertex1 = currentLine[1].split("/");
@@ -89,11 +108,10 @@ public class OBJFileLoader {
                 texturesArray, normalsArray);
         int[] indicesArray = convertIndicesListToArray(indices);
 
-        float[] minMax = {minX, maxX, minY, maxY, minZ, maxZ};
+        float[] BoundingCoords = {minX, maxX, minY, maxY, minZ, maxZ};
 
-        ModelData data = new ModelData(verticesArray, texturesArray, normalsArray, indicesArray,
-                furthest, minMax);
-        return data;
+        return new ModelData(verticesArray, texturesArray, normalsArray, indicesArray,
+                furthest, BoundingCoords);
     }
 
     private static void processVertex(String[] vertex, List<Vertex> vertices, List<Integer> indices) {

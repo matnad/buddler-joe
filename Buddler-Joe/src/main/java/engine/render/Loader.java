@@ -43,8 +43,8 @@ public class Loader {
 
     public RawModel loadToVAO(ModelData data) {
         RawModel rawModel = loadToVAO(data.getVertices(), data.getTextureCoords(), data.getNormals(), data.getIndices());
-        if (data.getBB().length == 6)
-            rawModel.setBoundingCoords(data.getBB());
+        if (data.getBoundingCoords().length == 6)
+            rawModel.setBoundingCoords(data.getBoundingCoords());
         return rawModel;
     }
 

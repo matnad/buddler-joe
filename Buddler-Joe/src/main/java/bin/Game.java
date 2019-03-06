@@ -166,7 +166,7 @@ public class Game extends Thread {
         ItemMaster.init(loader);
 
         //Initiate the master renderer class
-        MasterRenderer renderer = new MasterRenderer(window);
+        MasterRenderer renderer = new MasterRenderer();
 
         //Generate the player. TODO (later): Move this in some player related class when more work on network is done
         RawModel rawPlayer = loader.loadToVAO(OBJFileLoader.loadOBJ(myModel));
@@ -270,7 +270,7 @@ public class Game extends Thread {
         **************************************************************
          */
 
-        //Clean up memory
+        //Clean up memory and unbind openGL shader programs
         TextMaster.cleanUp();
         guiRenderer.cleanUp();
         renderer.cleanUp();

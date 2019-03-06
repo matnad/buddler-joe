@@ -1,5 +1,10 @@
 package engine.render.objConverter;
 
+/**
+ * Fully parsed .obj file.
+ *
+ * All the infos from an .obj file parsed and ready to load into VAOs
+ */
 public class ModelData {
 
     private float[] vertices;
@@ -7,16 +12,10 @@ public class ModelData {
     private float[] normals;
     private int[] indices;
     private float furthestPoint;
-    private float[] BB;
+    private float[] boundingCoords;
 
-    public ModelData(float[] vertices, float[] textureCoords, float[] normals, int[] indices,
-                     float furthestPoint ) {
-
-        this(vertices, textureCoords, normals, indices, furthestPoint, new float[] {});
-    }
-
-    public ModelData(float[] vertices, float[] textureCoords, float[] normals, int[] indices,
-                     float furthestPoint, float[] boundingCoords ) {
+    ModelData(float[] vertices, float[] textureCoords, float[] normals, int[] indices,
+              float furthestPoint, float[] boundingCoords) {
 
         this.vertices = vertices;
         this.textureCoords = textureCoords;
@@ -25,11 +24,8 @@ public class ModelData {
         this.furthestPoint = furthestPoint;
 
         if (boundingCoords.length == 6) {
-            this.BB = boundingCoords;
+            this.boundingCoords = boundingCoords;
         }
-
-
-
     }
 
     public float[] getVertices() {
@@ -48,11 +44,7 @@ public class ModelData {
         return indices;
     }
 
-    public float getFurthestPoint() {
-        return furthestPoint;
-    }
-
-    public float[] getBB() {
-        return BB;
+    public float[] getBoundingCoords() {
+        return boundingCoords;
     }
 }
