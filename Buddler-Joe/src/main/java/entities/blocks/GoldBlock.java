@@ -10,8 +10,7 @@ public class GoldBlock extends Block {
     private static float hardness = 2f;
 
     public GoldBlock(Vector3f position, float rotX, float rotY, float rotZ, float scale) {
-        super(30, position, rotX, rotY, rotZ, scale);
-        super.setHardness(hardness);
+        super(BlockMaster.BlockTypes.GOLD, 2f, position, rotX, rotY, rotZ, scale);
     }
 
     public GoldBlock(Vector3f position) {

@@ -32,12 +32,12 @@ public class InputHandler {
 
     private static Vector3f mouseRay = new Vector3f();
     private static Vector3f wallIntersection = new Vector3f();
-    private static boolean pickerMode = false;
+    private static boolean placerMode = false;
 
-    private long window;
+    private static long window;
 
     public InputHandler(long window) {
-        this.window = window;
+        InputHandler.window = window;
     }
 
     //Callbacks
@@ -65,26 +65,25 @@ public class InputHandler {
     protected static GLFWCursorPosCallback cursorPosCallback = new GLFWCursorPosCallback() {
         @Override
         public void invoke(long window, double xpos, double ypos) {
+            //This is mostly used to detect and quantify mouse movement. For mouse position we should use the glfw buffer!
             cursorPosX = xpos;
             cursorPosY = ypos;
             cursorPosDX = xpos - cursorPosLX;
             cursorPosDY = ypos - cursorPosLY;
-
-            if(pickerMode) {
-                //Proabably need to move this to the main loop since moving the player moves the cursor and doesn't update this
-                updateRaycasting(xpos, ypos);
-            }
         }
     };
 
-    public static void updateRaycasting(double xpos, double ypos) {
+    public static void updateRaycasting() {
         int[] viewport = new int[4];
         viewport[2] = Game.window.getWidth();
         viewport[3] = Game.window.getHeight();
 
+        //We manually get mouse position here (via the glfw buffer) since when moving the player,
+        // the mouse position changes without triggering the cursor callback function. It looks weird otherwise.
+
         //Unproject mouseRay with the projection Matrix, Viewport data and the cursor position
         MasterRenderer.getProjectionMatrix()
-                .unprojectRay((float) xpos, (float) (Game.window.getHeight() - ypos), viewport, new Vector3f(), mouseRay);
+                .unprojectRay((float) getMouseX(), (float) (Game.window.getHeight() - getMouseY()), viewport, new Vector3f(), mouseRay);
 
         //Rotate mouseRay with camera
         new Matrix3f()
@@ -99,18 +98,24 @@ public class InputHandler {
     }
 
     public static Vector3f getPointOnRay(Vector3f origin, Vector3f ray, float distance) {
-        Vector3f camPos = origin;
-        Vector3f start = new Vector3f(camPos.x, camPos.y, camPos.z);
+        Vector3f start = new Vector3f(origin.x, origin.y, origin.z);
         Vector3f scaledRay = new Vector3f(ray.x * distance, ray.y * distance, ray.z * distance);
         return start.add(scaledRay);
     }
 
-    public static boolean isPickerMode() {
-        return pickerMode;
+    public static boolean isPlacerMode() {
+        return placerMode;
     }
 
-    public static void setPickerMode(boolean pickerMode) {
-        InputHandler.pickerMode = pickerMode;
+    public static void setPlacerMode(boolean placerMode) {
+        InputHandler.placerMode = placerMode;
+        //Very important to only change placer mode with this function, otherwise it fucks up the cursor!
+        //Disable cursor when an object is being placed with the cursor
+        if(placerMode) {
+            glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
+        } else {
+            glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+        }
     }
 
     public static Vector3f getWallIntersection() {
@@ -134,6 +139,10 @@ public class InputHandler {
         cursorPosDX = 0;
         cursorPosDY = 0;
         mouseScrollY = 0;
+
+        if(isPlacerMode()) {
+            updateRaycasting();
+        }
 
     }
 
