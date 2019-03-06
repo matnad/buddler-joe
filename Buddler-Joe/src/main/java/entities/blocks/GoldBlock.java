@@ -7,9 +7,11 @@ import org.joml.Vector3f;
 
 public class GoldBlock extends Block {
 
+    private static float hardness = 2f;
+
     public GoldBlock(Vector3f position, float rotX, float rotY, float rotZ, float scale) {
         super(30, position, rotX, rotY, rotZ, scale);
-        super.setHardness(2f);
+        super.setHardness(hardness);
     }
 
     public GoldBlock(Vector3f position) {

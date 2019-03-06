@@ -12,9 +12,11 @@ import java.util.Random;
 
 public class DirtBlock extends Block {
 
+    private static float hardness = .9f;
+
     public DirtBlock(Vector3f position, float rotX, float rotY, float rotZ, float scale) {
         super(31, position, rotX, rotY, rotZ, scale);
-        super.setHardness(.9f);
+        super.setHardness(hardness);
     }
 
     public DirtBlock(Vector3f position) {

@@ -81,7 +81,7 @@ public class Game extends Thread {
                 //Person
                 myModel = "person";
                 myTexture = "person";
-                myModelSize = .5f;
+                myModelSize = .4f;
                 break;
             case 3:
                 //Rabbit
@@ -171,22 +171,8 @@ public class Game extends Thread {
             }
         }
 
-
-//        //Blocks ->> TODO: make texture atlas
-//        RawModel rawStone = loader.loadToVAO(OBJFileLoader.loadOBJ("cube"));
-//        TexturedModel stone = new TexturedModel(rawStone, new ModelTexture(loader.loadTexture("rocks")));
-//
-//        RawModel rawBox = loader.loadToVAO(OBJFileLoader.loadOBJ("cube"));
-//        TexturedModel box = new TexturedModel(rawBox, new ModelTexture(loader.loadTexture("box")));
-//
-//        RawModel rawDirt = loader.loadToVAO(OBJFileLoader.loadOBJ("cube"));
-//        TexturedModel dirt = new TexturedModel(rawDirt, new ModelTexture(loader.loadTexture("mud")));
-//        //Later we can calculate position and index of a block to optimize, for now we search by looping
-
-
         Block.loadBlockModels(loader);
         Dynamite.loadModel(loader);
-
 
         //Generate blocks
         float padding = .0f;
@@ -254,7 +240,7 @@ public class Game extends Thread {
                     window.stop();
 
 
-                //Maybe rework with iterators?
+                //Maybe rework with iterators? Or create Master Classes for types
                 List<Entity> entitiesToRemove = new ArrayList<>();
                 for (Entity entity : entities) {
                     if(entity.isDestroyed()) {
@@ -268,11 +254,11 @@ public class Game extends Thread {
                 }
                 entities.removeAll(entitiesToRemove);
 
-
                 checkAndLoadNetPlayers(loader);
                 window.update();
 
-                //Can't do foreach since and explosion could spawn a dynamite (concurrent modification exception)
+                //Can't do foreach since an explosion could spawn a dynamite (concurrent modification exception)
+                //Maybe switch to iterator?
                 for (int i = 0; i < dynamites.size(); i++) {
                     dynamites.get(i).move();
                 }

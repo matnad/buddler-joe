@@ -5,9 +5,11 @@ import org.joml.Vector3f;
 
 public class StoneBlock extends Block {
 
+    private static float hardness = 5f;
+
     public StoneBlock(Vector3f position, float rotX, float rotY, float rotZ, float scale) {
         super(11, position, rotX, rotY, rotZ, scale);
-        super.setHardness(5f);
+        super.setHardness(hardness);
     }
 
     public StoneBlock(Vector3f position) {
@@ -19,4 +21,6 @@ public class StoneBlock extends Block {
     protected void onDestroy() {
 
     }
+
+
 }
