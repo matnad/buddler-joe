@@ -15,22 +15,23 @@ public abstract class GUIString {
 
     private String guiStringString;
     private Vector2f position;
-    private FontType font;
+    private static FontType font;
     private Vector3f textColour;
     private float alpha;
-    private Loader loader;
     private float fontSize;
     private boolean centered;
     private float maxLineLength;
 
-    public GUIString (Loader loader) {
-        this.loader = loader;
-        font = new FontType(loader.loadFontTexture("src/main/resources/assets/fonts/verdana"), new File("src/main/resources/assets/fonts/verdana.fnt"));
+    public GUIString () {
         position = new Vector2f(0,0);
         textColour = new Vector3f(1,1,1);
         alpha = 0;
         centered = false;
         maxLineLength = 1f;
+    }
+
+    public static void loadFont(Loader loader) {
+        font = new FontType(loader.loadFontTexture("src/main/resources/assets/fonts/verdana"), new File("src/main/resources/assets/fonts/verdana.fnt"));
     }
 
     public void createGuiText() {
@@ -95,6 +96,7 @@ public abstract class GUIString {
 
     public void setGuiStringString(String guiStringString) {
         this.guiStringString = guiStringString;
+        //updateString();
     }
 
     public boolean isCentered() {

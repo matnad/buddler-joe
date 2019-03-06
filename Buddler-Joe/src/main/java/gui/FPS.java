@@ -14,8 +14,8 @@ public class FPS extends GUIString {
 
     private double counterD;
 
-    public FPS(Loader loader) {
-        super(loader);
+    public FPS() {
+        super();
 
         setPosition(new Vector2f(.92f,.02f));
         setTextColour(new Vector3f(1f,1f,0f));

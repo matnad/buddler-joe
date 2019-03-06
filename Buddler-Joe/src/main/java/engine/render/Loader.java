@@ -104,7 +104,11 @@ public class Loader {
             texture = TextureLoader.getTexture("src/main/resources/assets/textures/" + fileName + ".png");
             glGenerateMipmap(GL_TEXTURE_2D);
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-            glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_LOD_BIAS, -.4f);
+            glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_LOD_BIAS, -.3f);
+//            GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_LINEAR);
+//            GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
         } catch (Exception e) {
             e.printStackTrace();
             System.err.println("Tried to load texture " + fileName + ".png , didn't work");
@@ -112,8 +116,6 @@ public class Loader {
         }
         int textureID = texture.getTextureID();
         textures.add(textureID);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
         return textureID;
     }
 

@@ -4,6 +4,7 @@ import engine.io.InputHandler;
 import engine.io.Window;
 import engine.models.RawModel;
 import engine.models.TexturedModel;
+import engine.particles.*;
 import engine.render.*;
 import engine.render.fontRendering.TextMaster;
 import engine.render.objConverter.ModelData;
@@ -12,9 +13,11 @@ import engine.textures.ModelTexture;
 import engine.textures.TerrainTexture;
 import engine.textures.TerrainTexturePack;
 import entities.*;
-import entities.blocks.Block;
+import entities.blocks.*;
+import entities.items.Dynamite;
 import gui.Chat;
 import gui.FPS;
+import gui.GUIString;
 import gui.GuiTexture;
 import net.ClientLogic;
 import net.packets.Packet00Login;
@@ -22,6 +25,7 @@ import net.packets.Packet99Disconnect;
 import org.joml.Vector3f;
 import terrains.Terrain;
 import terrains.TerrainFlat;
+import util.MousePlacer;
 import util.RandomName;
 
 import java.util.ArrayList;
@@ -33,9 +37,9 @@ import static org.lwjgl.glfw.GLFW.*;
 public class Game extends Thread {
 //    public static final int WIDTH = 2560/2, HEIGHT = 1600/2, FPS = 60; //Mac Book Pro Half
 //    public static final int WIDTH = 2560, HEIGHT = 1600, FPS = 60; //Mac Book Pro
-    public static final int WIDTH = 800, HEIGHT = 600, FPS = 60; //Desktop Dev
-//    public static final int WIDTH = 1920, HEIGHT = 1080, FPS = 60; //Desktop Native
-    public static Window window = new Window(WIDTH, HEIGHT, FPS, "LWJGL Engine");
+//    public static final int WIDTH = 800, HEIGHT = 600, FPS = 60; //Desktop Dev
+    public static final int WIDTH = 1920, HEIGHT = 1080, FPS = 60; //Desktop Native
+    public static Window window = new Window(WIDTH, HEIGHT, FPS, "Buddler Joe");
 
     private static boolean fullscreen = false;
 
@@ -50,7 +54,7 @@ public class Game extends Thread {
     public static Camera camera;
 
     //Temp Player model
-    private int skin = 1;
+    private int skin = 2;
     public static  String myModel;
     public static String myTexture;
     public static float myModelSize;
@@ -59,8 +63,9 @@ public class Game extends Thread {
     private List<NetPlayer> netPlayers = new ArrayList<>();
     private List<NetPlayer> loadedNetPlayers = new ArrayList<>();
 
-    private List<Entity> entities = new ArrayList<>();
-    private List<Block> blocks = new ArrayList<>();
+    private static List<Entity> entities = new ArrayList<>();
+    private static List<Block> blocks = new ArrayList<>();
+    private static List<Dynamite> dynamites = new ArrayList<>();
 
     @Override
     public synchronized void start() {
@@ -151,8 +156,10 @@ public class Game extends Thread {
         TexturedModel fern = new TexturedModel(rawFern, fernAtlas);
         fern.getTexture().setHasTransparency(true);
 
+
+
         //Place some vegetation
-        Random random = new Random(676451);
+        Random random = new Random(676453);
         for (int i = 0; i < 200; i++) {
             if (i % 3 == 0) {
                 entities.add(new Entity(fern, random.nextInt(4), getNextRandomVector3f(terrain2, random), 0, 0, 0, .9f));
@@ -165,34 +172,45 @@ public class Game extends Thread {
         }
 
 
-        //Blocks ->> TODO: make texture atlas
-        RawModel rawStone = loader.loadToVAO(OBJFileLoader.loadOBJ("cube"));
-        TexturedModel stone = new TexturedModel(rawStone, new ModelTexture(loader.loadTexture("rocks")));
+//        //Blocks ->> TODO: make texture atlas
+//        RawModel rawStone = loader.loadToVAO(OBJFileLoader.loadOBJ("cube"));
+//        TexturedModel stone = new TexturedModel(rawStone, new ModelTexture(loader.loadTexture("rocks")));
+//
+//        RawModel rawBox = loader.loadToVAO(OBJFileLoader.loadOBJ("cube"));
+//        TexturedModel box = new TexturedModel(rawBox, new ModelTexture(loader.loadTexture("box")));
+//
+//        RawModel rawDirt = loader.loadToVAO(OBJFileLoader.loadOBJ("cube"));
+//        TexturedModel dirt = new TexturedModel(rawDirt, new ModelTexture(loader.loadTexture("mud")));
+//        //Later we can calculate position and index of a block to optimize, for now we search by looping
 
-        RawModel rawBox = loader.loadToVAO(OBJFileLoader.loadOBJ("cube"));
-        TexturedModel box = new TexturedModel(rawBox, new ModelTexture(loader.loadTexture("box")));
 
-        RawModel rawDirt = loader.loadToVAO(OBJFileLoader.loadOBJ("cube"));
-        TexturedModel dirt = new TexturedModel(rawDirt, new ModelTexture(loader.loadTexture("mud")));
-        //Later we can calculate position and index of a block to optimize, for now we search by looping
+        Block.loadBlockModels(loader);
+        Dynamite.loadModel(loader);
+
 
         //Generate blocks
         float padding = .0f;
         float size = 3;
         float m = size*2+padding;
+
+        for (int i = 0; i < 33; i++) {
+            blocks.add(new GrassBlock(new Vector3f(i * m + 3f, -size, size),0, 0, 0, size));
+        }
+
         for (int i = 0; i < 33; i++) {
             for (int j = 0; j < 33; j++) {
                 float k = random.nextFloat();
-                if (k < .4f) {
-                    blocks.add(new Block(stone, new Vector3f(i * m + 3f, -j * m - size*2-1, size), 0, 0, 0, size));
-                } else if (k < .6f) {
-                    blocks.add(new Block(box, new Vector3f(i * m + 3f, -j * m - size*2-1, size), 0, 0, 0, size));
+                if (k < .5f) {
+                    blocks.add(new DirtBlock(new Vector3f(i * m + 3f, -j * m - size*3, size),0, 0, 0, size));
                 } else if (k < .8f) {
-                    blocks.add(new Block(dirt, new Vector3f(i * m + 3f, -j * m - size*2-1, size), 0, 0, 0, size));
+                    blocks.add(new StoneBlock(new Vector3f(i * m + 3f, -j * m - size*3, size), 0, 0, 0, size));
+                } else if (k < .85f) {
+                    blocks.add(new GoldBlock(new Vector3f(i * m + 3f, -j * m - size*3, size), 0, 0, 0, size));
                 }
             }
         }
         entities.addAll(blocks);
+
 
         //Initiate the master renderer class
         MasterRenderer renderer = new MasterRenderer(window);
@@ -203,14 +221,19 @@ public class Game extends Thread {
         Player player = new Player(playerModel, new Vector3f(97, 0, 3), 0, 0, 0, myModelSize);
 
         //Light, Cameras, GUI, etc initialization
+        GUIString.loadFont(loader);
+
         Light light = new Light(new Vector3f(2e4f,4e4f,2e4f), new Vector3f(.5f,1, 1));
         camera = new Camera(player, window);
-        FPS fpsCounter = new FPS(loader);
+        FPS fpsCounter = new FPS();
         TextMaster.init(loader);
         chat = new Chat(loader);
         List<GuiTexture> guis = new ArrayList<>();
         guis.add(chat.getChatGui());
         GuiRenderer guiRenderer = new GuiRenderer(loader);
+
+        //Particles
+        ParticleMaster.init(loader, MasterRenderer.getProjectionMatrix());
 
         /********************************************************
          * HERE STARTS THE GAME LOOP!
@@ -230,15 +253,38 @@ public class Game extends Thread {
                 if(InputHandler.isKeyPressed(GLFW_KEY_ESCAPE))
                     window.stop();
 
+
+                //Maybe rework with iterators?
+                List<Entity> entitiesToRemove = new ArrayList<>();
+                for (Entity entity : entities) {
+                    if(entity.isDestroyed()) {
+                        entitiesToRemove.add(entity);
+                        if (entity instanceof Block) {
+                            blocks.remove(entity);
+                        } else if (entity instanceof Dynamite) {
+                            dynamites.remove(entity);
+                        }
+                    }
+                }
+                entities.removeAll(entitiesToRemove);
+
+
                 checkAndLoadNetPlayers(loader);
                 window.update();
 
-                //Update positions of entities
-                player.setBlocksToDig(blocks);
+                //Can't do foreach since and explosion could spawn a dynamite (concurrent modification exception)
+                for (int i = 0; i < dynamites.size(); i++) {
+                    dynamites.get(i).move();
+                }
+
                 player.updateCloseBlocks(blocks);
 
                 camera.move();
                 player.move();
+                MousePlacer.move();
+
+//                system.generateParticles(new Vector3f(0,15,0).add(player.getPosition()));
+                ParticleMaster.update(camera);
 
                 //Prepare and render the entities
                 renderer.processEntity(player);
@@ -247,7 +293,7 @@ public class Game extends Thread {
                 for (Entity entity : entities) {
                     if (entity != null) {
                         if(entity instanceof NetPlayer) {
-                            entity.updateBoundingBox();
+                            //entity.updateBoundingBox();
                             ((NetPlayer) entity).getDirectionalUsername().updateString();
                         }
                         renderer.processEntity(entity);
@@ -257,7 +303,8 @@ public class Game extends Thread {
                 //Render the light and gui and text
                 renderer.render(light, camera);
                 chat.checkInputs();
-                guiRenderer.render(guis);
+                ParticleMaster.renderParticles(camera);
+//                guiRenderer.render(guis);
                 TextMaster.render();
 
                 window.swapBuffers();
@@ -271,6 +318,7 @@ public class Game extends Thread {
         guiRenderer.cleanUp();
         renderer.cleanUp();
         loader.cleanUp();
+        ParticleMaster.cleanUp();
 
         //Close and disconnect (still need a window close callback)
         window.kill();
@@ -358,7 +406,7 @@ public class Game extends Thread {
                     TexturedModel defaultModel = new TexturedModel(rawPlayer, new ModelTexture(loader.loadTexture(enteringPlayer.getTextureStr())));
                     enteringPlayer.setModel(defaultModel);
                 }
-                enteringPlayer.loadDirectionalUsername(loader);
+                enteringPlayer.loadDirectionalUsername();
                 entities.add(enteringPlayer);
                 loadedNetPlayers.add(enteringPlayer);
             }
@@ -411,6 +459,23 @@ public class Game extends Thread {
         return loadedNetPlayers;
     }
 
+    public static void addEntity(Entity entity) {
+        entities.add(entity);
+        if (entity instanceof Dynamite) {
+            dynamites.add((Dynamite) entity);
+        }
+    }
 
+    public static void removeEntity(Entity entity) {
+        entities.remove(entity);
+        if (entity instanceof Dynamite) {
+            dynamites.remove(entity);
+        }
+    }
+
+
+    public static List<Block> getBlocks() {
+        return blocks;
+    }
 }
 

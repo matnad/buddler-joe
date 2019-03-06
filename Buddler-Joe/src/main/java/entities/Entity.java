@@ -19,6 +19,8 @@ public class Entity {
     private float scale;
     private int textureIndex = 0;
 
+    private boolean destroyed;
+
     private BoundingBox bBox;
 
     public Entity(TexturedModel model, Vector3f position, float rotX, float rotY, float rotZ, float scale) {
@@ -32,6 +34,7 @@ public class Entity {
             this.textureIndex = index;
 
         this.model = model;
+        
         this.position = position;
         this.rotX = rotX;
         this.rotY = rotY;
@@ -51,7 +54,6 @@ public class Entity {
     public void updateBoundingBox() {
         if(bBox == null)
             return;
-
         bBox.moveTo(getPosition());
     }
 
@@ -65,36 +67,6 @@ public class Entity {
         return collidesWith(entity, 2);
     }
 
-//    // -9999 means no collision
-//    public float getCollisionX(Entity entity) {
-//        if(bBox == null || entity.getbBox() == null)
-//            return -9999; //
-//
-//        if (bBox.collidesX(entity.bBox)) {
-//            if(bBox.getMaxX() > entity.bBox.getMaxX()) { //We are to the right
-//                return entity.bBox.getMaxX();
-//            } else {
-//                return entity.bBox.getMinX();
-//            }
-//        }
-//
-//        return -9999;
-//    }
-//
-//    public float getCollisionY(Entity entity) {
-//        if(bBox == null || entity.getbBox() == null)
-//            return -9999; //
-//
-//        if (bBox.collidesY(entity.bBox)) {
-//            if(bBox.getMaxY() > entity.bBox.getMaxY()) { //We are above
-//                return entity.bBox.getMaxY();
-//            } else {
-//                return entity.bBox.getMinY();
-//            }
-//        }
-//
-//        return -9999;
-//    }
 
     public float getTextureXOffset(){
         int column = textureIndex%model.getTexture().getNumberOfRows();
@@ -110,12 +82,14 @@ public class Entity {
         this.position.x += dx;
         this.position.y += dy;
         this.position.z += dz;
+        updateBoundingBox();
     }
 
     public void increaseRotation(float dx, float dy, float dz) {
         this.rotX += dx;
         this.rotY += dy;
         this.rotZ += dz;
+        updateBoundingBox();
     }
 
     public TexturedModel getModel() {
@@ -153,30 +127,31 @@ public class Entity {
 
     public void setPosition(Vector3f position) {
         this.position = position;
+        updateBoundingBox();
     }
 
     public void setRotX(float rotX) {
         this.rotX = rotX;
+        updateBoundingBox();
     }
 
     public void setRotY(float rotY) {
         this.rotY = rotY;
+        updateBoundingBox();
     }
 
     public void setRotZ(float rotZ) {
         this.rotZ = rotZ;
+        updateBoundingBox();
     }
 
     public void setScale(float scale) {
         this.scale = scale;
+        updateBoundingBox();
     }
 
     public BoundingBox getbBox() {
         return bBox;
-    }
-
-    public Vector3f getPositionBeforeMove() {
-        return positionBeforeMove;
     }
 
     public void setPositionBeforeMove(Vector3f positionBeforeMove) {
@@ -185,11 +160,22 @@ public class Entity {
 
     public void setPositionX(float x) {
         setPosition(new Vector3f(x, getPosition().y, getPosition().z));
+        updateBoundingBox();
     }
     public void setPositionY(float y) {
         setPosition(new Vector3f(getPosition().x, y, getPosition().z));
+        updateBoundingBox();
     }
     public void setPositionZ(float z) {
         setPosition(new Vector3f(getPosition().x, getPosition().y, z));
+        updateBoundingBox();
+    }
+
+    public boolean isDestroyed() {
+        return destroyed;
+    }
+
+    public void setDestroyed(boolean destroyed) {
+        this.destroyed = destroyed;
     }
 }

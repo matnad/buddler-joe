@@ -143,10 +143,10 @@ public class Camera {
         if(InputHandler.isMouseDown(GLFW_MOUSE_BUTTON_2)){
             float yawChange = (float) (InputHandler.getCursorPosDX() * 0.2f);
             yaw += yawChange;
-            if(yaw < -25){
-                yaw = -25;
-            }else if(yaw > 25){
-                yaw = 25;
+            if(yaw < -75){
+                yaw = -75;
+            }else if(yaw > 75){
+                yaw = 75;
             }
         }
     }
@@ -187,7 +187,7 @@ public class Camera {
         return (float) (distanceFromPlayer * Math.sin(Math.toRadians(pitch+4)));
     }
 
-    public static Vector3f getPosition() {
+    public Vector3f getPosition() {
         return position;
     }
 
@@ -195,15 +195,17 @@ public class Camera {
         this.pitch = -pitch;
     }
 
-    public static float getPitch() {
+    public float getPitch() {
         return pitch;
     }
 
-    public static float getYaw() {
+    public float getYaw() {
         return yaw;
     }
 
     public float getRoll() {
         return roll;
     }
+
+
 }
