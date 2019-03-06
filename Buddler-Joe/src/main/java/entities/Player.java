@@ -6,7 +6,8 @@ import engine.io.InputHandler;
 import engine.io.Window;
 import engine.models.TexturedModel;
 import entities.blocks.Block;
-import entities.items.Dynamite;
+import entities.blocks.BlockMaster;
+import entities.items.ItemMaster;
 import net.packets.Packet01Move;
 import org.joml.Vector3f;
 import util.MousePlacer;
@@ -14,6 +15,7 @@ import util.MousePlacer;
 import java.util.ArrayList;
 import java.util.List;
 
+import static entities.items.ItemMaster.ItemTypes.DYNAMITE;
 import static org.lwjgl.glfw.GLFW.*;
 
 public class Player extends NetPlayer {
@@ -22,7 +24,6 @@ public class Player extends NetPlayer {
     private static final float TURN_SPEED = 720; //Degrees per second
     public static final float GRAVITY = -45; //Units per second
     private static final float JUMP_POWER = 25; //Units per second
-    private static final float DIG_TIME = 1.2f; //In seconds
 
     private static final float COLLISION_PUSH_OFFSET = 0.1f;
 
@@ -50,6 +51,9 @@ public class Player extends NetPlayer {
 
 
     public void move(){
+
+        updateCloseBlocks(BlockMaster.getBlocks());
+
         super.setPositionBeforeMove(new Vector3f(super.getPosition()));
         checkInputs();
         if (getRotY() <= -90 && currentTurnSpeed <0) {
@@ -71,7 +75,7 @@ public class Player extends NetPlayer {
             handleCollision(closeBlock);
         }
 
-        //Send server update with move
+        //Send server update with update
         if(Game.isConnectedToServer() && (currentSpeed != 0 || upwardsSpeed != 0 || currentTurnSpeed != 0)) {
             Packet01Move packet = new Packet01Move(Game.getUsername(), this.getPosition(), this.getRotX(), this.getRotY(), this.getRotZ());
             packet.writeData(Game.getSocketClient());
@@ -145,7 +149,7 @@ public class Player extends NetPlayer {
         List<Block> closeBlocks = new ArrayList<>();
         //Only 2D (XY) for performance
         for (Block block : blocks) {
-            if(block.get2DDistanceFrom(super.getPositionXY()) < block.getDim()+minDistance) {
+            if(block.get2dDistanceFrom(super.getPositionXY()) < block.getDim()+minDistance) {
                 closeBlocks.add(block);
             }
         }
@@ -164,7 +168,7 @@ public class Player extends NetPlayer {
         }
 
         if (InputHandler.isKeyPressed(GLFW_KEY_Q)) {
-            placeItem(new Dynamite(getPosition()));
+            placeItem(DYNAMITE);
         }
 
         if (InputHandler.isKeyDown(GLFW_KEY_A)) {
@@ -188,8 +192,17 @@ public class Player extends NetPlayer {
 
     }
 
-    private void placeItem(Entity entity) {
-        MousePlacer.setEntity(entity);
+    private void placeItem(ItemMaster.ItemTypes itemType) {
+        if(InputHandler.isPlacerMode()) {
+            //Already placing an item
+            return;
+        }
+        //Generate item and pass it to Mouseplacer
+        MousePlacer.placeEntity(
+                //Just place it at the player for the first frame, then update to cursor
+                //We dont want to run raycasting on every frame, just when the placer is active
+                ItemMaster.generateItem(itemType, getPosition())
+        );
     }
 
     /* HORIZONTAL PLANE (XZ) STUFF */

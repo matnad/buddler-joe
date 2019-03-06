@@ -3,7 +3,6 @@ package entities.blocks;
 import engine.models.RawModel;
 import engine.models.TexturedModel;
 import engine.render.Loader;
-import engine.render.fontRendering.TextMaster;
 import engine.render.objConverter.OBJFileLoader;
 import engine.textures.ModelTexture;
 import entities.Entity;
@@ -17,15 +16,22 @@ public abstract class Block extends Entity {
     private float damage;
     private float dim;
 
+    private BlockMaster.BlockTypes type;
+
     private Entity destroyedBy;
 
     private static TexturedModel blockModel;
 
 
-    public Block(int index, Vector3f position, float rotX, float rotY, float rotZ, float scale) {
-        super(blockModel, index, position, rotX, rotY, rotZ, scale);
+    public Block(BlockMaster.BlockTypes type, float hardness, Vector3f position, float rotX, float rotY, float rotZ, float scale) {
+        super(blockModel, type.getTextureId(), position, rotX, rotY, rotZ, scale);
+
+        this.type = type;
+        this.hardness = hardness;
 
         if (blockModel == null) {
+            //Maybe need more than a warning
+            //This is loaded in the BlockMaster.init() function
             System.out.println("WARNING! Load the block models first!");
         }
 
@@ -52,7 +58,7 @@ public abstract class Block extends Entity {
         return super.getPosition().distance(pos);
     }
 
-    public float get2DDistanceFrom(Vector2f pos) {
+    public float get2dDistanceFrom(Vector2f pos) {
         return new Vector2f(super.getPosition().x, super.getPosition().y).distance(pos);
     }
 
@@ -71,7 +77,7 @@ public abstract class Block extends Entity {
     public void increaseDamage(float damage, Entity entity) {
         this.damage += damage;
         if (this.damage > this.hardness) {
-            destroyedBy = entity;
+            setDestroyedBy(entity);
             setDestroyed(true);
             //Send server packet
         }
@@ -98,4 +104,13 @@ public abstract class Block extends Entity {
     }
 
     protected abstract void onDestroy();
+
+
+    public void setDestroyedBy(Entity destroyedBy) {
+        this.destroyedBy = destroyedBy;
+    }
+
+    public BlockMaster.BlockTypes getType() {
+        return type;
+    }
 }

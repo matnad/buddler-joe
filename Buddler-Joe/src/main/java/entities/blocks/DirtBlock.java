@@ -12,21 +12,19 @@ import java.util.Random;
 
 public class DirtBlock extends Block {
 
-    private static float hardness = .9f;
 
     public DirtBlock(Vector3f position, float rotX, float rotY, float rotZ, float scale) {
-        super(31, position, rotX, rotY, rotZ, scale);
-        super.setHardness(hardness);
+        //Must pass block type and hardness here as they are required
+        super(BlockMaster.BlockTypes.DIRT, 0.9f, position, rotX, rotY, rotZ, scale);
     }
 
+    //Shortened constructer with just position. Can be used for the default Block
     public DirtBlock(Vector3f position) {
         this(position, 0, 0 ,0, 3);
-
     }
 
     @Override
     protected void onDestroy() {
-
         //Experimental Debris generation
         if(getDestroyedBy() instanceof Player || getDestroyedBy() instanceof NetPlayer ) {
             Random r = new Random();

@@ -15,6 +15,7 @@ import engine.textures.TerrainTexturePack;
 import entities.*;
 import entities.blocks.*;
 import entities.items.Dynamite;
+import entities.items.ItemMaster;
 import gui.Chat;
 import gui.FPS;
 import gui.GUIString;
@@ -32,6 +33,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import static entities.blocks.BlockMaster.BlockTypes.*;
 import static org.lwjgl.glfw.GLFW.*;
 
 public class Game extends Thread {
@@ -64,7 +66,7 @@ public class Game extends Thread {
     private List<NetPlayer> loadedNetPlayers = new ArrayList<>();
 
     private static List<Entity> entities = new ArrayList<>();
-    private static List<Block> blocks = new ArrayList<>();
+//    private static List<Block> blocks = new ArrayList<>();
     private static List<Dynamite> dynamites = new ArrayList<>();
 
     @Override
@@ -171,37 +173,37 @@ public class Game extends Thread {
             }
         }
 
-        Block.loadBlockModels(loader);
-        Dynamite.loadModel(loader);
+        //Initialise blocks
+        BlockMaster.init(loader);
 
-        //Generate blocks
-        float padding = .0f;
-        float size = 3;
-        float m = size*2+padding;
-
+        //Generate some blocks
+        float padding = .0f; //Distance between blocks
+        float size = 3; //If this is not 3, you need to use the full block constructor
+        float dim = size*2+padding;
         for (int i = 0; i < 33; i++) {
-            blocks.add(new GrassBlock(new Vector3f(i * m + 3f, -size, size),0, 0, 0, size));
+            BlockMaster.generateBlock(GRASS, new Vector3f(i * dim + 3f, -size, size));
         }
-
         for (int i = 0; i < 33; i++) {
             for (int j = 0; j < 33; j++) {
                 float k = random.nextFloat();
+                Vector3f position = new Vector3f(i * dim + 3f, -j * dim - size*3, size);
                 if (k < .5f) {
-                    blocks.add(new DirtBlock(new Vector3f(i * m + 3f, -j * m - size*3, size),0, 0, 0, size));
+                    BlockMaster.generateBlock(DIRT, position);
                 } else if (k < .8f) {
-                    blocks.add(new StoneBlock(new Vector3f(i * m + 3f, -j * m - size*3, size), 0, 0, 0, size));
+                    BlockMaster.generateBlock(STONE, position);
                 } else if (k < .85f) {
-                    blocks.add(new GoldBlock(new Vector3f(i * m + 3f, -j * m - size*3, size), 0, 0, 0, size));
+                    BlockMaster.generateBlock(GOLD, position);
                 }
             }
         }
-        entities.addAll(blocks);
 
+        //Initialize items
+        ItemMaster.init(loader);
 
         //Initiate the master renderer class
         MasterRenderer renderer = new MasterRenderer(window);
 
-        //Generate the player, this will change
+        //Generate the player, this will be moved
         RawModel rawPlayer = loader.loadToVAO(OBJFileLoader.loadOBJ(myModel));
         TexturedModel playerModel = new TexturedModel(rawPlayer, new ModelTexture(loader.loadTexture(myTexture)));
         Player player = new Player(playerModel, new Vector3f(97, 0, 3), 0, 0, 0, myModelSize);
@@ -239,35 +241,16 @@ public class Game extends Thread {
                 if(InputHandler.isKeyPressed(GLFW_KEY_ESCAPE))
                     window.stop();
 
-
-                //Maybe rework with iterators? Or create Master Classes for types
-                List<Entity> entitiesToRemove = new ArrayList<>();
-                for (Entity entity : entities) {
-                    if(entity.isDestroyed()) {
-                        entitiesToRemove.add(entity);
-                        if (entity instanceof Block) {
-                            blocks.remove(entity);
-                        } else if (entity instanceof Dynamite) {
-                            dynamites.remove(entity);
-                        }
-                    }
-                }
-                entities.removeAll(entitiesToRemove);
-
                 checkAndLoadNetPlayers(loader);
                 window.update();
 
-                //Can't do foreach since an explosion could spawn a dynamite (concurrent modification exception)
-                //Maybe switch to iterator?
-                for (int i = 0; i < dynamites.size(); i++) {
-                    dynamites.get(i).move();
-                }
-
-                player.updateCloseBlocks(blocks);
-
                 camera.move();
                 player.move();
-                MousePlacer.move();
+                MousePlacer.update();
+
+                ItemMaster.update();
+                BlockMaster.update();
+
 
 //                system.generateParticles(new Vector3f(0,15,0).add(player.getPosition()));
                 ParticleMaster.update(camera);
@@ -279,7 +262,6 @@ public class Game extends Thread {
                 for (Entity entity : entities) {
                     if (entity != null) {
                         if(entity instanceof NetPlayer) {
-                            //entity.updateBoundingBox();
                             ((NetPlayer) entity).getDirectionalUsername().updateString();
                         }
                         renderer.processEntity(entity);
@@ -459,9 +441,5 @@ public class Game extends Thread {
         }
     }
 
-
-    public static List<Block> getBlocks() {
-        return blocks;
-    }
 }
 

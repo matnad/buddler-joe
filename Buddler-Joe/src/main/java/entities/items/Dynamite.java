@@ -11,7 +11,7 @@ import engine.render.Loader;
 import engine.render.objConverter.OBJFileLoader;
 import engine.textures.ModelTexture;
 import entities.blocks.Block;
-//import gui.DynamiteTimer;
+import entities.blocks.BlockMaster;
 import gui.DynamiteTimer;
 import org.joml.Vector3f;
 
@@ -35,7 +35,8 @@ public class Dynamite extends Item {
     private Smoke particleSmoke;
 
     public Dynamite(Vector3f position, float rotX, float rotY, float rotZ, float scale) {
-        super(getPreloadedModel(), position, rotX, rotY, rotZ, scale);
+        super(ItemMaster.ItemTypes.DYNAMITE, getPreloadedModel(), position, rotX, rotY, rotZ, scale);
+
         time = 0;
         active = false;
         exploded = false;
@@ -77,22 +78,21 @@ public class Dynamite extends Item {
 
     }
 
-    public static void loadModel(Loader loader) {
+    public static void init(Loader loader) {
         RawModel rawDynamite = loader.loadToVAO(OBJFileLoader.loadOBJ("dynamite"));
         setPreloadedModel(new TexturedModel(rawDynamite, new ModelTexture(loader.loadTexture("dynamite"))));
     }
 
-    public void move() {
+    @Override
+    public void update() {
 
         if(!active)
             return;
 
         time += Game.window.getFrameTimeSeconds();
-//        timerGUI.setGuiStringString(""+Math.round((FUSE_TIMER-time)*10)/10f);
-//        timerGUI.updateString(getPosition());
         if(time < FUSE_TIMER) {
             boolean collision = false;
-            for (Block block : Game.getBlocks()) {
+            for (Block block : BlockMaster.getBlocks()) {
                 if (collidesWith(block)) {
                     collision = true;
                     break;
@@ -123,15 +123,13 @@ public class Dynamite extends Item {
         }
         exploded = true;
         setScale(0); //Hide the model, but keep the object for the explosion effect to complete
-        for (Block block : Game.getBlocks()) {
-            float distance = block.get2DDistanceFrom(getPositionXY());
+        for (Block block : BlockMaster.getBlocks()) {
+            float distance = block.get2dDistanceFrom(getPositionXY());
             if(distance < 15) {
                 //Damage blocks inverse to distance (closer = more damage)
                 block.increaseDamage(1/distance * 50, this);
             }
         }
-        //Destroy the dynamite object
-//        TextMaster.removeText(timerGUI.getGuiString());
     }
 
 
