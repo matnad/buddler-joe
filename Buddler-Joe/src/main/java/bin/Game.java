@@ -4,15 +4,17 @@ import engine.io.InputHandler;
 import engine.io.Window;
 import engine.models.RawModel;
 import engine.models.TexturedModel;
-import engine.particles.ParticleMaster;
-import engine.render.GuiRenderer;
-import engine.render.Loader;
-import engine.render.MasterRenderer;
+import engine.particles.*;
+import engine.render.*;
 import engine.render.fontRendering.TextMaster;
+import engine.render.objConverter.ModelData;
 import engine.render.objConverter.OBJFileLoader;
 import engine.textures.ModelTexture;
+import engine.textures.TerrainTexture;
+import engine.textures.TerrainTexturePack;
 import entities.*;
-import entities.blocks.BlockMaster;
+import entities.blocks.*;
+import entities.items.Dynamite;
 import entities.items.ItemMaster;
 import gui.Chat;
 import gui.FPS;
@@ -29,76 +31,47 @@ import util.RandomName;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_ESCAPE;
+import static entities.blocks.BlockMaster.BlockTypes.*;
+import static org.lwjgl.glfw.GLFW.*;
 
-/**
- * Game is static for all intents and purposes. There will never be multiple instances of Game in the same execution.
- * Getters and setters should be static so we can access them from anywhere, but we have to be very careful
- * which variables we want to be "global"
- */
 public class Game extends Thread {
-
-    /*
-     * Set your resolution here, feel free to add new entries and comment them with your name/machine
-     * TODO (anyone): We need a JSON file to store user settings.
-     * If someone wants to work on this, edit this comment or add an issue to the tracker in gitlab
-     */
 //    public static final int WIDTH = 2560/2, HEIGHT = 1600/2, FPS = 60; //Mac Book Pro Half
 //    public static final int WIDTH = 2560, HEIGHT = 1600, FPS = 60; //Mac Book Pro
 //    public static final int WIDTH = 800, HEIGHT = 600, FPS = 60; //Desktop Dev
     public static final int WIDTH = 1920, HEIGHT = 1080, FPS = 60; //Desktop Native
-
-
-    //Set up GLFW Window
-    private static boolean fullscreen = false;
     public static Window window = new Window(WIDTH, HEIGHT, FPS, "Buddler Joe");
 
-    //Game instance and player settings
+    private static boolean fullscreen = false;
+
     private static ClientLogic socketClient;
 
+    private boolean running = false;
     private static boolean doConnectToServer = true; //Multiplayer: true, Singleplayer: false
     private static boolean connectedToServer = false;
-    public static String username = RandomName.getRandomName(); //TODO (Server Team): Username maybe needs its own class or should at least be moved to NetPlayer
+    public static String username = RandomName.getRandomName();
 
-    public static Chat chat; //This probably needs to go somewhere else when we work on the chat
-
-    /*
-     * TODO (Matthias): Change camera to non-static.
-     * We want everything set up so we could use multiple camaras, even if we don't end up needing them.
-     * Everything that relies on a camera object should know which camera it is using
-     */
+    public static Chat chat;
     public static Camera camera;
 
-
-    /*
-     * A Temporary, crude "skin-selector". We will work on this when we do GUI Stuff.
-     */
+    //Temp Player model
     private int skin = 2;
     public static  String myModel;
     public static String myTexture;
     public static float myModelSize;
 
-    /*
-     * Keep track of connected players.
-     * TODO (Client Network Team): This needs to be moved to a different class that handles connected players.
-     */
+    //Containers
     private List<NetPlayer> netPlayers = new ArrayList<>();
     private List<NetPlayer> loadedNetPlayers = new ArrayList<>();
 
-    /*
-     * All entities that need to be rendered. I can see this moving to a "EntityMaster" class, but is absolutely fine for now.
-     * We keep all the Sub-Entities organized in Masters and keep this as a global Game-Static list with minimal maintenance.
-     */
     private static List<Entity> entities = new ArrayList<>();
+//    private static List<Block> blocks = new ArrayList<>();
+    private static List<Dynamite> dynamites = new ArrayList<>();
 
-    /**
-     * Initialize the Game Thread (Treat this like a constructor)
-     */
     @Override
     public synchronized void start() {
 
-        //select model
         switch (skin) {
             case 1:
                 //Penguin
@@ -119,10 +92,8 @@ public class Game extends Thread {
                 myModelSize = .15f;
         }
 
-        /*
-         * Start client Logic and send a login packet
-         * TODO (Server Network Team): Move this out of Game into a class in the network package and change it.
-         */
+        running = true;
+
         if(doConnectToServer) {
             socketClient = new ClientLogic(this, "localhost");
             socketClient.start();
@@ -136,30 +107,94 @@ public class Game extends Thread {
         }
 
 
-        //Start the thread
+
         super.start();
+//        new Thread(this).start();
     }
 
-    /**
-     * Here we initialize all the Masters and other classes and generate the world.
-     */
     @Override
     public void run() {
-        //Create GLFW Window, we run this in a thread.
+
         window.setSize(WIDTH, HEIGHT);
         window.setFullscreen(fullscreen);
         window.create();
+        window.setBackgroundColor(.6f, .2f, .2f);
 
-        //Used to load 3D models (.obj) and convert them to coordinates for the shaders, also initializes the Bounding Boxes
+        //Used to lead 3D models and convert them to coordinates for the shaders
         Loader loader = new Loader();
 
-        //Initialize World. We can do this a little better once we have a proper algorithm to generate the world
-        GenerateWorld.generateTerrain(loader);
-        GenerateWorld.generateBlocks(loader);
-        Terrain aboveGround = GenerateWorld.getAboveGround();
-        TerrainFlat belowGround = GenerateWorld.getBelowGround();
-        if(aboveGround == null || belowGround == null) {
-            System.err.println("Could not generate terrain.");
+        //Terrain Texture
+        TerrainTexture grass = new TerrainTexture(loader.loadTexture("grass"));
+        TerrainTexture mud = new TerrainTexture(loader.loadTexture("mud"));
+        TerrainTexture grassFlowers = new TerrainTexture(loader.loadTexture("grassFlowers"));
+        TerrainTexture path = new TerrainTexture(loader.loadTexture("path"));
+        //Blend map defines how the textures get applies (each color = one texture with smooth transition)
+        //Check out the picture in resources
+        TerrainTexture blendMap = new TerrainTexture(loader.loadTexture("blendMap"));
+
+        //Terrain Generation
+        TerrainTexturePack texturePack = new TerrainTexturePack(grass, mud, grassFlowers, path);
+        Terrain terrain2 = new Terrain(0,-1,loader, texturePack, blendMap, "heightMap");
+
+        texturePack = new TerrainTexturePack(mud, mud, grass, mud);
+        TerrainFlat terrain = new TerrainFlat(0,0, loader, texturePack, blendMap);
+        terrain.setRotation(new Vector3f(0,0,90));
+
+        //Tree
+        ModelData data = OBJFileLoader.loadOBJ("tree");
+        RawModel rawTree = loader.loadToVAO(data);
+        TexturedModel tree = new TexturedModel(rawTree, new ModelTexture(loader.loadTexture("tree")));
+
+        //Tree2
+        data = OBJFileLoader.loadOBJ("lowPolyTree");
+        RawModel rawTree2 = loader.loadToVAO(data.getVertices(), data.getTextureCoords(), data.getNormals(), data.getIndices());
+        TexturedModel tree2 = new TexturedModel(rawTree2, new ModelTexture(loader.loadTexture("lowPolyTree")));
+
+        //Fern
+        data = OBJFileLoader.loadOBJ("fern");
+        RawModel rawFern = loader.loadToVAO(data.getVertices(), data.getTextureCoords(), data.getNormals(), data.getIndices());
+        ModelTexture fernAtlas = new ModelTexture(loader.loadTexture("fernAtlas"));
+        fernAtlas.setNumberOfRows(2);
+        TexturedModel fern = new TexturedModel(rawFern, fernAtlas);
+        fern.getTexture().setHasTransparency(true);
+
+
+
+        //Place some vegetation
+        Random random = new Random(676453);
+        for (int i = 0; i < 200; i++) {
+            if (i % 3 == 0) {
+                entities.add(new Entity(fern, random.nextInt(4), getNextRandomVector3f(terrain2, random), 0, 0, 0, .9f));
+                entities.add(new Entity(tree2, getNextRandomVector3f(terrain2, random), 0, random.nextFloat() * 360, 0,
+                        random.nextFloat() * 0.4f + .2f));
+                entities.add(new Entity(tree, getNextRandomVector3f(terrain2, random), 0, 0, 0,
+                        random.nextFloat() * 1 + 4));
+
+            }
+        }
+
+        //Initialise blocks
+        BlockMaster.init(loader);
+
+        //Generate some blocks
+        float padding = .0f; //Distance between blocks
+        float size = 3; //If this is not 3, you need to use the full block constructor
+        float dim = size*2+padding;
+        for (int i = 0; i < 33; i++) {
+            BlockMaster.generateBlock(GRASS, new Vector3f(i * dim + 3f, -size, size));
+        }
+        for (int i = 0; i < 33; i++) {
+            for (int j = 0; j < 33; j++) {
+                float k = random.nextFloat();
+                Vector3f position = new Vector3f(i * dim + 3f, -j * dim - size*3, size);
+                if (k < .5f) {
+                    BlockMaster.generateBlock(DIRT, position);
+                } else if (k < .8f) {
+                    BlockMaster.generateBlock(STONE, position);
+                } else if (k < .85f) {
+                    BlockMaster.generateBlock(GOLD, position);
+                }
+            }
         }
 
         //Initialize items
@@ -168,82 +203,64 @@ public class Game extends Thread {
         //Initiate the master renderer class
         MasterRenderer renderer = new MasterRenderer(window);
 
-        //Generate the player. TODO (later): Move this in some player related class when more work on network is done
+        //Generate the player, this will be moved
         RawModel rawPlayer = loader.loadToVAO(OBJFileLoader.loadOBJ(myModel));
         TexturedModel playerModel = new TexturedModel(rawPlayer, new ModelTexture(loader.loadTexture(myTexture)));
         Player player = new Player(playerModel, new Vector3f(97, 0, 3), 0, 0, 0, myModelSize);
 
-        //GUI / HUD
-        //TODO (Matthias): We will need a GuiMaster class to initialize and manage the GUI elements
-        TextMaster.init(loader);
+        //Light, Cameras, GUI, etc initialization
         GUIString.loadFont(loader);
+
+        Light light = new Light(new Vector3f(2e4f,4e4f,2e4f), new Vector3f(.5f,1, 1));
+        camera = new Camera(player, window);
         FPS fpsCounter = new FPS();
-        List<GuiTexture> guis = new ArrayList<>();
+        TextMaster.init(loader);
         chat = new Chat(loader);
+        List<GuiTexture> guis = new ArrayList<>();
         guis.add(chat.getChatGui());
         GuiRenderer guiRenderer = new GuiRenderer(loader);
 
-
-        //Light and cameras (just one for now)
-        Light light = new Light(new Vector3f(2e4f,4e4f,2e4f), new Vector3f(.5f,1, 1));
-        camera = new Camera(player, window);
-
-        //Load Particle Master
+        //Particles
         ParticleMaster.init(loader, MasterRenderer.getProjectionMatrix());
 
-        /*
-        **************************************************************
----------HERE STARTS THE GAME LOOP!
-        **************************************************************
-         */
+        /********************************************************
+         * HERE STARTS THE GAME LOOP!
+         ********************************************************/
         while (!window.isClosed()) {
             if (window.isOneSecond()) {
-                //This runs once per second, we can use it for stuff that needs less frequent updates
+                //This runs once per second
                 fpsCounter.updateString(""+window.getCurrentFPS());
             }
-
-            //...
-
-            //This runs super often, we shouldn't use it
+            //This runs super often, don't think we need it
 
             //...
 
             if (window.isUpdating()) {
-                /* This runs once per frame. Do all the updating here.
-                   The order of things is quite relevant here
-                   Optimally this should be mostly Masters here
-                 */
-
-                //ESC = Exit... we will add a menu later
+                //This runs once per frame. Do all the updating here.
+                //The order of things is quite relevant here
                 if(InputHandler.isKeyPressed(GLFW_KEY_ESCAPE))
                     window.stop();
 
-                /*Check if a new player joined and add the player to the local game
-                  This needs to go to some net package*/
                 checkAndLoadNetPlayers(loader);
-
-                /*InputHandler needs to be BEFORE polling (window.update()) so we still have access to the events of last Frame.
-                  Everythine else should be after polling.*/
-                InputHandler.update();
                 window.update();
 
-                //Update positions of camera, player and 3D Mouse Pointer
                 camera.move();
                 player.move();
                 MousePlacer.update();
 
-                //Masters check their slaves
                 ItemMaster.update();
                 BlockMaster.update();
+
+
+//                system.generateParticles(new Vector3f(0,15,0).add(player.getPosition()));
                 ParticleMaster.update(camera);
 
                 //Prepare and render the entities
                 renderer.processEntity(player);
-                renderer.processTerrain(aboveGround);
-                renderer.processTerrain(belowGround);
+                renderer.processTerrain(terrain);
+                renderer.processTerrain(terrain2);
                 for (Entity entity : entities) {
                     if (entity != null) {
-                        //All the NetPlayer stuff will need to move to a different class and update it from there
                         if(entity instanceof NetPlayer) {
                             ((NetPlayer) entity).getDirectionalUsername().updateString();
                         }
@@ -251,25 +268,19 @@ public class Game extends Thread {
                     }
                 }
 
-                //Render other stuff, order is important
+                //Render the light and gui and text
                 renderer.render(light, camera);
                 chat.checkInputs();
-                //GUI goes over everything else and then text on top of GUI
                 ParticleMaster.renderParticles(camera);
-                guiRenderer.render(guis);
+//                guiRenderer.render(guis);
                 TextMaster.render();
 
-                //Done with one frame
                 window.swapBuffers();
             }
         }
-
-        /*
-        **************************************************************
----------HERE ENDS THE GAME LOOP!
-        **************************************************************
-         */
-
+        /************************************
+         * HERE ENDS THE GAME LOOP
+         ***********************************/
         //Clean up memory
         TextMaster.cleanUp();
         guiRenderer.cleanUp();
@@ -286,27 +297,18 @@ public class Game extends Thread {
 
     }
 
-    /**
-     * Any entity added via this function will be passed to the Master Renderer and rendered in the Game World.
-     * @param entity any entity that can be rendered
-     */
-    public static void addEntity(Entity entity) {
-        entities.add(entity);
-    }
-
-    /**
-     * Stops an entity from being passed to the Master Renderer and being rendered in the Game World.
-     * Can be used to effectively destroy an entity in the game.
-     * @param entity entity that should no longer be rendered
-     */
-    public static void removeEntity(Entity entity) {
-        entities.remove(entity);
-    }
-
-    /*
+    /************************************************
      * Here are some functions that have no other place yet, but they all need to get out of this file
      * Most of them will be moved to the net package when working on the protocoll
-     */
+     **********************************************/
+
+    //For terrain generation
+    private Vector3f getNextRandomVector3f(Terrain terrain, Random random) {
+        float x = random.nextFloat() * 200;
+        float z = random.nextFloat() * -200;
+        float y = terrain.getHeightOfTerrain(x, z);
+        return new Vector3f(x, y, z);
+    }
 
     private void disconnectFromServer() {
         Packet99Disconnect packet = new Packet99Disconnect(username);
@@ -348,7 +350,6 @@ public class Game extends Thread {
 
     }
 
-    //This is just a quick mock up, please rewrite properly from scratch
     public void checkAndLoadNetPlayers(Loader loader) {
 
         if (loadedNetPlayers.size() < netPlayers.size()) {
@@ -396,8 +397,8 @@ public class Game extends Thread {
                 loadedNetPlayers.remove(leavingPlayer);
                 int index = 0;
                 for (Entity entity : entities) {
-                    if( entity instanceof  NetPlayer && entity.equals(leavingPlayer))
-                        break;
+                    if( entity instanceof  NetPlayer && ((NetPlayer) entity).equals(leavingPlayer))
+                        break;;
                     index++;
                 }
                 entities.remove(index);
@@ -406,7 +407,6 @@ public class Game extends Thread {
         }
     }
 
-    //Getters
     public List<NetPlayer> getNetPlayers() {
         return netPlayers;
     }
@@ -427,13 +427,19 @@ public class Game extends Thread {
         return loadedNetPlayers;
     }
 
-    /**
-     * Returns the active camera that determines which View Matrix is used in the shaders
-     */
-    public static Camera getActiveCamera() {
-        return camera;
+    public static void addEntity(Entity entity) {
+        entities.add(entity);
+        if (entity instanceof Dynamite) {
+            dynamites.add((Dynamite) entity);
+        }
     }
 
+    public static void removeEntity(Entity entity) {
+        entities.remove(entity);
+        if (entity instanceof Dynamite) {
+            dynamites.remove(entity);
+        }
+    }
 
 }
 

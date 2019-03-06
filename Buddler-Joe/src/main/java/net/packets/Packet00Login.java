@@ -52,6 +52,7 @@ public class Packet00Login extends Packet{
                         this.texture+","+
                         this.modelSize
         ).getBytes();
+        //TODO Codierung weg und alles Klartext!
     }
 
     public String getUsername() {

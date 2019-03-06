@@ -85,9 +85,7 @@ public class MasterRenderer {
     }
 
     public void processTerrain(TerrainFlat terrain) {
-        if(terrain != null) {
-            terrains.add(terrain);
-        }
+        terrains.add(terrain);
     }
 
     public void processEntity(Entity entity) {

@@ -65,10 +65,11 @@ public class Window {
         }
 
         //Set up input handler
+        inputHandler = new InputHandler(window);
         glfwSetInputMode(window, GLFW_STICKY_KEYS, GLFW_TRUE);
-        glfwSetKeyCallback(window, InputHandler.keyboard);
-        glfwSetMouseButtonCallback(window, InputHandler.mouse);
-        glfwSetScrollCallback(window, InputHandler.scrollCallback);
+        glfwSetKeyCallback(window, inputHandler.keyboard);
+        glfwSetMouseButtonCallback(window, inputHandler.mouse);
+        glfwSetScrollCallback(window, inputHandler.scrollCallback);
         glfwSetCursorPosCallback(window, InputHandler.cursorPosCallback);
 
 
@@ -98,6 +99,9 @@ public class Window {
     }
 
     public void update() {
+        inputHandler.update();
+
+
         glfwPollEvents();
     }
 
@@ -144,16 +148,16 @@ public class Window {
     }
 
     public double getMouseScrollY() {
-        return InputHandler.getMouseScrollY();
+        return inputHandler.getMouseScrollY();
     }
 
     //Cursor coordinates
     public double getMouseX() {
-        return InputHandler.getMouseX();
+        return inputHandler.getMouseX();
     }
 
     public double getMouseY() {
-        return InputHandler.getMouseY();
+        return inputHandler.getMouseY();
     }
 
     //FPS limiter
