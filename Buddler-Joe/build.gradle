@@ -22,6 +22,11 @@ switch (OperatingSystem.current()) {
         break
 }
 
+sourceSets {
+    main
+}
+
+
 repositories {
     mavenCentral()
 }
