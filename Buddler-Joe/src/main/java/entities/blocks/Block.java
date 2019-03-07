@@ -6,6 +6,7 @@ import engine.render.Loader;
 import engine.render.objConverter.OBJFileLoader;
 import engine.textures.ModelTexture;
 import entities.Entity;
+import entities.blocks.debris.DebrisMaster;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 
@@ -21,6 +22,7 @@ public abstract class Block extends Entity {
 
 
     private float hardness;
+    private float mass;
     private float damage;
     private float dim;
     private BlockMaster.BlockTypes type;
@@ -38,12 +40,13 @@ public abstract class Block extends Entity {
      * @param rotZ rotation around Z axis
      * @param scale scaling multiplier
      */
-    public Block(BlockMaster.BlockTypes type, float hardness, Vector3f position, float rotX, float rotY, float rotZ, float scale) {
+    public Block(BlockMaster.BlockTypes type, float hardness, float mass, Vector3f position, float rotX, float rotY, float rotZ, float scale) {
         //blockModel is a texture atlas, containing all block textures, ID is the position of the texture on the atlas
         super(blockModel, type.getTextureId(), position, rotX, rotY, rotZ, scale);
 
         this.type = type;
         this.hardness = hardness;
+        this.mass = mass;
 
         if (blockModel == null) {
             //Maybe need more than a warning
@@ -86,6 +89,17 @@ public abstract class Block extends Entity {
     }
 
     /**
+     * Squared 3D distance between block and a 3D point.
+     * Squared is faster
+     *
+     * @param pos distance from block to this point
+     * @return distance in units
+     */
+    public float getDistanceSquaredFrom(Vector3f pos) {
+        return super.getPosition().distanceSquared(pos);
+    }
+
+    /**
      * Assuming the objects are on the same Z-plane, this gets the 2D distance between the objects
      *
      * @param pos X and Y coordinates for a position in the world
@@ -93,6 +107,17 @@ public abstract class Block extends Entity {
      */
     public float get2dDistanceFrom(Vector2f pos) {
         return new Vector2f(super.getPosition().x, super.getPosition().y).distance(pos);
+    }
+
+    /**
+     * Assuming the objects are on the same Z-plane, this gets the squared 2D distance between the objects
+     * Squared is faster!
+     *
+     * @param pos X and Y coordinates for a position in the world
+     * @return distance in units
+     */
+    public float get2dDistanceSquaredFrom(Vector2f pos) {
+        return new Vector2f(super.getPosition().x, super.getPosition().y).distanceSquared(pos);
     }
 
     /**
@@ -125,6 +150,7 @@ public abstract class Block extends Entity {
     public void setDestroyed(boolean destroyed) {
         super.setDestroyed(destroyed);
         if(destroyed) {
+            DebrisMaster.generateDebris(this);
             onDestroy();
         }
     }
@@ -159,5 +185,13 @@ public abstract class Block extends Entity {
 
     public BlockMaster.BlockTypes getType() {
         return type;
+    }
+
+    public static TexturedModel getBlockModel() {
+        return blockModel;
+    }
+
+    public float getMass() {
+        return mass;
     }
 }

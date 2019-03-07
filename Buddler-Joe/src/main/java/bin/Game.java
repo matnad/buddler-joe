@@ -13,6 +13,7 @@ import engine.render.objConverter.OBJFileLoader;
 import engine.textures.ModelTexture;
 import entities.*;
 import entities.blocks.BlockMaster;
+import entities.blocks.debris.DebrisMaster;
 import entities.items.ItemMaster;
 import gui.Chat;
 import gui.FPS;
@@ -165,13 +166,16 @@ public class Game extends Thread {
         //Initialize items
         ItemMaster.init(loader);
 
+        //Initialize debris
+        DebrisMaster.init();
+
         //Initiate the master renderer class
         MasterRenderer renderer = new MasterRenderer();
 
         //Generate the player. TODO (later): Move this in some player related class when more work on network is done
         RawModel rawPlayer = loader.loadToVAO(OBJFileLoader.loadOBJ(myModel));
         TexturedModel playerModel = new TexturedModel(rawPlayer, new ModelTexture(loader.loadTexture(myTexture)));
-        Player player = new Player(playerModel, new Vector3f(97, 0, 3), 0, 0, 0, myModelSize);
+        Player player = new Player(playerModel, new Vector3f(90, 2, 3), 0, 0, 0, myModelSize);
 
         //GUI / HUD
         //TODO (Matthias): We will need a GuiMaster class to initialize and manage the GUI elements
@@ -235,6 +239,7 @@ public class Game extends Thread {
                 //Masters check their slaves
                 ItemMaster.update();
                 BlockMaster.update();
+                DebrisMaster.update();
                 ParticleMaster.update(camera);
 
                 //Prepare and render the entities

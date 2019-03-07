@@ -135,7 +135,16 @@ public class Entity {
     }
 
     /**
+     * Move this entity in world space. Updates Bounding Box;
      *
+     * @param velocity velocity to move
+     */
+    public void increasePosition(Vector3f velocity) {
+        position.add(velocity);
+        updateBoundingBox();
+    }
+
+    /**
      * Rotate this entity in world space. Updates Bounding Box;
      *
      * @param dx Rotate this entity by dx degrees (not radians) along the X axis
@@ -146,6 +155,18 @@ public class Entity {
         this.rotX += dx;
         this.rotY += dy;
         this.rotZ += dz;
+        updateBoundingBox();
+    }
+
+    /**
+     * Rotate this entity in world space. Updates Bounding Box;
+     *
+     * @param spin Rotate this entity along all 3 axes
+     */
+    public void increaseRotation(Vector3f spin) {
+        this.rotX += spin.x;
+        this.rotY += spin.y;
+        this.rotZ += spin.z;
         updateBoundingBox();
     }
 

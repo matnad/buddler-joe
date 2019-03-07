@@ -13,7 +13,7 @@ public class GrassBlock extends Block {
      * Extended Constructor, dont call directly.
      */
     GrassBlock(Vector3f position, float rotX, float rotY, float rotZ, float scale) {
-        super(BlockMaster.BlockTypes.GRASS, .7f, position, rotX, rotY, rotZ, scale);
+        super(BlockMaster.BlockTypes.GRASS, .7f, .6f, position, rotX, rotY, rotZ, scale);
     }
 
     /**

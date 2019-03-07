@@ -13,7 +13,7 @@ public class StoneBlock extends Block {
      * Extended Constructor, dont call directly.
      */
     StoneBlock(Vector3f position, float rotX, float rotY, float rotZ, float scale) {
-        super(BlockMaster.BlockTypes.STONE, 5f, position, rotX, rotY, rotZ, scale);
+        super(BlockMaster.BlockTypes.STONE, 5f, 2f, position, rotX, rotY, rotZ, scale);
     }
 
     /**

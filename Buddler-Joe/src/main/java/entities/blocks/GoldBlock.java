@@ -15,7 +15,7 @@ public class GoldBlock extends Block {
      * Extended Constructor, dont call directly.
      */
     GoldBlock(Vector3f position, float rotX, float rotY, float rotZ, float scale) {
-        super(BlockMaster.BlockTypes.GOLD, 2f, position, rotX, rotY, rotZ, scale);
+        super(BlockMaster.BlockTypes.GOLD, 2f, 3f,  position, rotX, rotY, rotZ, scale);
     }
 
     /**

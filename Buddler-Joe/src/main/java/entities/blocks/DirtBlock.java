@@ -4,6 +4,7 @@ import engine.particles.Particle;
 import engine.particles.systems.Debris;
 import entities.NetPlayer;
 import entities.Player;
+import entities.blocks.debris.DebrisMaster;
 import org.joml.Vector3f;
 
 import java.util.Random;
@@ -21,7 +22,7 @@ public class DirtBlock extends Block {
      */
     DirtBlock(Vector3f position, float rotX, float rotY, float rotZ, float scale) {
         //Must pass block type and hardness here as they are required
-        super(BlockMaster.BlockTypes.DIRT, 0.9f, position, rotX, rotY, rotZ, scale);
+        super(BlockMaster.BlockTypes.DIRT, 0.9f, 1f, position, rotX, rotY, rotZ, scale);
     }
 
     /**
@@ -34,20 +35,22 @@ public class DirtBlock extends Block {
     @Override
     protected void onDestroy() {
         //Experimental Debris generation
-        if(getDestroyedBy() instanceof Player || getDestroyedBy() instanceof NetPlayer ) {
-            Random r = new Random();
-            for (int i = 0; i < generateValue(r, 10, 1f); i++) {
-                new Particle(Debris.getParticleTexture(), new Vector3f(
-                        getPosition().x + (r.nextFloat() * getDim() * 2) - getDim(),
-                        getPosition().y + (r.nextFloat() * getDim() * 2) - getDim(),
-                        getPosition().z + (r.nextFloat() * getDim() * 2) - getDim()),
-                        new Vector3f(0, 0, generateValue(r, 15, .2f)),
-                        generateValue(r, 0.3f, .05f),
-                        generateValue(r, 2, .5f),
-                        r.nextFloat() * 360,
-                        generateValue(r, 1, .5f));
-            }
-        }
+//        if(getDestroyedBy() instanceof Player || getDestroyedBy() instanceof NetPlayer ) {
+//            Random r = new Random();
+//            for (int i = 0; i < generateValue(r, 10, 1f); i++) {
+//                new Particle(Debris.getParticleTexture(), new Vector3f(
+//                        getPosition().x + (r.nextFloat() * getDim() * 2) - getDim(),
+//                        getPosition().y + (r.nextFloat() * getDim() * 2) - getDim(),
+//                        getPosition().z + (r.nextFloat() * getDim() * 2) - getDim()),
+//                        new Vector3f(0, 0, generateValue(r, 15, .2f)),
+//                        generateValue(r, 0.3f, .05f),
+//                        generateValue(r, 2, .5f),
+//                        r.nextFloat() * 360,
+//                        generateValue(r, 1, .5f));
+//            }
+//        }
+
+
     }
 
     /**

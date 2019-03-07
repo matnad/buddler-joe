@@ -79,7 +79,7 @@ public class BlockMaster {
     }
 
     /**
-     * Called everey frame to update if a block has been destroyed.
+     * Called every frame to update if a block has been destroyed.
      * If so, remove that block from all relevant lists (and clean out empty lists).
      */
     public static void update() {
