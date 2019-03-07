@@ -1,5 +1,8 @@
 package engine.textures;
 
+/**
+ * Holds TerrainTextures for use with a blend map
+ */
 public class TerrainTexturePack {
 
     private TerrainTexture backgroundTexture;

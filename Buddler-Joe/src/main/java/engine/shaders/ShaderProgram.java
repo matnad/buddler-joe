@@ -15,6 +15,9 @@ import org.lwjgl.opengl.GL20;
 
 import static org.lwjgl.opengl.GL20.glUniformMatrix4fv;
 
+/**
+ * Abstract shader class. Has the functions to actually load values into the shader.
+ */
 public abstract class ShaderProgram {
 
     private static final String PATH_TO_GLSL = "src/main/java/engine/shaders/glsl/";
@@ -25,6 +28,14 @@ public abstract class ShaderProgram {
 
     private static FloatBuffer matrixBuffer = BufferUtils.createFloatBuffer(16);
 
+    /**
+     * Initialize the VS and FS with the specified name.
+     * Load them in openGL and attach them to VS resp. FS program
+     *
+     * Then get UniformLocations (this is where variables we pass are stored and is defined in the child classes)
+     *
+     * @param shaderName name of the shader. VS and FS need to have the same name!
+     */
     public ShaderProgram(String shaderName){
         String vertexFile = shaderName + ".vs";
         String fragmentFile = shaderName + ".fs";
@@ -45,14 +56,23 @@ public abstract class ShaderProgram {
         return GL20.glGetUniformLocation(programID,uniformName);
     }
 
+    /**
+     * Called immediately before using the shader while rendering
+     */
     public void start(){
         GL20.glUseProgram(programID);
     }
 
+    /**
+     * When done rendering with this shader
+     */
     public void stop(){
         GL20.glUseProgram(0);
     }
 
+    /**
+     * Unbind both shaders
+     */
     public void cleanUp(){
         stop();
         GL20.glDetachShader(programID, vertexShaderID);
@@ -64,10 +84,53 @@ public abstract class ShaderProgram {
 
     protected abstract void bindAttributes();
 
+
+    /**
+     * @param attribute slot
+     * @param variableName name of the shader variable
+     */
     protected void bindAttribute(int attribute, String variableName){
         GL20.glBindAttribLocation(programID, attribute, variableName);
     }
 
+    /**
+     *
+     * Read GLSL code file from the file system and tell openGL to compile it.
+     * Then return the ID of the compiled and ready shader program.
+     *
+     * @param file GLSL file name on file system
+     * @param type type of the shader (fragment or vertex)
+     * @return ID of shader object in openGL
+     */
+    private static int loadShader(String file, int type){
+        StringBuilder shaderSource = new StringBuilder();
+        try{
+            BufferedReader reader = new BufferedReader(new FileReader(PATH_TO_GLSL+file));
+            String line;
+            while((line = reader.readLine())!=null){
+                shaderSource.append(line).append("//\n");
+            }
+            reader.close();
+        }catch(IOException e){
+            e.printStackTrace();
+            System.exit(-1);
+        }
+        int shaderID = GL20.glCreateShader(type);
+        GL20.glShaderSource(shaderID, shaderSource);
+        GL20.glCompileShader(shaderID);
+        if(GL20.glGetShaderi(shaderID, GL20.GL_COMPILE_STATUS )== GL11.GL_FALSE){
+            System.out.println(GL20.glGetShaderInfoLog(shaderID, 500));
+            System.err.println("Could not compile shader!");
+            System.exit(-1);
+        }
+        return shaderID;
+    }
+
+
+    /*
+    From here on are functions to load specific variable types to the shader in the specified location.
+    They all do the same, but for different types.
+     */
     protected void loadFloat(int location, float value){
         GL20.glUniform1f(location, value);
     }
@@ -102,29 +165,4 @@ public abstract class ShaderProgram {
             glUniformMatrix4fv(location, false, matrixBuffer);
 
     }
-
-    private static int loadShader(String file, int type){
-        StringBuilder shaderSource = new StringBuilder();
-        try{
-            BufferedReader reader = new BufferedReader(new FileReader(PATH_TO_GLSL+file));
-            String line;
-            while((line = reader.readLine())!=null){
-                shaderSource.append(line).append("//\n");
-            }
-            reader.close();
-        }catch(IOException e){
-            e.printStackTrace();
-            System.exit(-1);
-        }
-        int shaderID = GL20.glCreateShader(type);
-        GL20.glShaderSource(shaderID, shaderSource);
-        GL20.glCompileShader(shaderID);
-        if(GL20.glGetShaderi(shaderID, GL20.GL_COMPILE_STATUS )== GL11.GL_FALSE){
-            System.out.println(GL20.glGetShaderInfoLog(shaderID, 500));
-            System.err.println("Could not compile shader!");
-            System.exit(-1);
-        }
-        return shaderID;
-    }
-
 }

@@ -1,5 +1,20 @@
 package engine.textures;
 
+/**
+ * Defines properties of a Model Texture
+ *
+ * Shine Damper: Softens reflection
+ * Reflectivity: Intensifies reflectivity
+ *
+ * Calculated in the shader as follows:
+ *      finalSpecular = pow(specularFactor, shineDamper) * reflectivity * lightColour;
+ *      finalSpecular is then added to the texture colour
+ *
+ * hasTransparency: Part of the texture is transparent and we need to set some extra openGL options like disableCulling
+ * useFakeLighting: Simulate lighting when no normals are defined: Just sets the normal to vec3(0.0, 1.0, 0.0).
+ *
+ * Class just has basic setters and getters to change how the texture behaves under light.
+ */
 public class ModelTexture {
 
     private int textureID;

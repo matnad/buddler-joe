@@ -7,6 +7,10 @@ import org.joml.Vector2f;
 import org.joml.Vector3f;
 import util.Maths;
 
+/**
+ * Shader programm for entities
+ * Just passing some variables to the shader
+ */
 public class StaticShader extends ShaderProgram {
 
     private static final String SHADER_NAME = "entity";

@@ -6,6 +6,10 @@ import org.joml.Matrix4f;
 import org.joml.Vector3f;
 import util.Maths;
 
+/**
+ * Shader programm for terrain
+ * Just passing some variables to the shader
+ */
 public class TerrainShader extends ShaderProgram {
     private static final String SHADER_NAME = "terrain";
 

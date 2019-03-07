@@ -94,6 +94,7 @@ public class ParticleSystem {
      *
      * @param systemCenter position of emittance
      * @return list of particles emitted with this call
+ *             (if you need to delete them prematurely or dynamically manipulate them)
      */
     public List<Particle> generateParticles(Vector3f systemCenter) {
         List<Particle> particles = new ArrayList<>();

@@ -19,6 +19,10 @@ import static org.lwjgl.system.MemoryUtil.memAlloc;
 import static org.lwjgl.system.MemoryUtil.memFree;
 import static util.IOUtil.ioResourceToByteBuffer;
 
+/**
+ * Loads texture files from the file system using low level buffer manipulation
+ * Creates a texture in openGL and saves the texture ID. We can then load the texture with this ID.
+ */
 public class TextureLoader implements Texture {
 
     private final ByteBuffer image;
@@ -28,7 +32,12 @@ public class TextureLoader implements Texture {
     private final int comp;
     private int texID;
 
-
+    /**
+     * Don't call this directly.
+     * Will load an image into a Buffer and save width, height and alpha compositioning
+     *
+     * @param imagePath fill image path
+     */
     private TextureLoader(String imagePath) {
         ByteBuffer imageBuffer;
         try {
@@ -45,14 +54,7 @@ public class TextureLoader implements Texture {
             // Use info to read image metadata without decoding the entire image.
             if (!stbi_info_from_memory(imageBuffer, w, h, comp)) {
                 throw new RuntimeException("Failed to read image information: " + stbi_failure_reason());
-            } else {
-//                System.out.println("OK with reason: " + stbi_failure_reason());
             }
-
-//            System.out.println("Image width: " + w.get(0));
-//            System.out.println("Image height: " + h.get(0));
-//            System.out.println("Image components: " + comp.get(0));
-//            System.out.println("Image HDR: " + stbi_is_hdr_from_memory(imageBuffer));
 
             // Decode the image
             image = stbi_load_from_memory(imageBuffer, w, h, comp, 0);
@@ -68,16 +70,25 @@ public class TextureLoader implements Texture {
         }
     }
 
+    /**
+     * Don't call this directly.
+     * Will load an image into a Buffer and save width, height and comp
+     *
+     * @param imagePath fill image path
+     * @return Texture (can be accessed via texture interface)
+     */
     public static Texture getTexture(String imagePath) {
         return new TextureLoader(imagePath);
     }
 
+    /**
+     * To create transparency
+     */
     private void premultiplyAlpha() {
         int stride = w * 4;
         for (int y = 0; y < h; y++) {
             for (int x = 0; x < w; x++) {
                 int i = y * stride + x * 4;
-
                 float alpha = (image.get(i + 3) & 0xFF) / 255.0f;
                 image.put(i + 0, (byte)round(((image.get(i + 0) & 0xFF) * alpha)));
                 image.put(i + 1, (byte)round(((image.get(i + 1) & 0xFF) * alpha)));
@@ -86,6 +97,13 @@ public class TextureLoader implements Texture {
         }
     }
 
+    /**
+     *
+     * Create a Texture in openGL and set up the alpha channel to render transparency properly.
+     * Also does edge clamp, so we need to make sure the models have seams.
+     *
+     * @return the ID of the texture in openGL
+     */
     private int createTexture() {
         texID = glGenTextures();
 
@@ -152,31 +170,6 @@ public class TextureLoader implements Texture {
     }
 
     @Override
-    public boolean hasAlpha() {
-        return false;
-    }
-
-    @Override
-    public String getTextureRef() {
-        return null;
-    }
-
-    @Override
-    public void bind() {
-
-    }
-
-    @Override
-    public int getImageHeight() {
-        return 0;
-    }
-
-    @Override
-    public int getImageWidth() {
-        return 0;
-    }
-
-    @Override
     public float getHeight() {
         return h;
     }
@@ -186,35 +179,10 @@ public class TextureLoader implements Texture {
         return w;
     }
 
-    @Override
-    public int getTextureHeight() {
-        return h;
-    }
-
-    @Override
-    public int getTextureWidth() {
-        return w;
-    }
-
-    @Override
-    public void release() {
-
-    }
 
     @Override
     public int getTextureID() {
         return texID;
     }
 
-    @Override
-    public byte[] getTextureData() {
-        byte[] arr = new byte[image.remaining()];
-        image.get(arr);
-        return arr;
-    }
-
-    @Override
-    public void setTextureFilter(int textureFilter) {
-
-    }
 }

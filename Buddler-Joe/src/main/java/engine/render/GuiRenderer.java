@@ -38,6 +38,12 @@ public class GuiRenderer {
         shader = new GuiShader();
     }
 
+    /**
+     * Renders a list of guis. Will enable and disable all openGL settings as required.
+     * For details see comments in the code.
+     *
+     * @param guis list of guis to render
+     */
     public void render(List<GuiTexture> guis){
         shader.start();
         GL30.glBindVertexArray(quad.getVaoID());

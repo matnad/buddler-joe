@@ -1,5 +1,8 @@
 package engine.textures;
 
+/**
+ * Holds Texture ID
+ */
 public class TerrainTexture {
 
     private int textureID;
