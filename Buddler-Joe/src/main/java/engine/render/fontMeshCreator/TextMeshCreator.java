@@ -17,13 +17,12 @@ public class TextMeshCreator {
 
 	protected TextMeshData createTextMesh(GUIText text) {
 		List<Line> lines = createStructure(text);
-		TextMeshData data = createQuadVertices(text, lines);
-		return data;
+		return createQuadVertices(text, lines);
 	}
 
 	private List<Line> createStructure(GUIText text) {
 		char[] chars = text.getTextString().toCharArray();
-		List<Line> lines = new ArrayList<Line>();
+		List<Line> lines = new ArrayList<>();
 		Line currentLine = new Line(metaData.getSpaceWidth(), text.getFontSize(), text.getMaxLineSize());
 		Word currentWord = new Word(text.getFontSize());
 		for (char c : chars) {
@@ -59,8 +58,8 @@ public class TextMeshCreator {
 		text.setNumberOfLines(lines.size());
 		double curserX = 0f;
 		double curserY = 0f;
-		List<Float> vertices = new ArrayList<Float>();
-		List<Float> textureCoords = new ArrayList<Float>();
+		List<Float> vertices = new ArrayList<>();
+		List<Float> textureCoords = new ArrayList<>();
 		for (Line line : lines) {
 			if (text.isCentered()) {
 				curserX = (line.getMaxLength() - line.getLineLength()) / 2;

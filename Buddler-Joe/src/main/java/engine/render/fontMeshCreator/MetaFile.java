@@ -35,10 +35,10 @@ public class MetaFile {
 	private int paddingWidth;
 	private int paddingHeight;
 
-	private Map<Integer, Character> metaData = new HashMap<Integer, Character>();
+	private Map<Integer, Character> metaData = new HashMap<>();
 
 	private BufferedReader reader;
-	private Map<String, String> values = new HashMap<String, String>();
+	private Map<String, String> values = new HashMap<>();
 
 	/**
 	 * Opens a font file in preparation for reading.
@@ -74,7 +74,7 @@ public class MetaFile {
 		String line = null;
 		try {
 			line = reader.readLine();
-		} catch (IOException e1) {
+		} catch (IOException ignored) {
 		}
 		if (line == null) {
 			return false;

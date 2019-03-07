@@ -3,8 +3,6 @@ package net.packets;
 import net.ClientLogic;
 import net.ServerLogic;
 
-import java.nio.FloatBuffer;
-
 public class Packet00Login extends Packet{
 
     private String username;

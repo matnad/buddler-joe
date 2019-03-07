@@ -178,7 +178,7 @@ public class Camera {
      * Maybe as a setting?
      */
     public void invertPitch(){
-        this.pitch = -pitch;
+        pitch = -pitch;
     }
 
     public float getPitch() {

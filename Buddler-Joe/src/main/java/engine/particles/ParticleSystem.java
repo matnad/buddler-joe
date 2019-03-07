@@ -118,7 +118,7 @@ public class ParticleSystem {
     }
 
     private Particle emitParticle(Vector3f center) {
-        Vector3f velocity = null;
+        Vector3f velocity;
         if(direction!=null){
             //Cone style random vectors
             velocity = generateRandomUnitVectorWithinCone(direction, directionDeviation);

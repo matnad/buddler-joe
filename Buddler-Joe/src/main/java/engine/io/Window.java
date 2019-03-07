@@ -1,14 +1,7 @@
 package engine.io;
 
-import net.packets.Packet99Disconnect;
-import org.lwjgl.BufferUtils;
-import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.opengl.GL;
-import org.joml.Vector3f;
-import org.lwjgl.opengl.GL11;
-
-import java.nio.DoubleBuffer;
 
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;

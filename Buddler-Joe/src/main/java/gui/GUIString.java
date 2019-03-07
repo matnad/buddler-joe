@@ -3,12 +3,16 @@ package gui;
 import engine.render.Loader;
 import engine.render.fontMeshCreator.FontType;
 import engine.render.fontMeshCreator.GUIText;
-import engine.render.fontRendering.TextMaster;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 
 import java.io.File;
 
+/**
+ * A GUI Text with preloaded font. Not sure this is needed.
+ * Will revisit when we work on the HUD
+ * For now its basically the same as GUIText
+ */
 public abstract class GUIString {
 
     private GUIText guiString;
@@ -71,7 +75,7 @@ public abstract class GUIString {
     }
 
     public void setFont(FontType font) {
-        this.font = font;
+        GUIString.font = font;
     }
 
     public float getFontSize() {

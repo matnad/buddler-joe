@@ -1,21 +1,18 @@
 package net.packets;
 
-import entities.NetPlayer;
 import net.ClientLogic;
 import net.ServerLogic;
 
-import java.net.InetAddress;
-
 public abstract class Packet {
 
-    public static enum PacketTypes {
+    public enum PacketTypes {
         INVALID(-1),
         LOGIN(00),
         MOVE(01),
         DISCONNECT(99);
 
         private int packetId;
-        private PacketTypes(int packetId) {
+        PacketTypes(int packetId) {
             this.packetId = packetId;
         }
 

@@ -9,11 +9,9 @@ import java.nio.IntBuffer;
 
 import static java.lang.Math.round;
 import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL11.GL_UNSIGNED_BYTE;
 import static org.lwjgl.opengl.GL12.GL_CLAMP_TO_EDGE;
 import static org.lwjgl.stb.STBImage.*;
 import static org.lwjgl.stb.STBImageResize.*;
-import static org.lwjgl.stb.STBImageResize.STBIR_COLORSPACE_SRGB;
 import static org.lwjgl.system.MemoryStack.stackPush;
 import static org.lwjgl.system.MemoryUtil.memAlloc;
 import static org.lwjgl.system.MemoryUtil.memFree;

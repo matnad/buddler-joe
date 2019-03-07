@@ -1,13 +1,11 @@
 package net;
 
-import bin.Game;
 import entities.NetPlayer;
 import net.packets.Packet;
 import net.packets.Packet00Login;
 import net.packets.Packet01Move;
 import net.packets.Packet99Disconnect;
 import org.joml.Vector3f;
-import org.lwjgl.system.CallbackI;
 
 import java.io.IOException;
 import java.net.*;
@@ -55,7 +53,7 @@ public class ServerLogic extends Thread {
     private void parsePacket(byte[] data, InetAddress address, int port) {
         String message = new String(data).trim();
         Packet.PacketTypes type = Packet.lookupPacket(message.substring(0,2));
-        Packet packet = null;
+        Packet packet;
         switch (type) {
             default:
             case INVALID:

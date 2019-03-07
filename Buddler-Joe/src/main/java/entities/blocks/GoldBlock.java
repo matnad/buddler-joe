@@ -1,7 +1,5 @@
 package entities.blocks;
 
-import bin.Game;
-import entities.items.Dynamite;
 import org.joml.Vector3f;
 
 /**

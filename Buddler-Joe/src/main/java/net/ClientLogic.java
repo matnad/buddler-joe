@@ -55,7 +55,7 @@ public class ClientLogic extends Thread {
     private void parsePacket(byte[] data, InetAddress address, int port) {
         String message = new String(data).trim();
         Packet.PacketTypes type = Packet.lookupPacket(message.substring(0,2));
-        Packet packet = null;
+        Packet packet;
         switch (type) {
             default:
             case INVALID:
@@ -83,7 +83,6 @@ public class ClientLogic extends Thread {
         boolean found = false;
         for (NetPlayer loadedNetPlayer : game.getLoadedNetPlayers()) {
             if (loadedNetPlayer.getUsername().equals(packet.getUsername())) {
-                found = true;
                 loadedNetPlayer.setPosition(packet.getMoveCoords());
                 loadedNetPlayer.setRotX(packet.getRotX());
                 loadedNetPlayer.setRotY(packet.getRotY());

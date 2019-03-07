@@ -9,23 +9,33 @@ import org.joml.Vector3f;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+/**
+ * A Chat message with Username and Formatted Timestamp
+ *
+ * This will change when we build a proper chat
+ * We need a proper timestamp too
+ */
 public class ChatText extends GUIText {
 
-//    private Date date;
     private String time;
     private String username;
     private boolean sent;
 
-    public ChatText(String text, float fontSize, FontType font, Vector2f position, float maxLineLength, boolean centered, boolean sent) {
-        super(text, fontSize, font, position, maxLineLength, centered);
 
-        username = Game.username;
-        this.sent = sent;
-        time = "["+username+"-"+new SimpleDateFormat("HH:mm").format(new Date())+"] ";
-
-    }
-
-    public ChatText(String text, float fontSize, Vector3f colour, float alpha, FontType font, Vector2f position, float maxLineLength, boolean centered, boolean sent) {
+    /**
+     * Create a chat message that can be rendered on screen
+     *
+     * @param text Text of the message
+     * @param fontSize font size...
+     * @param colour r, g, b
+     * @param alpha transparency, used to fade the text with the chat window
+     * @param font font style
+     * @param position in screen coordinates
+     * @param maxLineLength 1 = screen wide
+     * @param centered true = center of line length
+     * @param sent true if the message is submitted
+     */
+    ChatText(String text, float fontSize, Vector3f colour, float alpha, FontType font, Vector2f position, float maxLineLength, boolean centered, boolean sent) {
         super(text, fontSize, font, colour, alpha, position, maxLineLength, centered);
 
         username = Game.username;
@@ -33,7 +43,7 @@ public class ChatText extends GUIText {
         time = "["+username+"-"+new SimpleDateFormat("HH:mm").format(new Date())+"] ";
     }
 
-    public boolean isSent() {
+    boolean isSent() {
         return sent;
     }
 
@@ -41,7 +51,7 @@ public class ChatText extends GUIText {
         this.sent = sent;
     }
 
-    public String getTime() {
+    String getTime() {
         return time;
     }
 

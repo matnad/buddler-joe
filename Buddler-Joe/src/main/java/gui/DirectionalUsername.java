@@ -1,35 +1,21 @@
 package gui;
 
-import bin.Game;
-import engine.io.Window;
-import engine.render.Loader;
 import engine.render.MasterRenderer;
-import engine.render.fontMeshCreator.FontType;
-import engine.render.fontMeshCreator.GUIText;
 import engine.render.fontRendering.TextMaster;
 import entities.NetPlayer;
-import entities.Player;
 import org.joml.*;
-import org.lwjgl.BufferUtils;
-import org.lwjgl.opengl.GL11;
 import util.Maths;
 
-import javax.swing.*;
-import java.io.File;
-import java.lang.Math;
-import java.nio.FloatBuffer;
-import java.nio.IntBuffer;
-
-import static org.lwjgl.opengl.GL11.*;
-
+/**
+ * TEMPORARY CLASS
+ *
+ * Displays username that stay on the edge of the screen.. still work to be done here.
+ *
+ * Disregard this as it is not implemented yet
+ */
 public class DirectionalUsername extends GUIString{
 
     private NetPlayer player;
-
-    private Matrix4f viewMatrix;
-    private Matrix4f projectionMatrix;
-
-
 
     public DirectionalUsername(NetPlayer player) {
         super();
@@ -63,7 +49,6 @@ public class DirectionalUsername extends GUIString{
 
         float normX = (loc.x+1)/2;
         float normY = (1-loc.y)/2;
-        //System.out.println(""+normX+" "+normY);
         return new Vector2f(normX,normY);
     }
 

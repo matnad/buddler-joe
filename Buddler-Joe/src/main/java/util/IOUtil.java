@@ -14,6 +14,9 @@ import java.nio.file.*;
 
 import static org.lwjgl.BufferUtils.*;
 
+/**
+ * Official Loader for textures from LWJGL
+ */
 public final class IOUtil {
 
     private IOUtil() {
@@ -44,7 +47,6 @@ public final class IOUtil {
             try (SeekableByteChannel fc = Files.newByteChannel(path)) {
                 buffer = BufferUtils.createByteBuffer((int)fc.size() + 1);
                 while (fc.read(buffer) != -1) {
-                    ;
                 }
             }
         } else {

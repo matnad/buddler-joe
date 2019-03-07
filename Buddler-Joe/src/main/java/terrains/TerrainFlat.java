@@ -2,12 +2,14 @@ package terrains;
 
 import engine.models.RawModel;
 import engine.render.Loader;
-import engine.textures.ModelTexture;
 import engine.textures.TerrainTexture;
 import engine.textures.TerrainTexturePack;
 import org.joml.Vector3f;
 
 
+/**
+ * Flat Terrain with blend map
+ */
 public class TerrainFlat {
 
     static final float SIZE = 200;
@@ -20,6 +22,15 @@ public class TerrainFlat {
 
     private Vector3f rotation = new Vector3f(0f,0f,0f); // in degrees
 
+    /**
+     * Create a flat terrain tile.
+     *
+     * @param gridX starting point X world coordinate
+     * @param gridZ starting point Z world coordinate
+     * @param loader main loader
+     * @param texturePack texture pack with all the textures required for the blend map
+     * @param blendMap "heat map" image for how to blend images (load as Texture)
+     */
     public TerrainFlat(int gridX, int gridZ, Loader loader, TerrainTexturePack texturePack, TerrainTexture blendMap) {
 
         this.texturePack = texturePack;
@@ -29,6 +40,13 @@ public class TerrainFlat {
         this.model = generateTerrain(loader);
     }
 
+    /**
+     * Creates Vertices, Texture Coords, Normals and Indices for a Flat terrain and loads them into a raw model
+     * Size and "resolution" can be set in the class vars, this is inteded to be used as "Tiles" of terrain
+     *
+     * @param loader main loader
+     * @return Raw Model of Terrain
+     */
     private RawModel generateTerrain(Loader loader){
         int count = VERTEX_COUNT * VERTEX_COUNT;
         float[] vertices = new float[count * 3];

@@ -1,5 +1,8 @@
 import bin.Game;
 
+/**
+ * Start the Main Game Thread
+ */
 public class Main {
 
     private static Game game;

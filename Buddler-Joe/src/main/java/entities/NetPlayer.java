@@ -1,14 +1,11 @@
 package entities;
 
 import engine.models.TexturedModel;
-import engine.render.Loader;
 import gui.DirectionalUsername;
-import net.packets.Packet;
 import org.joml.Vector3f;
 
 import java.net.DatagramPacket;
 import java.net.InetAddress;
-import java.util.UUID;
 
 /**
  * This will be reworked very shortly so I will not fully document it.
