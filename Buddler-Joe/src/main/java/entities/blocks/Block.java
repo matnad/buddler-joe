@@ -9,21 +9,37 @@ import entities.Entity;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 
+/**
+ * Abstract class for Blocks
+ *
+ * - Loads the texture Atlas
+ * - Handles damage to blocks
+ * - Provides getters and setters for mandatory properties
+ *
+ */
 public abstract class Block extends Entity {
 
 
     private float hardness;
     private float damage;
     private float dim;
-
     private BlockMaster.BlockTypes type;
-
     private Entity destroyedBy;
-
     private static TexturedModel blockModel;
 
-
+    /**
+     * Abstract Constructor
+     *
+     * @param type type of block, described by Block Master enum
+     * @param hardness damage before block is destroyed
+     * @param position 3D coordinate of block center
+     * @param rotX rotation around X axis
+     * @param rotY rotation around Y axis
+     * @param rotZ rotation around Z axis
+     * @param scale scaling multiplier
+     */
     public Block(BlockMaster.BlockTypes type, float hardness, Vector3f position, float rotX, float rotY, float rotZ, float scale) {
+        //blockModel is a texture atlas, containing all block textures, ID is the position of the texture on the atlas
         super(blockModel, type.getTextureId(), position, rotX, rotY, rotZ, scale);
 
         this.type = type;
@@ -46,20 +62,71 @@ public abstract class Block extends Entity {
     }
 
 
-    public static void loadBlockModels(Loader loader) {
+    /**
+     * Preload texture atlas. Called by the Block Master's init()
+     *
+     * @param loader main loader
+     */
+    static void loadBlockModels(Loader loader) {
         RawModel rawBlock = loader.loadToVAO(OBJFileLoader.loadOBJ("dirt"));
         ModelTexture blockAtlas = new ModelTexture(loader.loadTexture("blockAtlas"));
         blockAtlas.setNumberOfRows(6);
         blockModel = new TexturedModel(rawBlock, blockAtlas);
     }
 
-    //Functions to get the 2D (along the wall) or 3D distance from the center of the block to a point.
+
+    /**
+     * 3D distance between block and a 3D point
+     *
+     * @param pos distance from block to this point
+     * @return distance in units
+     */
     public float getDistanceFrom(Vector3f pos) {
         return super.getPosition().distance(pos);
     }
 
+    /**
+     * Assuming the objects are on the same Z-plane, this gets the 2D distance between the objects
+     *
+     * @param pos X and Y coordinates for a position in the world
+     * @return distance in units
+     */
     public float get2dDistanceFrom(Vector2f pos) {
         return new Vector2f(super.getPosition().x, super.getPosition().y).distance(pos);
+    }
+
+    /**
+     * @param damage damage done to the block
+     * @param entity entity that inflicted the damage
+     */
+    public void increaseDamage(float damage, Entity entity) {
+        this.damage += damage;
+        if (this.damage > this.hardness) {
+            setDestroyedBy(entity);
+            setDestroyed(true); //Destroy block
+        }
+    }
+
+    private void setDestroyedBy(Entity destroyedBy) {
+        this.destroyedBy = destroyedBy;
+    }
+
+    Entity getDestroyedBy() {
+        return destroyedBy;
+    }
+
+    /**
+     * Only change destroyed status via this method, never call the super directly.
+     * This will trigger the abstract method onDestroy() for the block.
+     * -> The block type will determine what happens
+     *
+     * @param destroyed true if you want to destroy the block
+     */
+    public void setDestroyed(boolean destroyed) {
+        super.setDestroyed(destroyed);
+        if(destroyed) {
+            onDestroy();
+        }
     }
 
     public float getHardness() {
@@ -74,16 +141,6 @@ public abstract class Block extends Entity {
         return damage;
     }
 
-    public void increaseDamage(float damage, Entity entity) {
-        this.damage += damage;
-        if (this.damage > this.hardness) {
-            setDestroyedBy(entity);
-            setDestroyed(true);
-            //Send server packet
-        }
-    }
-
-
     public float getDim() {
         return dim;
     }
@@ -92,23 +149,13 @@ public abstract class Block extends Entity {
         this.dim = dim;
     }
 
-    public void setDestroyed(boolean destroyed) {
-        super.setDestroyed(destroyed);
-        if(destroyed) {
-            onDestroy();
-        }
-    }
 
-    public Entity getDestroyedBy() {
-        return destroyedBy;
-    }
-
+    /**
+     * Specifies what happens when this block is destroyed.
+     * Must be implemented by the block child classes.
+     */
     protected abstract void onDestroy();
 
-
-    public void setDestroyedBy(Entity destroyedBy) {
-        this.destroyedBy = destroyedBy;
-    }
 
     public BlockMaster.BlockTypes getType() {
         return type;

@@ -3,7 +3,6 @@ package entities.items;
 import bin.Game;
 import engine.models.RawModel;
 import engine.models.TexturedModel;
-import engine.particles.Particle;
 import engine.particles.systems.Explosion;
 import engine.particles.systems.Fire;
 import engine.particles.systems.Smoke;
@@ -14,20 +13,23 @@ import entities.blocks.Block;
 import entities.blocks.BlockMaster;
 import gui.DynamiteTimer;
 import org.joml.Vector3f;
+import org.lwjgl.openal.EXTSourceRadius;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
+/**
+ * A budle of dynamite that can damage blocks or the player
+ */
 public class Dynamite extends Item {
     private  final float GRAVITY = 20;
     private final float FUSE_TIMER = 3f;
     private final float EXPLOSION_TIME = .5f;
+    private final float EXPLOSION_RANGE = 15;
+    private final float MAXIMUM_DAMAGE = 50;
+
     private float time;
     private boolean active;
     private boolean exploded;
-
-    private DynamiteTimer timerGUI;
 
     private Fire particleFuse;
     private Explosion particleExplosion;
@@ -35,14 +37,17 @@ public class Dynamite extends Item {
     private Smoke particleSmoke;
     private Explosion particleShockwave;
 
-    public Dynamite(Vector3f position, float rotX, float rotY, float rotZ, float scale) {
-        super(ItemMaster.ItemTypes.DYNAMITE, getPreloadedModel(), position, rotX, rotY, rotZ, scale);
 
+    /**
+     * Extended Constructor for Dynamite. Don't use directly. Use the Item Master to create items.
+     */
+    Dynamite(Vector3f position, float rotX, float rotY, float rotZ, float scale) {
+        super(ItemMaster.ItemTypes.DYNAMITE, getPreloadedModel(), position, rotX, rotY, rotZ, scale);
         time = 0;
         active = false;
         exploded = false;
-        timerGUI = new DynamiteTimer();
-        timerGUI.setAlpha(1);
+
+
 
         //Generate Fuse Effect
         particleFuse = new Fire(70, 1, .01f, 1, 3);
@@ -52,6 +57,7 @@ public class Dynamite extends Item {
         particleFuse.setScaleError(.5f);
         particleFuse.randomizeRotation();
 
+        /* Generate Fancy Particle Effects for an explosion */
         //Generate Explosion Effect
         particleExplosion = new Explosion(200, 11, 0, .4f, 15);
         particleExplosion.setScaleError(.4f);
@@ -81,22 +87,44 @@ public class Dynamite extends Item {
         particleShockwave.setRotationAxis(new Vector3f(rnd.nextFloat()*.4f-.2f,1,rnd.nextFloat()*.4f-.2f), 0);
     }
 
-    public Dynamite(Vector3f position) {
+    /**
+     * Constructor for the dynamite. Don't use directly. Use the Item Master to create items.
+     *
+     * @param position position to spawn the dynamite
+     */
+    Dynamite(Vector3f position) {
         this(position, 0,0,0, 1);
 
     }
 
+    /**
+     * Preload model
+     *
+     * @param loader passed by Item Master
+     */
     public static void init(Loader loader) {
         RawModel rawDynamite = loader.loadToVAO(OBJFileLoader.loadOBJ("dynamite"));
         setPreloadedModel(new TexturedModel(rawDynamite, new ModelTexture(loader.loadTexture("dynamite"))));
     }
 
+    /**
+     * Called every frame. Updates all the animations for the Dynamite and decides which particle systems will fire.
+     * Takes care of collision and removes itself when done with everything.
+     */
     @Override
     public void update() {
 
+        //Skip if dynamit is being placed or otherwise inactive
         if(!active)
             return;
+
+        //Update the fuse time
         time += Game.window.getFrameTimeSeconds();
+
+        /*
+        Case 1: Dynamit is about to blow -> play fuse animation, check for collision and update position if falling
+          Dynamite can only move if it is in this phase, the explosion will be stationary.
+        */
         if(time < FUSE_TIMER) {
             boolean collision = false;
             for (Block block : BlockMaster.getBlocks()) {
@@ -111,13 +139,19 @@ public class Dynamite extends Item {
 
             float offset = getbBox().getDimY() * 2 * (FUSE_TIMER-time)/FUSE_TIMER;
             particleFuse.generateParticles(new Vector3f(0,offset, 0).add(getPosition()));
+
+        /*
+        Case 2: Explosion is finished, remove the object
+         */
         } else if (time >= FUSE_TIMER + EXPLOSION_TIME) {
             setDestroyed(true); //Remove Object
+        /*
+        Case 3: Time is up, explode the dynamite.
+        Play explosion and smoke effect, and for 0.1 seconds, also play shrapnel and shockwave effects
+         */
         } else if (time >= FUSE_TIMER) {
             explode();
-
             particleExplosion.generateParticles(getPosition());
-
             particleSmoke.generateParticles(getPosition());
             if(time <= FUSE_TIMER+0.1) {
                 particleShrapnel.generateParticles(getPosition());
@@ -128,6 +162,9 @@ public class Dynamite extends Item {
         }
     }
 
+    /**
+     * Damage the blocks in range of the explosion and hide the dynamite
+     */
     private void explode() {
         if (exploded) {
             return;
@@ -136,9 +173,9 @@ public class Dynamite extends Item {
         setScale(0); //Hide the model, but keep the object for the explosion effect to complete
         for (Block block : BlockMaster.getBlocks()) {
             float distance = block.get2dDistanceFrom(getPositionXY());
-            if(distance < 15) {
+            if(distance < EXPLOSION_RANGE) {
                 //Damage blocks inverse to distance (closer = more damage)
-                block.increaseDamage(1/distance * 50, this);
+                block.increaseDamage(1/distance * MAXIMUM_DAMAGE, this);
             }
         }
     }

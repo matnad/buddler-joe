@@ -10,6 +10,11 @@ import java.net.DatagramPacket;
 import java.net.InetAddress;
 import java.util.UUID;
 
+/**
+ * This will be reworked very shortly so I will not fully document it.
+ * A LOT will change and it is not really used now.
+ * Ignore the class please.
+ */
 public class NetPlayer extends Entity {
 
     private InetAddress ipAddress;
@@ -20,8 +25,6 @@ public class NetPlayer extends Entity {
     private float modelSize;
 
     private DirectionalUsername directionalUsername;
-
-//    private UUID uuid = UUID.randomUUID();
 
     public NetPlayer(TexturedModel playerModel, Vector3f position, float rotX, float rotY, float rotZ, float scale,
                      InetAddress inetAddress, int port, String username, String strModel, String texture, float modelSize) {
@@ -35,10 +38,6 @@ public class NetPlayer extends Entity {
         this.modelSize = modelSize;
 
     }
-
-//    public void tick() {
-//        super.tick();
-//    }
 
     public boolean ownsDatagram(DatagramPacket datagramPacket) {
         return (datagramPacket.getAddress() == ipAddress && datagramPacket.getPort() == port);

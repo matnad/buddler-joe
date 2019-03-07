@@ -2,11 +2,14 @@ package entities.items;
 
 import bin.Game;
 import engine.render.Loader;
-import entities.blocks.Block;
 import org.joml.Vector3f;
 
 import java.util.*;
 
+/**
+ * Create and manage items
+ * Only ever create items using this class
+ */
 public class ItemMaster {
 
     //Organize Items in lists that can be accessed by their type
@@ -28,10 +31,25 @@ public class ItemMaster {
         }
     }
 
+    /**
+     * Init is called once while loading the game.
+     * Calls the init method of all the items to load their textures (and maybe more).
+     *
+     * @param loader main loader
+     */
     public static void init(Loader loader) {
         Dynamite.init(loader);
     }
 
+    /**
+     * ONLY USE THIS METHOD TO GENERATE BLOCKS!
+     *
+     * Generates a block of the chosen type and adds it to all relevant lists.
+     * Keeps track of the block and cleans it up when destroyed.
+     *
+     * @param type type of the block as described in {@link ItemMaster.ItemTypes}
+     * @param position 3D coordinate to place the block
+     */
     public static Item generateItem(ItemTypes type, Vector3f position) {
         Item item;
         switch (type) {
@@ -51,6 +69,10 @@ public class ItemMaster {
         return item;
     }
 
+    /**
+     * Called everey frame to update if an item has been destroyed.
+     * If so, remove that item from all relevant lists (and clean out empty lists).
+     */
     public static void update() {
         //Remove destroyed items from the list and update entities
         Iterator<Map.Entry<ItemTypes, List<Item>>> mapIterator = itemLists.entrySet().iterator();
@@ -78,6 +100,14 @@ public class ItemMaster {
         }
     }
 
+
+    /**
+     * Don't call this method directly. It is used by the Item Master to add new blocks to the game.
+     *
+     * Adds them to the Item Master's personal lists and to the Entity render's list.
+     *
+     * @param item freshly generated item
+     */
     private static void addToItemList(Item item) {
         //Get the list with the type of the block, if the list is absent, create it
         List<Item> list = itemLists.computeIfAbsent(item.getType(), k -> new ArrayList<>());
