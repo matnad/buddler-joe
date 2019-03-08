@@ -3,6 +3,7 @@ package net;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+
 public class ServerLogic {
         private int portValue;
         static ServerSocket serverSocket;

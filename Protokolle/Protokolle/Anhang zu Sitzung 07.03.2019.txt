@@ -4,18 +4,13 @@
     Packete, welche zu implementieren sind bis am 12.03.2019:
 
 
-        LOGIN { validate login und login } (Viktor)
-        PING { ping und pong } (Viktor)
-        CHAT { Send message, receive message, validate message sent, validate message received } (Moritz)
-        NAME { Set Name, Get name, Push name } (Moritz)
+        LOGIN { login } (Viktor)
+        PING { ping und pong } (Sanja)
+        CHAT { Send message, receive message } (Moritz)
+        NAME { Set Name, Get name, Push name } (Viktor)
         LOGOUT { Send Logout, Push Logout } (Viktor)
         LOBBIES { See lobbies, show lobbies, join lobby, leave lobby, create lobby } (Sebastian)
 
-
-    Konvention zu Validationspacketen: V + Name - Letzter Buchstabe
-
     Noch zu implementieren:
 
-        Abstrakte Klasse VALID für Validationspackete { ID, getter, setter } (Sanja)
-
-        Server Player Klasse { Name, Port, IP, Ping } (Viktor)
+        Server Player Klasse { Name, Thread-Nr., Ping } (Viktor)
