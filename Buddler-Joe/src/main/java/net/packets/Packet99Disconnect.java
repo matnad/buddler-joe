@@ -19,12 +19,12 @@ public class Packet99Disconnect extends Packet{
 
     @Override
     public void writeData(ClientLogic client) {
-        client.sendData(getData());
+        //client.sendData(getData());
     }
 
     @Override
     public void writeData(ServerLogic server) {
-        server.sendDataToAllClients(getData());
+        //server.sendDataToAllClients(getData());
     }
 
     @Override

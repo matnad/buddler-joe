@@ -58,7 +58,7 @@ public class Game extends Thread {
     //Game instance and player settings
     private static ClientLogic socketClient;
 
-    private static boolean doConnectToServer = true; //Multiplayer: true, Singleplayer: false
+    private static boolean doConnectToServer = false; //Multiplayer: true, Singleplayer: false
     private static boolean connectedToServer = false;
     public static String username = RandomName.getRandomName(); //TODO (Server Team): Username maybe needs its own class or should at least be moved to NetPlayer
 
@@ -125,15 +125,15 @@ public class Game extends Thread {
          * TODO (Server Network Team): Move this out of Game into a class in the network package and change it.
          */
         if(doConnectToServer) {
-            socketClient = new ClientLogic(this, "localhost");
-            socketClient.start();
-
-            while (!socketClient.isRunning()) {
-                Packet00Login loginPacket = new Packet00Login(username, myModel, myModel, myModelSize);
-                loginPacket.writeData(socketClient);
-                connectedToServer = true; //Not really, but we implement this later maybe.
-                                          //Just creating the variable for later use.
-            }
+//            socketClient = new ClientLogic(this, "localhost");
+//            socketClient.start();
+//
+//            while (!socketClient.isRunning()) {
+//                Packet00Login loginPacket = new Packet00Login(username, myModel, myModel, myModelSize);
+//                loginPacket.writeData(socketClient);
+//                connectedToServer = true; //Not really, but we implement this later maybe.
+//                                          //Just creating the variable for later use.
+//            }
         }
 
 
@@ -314,9 +314,9 @@ public class Game extends Thread {
      */
 
     private void disconnectFromServer() {
-        Packet99Disconnect packet = new Packet99Disconnect(username);
-        packet.writeData(socketClient);
-        socketClient.interrupt(); //Does this even work?
+//        Packet99Disconnect packet = new Packet99Disconnect(username);
+//        packet.writeData(socketClient);
+//        socketClient.interrupt(); //Does this even work?
     }
 
     public void addNetPlayer(NetPlayer netPlayer) {
