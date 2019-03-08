@@ -7,11 +7,11 @@ public class ClientThread implements Runnable {
 
     private BufferedReader input;
     private PrintWriter output;
-    private final int clientno;
+    private final int clientNo;
     private final Socket socket;
 
     ClientThread(Socket Client, int clientNo) {
-        this.clientno = clientNo;
+        this.clientNo = clientNo;
         this.socket = Client;
 
         // So we can see what unique clients have joined
@@ -34,16 +34,16 @@ public class ClientThread implements Runnable {
             while (command != null){
                 command = input.readLine();
                 if (command == null) {
-                    System.out.println("Client " + clientno + " left");
+                    System.out.println("Client " + clientNo + " left");
                 } else {
-                    System.out.println("command sent was '" + command + "' by client No " + clientno);
+                    System.out.println("command sent was '" + command + "' by client No " + clientNo);
                     if (command.equals("ping")) {
                         sendToClient("pong");
                     }
                 }
             }
         } catch (IOException e) {
-            System.out.println("Client " + clientno + " left");
+            System.out.println("Client " + clientNo + " left");
             try{
                 socket.close();
             } catch (IOException e1) {

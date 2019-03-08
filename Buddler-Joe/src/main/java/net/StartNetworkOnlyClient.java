@@ -32,8 +32,6 @@ public class StartNetworkOnlyClient {
             System.out.println("Command: ");
             String inputMessage = br.readLine();
             clientLogic.sendToServer(inputMessage);
-
-
         }
     }
 

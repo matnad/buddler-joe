@@ -1,18 +1,10 @@
 package net;
 
-import bin.Game;
-import entities.NetPlayer;
-import net.packets.Packet;
-import net.packets.Packet00Login;
-import net.packets.Packet01Move;
-import net.packets.Packet99Disconnect;
-import org.joml.Vector3f;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.net.*;
+import java.net.Socket;
 
 
 public class ClientLogic implements Runnable {

@@ -1,24 +1,16 @@
 package net;
 
-import entities.NetPlayer;
-import net.packets.Packet;
-import net.packets.Packet00Login;
-import net.packets.Packet01Move;
-import net.packets.Packet99Disconnect;
-import org.joml.Vector3f;
-
 import java.io.IOException;
-import java.net.*;
+import java.net.ServerSocket;
+import java.net.Socket;
 import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.List;
 
 public class ServerLogic {
-        private final int portValue;
+        private int portValue;
         static ServerSocket serverSocket;
 
 
-        ServerLogic(int portValue) throws IOException, ParseException {
+        ServerLogic(int portValue) throws IOException {
             this.portValue = portValue;
             serverSocket = new ServerSocket(portValue);
             System.out.println("Started Server");
