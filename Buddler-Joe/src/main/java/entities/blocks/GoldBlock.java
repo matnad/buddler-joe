@@ -1,5 +1,8 @@
 package entities.blocks;
 
+import entities.items.Dynamite;
+import entities.items.Item;
+import entities.items.ItemMaster;
 import org.joml.Vector3f;
 
 /**
@@ -28,7 +31,7 @@ public class GoldBlock extends Block {
     @Override
     protected void onDestroy() {
         //Drop some dynamite!
-//        Dynamite dynamite = new Dynamite(getPosition());
-//        dynamite.setActive(true);
+//        Item dynamite = ItemMaster.generateItem(ItemMaster.ItemTypes.DYNAMITE, getPosition());
+//        ((Dynamite) dynamite).setActive(true);
     }
 }

@@ -110,7 +110,7 @@ class GenerateWorld {
             for (int j = 0; j < 33; j++) {
                 float k = random.nextFloat();
                 Vector3f position = new Vector3f(i * dim + 3f, -j * dim - size * 3, size);
-                if (k < .5f) {
+                if (k < .4f) {
                     BlockMaster.generateBlock(DIRT, position);
                 } else if (k < .8f) {
                     BlockMaster.generateBlock(STONE, position);

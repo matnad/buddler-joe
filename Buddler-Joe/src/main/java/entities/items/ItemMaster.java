@@ -42,13 +42,13 @@ public class ItemMaster {
     }
 
     /**
-     * ONLY USE THIS METHOD TO GENERATE BLOCKS!
+     * ONLY USE THIS METHOD TO GENERATE ITEMS!
      *
-     * Generates a block of the chosen type and adds it to all relevant lists.
-     * Keeps track of the block and cleans it up when destroyed.
+     * Generates an item of the chosen type and adds it to all relevant lists.
+     * Keeps track of the item and cleans it up when destroyed.
      *
-     * @param type type of the block as described in {@link ItemMaster.ItemTypes}
-     * @param position 3D coordinate to place the block
+     * @param type type of the item as described in {@link ItemMaster.ItemTypes}
+     * @param position 3D coordinate to place the item
      */
     public static Item generateItem(ItemTypes type, Vector3f position) {
         Item item;
@@ -70,33 +70,33 @@ public class ItemMaster {
     }
 
     /**
-     * Called everey frame to update if an item has been destroyed.
-     * If so, remove that item from all relevant lists (and clean out empty lists).
+     * Called every frame to update all items.
+     * If an item is flagged as destroyed, remove that item from all relevant lists (and clean out empty lists).
      */
     public static void update() {
         //Remove destroyed items from the list and update entities
         Iterator<Map.Entry<ItemTypes, List<Item>>> mapIterator = itemLists.entrySet().iterator();
         while (mapIterator.hasNext()) {
             List<Item> list = mapIterator.next().getValue();
-            Iterator<Item> iterator = list.iterator();
-            while (iterator.hasNext()) {
-                Item item = iterator.next();
+            /*
+            For loop allows new items being added as part of the item update method (like destroying a block
+            with dynamite could spawn another dynamite). Otherwise we get a concurrent modification error.
+             */
+            for (int i = 0; i < list.size(); i++) {
+                Item item = list.get(i);
                 if (item.isDestroyed()) {
                     //Remove item from list and entities
                     Game.removeEntity(item);
-                    iterator.remove();
+                    list.remove(i);
                     items.remove(item);
                     //Clean up list if empty
                     if(list.isEmpty()) {
                         mapIterator.remove();
                     }
+                } else {
+                    item.update();
                 }
             }
-        }
-
-        //Update all active items
-        for (Item item : items) {
-            item.update();
         }
     }
 
