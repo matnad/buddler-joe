@@ -2,6 +2,10 @@ package net.packets;
 
 import net.ServerLogic;
 
+/**
+ *  Abstract Packet class which all Packets implement and build upon
+ */
+
 public abstract class Packet {
 
     public enum PacketTypes {
@@ -16,6 +20,11 @@ public abstract class Packet {
         GETNAME(GETNM);
 
         private final String packetId;
+
+        /**
+         * Constructor to assign the packet type to the subclass
+         * @param packetId
+         */
         PacketTypes(String packetId) {
             this.packetId = packetId;
         }
@@ -31,6 +40,10 @@ public abstract class Packet {
         this.packetId = packetId;
     }
 
+    /**
+     * Abstract classes to be implemented by all subclasses, perform standard operations every
+     * Package needs to have.
+     */
     public abstract String getData();
 
     public abstract void writeData(ServerLogic client);

@@ -15,6 +15,14 @@ public class ClientLogic implements Runnable {
     private Thread thread;
     private Socket server;
 
+    /**
+     * ClientLogic to communicate with the server. Controls the input/output from/to the player
+     * @param IP of the server which is to be communicated with
+     * @param Port of the server
+     * @param clientGUI ?
+     * @throws IOException
+     */
+
     public ClientLogic(String IP, int Port, StartNetworkOnlyClient clientGUI) throws IOException {
         server = new Socket(IP, Port);
         output = new PrintWriter(server.getOutputStream(), false);
@@ -25,6 +33,10 @@ public class ClientLogic implements Runnable {
         thread.start();
     }
 
+    /**
+     * Thread to run the ClientLogic on, does the switch analysis of the incoming messages from the server.
+     */
+
     @Override
     public void run() {
         try {
@@ -33,6 +45,12 @@ public class ClientLogic implements Runnable {
             System.out.println("Connection lost to server");
         }
     }
+
+    /**
+     * Method to wait for the server connetction until one is established
+     * @throws IOException
+     * @throws RuntimeException
+     */
 
     private void waitforserver() throws IOException, RuntimeException {
         while (true) {

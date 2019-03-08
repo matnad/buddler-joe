@@ -10,15 +10,25 @@ public class ServerLogic {
         private int portValue;
         static ServerSocket serverSocket;
 
+    /**
+     * Basic server logic to create a new thread for every player which connects to the game
+     * @param portValue the port on which the server runs on
+     * @throws IOException
+     */
 
-        ServerLogic(int portValue) throws IOException {
+
+    ServerLogic(int portValue) throws IOException {
             this.playerList = new ServerPlayerList();
             this.portValue = portValue;
             serverSocket = new ServerSocket(portValue);
             System.out.println("Started Server");
         }
 
-        void waitForPlayers() throws IOException {
+    /**
+     * Method to wait for incoming players and then create a new thread for them.
+     * @throws IOException
+     */
+    void waitForPlayers() throws IOException {
             int ClientId = 1;
 
             while (true) {

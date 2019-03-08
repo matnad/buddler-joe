@@ -6,6 +6,13 @@ public class ServerPlayerList {
 
     private HashMap<Integer, Player> players;
 
+    /**
+     * Method to add a player the the HashMap of all to the server connected players.
+     * @param player The player to be added to the HashMap
+     * @return statement to let for example the PackageLogin instance know,
+     * whether the action was successful or not
+     */
+
     public int addPlayer(Player player){
         if(players.containsKey(player.getClientId())){
             return -1;
@@ -20,13 +27,40 @@ public class ServerPlayerList {
 
     }
 
-    public String searchName(int threadNr){
-        if(players.containsKey(threadNr)){
-            return players.get(threadNr).getUsername();
+    /**
+     * Method to search for a players name in the Hashmap by using the clientId
+     * @param clientId the looked tor clientId
+     * @return either the correct name or null
+     */
+
+    public String searchName(int clientId){
+        if(players.containsKey(clientId)){
+            return players.get(clientId).getUsername();
         } else{
             return null;
         }
     }
+
+    /**
+     * Method to seach for a ceratin thread via the clientId to then return it to the method called
+     * @param clientId
+     * @return either the thread or null
+     */
+
+    public ClientThread searchThread(int clientId) {
+        if (players.containsKey(clientId)) {
+            return players.get(clientId).getThread();
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * search a client via the username to find the clientId in case only one of the two was supplied
+     * to the method.
+     * @param username of the player to be found in the list
+     * @return either the clientId or -1 if not found
+     */
 
     public int searchClientId(String username){
         for(Player p : players.values()){
@@ -37,6 +71,12 @@ public class ServerPlayerList {
         return -1;
     }
 
+    /**
+     * Method to remove a player by his clientId
+     * @param clientId the clientId of the player to be removed
+     * @return true or false depending on wheter the player was in the list or not
+     */
+
     public boolean removePlayer(int clientId){
         if(players.containsKey(clientId)){
             players.remove(clientId);
@@ -46,10 +86,17 @@ public class ServerPlayerList {
         }
     }
 
+    /**
+     * Method to print out the full player list
+     * @return the full player List as a String
+     */
+
+    //TODO: print out the player list
     @Override
     public String toString() {
         return "ServerPlayerList{" +
-                "players=" + players +
+                "players=" +
+                //for(Player p : players.values()){p.toString()} +
                 '}';
     }
 }

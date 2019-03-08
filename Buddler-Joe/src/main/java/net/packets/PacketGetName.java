@@ -21,6 +21,16 @@ public class PacketGetName extends Packet{
 
     }
 
+    /**
+     * Method to validate the data which is forwarded to the package to ensure its safety.
+     *
+     * @param data The data from the Buffered reader.
+     * @return True or false to determine the further action of the class.
+     */
+
+    //TODO: Exceptions!
+
+
     private boolean validate(String data){
         //TODO: Write the validation method
         return true;

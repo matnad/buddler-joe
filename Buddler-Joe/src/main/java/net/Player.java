@@ -7,6 +7,14 @@ public class Player {
     private int ping;
     ClientThread thread;
 
+    /**
+     * Main Player class to save the vital information which the server has to access at all times
+     * @param username for the player to be set and which is to be displayed in the game
+     * @param clientId to identify the player, unique to every player
+     * @param thread on which the client runs on from the server perspective
+     * @param ping current ping to be updated every 10 seconds
+     */
+
     public Player(String username, int clientId, ClientThread thread, int ping) {
         this.username = username;
         this.thread = thread;
@@ -41,6 +49,8 @@ public class Player {
     public void setPing(int ping) {
         this.ping = ping;
     }
+
+
 
     @Override
     public String toString() {

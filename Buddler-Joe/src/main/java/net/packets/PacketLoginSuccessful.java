@@ -6,19 +6,28 @@ public class PacketLoginSuccessful extends Packet{
 
     private int clientId;
     private ServerPlayerList playerList;
-    ClientThread thread;
+
+    /**
+     * Package to respond to the client that the Login has been successful
+     * @param playerList playerlist to find the thread belonging to this client
+     * @param clientId to find the player in the list
+     */
+
+    //TODO: Exceptions!
 
 
-
-    public PacketLoginSuccessful(ServerPlayerList playerList, int clientId, ClientThread thread) {
+    public PacketLoginSuccessful(ServerPlayerList playerList, int clientId) {
         super(PLOGS);
         this.clientId = clientId;
         this.playerList = playerList;
-        this.thread = thread;
-
-        playerList.searchName(clientId);
-
+        ClientThread thread = playerList.searchThread(clientId);
+        notifyClient(thread);
     }
+
+    /**
+     * Method to respond to the player via the thread.
+     * @param thread to write to the player.
+     */
 
     private void notifyClient(ClientThread thread){
         thread.sendToClient("Successful login.");

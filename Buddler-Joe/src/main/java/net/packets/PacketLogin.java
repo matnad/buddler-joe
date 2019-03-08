@@ -8,6 +8,18 @@ public class PacketLogin extends Packet{
     private ServerPlayerList playerList;
     private ClientThread thread;
 
+    /**
+     * Login Packet which gets sent first by the client. Validates the Login package, checks whether the
+     * Username is already taken and if not adds the player to the ServerPlayerList. Also creates instance
+     * of a player with the needed information to forward to the ServerPlayerList.
+     * @param playerList ServerPlayerList of the Server
+     * @param clientId of the player to be added to the Player instance
+     * @param data username to create the player
+     * @param thread the player thread to be added to the Player instance to be used later
+     */
+
+    //TODO: Exceptions!
+
 
     public PacketLogin(ServerPlayerList playerList, int clientId, String data, ClientThread thread) {
         super(PLOGI);
