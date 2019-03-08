@@ -20,8 +20,8 @@ import gui.FPS;
 import gui.GUIString;
 import gui.GuiTexture;
 import net.ClientLogic;
-import net.packets.Packet00Login;
-import net.packets.Packet99Disconnect;
+import net.packets.PacketLogin;
+import net.packets.PacketDisconnect;
 import org.joml.Vector3f;
 import terrains.Terrain;
 import terrains.TerrainFlat;
@@ -314,7 +314,6 @@ public class Game extends Thread {
      */
 
     private void disconnectFromServer() {
-//        Packet99Disconnect packet = new Packet99Disconnect(username);
 //        packet.writeData(socketClient);
 //        socketClient.interrupt(); //Does this even work?
     }

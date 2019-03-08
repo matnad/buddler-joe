@@ -1,60 +1,57 @@
 package net.packets;
 
-import net.ClientLogic;
 import net.ServerLogic;
 
 public abstract class Packet {
 
     public enum PacketTypes {
-        INVALID(-1),
-        LOGIN(00),
-        MOVE(01),
-        DISCONNECT(99);
 
-        private int packetId;
-        PacketTypes(int packetId) {
+        //TODO: Fix enum...
+
+        INVALID(INVAL),
+        LOGIN(PLOGI),
+        LOGIN_SUCCESSFUL(PLOGS),
+        //MOVE(MOVEP),
+        DISCONNECT(DISCP),
+        GETNAME(GETNM);
+
+        private final String packetId;
+        PacketTypes(String packetId) {
             this.packetId = packetId;
         }
 
-        public int getPacketId() {
+        public String getPacketId() {
             return packetId;
         }
     }
 
-    private byte packetId;
+    public String packetId;
 
-    public Packet(int packetId) {
-        this.packetId = (byte) packetId;
+    public Packet(String packetId) {
+        this.packetId = packetId;
     }
 
-    public abstract byte[] getData();
+    public abstract String getData();
 
-    public abstract void writeData(ClientLogic client);
     public abstract void writeData(ServerLogic client);
 
     public static PacketTypes lookupPacket(String packetId) {
         try {
-            return lookupPacket(Integer.parseInt(packetId));
+            for (PacketTypes p : PacketTypes.values()) {
+                if (p.getPacketId() == packetId) {
+                    return p;
+                }
+            }
         } catch (NumberFormatException e) {
             return PacketTypes.INVALID;
         }
     }
 
-    public String readData(byte[] data) {
-        String message = new String(data).trim();
-        return message.substring(2);
+    public String readData(String data) {
+        return data.substring(5,data.length()-1);
     }
 
-    public static PacketTypes lookupPacket(int id) {
-        for (PacketTypes p : PacketTypes.values()) {
-            if (p.getPacketId() == id) {
-                return p;
-            }
-        }
-        return PacketTypes.INVALID;
-    }
-
-    public void setPacketId(byte packetId) {
+    public void setPacketId(String packetId) {
         this.packetId = packetId;
     }
 }
