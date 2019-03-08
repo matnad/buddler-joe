@@ -3,7 +3,7 @@ package net;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.text.ParseException;
+
 
 public class StartServer {
 
@@ -32,8 +32,6 @@ public class StartServer {
                 created = true;
             } catch (IOException e) {
                 System.out.println("Could not create Server - Use different Port - IO");
-            } catch (ParseException PE) {
-                System.out.println("Could not create Server - Use different Port - PARSE");
             } catch (NumberFormatException NFE) {
                 System.out.println("Entered Server Port Incorrectly");
             } finally {
