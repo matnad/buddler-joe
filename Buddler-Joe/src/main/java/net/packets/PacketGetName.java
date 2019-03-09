@@ -16,7 +16,7 @@ public class PacketGetName extends Packet{
         setData(data);
 
         if(!validate()){
-            setPacketId(PacketTypes.GET_NAME);
+            setPacketId(PacketTypes.INVALID);
             return;
         }
 
@@ -40,7 +40,7 @@ public class PacketGetName extends Packet{
     }
 
     @Override
-    public String getData() {
+    public String getPackage() {
         return this.toString();
     }
 

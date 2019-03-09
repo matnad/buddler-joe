@@ -33,7 +33,7 @@ public class PacketDisconnect extends Packet{
     }
 
     @Override
-    public String getData() {
+    public String getPackage() {
         return this.toString();
     }
 

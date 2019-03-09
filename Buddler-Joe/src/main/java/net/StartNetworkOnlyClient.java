@@ -5,10 +5,10 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 public class StartNetworkOnlyClient {
-    private final BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    private static final BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
     private String ServerIP;
     private int PortValue;
-    private ClientLogic clientLogic;
+    private static ClientLogic clientLogic;
 
     private StartNetworkOnlyClient(){
         try {
@@ -27,7 +27,7 @@ public class StartNetworkOnlyClient {
 
     }
 
-    private void TakeInputAndAct() throws IOException{
+    private static void TakeInputAndAct() throws IOException{
         while (true){
             System.out.println("Command: ");
             String inputMessage = br.readLine();

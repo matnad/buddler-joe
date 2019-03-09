@@ -13,8 +13,9 @@ public class ClientThread implements Runnable {
     private PrintWriter output;
     private final int clientId;
     private final Socket socket;
+    private boolean connected;
 
-    ClientThread(Socket Client, int clientId, ServerPlayerList playerList) {
+    ClientThread(Socket Client, int clientId) {
         this.clientId = clientId;
         this.socket = Client;
 
@@ -43,8 +44,14 @@ public class ClientThread implements Runnable {
                 } else {
                     System.out.println("command sent was '" + command + "' by client No " + clientId);
                     switch(command){
-                        case "LOGIN":
-                            PacketLogin login = new PacketLogin(clientId, in[1].trim());
+                        case "PLOGI":
+                            if(!connected){
+                                PacketLogin login = new PacketLogin(clientId, in[1].trim());
+                                System.out.println("Player " + ServerLogic.getPlayerList().searchName(clientId) + " has connected.");
+                                connected = true;
+                            } else {
+                                continue;
+                            }
                         case "GETNM":
                             PacketGetName getName = new PacketGetName(clientId, in[1].trim());
                         case "SETNM":

@@ -5,7 +5,6 @@ import net.*;
 public class PacketLogin extends Packet{
 
     private Player player;
-    private int clientId;
     private ServerPlayerList playerList;
     private ClientThread thread;
 
@@ -21,11 +20,12 @@ public class PacketLogin extends Packet{
     public PacketLogin(int clientId, String data) {
         super(PacketTypes.LOGIN);
         if(!validate()){
-            setPacketId(PacketTypes.LOGIN);
+            setPacketId(PacketTypes.INVALID);
             return;
         }
-        this.clientId = clientId;
         this.playerList = ServerLogic.getPlayerList();
+        setClientId(clientId);
+        setData(data);
         processData();
     }
 
@@ -34,25 +34,29 @@ public class PacketLogin extends Packet{
     }
 
     public void processData(){
-        this.player = new Player(getData(), clientId, thread, 0);
+        this.player = new Player(getData(), getClientId(), thread, 0);
         int result = playerList.addPlayer(player);
-        PacketLoginStatus status = new PacketLoginStatus(clientId, Integer.toString(result));
-        status.sendToClient(clientId);
+        PacketLoginStatus status = new PacketLoginStatus(getClientId(), Integer.toString(result));
+        if(!addPlayerToSentToPlayer(getClientId())){
+            setPacketId(PacketTypes.INVALID);
+            return;
+        }
+        status.sendToClient(getClientId());
     }
 
     @Override
     public String toString() {
         return "PacketLogin{" +
                 "player=" + player +
-                ", clientId=" + clientId +
+                ", clientId=" + getClientId() +
                 ", playerList=" + playerList +
                 ", thread=" + thread +
                 '}';
     }
 
     @Override
-    public String getData() {
-        return this.toString();
+    public String getPackage() {
+        return "PLOGI" + " " + getData();
     }
 
     public Player getPlayer() {
@@ -61,16 +65,6 @@ public class PacketLogin extends Packet{
 
     public void setPlayer(Player player) {
         this.player = player;
-    }
-
-    @Override
-    public int getClientId() {
-        return clientId;
-    }
-
-    @Override
-    public void setClientId(int clientId) {
-        this.clientId = clientId;
     }
 
     public ServerPlayerList getPlayerList() {

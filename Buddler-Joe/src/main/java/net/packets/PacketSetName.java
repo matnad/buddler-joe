@@ -11,9 +11,11 @@ public class PacketSetName extends Packet {
         super(PacketTypes.SET_NAME);
 
         if(!validate()){
-            setPacketId(PacketTypes.SET_NAME);
+            setPacketId(PacketTypes.INVALID);
             return;
         }
+        setClientId(clientId);
+        setData(data);
     }
 
     @Override
@@ -27,7 +29,7 @@ public class PacketSetName extends Packet {
     }
 
     @Override
-    public String getData() {
+    public String getPackage() {
         return null;
     }
 

@@ -4,8 +4,6 @@ import net.*;
 
 public class PacketLoginStatus extends Packet{
 
-    private int clientId;
-    private String data;
     private ServerPlayerList playerList;
 
     /**
@@ -13,37 +11,37 @@ public class PacketLoginStatus extends Packet{
      * @param clientId to find the player in the list
      */
 
-    //TODO: Exceptions!
-
-
     public PacketLoginStatus(int clientId, String data) {
         super(PacketTypes.LOGIN_STATUS);
         if(!validate()){
-            setPacketId(PacketTypes.LOGIN_STATUS);
+            setPacketId(PacketTypes.INVALID);
             return;
         }
+        setData(data);
+        setClientId(clientId);
+        processData();
 
     }
 
     @Override
     public boolean validate() {
-        return false;
+        return true;
     }
 
     @Override
     public void processData() {
-
+        ServerLogic.sendPacket(getClientId(),this);
     }
 
     @Override
-    public String getData() {
-        return this.toString();
+    public String getPackage() {
+        return "PLOGS" + " " + getData();
     }
 
     @Override
     public String toString() {
         return "PacketLoginSuccessful{" +
-                "clientId=" + clientId + '\'' +
+                "clientId=" + getClientId() + '\'' +
                 '}';
     }
 }

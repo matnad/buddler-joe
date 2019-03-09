@@ -9,9 +9,11 @@ public class PacketPong extends Packet {
         super(Packet.PacketTypes.PONG);
 
         if(!validate()){
-            setPacketId(Packet.PacketTypes.PONG);
+            setPacketId(PacketTypes.INVALID);
             return;
         }
+        setClientId(clientId);
+        setData(data);
     }
 
     @Override
@@ -25,7 +27,7 @@ public class PacketPong extends Packet {
     }
 
     @Override
-    public String getData() {
+    public String getPackage() {
         return null;
     }
 
