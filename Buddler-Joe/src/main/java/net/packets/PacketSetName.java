@@ -2,18 +2,33 @@ package net.packets;
 
 import net.ServerPlayerList;
 
-public class PacketSetName{
+public class PacketSetName extends Packet {
 
-    private ServerPlayerList playerList;
+    private int clientId;
+    private String data;
 
-    public PacketSetName(ServerPlayerList playerList, String data) {
-        //super();
-        this.playerList = playerList;
+    public PacketSetName(int clientId, String data) {
+        super("SETNM");
 
+    }
 
+    @Override
+    public boolean validate(String data) {
+        return false;
+    }
 
+    @Override
+    public void processData(String data) {
 
-        //TODO: Look up the player, return username if found, return wrong username if not found
+    }
 
+    @Override
+    public String getData() {
+        return null;
+    }
+
+    @Override
+    public String toString() {
+        return null;
     }
 }

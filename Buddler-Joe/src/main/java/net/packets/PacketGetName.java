@@ -5,19 +5,21 @@ import net.ServerPlayerList;
 
 public class PacketGetName extends Packet{
 
-    private ServerPlayerList playerList;
     private int clientId;
     private String username;
+    private int getClientId;
+    private ServerPlayerList playerList;
 
-    public PacketGetName(ServerPlayerList playerList, String data, int clientId) {
-        super(GETNM);
-        this.playerList = playerList;
+    public PacketGetName(int clientId, String data) {
+        super("GETNM");
         this.clientId = clientId;
         if(!validate(data)){
             return;
         }
+        this.playerList = ServerLogic.getPlayerList();
+        String getClientName = playerList.searchName(getClientId);
 
-        playerList.searchName(clientId);
+        playerList.searchThread(clientId).sendToClient(getClientName);
 
     }
 
@@ -31,25 +33,15 @@ public class PacketGetName extends Packet{
     //TODO: Exceptions!
 
 
-    private boolean validate(String data){
+    public boolean validate(String data){
         //TODO: Write the validation method
+
+        getClientId = Integer.parseInt(data);
         return true;
     }
 
-    public PacketGetName(String username, int clientId) {
-        super(GETNM);
-        this.clientId = clientId;
-        this.username = username;
+    public void processData(String data){
 
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    @Override
-    public void writeData(ServerLogic server) {
-        //server.sendDataToAllClients(getData());
     }
 
     @Override
@@ -60,10 +52,33 @@ public class PacketGetName extends Packet{
     @Override
     public String toString() {
         return "PacketGetName{" +
-                "playerList=" + playerList.toString() +
-                ", clientId=" + clientId +
+                "clientId=" + clientId +
                 ", username='" + username + '\'' +
+                ", getClientId=" + getClientId +
                 '}';
     }
 
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public int getGetClientId() {
+        return getClientId;
+    }
+
+    public void setGetClientId(int getClientId) {
+        this.getClientId = getClientId;
+    }
+
+    public ServerPlayerList getPlayerList() {
+        return playerList;
+    }
+
+    public void setPlayerList(ServerPlayerList playerList) {
+        this.playerList = playerList;
+    }
 }

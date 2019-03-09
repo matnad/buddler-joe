@@ -1,12 +1,16 @@
 package net;
 
+import net.packets.Packet;
+
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Map;
 
 public class ServerLogic {
 
-        private ServerPlayerList playerList;
+        private static ServerPlayerList playerList;
+        private static Map<Integer, ClientThread> clientThreadMap;
         private int portValue;
         static ServerSocket serverSocket;
 
@@ -36,6 +40,7 @@ public class ServerLogic {
                 System.out.println("Client Arrived");
                 System.out.println("Start Thread for "+ClientId);
                 ClientThread task = new ClientThread(Client, ClientId, playerList);
+                clientThreadMap.put(ClientId,task);
                 ClientId++;
                 new Thread(task).start();
             }
@@ -48,5 +53,21 @@ public class ServerLogic {
                 System.out.println("Could not close ServerSocket");
             }
         }
+
+        public static ServerPlayerList getPlayerList(){
+            return playerList;
+        }
+
+        public static void sendPacket(int receiver, Packet packet){
+            playerList.searchThread(receiver).sendToClient(packet.getData());
+        }
+
+        public static void sendPacketToLobby(int receiverLobby, Packet packet){
+
+        }
+
+    public ClientThread getThreadByClientId(int clientId){
+        return clientThreadMap.get(clientId);
+    }
 
     }

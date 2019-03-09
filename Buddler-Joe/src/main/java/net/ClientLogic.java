@@ -9,11 +9,11 @@ import java.net.Socket;
 
 public class ClientLogic implements Runnable {
 
-    private PrintWriter output;
-    private BufferedReader input;
-    private StartNetworkOnlyClient clientGUI;
-    private Thread thread;
-    private Socket server;
+    private static PrintWriter output;
+    private static BufferedReader input;
+    private static StartNetworkOnlyClient clientGUI;
+    private static Thread thread;
+    private static Socket server;
 
     /**
      * ClientLogic to communicate with the server. Controls the input/output from/to the player
@@ -63,7 +63,7 @@ public class ClientLogic implements Runnable {
         }
     }
 
-    void sendToServer(String message) {
+    public static void sendToServer(String message) {
         output.println(message);
         output.flush();
     }

@@ -13,10 +13,8 @@ public class ClientThread implements Runnable {
     private PrintWriter output;
     private final int clientId;
     private final Socket socket;
-    private ServerPlayerList playerList;
 
     ClientThread(Socket Client, int clientId, ServerPlayerList playerList) {
-        this.playerList = playerList;
         this.clientId = clientId;
         this.socket = Client;
 
@@ -45,12 +43,12 @@ public class ClientThread implements Runnable {
                 } else {
                     System.out.println("command sent was '" + command + "' by client No " + clientId);
                     switch(command){
-                        case LOGIN:
-                            PacketLogin login = new PacketLogin(playerList, clientId, in[1].trim(), this);
-                        case GETNM:
-                            PacketGetName getName = new PacketGetName(playerList, in[1].trim(), clientId);
-                        case GETNM:
-                            PacketSetName setName = new PacketSetName(playerList, in[1].trim());
+                        case "LOGIN":
+                            PacketLogin login = new PacketLogin(clientId, in[1].trim());
+                        case "GETNM":
+                            PacketGetName getName = new PacketGetName(clientId, in[1].trim());
+                        case "SETNM":
+                            PacketSetName setName = new PacketSetName(clientId, in[1].trim());
 
                     }
                 }
@@ -69,4 +67,11 @@ public class ClientThread implements Runnable {
         output.println(message);
         output.flush();
     }
+
+    public int getClientId() {
+        return clientId;
+    }
+
+
+
 }

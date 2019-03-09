@@ -18,25 +18,18 @@ public class PacketLoginStatus extends Packet{
 
     public PacketLoginStatus(int clientId, String data) {
         super("PLOGS");
-        this.data = data;
-        this.clientId = clientId;
-        this.playerList = ServerLogic.getPlayerList();
-        Integer.parseInt(data);
 
-    }
 
-    /**
-     * Method to respond to the player via the thread.
-     * @param thread to write to the player.
-     */
-
-    private void notifyClient(ClientThread thread){
-        thread.sendToClient("Successful login.");
     }
 
     @Override
-    public void writeData(ServerLogic server) {
-        //server.sendDataToAllClients(getData());
+    public boolean validate(String data) {
+        return false;
+    }
+
+    @Override
+    public void processData(String data) {
+
     }
 
     @Override

@@ -17,11 +17,11 @@ public class ServerPlayerList {
         if(players.containsKey(player.getClientId())){
             return -1;
         }
-//        for(Player p : players.values()){
-//            if(player.getUsername() == p.getUsername()) {
-//                return -2;
-//            }
-//        }
+        for(Player p : players.values()){
+            if(player.getUsername() == p.getUsername()) {
+                return -2;
+            }
+        }
         players.put(player.getClientId(), player);
         return 1;
 
@@ -34,11 +34,7 @@ public class ServerPlayerList {
      */
 
     public String searchName(int clientId){
-        if(players.containsKey(clientId)){
-            return players.get(clientId).getUsername();
-        } else{
-            return null;
-        }
+        return players.get(clientId).getUsername();
     }
 
     /**
@@ -48,11 +44,7 @@ public class ServerPlayerList {
      */
 
     public ClientThread searchThread(int clientId) {
-        if (players.containsKey(clientId)) {
-            return players.get(clientId).getThread();
-        } else {
-            return null;
-        }
+        return players.get(clientId).getThread();
     }
 
     /**

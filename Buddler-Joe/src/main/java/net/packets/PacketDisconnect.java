@@ -6,9 +6,6 @@ import net.ServerPlayerList;
 
 public class PacketDisconnect extends Packet{
 
-    private String username;
-    private ServerPlayerList playerList;
-
     /**
      * Disconnect package to disconnect a player from the server.
      * @param data data contains the username which is to be deleted from
@@ -16,34 +13,17 @@ public class PacketDisconnect extends Packet{
      *             the ServerPlayerList.
      */
 
-    public PacketDisconnect(String data, ServerPlayerList playerList) {
-        super(DISCP);
-        this.playerList = playerList;
-        this.username = data;
-        deletePlayer();
+    public PacketDisconnect(int clientId, String data) {
+        super("DISCP");
+        setClientId(clientId);
     }
 
-    /**
-     * Method to delete the player from the ServerPlayerList.
-     */
+    public void processData(String data){
 
-    //TODO: Exceptions!
-
-    public void deletePlayer(){
-        playerList.removePlayer(playerList.searchClientId(username));
-    }
-//    public PacketDisconnect(String username) {
-//        super(DISCP);
-//        this.username = username;
-//    }
-
-    public void writeData(ClientLogic client) {
-        //client.sendData(getData());
     }
 
-    @Override
-    public void writeData(ServerLogic server) {
-        //server.sendDataToAllClients(getData());
+    public boolean validate(String data){
+        return true;
     }
 
     @Override
@@ -51,14 +31,11 @@ public class PacketDisconnect extends Packet{
         return this.toString();
     }
 
-    public String getUsername() {
-        return username;
-    }
-
     @Override
     public String toString() {
-        return "PacketDisconnect{" +
-                "username='" + username + '\'' +
-                '}';
+        return "PacketDisconnect{}";
     }
+
+
+
 }
