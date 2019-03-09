@@ -2,26 +2,27 @@ package net.packets;
 
 import net.*;
 
-public class PacketLoginSuccessful extends Packet{
+public class PacketLoginStatus extends Packet{
 
     private int clientId;
+    private String data;
     private ServerPlayerList playerList;
 
     /**
      * Package to respond to the client that the Login has been successful
-     * @param playerList playerlist to find the thread belonging to this client
      * @param clientId to find the player in the list
      */
 
     //TODO: Exceptions!
 
 
-    public PacketLoginSuccessful(ServerPlayerList playerList, int clientId) {
-        super(PLOGS);
+    public PacketLoginStatus(int clientId, String data) {
+        super("PLOGS");
+        this.data = data;
         this.clientId = clientId;
-        this.playerList = playerList;
-        ClientThread thread = playerList.searchThread(clientId);
-        notifyClient(thread);
+        this.playerList = ServerLogic.getPlayerList();
+        Integer.parseInt(data);
+
     }
 
     /**
