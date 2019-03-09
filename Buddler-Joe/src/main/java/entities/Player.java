@@ -7,7 +7,6 @@ import engine.models.TexturedModel;
 import entities.blocks.Block;
 import entities.blocks.BlockMaster;
 import entities.items.ItemMaster;
-import net.packets.Packet01Move;
 import org.joml.Vector3f;
 import util.MousePlacer;
 
@@ -99,8 +98,8 @@ public class Player extends NetPlayer {
         //Send server update with update
         //TEMPORARY PROOF OF CONCEPT: THIS WILL GET REWORKED ONCE WE IMPLEMENT NET STUFF
         if(Game.isConnectedToServer() && (currentSpeed != 0 || upwardsSpeed != 0 || currentTurnSpeed != 0)) {
-            Packet01Move packet = new Packet01Move(Game.getUsername(), this.getPosition(), this.getRotX(), this.getRotY(), this.getRotZ());
-            packet.writeData(Game.getSocketClient());
+            //Packet01Move packet = new Packet01Move(Game.getUsername(), this.getPosition(), this.getRotX(), this.getRotY(), this.getRotZ());
+            //packet.writeData(Game.getSocketClient());
         }
     }
 

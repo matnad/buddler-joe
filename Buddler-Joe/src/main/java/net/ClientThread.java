@@ -1,5 +1,9 @@
 package net;
 
+import net.packets.PacketGetName;
+import net.packets.PacketLogin;
+import net.packets.PacketSetName;
+
 import java.io.*;
 import java.net.Socket;
 
@@ -7,11 +11,12 @@ public class ClientThread implements Runnable {
 
     private BufferedReader input;
     private PrintWriter output;
-    private final int clientNo;
+    private final int clientId;
     private final Socket socket;
+    private boolean connected;
 
-    ClientThread(Socket Client, int clientNo) {
-        this.clientNo = clientNo;
+    ClientThread(Socket Client, int clientId) {
+        this.clientId = clientId;
         this.socket = Client;
 
         // So we can see what unique clients have joined
@@ -32,18 +37,31 @@ public class ClientThread implements Runnable {
         String command = "";
         try{
             while (command != null){
-                command = input.readLine();
+                String[] in = input.readLine().split(" ");
+                command = in[0];
                 if (command == null) {
-                    System.out.println("Client " + clientNo + " left");
+                    System.out.println("Client " + clientId + " left");
                 } else {
-                    System.out.println("command sent was '" + command + "' by client No " + clientNo);
-                    if (command.equals("ping")) {
-                        sendToClient("pong");
+                    System.out.println("command sent was '" + command + "' by client No " + clientId);
+                    switch(command){
+                        case "PLOGI":
+                            if(!connected){
+                                PacketLogin login = new PacketLogin(clientId, in[1].trim());
+                                System.out.println("Player " + ServerLogic.getPlayerList().searchName(clientId) + " has connected.");
+                                connected = true;
+                            } else {
+                                continue;
+                            }
+                        case "GETNM":
+                            PacketGetName getName = new PacketGetName(clientId, in[1].trim());
+                        case "SETNM":
+                            PacketSetName setName = new PacketSetName(clientId, in[1].trim());
+
                     }
                 }
             }
         } catch (IOException e) {
-            System.out.println("Client " + clientNo + " left");
+            System.out.println("Client " + clientId + " left");
             try{
                 socket.close();
             } catch (IOException e1) {
@@ -52,8 +70,15 @@ public class ClientThread implements Runnable {
         }
     }
 
-    private void sendToClient(String message) {
+    public void sendToClient(String message) {
         output.println(message);
         output.flush();
     }
+
+    public int getClientId() {
+        return clientId;
+    }
+
+
+
 }
