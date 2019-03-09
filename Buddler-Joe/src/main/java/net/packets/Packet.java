@@ -1,7 +1,5 @@
 package net.packets;
 
-import net.ServerLogic;
-
 /**
  *  Abstract Packet class which all Packets implement and build upon
  */
@@ -10,14 +8,12 @@ public abstract class Packet {
 
     public enum PacketTypes {
 
-        //TODO: Fix enum...
-
-        INVALID(INVAL),
-        LOGIN(PLOGI),
-        LOGIN_SUCCESSFUL(PLOGS),
+        INVALID("INVAL"),
+        LOGIN("PLOGI"),
+        LOGIN_SUCCESSFUL("PLOGS"),
         //MOVE(MOVEP),
-        DISCONNECT(DISCP),
-        GETNAME(GETNM);
+        DISCONNECT("DISCP"),
+        GETNAME("GETNM");
 
         private final String packetId;
 
@@ -34,7 +30,10 @@ public abstract class Packet {
         }
     }
 
-    public String packetId;
+    private String packetId;
+    private int clientId;
+    private boolean sent;
+    private String data;
 
     public Packet(String packetId) {
         this.packetId = packetId;
@@ -44,9 +43,17 @@ public abstract class Packet {
      * Abstract classes to be implemented by all subclasses, perform standard operations every
      * Package needs to have.
      */
+    public abstract boolean validate(String data);
+
+    public abstract void processData();
+
     public abstract String getData();
 
-    public abstract void writeData(ServerLogic client);
+    public abstract void sendToClient(int clientId);
+
+    public abstract void sendToLobby(int lobbyId);
+
+    public abstract void sendToServer();
 
     public static PacketTypes lookupPacket(String packetId) {
         try {
@@ -58,6 +65,7 @@ public abstract class Packet {
         } catch (NumberFormatException e) {
             return PacketTypes.INVALID;
         }
+        return PacketTypes.INVALID;
     }
 
     public String readData(String data) {
