@@ -17,18 +17,21 @@ public class PacketLoginStatus extends Packet{
 
 
     public PacketLoginStatus(int clientId, String data) {
-        super("PLOGS");
-
+        super(PacketTypes.LOGIN_STATUS);
+        if(!validate()){
+            setPacketId(PacketTypes.LOGIN_STATUS);
+            return;
+        }
 
     }
 
     @Override
-    public boolean validate(String data) {
+    public boolean validate() {
         return false;
     }
 
     @Override
-    public void processData(String data) {
+    public void processData() {
 
     }
 

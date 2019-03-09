@@ -19,21 +19,22 @@ public class PacketLogin extends Packet{
      */
 
     public PacketLogin(int clientId, String data) {
-        super("PLOGI");
-        if(!validate(data)){
+        super(PacketTypes.LOGIN);
+        if(!validate()){
+            setPacketId(PacketTypes.LOGIN);
             return;
         }
         this.clientId = clientId;
         this.playerList = ServerLogic.getPlayerList();
-        processData(data);
+        processData();
     }
 
-    public boolean validate(String data){
+    public boolean validate(){
         return true;
     }
 
-    public void processData(String data){
-        this.player = new Player(data, clientId, thread, 0);
+    public void processData(){
+        this.player = new Player(getData(), clientId, thread, 0);
         int result = playerList.addPlayer(player);
         PacketLoginStatus status = new PacketLoginStatus(clientId, Integer.toString(result));
         status.sendToClient(clientId);

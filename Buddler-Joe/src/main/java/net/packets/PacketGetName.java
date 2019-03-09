@@ -11,36 +11,31 @@ public class PacketGetName extends Packet{
     private ServerPlayerList playerList;
 
     public PacketGetName(int clientId, String data) {
-        super("GETNM");
-        this.clientId = clientId;
-        if(!validate(data)){
+        super(PacketTypes.GET_NAME);
+        setClientId(clientId);
+        setData(data);
+
+        if(!validate()){
+            setPacketId(PacketTypes.GET_NAME);
             return;
         }
-        this.playerList = ServerLogic.getPlayerList();
-        String getClientName = playerList.searchName(getClientId);
-
-        playerList.searchThread(clientId).sendToClient(getClientName);
 
     }
 
     /**
      * Method to validate the data which is forwarded to the package to ensure its safety.
-     *
-     * @param data The data from the Buffered reader.
-     * @return True or false to determine the further action of the class.
+     ** @return True or false to determine the further action of the class.
      */
 
     //TODO: Exceptions!
 
 
-    public boolean validate(String data){
+    public boolean validate(){
         //TODO: Write the validation method
-
-        getClientId = Integer.parseInt(data);
         return true;
     }
 
-    public void processData(String data){
+    public void processData(){
 
     }
 

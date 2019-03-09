@@ -15,10 +15,12 @@ public abstract class Packet {
 
         INVALID("INVAL"),
         LOGIN("PLOGI"),
-        LOGIN_SUCCESSFUL("PLOGS"),
+        LOGIN_STATUS("PLOGS"),
         //MOVE(MOVEP),
         DISCONNECT("DISCP"),
         GET_NAME("GETNM"),
+        PING("UPING"),
+        PONG("PONGU"),
         SET_NAME("SETNM");
 
         private final String packetId;
@@ -36,22 +38,20 @@ public abstract class Packet {
         }
     }
 
-    private String packetId;
+    private PacketTypes packetId;
     private int clientId;
     private Map<Integer, Boolean> sentToPlayer;
     private String data;
 
-    public Packet(String packetId) {
-        this.packetId = packetId;
-    }
+    public Packet(PacketTypes packetId) { this.packetId = packetId; }
 
     /**
      * Abstract classes to be implemented by all subclasses, perform standard operations every
      * Package needs to have.
      */
-    public abstract boolean validate(String data);
+    public abstract boolean validate();
 
-    public abstract void processData(String data);
+    public abstract void processData();
 
     public abstract String getData();
 
@@ -99,11 +99,11 @@ public abstract class Packet {
         return data.substring(5,data.length()-1);
     }
 
-    public void setPacketId(String packetId) {
+    public void setPacketId(PacketTypes packetId) {
         this.packetId = packetId;
     }
 
-    public String getPacketId() {
+    public PacketTypes getPacketId() {
         return packetId;
     }
 
