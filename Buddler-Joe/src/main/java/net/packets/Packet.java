@@ -72,7 +72,7 @@ public abstract class Packet {
 
     public abstract void processData();
 
-    public abstract Packet getPackage();
+    public abstract String getPackage();
 
     public abstract String toString();
 
