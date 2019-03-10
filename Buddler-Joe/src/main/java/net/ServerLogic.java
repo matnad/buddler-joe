@@ -1,6 +1,7 @@
 package net;
 
 import net.packets.Packet;
+
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -9,8 +10,6 @@ import java.util.HashMap;
 public class ServerLogic {
 
         private static ServerPlayerList playerList;
-        private static ServerLobbyList lobbyList;
-        private static Map<Integer, ClientThread> clientThreadMap;
         private static HashMap<Integer, ClientThread> clientThreadMap;
         private int portValue;
         static ServerSocket serverSocket;
@@ -27,7 +26,6 @@ public class ServerLogic {
             this.clientThreadMap = new HashMap<Integer, ClientThread>();
             this.portValue = portValue;
             serverSocket = new ServerSocket(portValue);
-            lobbyList = new ServerLobbyList();
             System.out.println("Started Server");
         }
 

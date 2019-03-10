@@ -1,7 +1,0 @@
-
-
-	General coding conventions: 
-		-Google check-style
-		-TODOs: Always write who has to do what
-		-Javadoc: Comment on everything necessary
-		
