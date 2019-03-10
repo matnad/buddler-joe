@@ -1,9 +1,9 @@
-package net.packets;
+package net.packets.Name;
 
-import net.ServerLogic;
-import net.ServerPlayerList;
+import net.PlayerHandling.ServerPlayerList;
+import net.packets.Packet;
 
-public class PacketGetName extends Packet{
+public class PacketGetName extends Packet {
 
     private int clientId;
     private String username;
@@ -40,8 +40,8 @@ public class PacketGetName extends Packet{
     }
 
     @Override
-    public String getPackage() {
-        return this.toString();
+    public Packet getPackage() {
+        return null;
     }
 
     @Override

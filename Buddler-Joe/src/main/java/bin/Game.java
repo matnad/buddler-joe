@@ -20,8 +20,6 @@ import gui.FPS;
 import gui.GUIString;
 import gui.GuiTexture;
 import net.ClientLogic;
-import net.packets.PacketLogin;
-import net.packets.PacketDisconnect;
 import org.joml.Vector3f;
 import terrains.Terrain;
 import terrains.TerrainFlat;

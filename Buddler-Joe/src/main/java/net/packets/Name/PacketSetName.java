@@ -1,6 +1,6 @@
-package net.packets;
+package net.packets.Name;
 
-import net.ServerPlayerList;
+import net.packets.Packet;
 
 public class PacketSetName extends Packet {
 
@@ -29,7 +29,7 @@ public class PacketSetName extends Packet {
     }
 
     @Override
-    public String getPackage() {
+    public Packet getPackage() {
         return null;
     }
 

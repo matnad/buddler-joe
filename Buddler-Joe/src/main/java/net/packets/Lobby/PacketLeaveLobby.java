@@ -1,24 +1,26 @@
-package net.packets;
+package net.packets.Lobby;
 
-public class PacketLeaveLobby extends Packet{
+import net.packets.Packet;
+
+public class PacketLeaveLobby extends Packet {
 
     public PacketLeaveLobby(int clientId, String data) {
-        super("LOBLE");
+        super(PacketTypes.LEAVE_LOBBY);
 
     }
 
     @Override
-    public boolean validate(String data) {
+    public boolean validate() {
         return false;
     }
 
     @Override
-    public void processData(String data) {
+    public void processData() {
 
     }
 
     @Override
-    public String getData() {
+    public Packet getPackage() {
         return null;
     }
 

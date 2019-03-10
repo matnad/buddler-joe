@@ -1,4 +1,6 @@
-package net;
+package net.LobbyHandling;
+
+import net.LobbyHandling.Lobby;
 
 import java.util.HashMap;
 

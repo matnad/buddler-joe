@@ -1,10 +1,8 @@
-package net.packets;
+package net.packets.LoginLogout;
 
-import net.ClientLogic;
-import net.ServerLogic;
-import net.ServerPlayerList;
+import net.packets.Packet;
 
-public class PacketDisconnect extends Packet{
+public class PacketDisconnect extends Packet {
 
     /**
      * Disconnect package to disconnect a player from the server.
@@ -33,8 +31,8 @@ public class PacketDisconnect extends Packet{
     }
 
     @Override
-    public String getPackage() {
-        return this.toString();
+    public Packet getPackage() {
+        return null;
     }
 
     @Override

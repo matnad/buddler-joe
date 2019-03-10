@@ -24,10 +24,9 @@ public abstract class Packet {
         GET_LOBBIES("LOBOV"),
         LEAVE_LOBBY("LOBLE"),
         JOIN_LOBBY("LOBJO"),
-        CREATE_LOBBY("LOBCRE");
+        CREATE_LOBBY("LOBCRE"),
         PING("UPING"),
-        PONG("PONGU"),
-        SET_NAME("SETNM");
+        PONG("PONGU");
 
 
         private final String packetId;

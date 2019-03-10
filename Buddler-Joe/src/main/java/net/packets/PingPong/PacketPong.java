@@ -1,12 +1,14 @@
-package net.packets;
+package net.packets.PingPong;
 
-public class PacketPing extends Packet {
+import net.packets.Packet;
+
+public class PacketPong extends Packet {
 
     private int clientId;
     private String data;
 
-    public PacketPing(int clientId, String data) {
-        super(Packet.PacketTypes.PING);
+    public PacketPong(int clientId, String data) {
+        super(Packet.PacketTypes.PONG);
 
         if(!validate()){
             setPacketId(PacketTypes.INVALID);
@@ -27,7 +29,7 @@ public class PacketPing extends Packet {
     }
 
     @Override
-    public String getPackage() {
+    public Packet getPackage() {
         return null;
     }
 
@@ -35,4 +37,5 @@ public class PacketPing extends Packet {
     public String toString() {
         return null;
     }
+
 }

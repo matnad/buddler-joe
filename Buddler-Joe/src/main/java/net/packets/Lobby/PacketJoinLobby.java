@@ -1,29 +1,31 @@
-package net.packets;
+package net.packets.Lobby;
 
-public class PacketChooseLobby extends Packet {
+import net.packets.Packet;
+
+public class PacketJoinLobby extends Packet {
 
     /**
      * A packed which is send from the client to the Server once
      * he has choosen a Lobby to join. Server should then move the client in
      * the choosen Lobby
      */
-    public PacketChooseLobby(int clientId, String data) {
-        super("LOBJO");
+    public PacketJoinLobby(int clientId, String data) {
+        super(PacketTypes.JOIN_LOBBY);
 
     }
 
     @Override
-    public boolean validate(String data) {
+    public boolean validate() {
         return false;
     }
 
     @Override
-    public void processData(String data) {
+    public void processData() {
 
     }
 
     @Override
-    public String getData() {
+    public Packet getPackage() {
         return null;
     }
 

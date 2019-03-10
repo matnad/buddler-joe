@@ -1,6 +1,7 @@
-package net;
+package net.LobbyHandling;
 
-import bin.Game;
+import net.PlayerHandling.ClientThread;
+import net.PlayerHandling.Player;
 
 import java.util.HashMap;
 

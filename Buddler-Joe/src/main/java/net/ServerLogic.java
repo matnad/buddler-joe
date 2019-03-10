@@ -1,5 +1,8 @@
 package net;
 
+import net.LobbyHandling.ServerLobbyList;
+import net.PlayerHandling.ClientThread;
+import net.PlayerHandling.ServerPlayerList;
 import net.packets.Packet;
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -10,7 +13,6 @@ public class ServerLogic {
 
         private static ServerPlayerList playerList;
         private static ServerLobbyList lobbyList;
-        private static Map<Integer, ClientThread> clientThreadMap;
         private static HashMap<Integer, ClientThread> clientThreadMap;
         private int portValue;
         static ServerSocket serverSocket;

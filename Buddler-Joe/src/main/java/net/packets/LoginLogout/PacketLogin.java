@@ -1,8 +1,12 @@
-package net.packets;
+package net.packets.LoginLogout;
 
 import net.*;
+import net.PlayerHandling.ClientThread;
+import net.PlayerHandling.Player;
+import net.PlayerHandling.ServerPlayerList;
+import net.packets.Packet;
 
-public class PacketLogin extends Packet{
+public class PacketLogin extends Packet {
 
     private Player player;
     private ServerPlayerList playerList;
@@ -55,8 +59,8 @@ public class PacketLogin extends Packet{
     }
 
     @Override
-    public String getPackage() {
-        return "PLOGI" + " " + getData();
+    public Packet getPackage() {
+        return null;
     }
 
     public Player getPlayer() {

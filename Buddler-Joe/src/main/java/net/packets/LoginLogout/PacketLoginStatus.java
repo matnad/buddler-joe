@@ -1,8 +1,10 @@
-package net.packets;
+package net.packets.LoginLogout;
 
 import net.*;
+import net.PlayerHandling.ServerPlayerList;
+import net.packets.Packet;
 
-public class PacketLoginStatus extends Packet{
+public class PacketLoginStatus extends Packet {
 
     private ServerPlayerList playerList;
 
@@ -34,8 +36,8 @@ public class PacketLoginStatus extends Packet{
     }
 
     @Override
-    public String getPackage() {
-        return "PLOGS" + " " + getData();
+    public Packet getPackage() {
+        return null;
     }
 
     @Override

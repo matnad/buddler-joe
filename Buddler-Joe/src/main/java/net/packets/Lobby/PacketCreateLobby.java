@@ -1,4 +1,6 @@
-package net.packets;
+package net.packets.Lobby;
+
+import net.packets.Packet;
 
 public class PacketCreateLobby extends Packet {
 
@@ -7,22 +9,22 @@ public class PacketCreateLobby extends Packet {
      * to create a new lobby. Containing the information to do so.
      */
     public PacketCreateLobby(int clientId, String data) {
-        super("LOBCR");
+        super(PacketTypes.CREATE_LOBBY);
 
     }
 
     @Override
-    public boolean validate(String data) {
+    public boolean validate() {
         return false;
     }
 
     @Override
-    public void processData(String data) {
+    public void processData() {
 
     }
 
     @Override
-    public String getData() {
+    public Packet getPackage() {
         return null;
     }
 
