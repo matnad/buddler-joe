@@ -9,7 +9,6 @@ import org.joml.Vector3f;
  */
 public abstract class Item extends Entity {
 
-    private static TexturedModel preloadedModel;
     private ItemMaster.ItemTypes type;
 
     /**
@@ -33,13 +32,7 @@ public abstract class Item extends Entity {
 
     public abstract void update();
 
-    static void setPreloadedModel(TexturedModel preloadedModel) {
-        Item.preloadedModel = preloadedModel;
-    }
 
-    static TexturedModel getPreloadedModel() {
-        return preloadedModel;
-    }
 
     public ItemMaster.ItemTypes getType() {
         return type;

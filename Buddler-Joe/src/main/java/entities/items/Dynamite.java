@@ -11,6 +11,7 @@ import engine.render.objConverter.OBJFileLoader;
 import engine.textures.ModelTexture;
 import entities.blocks.Block;
 import entities.blocks.BlockMaster;
+import entities.light.Light;
 import org.joml.Vector3f;
 
 import java.util.Random;
@@ -22,8 +23,11 @@ public class Dynamite extends Item {
     private  final float GRAVITY = 20;
     private final float FUSE_TIMER = 3f;
     private final float EXPLOSION_TIME = .5f;
+    private final float TOTAL_EFFECTS_TIME = 2.5f;
     private final float EXPLOSION_RANGE = 15;
     private final float MAXIMUM_DAMAGE = 50;
+
+    private static TexturedModel preloadedModel;
 
     private float time;
     private boolean active;
@@ -34,6 +38,7 @@ public class Dynamite extends Item {
     private Explosion particleShrapnel;
     private Smoke particleSmoke;
     private Explosion particleShockwave;
+    private Light flash;
 
 
     /**
@@ -142,12 +147,12 @@ public class Dynamite extends Item {
         Case 2: Explosion is finished, remove the object
          */
         } else if (time >= FUSE_TIMER + EXPLOSION_TIME) {
-            setDestroyed(true); //Remove Object
+
         /*
         Case 3: Time is up, explode the dynamite.
         Play explosion and smoke effect, and for 0.1 seconds, also play shrapnel and shockwave effects
          */
-        } else if (time >= FUSE_TIMER) {
+        } else if (time >= FUSE_TIMER && time <= FUSE_TIMER + EXPLOSION_TIME) {
             explode();
             particleExplosion.generateParticles(getPosition());
             particleSmoke.generateParticles(getPosition());
@@ -156,7 +161,17 @@ public class Dynamite extends Item {
                 particleShockwave.generateParticles(getPosition());
             }
 
+        }
 
+        if(time >= FUSE_TIMER+TOTAL_EFFECTS_TIME) {
+            setDestroyed(true); //Remove Object
+            Game.lights.remove(flash);
+        } else if (time >= FUSE_TIMER + .3f) {
+            float scaleBrightness = (float) (1-Game.window.getFrameTimeSeconds()*5);
+            flash.getColour().mul(scaleBrightness);
+        } else if (time > FUSE_TIMER){
+            float scaleBrightness = (float) (1+Game.window.getFrameTimeSeconds()*10);
+            flash.getColour().mul(scaleBrightness);
         }
     }
 
@@ -176,6 +191,9 @@ public class Dynamite extends Item {
                 block.increaseDamage(1/distance * MAXIMUM_DAMAGE, this);
             }
         }
+        flash = new Light(getPosition(), new Vector3f(1,1,1));
+        Game.lights.add(flash);
+
     }
 
 
@@ -186,5 +204,13 @@ public class Dynamite extends Item {
 
     public void setActive(boolean active) {
         this.active = active;
+    }
+
+    private static void setPreloadedModel(TexturedModel preloadedModel) {
+        Dynamite.preloadedModel = preloadedModel;
+    }
+
+    private static TexturedModel getPreloadedModel() {
+        return preloadedModel;
     }
 }

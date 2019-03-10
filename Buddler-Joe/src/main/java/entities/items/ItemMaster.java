@@ -2,6 +2,7 @@ package entities.items;
 
 import bin.Game;
 import engine.render.Loader;
+import entities.blocks.Block;
 import org.joml.Vector3f;
 
 import java.util.*;
@@ -19,7 +20,7 @@ public class ItemMaster {
 
     public enum ItemTypes {
         DYNAMITE(1),
-        ICEBLOCK(2);
+        TORCH(2);
 
         private int itemId;
         ItemTypes(int textureId) {
@@ -39,6 +40,7 @@ public class ItemMaster {
      */
     public static void init(Loader loader) {
         Dynamite.init(loader);
+        Torch.init(loader);
     }
 
     /**
@@ -50,15 +52,15 @@ public class ItemMaster {
      * @param type type of the item as described in {@link ItemMaster.ItemTypes}
      * @param position 3D coordinate to place the item
      */
-    public static Item generateItem(ItemTypes type, Vector3f position) {
+    public static Item generateItem(ItemTypes type, Vector3f position, Object... args) {
         Item item;
         switch (type) {
             case DYNAMITE:
                 item = new Dynamite(position);
                 break;
-//            case ICEBLOCK:
-//                item = new DirtBlock(position);
-//                break;
+            case TORCH:
+                item = new Torch(position);
+                break;
             default:
                 item = null;
                 break;

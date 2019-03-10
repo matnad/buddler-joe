@@ -15,13 +15,12 @@ import entities.*;
 import entities.blocks.BlockMaster;
 import entities.blocks.debris.DebrisMaster;
 import entities.items.ItemMaster;
+import entities.light.Light;
 import gui.Chat;
 import gui.FPS;
 import gui.GUIString;
 import gui.GuiTexture;
 import net.ClientLogic;
-import net.packets.PacketLogin;
-import net.packets.PacketDisconnect;
 import org.joml.Vector3f;
 import terrains.Terrain;
 import terrains.TerrainFlat;
@@ -92,6 +91,9 @@ public class Game extends Thread {
      * We keep all the Sub-Entities organized in Masters and keep this as a global Game-Static list with minimal maintenance.
      */
     private static List<Entity> entities = new ArrayList<>();
+
+    //Lights will get their own master
+    public static List<Light> lights = new ArrayList<>();
 
     /**
      * Initialize the Game Thread (Treat this like a constructor)
@@ -187,13 +189,20 @@ public class Game extends Thread {
         guis.add(chat.getChatGui());
         GuiRenderer guiRenderer = new GuiRenderer(loader);
 
-
-        //Light and cameras (just one for now)
-        Light light = new Light(new Vector3f(2e4f,4e4f,2e4f), new Vector3f(.5f,1, 1));
-        camera = new Camera(player, window);
-
         //Load Particle Master
         ParticleMaster.init(loader, MasterRenderer.getProjectionMatrix());
+
+
+        //Lights and cameras (just one for now)
+
+        lights.add( new Light(new Vector3f(0, 5000, 7000), new Vector3f(.1f,.1f, .1f)));
+        //lights.add(new Light(new Vector3f(100, 10, 5), new Vector3f(2,0,0), new Vector3f(1, .01f, .002f)));
+//        lights.add(new Light(new Vector3f(100, -10, 100), new Vector3f(0,0,10)));
+        camera = new Camera(player, window);
+
+//        ItemMaster.generateItem(ItemMaster.ItemTypes.TORCH, new Vector3f(100, 10, 5));
+
+
 
         /*
         **************************************************************
@@ -234,7 +243,7 @@ public class Game extends Thread {
                 //Update positions of camera, player and 3D Mouse Pointer
                 camera.move();
                 player.move();
-                MousePlacer.update();
+                MousePlacer.update(camera);
 
                 //Masters check their slaves
                 ItemMaster.update();
@@ -257,7 +266,7 @@ public class Game extends Thread {
                 }
 
                 //Render other stuff, order is important
-                renderer.render(light, camera);
+                renderer.render(lights, camera);
                 chat.checkInputs();
                 //GUI goes over everything else and then text on top of GUI
                 ParticleMaster.renderParticles(camera);

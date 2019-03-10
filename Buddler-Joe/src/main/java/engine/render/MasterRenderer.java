@@ -6,7 +6,7 @@ import engine.shaders.StaticShader;
 import engine.shaders.TerrainShader;
 import entities.Camera;
 import entities.Entity;
-import entities.Light;
+import entities.light.Light;
 import org.joml.Matrix4f;
 import org.lwjgl.opengl.GL11;
 import terrains.TerrainFlat;
@@ -88,13 +88,13 @@ public class MasterRenderer {
      * @param sun position and colour of the single light source (sun)
      * @param camera active camera, used to generate view matrix
      */
-    public void render(Light sun, Camera camera) {
+    public void render(List<Light> lights, Camera camera) {
         prepare();
 
         //Render static entities.
         staticShader.start();
         staticShader.loadSkyColour(RED, GREEN, BLUE); //Pass sky colour to the shader
-        staticShader.loadLight(sun); //Pass light colour and position to the shader
+        staticShader.loadLights(lights); //Pass light colour and position to the shader
         staticShader.loadViewMatrix(camera); //Pass view matrix to the shader
         entityRenderer.render(entities); //entityRenderer handles the detailed rendering process
         staticShader.stop();
@@ -102,7 +102,7 @@ public class MasterRenderer {
         //Render the terrain, comments are equivalent to static entity renderer above
         terrainShader.start();
         terrainShader.loadSkyColour(RED, GREEN, BLUE);
-        terrainShader.loadLight(sun);
+        terrainShader.loadLights(lights);
         terrainShader.loadViewMatrix(camera);
         terrainRenderer.render(terrains);
         terrainShader.stop();

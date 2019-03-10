@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static entities.items.ItemMaster.ItemTypes.DYNAMITE;
+import static entities.items.ItemMaster.ItemTypes.TORCH;
 import static org.lwjgl.glfw.GLFW.*;
 
 /**
@@ -233,7 +234,19 @@ public class Player extends NetPlayer {
         }
 
         if (InputHandler.isKeyPressed(GLFW_KEY_Q)) {
-            placeItem(DYNAMITE);
+            if (InputHandler.isPlacerMode()) {
+                MousePlacer.cancelPlacing();
+            } else {
+                placeItem(DYNAMITE);
+            }
+        }
+
+        if (InputHandler.isKeyPressed(GLFW_KEY_E)) {
+            if (InputHandler.isPlacerMode()) {
+                MousePlacer.cancelPlacing();
+            } else {
+                placeItem(TORCH);
+            }
         }
 
         //SIMPLE Movement

@@ -1,4 +1,4 @@
-package entities;
+package entities.light;
 
 import org.joml.Vector3f;
 
@@ -11,6 +11,7 @@ import org.joml.Vector3f;
 public class Light {
     private Vector3f position;
     private Vector3f colour;
+    private Vector3f attenuation = new Vector3f(1,0,0);
 
     /**
      * Strength of the light depends on distance and angle.
@@ -21,6 +22,12 @@ public class Light {
     public Light(Vector3f position, Vector3f colour) {
         this.position = position;
         this.colour = colour;
+    }
+
+    public Light(Vector3f position, Vector3f colour, Vector3f attenuation) {
+        this.position = position;
+        this.colour = colour;
+        this.attenuation = attenuation;
     }
 
     public Vector3f getPosition() {
@@ -37,5 +44,13 @@ public class Light {
 
     public void setColour(Vector3f colour) {
         this.colour = colour;
+    }
+
+    public Vector3f getAttenuation() {
+        return attenuation;
+    }
+
+    public void setAttenuation(Vector3f attenuation) {
+        this.attenuation = attenuation;
     }
 }

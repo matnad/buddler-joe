@@ -4,6 +4,7 @@ import collision.BoundingBox;
 import engine.models.TexturedModel;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
+import util.MousePlacer;
 
 /**
  * All 3D entities are derived or spawned from this class
@@ -17,6 +18,7 @@ public class Entity {
     private float rotX, rotY, rotZ;
     private float scale;
     private int textureIndex = 0;
+    private int placerMode = MousePlacer.modes.Z3OFFSET.getMode();
 
     private boolean destroyed;
 
@@ -303,5 +305,13 @@ public class Entity {
 
     public void setDestroyed(boolean destroyed) {
         this.destroyed = destroyed;
+    }
+
+    public int getPlacerMode() {
+        return placerMode;
+    }
+
+    public void setPlacerMode(int placerMode) {
+        this.placerMode = placerMode;
     }
 }
