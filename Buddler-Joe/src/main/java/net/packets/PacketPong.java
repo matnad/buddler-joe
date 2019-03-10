@@ -1,14 +1,12 @@
 package net.packets;
 
-import net.ServerPlayerList;
-
-public class PacketSetName extends Packet {
+public class PacketPong extends Packet {
 
     private int clientId;
     private String data;
 
-    public PacketSetName(int clientId, String data) {
-        super(PacketTypes.SET_NAME);
+    public PacketPong(int clientId, String data) {
+        super(Packet.PacketTypes.PONG);
 
         if(!validate()){
             setPacketId(PacketTypes.INVALID);
@@ -37,4 +35,5 @@ public class PacketSetName extends Packet {
     public String toString() {
         return null;
     }
+
 }

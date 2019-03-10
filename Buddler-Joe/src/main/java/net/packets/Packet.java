@@ -3,10 +3,11 @@ package net.packets;
 import net.ClientLogic;
 import net.ServerLogic;
 
-import java.util.Map;
+import java.util.HashMap;
 
 /**
- *  Abstract Packet class which all Packets implement and build upon
+ *  Abstract Packet class which all Packets implement and build upon.
+ *  The enum represents all possible packages which can be implemented by the server/client
  */
 
 public abstract class Packet {
@@ -15,7 +16,7 @@ public abstract class Packet {
 
         INVALID("INVAL"),
         LOGIN("PLOGI"),
-        LOGIN_SUCCESSFUL("PLOGS"),
+        LOGIN_STATUS("PLOGS"),
         //MOVE(MOVEP),
         DISCONNECT("DISCP"),
         GET_NAME("GETNM"),
@@ -24,12 +25,17 @@ public abstract class Packet {
         LEAVE_LOBBY("LOBLE"),
         JOIN_LOBBY("LOBJO"),
         CREATE_LOBBY("LOBCRE");
+        PING("UPING"),
+        PONG("PONGU"),
+        SET_NAME("SETNM");
+
 
         private final String packetId;
 
         /**
          * Constructor to assign the packet type to the subclass
-         * @param packetId
+         * @param packetId to Assign the packet ID so that the subclass is
+         *                 clearly identified
          */
         PacketTypes(String packetId) {
             this.packetId = packetId;
@@ -40,29 +46,45 @@ public abstract class Packet {
         }
     }
 
-    private String packetId;
+    /**
+     * Variables which are accessible for the subclasses with the later Getter/Setter methods.
+     */
+
+    private PacketTypes packetId;
     private int clientId;
-    private Map<Integer, Boolean> sentToPlayer;
+    private HashMap<Integer, Boolean> sentToPlayer;
     private String data;
 
-    public Packet(String packetId) {
+    public Packet(PacketTypes packetId) {
         this.packetId = packetId;
+        this.sentToPlayer = new HashMap<Integer, Boolean>();
     }
 
     /**
-     * Abstract classes to be implemented by all subclasses, perform standard operations every
-     * Package needs to have.
+     *
+     * Abstract classes which are vital to the functionality of every package.
+     *
+     * The validate method is meant to be used to validate the data sent to the specific package,
+     *
+     * Process data is where the packages do their work and handle the package according to its
+     * functionality.
+     *
+     * Get Package creates a package which then can be sent.
+     *
+     * toString() to display the package and make it human readable.
+     *
      */
-    public abstract boolean validate(String data);
+    public abstract boolean validate();
 
-    public abstract void processData(String data);
+    public abstract void processData();
 
-    public abstract String getData();
+    public abstract Packet getPackage();
 
     public abstract String toString();
 
     /**
-     * Communication method to send data to another client
+     * Communication method to send data to another client. The destination address is determined by their
+     * clientId. At the same time it is also checked wheter the package has already been sent to this player.
      * @param receiver the receiving clientId
      */
 
@@ -76,10 +98,7 @@ public abstract class Packet {
     }
 
     public void sendToLobby(int lobbyId){
-
-        //TODO: While loop over the whole lobby to send the package to the players.
-
-        ServerLogic.sendPacketToLobby(lobbyId, this);
+        //TODO: Method to get the players from one lobby and then send them the package
     };
 
     public void sendToServer(){
@@ -103,11 +122,11 @@ public abstract class Packet {
         return data.substring(5,data.length()-1);
     }
 
-    public void setPacketId(String packetId) {
+    public void setPacketId(PacketTypes packetId) {
         this.packetId = packetId;
     }
 
-    public String getPacketId() {
+    public PacketTypes getPacketId() {
         return packetId;
     }
 
@@ -119,15 +138,33 @@ public abstract class Packet {
         this.clientId = clientId;
     }
 
-    public Map<Integer, Boolean> getSentToPlayer() {
+    public HashMap<Integer, Boolean> getSentToPlayer() {
         return sentToPlayer;
     }
 
-    public void setSentToPlayer(Map<Integer, Boolean> sentToPlayer) {
+    public void setSentToPlayer(HashMap<Integer, Boolean> sentToPlayer) {
         this.sentToPlayer = sentToPlayer;
     }
 
     public void setData(String data) {
         this.data = data;
+    }
+
+    public String getData() {
+        return data;
+    }
+
+    /**
+     * Method to add a player to the Hashmap which saves the players and whether the package has already
+     * been sent to this certain player
+     * @param receiverId The playerId of the player which should receive the package
+     * @return boolean to check wheter it was possible to add the player to the list or not.
+     */
+
+    public boolean addPlayerToSentToPlayer(int receiverId){
+        if(!sentToPlayer.containsKey(receiverId)){
+            sentToPlayer.put(receiverId,false);
+        }
+        return false;
     }
 }

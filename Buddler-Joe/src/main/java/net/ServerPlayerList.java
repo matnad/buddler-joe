@@ -6,6 +6,10 @@ public class ServerPlayerList {
 
     private HashMap<Integer, Player> players;
 
+    public ServerPlayerList() {
+        this.players = new HashMap<Integer, Player>();
+    }
+
     /**
      * Method to add a player the the HashMap of all to the server connected players.
      * @param player The player to be added to the HashMap
@@ -38,7 +42,7 @@ public class ServerPlayerList {
     }
 
     /**
-     * Method to seach for a ceratin thread via the clientId to then return it to the method called
+     * Method to seach for a certain thread via the clientId to then return it to the method called
      * @param clientId
      * @return either the thread or null
      */
@@ -88,7 +92,6 @@ public class ServerPlayerList {
     public String toString() {
         return "ServerPlayerList{" +
                 "players=" +
-                //for(Player p : players.values()){p.toString()} +
                 '}';
     }
 }

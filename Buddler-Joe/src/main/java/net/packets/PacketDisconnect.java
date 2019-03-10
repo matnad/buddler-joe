@@ -14,20 +14,26 @@ public class PacketDisconnect extends Packet{
      */
 
     public PacketDisconnect(int clientId, String data) {
-        super("DISCP");
+        super(PacketTypes.DISCONNECT);
         setClientId(clientId);
+        setData(data);
+
+        if(!validate()){
+            setPacketId(PacketTypes.INVALID);
+            return;
+        }
     }
 
-    public void processData(String data){
+    public void processData(){
 
     }
 
-    public boolean validate(String data){
+    public boolean validate(){
         return true;
     }
 
     @Override
-    public String getData() {
+    public String getPackage() {
         return this.toString();
     }
 

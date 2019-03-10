@@ -1,14 +1,12 @@
 package net.packets;
 
-import net.ServerPlayerList;
-
-public class PacketSetName extends Packet {
+public class PacketPing extends Packet {
 
     private int clientId;
     private String data;
 
-    public PacketSetName(int clientId, String data) {
-        super(PacketTypes.SET_NAME);
+    public PacketPing(int clientId, String data) {
+        super(Packet.PacketTypes.PING);
 
         if(!validate()){
             setPacketId(PacketTypes.INVALID);

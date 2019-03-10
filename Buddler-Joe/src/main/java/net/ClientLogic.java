@@ -1,5 +1,7 @@
 package net;
 
+import net.packets.PacketLoginStatus;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -14,6 +16,7 @@ public class ClientLogic implements Runnable {
     private static StartNetworkOnlyClient clientGUI;
     private static Thread thread;
     private static Socket server;
+    private int clientId;
 
     /**
      * ClientLogic to communicate with the server. Controls the input/output from/to the player
@@ -34,7 +37,7 @@ public class ClientLogic implements Runnable {
     }
 
     /**
-     * Thread to run the ClientLogic on, does the switch analysis of the incoming messages from the server.
+     * Thread to run the ClientLogic on, waits until a message is incoming
      */
 
     @Override
@@ -47,19 +50,25 @@ public class ClientLogic implements Runnable {
     }
 
     /**
-     * Method to wait for the server connetction until one is established
+     * Method to wait for the server connection until one is established
      * @throws IOException
      * @throws RuntimeException
      */
 
     private void waitforserver() throws IOException, RuntimeException {
         while (true) {
-            String serverReply = input.readLine();
-            if(serverReply == null) {
+            String command = "";
+            String[] in = input.readLine().split(" ");
+            if(in == null) {
                 System.out.println("Shutting down.");
                 clientGUI.kill();
             }
-            System.out.println("Server Reply: "+serverReply);
+//            command = in[0];
+//            switch (command){
+//                case "PLOGS":
+//                    PacketLoginStatus status = new PacketLoginStatus(clientId,in[1].trim());
+//            }
+            System.out.println("Server Reply: "+command);
         }
     }
 
