@@ -19,7 +19,11 @@ public abstract class Packet {
         //MOVE(MOVEP),
         DISCONNECT("DISCP"),
         GET_NAME("GETNM"),
-        SET_NAME("SETNM");
+        SET_NAME("SETNM"),
+        GET_LOBBIES("LOBOV"),
+        LEAVE_LOBBY("LOBLE"),
+        JOIN_LOBBY("LOBJO"),
+        CREATE_LOBBY("LOBCRE");
 
         private final String packetId;
 

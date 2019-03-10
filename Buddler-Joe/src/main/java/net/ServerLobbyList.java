@@ -69,10 +69,22 @@ public class ServerLobbyList {
     }
 
     /**
-     * Method to print out the full lobby List
+     * Method to get lobbyId, lobbyName and
      * @return the full lobby List  as a String
      */
 
+    public String getInfo(){
+        String res = "";
+        for(Lobby l : lobbies.values()){
+            res = l.getLobbyId() + ";" + l.getLobbyName() + ";" + l.getPlayerAmount() + ";";
+        }
+        return res;
+    }
+
+    /**
+     * Method to print out the full lobby List
+     * @return the full lobby List  as a String
+     */
     //TODO: print out the lobbies list
     @Override
     public String toString() {
