@@ -8,7 +8,7 @@
 	
 	    Muss Variablen: 
 		int clientId
-		boolean sent
+		HashMap sent
 		String data
 
             Muss Klassen:
