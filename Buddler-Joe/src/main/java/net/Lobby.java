@@ -9,21 +9,23 @@ public class Lobby {
     private int lobbyId;
     private String lobbyName;
     private HashMap<Integer, Player> lobbyPlayers;
+    private static int lobbyCounter = 0;
     //private Game game;
     //private ChatRoom chatRoom;
 
     /**
      * Main Player class to save the vital information which the server has to access at all times
      * @param lobbyName for the lobby to be set and which is to be displayed in the game
-     * @param lobbyId to identify the lobby, unique to every lobby
      */
 
-    public Lobby(int lobbyId, String lobbyName)  {
+    public Lobby(String lobbyName)  {
         this.lobbyId = lobbyId;
         this.lobbyName = lobbyName;
         //this.game = new Game();
         //this.chatRoom = new ChatRoom();
         this.lobbyPlayers = new HashMap<Integer, Player>();
+        this.lobbyId = lobbyCounter;
+        lobbyCounter++;
 
     }
 
@@ -44,16 +46,16 @@ public class Lobby {
 
     /**
      * Method to remove a player by his clientId
-     * @param clientId the clientId of the player to be removed
+     * @param player the player to be removed
      * @return true or false depending on wheter the player was in the list or not
      */
 
-    public boolean removePlayer(int clientId){
-        if(lobbyPlayers.containsKey(clientId)){
-            lobbyPlayers.remove(clientId);
-            return true;
+    public int removePlayer(Player player){
+        if(lobbyPlayers.containsValue(player)){
+            lobbyPlayers.remove(player.getClientId());
+            return 1;
         } else{
-            return false;
+            return -1;
         }
     }
 
@@ -86,7 +88,7 @@ public class Lobby {
 
     public int searchClientId(String username){
         for(Player p : lobbyPlayers.values()){
-            if(username == p.getUsername()) {
+            if(username.equals(p.getUsername())) {
                 return p.getClientId();
             }
         }

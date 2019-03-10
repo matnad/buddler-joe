@@ -18,7 +18,7 @@ public class ServerLobbyList {
             return -1;
         }
         for(Lobby l : lobbies.values()){
-            if(lobby.getLobbyName() == l.getLobbyName()) {
+            if(lobby.getLobbyName().equals(l.getLobbyName())) {
                 return -2;
             }
         }
@@ -33,12 +33,12 @@ public class ServerLobbyList {
      * @param lobbyId the lobbyId of the lobby to be removed
      * @return true or false depending on whether the lobby was in the list or not
      */
-    public boolean removeLobby(int lobbyId){
+    public int removeLobby(int lobbyId){
         if(lobbies.containsKey(lobbyId)){
             lobbies.remove(lobbyId);
-            return true;
+            return 1;
         } else{
-            return false;
+            return -1;
         }
     }
 
@@ -61,7 +61,7 @@ public class ServerLobbyList {
 
     public int searchLobbyId(String lobbyName){
         for(Lobby l : lobbies.values()){
-            if(lobbyName == l.getLobbyName()) {
+            if(lobbyName.equals(l.getLobbyName())) {
                 return l.getLobbyId();
             }
         }
