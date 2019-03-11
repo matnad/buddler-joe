@@ -10,6 +10,7 @@ import engine.render.objConverter.OBJFileLoader;
 import engine.textures.ModelTexture;
 import entities.blocks.Block;
 import entities.light.Light;
+import entities.light.LightMaster;
 import org.joml.Vector3f;
 import util.MousePlacer;
 
@@ -23,7 +24,6 @@ public class Torch extends Item {
 
     private Vector3f colour;
     private float brightness;
-    private Vector3f baseAttenuation;
 
     private Light light;
 
@@ -54,10 +54,8 @@ public class Torch extends Item {
                 -getbBox().getDimZ()/2
         );
 
-        baseAttenuation = new Vector3f(1, .01f, .002f);
         flamePosition = new Vector3f(position).add(flameOffset);
-        light = new Light(flamePosition, colour.mul(brightness), baseAttenuation);
-        Game.lights.add(light);
+        light = LightMaster.generateLight(LightMaster.LightTypes.TORCH, flamePosition, colour.mul(brightness));
 
         //Generate Fuse Effect
         flame = new Fire(15, .4f, 0, 2f, 1.5f);
@@ -131,16 +129,15 @@ public class Torch extends Item {
     @Override
     public void setDestroyed(boolean destroyed) {
         super.setDestroyed(destroyed);
-        if (destroyed) {
-            light = null; //Need light master
-        }
+        light.setDestroyed(destroyed);
+
     }
 
     private void updateAttenuationNoise() {
         //Add "light flicker" effect with gaussian random walk and pull to the average
         flickerFactor += (float) (random.nextGaussian() / 5000);
         flickerFactor -= flickerFactor * .05f;
-        light.setAttenuation(new Vector3f(baseAttenuation).add(new Vector3f(0, flickerFactor, flickerFactor / 5f)));
+        light.setAttenuation(new Vector3f(light.getType().getBaseAttenuation()).add(new Vector3f(0, flickerFactor, flickerFactor / 5f)));
     }
 
     @Override

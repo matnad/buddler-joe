@@ -1,5 +1,6 @@
 package entities.light;
 
+import entities.Camera;
 import org.joml.Vector3f;
 
 /**
@@ -11,7 +12,12 @@ import org.joml.Vector3f;
 public class Light {
     private Vector3f position;
     private Vector3f colour;
-    private Vector3f attenuation = new Vector3f(1,0,0);
+    private Vector3f attenuation;
+
+    private LightMaster.LightTypes type;
+
+    private boolean destroyed;
+    private float distanceSq;
 
     /**
      * Strength of the light depends on distance and angle.
@@ -19,15 +25,19 @@ public class Light {
      * @param position world coordinates
      * @param colour r, g, b
      */
-    public Light(Vector3f position, Vector3f colour) {
+    public Light(LightMaster.LightTypes type, Vector3f position, Vector3f colour) {
+        this.type = type;
         this.position = position;
         this.colour = colour;
+        this.attenuation = type.getBaseAttenuation();
+        this.distanceSq = 0;
     }
 
-    public Light(Vector3f position, Vector3f colour, Vector3f attenuation) {
-        this.position = position;
-        this.colour = colour;
-        this.attenuation = attenuation;
+    public void update(Camera camera) {
+         /*We use distance squared since it is faster and makes no difference. It is used to measure which particle is
+          closer to the camera.*/
+        distanceSq = position.distanceSquared(camera.getPosition());
+
     }
 
     public Vector3f getPosition() {
@@ -52,5 +62,21 @@ public class Light {
 
     public void setAttenuation(Vector3f attenuation) {
         this.attenuation = attenuation;
+    }
+
+    public LightMaster.LightTypes getType() {
+        return type;
+    }
+
+    public boolean isDestroyed() {
+        return destroyed;
+    }
+
+    public void setDestroyed(boolean destroyed) {
+        this.destroyed = destroyed;
+    }
+
+    public float getDistanceSq() {
+        return distanceSq;
     }
 }

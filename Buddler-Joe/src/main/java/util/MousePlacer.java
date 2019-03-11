@@ -23,8 +23,8 @@ public class MousePlacer {
 
     public enum modes {
 
-        Z3OFFSET(0),
-        BLOCK(1);
+        Z3OFFSET(0), //Place on an XY plane with Z=3 (centered on blocks with dim=3)
+        BLOCK(1); //Full 3D placement around the wall terrain and the blocks
 
         private int mode;
 

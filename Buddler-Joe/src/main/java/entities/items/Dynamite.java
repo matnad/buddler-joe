@@ -12,6 +12,7 @@ import engine.textures.ModelTexture;
 import entities.blocks.Block;
 import entities.blocks.BlockMaster;
 import entities.light.Light;
+import entities.light.LightMaster;
 import org.joml.Vector3f;
 
 import java.util.Random;
@@ -165,7 +166,7 @@ public class Dynamite extends Item {
 
         if(time >= FUSE_TIMER+TOTAL_EFFECTS_TIME) {
             setDestroyed(true); //Remove Object
-            Game.lights.remove(flash);
+            flash.setDestroyed(true);
         } else if (time >= FUSE_TIMER + .3f) {
             float scaleBrightness = (float) (1-Game.window.getFrameTimeSeconds()*5);
             flash.getColour().mul(scaleBrightness);
@@ -191,8 +192,7 @@ public class Dynamite extends Item {
                 block.increaseDamage(1/distance * MAXIMUM_DAMAGE, this);
             }
         }
-        flash = new Light(getPosition(), new Vector3f(1,1,1));
-        Game.lights.add(flash);
+        flash = LightMaster.generateLight(LightMaster.LightTypes.FLASH, getPosition(), new Vector3f(1,1,1));
 
     }
 

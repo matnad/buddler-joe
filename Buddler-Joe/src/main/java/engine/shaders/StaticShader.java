@@ -2,6 +2,7 @@ package engine.shaders;
 
 import entities.Camera;
 import entities.light.Light;
+import entities.light.LightMaster;
 import org.joml.Matrix4f;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
@@ -15,7 +16,7 @@ import java.util.List;
  */
 public class StaticShader extends ShaderProgram {
 
-    private static final int MAX_LIGHTS = 4;
+    private static final int MAX_LIGHTS = LightMaster.getMAX_LIGHTS();
 
     private static final String SHADER_NAME = "entity";
 

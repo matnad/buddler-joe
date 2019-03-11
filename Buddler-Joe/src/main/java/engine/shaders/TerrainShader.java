@@ -2,6 +2,7 @@ package engine.shaders;
 
 import entities.Camera;
 import entities.light.Light;
+import entities.light.LightMaster;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 import util.Maths;
@@ -14,7 +15,7 @@ import java.util.List;
  */
 public class TerrainShader extends ShaderProgram {
 
-    private static final int MAX_LIGHTS = 4;
+    private static final int MAX_LIGHTS = LightMaster.getMAX_LIGHTS();
 
     private static final String SHADER_NAME = "terrain";
 
