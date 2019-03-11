@@ -1,8 +1,8 @@
 package net;
 
-import net.LobbyHandling.ServerLobbyList;
-import net.PlayerHandling.ClientThread;
-import net.PlayerHandling.ServerPlayerList;
+import net.lobbyhandling.ServerLobbyList;
+import net.playerhandling.ClientThread;
+import net.playerhandling.ServerPlayerList;
 import net.packets.Packet;
 import java.io.IOException;
 import java.net.ServerSocket;

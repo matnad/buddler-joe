@@ -1,7 +1,4 @@
-package net.PlayerHandling;
-
-import net.PlayerHandling.ClientThread;
-import net.PlayerHandling.Player;
+package net.playerhandling;
 
 import java.util.HashMap;
 

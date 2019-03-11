@@ -1,7 +1,7 @@
-package net.LobbyHandling;
+package net.lobbyhandling;
 
-import net.PlayerHandling.ClientThread;
-import net.PlayerHandling.Player;
+import net.playerhandling.ClientThread;
+import net.playerhandling.Player;
 
 import java.util.HashMap;
 
@@ -97,7 +97,7 @@ public class Lobby {
     }
 
     /**
-     * @return the number of Players in this Lobby
+     * @return the number of Players in this lobby
      */
 
     public int getPlayerAmount(){ return lobbyPlayers.size(); }

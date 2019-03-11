@@ -12,7 +12,7 @@ public class StartNetworkOnlyClient {
 
     private StartNetworkOnlyClient(){
         try {
-//            System.out.println("Enter Server Name or IP: ");
+//            System.out.println("Enter Server name or IP: ");
 //            ServerIP = br.readLine();
             ServerIP = "127.0.0.1";
 //            System.out.println("Enter Port number for the Server: ");

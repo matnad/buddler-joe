@@ -1,7 +1,7 @@
-package net.packets.LoginLogout;
+package net.packets.login_logout;
 
 import net.*;
-import net.PlayerHandling.ServerPlayerList;
+import net.playerhandling.ServerPlayerList;
 import net.packets.Packet;
 
 public class PacketLoginStatus extends Packet {

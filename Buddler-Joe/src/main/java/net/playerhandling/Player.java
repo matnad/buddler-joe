@@ -1,4 +1,4 @@
-package net.PlayerHandling;
+package net.playerhandling;
 
 public class Player {
 

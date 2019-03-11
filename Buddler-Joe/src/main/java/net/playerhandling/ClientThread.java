@@ -1,9 +1,9 @@
-package net.PlayerHandling;
+package net.playerhandling;
 
 import net.ServerLogic;
-import net.packets.Name.PacketGetName;
-import net.packets.LoginLogout.PacketLogin;
-import net.packets.Name.PacketSetName;
+import net.packets.name.PacketGetName;
+import net.packets.login_logout.PacketLogin;
+import net.packets.name.PacketSetName;
 
 import java.io.*;
 import java.net.Socket;

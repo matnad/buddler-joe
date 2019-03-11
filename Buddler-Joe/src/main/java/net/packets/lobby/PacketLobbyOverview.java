@@ -1,16 +1,18 @@
-package net.packets.Lobby;
+package net.packets.lobby;
 
 import net.ServerLogic;
 import net.packets.Packet;
 
-public class PacketLeaveLobby extends Packet {
+public class PacketLobbyOverview extends Packet {
 
     /**
-     * A packed which is send from the client to the Server if
-     * he wants to leave his current lobby
+     * A packed which is sent to the client before joining a lobby.
+     * It should contain information to all open lobbys that are available
+     * on the server and not full. (Maximum 10)
      */
-    public PacketLeaveLobby(int clientId, String data) {
-        super(PacketTypes.LEAVE_LOBBY);
+
+    public PacketLobbyOverview(int clientId, String data) {
+        super(PacketTypes.GET_LOBBIES);
         setData(data);
         setClientId(clientId);
         validate();
@@ -19,7 +21,7 @@ public class PacketLeaveLobby extends Packet {
 
     @Override
     public boolean validate() {
-        return false;
+        return true;
     }
 
     @Override
@@ -36,4 +38,6 @@ public class PacketLeaveLobby extends Packet {
     public String toString() {
         return null;
     }
+
+
 }

@@ -1,9 +1,9 @@
-package net.packets.Lobby;
+package net.packets.lobby;
 
-import net.LobbyHandling.Lobby;
-import net.LobbyHandling.ServerLobbyList;
-import net.PlayerHandling.Player;
-import net.PlayerHandling.ServerPlayerList;
+import net.lobbyhandling.Lobby;
+import net.lobbyhandling.ServerLobbyList;
+import net.playerhandling.Player;
+import net.playerhandling.ServerPlayerList;
 import net.ServerLogic;
 import net.packets.Packet;
 
@@ -15,8 +15,8 @@ public class PacketJoinLobby extends Packet {
     private ServerLobbyList lobbyList;
     /**
      * A packed which is send from the client to the Server once
-     * he has chosen a Lobby to join. Server should then move the client in
-     * the chosen Lobby
+     * he has chosen a lobby to join. Server should then move the client in
+     * the chosen lobby
      * @param clientId of the player to be added to specified lobby
      * @param data lobbyId of the chosen lobby
      */

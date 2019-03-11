@@ -1,9 +1,9 @@
-package net.packets.LoginLogout;
+package net.packets.login_logout;
 
 import net.*;
-import net.PlayerHandling.ClientThread;
-import net.PlayerHandling.Player;
-import net.PlayerHandling.ServerPlayerList;
+import net.playerhandling.ClientThread;
+import net.playerhandling.Player;
+import net.playerhandling.ServerPlayerList;
 import net.packets.Packet;
 
 public class PacketLogin extends Packet {

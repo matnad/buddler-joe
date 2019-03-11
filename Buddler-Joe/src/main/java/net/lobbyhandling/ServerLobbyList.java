@@ -1,6 +1,4 @@
-package net.LobbyHandling;
-
-import net.LobbyHandling.Lobby;
+package net.lobbyhandling;
 
 import java.util.HashMap;
 
@@ -57,7 +55,7 @@ public class ServerLobbyList {
     /**
      * Method to search for a lobby by its lobbyId
      * @param lobbyId the looked for lobbyId
-     * @return either the Lobby or null
+     * @return either the lobby or null
      */
 
     public Lobby searchLobby(int lobbyId){

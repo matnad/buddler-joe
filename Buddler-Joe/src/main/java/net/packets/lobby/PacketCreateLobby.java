@@ -1,8 +1,8 @@
-package net.packets.Lobby;
+package net.packets.lobby;
 
-import net.LobbyHandling.Lobby;
-import net.LobbyHandling.ServerLobbyList;
-import net.PlayerHandling.Player;
+import net.lobbyhandling.Lobby;
+import net.lobbyhandling.ServerLobbyList;
+import net.playerhandling.Player;
 import net.ServerLogic;
 import net.packets.Packet;
 

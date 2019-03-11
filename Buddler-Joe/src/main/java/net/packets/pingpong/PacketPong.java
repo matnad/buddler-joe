@@ -1,4 +1,4 @@
-package net.packets.PingPong;
+package net.packets.pingpong;
 
 import net.packets.Packet;
 

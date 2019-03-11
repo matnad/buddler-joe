@@ -1,6 +1,6 @@
-package net.packets.Name;
+package net.packets.name;
 
-import net.PlayerHandling.ServerPlayerList;
+import net.playerhandling.ServerPlayerList;
 import net.packets.Packet;
 
 public class PacketGetName extends Packet {
