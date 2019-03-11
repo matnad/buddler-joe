@@ -113,7 +113,7 @@ public class MousePlacer {
                 //Ensure some distance from the intersecting block.
 
                 //Add an offset as a percentage of the distance from the center of the block to the object
-                float offset = .3f;
+                float offset = .35f;
 
                 /*Take the vector that goes from the center of the block to the entity
                   scale that Vector by the offset factor, then add it to the intersection point.
@@ -126,8 +126,7 @@ public class MousePlacer {
 
                 intersection.add(scaledDistance);
 
-                entity.setPosition(intersection );
-
+                entity.setPosition(intersection);
             }
 
             if(InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1) && !doesCollide(3)) {

@@ -51,7 +51,7 @@ public class Torch extends Item {
         flameOffset = new Vector3f(
                 getbBox().getDimX()/2,
                 getbBox().getDimY()-getbBox().getDimY()/20,
-                -getbBox().getDimZ()/2
+                getbBox().getDimZ()/2
         );
 
         flamePosition = new Vector3f(position).add(flameOffset);
@@ -143,7 +143,7 @@ public class Torch extends Item {
     @Override
     public void setPosition(Vector3f position) {
         super.setPosition(position);
-        flamePosition = new Vector3f(position).add(flameOffset);
+        flamePosition = new Vector3f(getPosition()).add(flameOffset);
         light.setPosition(flamePosition);
     }
 
