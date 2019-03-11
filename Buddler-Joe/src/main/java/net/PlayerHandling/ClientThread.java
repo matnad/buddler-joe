@@ -16,7 +16,7 @@ public class ClientThread implements Runnable {
     private final Socket socket;
     private boolean connected;
 
-    ClientThread(Socket Client, int clientId) {
+    public ClientThread(Socket Client, int clientId) {
         this.clientId = clientId;
         this.socket = Client;
 
