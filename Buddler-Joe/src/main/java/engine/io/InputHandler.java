@@ -11,10 +11,12 @@ import org.lwjgl.glfw.GLFWCursorPosCallback;
 import org.lwjgl.glfw.GLFWKeyCallback;
 import org.lwjgl.glfw.GLFWMouseButtonCallback;
 import org.lwjgl.glfw.GLFWScrollCallback;
+import util.MousePlacer;
 
 import java.nio.DoubleBuffer;
 
 import static org.lwjgl.glfw.GLFW.*;
+import static util.MousePlacer.modes.*;
 
 /**
  * Keystates, CursorPos, -Movement, Mousestates, Raycasting.
@@ -57,7 +59,7 @@ public class InputHandler {
 
     private static double mouseScrollY;
     private static final Vector3f mouseRay = new Vector3f();
-    private static Vector3f wallIntersection = new Vector3f();
+    private static Vector3f intersection = new Vector3f();
     private static boolean placerMode = false;
 
     private static final long window = Game.window.getWindow();
@@ -134,26 +136,18 @@ public class InputHandler {
                 .rotateX((float) Math.toRadians(-camera.getPitch()))
                 .transform(mouseRay);
 
-        //Calculate the intersection point of mouseRay and plane x=0, y=0, z=3 (a plane that goes through the center of the blocks)
-        //This is done with binary search, always choosing the part of the ray with the plane in it
-        float distance = Intersectionf.intersectRayPlane(camera.getPosition(), mouseRay, new Vector3f(0, 0, 3), new Vector3f(0, 0, 1), 1e-5f);
-        wallIntersection = getPointOnRay(camera.getPosition(), mouseRay, distance);
+//        if (MousePlacer.getMode() == Z3OFFSET.getMode()) {
+//            //Calculate the intersection point of mouseRay and plane x=0, y=0, z=3 (a plane that goes through the center of the blocks)
+//            //This is done with binary search, always choosing the part of the ray with the plane in it
+//            float distance = Intersectionf.intersectRayPlane(camera.getPosition(), mouseRay, new Vector3f(0, 0, 3), new Vector3f(0, 0, 1), 1e-5f);
+//            intersection = getPointOnRay(camera.getPosition(), mouseRay, distance);
+//        } else if (MousePlacer.getMode() == BLOCK.getMode()) {
+//
+//        }
     }
 
 
-    /**
-     * Simple vector math to get point on a ray.
-     *
-     * @param origin starting point of the ray. Usually a camera position
-     * @param ray direction vector
-     * @param distance distance to travel on the vector
-     * @return point at distance from origin in direction of the ray
-     */
-    private static Vector3f getPointOnRay(Vector3f origin, Vector3f ray, float distance) {
-        Vector3f start = new Vector3f(origin.x, origin.y, origin.z);
-        Vector3f scaledRay = new Vector3f(ray.x * distance, ray.y * distance, ray.z * distance);
-        return start.add(scaledRay);
-    }
+
 
     /**
      * Returns true if the Game is currently asking the player to place an object with the mouse cursor.
@@ -163,13 +157,13 @@ public class InputHandler {
     }
 
     /**
-     * Enter and leave placer mode. Mouse cursor is disabled while in placer mode to get a better view of the object
+     * Enter and leave placer modes. Mouse cursor is disabled while in placer modes to get a better view of the object
      * being placed. Never set placerMode directly!
      * @param placerMode True to enter placerMode, False to leave it
      */
     public static void setPlacerMode(boolean placerMode) {
         InputHandler.placerMode = placerMode;
-        //Very important to only change placer mode with this function, otherwise it fucks up the cursor!
+        //Very important to only change placer modes with this function, otherwise it fucks up the cursor!
         //Disable cursor when an object is being placed with the cursor
         if(placerMode) {
             glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
@@ -181,19 +175,23 @@ public class InputHandler {
     /**
      * Returns position of the intersection with the mouse ray and the z=3 plane. Thus z will always be 3 here.
      *
-     * A 3D direction vector originating from the camera is updated every frame while in placer mode and the
+     * A 3D direction vector originating from the camera is updated every frame while in placer modes and the
      * intersection with the z=3 plane can be found with this static method. This position vector is used to place
      * objects in our pseudo 3D world.
      *
      */
-    public static Vector3f getWallIntersection() {
-        return wallIntersection;
+    public static Vector3f getIntersection() {
+        return intersection;
+    }
+
+    public static Vector3f getMouseRay() {
+        return new Vector3f(mouseRay);
     }
 
 
     /**
      * Called every frame to update states of keys and mouse.
-     * While in placer mode it will also update the mouse ray and z=3 wall intersection
+     * While in placer modes it will also update the mouse ray and z=3 wall intersection
      * It is very important that this is called before the window polling happens or the single press functions will
      * not work.
      */

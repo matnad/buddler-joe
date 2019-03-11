@@ -1,6 +1,7 @@
 package collision;
 
 
+import org.joml.AABBf;
 import org.joml.Vector3f;
 
 /**
@@ -78,7 +79,7 @@ public class BoundingBox {
      * @param box Bounding Box from a different entity
      * @return true if the boxes overlap
      */
-    private boolean collidesX(BoundingBox box) {
+    public boolean collidesX(BoundingBox box) {
         return !(box.minX > this.maxX) && !(this.minX > box.maxX);
     }
 
@@ -87,7 +88,7 @@ public class BoundingBox {
      * @param box Bounding Box from a different entity
      * @return true if the boxes overlap
      */
-    private boolean collidesY(BoundingBox box) {
+    public boolean collidesY(BoundingBox box) {
         return !(box.minY > this.maxY) && !(this.minY > box.maxY);
     }
 
@@ -96,7 +97,7 @@ public class BoundingBox {
      * @param box Bounding Box from a different entity
      * @return true if the boxes overlap
      */
-    private boolean collidesZ(BoundingBox box) {
+    public boolean collidesZ(BoundingBox box) {
         return !(box.minZ > this.maxZ) && !(this.minZ > box.maxZ);
     }
 
@@ -114,6 +115,18 @@ public class BoundingBox {
     }
 
     //Getters
+
+    public AABBf getAABBf() {
+        return new AABBf(minX, minY, minZ, maxX, maxY, maxZ);
+    }
+
+    public Vector3f getCenter() {
+        return new Vector3f(
+                getMinX() + getDimX()/2,
+                getMinY() + getDimY()/2,
+                getMinZ() + getDimZ()/2
+        );
+    }
 
     public float getMinX() {
         return minX;

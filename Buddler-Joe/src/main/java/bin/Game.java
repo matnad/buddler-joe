@@ -15,6 +15,8 @@ import entities.*;
 import entities.blocks.BlockMaster;
 import entities.blocks.debris.DebrisMaster;
 import entities.items.ItemMaster;
+import entities.light.Light;
+import entities.light.LightMaster;
 import gui.Chat;
 import gui.FPS;
 import gui.GUIString;
@@ -185,13 +187,20 @@ public class Game extends Thread {
         guis.add(chat.getChatGui());
         GuiRenderer guiRenderer = new GuiRenderer(loader);
 
-
-        //Light and cameras (just one for now)
-        Light light = new Light(new Vector3f(2e4f,4e4f,2e4f), new Vector3f(.5f,1, 1));
-        camera = new Camera(player, window);
-
         //Load Particle Master
         ParticleMaster.init(loader, MasterRenderer.getProjectionMatrix());
+
+
+        //Lights and cameras (just one for now)
+        LightMaster.generateLight(
+                LightMaster.LightTypes.SUN,
+                new Vector3f(0, 600, 200),
+                new Vector3f(.3f, .3f, .3f));
+        camera = new Camera(player, window);
+
+//        ItemMaster.generateItem(ItemMaster.ItemTypes.TORCH, new Vector3f(100, 10, 5));
+
+
 
         /*
         **************************************************************
@@ -232,13 +241,14 @@ public class Game extends Thread {
                 //Update positions of camera, player and 3D Mouse Pointer
                 camera.move();
                 player.move();
-                MousePlacer.update();
+                MousePlacer.update(camera);
 
                 //Masters check their slaves
                 ItemMaster.update();
                 BlockMaster.update();
                 DebrisMaster.update();
                 ParticleMaster.update(camera);
+                LightMaster.update(camera, player);
 
                 //Prepare and render the entities
                 renderer.processEntity(player);
@@ -255,7 +265,7 @@ public class Game extends Thread {
                 }
 
                 //Render other stuff, order is important
-                renderer.render(light, camera);
+                renderer.render(LightMaster.getLightsToRender(), camera);
                 chat.checkInputs();
                 //GUI goes over everything else and then text on top of GUI
                 ParticleMaster.renderParticles(camera);

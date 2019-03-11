@@ -15,6 +15,7 @@ import org.joml.Vector3f;
 public class Debris extends Entity {
 
     private final float GRAVITY = 80;
+    private final float SPEED = 2;
 
     private Vector3f direction;
     private float lifeLength;
@@ -61,7 +62,7 @@ public class Debris extends Entity {
         elapsedTime += Game.window.getFrameTimeSeconds();
         direction.y -= weight*Game.window.getFrameTimeSeconds();
         handleCollision();
-        increasePosition(new Vector3f(direction).mul((float) Game.window.getFrameTimeSeconds()));
+        increasePosition(new Vector3f(direction).mul(SPEED).mul((float) Game.window.getFrameTimeSeconds()));
         increaseRotation(new Vector3f(spin).mul((float) Game.window.getFrameTimeSeconds()));
     }
 
