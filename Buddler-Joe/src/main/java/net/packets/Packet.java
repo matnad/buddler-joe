@@ -26,7 +26,9 @@ public abstract class Packet {
         JOIN_LOBBY("LOBJO"),
         CREATE_LOBBY("LOBCRE"),
         PING("UPING"),
-        PONG("PONGU");
+        PONG("PONGU"),
+        CREATE_LOBBY_STATUS("LOBCS"),
+        JOIN_LOBBY_STATUS("LOBJS");
 
 
         private final String packetId;

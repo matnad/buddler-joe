@@ -63,6 +63,10 @@ public class ServerLogic {
             return playerList;
         }
 
+        public static ServerLobbyList getLobbyList(){
+        return lobbyList;
+    }
+
         public static void sendPacket(int receiver, Packet packet){
             playerList.searchThread(receiver).sendToClient(packet.getData());
         }

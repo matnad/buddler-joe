@@ -55,6 +55,16 @@ public class ServerPlayerList {
     }
 
     /**
+     * Method to search and return a player by clientId
+     * @param clientId
+     * @return either the Player or null
+     */
+
+    public Player searchPlayer(int clientId) {
+        return players.get(clientId);
+    }
+
+    /**
      * search a client via the username to find the clientId in case only one of the two was supplied
      * to the method.
      * @param username of the player to be found in the list

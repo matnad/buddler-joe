@@ -55,6 +55,16 @@ public class ServerLobbyList {
     }
 
     /**
+     * Method to search for a lobby by its lobbyId
+     * @param lobbyId the looked for lobbyId
+     * @return either the Lobby or null
+     */
+
+    public Lobby searchLobby(int lobbyId){
+        return lobbies.get(lobbyId);
+    }
+
+    /**
      * search a lobby via the lobbyName to find the lobbyId in case only one of the two was supplied
      * to the method.
      * @param lobbyName of the lobby to be found in the list
