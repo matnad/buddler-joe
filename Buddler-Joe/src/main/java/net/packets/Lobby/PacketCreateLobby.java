@@ -17,10 +17,10 @@ public class PacketCreateLobby extends Packet {
      */
     public PacketCreateLobby(int clientId, String data) {
         super(PacketTypes.CREATE_LOBBY);
-        validate();
         this.lobbyList = ServerLogic.getLobbyList();
         setClientId(clientId);
         setData(data);
+        validate();
         processData();
     }
 

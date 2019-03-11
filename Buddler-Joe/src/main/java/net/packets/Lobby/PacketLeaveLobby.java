@@ -11,9 +11,9 @@ public class PacketLeaveLobby extends Packet {
      */
     public PacketLeaveLobby(int clientId, String data) {
         super(PacketTypes.LEAVE_LOBBY);
-        validate();
         setData(data);
         setClientId(clientId);
+        validate();
         processData();
     }
 

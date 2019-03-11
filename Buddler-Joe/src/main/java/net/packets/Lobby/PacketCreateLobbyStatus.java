@@ -15,9 +15,9 @@ public class PacketCreateLobbyStatus extends Packet{
 
     public PacketCreateLobbyStatus(int clientId, String data) {
         super(Packet.PacketTypes.CREATE_LOBBY_STATUS);
-        validate();
         setData(data);
         setClientId(clientId);
+        validate();
         processData();
     }
 

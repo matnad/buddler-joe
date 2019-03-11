@@ -22,11 +22,11 @@ public class PacketJoinLobby extends Packet {
      */
     public PacketJoinLobby(int clientId, String data) {
         super(PacketTypes.JOIN_LOBBY);
-        validate();
         this.playerList = ServerLogic.getPlayerList();
         this.lobbyList = ServerLogic.getLobbyList();
         setData(data);
         setClientId(clientId);
+        validate();
         processData();
     }
 

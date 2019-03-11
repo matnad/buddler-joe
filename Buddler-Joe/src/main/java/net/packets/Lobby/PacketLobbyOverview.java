@@ -3,8 +3,6 @@ package net.packets.Lobby;
 import net.ServerLogic;
 import net.packets.Packet;
 
-import java.util.Map;
-
 public class PacketLobbyOverview extends Packet {
 
     /**
@@ -15,9 +13,9 @@ public class PacketLobbyOverview extends Packet {
 
     public PacketLobbyOverview(int clientId, String data) {
         super(PacketTypes.GET_LOBBIES);
-        validate();
         setData(data);
         setClientId(clientId);
+        validate();
         processData();
     }
 

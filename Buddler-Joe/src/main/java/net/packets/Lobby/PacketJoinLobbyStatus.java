@@ -15,9 +15,9 @@ public class PacketJoinLobbyStatus extends Packet{
 
     public PacketJoinLobbyStatus(int clientId, String data) {
         super(Packet.PacketTypes.JOIN_LOBBY_STATUS);
-        validate();
         setData(data);
         setClientId(clientId);
+        validate();
         processData();
     }
 
