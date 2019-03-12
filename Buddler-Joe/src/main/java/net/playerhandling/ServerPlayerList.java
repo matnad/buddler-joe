@@ -17,17 +17,17 @@ public class ServerPlayerList {
      * whether the action was successful or not
      */
 
-    public int addPlayer(Player player){
+    public String addPlayer(Player player){
         if(players.containsKey(player.getClientId())){
-            return -1;
+            return "Already loggedin.";
         }
         for(Player p : players.values()){
-            if(player.getUsername() == p.getUsername()) {
-                return -2;
+            if(player.getUsername().equals(p.getUsername())) {
+                return "Username already taken.";
             }
         }
         players.put(player.getClientId(), player);
-        return 1;
+        return "OK";
 
     }
 
@@ -37,18 +37,8 @@ public class ServerPlayerList {
      * @return either the correct name or null
      */
 
-    public String searchName(int clientId){
+    public String getUsername(int clientId){
         return players.get(clientId).getUsername();
-    }
-
-    /**
-     * Method to seach for a certain thread via the clientId to then return it to the method called
-     * @param clientId
-     * @return either the thread or null
-     */
-
-    public ClientThread searchThread(int clientId) {
-        return players.get(clientId).getThread();
     }
 
     /**
@@ -57,24 +47,8 @@ public class ServerPlayerList {
      * @return either the Player or null
      */
 
-    public Player searchPlayer(int clientId) {
+    public Player getPlayer(int clientId) {
         return players.get(clientId);
-    }
-
-    /**
-     * search a client via the username to find the clientId in case only one of the two was supplied
-     * to the method.
-     * @param username of the player to be found in the list
-     * @return either the clientId or -1 if not found
-     */
-
-    public int searchClientId(String username){
-        for(Player p : players.values()){
-            if(username == p.getUsername()) {
-                return p.getClientId();
-            }
-        }
-        return -1;
     }
 
     /**
@@ -90,18 +64,5 @@ public class ServerPlayerList {
         } else{
             return false;
         }
-    }
-
-    /**
-     * Method to print out the full player list
-     * @return the full player List as a String
-     */
-
-    //TODO: print out the player list
-    @Override
-    public String toString() {
-        return "ServerPlayerList{" +
-                "players=" +
-                '}';
     }
 }

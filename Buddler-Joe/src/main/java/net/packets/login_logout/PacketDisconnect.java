@@ -15,31 +15,16 @@ public class PacketDisconnect extends Packet {
         super(PacketTypes.DISCONNECT);
         setClientId(clientId);
         setData(data);
-
-        if(!validate()){
-            setPacketId(PacketTypes.INVALID);
-            return;
-        }
-    }
-
-    public void processData(){
-
-    }
-
-    public boolean validate(){
-        return true;
+        validate();
     }
 
     @Override
-    public Packet getPackage() {
-        return null;
+    public void validate() {
+
     }
 
     @Override
-    public String toString() {
-        return "PacketDisconnect{}";
+    public void processData() {
+
     }
-
-
-
 }

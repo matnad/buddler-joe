@@ -21,47 +21,19 @@ public class PacketCreateLobby extends Packet {
         setClientId(clientId);
         setData(data);
         validate();
-        processData();
     }
 
     @Override
-    public boolean validate() {
-        return false;
+    public void validate() {
+
     }
 
     @Override
     public void processData() {
-        this.lobby = new Lobby(getData());
-        int code = lobbyList.addLobby(lobby);
-        String result = "" + code + ";" + lobby.getLobbyId();
-        PacketCreateLobbyStatus status = new PacketCreateLobbyStatus(getClientId(), result);
-        status.sendToClient(getClientId());
+//        this.lobby = new Lobby(getData());
+//        int code = lobbyList.addLobby(lobby);
+//        String result = "" + code + ";" + lobby.getLobbyId();
+//        PacketCreateLobbyStatus status = new PacketCreateLobbyStatus(getClientId(), result);
+//        status.sendToClient(getClientId());
     }
-
-    @Override
-    public Packet getPackage() {
-        return null;
-    }
-
-    @Override
-    public String toString() {
-        return null;
-    }
-
-    public Lobby getLobby() {
-        return lobby;
-    }
-
-    public void setLobby(Player player) {
-        this.lobby = lobby;
-    }
-
-    public ServerLobbyList getLobbyList() {
-        return lobbyList;
-    }
-
-    public void setLobbyList(ServerLobbyList lobbyList) {
-        this.lobbyList = lobbyList;
-    }
-
 }

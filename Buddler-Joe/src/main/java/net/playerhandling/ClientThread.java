@@ -1,6 +1,7 @@
 package net.playerhandling;
 
 import net.ServerLogic;
+import net.packets.Packet;
 import net.packets.name.PacketGetName;
 import net.packets.login_logout.PacketLogin;
 import net.packets.name.PacketSetName;
@@ -38,7 +39,7 @@ public class ClientThread implements Runnable {
         String command = "";
         try{
             while (command != null){
-                String[] in = input.readLine().split(" ");
+                String[] in = input.readLine().split(" ");//TODO: Substring 5
                 command = in[0];
                 if (command == null) {
                     System.out.println("Client " + clientId + " left");
@@ -46,13 +47,12 @@ public class ClientThread implements Runnable {
                     System.out.println("command sent was '" + command + "' by client No " + clientId);
                     switch(command){
                         case "PLOGI":
-                            if(!connected){
-                                PacketLogin login = new PacketLogin(clientId, in[1].trim());
-                                System.out.println("Player " + ServerLogic.getPlayerList().searchName(clientId) + " has connected.");
-                                connected = true;
-                            } else {
-                                continue;
+                            PacketLogin login = new PacketLogin(clientId, in[1].trim());
+                            login.processData();
+                            if(!login.hasErrors()) {
+                                System.out.println("Player " + ServerLogic.getPlayerList().getUsername(clientId) + " has connected.");
                             }
+
                         case "GETNM":
                             PacketGetName getName = new PacketGetName(clientId, in[1].trim());
                         case "SETNM":
@@ -71,8 +71,9 @@ public class ClientThread implements Runnable {
         }
     }
 
-    public void sendToClient(String message) {
-        output.println(message);
+    public void sendToClient(Packet packet) {
+        System.out.println(packet);
+        output.println(packet.toString());
         output.flush();
     }
 

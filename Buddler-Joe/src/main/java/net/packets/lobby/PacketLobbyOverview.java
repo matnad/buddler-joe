@@ -16,28 +16,15 @@ public class PacketLobbyOverview extends Packet {
         setData(data);
         setClientId(clientId);
         validate();
-        processData();
     }
 
     @Override
-    public boolean validate() {
-        return true;
+    public void validate() {
+
     }
 
     @Override
     public void processData() {
-        ServerLogic.sendPacket(getClientId(),this);
+
     }
-
-    @Override
-    public Packet getPackage() {
-        return null;
-    }
-
-    @Override
-    public String toString() {
-        return null;
-    }
-
-
 }

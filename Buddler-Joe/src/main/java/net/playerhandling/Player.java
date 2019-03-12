@@ -11,15 +11,12 @@ public class Player {
      * Main Player class to save the vital information which the server has to access at all times
      * @param username for the player to be set and which is to be displayed in the game
      * @param clientId to identify the player, unique to every player
-     * @param thread on which the client runs on from the server perspective
-     * @param ping current ping to be updated every 10 seconds
      */
 
-    public Player(String username, int clientId, ClientThread thread, int ping) {
+    public Player(String username, int clientId) {
         this.username = username;
-        this.thread = thread;
         this.clientId = clientId;
-        this.ping = ping;
+
     }
 
     public ClientThread getThread() {

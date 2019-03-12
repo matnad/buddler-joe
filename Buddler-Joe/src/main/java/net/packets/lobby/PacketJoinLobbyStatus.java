@@ -18,31 +18,17 @@ public class PacketJoinLobbyStatus extends Packet{
         setData(data);
         setClientId(clientId);
         validate();
-        processData();
+
     }
 
+
     @Override
-    public boolean validate() {
-        return true;
+    public void validate() {
+
     }
 
     @Override
     public void processData() {
-        ServerLogic.sendPacket(getClientId(),this);
-    }
 
-    @Override
-    public Packet getPackage() {
-        return null;
-    }
-
-    @Override
-    public String toString() {
-        String[] temp = getData().split(";");
-        String stringToBeCreated = "PacketJoinLobbyStatus{result=" + temp[0];
-        if(temp.length>1){
-            stringToBeCreated = stringToBeCreated + ", lobbyId=" + temp[1];
-        }
-        return stringToBeCreated;
     }
 }

@@ -1,10 +1,15 @@
 package net;
 
+import net.packets.Packet;
+import net.packets.login_logout.PacketLoginStatus;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+
+import static net.packets.Packet.PacketTypes.LOGIN;
 
 
 public class ClientLogic implements Runnable {
@@ -28,7 +33,7 @@ public class ClientLogic implements Runnable {
         server = new Socket(IP, Port);
         output = new PrintWriter(server.getOutputStream(), false);
         input = new BufferedReader(new InputStreamReader(server.getInputStream()));
-        this.clientGUI = clientGUI;
+
         // start thread
         thread = new Thread(this);
         thread.start();
@@ -55,18 +60,20 @@ public class ClientLogic implements Runnable {
 
     private void waitforserver() throws IOException, RuntimeException {
         while (true) {
-            String command = "";
-            String[] in = input.readLine().split(" ");
-            if(in == null) {
+            String in = input.readLine();
+            System.out.println("command:" + in);
+            String command = in.substring(0,5);
+            if(command == null) {
                 System.out.println("Shutting down.");
                 clientGUI.kill();
             }
-//            command = in[0];
-//            switch (command){
-//                case "PLOGS":
-//                    PacketLoginStatus status = new PacketLoginStatus(clientId,in[1].trim());
-//            }
-            System.out.println("Server Reply: "+command);
+            String data = in.substring(5);
+            System.out.println("data:"+ data);
+            switch (Packet.lookupPacket(command)){
+                case LOGIN_STATUS:
+                    PacketLoginStatus p = new PacketLoginStatus(data);
+                    p.processData();
+            }
         }
     }
 

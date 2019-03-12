@@ -6,13 +6,12 @@ import net.playerhandling.Player;
 import net.playerhandling.ServerPlayerList;
 import net.packets.Packet;
 
+import java.util.StringJoiner;
+
 public class PacketLogin extends Packet {
 
-    private Player player;
-    private ServerPlayerList playerList;
-    private ClientThread thread;
 
-
+    private String username;
     /**
      * Login Packet which gets sent first by the client. Validates the Login package, checks whether the
      * Username is already taken and if not adds the player to the ServerPlayerList. Also creates instance
@@ -23,67 +22,41 @@ public class PacketLogin extends Packet {
 
     public PacketLogin(int clientId, String data) {
         super(PacketTypes.LOGIN);
-        if(!validate()){
-            setPacketId(PacketTypes.INVALID);
-            return;
-        }
-        this.playerList = ServerLogic.getPlayerList();
-        setClientId(clientId);
         setData(data);
-        processData();
+        setClientId(clientId);
+        //Split here to class variables
+        username = getData();
+        validate();
     }
 
-    public boolean validate(){
-        return true;
+    public void validate(){
+        if(username == null){
+            addError("No username found.");
+            return;
+        }
+        if(username.length() > 30){
+            addError("Username to long. Maximum is 30 Characters.");
+        }else if(username.length() < 4){
+            addError("Username to short. Minimum is 4 Characters.");
+        }
+        isExtendedAscii(username);
     }
 
     public void processData(){
-        this.player = new Player(getData(), getClientId(), thread, 0);
-        int result = playerList.addPlayer(player);
-        PacketLoginStatus status = new PacketLoginStatus(getClientId(), Integer.toString(result));
-        if(!addPlayerToSentToPlayer(getClientId())){
-            setPacketId(PacketTypes.INVALID);
-            return;
+        String status;
+        if(hasErrors()){
+            StringJoiner statusJ = new StringJoiner("\n","ERRORS:","");
+            for (String error : getErrors()) {
+                statusJ.add(error);
+            }
+            status = statusJ.toString();
+        }else{
+            Player player = new Player(username,getClientId());
+            status = ServerLogic.getPlayerList().addPlayer(player);
         }
-        status.sendToClient(getClientId());
+        PacketLoginStatus p = new PacketLoginStatus(status);
+        p.sendToClient(getClientId());
     }
 
-    @Override
-    public String toString() {
-        return "PacketLogin{" +
-                "player=" + player +
-                ", clientId=" + getClientId() +
-                ", playerList=" + playerList +
-                ", thread=" + thread +
-                '}';
-    }
 
-    @Override
-    public Packet getPackage() {
-        return null;
-    }
-
-    public Player getPlayer() {
-        return player;
-    }
-
-    public void setPlayer(Player player) {
-        this.player = player;
-    }
-
-    public ServerPlayerList getPlayerList() {
-        return playerList;
-    }
-
-    public void setPlayerList(ServerPlayerList playerList) {
-        this.playerList = playerList;
-    }
-
-    public ClientThread getThread() {
-        return thread;
-    }
-
-    public void setThread(ClientThread thread) {
-        this.thread = thread;
-    }
 }

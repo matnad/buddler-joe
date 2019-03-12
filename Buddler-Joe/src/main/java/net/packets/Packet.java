@@ -3,7 +3,8 @@ package net.packets;
 import net.ClientLogic;
 import net.ServerLogic;
 
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *  Abstract Packet class which all Packets implement and build upon.
@@ -31,34 +32,33 @@ public abstract class Packet {
         JOIN_LOBBY_STATUS("LOBJS");
 
 
-        private final String packetId;
+        private final String packetCode;
 
         /**
          * Constructor to assign the packet type to the subclass
-         * @param packetId to Assign the packet ID so that the subclass is
+         * @param packetCode to Assign the packet ID so that the subclass is
          *                 clearly identified
          */
-        PacketTypes(String packetId) {
-            this.packetId = packetId;
+        PacketTypes(String packetCode) {
+            this.packetCode = packetCode;
         }
 
-        public String getPacketId() {
-            return packetId;
+        public String getPacketCode() {
+            return packetCode;
         }
     }
 
     /**
      * Variables which are accessible for the subclasses with the later Getter/Setter methods.
      */
-
-    private PacketTypes packetId;
+    private List<String> errors = new ArrayList<>();
+    private PacketTypes packetType;
     private int clientId;
-    private HashMap<Integer, Boolean> sentToPlayer;
+
     private String data;
 
-    public Packet(PacketTypes packetId) {
-        this.packetId = packetId;
-        this.sentToPlayer = new HashMap<Integer, Boolean>();
+    public Packet(PacketTypes packetType) {
+        this.packetType = packetType;
     }
 
     /**
@@ -75,14 +75,18 @@ public abstract class Packet {
      * toString() to display the package and make it human readable.
      *
      */
-    public abstract boolean validate();
+    public abstract void validate();
 
     public abstract void processData();
 
-    public abstract Packet getPackage();
-
-    public abstract String toString();
-
+    public static PacketTypes lookupPacket(String code) {
+        for (PacketTypes p : PacketTypes.values()) {
+            if (p.getPacketCode().equals(code)) {
+                return p;
+            }
+        }
+        return PacketTypes.INVALID;
+    }
     /**
      * Communication method to send data to another client. The destination address is determined by their
      * clientId. At the same time it is also checked wheter the package has already been sent to this player.
@@ -90,12 +94,7 @@ public abstract class Packet {
      */
 
     public void sendToClient(int receiver) {
-        if(sentToPlayer.get(receiver) != true){
-            sentToPlayer.replace(receiver,true);
             ServerLogic.sendPacket(receiver, this);
-        } else{
-            return;
-        }
     }
 
     public void sendToLobby(int lobbyId){
@@ -106,29 +105,12 @@ public abstract class Packet {
         ClientLogic.sendToServer(this.getData());
     };
 
-    public static PacketTypes lookupPacket(String packetId) {
-        try {
-            for (PacketTypes p : PacketTypes.values()) {
-                if (p.getPacketId() == packetId) {
-                    return p;
-                }
-            }
-        } catch (NumberFormatException e) {
-            return PacketTypes.INVALID;
-        }
-        return PacketTypes.INVALID;
+    public void setPacketType(PacketTypes packetType) {
+        this.packetType = packetType;
     }
 
-    public String readData(String data) {
-        return data.substring(5,data.length()-1);
-    }
-
-    public void setPacketId(PacketTypes packetId) {
-        this.packetId = packetId;
-    }
-
-    public PacketTypes getPacketId() {
-        return packetId;
+    public PacketTypes getPacketType() {
+        return packetType;
     }
 
     public int getClientId() {
@@ -139,13 +121,7 @@ public abstract class Packet {
         this.clientId = clientId;
     }
 
-    public HashMap<Integer, Boolean> getSentToPlayer() {
-        return sentToPlayer;
-    }
 
-    public void setSentToPlayer(HashMap<Integer, Boolean> sentToPlayer) {
-        this.sentToPlayer = sentToPlayer;
-    }
 
     public void setData(String data) {
         this.data = data;
@@ -155,17 +131,30 @@ public abstract class Packet {
         return data;
     }
 
-    /**
-     * Method to add a player to the Hashmap which saves the players and whether the package has already
-     * been sent to this certain player
-     * @param receiverId The playerId of the player which should receive the package
-     * @return boolean to check wheter it was possible to add the player to the list or not.
-     */
+    public List<String> getErrors() {
+        return errors;
+    }
 
-    public boolean addPlayerToSentToPlayer(int receiverId){
-        if(!sentToPlayer.containsKey(receiverId)){
-            sentToPlayer.put(receiverId,false);
+    public boolean hasErrors(){
+        return errors.size() > 0;
+    }
+
+    public void addError(String name){
+        errors.add(name);
+    }
+
+    public boolean isExtendedAscii(String s){
+        char[] charArray = s.toCharArray();
+        for (char c : charArray) {
+            if(c>255){
+                addError("Invalid characters in username. Only extended ASCII.");
+                return false;
+            }
         }
-        return false;
+        return true;
+    }
+
+    public String toString() {
+        return getPacketType().getPacketCode() + " " + getData();
     }
 }

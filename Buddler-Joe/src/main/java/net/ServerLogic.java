@@ -25,8 +25,8 @@ public class ServerLogic {
 
 
     ServerLogic(int portValue) throws IOException {
-            this.playerList = new ServerPlayerList();
-            this.clientThreadMap = new HashMap<Integer, ClientThread>();
+            playerList = new ServerPlayerList();
+            clientThreadMap = new HashMap<Integer, ClientThread>();
             this.portValue = portValue;
             serverSocket = new ServerSocket(portValue);
             lobbyList = new ServerLobbyList();
@@ -45,8 +45,7 @@ public class ServerLogic {
                 System.out.println("Client Arrived");
                 System.out.println("Start Thread for "+ClientId);
                 ClientThread task = new ClientThread(Client, ClientId);
-                ClientId++;
-                clientThreadMap.put(ClientId,task);
+                clientThreadMap.put(ClientId++,task);
                 new Thread(task).start();
             }
         }
@@ -67,15 +66,23 @@ public class ServerLogic {
         return lobbyList;
     }
 
-        public static void sendPacket(int receiver, Packet packet){
-            playerList.searchThread(receiver).sendToClient(packet.getData());
+        public static void sendPacket(int receiver, Packet packet){  //TODO: Check receiver and if he exists
+            ClientThread ct = getThreadByClientId(receiver);
+            System.out.println("reciver:"+ receiver);
+            for (int key : clientThreadMap.keySet()) {
+                System.out.println("key:" + key + "value: " + clientThreadMap.get(key));
+            }
+            System.out.println("send to server thread:" + ct);
+            if(ct != null){
+                ct.sendToClient(packet);
+            }
         }
 
         public static void sendPacketToLobby(int receiverLobby, Packet packet){
 
         }
 
-    public ClientThread getThreadByClientId(int clientId){
+    public static ClientThread getThreadByClientId(int clientId){
         return clientThreadMap.get(clientId);
     }
 

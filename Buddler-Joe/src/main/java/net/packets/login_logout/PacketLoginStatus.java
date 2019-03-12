@@ -6,44 +6,43 @@ import net.packets.Packet;
 
 public class PacketLoginStatus extends Packet {
 
-    private ServerPlayerList playerList;
-
+    private String status;
     /**
      * Package to respond to the client that the Login has been successful
-     * @param clientId to find the player in the list
      */
 
-    public PacketLoginStatus(int clientId, String data) {
+    public PacketLoginStatus(String data) {
+        //Client receives packed
         super(PacketTypes.LOGIN_STATUS);
-        if(!validate()){
-            setPacketId(PacketTypes.INVALID);
-            return;
-        }
         setData(data);
-        setClientId(clientId);
-        processData();
+        status = data;
+        validate();
+    }
 
+    public PacketLoginStatus(int clientId, String status){
+        super(PacketTypes.LOGIN_STATUS);
+        setData(status);
+        setClientId(clientId);
+        this.status = status;
+        validate();
     }
 
     @Override
-    public boolean validate() {
-        return true;
+    public void validate() {
+        if(status != null) {
+            isExtendedAscii(status);
+        }else{
+            addError("No Status found.");
+        }
     }
 
     @Override
     public void processData() {
-        ServerLogic.sendPacket(getClientId(),this);
+        if(status.startsWith("OK")){
+            System.out.println("Login Successful");
+        }else{
+            System.out.println(status);
+        }
     }
 
-    @Override
-    public Packet getPackage() {
-        return null;
-    }
-
-    @Override
-    public String toString() {
-        return "PacketLoginSuccessful{" +
-                "clientId=" + getClientId() + '\'' +
-                '}';
-    }
 }

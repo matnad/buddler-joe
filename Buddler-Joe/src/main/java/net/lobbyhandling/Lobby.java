@@ -9,7 +9,7 @@ public class Lobby {
 
     private int lobbyId;
     private String lobbyName;
-    private HashMap<Integer, Player> lobbyPlayers;
+    private HashMap<Integer, Player> lobbyPlayers; //TODO: replace with arraylist
     private static int lobbyCounter = 0;
     //private Game game;
     //private ChatRoom chatRoom;

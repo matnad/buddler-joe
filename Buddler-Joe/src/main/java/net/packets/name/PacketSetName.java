@@ -9,32 +9,19 @@ public class PacketSetName extends Packet {
 
     public PacketSetName(int clientId, String data) {
         super(PacketTypes.SET_NAME);
-
-        if(!validate()){
-            setPacketId(PacketTypes.INVALID);
-            return;
-        }
         setClientId(clientId);
         setData(data);
+        validate();
     }
 
+
     @Override
-    public boolean validate() {
-        return false;
+    public void validate() {
+
     }
 
     @Override
     public void processData() {
 
-    }
-
-    @Override
-    public Packet getPackage() {
-        return null;
-    }
-
-    @Override
-    public String toString() {
-        return null;
     }
 }
