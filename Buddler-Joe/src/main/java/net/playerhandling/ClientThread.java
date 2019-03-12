@@ -57,6 +57,9 @@ public class ClientThread implements Runnable {
                             PacketGetName getName = new PacketGetName(clientId, in[1].trim());
                         case "SETNM":
                             PacketSetName setName = new PacketSetName(clientId, in[1].trim());
+                        default:
+                            continue;
+
 
                     }
                 }
