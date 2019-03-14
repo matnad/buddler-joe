@@ -1,6 +1,7 @@
 package net;
 
 import net.packets.Packet;
+import net.packets.lobby.PacketLobbyOverview;
 import net.packets.login_logout.PacketLoginStatus;
 
 import java.io.BufferedReader;
@@ -73,6 +74,11 @@ public class ClientLogic implements Runnable {
                 case LOGIN_STATUS:
                     PacketLoginStatus p = new PacketLoginStatus(data);
                     p.processData();
+                    break;
+                case LOBBY_OVERVIEW:
+                    PacketLobbyOverview pLO = new PacketLobbyOverview(data);
+                    pLO.processData();
+                    break;
             }
         }
     }

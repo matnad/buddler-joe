@@ -11,20 +11,32 @@ public class PacketLobbyOverview extends Packet {
      * on the server and not full. (Maximum 10)
      */
 
-    public PacketLobbyOverview(int clientId, String data) {
-        super(PacketTypes.GET_LOBBIES);
+    public PacketLobbyOverview(String data) {
+        //Client receives
+        super(PacketTypes.LOBBY_OVERVIEW);
         setData(data);
-        setClientId(clientId);
         validate();
     }
 
+    public PacketLobbyOverview(int clientId, String data) {
+        //server builds
+        super(PacketTypes.LOBBY_OVERVIEW);
+        setClientId(clientId);
+        setData(data);
+    }
+
+
     @Override
     public void validate() {
-
+        if(getData() != null) {
+            isExtendedAscii(getData());
+        }else{
+            addError("No data has been found");
+        }
     }
 
     @Override
     public void processData() {
-
+        System.out.println(getData());
     }
 }

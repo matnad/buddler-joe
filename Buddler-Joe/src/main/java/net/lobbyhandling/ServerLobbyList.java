@@ -6,6 +6,10 @@ public class ServerLobbyList {
     private HashMap<Integer, Lobby> lobbies;
 
 
+    public ServerLobbyList(){
+        lobbies = new HashMap<>();
+    }
+
     /**
      * Method to add a lobby tho the HashMap of all players. of this lobby
      * @param lobby The lobby to be added to the HashMap
@@ -48,7 +52,7 @@ public class ServerLobbyList {
      * @return either the correct name or null
      */
 
-    public String searchName(int lobbyId){
+    public String getName(int lobbyId){
         return lobbies.get(lobbyId).getLobbyName();
     }
 
@@ -58,7 +62,7 @@ public class ServerLobbyList {
      * @return either the lobby or null
      */
 
-    public Lobby searchLobby(int lobbyId){
+    public Lobby getLobby(int lobbyId){
         return lobbies.get(lobbyId);
     }
 
@@ -69,7 +73,7 @@ public class ServerLobbyList {
      * @return either the lobbyId or -1 if not found
      */
 
-    public int searchLobbyId(String lobbyName){
+    public int getLobbyId(String lobbyName){
         for(Lobby l : lobbies.values()){
             if(lobbyName.equals(l.getLobbyName())) {
                 return l.getLobbyId();
@@ -79,28 +83,35 @@ public class ServerLobbyList {
     }
 
     /**
-     * Method to get lobbyId, lobbyName and
-     * @return the full lobby List  as a String
+     * A method to get a List of at max 10 lobbies.
+     * @return A String that contains a List of max 10 lobbies (that are not full).
+     * Each line contains the Lobbies: Name,LobbyId, and the Amount of Players in the Lobby.
+     * If no such lobbies are available the String contains the information about that.
      */
 
-    public String getInfo(){
-        String res = "";
-        for(Lobby l : lobbies.values()){
-            res = l.getLobbyId() + ";" + l.getLobbyName() + ";" + l.getPlayerAmount() + ";";
+    public String getTopTen(){
+        String s = "";
+        int counter = 0;
+        if(lobbies.size()>0){
+            for(Lobby l : lobbies.values()){
+                if(counter == 10){
+                    break;
+                }
+                if(l.getPlayerAmount() == 1000){//TODO:100 durch maximale Spielerzahl ersetzen
+                    continue;
+                }else{
+                    s = s + l.toString();
+                    counter++;
+                }
+            }
+            if(s.equals("")){
+                s = "All Lobbies are full";
+            }
+        } else {
+            s = "No Lobbies online";
         }
-        return res;
+        return s;
     }
 
-    /**
-     * Method to print out the full lobby List
-     * @return the full lobby List  as a String
-     */
-    //TODO: print out the lobbies list
-    @Override
-    public String toString() {
-        return "LobbyPlayerList{" +
-                "lobbies=" +
 
-                '}';
-    }
 }

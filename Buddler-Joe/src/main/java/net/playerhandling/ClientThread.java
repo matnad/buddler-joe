@@ -2,6 +2,8 @@ package net.playerhandling;
 
 import net.ServerLogic;
 import net.packets.Packet;
+import net.packets.lobby.PacketGetLobbies;
+import net.packets.lobby.PacketLobbyOverview;
 import net.packets.name.PacketGetName;
 import net.packets.login_logout.PacketLogin;
 import net.packets.name.PacketSetName;
@@ -52,11 +54,18 @@ public class ClientThread implements Runnable {
                             if(!login.hasErrors()) {
                                 System.out.println("Player " + ServerLogic.getPlayerList().getUsername(clientId) + " has connected.");
                             }
+                            break;
 
                         case "GETNM":
                             PacketGetName getName = new PacketGetName(clientId, in[1].trim());
+                            break;
                         case "SETNM":
                             PacketSetName setName = new PacketSetName(clientId, in[1].trim());
+                            break;
+                        case "LOBGE":
+                            PacketGetLobbies getLobbies = new PacketGetLobbies(clientId);
+                            getLobbies.processData();
+                            break;
                         default:
                             continue;
 

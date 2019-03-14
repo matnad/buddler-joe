@@ -22,15 +22,15 @@ public abstract class Packet {
         DISCONNECT("DISCP"),
         GET_NAME("GETNM"),
         SET_NAME("SETNM"),
-        GET_LOBBIES("LOBOV"),
+        GET_LOBBIES("LOBGE"),
         LEAVE_LOBBY("LOBLE"),
         JOIN_LOBBY("LOBJO"),
         CREATE_LOBBY("LOBCRE"),
         PING("UPING"),
         PONG("PONGU"),
         CREATE_LOBBY_STATUS("LOBCS"),
-        JOIN_LOBBY_STATUS("LOBJS");
-
+        JOIN_LOBBY_STATUS("LOBJS"),
+        LOBBY_OVERVIEW("LOBOV");
 
         private final String packetCode;
 
