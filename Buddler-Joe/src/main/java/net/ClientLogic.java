@@ -48,7 +48,8 @@ public class ClientLogic implements Runnable {
     @Override
     public void run() {
         try {
-        } catch (IOException | RuntimeException | NullPointerException e) {
+            waitForServer();
+        } catch (IOException | RuntimeException e) {
             e.printStackTrace();
             System.out.println("Connection lost to server");
             try {
@@ -67,7 +68,7 @@ public class ClientLogic implements Runnable {
      * @throws RuntimeException
      */
 
-    private void waitForServer() throws IOException {
+    private void waitForServer() throws IOException, RuntimeException {
         //firstLogin();
         while (true) {
             String in = input.readLine();

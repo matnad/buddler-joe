@@ -5,6 +5,7 @@ import net.packets.Packet;
 import net.packets.lobby.PacketCreateLobby;
 import net.packets.lobby.PacketGetLobbies;
 import net.packets.lobby.PacketLobbyOverview;
+import net.packets.login_logout.PacketDisconnect;
 import net.packets.name.PacketGetName;
 import net.packets.login_logout.PacketLogin;
 import net.packets.name.PacketSetName;
@@ -64,15 +65,13 @@ public class ClientThread implements Runnable {
                         PacketDisconnect disconnect = new PacketDisconnect(clientId, data);
                         disconnect.processData();
                         break;
-                    case "LOBGE":
+                    case GET_LOBBIES:
                         PacketGetLobbies getLobbies = new PacketGetLobbies(clientId);
                         getLobbies.processData();
                         break;
-                    case "LOBCR":
-                        if(in.length>1) {
-                            PacketCreateLobby createLobby = new PacketCreateLobby(clientId, in[1].trim());
-                            createLobby.processData();
-                            }
+                    case CREATE_LOBBY:
+                        PacketCreateLobby createLobby = new PacketCreateLobby(clientId, data);
+                        createLobby.processData();
                         break;
                     default:
                         break;
@@ -81,6 +80,7 @@ public class ClientThread implements Runnable {
                 System.out.println("Client " + clientId + " left");
                 try {
                     socket.close();
+                    break;
                 } catch (IOException e1) {
                     e1.printStackTrace();
                 }

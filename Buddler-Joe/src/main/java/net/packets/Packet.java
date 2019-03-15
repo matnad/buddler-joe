@@ -28,6 +28,7 @@ public abstract class Packet {
         GET_NAME("GETNM"),
         SEND_NAME("SENDN"),
         SET_NAME("SETNM"),
+        SET_NAME_STATUS("STNMS"),
         GET_LOBBIES("LOBGE"),
         LEAVE_LOBBY("LOBLE"),
         JOIN_LOBBY("LOBJO"),

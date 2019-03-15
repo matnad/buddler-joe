@@ -9,14 +9,14 @@ public class PacketSetNameStatus extends Packet{
      */
 
     public PacketSetNameStatus(String data) {
-        super(Packet.PacketTypes.LOGIN_STATUS);
+        super(PacketTypes.SET_NAME_STATUS);
         setData(data);
         this.status = data;
         validate();
     }
 
     public PacketSetNameStatus(int clientId, String status){
-        super(Packet.PacketTypes.LOGIN_STATUS);
+        super(PacketTypes.SET_NAME_STATUS);
         setData(status);
         setClientId(clientId);
         this.status = status;
@@ -35,7 +35,7 @@ public class PacketSetNameStatus extends Packet{
     @Override
     public void processData() {
         if (status.startsWith("Successfully")) {
-            //System.out.println(status);
+            System.out.println(status);
         } else {
             if (hasErrors()) {
                 System.out.println(createErrorMessage());

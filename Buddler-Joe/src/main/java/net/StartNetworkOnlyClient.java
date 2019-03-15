@@ -39,7 +39,7 @@ public class StartNetworkOnlyClient {
         StartNetworkOnlyClient client = new StartNetworkOnlyClient();
         try {
             firstLogin();
-        } catch (IOException e){
+        } catch (IOException | StringIndexOutOfBoundsException e){
             System.out.println("Server disconnected.");
         }
         try {
@@ -50,13 +50,13 @@ public class StartNetworkOnlyClient {
 
     }
 
-    private static void firstLogin() throws IOException {
+    private static void firstLogin() throws IOException, StringIndexOutOfBoundsException {
         System.out.println("Welcome player! What name would you like to give yourself? " + "\n" +
                 "Your System says, that you are " + System.getProperty("user.name") +
                 "." + "\n" + "Would you like to choose that name? Type Yes or " +
                 "the username you would like to choose.");
         String answer = br.readLine();
-        if(answer.substring(0,3).startsWith("Yes")){
+        if(answer.trim().toLowerCase().equals("yes")){
             clientLogic.sendToServer("PLOGI " + System.getProperty("user.name"));
         } else {
             clientLogic.sendToServer("PLOGI " + answer);
