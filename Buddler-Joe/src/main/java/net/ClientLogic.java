@@ -74,7 +74,7 @@ public class ClientLogic implements Runnable {
                 clientGUI.kill();
             }
             String data = in.substring(6);
-           // System.out.println("data:"+ data);
+            //System.out.println("data:"+ data + "\n------------------------------------------------");
             switch (Packet.lookupPacket(command)){
                 case LOGIN_STATUS:
                     PacketLoginStatus p = new PacketLoginStatus(data);

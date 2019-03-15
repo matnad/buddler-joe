@@ -5,6 +5,7 @@ import net.packets.Packet;
 
 public class PacketLobbyOverview extends Packet {
 
+    String[] in;
     /**
      * A packed which is sent to the client before joining a lobby.
      * It should contain information to all open lobbys that are available
@@ -14,6 +15,8 @@ public class PacketLobbyOverview extends Packet {
     public PacketLobbyOverview(String data) {
         //Client receives
         super(PacketTypes.LOBBY_OVERVIEW);
+        //System.out.print(data);
+        in = data.split("║");
         setData(data);
         validate();
     }
@@ -37,6 +40,11 @@ public class PacketLobbyOverview extends Packet {
 
     @Override
     public void processData() {
-        System.out.println(getData());
+        System.out.println("-------------------------------------");
+        System.out.println("Available Lobbies:");
+        for (String s : in) {
+            System.out.println(s);
+        }
+        System.out.println("-------------------------------------");
     }
 }

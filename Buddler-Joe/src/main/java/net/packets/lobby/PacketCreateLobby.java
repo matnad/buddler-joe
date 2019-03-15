@@ -50,6 +50,7 @@ public class PacketCreateLobby extends Packet {
 
     @Override
     public void processData() {
+        //System.out.println("--------------" + ServerLogic.getLobbyList().toString());
         String status;
         if(hasErrors()){
             StringJoiner statusJ = new StringJoiner("\n","ERRORS:","");
@@ -64,7 +65,7 @@ public class PacketCreateLobby extends Packet {
         PacketCreateLobbyStatus pcls = new PacketCreateLobbyStatus(getClientId(),status);
         pcls.sendToClient(getClientId());
         //Creat a LobbyOverview-Packet to be send to all Clients.
-        if(!hasErrors()){
+        if(!hasErrors() && status.equals("OK")){
             String info = ServerLogic.getLobbyList().getTopTen();
             PacketLobbyOverview p = new PacketLobbyOverview(getClientId(),info);
             p.sendToAllClients();

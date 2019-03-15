@@ -81,6 +81,15 @@ public class ServerLobbyList {
         return -1;
     }
 
+    /*
+    public String toString(){
+        String s = "";
+        for (Lobby lobby : lobbies.values()) {
+            s = s + lobby.getLobbyName() + " ";
+        }
+        return s;
+    }*/
+
     /**
      * A method to get a List of at max 10 lobbies.
      * @return A String that contains a List of max 10 lobbies (that are not full).
@@ -99,7 +108,7 @@ public class ServerLobbyList {
                 if(l.getPlayerAmount() == 1000){//TODO:100 durch maximale Spielerzahl ersetzen
                     continue;
                 }else{
-                    s = s + l.toString();
+                    s = s + l.toString()+"║";
                     counter++;
                 }
             }

@@ -69,8 +69,10 @@ public class Lobby {
         return lobbyPlayers;
     }
 
+
     public String toString(){
-        String s = "Name: " + lobbyName + ", LobbyId: " + lobbyId + ", Spieler: " + getPlayerAmount() + "\n";
+        String s = "Name: " + lobbyName + ", LobbyId: " + lobbyId + ", Spieler: " + getPlayerAmount();
         return s;
     }
+
 }
