@@ -187,6 +187,21 @@ public abstract class Packet {
         }
     }
 
+    /**
+     * This method checks if the client how send this Packet is currently in a Lobby
+     * @return true if in a Lobby else false
+     */
+    public boolean isInALobby(){
+        int lobbyId = ServerLogic.getPlayerList().getPlayers().get(getClientId()).getCurLobbyId();
+        if(lobbyId != 0){
+            addError("Already in a lobby");
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+
     public String toString() {
         return getPacketType().getPacketCode() + " " + getData();
     }

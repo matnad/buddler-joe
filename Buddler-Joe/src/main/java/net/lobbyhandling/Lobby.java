@@ -11,7 +11,7 @@ public class Lobby {
     private int lobbyId;
     private String lobbyName;
     private ArrayList<Player> lobbyPlayers; //TODO: replace with arraylist
-    private static int lobbyCounter = 0;
+    private static int lobbyCounter = 1;
     //private Game game;
     //private ChatRoom chatRoom;
 
@@ -37,12 +37,12 @@ public class Lobby {
      * whether the action was successful or not
      */
 
-    public int addPlayer(Player player){
+    public String addPlayer(Player player){
         if(lobbyPlayers.contains(player)){
-            return -1;
+            return "Already joined this lobby.";
         }
         lobbyPlayers.add(player);
-        return 1;
+        return "OK";
     }
 
     /**

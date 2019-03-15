@@ -2,6 +2,7 @@ package net;
 
 import net.packets.Packet;
 import net.packets.lobby.PacketCreateLobbyStatus;
+import net.packets.lobby.PacketJoinLobbyStatus;
 import net.packets.lobby.PacketLobbyOverview;
 import net.packets.login_logout.PacketLoginStatus;
 
@@ -87,6 +88,10 @@ public class ClientLogic implements Runnable {
                 case CREATE_LOBBY_STATUS:
                     PacketCreateLobbyStatus  pcls = new PacketCreateLobbyStatus(data);
                     pcls.processData();
+                    break;
+                case JOIN_LOBBY_STATUS:
+                    PacketJoinLobbyStatus pjls = new PacketJoinLobbyStatus(data);
+                    pjls.processData();
                     break;
             }
         }

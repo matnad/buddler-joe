@@ -4,6 +4,7 @@ import net.ServerLogic;
 import net.packets.Packet;
 import net.packets.lobby.PacketCreateLobby;
 import net.packets.lobby.PacketGetLobbies;
+import net.packets.lobby.PacketJoinLobby;
 import net.packets.lobby.PacketLobbyOverview;
 import net.packets.name.PacketGetName;
 import net.packets.login_logout.PacketLogin;
@@ -73,6 +74,12 @@ public class ClientThread implements Runnable {
                             if(in.length>1) {
                                 PacketCreateLobby createLobby = new PacketCreateLobby(clientId, in[1].trim());
                                 createLobby.processData();
+                            }
+                            break;
+                        case "LOBJO":
+                            if(in.length>1) {
+                                PacketJoinLobby joinLobby = new PacketJoinLobby(clientId, in[1].trim());
+                                joinLobby.processData();
                             }
                             break;
                         default:

@@ -46,14 +46,16 @@ public class PacketCreateLobby extends Packet {
             addError("Lobbyname to short. Minimum is 4 Characters.");
         }
         isExtendedAscii(lobbyname);
-        isLoggedIn();
+        if(isLoggedIn()){
+            isInALobby();
+        }
     }
 
     @Override
     public void processData() {
         String status;
         if(hasErrors()){
-            StringJoiner statusJ = new StringJoiner("\n","ERRORS: ","");
+            StringJoiner statusJ = new StringJoiner("║","ERRORS:║","");
             for (String error : getErrors()) {
                 statusJ.add(error);
             }
