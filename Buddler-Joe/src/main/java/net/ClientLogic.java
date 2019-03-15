@@ -1,6 +1,7 @@
 package net;
 
 import net.packets.Packet;
+import net.packets.lobby.PacketCreateLobbyStatus;
 import net.packets.lobby.PacketLobbyOverview;
 import net.packets.login_logout.PacketLoginStatus;
 
@@ -49,6 +50,7 @@ public class ClientLogic implements Runnable {
         try {
             waitforserver();
         } catch (IOException | RuntimeException e) {
+            e.printStackTrace();
             System.out.println("Connection lost to server");
         }
     }
@@ -62,14 +64,17 @@ public class ClientLogic implements Runnable {
     private void waitforserver() throws IOException, RuntimeException {
         while (true) {
             String in = input.readLine();
-            System.out.println("command:" + in);
+            if(in.equals("")){
+                continue;
+            }
+            //System.out.println("command:" + in);
             String command = in.substring(0,5);
             if(command == null) {
                 System.out.println("Shutting down.");
                 clientGUI.kill();
             }
-            String data = in.substring(5);
-            System.out.println("data:"+ data);
+            String data = in.substring(6);
+           // System.out.println("data:"+ data);
             switch (Packet.lookupPacket(command)){
                 case LOGIN_STATUS:
                     PacketLoginStatus p = new PacketLoginStatus(data);
@@ -78,6 +83,10 @@ public class ClientLogic implements Runnable {
                 case LOBBY_OVERVIEW:
                     PacketLobbyOverview pLO = new PacketLobbyOverview(data);
                     pLO.processData();
+                    break;
+                case CREATE_LOBBY_STATUS:
+                    PacketCreateLobbyStatus  pcls = new PacketCreateLobbyStatus(data);
+                    pcls.processData();
                     break;
             }
         }

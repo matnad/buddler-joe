@@ -17,18 +17,17 @@ public class ServerLobbyList {
      * whether the action was successful or not
      */
 
-    public int addLobby(Lobby lobby){
+    public String addLobby(Lobby lobby){
         if(lobbies.containsKey(lobby.getLobbyId())){
-            return -1;
+            return "Lobby already created.";
         }
         for(Lobby l : lobbies.values()){
             if(lobby.getLobbyName().equals(l.getLobbyName())) {
-                return -2;
+                return "Lobbyname already taken.";
             }
         }
         lobbies.put(lobby.getLobbyId(), lobby);
-        return 1;
-
+        return "OK";
     }
 
 

@@ -7,8 +7,14 @@ public class PacketGetLobbies extends Packet {
 
 
     public PacketGetLobbies(int clientId){
+        //server builds
         super(PacketTypes.GET_LOBBIES);
         setClientId(clientId);
+    }
+
+    public PacketGetLobbies(){
+        //client builds
+        super(PacketTypes.GET_LOBBIES);
     }
 
     @Override

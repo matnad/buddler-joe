@@ -60,9 +60,14 @@ public class Lobby {
         }
     }
 
+
     public int getPlayerAmount(){ return lobbyPlayers.size(); }
     public int getLobbyId() { return lobbyId; }
     public String getLobbyName() { return lobbyName; }
+
+    public ArrayList<Player> getLobbyPlayers() {
+        return lobbyPlayers;
+    }
 
     public String toString(){
         String s = "Name: " + lobbyName + ", LobbyId: " + lobbyId + ", Spieler: " + getPlayerAmount() + "\n";

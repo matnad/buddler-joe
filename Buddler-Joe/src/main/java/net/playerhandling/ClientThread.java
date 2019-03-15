@@ -2,6 +2,7 @@ package net.playerhandling;
 
 import net.ServerLogic;
 import net.packets.Packet;
+import net.packets.lobby.PacketCreateLobby;
 import net.packets.lobby.PacketGetLobbies;
 import net.packets.lobby.PacketLobbyOverview;
 import net.packets.name.PacketGetName;
@@ -49,10 +50,12 @@ public class ClientThread implements Runnable {
                     System.out.println("command sent was '" + command + "' by client No " + clientId);
                     switch(command){
                         case "PLOGI":
-                            PacketLogin login = new PacketLogin(clientId, in[1].trim());
-                            login.processData();
-                            if(!login.hasErrors()) {
-                                System.out.println("Player " + ServerLogic.getPlayerList().getUsername(clientId) + " has connected.");
+                            if(in.length>1){
+                                PacketLogin login = new PacketLogin(clientId, in[1].trim());
+                                login.processData();
+                                if(!login.hasErrors()) {
+                                    System.out.println("Player " + ServerLogic.getPlayerList().getUsername(clientId) + " has connected.");
+                                }
                             }
                             break;
 
@@ -65,6 +68,12 @@ public class ClientThread implements Runnable {
                         case "LOBGE":
                             PacketGetLobbies getLobbies = new PacketGetLobbies(clientId);
                             getLobbies.processData();
+                            break;
+                        case "LOBCR":
+                            if(in.length>1) {
+                                PacketCreateLobby createLobby = new PacketCreateLobby(clientId, in[1].trim());
+                                createLobby.processData();
+                            }
                             break;
                         default:
                             continue;
