@@ -20,7 +20,7 @@ public class ServerPlayerList {
     public String addPlayer(Player player){
         String answer = "";
         if(players.containsKey(player.getClientId())){
-            answer = "Already loggedin.";
+            answer = "Already logged in.";
         } else if(isUsernameInList(player.getUsername())){
             answer = "Username already taken";
         } else {

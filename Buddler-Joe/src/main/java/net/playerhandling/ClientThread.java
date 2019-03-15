@@ -33,48 +33,46 @@ public class ClientThread implements Runnable {
 
     @Override
     public void run() {
-        try {
             while (true) {
                 try {
                     String in = input.readLine();
-                    if (in.length() < 7) {
-                        System.out.println("No valid command has been sent by player No " + clientId);
-                        continue;
-                    }
-                    String command = in.substring(0, 5);
-                    String data = in.substring(5).trim();
-                    System.out.println("command sent was '" + command + "' by client No " + clientId);
-                    switch (Packet.lookupPacket(command)) {
-                        case LOGIN:
-                            PacketLogin login = new PacketLogin(clientId, data);
-                            login.processData();
-                            if (!login.hasErrors()) {
-                                System.out.println("Player " + ServerLogic.getPlayerList().getUsername(clientId) + " has connected.");
-                            }
-                        case GET_NAME:
-                            PacketGetName getName = new PacketGetName(clientId, data);
-                            getName.processData();
-                        case SET_NAME:
-                            PacketSetName setName = new PacketSetName(clientId, data);
-                            setName.processData();
-                        case DISCONNECT:
-                            PacketDisconnect disconnect = new PacketDisconnect(clientId, data);
-                            disconnect.processData();
-                    }
-                } catch (IOException e) {
-                    System.out.println("Client " + clientId + " left");
-                    try {
-                        socket.close();
-                    } catch (IOException e1) {
-                        e1.printStackTrace();
-                    }
+                if (in.length() < 6) {
+                    System.out.println("No valid command has been sent by player No " + clientId);
+                    continue;
                 }
-            }
-        } catch (NullPointerException e2){
-            try {
-                socket.close();
-            } catch (IOException e1) {
-                e1.printStackTrace();
+                String command = in.substring(0, 5);
+                String data = in.substring(5).trim();
+                System.out.println("command sent was '" + command + "' by client No " + clientId);
+                switch (Packet.lookupPacket(command)) {
+                    case LOGIN:
+                        PacketLogin login = new PacketLogin(clientId, data);
+                        login.processData();
+                        if (!login.hasErrors()) {
+                            System.out.println("Player " + ServerLogic.getPlayerList().getUsername(clientId) + " has connected.");
+                        }
+                        break;
+                    case GET_NAME:
+                        PacketGetName getName = new PacketGetName(clientId, data);
+                        getName.processData();
+                        break;
+                    case SET_NAME:
+                        PacketSetName setName = new PacketSetName(clientId, data);
+                        setName.processData();
+                        break;
+                    case DISCONNECT:
+                        PacketDisconnect disconnect = new PacketDisconnect(clientId, data);
+                        disconnect.processData();
+                        break;
+                    default:
+                        break;
+                }
+            } catch(IOException | NullPointerException e){
+                System.out.println("Client " + clientId + " left");
+                try {
+                    socket.close();
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
             }
         }
     }

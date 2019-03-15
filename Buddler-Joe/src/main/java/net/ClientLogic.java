@@ -69,7 +69,7 @@ public class ClientLogic implements Runnable {
         //firstLogin();
         while (true) {
             String in = input.readLine();
-            if(in.length() < 7){
+            if(in.length() < 6){
                 System.out.println("No valid command has been sent by server");
                 continue;
             }
@@ -79,12 +79,17 @@ public class ClientLogic implements Runnable {
                 case LOGIN_STATUS:
                     PacketLoginStatus p = new PacketLoginStatus(data);
                     p.processData();
+                    break;
                 case SEND_NAME:
                     PacketSendName sendName = new PacketSendName(data);
                     sendName.processData();
+                    break;
                 case SET_NAME_STATUS:
                     PacketSetNameStatus setName = new PacketSetNameStatus(data);
                     setName.processData();
+                    break;
+                default:
+                    break;
             }
         }
     }
