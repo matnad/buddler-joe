@@ -46,14 +46,14 @@ public class PacketCreateLobby extends Packet {
             addError("Lobbyname to short. Minimum is 4 Characters.");
         }
         isExtendedAscii(lobbyname);
+        isLoggedIn();
     }
 
     @Override
     public void processData() {
-        //System.out.println("--------------" + ServerLogic.getLobbyList().toString());
         String status;
         if(hasErrors()){
-            StringJoiner statusJ = new StringJoiner("\n","ERRORS:","");
+            StringJoiner statusJ = new StringJoiner("\n","ERRORS: ","");
             for (String error : getErrors()) {
                 statusJ.add(error);
             }
@@ -66,7 +66,7 @@ public class PacketCreateLobby extends Packet {
         pcls.sendToClient(getClientId());
         //Creat a LobbyOverview-Packet to be send to all Clients.
         if(!hasErrors() && status.equals("OK")){
-            String info = ServerLogic.getLobbyList().getTopTen();
+            String info = "OK║" + ServerLogic.getLobbyList().getTopTen();
             PacketLobbyOverview p = new PacketLobbyOverview(getClientId(),info);
             p.sendToAllClients();
         }

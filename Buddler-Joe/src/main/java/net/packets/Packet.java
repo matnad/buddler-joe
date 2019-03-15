@@ -174,6 +174,19 @@ public abstract class Packet {
         return true;
     }
 
+    /**
+     * This method checks if the client how send this Packet is logged in or not.
+     * @return true if logged in else false
+     */
+    public boolean isLoggedIn(){
+        if(!ServerLogic.getPlayerList().getPlayers().containsKey(getClientId())){
+            addError("Not loggedin yet.");
+            return false;
+        }else{
+            return true;
+        }
+    }
+
     public String toString() {
         return getPacketType().getPacketCode() + " " + getData();
     }
