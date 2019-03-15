@@ -3,13 +3,14 @@ package net.lobbyhandling;
 import net.playerhandling.ClientThread;
 import net.playerhandling.Player;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Lobby {
 
     private int lobbyId;
     private String lobbyName;
-    private HashMap<Integer, Player> lobbyPlayers; //TODO: replace with arraylist
+    private ArrayList<Player> lobbyPlayers; //TODO: replace with arraylist
     private static int lobbyCounter = 0;
     //private Game game;
     //private ChatRoom chatRoom;
@@ -24,10 +25,9 @@ public class Lobby {
         this.lobbyName = lobbyName;
         //this.game = new Game();
         //this.chatRoom = new ChatRoom();
-        this.lobbyPlayers = new HashMap<Integer, Player>();
+        this.lobbyPlayers = new ArrayList<>();
         this.lobbyId = lobbyCounter;
         lobbyCounter++;
-
     }
 
     /**
@@ -38,10 +38,10 @@ public class Lobby {
      */
 
     public int addPlayer(Player player){
-        if(lobbyPlayers.containsKey(player.getClientId())){
+        if(lobbyPlayers.contains(player)){
             return -1;
         }
-        lobbyPlayers.put(player.getClientId(), player);
+        lobbyPlayers.add(player);
         return 1;
     }
 
@@ -52,58 +52,27 @@ public class Lobby {
      */
 
     public int removePlayer(Player player){
-        if(lobbyPlayers.containsValue(player)){
-            lobbyPlayers.remove(player.getClientId());
+        if(lobbyPlayers.contains(player)){
+            lobbyPlayers.remove(player);
             return 1;
         } else{
             return -1;
         }
     }
 
-    /**
-     * Method to search for a players name in the Hashmap by using the clientId
-     * @param clientId the looked tor clientId
-     * @return either the correct name or null
-     */
-
-    public String searchName(int clientId){
-        return lobbyPlayers.get(clientId).getUsername();
-    }
-
-    /**
-     * Method to seach for a certain thread via the clientId to then return it to the method called
-     * @param clientId
-     * @return either the thread or null
-     */
-
-    public ClientThread searchThread(int clientId) {
-        return lobbyPlayers.get(clientId).getThread();
-    }
-
-    /**
-     * search a client via the username to find the clientId in case only one of the two was supplied
-     * to the method.
-     * @param username of the player to be found in the list
-     * @return either the clientId or -1 if not found
-     */
-
-    public int searchClientId(String username){
-        for(Player p : lobbyPlayers.values()){
-            if(username.equals(p.getUsername())) {
-                return p.getClientId();
-            }
-        }
-        return -1;
-    }
-
-    /**
-     * @return the number of Players in this lobby
-     */
 
     public int getPlayerAmount(){ return lobbyPlayers.size(); }
-
-
     public int getLobbyId() { return lobbyId; }
     public String getLobbyName() { return lobbyName; }
+
+    public ArrayList<Player> getLobbyPlayers() {
+        return lobbyPlayers;
+    }
+
+
+    public String toString(){
+        String s = "Name: " + lobbyName + ", LobbyId: " + lobbyId + ", Spieler: " + getPlayerAmount();
+        return s;
+    }
 
 }

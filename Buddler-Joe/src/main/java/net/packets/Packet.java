@@ -2,9 +2,14 @@ package net.packets;
 
 import net.ClientLogic;
 import net.ServerLogic;
+import net.lobbyhandling.Lobby;
+import net.playerhandling.Player;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+
+import static net.ServerLogic.getPlayerList;
 
 /**
  *  Abstract Packet class which all Packets implement and build upon.
@@ -22,15 +27,15 @@ public abstract class Packet {
         DISCONNECT("DISCP"),
         GET_NAME("GETNM"),
         SET_NAME("SETNM"),
-        GET_LOBBIES("LOBOV"),
+        GET_LOBBIES("LOBGE"),
         LEAVE_LOBBY("LOBLE"),
         JOIN_LOBBY("LOBJO"),
-        CREATE_LOBBY("LOBCRE"),
+        CREATE_LOBBY("LOBCR"),
         PING("UPING"),
         PONG("PONGU"),
         CREATE_LOBBY_STATUS("LOBCS"),
-        JOIN_LOBBY_STATUS("LOBJS");
-
+        JOIN_LOBBY_STATUS("LOBJS"),
+        LOBBY_OVERVIEW("LOBOV");
 
         private final String packetCode;
 
@@ -97,13 +102,28 @@ public abstract class Packet {
             ServerLogic.sendPacket(receiver, this);
     }
 
+    /**
+     * This Method calls the sendToClient Method for each player in the specified lobby.
+     * @param lobbyId the lobbyId of the lobby to which the packet should be send.
+     */
     public void sendToLobby(int lobbyId){
-        //TODO: Method to get the players from one lobby and then send them the package
-    };
+        Lobby lobby = ServerLogic.getLobbyList().getLobby(lobbyId);
+        ArrayList<Player> players = lobby.getLobbyPlayers();
+        for (Player p : players) {
+            sendToClient(p.getClientId());
+        }
+    }
+
+    public void sendToAllClients(){
+        HashMap<Integer, Player> players = ServerLogic.getPlayerList().getPlayers();
+        for (Player p : players.values()) {
+            sendToClient(p.getClientId());
+        }
+    }
 
     public void sendToServer(){
         ClientLogic.sendToServer(this.getData());
-    };
+    }
 
     public void setPacketType(PacketTypes packetType) {
         this.packetType = packetType;

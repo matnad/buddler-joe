@@ -65,4 +65,8 @@ public class ServerPlayerList {
             return false;
         }
     }
+
+    public HashMap<Integer, Player> getPlayers() {
+        return players;
+    }
 }
