@@ -38,11 +38,29 @@ public class StartNetworkOnlyClient {
     public static void main(String[] args) {
         StartNetworkOnlyClient client = new StartNetworkOnlyClient();
         try {
+            firstLogin();
+        } catch (IOException e){
+            System.out.println("Server disconnected.");
+        }
+        try {
             client.TakeInputAndAct();
         } catch (IOException e ) {
             System.out.println("Buffer Reader does not exist");
         }
 
+    }
+
+    private static void firstLogin() throws IOException {
+        System.out.println("Welcome player! What name would you like to give yourself? " + "\n" +
+                "Your System says, that you are " + System.getProperty("user.name") +
+                "." + "\n" + "Would you like to choose that name? Type Yes or " +
+                "the username you would like to choose.");
+        String answer = br.readLine();
+        if(answer.substring(0,3).startsWith("Yes")){
+            clientLogic.sendToServer("PLOGI " + System.getProperty("user.name"));
+        } else {
+            clientLogic.sendToServer("PLOGI " + answer);
+        }
     }
 
     void kill() {

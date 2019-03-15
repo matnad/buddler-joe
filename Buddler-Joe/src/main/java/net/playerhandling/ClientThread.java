@@ -2,6 +2,8 @@ package net.playerhandling;
 
 import net.ServerLogic;
 import net.packets.Packet;
+import net.packets.login_logout.PacketDisconnect;
+import net.packets.login_logout.PacketLoginStatus;
 import net.packets.name.PacketGetName;
 import net.packets.login_logout.PacketLogin;
 import net.packets.name.PacketSetName;
@@ -15,16 +17,11 @@ public class ClientThread implements Runnable {
     private PrintWriter output;
     private final int clientId;
     private final Socket socket;
-    private boolean connected;
 
     public ClientThread(Socket Client, int clientId) {
         this.clientId = clientId;
         this.socket = Client;
-
-        // So we can see what unique clients have joined
         System.out.println("Client details: "+Client.toString());
-
-        // create streams
         try {
             input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             output = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()));
@@ -36,37 +33,45 @@ public class ClientThread implements Runnable {
 
     @Override
     public void run() {
-        String command = "";
-        try{
-            while (command != null){
-                String[] in = input.readLine().split(" ");//TODO: Substring 5
-                command = in[0];
-                if (command == null) {
-                    System.out.println("Client " + clientId + " left");
-                } else {
+        try {
+            while (true) {
+                try {
+                    String in = input.readLine();
+                    if (in.length() < 7) {
+                        System.out.println("No valid command has been sent by player No " + clientId);
+                        continue;
+                    }
+                    String command = in.substring(0, 5);
+                    String data = in.substring(5).trim();
                     System.out.println("command sent was '" + command + "' by client No " + clientId);
-                    switch(command){
-                        case "PLOGI":
-                            PacketLogin login = new PacketLogin(clientId, in[1].trim());
+                    switch (Packet.lookupPacket(command)) {
+                        case LOGIN:
+                            PacketLogin login = new PacketLogin(clientId, data);
                             login.processData();
-                            if(!login.hasErrors()) {
+                            if (!login.hasErrors()) {
                                 System.out.println("Player " + ServerLogic.getPlayerList().getUsername(clientId) + " has connected.");
                             }
-
-                        case "GETNM":
-                            PacketGetName getName = new PacketGetName(clientId, in[1].trim());
-                        case "SETNM":
-                            PacketSetName setName = new PacketSetName(clientId, in[1].trim());
-                        default:
-                            continue;
-
-
+                        case GET_NAME:
+                            PacketGetName getName = new PacketGetName(clientId, data);
+                            getName.processData();
+                        case SET_NAME:
+                            PacketSetName setName = new PacketSetName(clientId, data);
+                            setName.processData();
+                        case DISCONNECT:
+                            PacketDisconnect disconnect = new PacketDisconnect(clientId, data);
+                            disconnect.processData();
+                    }
+                } catch (IOException e) {
+                    System.out.println("Client " + clientId + " left");
+                    try {
+                        socket.close();
+                    } catch (IOException e1) {
+                        e1.printStackTrace();
                     }
                 }
             }
-        } catch (IOException e) {
-            System.out.println("Client " + clientId + " left");
-            try{
+        } catch (NullPointerException e2){
+            try {
                 socket.close();
             } catch (IOException e1) {
                 e1.printStackTrace();
@@ -75,7 +80,6 @@ public class ClientThread implements Runnable {
     }
 
     public void sendToClient(Packet packet) {
-        System.out.println(packet);
         output.println(packet.toString());
         output.flush();
     }

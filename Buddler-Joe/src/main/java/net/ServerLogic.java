@@ -68,11 +68,6 @@ public class ServerLogic {
 
         public static void sendPacket(int receiver, Packet packet){  //TODO: Check receiver and if he exists
             ClientThread ct = getThreadByClientId(receiver);
-            System.out.println("reciver:"+ receiver);
-            for (int key : clientThreadMap.keySet()) {
-                System.out.println("key:" + key + "value: " + clientThreadMap.get(key));
-            }
-            System.out.println("send to server thread:" + ct);
             if(ct != null){
                 ct.sendToClient(packet);
             }
