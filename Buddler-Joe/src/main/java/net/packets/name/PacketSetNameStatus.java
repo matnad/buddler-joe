@@ -1,24 +1,22 @@
-package net.packets.login_logout;
+package net.packets.name;
 
 import net.packets.Packet;
 
-public class PacketLoginStatus extends Packet {
-
+public class PacketSetNameStatus extends Packet{
     private String status;
     /**
      * Package to respond to the client that the Login has been successful
      */
 
-    public PacketLoginStatus(String data) {
-        //Client receives packed
-        super(PacketTypes.LOGIN_STATUS);
+    public PacketSetNameStatus(String data) {
+        super(Packet.PacketTypes.LOGIN_STATUS);
         setData(data);
         this.status = data;
         validate();
     }
 
-    public PacketLoginStatus(int clientId, String status){
-        super(PacketTypes.LOGIN_STATUS);
+    public PacketSetNameStatus(int clientId, String status){
+        super(Packet.PacketTypes.LOGIN_STATUS);
         setData(status);
         setClientId(clientId);
         this.status = status;
@@ -36,12 +34,16 @@ public class PacketLoginStatus extends Packet {
 
     @Override
     public void processData() {
-        if (status.startsWith("OK")) {
-            System.out.println("Login Successful");
+        if (status.startsWith("Successfully")) {
+            //System.out.println(status);
         } else {
             if (hasErrors()) {
-                System.out.println(status + "\n" + createErrorMessage());
+                System.out.println(createErrorMessage());
             } else {
+                if(status.contains("Username already taken")){
+                    //TODO: bob_001
+                    //ClientLogic.recommendName(status.substring());
+                }
                 System.out.println(status);
             }
         }
