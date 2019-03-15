@@ -69,6 +69,17 @@ public class Lobby {
         return lobbyPlayers;
     }
 
+    /**
+     *
+     * @return a String with the usernames of all Playeers in this Lobby seperated by "║".
+     */
+    public String getPlayerNames(){
+        String s = "";
+        for (Player player : lobbyPlayers) {
+            s = s + player.getUsername() + "║";
+        }
+        return s;
+    }
 
     public String toString(){
         String s = "Name: " + lobbyName + ", LobbyId: " + lobbyId + ", Spieler: " + getPlayerAmount();

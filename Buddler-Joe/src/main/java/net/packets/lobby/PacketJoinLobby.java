@@ -27,7 +27,10 @@ public class PacketJoinLobby extends Packet {
         validate();
     }
 
-
+    /**
+     * This Method checks if the recived lobbyname is a valid, existing lobbyname.
+     * And if the Player that wants to join a Lobby is logged in and if so, ih he is in a Lobby already or not.
+     */
     @Override
     public void validate() {
         isExtendedAscii(lobbyname);
@@ -57,5 +60,11 @@ public class PacketJoinLobby extends Packet {
         }
         PacketJoinLobbyStatus p = new PacketJoinLobbyStatus(getClientId(),status);
         p.sendToClient(getClientId());
+        if(!hasErrors() && status.equals("OK")){
+            int lobbyId = ServerLogic.getLobbyList().getLobbyId(lobbyname);
+            String info = "OK║" + ServerLogic.getLobbyList().getLobby(lobbyId).getPlayerNames();
+            PacketCurLobbyInfo pcli = new PacketCurLobbyInfo(getClientId(),info);
+            pcli.sendToLobby(lobbyId);
+        }
     }
 }

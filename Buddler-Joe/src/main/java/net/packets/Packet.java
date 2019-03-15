@@ -35,7 +35,8 @@ public abstract class Packet {
         PONG("PONGU"),
         CREATE_LOBBY_STATUS("LOBCS"),
         JOIN_LOBBY_STATUS("LOBJS"),
-        LOBBY_OVERVIEW("LOBOV");
+        LOBBY_OVERVIEW("LOBOV"),
+        CUR_LOBBY_INFO("LOBCI");
 
         private final String packetCode;
 
