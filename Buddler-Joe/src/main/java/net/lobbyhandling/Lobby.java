@@ -12,7 +12,7 @@ public class Lobby {
     private String lobbyName;
     private ArrayList<Player> lobbyPlayers; //TODO: replace with arraylist
     private static int lobbyCounter = 0;
-    //private Game game;
+    //private Playing game;
     //private ChatRoom chatRoom;
 
     /**
@@ -23,7 +23,7 @@ public class Lobby {
     public Lobby(String lobbyName)  {
         this.lobbyId = lobbyId;
         this.lobbyName = lobbyName;
-        //this.game = new Game();
+        //this.game = new Playing();
         //this.chatRoom = new ChatRoom();
         this.lobbyPlayers = new ArrayList<>();
         this.lobbyId = lobbyCounter;

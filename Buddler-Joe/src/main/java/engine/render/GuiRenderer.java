@@ -25,7 +25,7 @@ public class GuiRenderer {
 
     /**
      * Needs to be created once.
-     * @param loader Pass the main loader from the Game class. There is no reason to have more than one loader.
+     * @param loader Pass the main loader from the Playing class. There is no reason to have more than one loader.
      */
     public GuiRenderer(Loader loader){
         float[] positions = {-1, 1, -1, -1, 1, 1, 1, -1}; //simple quad, full screen

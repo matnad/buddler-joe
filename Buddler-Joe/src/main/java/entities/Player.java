@@ -1,6 +1,6 @@
 package entities;
 
-import bin.Game;
+import game.Game;
 import collision.BoundingBox;
 import engine.io.InputHandler;
 import engine.models.TexturedModel;
@@ -99,8 +99,8 @@ public class Player extends NetPlayer {
         //Send server update with update
         //TEMPORARY PROOF OF CONCEPT: THIS WILL GET REWORKED ONCE WE IMPLEMENT NET STUFF
         if(Game.isConnectedToServer() && (currentSpeed != 0 || upwardsSpeed != 0 || currentTurnSpeed != 0)) {
-            //Packet01Move packet = new Packet01Move(Game.getUsername(), this.getPosition(), this.getRotX(), this.getRotY(), this.getRotZ());
-            //packet.writeData(Game.getSocketClient());
+            //Packet01Move packet = new Packet01Move(Playing.getUsername(), this.getPosition(), this.getRotX(), this.getRotY(), this.getRotZ());
+            //packet.writeData(Playing.getSocketClient());
         }
     }
 
@@ -228,7 +228,7 @@ public class Player extends NetPlayer {
      */
     private void checkInputs() {
 
-        if(Game.chat.isEnabled()) {
+        if(Game.getChat().isEnabled()) {
             currentSpeed = 0;
             return;
         }

@@ -1,7 +1,7 @@
-import bin.Game;
+import game.Game;
 
 /**
- * Start the Main Game Thread
+ * Start the Main Playing Thread
  */
 public class Main {
 

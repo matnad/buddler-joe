@@ -1,6 +1,6 @@
 package entities.blocks.debris;
 
-import bin.Game;
+import game.Game;
 import entities.blocks.Block;
 
 import java.util.ArrayList;

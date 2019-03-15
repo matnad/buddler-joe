@@ -1,9 +1,8 @@
 package engine.io;
 
-import bin.Game;
+import game.Game;
 import engine.render.MasterRenderer;
 import entities.Camera;
-import org.joml.Intersectionf;
 import org.joml.Matrix3f;
 import org.joml.Vector3f;
 import org.lwjgl.BufferUtils;
@@ -11,12 +10,10 @@ import org.lwjgl.glfw.GLFWCursorPosCallback;
 import org.lwjgl.glfw.GLFWKeyCallback;
 import org.lwjgl.glfw.GLFWMouseButtonCallback;
 import org.lwjgl.glfw.GLFWScrollCallback;
-import util.MousePlacer;
 
 import java.nio.DoubleBuffer;
 
 import static org.lwjgl.glfw.GLFW.*;
-import static util.MousePlacer.modes.*;
 
 /**
  * Keystates, CursorPos, -Movement, Mousestates, Raycasting.
@@ -150,7 +147,7 @@ public class InputHandler {
 
 
     /**
-     * Returns true if the Game is currently asking the player to place an object with the mouse cursor.
+     * Returns true if the Playing is currently asking the player to place an object with the mouse cursor.
      */
     public static boolean isPlacerMode() {
         return placerMode;

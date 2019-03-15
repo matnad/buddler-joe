@@ -1,6 +1,6 @@
 package entities.items;
 
-import bin.Game;
+import game.Game;
 import engine.models.RawModel;
 import engine.models.TexturedModel;
 import engine.particles.systems.Explosion;

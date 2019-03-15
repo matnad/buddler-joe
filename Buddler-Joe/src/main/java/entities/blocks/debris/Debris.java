@@ -1,6 +1,6 @@
 package entities.blocks.debris;
 
-import bin.Game;
+import game.Game;
 import entities.Entity;
 import entities.blocks.Block;
 import entities.blocks.BlockMaster;

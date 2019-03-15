@@ -1,6 +1,6 @@
 package entities.blocks;
 
-import bin.Game;
+import game.Game;
 import engine.render.Loader;
 import org.joml.Vector3f;
 
@@ -115,7 +115,7 @@ public class BlockMaster {
         //Get the list with the type of the block, if the list is absent, create it
         List<Block> list = blockLists.computeIfAbsent(block.getType(), k -> new ArrayList<>());
 
-        //If the block is not destroyed, add it to the Game to be rendered
+        //If the block is not destroyed, add it to the Playing to be rendered
         if (!block.isDestroyed()) {
             //Add block to its type-specific list
             list.add(block);

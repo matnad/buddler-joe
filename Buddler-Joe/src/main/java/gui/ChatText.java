@@ -1,6 +1,6 @@
 package gui;
 
-import bin.Game;
+import game.Game;
 import engine.render.fontMeshCreator.FontType;
 import engine.render.fontMeshCreator.GUIText;
 import org.joml.Vector2f;

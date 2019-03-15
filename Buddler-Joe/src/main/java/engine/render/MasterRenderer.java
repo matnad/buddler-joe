@@ -1,6 +1,6 @@
 package engine.render;
 
-import bin.Game;
+import game.Game;
 import engine.models.TexturedModel;
 import engine.shaders.StaticShader;
 import engine.shaders.TerrainShader;
@@ -85,7 +85,6 @@ public class MasterRenderer {
 
     /**
      * Start/stop shaders and pass rendering priority for entities and terrains.
-     * @param sun position and colour of the single light source (sun)
      * @param camera active camera, used to generate view matrix
      */
     public void render(List<Light> lights, Camera camera) {
