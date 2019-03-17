@@ -17,6 +17,7 @@ import entities.blocks.BlockMaster;
 import entities.blocks.debris.DebrisMaster;
 import entities.items.ItemMaster;
 import entities.light.LightMaster;
+import game.stages.GameMenu;
 import game.stages.MainMenu;
 import game.stages.Playing;
 import gui.Chat;
@@ -217,6 +218,7 @@ public class Game extends Thread {
 
 
         MainMenu.init(loader);
+        GameMenu.init(loader);
 
         /*
         **************************************************************
@@ -251,6 +253,7 @@ public class Game extends Thread {
                         MainMenu.update();
                         break;
                     case GAMEMENU:
+                        GameMenu.update();
                         break;
                 }
 
