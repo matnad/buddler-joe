@@ -8,6 +8,7 @@ import net.playerhandling.Player;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.StringJoiner;
 
 import static net.ServerLogic.getPlayerList;
 
@@ -23,10 +24,11 @@ public abstract class Packet {
         INVALID("INVAL"),
         LOGIN("PLOGI"),
         LOGIN_STATUS("PLOGS"),
-        //MOVE(MOVEP),
         DISCONNECT("DISCP"),
         GET_NAME("GETNM"),
+        SEND_NAME("SENDN"),
         SET_NAME("SETNM"),
+        SET_NAME_STATUS("STNMS"),
         GET_LOBBIES("LOBGE"),
         LEAVE_LOBBY("LOBLE"),
         JOIN_LOBBY("LOBJO"),
@@ -35,7 +37,8 @@ public abstract class Packet {
         PONG("PONGU"),
         CREATE_LOBBY_STATUS("LOBCS"),
         JOIN_LOBBY_STATUS("LOBJS"),
-        LOBBY_OVERVIEW("LOBOV");
+        LOBBY_OVERVIEW("LOBOV"),
+        CUR_LOBBY_INFO("LOBCI");
 
         private final String packetCode;
 
@@ -80,6 +83,7 @@ public abstract class Packet {
      * toString() to display the package and make it human readable.
      *
      */
+
     public abstract void validate();
 
     public abstract void processData();
@@ -163,7 +167,7 @@ public abstract class Packet {
         errors.add(name);
     }
 
-    public boolean isExtendedAscii(String s){
+    protected boolean isExtendedAscii(String s){
         char[] charArray = s.toCharArray();
         for (char c : charArray) {
             if(c>255){
@@ -174,7 +178,69 @@ public abstract class Packet {
         return true;
     }
 
+    protected boolean isInt(String s) {
+        boolean h = true;
+        try {
+            int i = Integer.parseInt(s);
+        } catch (NumberFormatException | NullPointerException nfe) {
+            h = false;
+        }
+        return h;
+    }
+
+    protected String createErrorMessage(){
+        String message = "";
+        StringJoiner statusJ = new StringJoiner("\n","ERRORS: ","");
+        for (String error : getErrors()) {
+            statusJ.add(error);
+        }
+        return message = statusJ.toString();
+    }
+
+    protected void checkUsername(String username){
+        if(username == null){
+            addError("No username found.");
+            return;
+        }
+        if(username.length() > 30){
+            addError("Username to long. Maximum is 30 Characters.");
+        }else if(username.length() < 4){
+            addError("Username to short. Minimum is 4 Characters.");
+        }
+        isExtendedAscii(username);
+    }
+
+    /**
+     * This method checks if the client how send this Packet is logged in or not.
+     * @return true if logged in else false
+     */
+    public boolean isLoggedIn(){
+        if(!ServerLogic.getPlayerList().getPlayers().containsKey(getClientId())){
+            addError("Not loggedin yet.");
+            return false;
+        }else{
+            return true;
+        }
+    }
+
+    /**
+     * This method checks if the client how send this Packet is currently in a Lobby
+     * @return true if in a Lobby else false
+     */
+    public boolean isInALobby(){
+        int lobbyId = ServerLogic.getPlayerList().getPlayers().get(getClientId()).getCurLobbyId();
+        if(lobbyId != 0){
+            addError("Already in a lobby");
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+
     public String toString() {
         return getPacketType().getPacketCode() + " " + getData();
     }
+
+
 }

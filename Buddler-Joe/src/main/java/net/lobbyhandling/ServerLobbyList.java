@@ -65,6 +65,7 @@ public class ServerLobbyList {
         return lobbies.get(lobbyId);
     }
 
+
     /**
      * search a lobby via the lobbyName to find the lobbyId in case only one of the two was supplied
      * to the method.
@@ -88,8 +89,8 @@ public class ServerLobbyList {
             s = s + lobby.getLobbyName() + " ";
         }
         return s;
-    }*/
-
+    }
+    */
     /**
      * A method to get a List of at max 10 lobbies.
      * @return A String that contains a List of max 10 lobbies (that are not full).
