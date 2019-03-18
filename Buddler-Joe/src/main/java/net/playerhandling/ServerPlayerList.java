@@ -18,17 +18,16 @@ public class ServerPlayerList {
      */
 
     public String addPlayer(Player player){
+        String answer = "";
         if(players.containsKey(player.getClientId())){
-            return "Already loggedin.";
+            answer = "Already logged in.";
+        } else if(isUsernameInList(player.getUsername())){
+            answer = "Username already taken";
+        } else {
+            players.put(player.getClientId(), player);
+            answer = "OK";
         }
-        for(Player p : players.values()){
-            if(player.getUsername().equals(p.getUsername())) {
-                return "Username already taken.";
-            }
-        }
-        players.put(player.getClientId(), player);
-        return "OK";
-
+        return  answer;
     }
 
     /**
@@ -64,6 +63,25 @@ public class ServerPlayerList {
         } else{
             return false;
         }
+    }
+
+    public boolean isPlayerIdInList(int clientId){
+        boolean b = true;
+        try{
+            getPlayer(clientId);
+        }catch (NullPointerException nfe){
+            b = false;
+        }
+        return b;
+    }
+
+    public boolean isUsernameInList(String username){
+        for (Player p : players.values()) {
+            if (username.equals(p.getUsername())) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public HashMap<Integer, Player> getPlayers() {
