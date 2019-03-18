@@ -2,10 +2,7 @@ package net.playerhandling;
 
 import net.ServerLogic;
 import net.packets.Packet;
-import net.packets.lobby.PacketCreateLobby;
-import net.packets.lobby.PacketGetLobbies;
-import net.packets.lobby.PacketJoinLobby;
-import net.packets.lobby.PacketLobbyOverview;
+import net.packets.lobby.*;
 import net.packets.login_logout.PacketDisconnect;
 import net.packets.name.PacketGetName;
 import net.packets.login_logout.PacketLogin;
@@ -39,7 +36,7 @@ public class ClientThread implements Runnable {
             while (true) {
                 try {
                     String in = input.readLine();
-                if (in.length() < 6) {
+                if (in.length() < 5) {
                     System.out.println("No valid command has been sent by player No " + clientId);
                     continue;
                 }
@@ -74,6 +71,21 @@ public class ClientThread implements Runnable {
                         PacketCreateLobby createLobby = new PacketCreateLobby(clientId, data);
                         createLobby.processData();
                         break;
+                    case CREATE_LOBBY_STATUS:
+                        PacketJoinLobby joinLobby = new PacketJoinLobby(clientId, data);
+                        joinLobby.processData();
+                        break;
+                    case JOIN_LOBBY:
+                        PacketJoinLobby packetJoinLobby = new PacketJoinLobby(clientId, data);
+                        packetJoinLobby.processData();
+                        break;
+                    case JOIN_LOBBY_STATUS:
+                        PacketJoinLobbyStatus packetJoinLobbyStatus = new PacketJoinLobbyStatus(clientId, data);
+                        packetJoinLobbyStatus.processData();
+                        break;
+                    case CUR_LOBBY_INFO:
+                        PacketCurLobbyInfo packetCurLobbyInfo = new PacketCurLobbyInfo(clientId, data);
+                        packetCurLobbyInfo.processData();
                     default:
                         break;
                 }
