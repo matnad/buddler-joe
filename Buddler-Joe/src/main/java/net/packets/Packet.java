@@ -37,7 +37,8 @@ public abstract class Packet {
         PONG("PONGU"),
         CREATE_LOBBY_STATUS("LOBCS"),
         JOIN_LOBBY_STATUS("LOBJS"),
-        LOBBY_OVERVIEW("LOBOV");
+        LOBBY_OVERVIEW("LOBOV"),
+        CUR_LOBBY_INFO("LOBCI");
 
         private final String packetCode;
 
@@ -208,6 +209,34 @@ public abstract class Packet {
         }
         isExtendedAscii(username);
     }
+
+    /**
+     * This method checks if the client how send this Packet is logged in or not.
+     * @return true if logged in else false
+     */
+    public boolean isLoggedIn(){
+        if(!ServerLogic.getPlayerList().getPlayers().containsKey(getClientId())){
+            addError("Not loggedin yet.");
+            return false;
+        }else{
+            return true;
+        }
+    }
+
+    /**
+     * This method checks if the client how send this Packet is currently in a Lobby
+     * @return true if in a Lobby else false
+     */
+    public boolean isInALobby(){
+        int lobbyId = ServerLogic.getPlayerList().getPlayers().get(getClientId()).getCurLobbyId();
+        if(lobbyId != 0){
+            addError("Already in a lobby");
+            return true;
+        }else{
+            return false;
+        }
+    }
+
 
     public String toString() {
         return getPacketType().getPacketCode() + " " + getData();

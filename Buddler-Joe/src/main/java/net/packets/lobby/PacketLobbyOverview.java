@@ -40,11 +40,15 @@ public class PacketLobbyOverview extends Packet {
 
     @Override
     public void processData() {
-        System.out.println("-------------------------------------");
-        System.out.println("Available Lobbies:");
-        for (String s : in) {
-            System.out.println(s);
+        if(in[0].equals("OK")) { //the "OK" gets added in PacketCreatLobby.processData and PacketGetLobbies.processData
+            System.out.println("-------------------------------------");
+            System.out.println("Available Lobbies:");
+            for (int i = 1; i < in.length; i++) {
+                System.out.println(in[i]);
+            }
+            System.out.println("-------------------------------------");
+        }else{
+            System.out.println(in[0]);
         }
-        System.out.println("-------------------------------------");
     }
 }

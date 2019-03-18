@@ -2,6 +2,8 @@ package net;
 
 import net.packets.Packet;
 import net.packets.lobby.PacketCreateLobbyStatus;
+import net.packets.lobby.PacketCurLobbyInfo;
+import net.packets.lobby.PacketJoinLobbyStatus;
 import net.packets.lobby.PacketLobbyOverview;
 import net.packets.login_logout.PacketLoginStatus;
 import net.packets.name.PacketSendName;
@@ -103,7 +105,13 @@ public class ClientLogic implements Runnable {
                     PacketCreateLobbyStatus  pcls = new PacketCreateLobbyStatus(data);
                     pcls.processData();
                     break;
-                default:
+                case JOIN_LOBBY_STATUS:
+                    PacketJoinLobbyStatus pjls = new PacketJoinLobbyStatus(data);
+                    pjls.processData();
+                    break;
+                case CUR_LOBBY_INFO:
+                    PacketCurLobbyInfo pcli = new PacketCurLobbyInfo(data);
+                    pcli.processData();
                     break;
             }
         }

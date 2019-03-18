@@ -6,6 +6,7 @@ public class Player {
     private int clientId;
     private int ping;
     ClientThread thread;
+    private int curLobbyId;
 
     /**
      * Main Player class to save the vital information which the server has to access at all times
@@ -16,7 +17,7 @@ public class Player {
     public Player(String username, int clientId) {
         this.username = username;
         this.clientId = clientId;
-
+        curLobbyId = 0;
     }
 
     public ClientThread getThread() {
@@ -47,7 +48,9 @@ public class Player {
         this.ping = ping;
     }
 
+    public int getCurLobbyId() { return curLobbyId; }
 
+    public void setCurLobbyId(int curLobbyId) { this.curLobbyId = curLobbyId; }
 
     @Override
     public String toString() {
