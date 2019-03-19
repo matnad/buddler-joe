@@ -20,7 +20,7 @@ public class Playing {
     public static void update(MasterRenderer renderer) {
         //ESC = Exit... we will add a menu later
         if(InputHandler.isKeyPressed(GLFW_KEY_ESCAPE)) {
-            Game.setStage(Game.Stage.GAMEMENU);
+            Game.addActiveStage(Game.Stage.GAMEMENU);
         }
 
         /*InputHandler needs to be BEFORE polling (window.update()) so we still have access to the events of last Frame.

@@ -34,6 +34,7 @@ import util.RandomName;
 import java.util.ArrayList;
 import java.util.List;
 
+import static game.Game.Stage.*;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_ESCAPE;
 
 /**
@@ -62,7 +63,7 @@ public class Game extends Thread {
         MAINMENU, LOBBIES, GAMEMENU, PLAYING;
     }
 
-    private static Stage stage = Stage.MAINMENU;
+    private static List<Stage> activeStages = new ArrayList<>();
 
     //Playing instance and player settings
     private static ClientLogic socketClient;
@@ -220,6 +221,8 @@ public class Game extends Thread {
         MainMenu.init(loader);
         GameMenu.init(loader);
 
+        addActiveStage(MAINMENU);
+
         /*
         **************************************************************
 ---------HERE STARTS THE GAME LOOP!
@@ -243,19 +246,18 @@ public class Game extends Thread {
                    Optimally this should be mostly Masters here
                  */
 
-                switch (stage) {
-                    case PLAYING:
-                        Playing.update(renderer);
-                        break;
-                    case LOBBIES:
-                        break;
-                    case MAINMENU:
-                        MainMenu.update();
-                        break;
-                    case GAMEMENU:
-                        GameMenu.update();
-                        break;
+                if (activeStages.contains(PLAYING)) {
+                    Playing.update(renderer);
                 }
+
+                if (activeStages.contains(MAINMENU)) {
+                    MainMenu.update();
+                }
+
+                if (activeStages.contains(GAMEMENU)) {
+                    GameMenu.update();
+                }
+
 
                 //Done with one frame
                 window.swapBuffers();
@@ -452,12 +454,18 @@ public class Game extends Thread {
         return chat;
     }
 
-    public static Stage getStage() {
-        return stage;
+    public static List<Stage> getActiveStages() {
+        return activeStages;
     }
 
-    public static void setStage(Stage stage) {
-        Game.stage = stage;
+    public static void addActiveStage(Stage stage) {
+        if(!activeStages.contains(stage)) {
+            activeStages.add(stage);
+        }
+    }
+
+    public static void removeActiveStage(Stage stage) {
+        activeStages.remove(stage);
     }
 
     public static GuiRenderer getGuiRenderer() {

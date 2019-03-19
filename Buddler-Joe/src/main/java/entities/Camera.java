@@ -3,9 +3,12 @@ package entities;
 import engine.io.InputHandler;
 import engine.io.Window;
 import entities.Player;
+import game.Game;
 import org.joml.Vector3f;
 import util.Maths;
 
+import static game.Game.Stage.GAMEMENU;
+import static game.Game.Stage.PLAYING;
 import static org.lwjgl.glfw.GLFW.*;
 
 /**
@@ -50,15 +53,20 @@ public class Camera {
 
 
     public void move() {
-        calculateZoom();
-        calculatePitch();
-        calculateYaw();
-        calculatePan();
-        isResest();
+
+        if(!Game.getActiveStages().contains(GAMEMENU)) {
+
+            calculateZoom();
+            calculatePitch();
+            calculateYaw();
+            calculatePan();
+            isResest();
+        }
 
         position.z = offsetZ;
-        position.x = player.getPosition().x+offsetX;
-        position.y = player.getPosition().y+offsetY;
+        position.x = player.getPosition().x + offsetX;
+        position.y = player.getPosition().y + offsetY;
+
     }
 
     /**

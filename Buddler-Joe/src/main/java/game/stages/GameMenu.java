@@ -43,9 +43,12 @@ public class GameMenu {
         double y = 1-2*(InputHandler.getMouseY()/Game.window.getHeight());
 
         if (InputHandler.isKeyPressed(GLFW_KEY_ESCAPE)) {
-            Game.setStage(Game.Stage.PLAYING);
-        } else if (InputHandler.isMouseDown(GLFW_MOUSE_BUTTON_1) && exitGame.isHover(x, y)) {
-            Game.window.stop();
+            Game.addActiveStage(Game.Stage.PLAYING);
+            Game.removeActiveStage(Game.Stage.GAMEMENU);
+        } else if (InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1) && exitGame.isHover(x, y)) {
+            Game.addActiveStage(Game.Stage.MAINMENU);
+            Game.removeActiveStage(Game.Stage.PLAYING);
+            Game.removeActiveStage(Game.Stage.GAMEMENU);
         }
 
         InputHandler.update();
