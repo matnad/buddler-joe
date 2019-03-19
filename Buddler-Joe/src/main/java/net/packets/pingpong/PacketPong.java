@@ -2,8 +2,13 @@ package net.packets.pingpong;
 
 import net.packets.Packet;
 
+import java.util.HashMap;
+
 public class PacketPong extends Packet {
 
+    //String is the reference number, Integer should be the clientid
+    private static HashMap<String, Integer> ping_reference = new HashMap<>();
+    private static int countPing = 0;
     /**
      * Constructor client gets pong(answer) from server
      * @param data defines what ping this pong refers to
@@ -24,6 +29,8 @@ public class PacketPong extends Packet {
         setData(data);
         validate();
     }
+    public static HashMap getListOfPingReference() { return ping_reference; }
+
     //data already checked when receiving the ping packet.
     @Override
     public void validate() {

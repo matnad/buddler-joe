@@ -4,6 +4,7 @@ import net.packets.Packet;
 
 public class PacketPing extends Packet {
 
+
     /**
      * Constructor when server gets ping from client
      * @param clientId identity of client who sent ping
@@ -61,17 +62,23 @@ public class PacketPing extends Packet {
         if(hasErrors()) {
             //discard packet and no need to response
         }else{
-            if(getListOfPingReference().containsKey(getData())) {
+            if(PacketPong.getListOfPingReference().containsKey(getData())) {
                 //Invalid
                 //HashMap doesnt allow duplicate Keys
             }
-            getListOfPingReference().put(getData(), getClientId());
+            PacketPong.getListOfPingReference().put(getData(), getClientId());
             PacketPong pong = new PacketPong(getData());
-            if(Integer.parseInt(getData()) >= 10000) {
+
+            if(getClientId() > 0) {
                 pong.sendToClient(getClientId());
-            } else if(Integer.parseInt(getData()) < 10000) {
+            }else{
                 pong.sendToServer();
             }
+            //if(Integer.parseInt(getData()) >= 10000) {
+            //    pong.sendToClient(getClientId());
+            //} else if(Integer.parseInt(getData()) < 10000) {
+            //    pong.sendToServer();
+            //}
         }
     }
 }
