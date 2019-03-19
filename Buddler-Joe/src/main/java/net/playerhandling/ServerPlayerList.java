@@ -22,10 +22,20 @@ public class ServerPlayerList {
         if(players.containsKey(player.getClientId())){
             answer = "Already logged in.";
         } else if(isUsernameInList(player.getUsername())){
-            answer = "Username already taken";
+            int len = player.getUsername().length();
+            String name = player.getUsername();
+            int counter = 1;
+            while(isUsernameInList(player.getUsername())){
+                name = name.substring(0, len);
+                name = name + "_" + counter;
+                player.setUsername(name);
+                counter++;
+            }
+            players.put(player.getClientId(), player);
+            answer = "CHANGE" + player.getUsername();
         } else {
             players.put(player.getClientId(), player);
-            answer = "OK";
+            answer = "OK" + player.getUsername();
         }
         return  answer;
     }

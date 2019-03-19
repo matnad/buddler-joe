@@ -23,25 +23,33 @@ public class PacketSetName extends Packet {
     @Override
     public void validate() {
         checkUsername(username);
-        if(ServerLogic.getPlayerList().isUsernameInList(username)){
-            addError("Username already taken");
-        }
     }
 
     @Override
     public void processData() {
-        String status="";
-        if(hasErrors()){
+        String status = "";
+        if (hasErrors()) {
             status = createErrorMessage();
-        }else{
+        } else {
             try {
-                ServerLogic.getPlayerList().getPlayer(getClientId()).setUsername(username);
-                status = "Successfully changed the name to: " + username;
-            } catch (NullPointerException e){
+                if (ServerLogic.getPlayerList().isUsernameInList(username)) {
+                    int counter = 1;
+                    String name = username;
+                    while(ServerLogic.getPlayerList().isUsernameInList(name)) {
+                        name = username + "_" + counter;
+                        counter++;
+                    }
+                    ServerLogic.getPlayerList().getPlayer(getClientId()).setUsername(name);
+                    status = "Changed to: " + name + ". Because your chosen name is already in use.";
+                } else {
+                    ServerLogic.getPlayerList().getPlayer(getClientId()).setUsername(username);
+                    status = "Successfully changed the name to: " + username;
+                }
+            } catch (NullPointerException e) {
                 status = "Player not logged in";
             }
+            PacketSetNameStatus p = new PacketSetNameStatus(getClientId(), status);
+            p.sendToClient(getClientId());
         }
-        PacketSetNameStatus p = new PacketSetNameStatus(getClientId(),status);
-        p.sendToClient(getClientId());
     }
 }

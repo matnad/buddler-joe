@@ -37,7 +37,10 @@ public class PacketLoginStatus extends Packet {
     @Override
     public void processData() {
         if (status.startsWith("OK")) {
-            System.out.println("Login Successful");
+            System.out.println("Login Successful, your username is: " + getData().substring(2));
+        } else if(status.startsWith("CHANGE")){
+            System.out.println("Login Successful, however your username has already been taken. " +
+                    "We assigned you this username: " + getData().substring(6));
         } else {
             if (hasErrors()) {
                 System.out.println(status + "\n" + createErrorMessage());
