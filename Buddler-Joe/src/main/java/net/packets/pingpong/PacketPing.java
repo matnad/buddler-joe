@@ -14,6 +14,7 @@ public class PacketPing extends Packet {
         super(Packet.PacketTypes.PING);
         setClientId(clientId);
         setData(data);
+        System.out.println("PING");
         validate();
     }
 
@@ -23,6 +24,7 @@ public class PacketPing extends Packet {
     public PacketPing(String data) {
         super(Packet.PacketTypes.PING);
         setData(data);
+        System.out.println("PING");
         validate();
     }
 
@@ -67,7 +69,7 @@ public class PacketPing extends Packet {
             PacketPong pong = new PacketPong(getData());
             if(Integer.parseInt(getData()) >= 10000) {
                 pong.sendToClient(getClientId());
-            } else {
+            } else if(Integer.parseInt(getData()) < 10000) {
                 pong.sendToServer();
             }
         }

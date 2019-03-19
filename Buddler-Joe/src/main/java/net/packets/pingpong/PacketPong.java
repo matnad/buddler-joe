@@ -40,11 +40,12 @@ public class PacketPong extends Packet {
      */
     @Override
     public void processData() {
-        if(hasErrors() || !getListOfPingReference().containsKey(getData())) {
+        //if(hasErrors() || !getListOfPingReference().containsKey(getData())) {
             //Invalid
-        }else{
+        //}else{
             //Here would be the time calculation
+            System.out.println("PONG");
             getListOfPingReference().remove(getData());
-        }
+        //}
     }
 }
