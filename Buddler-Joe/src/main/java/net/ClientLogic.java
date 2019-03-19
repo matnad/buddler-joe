@@ -75,7 +75,12 @@ public class ClientLogic implements Runnable {
         //firstLogin();
         while (true) {
             String in = input.readLine();
-            if(in.length() < 6){
+            if (in == null) {
+                System.out.println("Client received null input. Skipping.");
+                continue;
+            }
+            System.out.println("in: "+in);
+            if(in.length() < 5){
                 System.out.println("No valid command has been sent by server");
                 continue;
             }

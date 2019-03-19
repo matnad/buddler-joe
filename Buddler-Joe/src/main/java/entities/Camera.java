@@ -54,7 +54,7 @@ public class Camera {
 
     public void move() {
 
-        if(!Game.getActiveStages().contains(GAMEMENU)) {
+        if(Game.getActiveStages().size() == 1 && Game.getActiveStages().get(0) == PLAYING) {
 
             calculateZoom();
             calculatePitch();

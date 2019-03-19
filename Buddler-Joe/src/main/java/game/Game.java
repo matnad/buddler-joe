@@ -1,7 +1,5 @@
 package game;
 
-import com.sun.tools.javac.Main;
-import engine.io.InputHandler;
 import engine.io.Window;
 import engine.models.RawModel;
 import engine.models.TexturedModel;
@@ -12,8 +10,10 @@ import engine.render.MasterRenderer;
 import engine.render.fontRendering.TextMaster;
 import engine.render.objConverter.OBJFileLoader;
 import engine.textures.ModelTexture;
-import entities.*;
-import entities.blocks.BlockMaster;
+import entities.Camera;
+import entities.Entity;
+import entities.NetPlayer;
+import entities.Player;
 import entities.blocks.debris.DebrisMaster;
 import entities.items.ItemMaster;
 import entities.light.LightMaster;
@@ -28,14 +28,12 @@ import net.ClientLogic;
 import org.joml.Vector3f;
 import terrains.Terrain;
 import terrains.TerrainFlat;
-import util.MousePlacer;
 import util.RandomName;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static game.Game.Stage.*;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_ESCAPE;
 
 /**
  * Playing is static for all intents and purposes. There will never be multiple instances of Playing in the same execution.
