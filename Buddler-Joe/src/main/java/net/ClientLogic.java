@@ -8,6 +8,8 @@ import net.packets.lobby.PacketLobbyOverview;
 import net.packets.login_logout.PacketLoginStatus;
 import net.packets.name.PacketSendName;
 import net.packets.name.PacketSetNameStatus;
+import net.packets.pingpong.PacketPing;
+import net.packets.pingpong.PacketPong;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -112,6 +114,14 @@ public class ClientLogic implements Runnable {
                 case CUR_LOBBY_INFO:
                     PacketCurLobbyInfo pcli = new PacketCurLobbyInfo(data);
                     pcli.processData();
+                    break;
+                case PONG:
+                    PacketPong packetPong = new PacketPong(data);
+                    packetPong.processData();
+                    break;
+                case PING:
+                    PacketPing packetPing = new PacketPing(data);
+                    packetPing.processData();
                     break;
             }
         }

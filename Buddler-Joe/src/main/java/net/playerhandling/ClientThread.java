@@ -7,6 +7,8 @@ import net.packets.login_logout.PacketDisconnect;
 import net.packets.name.PacketGetName;
 import net.packets.login_logout.PacketLogin;
 import net.packets.name.PacketSetName;
+import net.packets.pingpong.PacketPing;
+import net.packets.pingpong.PacketPong;
 
 import java.io.*;
 import java.net.Socket;
@@ -86,6 +88,14 @@ public class ClientThread implements Runnable {
                     case CUR_LOBBY_INFO:
                         PacketCurLobbyInfo packetCurLobbyInfo = new PacketCurLobbyInfo(clientId, data);
                         packetCurLobbyInfo.processData();
+                        break;
+                    case PING:
+                        PacketPing packetPing = new PacketPing(clientId, data);
+                        packetPing.processData();
+                        break;
+                    case PONG:
+                        PacketPong packetPong = new PacketPong(clientId, data);
+                        packetPong.processData();
                     default:
                         break;
                 }

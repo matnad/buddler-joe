@@ -64,7 +64,8 @@ public abstract class Packet {
     private int clientId;
 
     private String data;
-
+    //String is the reference number, Integer should be the clientid
+    private static HashMap<String, Integer> ping_reference = new HashMap<>();
     public Packet(PacketTypes packetType) {
         this.packetType = packetType;
     }
@@ -145,6 +146,7 @@ public abstract class Packet {
         this.clientId = clientId;
     }
 
+    public HashMap getListOfPingReference() { return ping_reference; }
 
 
     public void setData(String data) {
