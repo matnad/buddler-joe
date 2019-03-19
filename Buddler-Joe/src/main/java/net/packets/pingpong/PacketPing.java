@@ -14,7 +14,7 @@ public class PacketPing extends Packet {
         super(Packet.PacketTypes.PING);
         setClientId(clientId);
         setData(data);
-        System.out.println("PING");
+        System.out.println("PING " + getData());
         validate();
     }
 
@@ -24,7 +24,7 @@ public class PacketPing extends Packet {
     public PacketPing(String data) {
         super(Packet.PacketTypes.PING);
         setData(data);
-        System.out.println("PING");
+        System.out.println("PING " + getData());
         validate();
     }
 

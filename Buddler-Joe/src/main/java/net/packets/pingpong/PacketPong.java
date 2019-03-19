@@ -44,7 +44,7 @@ public class PacketPong extends Packet {
             //Invalid
         //}else{
             //Here would be the time calculation
-            System.out.println("PONG");
+            System.out.println("PONG " + getData());
             getListOfPingReference().remove(getData());
         //}
     }
