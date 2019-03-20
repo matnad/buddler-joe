@@ -40,7 +40,10 @@ public abstract class Packet {
         LOBBY_OVERVIEW("LOBOV"),
         CUR_LOBBY_INFO("LOBCI"),
         GET_LOBBY_INFO("LOBGI"),
-        LEAVE_LOBBY_STATUS("LOBLS");
+        LEAVE_LOBBY_STATUS("LOBLS"),
+        CHAT_MESSAGE_TO_SERVER("CHATS"),
+        CHAT_MESSAGE_TO_CLIENT("CHATC"),
+        CHAT_MESSAGE_STATUS("CHATN");
 
         private final String packetCode;
 
@@ -141,7 +144,7 @@ public abstract class Packet {
     }
 
     public void sendToServer(){
-        ClientLogic.sendToServer(this.getData());
+        ClientLogic.sendToServer(this.toString());
     }
 
     public void setPacketType(PacketTypes packetType) {

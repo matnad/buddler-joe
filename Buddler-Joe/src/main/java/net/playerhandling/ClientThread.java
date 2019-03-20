@@ -2,6 +2,7 @@ package net.playerhandling;
 
 import net.ServerLogic;
 import net.packets.Packet;
+import net.packets.chat.PacketChatMessageToServer;
 import net.packets.lobby.*;
 import net.packets.login_logout.PacketDisconnect;
 import net.packets.name.PacketGetName;
@@ -90,6 +91,10 @@ public class ClientThread implements Runnable {
                     case LEAVE_LOBBY:
                         PacketLeaveLobby packetLeaveLobby = new PacketLeaveLobby(clientId);
                         packetLeaveLobby.processData();
+                        break;
+                    case CHAT_MESSAGE_TO_SERVER:
+                        PacketChatMessageToServer packetChatMessageToServer = new PacketChatMessageToServer(clientId,data);
+                        packetChatMessageToServer.processData();
                         break;
                     default:
                         break;

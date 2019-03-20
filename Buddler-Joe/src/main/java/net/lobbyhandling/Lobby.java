@@ -48,8 +48,8 @@ public class Lobby {
 
     /**
      * Method to remove a player by his clientId
-     * @param player the player to be removed
-     * @return true or false depending on wheter the player was in the list or not
+     * @param clientId of the player to be removed
+     * @return String with "OK" or "Not in a Lobby" depending on if the removing was succesfull or not
      */
 
     public String removePlayer(int clientId){
