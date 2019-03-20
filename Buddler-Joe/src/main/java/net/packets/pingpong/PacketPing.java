@@ -2,8 +2,12 @@ package net.packets.pingpong;
 
 import net.packets.Packet;
 
+import java.util.ArrayList;
+
 public class PacketPing extends Packet {
 
+    //TS=timestamps
+    ArrayList<Integer> listOfPingTS = new ArrayList<>();
 
     /**
      * Constructor when server gets ping from client

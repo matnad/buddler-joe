@@ -43,6 +43,9 @@ public class ClientLogic implements Runnable {
         input = new BufferedReader(new InputStreamReader(server.getInputStream()));
         thread = new Thread(this);
         thread.start();
+        //hier PingManager aufrufen
+        //thread starten PingManager pingManager = new PingManager()
+        //pingManager.start()
     }
 
     /**

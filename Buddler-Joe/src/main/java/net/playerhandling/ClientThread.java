@@ -31,6 +31,9 @@ public class ClientThread implements Runnable {
         } catch (IOException e) {
             System.err.println("Streams not set up for Client.");
         }
+        //hier PingManager aufrufen
+        //thread starten PingManager pingManager = new PingManager()
+        //pingManager.start()
     }
 
     @Override

@@ -7,7 +7,9 @@ import java.util.HashMap;
 public class PacketPong extends Packet {
 
     //String is the reference number, Integer should be the clientid
-    private static HashMap<String, Integer> ping_reference = new HashMap<>();
+    //private static HashMap<String, Integer> ping_reference = new HashMap<>();
+
+    //IN PINGMANAGER
     //Arraylist mit time
     private static int ping = 0;
     /**
