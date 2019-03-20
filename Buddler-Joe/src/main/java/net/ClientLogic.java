@@ -1,6 +1,7 @@
 package net;
 
 import net.packets.Packet;
+import net.packets.lobby.*;
 import net.packets.chat.PacketChatMessageStatus;
 import net.packets.lobby.PacketCreateLobbyStatus;
 import net.packets.lobby.PacketCurLobbyInfo;
@@ -76,7 +77,7 @@ public class ClientLogic implements Runnable {
         //firstLogin();
         while (true) {
             String in = input.readLine();
-            if(in.length() < 6){
+            if(in.length() < 5){
                 System.out.println("No valid command has been sent by server");
                 continue;
             }
@@ -114,6 +115,10 @@ public class ClientLogic implements Runnable {
                 case CUR_LOBBY_INFO:
                     PacketCurLobbyInfo pcli = new PacketCurLobbyInfo(data);
                     pcli.processData();
+                    break;
+                case LEAVE_LOBBY_STATUS:
+                    PacketLeaveLobbyStatus packetLeaveLobbyStatus = new PacketLeaveLobbyStatus(data);
+                    packetLeaveLobbyStatus.processData();
                     break;
                 case CHAT_MESSAGE_TO_CLIENT:
                     PacketChatMessageToClient pcmtc = new PacketChatMessageToClient(data);

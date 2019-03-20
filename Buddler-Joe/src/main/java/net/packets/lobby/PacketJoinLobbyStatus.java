@@ -45,12 +45,12 @@ public class PacketJoinLobbyStatus extends Packet{
 
     @Override
     public void processData() {
-        if(status.startsWith("OK")){
+        if(hasErrors()){//Errors on Client
+            System.out.println(createErrorMessage());
+        }else if(status.startsWith("OK")){
             System.out.println("Successfully joined lobby");
-        }else{
-            for (String s : in) {
-                System.out.println(s);
-            }
+        }else{//Errors on Server
+            System.out.println(status);
         }
     }
 }

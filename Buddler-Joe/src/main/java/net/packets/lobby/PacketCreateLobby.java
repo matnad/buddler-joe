@@ -46,20 +46,19 @@ public class PacketCreateLobby extends Packet {
             addError("Lobbyname to short. Minimum is 4 Characters.");
         }
         isExtendedAscii(lobbyname);
-        if(isLoggedIn()){
-            isInALobby();
-        }
     }
 
     @Override
     public void processData() {
+        if(!isLoggedIn()){
+            addError("Not loggedin yet");
+        }
+        if(isInALobby()){
+            addError("You are in a lobby, leave the current lobby first");
+        }
         String status;
         if(hasErrors()){
-            StringJoiner statusJ = new StringJoiner("║","ERRORS:║","");
-            for (String error : getErrors()) {
-                statusJ.add(error);
-            }
-            status = statusJ.toString();
+            status = createErrorMessage();
         }else{
             Lobby lobby = new Lobby(lobbyname);
             status = ServerLogic.getLobbyList().addLobby(lobby);
@@ -70,7 +69,7 @@ public class PacketCreateLobby extends Packet {
         if(!hasErrors() && status.equals("OK")){
             String info = "OK║" + ServerLogic.getLobbyList().getTopTen();
             PacketLobbyOverview p = new PacketLobbyOverview(getClientId(),info);
-            p.sendToAllClients();
+            p.sendToClientsNotInALobby();
         }
     }
 }

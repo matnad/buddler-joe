@@ -84,15 +84,20 @@ public class ClientThread implements Runnable {
                         PacketJoinLobbyStatus packetJoinLobbyStatus = new PacketJoinLobbyStatus(clientId, data);
                         packetJoinLobbyStatus.processData();
                         break;
-                    case CUR_LOBBY_INFO:
-                        PacketCurLobbyInfo packetCurLobbyInfo = new PacketCurLobbyInfo(clientId, data);
-                        packetCurLobbyInfo.processData();
+                    case GET_LOBBY_INFO:
+                        PacketGetLobbyInfo packetGetLobbyInfo = new PacketGetLobbyInfo(clientId);
+                        packetGetLobbyInfo.processData();
+                        break;
+                    case LEAVE_LOBBY:
+                        PacketLeaveLobby packetLeaveLobby = new PacketLeaveLobby(clientId);
+                        packetLeaveLobby.processData();
                         break;
                     case CHAT_MESSAGE_TO_SERVER:
                         PacketChatMessageToServer packetChatMessageToServer = new PacketChatMessageToServer(clientId,data);
                         packetChatMessageToServer.processData();
                         break;
-                        default:
+                    default:
+                        break;
                 }
             } catch(IOException | NullPointerException e){
                 System.out.println("Client " + clientId + " left");

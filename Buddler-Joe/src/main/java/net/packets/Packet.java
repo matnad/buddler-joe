@@ -39,6 +39,8 @@ public abstract class Packet {
         JOIN_LOBBY_STATUS("LOBJS"),
         LOBBY_OVERVIEW("LOBOV"),
         CUR_LOBBY_INFO("LOBCI"),
+        GET_LOBBY_INFO("LOBGI"),
+        LEAVE_LOBBY_STATUS("LOBLS"),
         CHAT_MESSAGE_TO_SERVER("CHATS"),
         CHAT_MESSAGE_TO_CLIENT("CHATC"),
         CHAT_MESSAGE_STATUS("CHATN");
@@ -128,6 +130,19 @@ public abstract class Packet {
         }
     }
 
+    /**
+     * This Method calls the sendToClient Method for each player on the server that is currently not in a Lobby.
+     */
+    public void sendToClientsNotInALobby(){
+        HashMap<Integer, Player> players = ServerLogic.getPlayerList().getPlayers();
+        for (Player p : players.values()) {
+            //System.out.println("Username: " + p.getUsername() + " curLobbyId: " + p.getCurLobbyId());
+            if(p.getCurLobbyId() == 0) {
+                sendToClient(p.getClientId());
+            }
+        }
+    }
+
     public void sendToServer(){
         ClientLogic.sendToServer(this.toString());
     }
@@ -171,10 +186,12 @@ public abstract class Packet {
     }
 
     protected boolean isExtendedAscii(String s){
+        //System.out.println(s);
         char[] charArray = s.toCharArray();
         for (char c : charArray) {
+            //System.out.println((int)c + "   " +c);
             if(c>255){
-                addError("Invalid characters in username. Only extended ASCII.");
+                addError("Invalid characters, only extended ASCII.");
                 return false;
             }
         }
@@ -193,7 +210,7 @@ public abstract class Packet {
 
     protected String createErrorMessage(){
         String message = "";
-        StringJoiner statusJ = new StringJoiner("\n","ERRORS: ","");
+        StringJoiner statusJ = new StringJoiner(" ","ERRORS: ","");
         for (String error : getErrors()) {
             statusJ.add(error);
         }
@@ -215,27 +232,37 @@ public abstract class Packet {
 
     /**
      * This method checks if the client how send this Packet is logged in or not.
-     * @return true if logged in else false
+     * This method should only be called on the serverside, since it will always return false on the clientside.
+     * @return true if logged in else false.
      */
     public boolean isLoggedIn(){
-        if(!ServerLogic.getPlayerList().getPlayers().containsKey(getClientId())){
-            addError("Not loggedin yet.");
+        try{
+            if(!ServerLogic.getPlayerList().getPlayers().containsKey(getClientId())){
+                //addError("Not loggedin yet.");
+                return false;
+            }else{
+                return true;
+            }
+        }catch(NullPointerException e){
             return false;
-        }else{
-            return true;
         }
     }
 
     /**
-     * This method checks if the client how send this Packet is currently in a Lobby
-     * @return true if in a Lobby else false
+     * This method checks if the client how send this Packet is currently in a Lobby.
+     * This method should only be called on the serverside, since it will always return false on the clientside.
+     * @return true if in a Lobby else false.
      */
     public boolean isInALobby(){
-        int lobbyId = ServerLogic.getPlayerList().getPlayers().get(getClientId()).getCurLobbyId();
-        if(lobbyId != 0){
-            addError("Already in a lobby");
-            return true;
-        }else{
+        try{
+            int lobbyId = ServerLogic.getPlayerList().getPlayers().get(getClientId()).getCurLobbyId();
+            if(lobbyId != 0){
+                //addError("Already in a lobby");
+                return true;
+            }else{
+                return false;
+            }
+        }catch(NullPointerException e){
             return false;
         }
     }
