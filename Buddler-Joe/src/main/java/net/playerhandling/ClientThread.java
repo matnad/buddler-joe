@@ -42,7 +42,7 @@ public class ClientThread implements Runnable {
                     continue;
                 }
                 String command = in.substring(0, 5);
-                String data = in.substring(6).trim();
+                String data = in.substring(5).trim();
                 System.out.println("command sent was '" + command + "' by client No " + clientId);
                 switch (Packet.lookupPacket(command)) {
                     case LOGIN:
