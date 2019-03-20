@@ -41,7 +41,7 @@ public class ClientThread implements Runnable {
                     continue;
                 }
                 String command = in.substring(0, 5);
-                String data = in.substring(6).trim();
+                String data = in.substring(5).trim();
                 System.out.println("command sent was '" + command + "' by client No " + clientId);
                 switch (Packet.lookupPacket(command)) {
                     case LOGIN:
@@ -83,9 +83,9 @@ public class ClientThread implements Runnable {
                         PacketJoinLobbyStatus packetJoinLobbyStatus = new PacketJoinLobbyStatus(clientId, data);
                         packetJoinLobbyStatus.processData();
                         break;
-                    case CUR_LOBBY_INFO:
-                        PacketCurLobbyInfo packetCurLobbyInfo = new PacketCurLobbyInfo(clientId, data);
-                        packetCurLobbyInfo.processData();
+                    case GET_LOBBY_INFO:
+                        PacketGetLobbyInfo packetGetLobbyInfo = new PacketGetLobbyInfo(clientId);
+                        packetGetLobbyInfo.processData();
                     default:
                         break;
                 }

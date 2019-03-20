@@ -27,6 +27,7 @@ public class PacketJoinLobbyStatus extends Packet{
         //client builds
         super(Packet.PacketTypes.JOIN_LOBBY_STATUS);
         setData(data);
+        System.out.println("in constructor: " + data);
         status = getData();
         in = status.split("║");
         validate();
@@ -48,9 +49,10 @@ public class PacketJoinLobbyStatus extends Packet{
         if(status.startsWith("OK")){
             System.out.println("Successfully joined lobby");
         }else{
-            for (String s : in) {
-                System.out.println(s);
-            }
+            System.out.println(status);
+            /* for (String s : in) {
+                System.out.print(s);
+            }*/
         }
     }
 }

@@ -38,7 +38,8 @@ public abstract class Packet {
         CREATE_LOBBY_STATUS("LOBCS"),
         JOIN_LOBBY_STATUS("LOBJS"),
         LOBBY_OVERVIEW("LOBOV"),
-        CUR_LOBBY_INFO("LOBCI");
+        CUR_LOBBY_INFO("LOBCI"),
+        GET_LOBBY_INFO("LOBGI");
 
         private final String packetCode;
 
@@ -168,10 +169,12 @@ public abstract class Packet {
     }
 
     protected boolean isExtendedAscii(String s){
+        //System.out.println(s);
         char[] charArray = s.toCharArray();
         for (char c : charArray) {
+            //System.out.println((int)c + "   " +c);
             if(c>255){
-                addError("Invalid characters in username. Only extended ASCII.");
+                addError("Invalid characters, only extended ASCII.");
                 return false;
             }
         }
@@ -216,7 +219,7 @@ public abstract class Packet {
      */
     public boolean isLoggedIn(){
         if(!ServerLogic.getPlayerList().getPlayers().containsKey(getClientId())){
-            addError("Not loggedin yet.");
+            //addError("Not loggedin yet.");
             return false;
         }else{
             return true;
@@ -228,11 +231,15 @@ public abstract class Packet {
      * @return true if in a Lobby else false
      */
     public boolean isInALobby(){
-        int lobbyId = ServerLogic.getPlayerList().getPlayers().get(getClientId()).getCurLobbyId();
-        if(lobbyId != 0){
-            addError("Already in a lobby");
-            return true;
-        }else{
+        try{
+            int lobbyId = ServerLogic.getPlayerList().getPlayers().get(getClientId()).getCurLobbyId();
+            if(lobbyId != 0){
+                //addError("Already in a lobby");
+                return true;
+            }else{
+                return false;
+            }
+        }catch(NullPointerException e){
             return false;
         }
     }

@@ -16,8 +16,8 @@ public class PacketLobbyOverview extends Packet {
         //Client receives
         super(PacketTypes.LOBBY_OVERVIEW);
         //System.out.print(data);
-        in = data.split("║");
         setData(data);
+        in = getData().split("║");
         validate();
     }
 
@@ -26,13 +26,17 @@ public class PacketLobbyOverview extends Packet {
         super(PacketTypes.LOBBY_OVERVIEW);
         setClientId(clientId);
         setData(data);
+        in = getData().split("║");
+        validate();
     }
 
 
     @Override
     public void validate() {
-        if(getData() != null) {
-            isExtendedAscii(getData());
+        if(getData() != null){
+            for (String s : in) {
+                isExtendedAscii(s);
+            }
         }else{
             addError("No data has been found");
         }
@@ -40,7 +44,9 @@ public class PacketLobbyOverview extends Packet {
 
     @Override
     public void processData() {
-        if(in[0].equals("OK")) { //the "OK" gets added in PacketCreatLobby.processData and PacketGetLobbies.processData
+        if(hasErrors()){
+            System.out.println(createErrorMessage());
+        }else if(in[0].equals("OK")) { //the "OK" gets added in PacketCreatLobby.processData and PacketGetLobbies.processData
             System.out.println("-------------------------------------");
             System.out.println("Available Lobbies:");
             for (int i = 1; i < in.length; i++) {

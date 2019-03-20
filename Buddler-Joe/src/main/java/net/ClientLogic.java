@@ -74,7 +74,7 @@ public class ClientLogic implements Runnable {
         //firstLogin();
         while (true) {
             String in = input.readLine();
-            if(in.length() < 6){
+            if(in.length() < 5){
                 System.out.println("No valid command has been sent by server");
                 continue;
             }
@@ -106,6 +106,7 @@ public class ClientLogic implements Runnable {
                     pcls.processData();
                     break;
                 case JOIN_LOBBY_STATUS:
+                    System.out.println("In switch: " + data);
                     PacketJoinLobbyStatus pjls = new PacketJoinLobbyStatus(data);
                     pjls.processData();
                     break;

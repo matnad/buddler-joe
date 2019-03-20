@@ -34,23 +34,22 @@ public class PacketJoinLobby extends Packet {
     @Override
     public void validate() {
         isExtendedAscii(lobbyname);
-        if(isLoggedIn()){//cheack if logged in at the same time
-            isInALobby();
-        }
-        if(ServerLogic.getLobbyList().getLobbyId(lobbyname) == -1){
-            addError("Chosen lobby does not exist.");
-        }
     }
 
     @Override
     public void processData() {
         String status;
+        if(ServerLogic.getLobbyList().getLobbyId(lobbyname) == -1){
+            addError("Chosen lobby does not exist.");
+        }
+        if(!isLoggedIn()){
+            addError("Not loggedin yet.");
+        }
+        if(isInALobby()){
+            addError("Already in a lobby, leave current lobby first");
+        }
         if(hasErrors()){
-            StringJoiner statusJ = new StringJoiner("║","ERRORS:║","");
-            for (String error : getErrors()) {
-                statusJ.add(error);
-            }
-            status = statusJ.toString();
+            status = createErrorMessage();
         }else{
             Player player = ServerLogic.getPlayerList().getPlayer(getClientId());
             int lobbyId = ServerLogic.getLobbyList().getLobbyId(lobbyname);

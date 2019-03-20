@@ -42,7 +42,9 @@ public class PacketCreateLobbyStatus extends Packet{
 
     @Override
     public void processData() {
-        if(status.startsWith("OK")){
+        if(hasErrors()){
+            System.out.println(createErrorMessage());
+        }else if(status.startsWith("OK")){
             System.out.println("Lobby-Creation Successful");
         }else{
             for (String s : in) {

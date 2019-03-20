@@ -18,23 +18,22 @@ public class PacketGetLobbies extends Packet {
     public PacketGetLobbies(){
         //client builds
         super(PacketTypes.GET_LOBBIES);
+        validate();
     }
 
     @Override
     public void validate() {
-        isLoggedIn();
+        //No data to validate since it is a Empty Packet
     }
 
     @Override
     public void processData() {
         String info;
-        //checks if the client is logged in or not.
+        if(!isLoggedIn()){
+            addError("Not loggedin yet");
+        }
         if(hasErrors()) {
-            StringJoiner statusJ = new StringJoiner("\n", "ERRORS: ", "");
-            for (String error : getErrors()) {
-                statusJ.add(error);
-            }
-            info = statusJ.toString();
+            info = createErrorMessage();
         }else{
             info = "OK║" + ServerLogic.getLobbyList().getTopTen();
         }
