@@ -8,7 +8,8 @@ public class PacketPong extends Packet {
 
     //String is the reference number, Integer should be the clientid
     private static HashMap<String, Integer> ping_reference = new HashMap<>();
-    private static int countPing = 0;
+    //Arraylist mit time
+    private static int ping = 0;
     /**
      * Constructor client gets pong(answer) from server
      * @param data defines what ping this pong refers to
