@@ -27,6 +27,14 @@ public class PacketJoinLobby extends Packet {
         validate();
     }
 
+    public PacketJoinLobby(String data) {
+        //client builds
+        super(PacketTypes.JOIN_LOBBY);
+        setData(data);
+        lobbyname = getData();
+        validate();
+    }
+
     /**
      * This Method checks if the recived lobbyname is a valid, existing lobbyname.
      * And if the Player that wants to join a Lobby is logged in and if so, ih he is in a Lobby already or not.
@@ -60,10 +68,15 @@ public class PacketJoinLobby extends Packet {
         PacketJoinLobbyStatus p = new PacketJoinLobbyStatus(getClientId(),status);
         p.sendToClient(getClientId());
         if(!hasErrors() && status.equals("OK")){
+            //CurrentLobbyInfo Update jor clients in this lobby
             int lobbyId = ServerLogic.getLobbyList().getLobbyId(lobbyname);
             String info = "OK║" + ServerLogic.getLobbyList().getLobby(lobbyId).getPlayerNames();
             PacketCurLobbyInfo pcli = new PacketCurLobbyInfo(getClientId(),info);
             pcli.sendToLobby(lobbyId);
+            //LobbyOverview update jor clients currently not in a Lobby
+            info = "OK║" + ServerLogic.getLobbyList().getTopTen();
+            PacketLobbyOverview packetLobbyOverview = new PacketLobbyOverview(getClientId(),info);
+            packetLobbyOverview.sendToClientsNotInALobby();
         }
     }
 }

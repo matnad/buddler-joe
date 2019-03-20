@@ -86,6 +86,11 @@ public class ClientThread implements Runnable {
                     case GET_LOBBY_INFO:
                         PacketGetLobbyInfo packetGetLobbyInfo = new PacketGetLobbyInfo(clientId);
                         packetGetLobbyInfo.processData();
+                        break;
+                    case LEAVE_LOBBY:
+                        PacketLeaveLobby packetLeaveLobby = new PacketLeaveLobby(clientId);
+                        packetLeaveLobby.processData();
+                        break;
                     default:
                         break;
                 }

@@ -12,13 +12,11 @@ public class PacketGetLobbies extends Packet {
         //server builds
         super(PacketTypes.GET_LOBBIES);
         setClientId(clientId);
-        validate();
     }
 
     public PacketGetLobbies(){
         //client builds
         super(PacketTypes.GET_LOBBIES);
-        validate();
     }
 
     @Override

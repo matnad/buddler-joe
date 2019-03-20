@@ -1,5 +1,6 @@
 package net.lobbyhandling;
 
+import net.ServerLogic;
 import net.playerhandling.ClientThread;
 import net.playerhandling.Player;
 
@@ -51,13 +52,15 @@ public class Lobby {
      * @return true or false depending on wheter the player was in the list or not
      */
 
-    public int removePlayer(Player player){
-        if(lobbyPlayers.contains(player)){
+    public String removePlayer(int clientId){
+        if(ServerLogic.getPlayerList().isPlayerIdInList(clientId)){
+            Player player = ServerLogic.getPlayerList().getPlayer(clientId);
             lobbyPlayers.remove(player);
-            return 1;
-        } else{
-            return -1;
+            return "OK";
+        }else{
+            return "Not in a Lobby";
         }
+
     }
 
 

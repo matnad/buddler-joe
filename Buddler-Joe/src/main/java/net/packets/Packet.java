@@ -39,7 +39,8 @@ public abstract class Packet {
         JOIN_LOBBY_STATUS("LOBJS"),
         LOBBY_OVERVIEW("LOBOV"),
         CUR_LOBBY_INFO("LOBCI"),
-        GET_LOBBY_INFO("LOBGI");
+        GET_LOBBY_INFO("LOBGI"),
+        LEAVE_LOBBY_STATUS("LOBLS");
 
         private final String packetCode;
 
@@ -123,6 +124,19 @@ public abstract class Packet {
         HashMap<Integer, Player> players = ServerLogic.getPlayerList().getPlayers();
         for (Player p : players.values()) {
             sendToClient(p.getClientId());
+        }
+    }
+
+    /**
+     * This Method calls the sendToClient Method for each player on the server that is currently not in a Lobby.
+     */
+    public void sendToClientsNotInALobby(){
+        HashMap<Integer, Player> players = ServerLogic.getPlayerList().getPlayers();
+        for (Player p : players.values()) {
+            //System.out.println("Username: " + p.getUsername() + " curLobbyId: " + p.getCurLobbyId());
+            if(p.getCurLobbyId() == 0) {
+                sendToClient(p.getClientId());
+            }
         }
     }
 

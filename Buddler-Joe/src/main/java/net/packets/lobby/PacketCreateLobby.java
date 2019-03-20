@@ -69,7 +69,7 @@ public class PacketCreateLobby extends Packet {
         if(!hasErrors() && status.equals("OK")){
             String info = "OK║" + ServerLogic.getLobbyList().getTopTen();
             PacketLobbyOverview p = new PacketLobbyOverview(getClientId(),info);
-            p.sendToAllClients();
+            p.sendToClientsNotInALobby();
         }
     }
 }

@@ -21,7 +21,7 @@ public class PacketGetLobbyInfo extends Packet {
 
     @Override
     public void validate() {
-
+        //Nothing to validate.
     }
 
     @Override
