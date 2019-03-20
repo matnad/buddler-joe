@@ -2,6 +2,7 @@ package net.playerhandling;
 
 import net.ServerLogic;
 import net.packets.Packet;
+import net.packets.chat.PacketChatMessageToServer;
 import net.packets.lobby.*;
 import net.packets.login_logout.PacketDisconnect;
 import net.packets.name.PacketGetName;
@@ -86,8 +87,12 @@ public class ClientThread implements Runnable {
                     case CUR_LOBBY_INFO:
                         PacketCurLobbyInfo packetCurLobbyInfo = new PacketCurLobbyInfo(clientId, data);
                         packetCurLobbyInfo.processData();
-                    default:
                         break;
+                    case CHAT_MESSAGE_TO_SERVER:
+                        PacketChatMessageToServer packetChatMessageToServer = new PacketChatMessageToServer(clientId,data);
+                        packetChatMessageToServer.processData();
+                        break;
+                        default:
                 }
             } catch(IOException | NullPointerException e){
                 System.out.println("Client " + clientId + " left");

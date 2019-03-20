@@ -3,6 +3,7 @@ package net;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import net.packets.chat.PacketChatMessageToServer;
 
 public class StartNetworkOnlyClient {
     private static final BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -31,7 +32,12 @@ public class StartNetworkOnlyClient {
         while (true){
             System.out.println("Command: ");
             String inputMessage = br.readLine();
-            clientLogic.sendToServer(inputMessage);
+            if(inputMessage.startsWith("C ") && inputMessage.length() > 2) {
+                PacketChatMessageToServer p = new PacketChatMessageToServer(inputMessage.substring(2));
+                p.sendToServer();
+            } else {
+                ClientLogic.sendToServer(inputMessage);
+            }
         }
     }
 
