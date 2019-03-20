@@ -1,6 +1,7 @@
 package net;
 
 import net.packets.Packet;
+import net.packets.chat.PacketChatMessageStatus;
 import net.packets.lobby.PacketCreateLobbyStatus;
 import net.packets.lobby.PacketCurLobbyInfo;
 import net.packets.lobby.PacketJoinLobbyStatus;
@@ -8,6 +9,7 @@ import net.packets.lobby.PacketLobbyOverview;
 import net.packets.login_logout.PacketLoginStatus;
 import net.packets.name.PacketSendName;
 import net.packets.name.PacketSetNameStatus;
+import net.packets.chat.PacketChatMessageToClient;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -112,6 +114,14 @@ public class ClientLogic implements Runnable {
                 case CUR_LOBBY_INFO:
                     PacketCurLobbyInfo pcli = new PacketCurLobbyInfo(data);
                     pcli.processData();
+                    break;
+                case CHAT_MESSAGE_TO_CLIENT:
+                    PacketChatMessageToClient pcmtc = new PacketChatMessageToClient(data);
+                    pcmtc.processData();
+                    break;
+                case CHAT_MESSAGE_STATUS:
+                    PacketChatMessageStatus pcms = new PacketChatMessageStatus(data);
+                    pcms.processData();
                     break;
             }
         }
