@@ -106,7 +106,6 @@ public class ClientLogic implements Runnable {
                     pcls.processData();
                     break;
                 case JOIN_LOBBY_STATUS:
-                    System.out.println("In switch: " + data);
                     PacketJoinLobbyStatus pjls = new PacketJoinLobbyStatus(data);
                     pjls.processData();
                     break;

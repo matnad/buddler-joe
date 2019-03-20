@@ -193,7 +193,7 @@ public abstract class Packet {
 
     protected String createErrorMessage(){
         String message = "";
-        StringJoiner statusJ = new StringJoiner("\n","ERRORS: ","");
+        StringJoiner statusJ = new StringJoiner(" ","ERRORS: ","");
         for (String error : getErrors()) {
             statusJ.add(error);
         }

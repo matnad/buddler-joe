@@ -67,8 +67,8 @@ public class ServerLogic {
     }
 
         public static void sendPacket(int receiver, Packet packet){  //TODO: Check receiver and if he exists
-            System.out.println("reciver: " + receiver + " Packet: " + packet.getPacketType());
-            System.out.println("Data: "+ packet.getData());
+            //System.out.println("reciver: " + receiver + " Packet: " + packet.getPacketType());
+            //System.out.println("Data: "+ packet.getData());
             ClientThread ct = getThreadByClientId(receiver);
             if(ct != null){
                 ct.sendToClient(packet);
