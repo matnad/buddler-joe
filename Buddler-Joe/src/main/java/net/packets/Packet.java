@@ -215,20 +215,26 @@ public abstract class Packet {
 
     /**
      * This method checks if the client how send this Packet is logged in or not.
-     * @return true if logged in else false
+     * This method should only be called on the serverside, since it will always return false on the clientside.
+     * @return true if logged in else false.
      */
     public boolean isLoggedIn(){
-        if(!ServerLogic.getPlayerList().getPlayers().containsKey(getClientId())){
-            //addError("Not loggedin yet.");
+        try{
+            if(!ServerLogic.getPlayerList().getPlayers().containsKey(getClientId())){
+                //addError("Not loggedin yet.");
+                return false;
+            }else{
+                return true;
+            }
+        }catch(NullPointerException e){
             return false;
-        }else{
-            return true;
         }
     }
 
     /**
-     * This method checks if the client how send this Packet is currently in a Lobby
-     * @return true if in a Lobby else false
+     * This method checks if the client how send this Packet is currently in a Lobby.
+     * This method should only be called on the serverside, since it will always return false on the clientside.
+     * @return true if in a Lobby else false.
      */
     public boolean isInALobby(){
         try{

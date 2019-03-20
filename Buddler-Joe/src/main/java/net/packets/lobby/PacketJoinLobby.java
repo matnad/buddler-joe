@@ -46,7 +46,7 @@ public class PacketJoinLobby extends Packet {
             addError("Not loggedin yet.");
         }
         if(isInALobby()){
-            addError("Already in a lobby, leave current lobby first");
+            addError("Already in a lobby, leave current lobby first.");
         }
         if(hasErrors()){
             status = createErrorMessage();

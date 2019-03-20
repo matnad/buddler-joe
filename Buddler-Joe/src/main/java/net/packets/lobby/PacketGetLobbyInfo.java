@@ -34,11 +34,7 @@ public class PacketGetLobbyInfo extends Packet {
         }
         String info;
         if(hasErrors()) {
-            StringJoiner statusJ = new StringJoiner("\n", "ERRORS: ", "");
-            for (String error : getErrors()) {
-                statusJ.add(error);
-            }
-            info = statusJ.toString();
+            info = createErrorMessage();
         }else{
             int lobbyId = ServerLogic.getPlayerList().getPlayers().get(getClientId()).getCurLobbyId();
             info = "OK║" + ServerLogic.getLobbyList().getLobby(lobbyId).getPlayerNames();
