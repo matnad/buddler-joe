@@ -11,6 +11,8 @@ import net.packets.login_logout.PacketLoginStatus;
 import net.packets.name.PacketSendName;
 import net.packets.name.PacketSetNameStatus;
 import net.packets.chat.PacketChatMessageToClient;
+import net.packets.pingpong.PacketPing;
+import net.packets.pingpong.PacketPong;
 import net.playerhandling.PingManager;
 
 import java.io.BufferedReader;
@@ -131,6 +133,14 @@ public class ClientLogic implements Runnable {
                 case CHAT_MESSAGE_STATUS:
                     PacketChatMessageStatus pcms = new PacketChatMessageStatus(data);
                     pcms.processData();
+                    break;
+                case PING:
+                    PacketPing packetPing = new PacketPing(data);
+                    packetPing.processData();
+                    break;
+                case PONG:
+                    PacketPong packetPong = new PacketPong(data);
+                    packetPong.processData();
                     break;
             }
         }

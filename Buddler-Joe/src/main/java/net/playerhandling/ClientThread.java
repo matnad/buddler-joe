@@ -101,6 +101,14 @@ public class ClientThread implements Runnable {
                         PacketChatMessageToServer packetChatMessageToServer = new PacketChatMessageToServer(clientId,data);
                         packetChatMessageToServer.processData();
                         break;
+                    case PING:
+                        PacketPing packetPing = new PacketPing(clientId, data);
+                        packetPing.processData();
+                        break;
+                    case PONG:
+                        PacketPong packetPong = new PacketPong(clientId, data);
+                        packetPong.processData();
+                        break;
                     default:
                         break;
                 }
