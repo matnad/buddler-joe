@@ -1,6 +1,8 @@
 package net;
 
 import net.packets.Packet;
+import net.packets.lobby.*;
+import net.packets.chat.PacketChatMessageStatus;
 import net.packets.lobby.PacketCreateLobbyStatus;
 import net.packets.lobby.PacketCurLobbyInfo;
 import net.packets.lobby.PacketJoinLobbyStatus;
@@ -8,9 +10,7 @@ import net.packets.lobby.PacketLobbyOverview;
 import net.packets.login_logout.PacketLoginStatus;
 import net.packets.name.PacketSendName;
 import net.packets.name.PacketSetNameStatus;
-import net.packets.pingpong.PacketPing;
-import net.packets.pingpong.PacketPong;
-import net.playerhandling.PingManager;
+import net.packets.chat.PacketChatMessageToClient;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -81,7 +81,7 @@ public class ClientLogic implements Runnable {
         //firstLogin();
         while (true) {
             String in = input.readLine();
-            if(in.length() < 6){
+            if(in.length() < 5){
                 System.out.println("No valid command has been sent by server");
                 continue;
             }
@@ -120,14 +120,17 @@ public class ClientLogic implements Runnable {
                     PacketCurLobbyInfo pcli = new PacketCurLobbyInfo(data);
                     pcli.processData();
                     break;
-                case PONG:
-                    PacketPong packetPong = new PacketPong(data);
-                    packetPong.processData();
+                case LEAVE_LOBBY_STATUS:
+                    PacketLeaveLobbyStatus packetLeaveLobbyStatus = new PacketLeaveLobbyStatus(data);
+                    packetLeaveLobbyStatus.processData();
                     break;
-                case PING:
-                    PacketPing packetPing = new PacketPing(data);
-                    packetPing.processData();
-                    //andere methode z.b packetPing.calculate diese ruft pingupdate() auf
+                case CHAT_MESSAGE_TO_CLIENT:
+                    PacketChatMessageToClient pcmtc = new PacketChatMessageToClient(data);
+                    pcmtc.processData();
+                    break;
+                case CHAT_MESSAGE_STATUS:
+                    PacketChatMessageStatus pcms = new PacketChatMessageStatus(data);
+                    pcms.processData();
                     break;
             }
         }

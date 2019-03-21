@@ -36,14 +36,12 @@ public class PacketSetNameStatus extends Packet{
     public void processData() {
         if (status.startsWith("Successfully")) {
             System.out.println(status);
-        } else {
+        } else if(status.startsWith("Changed")) {
+            System.out.println(status);
+        } else{
             if (hasErrors()) {
                 System.out.println(createErrorMessage());
             } else {
-                if(status.contains("Username already taken")){
-                    //TODO: bob_001
-                    //ClientLogic.recommendName(status.substring());
-                }
                 System.out.println(status);
             }
         }

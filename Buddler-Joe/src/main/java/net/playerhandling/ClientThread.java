@@ -2,6 +2,7 @@ package net.playerhandling;
 
 import net.ServerLogic;
 import net.packets.Packet;
+import net.packets.chat.PacketChatMessageToServer;
 import net.packets.lobby.*;
 import net.packets.login_logout.PacketDisconnect;
 import net.packets.name.PacketGetName;
@@ -88,17 +89,18 @@ public class ClientThread implements Runnable {
                         PacketJoinLobbyStatus packetJoinLobbyStatus = new PacketJoinLobbyStatus(clientId, data);
                         packetJoinLobbyStatus.processData();
                         break;
-                    case CUR_LOBBY_INFO:
-                        PacketCurLobbyInfo packetCurLobbyInfo = new PacketCurLobbyInfo(clientId, data);
-                        packetCurLobbyInfo.processData();
+                    case GET_LOBBY_INFO:
+                        PacketGetLobbyInfo packetGetLobbyInfo = new PacketGetLobbyInfo(clientId);
+                        packetGetLobbyInfo.processData();
                         break;
-                    case PING:
-                        PacketPing packetPing = new PacketPing(clientId, data);
-                        packetPing.processData();
+                    case LEAVE_LOBBY:
+                        PacketLeaveLobby packetLeaveLobby = new PacketLeaveLobby(clientId);
+                        packetLeaveLobby.processData();
                         break;
-                    case PONG:
-                        PacketPong packetPong = new PacketPong(clientId, data);
-                        packetPong.processData();
+                    case CHAT_MESSAGE_TO_SERVER:
+                        PacketChatMessageToServer packetChatMessageToServer = new PacketChatMessageToServer(clientId,data);
+                        packetChatMessageToServer.processData();
+                        break;
                     default:
                         break;
                 }

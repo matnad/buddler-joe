@@ -27,6 +27,14 @@ public class PacketJoinLobby extends Packet {
         validate();
     }
 
+    public PacketJoinLobby(String data) {
+        //client builds
+        super(PacketTypes.JOIN_LOBBY);
+        setData(data);
+        lobbyname = getData();
+        validate();
+    }
+
     /**
      * This Method checks if the recived lobbyname is a valid, existing lobbyname.
      * And if the Player that wants to join a Lobby is logged in and if so, ih he is in a Lobby already or not.
@@ -34,23 +42,22 @@ public class PacketJoinLobby extends Packet {
     @Override
     public void validate() {
         isExtendedAscii(lobbyname);
-        if(isLoggedIn()){//cheack if logged in at the same time
-            isInALobby();
-        }
-        if(ServerLogic.getLobbyList().getLobbyId(lobbyname) == -1){
-            addError("Chosen lobby does not exist.");
-        }
     }
 
     @Override
     public void processData() {
         String status;
+        if(ServerLogic.getLobbyList().getLobbyId(lobbyname) == -1){
+            addError("Chosen lobby does not exist.");
+        }
+        if(!isLoggedIn()){
+            addError("Not loggedin yet.");
+        }
+        if(isInALobby()){
+            addError("Already in a lobby, leave current lobby first.");
+        }
         if(hasErrors()){
-            StringJoiner statusJ = new StringJoiner("║","ERRORS:║","");
-            for (String error : getErrors()) {
-                statusJ.add(error);
-            }
-            status = statusJ.toString();
+            status = createErrorMessage();
         }else{
             Player player = ServerLogic.getPlayerList().getPlayer(getClientId());
             int lobbyId = ServerLogic.getLobbyList().getLobbyId(lobbyname);
@@ -61,10 +68,15 @@ public class PacketJoinLobby extends Packet {
         PacketJoinLobbyStatus p = new PacketJoinLobbyStatus(getClientId(),status);
         p.sendToClient(getClientId());
         if(!hasErrors() && status.equals("OK")){
+            //CurrentLobbyInfo Update jor clients in this lobby
             int lobbyId = ServerLogic.getLobbyList().getLobbyId(lobbyname);
             String info = "OK║" + ServerLogic.getLobbyList().getLobby(lobbyId).getPlayerNames();
             PacketCurLobbyInfo pcli = new PacketCurLobbyInfo(getClientId(),info);
             pcli.sendToLobby(lobbyId);
+            //LobbyOverview update jor clients currently not in a Lobby
+            info = "OK║" + ServerLogic.getLobbyList().getTopTen();
+            PacketLobbyOverview packetLobbyOverview = new PacketLobbyOverview(getClientId(),info);
+            packetLobbyOverview.sendToClientsNotInALobby();
         }
     }
 }
