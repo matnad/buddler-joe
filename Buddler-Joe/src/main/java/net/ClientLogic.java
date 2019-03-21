@@ -10,6 +10,7 @@ import net.packets.name.PacketSendName;
 import net.packets.name.PacketSetNameStatus;
 import net.packets.pingpong.PacketPing;
 import net.packets.pingpong.PacketPong;
+import net.playerhandling.PingManager;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -44,8 +45,9 @@ public class ClientLogic implements Runnable {
         thread = new Thread(this);
         thread.start();
         //hier PingManager aufrufen
-        //thread starten PingManager pingManager = new PingManager()
-        //pingManager.start()
+        //thread starten
+        PingManager pingManager = new PingManager();
+        //pingManager.start();
     }
 
     /**

@@ -2,12 +2,7 @@ package net.packets.pingpong;
 
 import net.packets.Packet;
 
-import java.util.ArrayList;
-
 public class PacketPing extends Packet {
-
-    //TS=timestamps
-    ArrayList<Integer> listOfPingTS = new ArrayList<>();
 
     /**
      * Constructor when server gets ping from client
@@ -44,7 +39,6 @@ public class PacketPing extends Packet {
         }else{
             for(int i = 0; i < getData().length(); i++) {
                 if(!Character.isDigit(getData().charAt(i))) {
-                    //Invalid
                     addError("Invalid ping number");
                 }
             }
@@ -63,26 +57,15 @@ public class PacketPing extends Packet {
      */
     @Override
     public void processData() {
-        if(hasErrors()) {
-            //discard packet and no need to response
-        }else{
-            if(PacketPong.getListOfPingReference().containsKey(getData())) {
-                //Invalid
-                //HashMap doesnt allow duplicate Keys
-            }
-            PacketPong.getListOfPingReference().put(getData(), getClientId());
+        if(!hasErrors()) {
             PacketPong pong = new PacketPong(getData());
-
             if(getClientId() > 0) {
                 pong.sendToClient(getClientId());
             }else{
                 pong.sendToServer();
             }
-            //if(Integer.parseInt(getData()) >= 10000) {
-            //    pong.sendToClient(getClientId());
-            //} else if(Integer.parseInt(getData()) < 10000) {
-            //    pong.sendToServer();
-            //}
         }
+        //hasErrors() == true dann passiert nichts mit dem Packet
     }
+    //HIER: falls errors == 0 dann send, sonst nichts, packet soll verschwinden
 }

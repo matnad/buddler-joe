@@ -2,16 +2,8 @@ package net.packets.pingpong;
 
 import net.packets.Packet;
 
-import java.util.HashMap;
-
 public class PacketPong extends Packet {
 
-    //String is the reference number, Integer should be the clientid
-    //private static HashMap<String, Integer> ping_reference = new HashMap<>();
-
-    //IN PINGMANAGER
-    //Arraylist mit time
-    private static int ping = 0;
     /**
      * Constructor client gets pong(answer) from server
      * @param data defines what ping this pong refers to
@@ -32,14 +24,19 @@ public class PacketPong extends Packet {
         setData(data);
         validate();
     }
-    public static HashMap getListOfPingReference() { return ping_reference; }
 
-    //data already checked when receiving the ping packet.
+
     @Override
     public void validate() {
-       if(getData() == null) {
-           addError("Empty packet");
-       }
+        if(getData() == null) {
+            addError("Empty message");
+        }else{
+            for(int i = 0; i < getData().length(); i++) {
+                if(!Character.isDigit(getData().charAt(i))) {
+                    addError("Invalid ping number");
+                }
+            }
+        }
     }
 
     /**
@@ -50,12 +47,15 @@ public class PacketPong extends Packet {
      */
     @Override
     public void processData() {
-        //if(hasErrors() || !getListOfPingReference().containsKey(getData())) {
-            //Invalid
-        //}else{
+        if(!hasErrors()) {
             //Here would be the time calculation
-            System.out.println("PONG " + getData());
-            getListOfPingReference().remove(getData());
-        //}
+            long timeAtSending = Long.parseLong(getData());
+            long currTime = System.currentTimeMillis();
+            long diffTime = currTime - timeAtSending;
+
+
+        }
+        //AUS DER ARRAYLIST LÖSCHEN NICHT VERGESSEN
+
     }
 }
