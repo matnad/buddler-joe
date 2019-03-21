@@ -11,13 +11,13 @@ import net.packets.login_logout.PacketLoginStatus;
 import net.packets.name.PacketSendName;
 import net.packets.name.PacketSetNameStatus;
 import net.packets.chat.PacketChatMessageToClient;
+import net.playerhandling.PingManager;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.util.ArrayList;
 
 public class ClientLogic implements Runnable {
 
@@ -29,7 +29,7 @@ public class ClientLogic implements Runnable {
     private int clientId;
     private static int counter = 1;
     private String username;
-    PingManager pingManager;
+    private static PingManager pingManager;
 
     /**
      * ClientLogic to communicate with the server. Controls the input/output from/to the player. The constructor sets
@@ -150,7 +150,7 @@ public class ClientLogic implements Runnable {
         System.out.println("The username is already taken, we would recommend: " + username + "_" + counter++);
     }
 
-    public PingManager getPingManager() {
+    public static PingManager getPingManager() {
         return pingManager;
     }
 }

@@ -48,6 +48,7 @@ public class PacketPong extends Packet {
      * saved in the HashMap after receiving the ping packet.
      * We check if the pong belongs to a ping
      */
+    //TRYCATCH einbauen
     @Override
     public void processData() {
         if(!hasErrors()) {
@@ -56,9 +57,9 @@ public class PacketPong extends Packet {
             long currTime = System.currentTimeMillis();
             long diffTime = currTime - timeAtSending;
             if(getClientId() == 0) {
-            //    PingManager pingManager = ClientLogic.getThreadByClientId().getPingManagerThreadByClientId(getClientId());
-            //    pingManager.delete(getData());
-            //    pingManager.updatePing(String.valueOf(diffTime));
+                PingManager pingManager = ClientLogic.getPingManager();
+                pingManager.delete(getData());
+                pingManager.updatePing(String.valueOf(diffTime));
             }else { //when server gets answer/pong
                 PingManager pingManager = ServerLogic.getThreadByClientId(getClientId()).getPingManager();
                 pingManager.delete(getData());

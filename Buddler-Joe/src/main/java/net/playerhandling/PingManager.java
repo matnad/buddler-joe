@@ -41,7 +41,7 @@ public class PingManager implements Runnable{
     public void run() {
         while(true) {
             try {
-                sleep(3000);
+                sleep(5000);
             }
             catch(InterruptedException e) {
             }
