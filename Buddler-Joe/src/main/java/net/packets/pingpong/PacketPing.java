@@ -58,11 +58,13 @@ public class PacketPing extends Packet {
     @Override
     public void processData() {
         if(!hasErrors()) {
-            PacketPong pong = new PacketPong(getData());
+            //PacketPong pong = new PacketPong(getData());
             if(getClientId() > 0) {
-                pong.sendToClient(getClientId());
+                this.sendToClient(getClientId());
+                //PacketPing ping = new PacketPing(getClientId(), getData());
+                //ping.processData();
             }else{
-                pong.sendToServer();
+                this.sendToServer();
             }
         }
         //hasErrors() == true dann passiert nichts mit dem Packet

@@ -48,11 +48,14 @@ public class PacketPong extends Packet {
     @Override
     public void processData() {
         if(!hasErrors()) {
-            //Here would be the time calculation
-            long timeAtSending = Long.parseLong(getData());
-            long currTime = System.currentTimeMillis();
-            long diffTime = currTime - timeAtSending;
-
+            if(getClientId() != 0) {
+                this.sendToClient(getClientId());
+            }else{
+                //Here would be the time calculation
+                long timeAtSending = Long.parseLong(getData());
+                long currTime = System.currentTimeMillis();
+                long diffTime = currTime - timeAtSending;
+            }
 
         }
         //AUS DER ARRAYLIST LÖSCHEN NICHT VERGESSEN

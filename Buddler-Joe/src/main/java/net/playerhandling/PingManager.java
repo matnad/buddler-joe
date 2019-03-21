@@ -28,8 +28,6 @@ public class PingManager implements Runnable{
         listOfPingTS = new ArrayList<>();
         ping = 0;
         this.clientId = clientId;
-        thread = new Thread(this);
-        thread.start();
     }
 
     /**
@@ -38,8 +36,6 @@ public class PingManager implements Runnable{
     public PingManager() {
         listOfPingTS = new ArrayList<>();
         ping = 0;
-        thread = new Thread(this);
-        thread.start();
     }
 
     public void run() {
@@ -51,7 +47,7 @@ public class PingManager implements Runnable{
             }
             //hier anweisung
             long currTime;
-            if(clientId != 0) {//from server to client
+            if(clientId > 0) {//from server to client
                 currTime = System.currentTimeMillis();
                 String data = String.valueOf(currTime);
                 append(data);

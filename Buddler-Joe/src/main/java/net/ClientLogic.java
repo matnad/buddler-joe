@@ -44,10 +44,8 @@ public class ClientLogic implements Runnable {
         input = new BufferedReader(new InputStreamReader(server.getInputStream()));
         thread = new Thread(this);
         thread.start();
-        //hier PingManager aufrufen
-        //thread starten
         PingManager pingManager = new PingManager();
-        //pingManager.start();
+        new Thread(pingManager).start();
     }
 
     /**
@@ -127,6 +125,7 @@ public class ClientLogic implements Runnable {
                 case PING:
                     PacketPing packetPing = new PacketPing(data);
                     packetPing.processData();
+                    //andere methode z.b packetPing.calculate diese ruft pingupdate() auf
                     break;
             }
         }
