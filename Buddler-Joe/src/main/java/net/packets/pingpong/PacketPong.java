@@ -1,6 +1,9 @@
 package net.packets.pingpong;
 
+import net.ClientLogic;
+import net.ServerLogic;
 import net.packets.Packet;
+import net.playerhandling.PingManager;
 
 public class PacketPong extends Packet {
 
@@ -48,17 +51,20 @@ public class PacketPong extends Packet {
     @Override
     public void processData() {
         if(!hasErrors()) {
-            if(getClientId() != 0) {
-                this.sendToClient(getClientId());
-            }else{
-                //Here would be the time calculation
-                long timeAtSending = Long.parseLong(getData());
-                long currTime = System.currentTimeMillis();
-                long diffTime = currTime - timeAtSending;
+            //Here would be the time calculation
+            long timeAtSending = Long.parseLong(getData());
+            long currTime = System.currentTimeMillis();
+            long diffTime = currTime - timeAtSending;
+            if(getClientId() == 0) {
+            //    PingManager pingManager = ClientLogic.getThreadByClientId().getPingManagerThreadByClientId(getClientId());
+            //    pingManager.delete(getData());
+            //    pingManager.updatePing(String.valueOf(diffTime));
+            }else { //when server gets answer/pong
+                PingManager pingManager = ServerLogic.getThreadByClientId(getClientId()).getPingManagerMapByClientId(getClientId());
+                pingManager.delete(getData());
+                pingManager.updatePing(String.valueOf(diffTime));
             }
-
         }
-        //AUS DER ARRAYLIST LÖSCHEN NICHT VERGESSEN
 
     }
 }

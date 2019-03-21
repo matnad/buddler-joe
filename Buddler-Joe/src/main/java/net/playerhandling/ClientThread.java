@@ -12,6 +12,7 @@ import net.packets.pingpong.PacketPong;
 
 import java.io.*;
 import java.net.Socket;
+import java.util.HashMap;
 
 public class ClientThread implements Runnable {
 
@@ -19,10 +20,12 @@ public class ClientThread implements Runnable {
     private PrintWriter output;
     private final int clientId;
     private final Socket socket;
+    private static HashMap<Integer, PingManager> pingManagerMap;
 
     public ClientThread(Socket Client, int clientId) {
         this.clientId = clientId;
         this.socket = Client;
+        pingManagerMap = new HashMap<>();
         System.out.println("Client details: "+Client.toString());
         try {
             input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -32,6 +35,7 @@ public class ClientThread implements Runnable {
             System.err.println("Streams not set up for Client.");
         }
         PingManager pingManager = new PingManager(clientId);
+        pingManagerMap.put(clientId, pingManager);
         new Thread(pingManager).start();
     }
 
@@ -122,6 +126,8 @@ public class ClientThread implements Runnable {
         return clientId;
     }
 
-
+    public PingManager getPingManagerMapByClientId(int clientId) {
+        return pingManagerMap.get(clientId);
+    }
 
 }

@@ -15,11 +15,11 @@ public class PingManager implements Runnable{
      * data is timestamp in String
      */
     //TS=timestamps number in string
-    private static ArrayList<String> listOfPingTS;
+    private ArrayList<String> listOfPingTS;
     //Arraylist mit time
-    private static int ping;
+    private long ping;
     Thread thread;
-    private static int clientId;
+    private int clientId;
 
     /**
      * sending ping from server to client
@@ -45,20 +45,19 @@ public class PingManager implements Runnable{
             }
             catch(InterruptedException e) {
             }
-            //hier anweisung
             long currTime;
             if(clientId > 0) {//from server to client
                 currTime = System.currentTimeMillis();
                 String data = String.valueOf(currTime);
                 append(data);
                 PacketPing packetPing = new PacketPing(clientId, data);
-                packetPing.processData();
-            }else{
+                packetPing.sendToClient(clientId);
+            }else{ //from client to server
                 currTime = System.currentTimeMillis();
                 String data = String.valueOf(currTime);
                 append(data);
                 PacketPing packetPing = new PacketPing(data);
-                packetPing.processData();
+                packetPing.sendToServer();
             }
         }
     }
@@ -72,10 +71,14 @@ public class PingManager implements Runnable{
     }
 
     public void updatePing(String diffTime) {
-
+        ping = (ping*9 + Long.parseLong(diffTime))/10;
     }
 
-    public int getPing() {
+    public ArrayList getListOfPingTS() {
+        return listOfPingTS;
+    }
+
+    public long getPing() {
         return ping;
     }
 
