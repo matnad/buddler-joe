@@ -29,7 +29,7 @@ public class ClientLogic implements Runnable {
     private int clientId;
     private static int counter = 1;
     private String username;
-    private static ArrayList<PingManager> pingManagerList;
+    PingManager pingManager;
 
     /**
      * ClientLogic to communicate with the server. Controls the input/output from/to the player. The constructor sets
@@ -46,9 +46,7 @@ public class ClientLogic implements Runnable {
         input = new BufferedReader(new InputStreamReader(server.getInputStream()));
         thread = new Thread(this);
         thread.start();
-        PingManager pingManager = new PingManager();
-        pingManagerList = new ArrayList<>();
-        pingManagerList.add(pingManager);
+        pingManager = new PingManager();
         new Thread(pingManager).start();
     }
 
@@ -149,7 +147,7 @@ public class ClientLogic implements Runnable {
         System.out.println("The username is already taken, we would recommend: " + username + "_" + counter++);
     }
 
-    //public PingManager getPingManagerList() {
-    //    return pingManagerList;
-    //}
+    public PingManager getPingManager() {
+        return pingManager;
+    }
 }

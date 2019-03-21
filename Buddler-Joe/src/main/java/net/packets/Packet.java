@@ -126,7 +126,7 @@ public abstract class Packet {
     }
 
     public void sendToServer(){
-        ClientLogic.sendToServer(this.getData());
+        ClientLogic.sendToServer(toString());
     }
 
     public void setPacketType(PacketTypes packetType) {

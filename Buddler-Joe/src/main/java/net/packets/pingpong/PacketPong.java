@@ -60,7 +60,7 @@ public class PacketPong extends Packet {
             //    pingManager.delete(getData());
             //    pingManager.updatePing(String.valueOf(diffTime));
             }else { //when server gets answer/pong
-                PingManager pingManager = ServerLogic.getThreadByClientId(getClientId()).getPingManagerMapByClientId(getClientId());
+                PingManager pingManager = ServerLogic.getThreadByClientId(getClientId()).getPingManager();
                 pingManager.delete(getData());
                 pingManager.updatePing(String.valueOf(diffTime));
             }
