@@ -36,7 +36,7 @@ public class PacketChatMessageStatus extends Packet{
     @Override
     public void processData() {
         if(status.startsWith("OK")){
-            System.out.println("Successfully send a Message");
+//            System.out.println("Successfully send a Message");
         }else{
             for (String s : input) {
                 System.out.println(s);

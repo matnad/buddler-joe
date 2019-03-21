@@ -1,6 +1,10 @@
 package net.packets.login_logout;
 
 import net.packets.Packet;
+import net.playerhandling.Player;
+import net.ServerLogic;
+import net.packets.lobby.PacketLeaveLobby;
+import net.packets.chat.PacketChatMessageToServer;
 
 public class PacketDisconnect extends Packet {
 
@@ -25,6 +29,22 @@ public class PacketDisconnect extends Packet {
 
     @Override
     public void processData() {
+        Player client = ServerLogic.getPlayerList().getPlayer(getClientId());
+
+        PacketChatMessageToServer sendMessage = new PacketChatMessageToServer("left the lobby");
+        sendMessage.setClientId(client.getClientId());
+        sendMessage.processData();
+
+        PacketLeaveLobby leaveLobby = new PacketLeaveLobby(getClientId());
+        leaveLobby.processData();
+
+
+        ServerLogic.getPlayerList().removePlayer(getClientId());
+
+//        PacketLeaveLobby leaveLobby = new PacketLeaveLobby(client.getClientId());
+//        leaveLobby.processData();
+
+//        ServerLogic.getPlayerList().removePlayer(getClientId());
 
     }
 }
