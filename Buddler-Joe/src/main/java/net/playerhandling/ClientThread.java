@@ -37,6 +37,9 @@ public class ClientThread implements Runnable {
             while (true) {
                 try {
                     String in = input.readLine();
+                    if(in == null){
+                        break;
+                    }
                 if (in.length() < 5) {
                     System.out.println("No valid command has been sent by player No " + clientId);
                     continue;
@@ -61,7 +64,7 @@ public class ClientThread implements Runnable {
                         setName.processData();
                         break;
                     case DISCONNECT:
-                        PacketDisconnect disconnect = new PacketDisconnect(clientId, data);
+                        PacketDisconnect disconnect = new PacketDisconnect(clientId);
                         disconnect.processData();
                         break;
                     case GET_LOBBIES:
@@ -93,13 +96,13 @@ public class ClientThread implements Runnable {
                         packetLeaveLobby.processData();
                         break;
                     case CHAT_MESSAGE_TO_SERVER:
-                        PacketChatMessageToServer packetChatMessageToServer = new PacketChatMessageToServer(clientId,data);
+                        PacketChatMessageToServer packetChatMessageToServer = new PacketChatMessageToServer(clientId, data);
                         packetChatMessageToServer.processData();
                         break;
                     default:
                         break;
                 }
-            } catch(IOException | NullPointerException e){
+            } catch(IOException | NullPointerException e) {
                 System.out.println("Client " + clientId + " left");
                 try {
                     socket.close();
@@ -121,5 +124,13 @@ public class ClientThread implements Runnable {
     }
 
 
+    public void closeSocket(){
+        try {
+        socket.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
 
 }

@@ -77,6 +77,7 @@ public class ClientLogic implements Runnable {
         //firstLogin();
         while (true) {
             String in = input.readLine();
+            if(in == null){break;}
             if(in.length() < 5){
                 System.out.println("No valid command has been sent by server");
                 continue;

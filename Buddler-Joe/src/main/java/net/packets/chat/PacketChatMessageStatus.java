@@ -8,12 +8,15 @@ public class PacketChatMessageStatus extends Packet{
     private String input[];
 
 
+    /**
+     * Package to respond to the client that the  chat message send successful
+     */
     //client
     public PacketChatMessageStatus(String data){
         super(PacketTypes.CHAT_MESSAGE_STATUS);
         setData(data);
         status = getData();
-        input = status.split("\n");
+        input = status.split(" ");
         validate();
     }
     //server
