@@ -7,7 +7,7 @@ import net.packets.Packet;
 public class PacketJoinLobbyStatus extends Packet{
 
     private String status;
-    private String[] in;
+
 
     /**
      * Package to inform the client over the result of the lobby-join attempt
@@ -28,7 +28,6 @@ public class PacketJoinLobbyStatus extends Packet{
         super(Packet.PacketTypes.JOIN_LOBBY_STATUS);
         setData(data);
         status = getData();
-        in = status.split("║");
         validate();
     }
 

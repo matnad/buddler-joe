@@ -6,7 +6,6 @@ import net.packets.Packet;
 
 public class PacketCreateLobbyStatus extends Packet{
     private String status;
-    private String[] in;
     /**
      * Package to inform the client over the result of the lobby-creation attempt
      * @param clientId to find the player in the list
@@ -26,7 +25,6 @@ public class PacketCreateLobbyStatus extends Packet{
         super(Packet.PacketTypes.CREATE_LOBBY_STATUS);
         setData(data);
         status = getData();
-        in = data.split("║");
         validate();
     }
 
@@ -47,9 +45,7 @@ public class PacketCreateLobbyStatus extends Packet{
         }else if(status.startsWith("OK")){
             System.out.println("Lobby-Creation Successful");
         }else{
-            for (String s : in) {
-                System.out.println(s);
-            }
+            System.out.println(status);
         }
     }
 }
