@@ -213,9 +213,6 @@ public class Game extends Thread {
                 new Vector3f(.3f, .3f, .3f));
         camera = new Camera(player, window);
 
-//        ItemMaster.generateItem(ItemMaster.ItemTypes.TORCH, new Vector3f(100, 10, 5));
-
-
         MainMenu.init(loader);
         GameMenu.init(loader);
 
@@ -255,7 +252,6 @@ public class Game extends Thread {
                 if (activeStages.contains(GAMEMENU)) {
                     GameMenu.update();
                 }
-
 
                 //Done with one frame
                 window.swapBuffers();

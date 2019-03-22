@@ -71,7 +71,7 @@ public class Debris extends Entity {
      * The next step, to do constraint based collision with multiple contact points, is probably a bit too much.
      */
     private void handleCollision() {
-        if (getPosition().z <= getScale()) {
+        if (getPosition().z <= getScale().z) {
             direction = new Vector3f();
             spin = new Vector3f();
         }

@@ -184,7 +184,7 @@ public class Dynamite extends Item {
             return;
         }
         exploded = true;
-        setScale(0); //Hide the model, but keep the object for the explosion effect to complete
+        setScale(new Vector3f()); //Hide the model, but keep the object for the explosion effect to complete
         for (Block block : BlockMaster.getBlocks()) {
             float distance = block.get2dDistanceFrom(getPositionXY());
             if(distance < EXPLOSION_RANGE) {

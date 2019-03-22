@@ -16,7 +16,7 @@ public class Entity {
     private TexturedModel model;
     private Vector3f position;
     private float rotX, rotY, rotZ;
-    private float scale;
+    private Vector3f scale;
     private int textureIndex = 0;
     private int placerMode = MousePlacer.modes.Z3OFFSET.getMode();
 
@@ -58,12 +58,12 @@ public class Entity {
         this.rotX = rotX;
         this.rotY = rotY;
         this.rotZ = rotZ;
-        this.scale = scale;
+        this.scale = new Vector3f(scale, scale, scale);
 
         //Set bounding box which is stored in the raw model
         if(model != null && model.getRawModel().getBoundingCoords().length == 6) {
             bBox = new BoundingBox(model.getRawModel().getBoundingCoords());
-            bBox.scale(scale);
+            bBox.scale(getScale());
             updateBoundingBox();
         }
 
@@ -196,7 +196,7 @@ public class Entity {
         return rotZ;
     }
 
-    public float getScale() {
+    public Vector3f getScale() {
         return scale;
     }
 
@@ -260,9 +260,9 @@ public class Entity {
      *
      * @param scale Scaling factor
      */
-    public void setScale(float scale) {
+    public void setScale(Vector3f scale) {
         this.scale = scale;
-        updateBoundingBox();
+        //TODO: Update bounding box scale
     }
 
     public BoundingBox getbBox() {
