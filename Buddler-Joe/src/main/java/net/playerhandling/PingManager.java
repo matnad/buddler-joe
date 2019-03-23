@@ -18,7 +18,7 @@ public class PingManager implements Runnable{
     //TS=timestamps number in string
     private ArrayList<String> listOfPingTS;
     //Arraylist mit time
-    private long ping;
+    private float ping;
     Thread thread;
     private int clientId;
 
@@ -42,7 +42,7 @@ public class PingManager implements Runnable{
     public void run() {
         while(true) {
             try {
-                sleep(5000);
+                sleep(1000);
             }
             catch(InterruptedException e) {
             }
@@ -63,6 +63,7 @@ public class PingManager implements Runnable{
         }
     }
 
+
     private void append(String timestamp) {
         listOfPingTS.add(timestamp);
     }
@@ -72,7 +73,7 @@ public class PingManager implements Runnable{
     }
 
     public void updatePing(long diffTime) {
-        ping = (ping*9 + diffTime)/10;
+        ping = (ping*9 + diffTime)/10f;
     }
 
     public ArrayList getListOfPingTS() {
@@ -80,7 +81,7 @@ public class PingManager implements Runnable{
     }
 
     public long getPing() {
-        return ping;
+        return (int) (ping);
     }
 
 }

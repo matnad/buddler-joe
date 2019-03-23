@@ -17,12 +17,18 @@ public class PacketLogin extends Packet {
      * @param clientId of the player to be added to the Player instance
      * @param data username to create the player
      */
-
     public PacketLogin(int clientId, String data) {
         super(PacketTypes.LOGIN);
         setData(data);
         setClientId(clientId);
         username = getData();
+        validate();
+    }
+
+    public PacketLogin(String username) {
+        super(PacketTypes.LOGIN);
+        setData(username);
+        this.username = username;
         validate();
     }
 

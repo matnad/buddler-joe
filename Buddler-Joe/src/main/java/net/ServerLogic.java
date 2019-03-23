@@ -95,33 +95,41 @@ public class ServerLogic {
      */
         public static void removePlayer(int clientId){
 
-            Player player = ServerLogic.getPlayerList().getPlayer(clientId);
-            int lobbyId = player.getCurLobbyId();
-            int playerId = player.getClientId();
+            //inform the client that he is being disconnected
+            PacketChatMessageToClient confirmMessage = new PacketChatMessageToClient(clientId,"[SERVER] You have been disconnected.");
+            confirmMessage.sendToClient(clientId);
 
             //check if the client is in a lobby and remove it from the lobby
-            Lobby lobby = ServerLogic.getLobbyList().getLobby(lobbyId);
-        if(ServerLogic.getPlayerList().getPlayer(clientId).getCurLobbyId() > 0) {
-            lobby.removePlayer(clientId);
-        }
+            Player player = ServerLogic.getPlayerList().getPlayer(clientId);
+            int lobbyId = player.getCurLobbyId();
+            if(lobbyId > 0) {
+                ServerLogic.getLobbyList().getLobby(lobbyId).removePlayer(clientId);
+            }
             player.setCurLobbyId(0);
+
             //close the thread which manage the client and delete the player from the playerlist
             clientThreadMap.remove(clientId);
             getPlayerList().removePlayer(clientId);
+
             //set the time when the player left the lobby
             String timestamp;
             SimpleDateFormat simpleFormat = new SimpleDateFormat("HH:mm");
             Date date = new Date();
             timestamp = simpleFormat.format(date);
+
             //send the message "[SERVER 'TIME']'username' left lobby" to the lobby
-            PacketChatMessageToClient sendMessage = new PacketChatMessageToClient(playerId,"[SERVER-" + timestamp + "] " + player.getUsername()+" left lobby");
+            PacketChatMessageToClient sendMessage = new PacketChatMessageToClient(clientId,"[SERVER-" + timestamp + "] " + player.getUsername()+" left lobby");
             sendMessage.sendToLobby(lobbyId);
+
+
+
             //send lobbyinfo to the other player in the lobby
             String info;
             info = "OK║" + ServerLogic.getLobbyList().getLobby(lobbyId).getPlayerNames();
-            PacketCurLobbyInfo packetCurLobbyInfo = new PacketCurLobbyInfo(playerId,info);
+            PacketCurLobbyInfo packetCurLobbyInfo = new PacketCurLobbyInfo(clientId,info);
             packetCurLobbyInfo.sendToLobby(lobbyId);
+
             //close the client's thread
-            ServerLogic.getThreadByClientId(playerId).closeSocket();
+            ServerLogic.getThreadByClientId(clientId).closeSocket();
     }
 }

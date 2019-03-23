@@ -16,7 +16,7 @@ public class PacketChatMessageStatus extends Packet{
         super(PacketTypes.CHAT_MESSAGE_STATUS);
         setData(data);
         status = getData();
-        input = status.split(" ");
+        //input = status.split(" ");
         validate();
     }
     //server
@@ -41,9 +41,10 @@ public class PacketChatMessageStatus extends Packet{
         if(status.startsWith("OK")){
 //            System.out.println("Successfully send a Message");
         }else{
-            for (String s : input) {
-                System.out.println(s);
-            }
+//            for (String s : input) {
+//                System.out.println(s);
+//            }
+            System.out.println(status);
         }
     }
 }
