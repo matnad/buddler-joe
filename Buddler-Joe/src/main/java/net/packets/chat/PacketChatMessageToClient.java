@@ -25,7 +25,9 @@ public class PacketChatMessageToClient extends Packet {
     }
 
 
-
+    /**
+     * Check message length
+     */
     public void validate() {
         if (chatmsg == null) {
             addError("No Message found");
@@ -36,6 +38,9 @@ public class PacketChatMessageToClient extends Packet {
         }
     }
 
+    /**
+     * Test for errors and print the message.
+     */
     public void processData(){
         String status;
         if(hasErrors()){
