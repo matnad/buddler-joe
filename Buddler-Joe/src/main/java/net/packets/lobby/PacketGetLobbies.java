@@ -5,25 +5,47 @@ import net.packets.Packet;
 
 import java.util.StringJoiner;
 
+/**
+ * A Packet that gets send from the Client to the Server, to get an Overview of available lobbies.
+ */
 public class PacketGetLobbies extends Packet {
 
 
+    /**
+     * Constructor that is used by the Server to build the Packet, after receiving the Command "LOBGE".
+     * @param clientId of the Client that has sent the command.
+     */
     public PacketGetLobbies(int clientId){
         //server builds
         super(PacketTypes.GET_LOBBIES);
         setClientId(clientId);
     }
 
+    /**
+     * Constructor that will be used by the Client to build the Packet. Which can then be send to the Server.
+     * There are no parameters necessary here since the Packet has no real content(only a Type, LOBGE).
+     */
     public PacketGetLobbies(){
         //client builds
         super(PacketTypes.GET_LOBBIES);
     }
 
+    /**
+     * Dummy method. Since there is no content to validate.
+     */
     @Override
     public void validate() {
         //No data to validate since it is a Empty Packet
     }
 
+    /**
+     * Method that lets the Server react to the receiving of this packet.
+     * Adds Error if the client that has sent the Packet, is not logged in to the Server.
+     * Constructs a PacketLobbyOverview-Packet that contains either a list of max ten available lobbies
+     * or, in the case of an error, a suitable errormessage.
+     * Sends the PacketLobbyOverview-packet to the client that has send this packet.
+     * @see PacketLobbyOverview
+     */
     @Override
     public void processData() {
         String info;
