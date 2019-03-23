@@ -71,14 +71,8 @@ public class PingManager implements Runnable{
         listOfPingTS.remove(timestamp);
     }
 
-    public void updatePing(String diffTime) {
-        long diffTimeLong;
-        try {
-            diffTimeLong = Long.parseLong(diffTime);
-        }catch(NumberFormatException e) {
-            return;
-        }
-        ping = (ping*9 + diffTimeLong)/10;
+    public void updatePing(long diffTime) {
+        ping = (ping*9 + diffTime)/10;
     }
 
     public ArrayList getListOfPingTS() {

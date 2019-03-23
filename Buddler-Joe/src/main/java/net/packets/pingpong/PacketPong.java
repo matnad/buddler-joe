@@ -64,13 +64,13 @@ public class PacketPong extends Packet {
             if (getClientId() == 0) {
                 PingManager pingManager = ClientLogic.getPingManager();
                 pingManager.delete(getData());
-                pingManager.updatePing(String.valueOf(diffTime));
-                System.out.println("PING " + diffTime);
+                pingManager.updatePing(diffTime);
+                //System.out.println("PING " + diffTime);
             } else { //when server gets answer/pong
                 PingManager pingManager = ServerLogic.getThreadByClientId(getClientId()).getPingManager();
                 pingManager.delete(getData());
-                pingManager.updatePing(String.valueOf(diffTime));
-                System.out.println("PING " + diffTime);
+                pingManager.updatePing(diffTime);
+                //System.out.println("PING " + diffTime);
             }
 
         }
