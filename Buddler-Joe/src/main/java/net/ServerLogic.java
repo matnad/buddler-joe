@@ -56,7 +56,7 @@ public class ServerLogic {
             }
         }
 
-        private void kill() {
+        public void kill() {
             try {
                 serverSocket.close();
             } catch (IOException e) {
