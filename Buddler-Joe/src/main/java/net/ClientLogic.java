@@ -11,6 +11,9 @@ import net.packets.login_logout.PacketLoginStatus;
 import net.packets.name.PacketSendName;
 import net.packets.name.PacketSetNameStatus;
 import net.packets.chat.PacketChatMessageToClient;
+import net.packets.pingpong.PacketPing;
+import net.packets.pingpong.PacketPong;
+import net.playerhandling.PingManager;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -28,6 +31,7 @@ public class ClientLogic implements Runnable {
     private int clientId;
     private static int counter = 1;
     private String username;
+    private static PingManager pingManager;
 
     /**
      * ClientLogic to communicate with the server. Controls the input/output from/to the player. The constructor sets
@@ -44,6 +48,8 @@ public class ClientLogic implements Runnable {
         input = new BufferedReader(new InputStreamReader(server.getInputStream()));
         thread = new Thread(this);
         thread.start();
+        pingManager = new PingManager();
+        new Thread(pingManager).start();
     }
 
     /**
@@ -128,6 +134,14 @@ public class ClientLogic implements Runnable {
                     PacketChatMessageStatus pcms = new PacketChatMessageStatus(data);
                     pcms.processData();
                     break;
+                case PING:
+                    PacketPing packetPing = new PacketPing(data);
+                    packetPing.processData();
+                    break;
+                case PONG:
+                    PacketPong packetPong = new PacketPong(data);
+                    packetPong.processData();
+                    break;
             }
         }
     }
@@ -146,4 +160,7 @@ public class ClientLogic implements Runnable {
         System.out.println("The username is already taken, we would recommend: " + username + "_" + counter++);
     }
 
+    public static PingManager getPingManager() {
+        return pingManager;
+    }
 }

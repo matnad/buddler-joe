@@ -8,6 +8,8 @@ import net.packets.login_logout.PacketDisconnect;
 import net.packets.name.PacketGetName;
 import net.packets.login_logout.PacketLogin;
 import net.packets.name.PacketSetName;
+import net.packets.pingpong.PacketPing;
+import net.packets.pingpong.PacketPong;
 
 import java.io.*;
 import java.net.Socket;
@@ -18,6 +20,7 @@ public class ClientThread implements Runnable {
     private PrintWriter output;
     private final int clientId;
     private final Socket socket;
+    private PingManager pingManager;
 
     public ClientThread(Socket Client, int clientId) {
         this.clientId = clientId;
@@ -30,6 +33,8 @@ public class ClientThread implements Runnable {
         } catch (IOException e) {
             System.err.println("Streams not set up for Client.");
         }
+        pingManager = new PingManager(clientId);
+        new Thread(pingManager).start();
     }
 
     @Override
@@ -96,6 +101,14 @@ public class ClientThread implements Runnable {
                         PacketChatMessageToServer packetChatMessageToServer = new PacketChatMessageToServer(clientId,data);
                         packetChatMessageToServer.processData();
                         break;
+                    case PING:
+                        PacketPing packetPing = new PacketPing(clientId, data);
+                        packetPing.processData();
+                        break;
+                    case PONG:
+                        PacketPong packetPong = new PacketPong(clientId, data);
+                        packetPong.processData();
+                        break;
                     default:
                         break;
                 }
@@ -120,6 +133,7 @@ public class ClientThread implements Runnable {
         return clientId;
     }
 
-
-
+    public PingManager getPingManager() {
+        return pingManager;
+    }
 }
