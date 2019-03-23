@@ -3,15 +3,23 @@ package net.packets.lobby;
 import net.ServerLogic;
 import net.packets.Packet;
 
+/**
+ * A packed that is send from the server to the client, which contains a List of at max 10 Lobbies
+ * that are currently available on the server and not full.
+ * Command-Code: LOBOV
+ */
 public class PacketLobbyOverview extends Packet {
 
     String[] in;
-    /**
-     * A packed which is sent to the client before joining a lobby.
-     * It should contain information to all open lobbys that are available
-     * on the server and not full. (Maximum 10)
-     */
 
+
+    /**
+     * Constructor that is used by the Client to build the Packet, after receiving the Command LOBOV.
+     * @param data a single String that begins with "OK║" and contains a List of max 10 Lobbies
+     *             (and information to them). Each list entry is separated by "║". In the case that
+     *             an error occurred before, the String is an errormessage and does not begin with "OK║".
+     * The variable data gets split at the positions of "║". Every substring gets then saved in to the Array called in.
+     */
     public PacketLobbyOverview(String data) {
         //Client receives
         super(PacketTypes.LOBBY_OVERVIEW);
@@ -21,6 +29,14 @@ public class PacketLobbyOverview extends Packet {
         validate();
     }
 
+    /**
+     * Constructor that is used by the Server to build the Packet.
+     * @param clientId of the the receiver.
+     * @param data a single String that begins with "OK║" and contains a List of max 10 Lobbies
+     *             (and information to them). Each list entry is separated by "║". In the case that an
+     *             error occurred before the String is an errormessage and does not begin with "OK║".
+     * The variable data gets split at the positions of "║". Every substring gets then saved in to the Array called in.
+     */
     public PacketLobbyOverview(int clientId, String data) {
         //server builds
         super(PacketTypes.LOBBY_OVERVIEW);
@@ -31,6 +47,12 @@ public class PacketLobbyOverview extends Packet {
     }
 
 
+    /**
+     * Validation method to check the data that has, or will be send in this packet.
+     * Checks if data is not null.
+     * Checks for every element of the Array in, that it consists of extendet ASCII Characters.
+     * In the case of an error it gets added with {@link Packet#addError(String)}.
+     */
     @Override
     public void validate() {
         if(getData() != null){
@@ -42,6 +64,12 @@ public class PacketLobbyOverview extends Packet {
         }
     }
 
+    /**
+     * Method that lets the Client react to the receiving of this packet.
+     * Check for errors in validate.
+     * If in[0] equals "OK" the list of lobbies gets printed.
+     * Else in the case of an error only the error message gets printed.
+     */
     @Override
     public void processData() {
         if(hasErrors()){
