@@ -7,14 +7,14 @@ import java.util.StringJoiner;
 
 /**
  * A Packet that gets send from the Client to the Server, to get an Overview of available lobbies.
- * Command-Code: LOBGE
+ * Packet-Code: LOBGE
  */
 public class PacketGetLobbies extends Packet {
 
 
     /**
      * Constructor that is used by the Server to build the Packet, after receiving the Command "LOBGE".
-     * @param clientId of the Client that has sent the command.
+     * @param clientId ClientId of the Client that has sent the command.
      */
     public PacketGetLobbies(int clientId){
         //server builds

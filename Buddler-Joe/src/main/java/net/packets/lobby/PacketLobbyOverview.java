@@ -6,7 +6,7 @@ import net.packets.Packet;
 /**
  * A packed that is send from the server to the client, which contains a List of at max 10 Lobbies
  * that are currently available on the server and not full.
- * Command-Code: LOBOV
+ * Packet-Code: LOBOV
  */
 public class PacketLobbyOverview extends Packet {
 
@@ -31,8 +31,8 @@ public class PacketLobbyOverview extends Packet {
 
     /**
      * Constructor that is used by the Server to build the Packet.
-     * @param clientId of the the receiver.
-     * @param data a single String that begins with "OK║" and contains a List of max 10 Lobbies
+     * @param clientId ClientId of the the receiver.
+     * @param data A single String that begins with "OK║" and contains a List of max 10 Lobbies
      *             (and information to them). Each list entry is separated by "║". In the case that an
      *             error occurred before the String is an errormessage and does not begin with "OK║".
      * The variable data gets split at the positions of "║". Every substring gets then saved in to the Array called in.
