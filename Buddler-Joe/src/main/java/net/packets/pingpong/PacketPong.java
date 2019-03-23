@@ -53,18 +53,26 @@ public class PacketPong extends Packet {
     public void processData() {
         if(!hasErrors()) {
             //Here would be the time calculation
-            long timeAtSending = Long.parseLong(getData());
+            long timeAtSending;
+            try {
+                timeAtSending = Long.parseLong(getData());
+            }catch(NumberFormatException e){
+                return; //stops the method
+            }
             long currTime = System.currentTimeMillis();
             long diffTime = currTime - timeAtSending;
-            if(getClientId() == 0) {
+            if (getClientId() == 0) {
                 PingManager pingManager = ClientLogic.getPingManager();
                 pingManager.delete(getData());
                 pingManager.updatePing(String.valueOf(diffTime));
-            }else { //when server gets answer/pong
+                System.out.println("PING " + diffTime);
+            } else { //when server gets answer/pong
                 PingManager pingManager = ServerLogic.getThreadByClientId(getClientId()).getPingManager();
                 pingManager.delete(getData());
                 pingManager.updatePing(String.valueOf(diffTime));
+                System.out.println("PING " + diffTime);
             }
+
         }
 
     }

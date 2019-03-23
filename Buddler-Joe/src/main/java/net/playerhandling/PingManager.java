@@ -2,6 +2,7 @@ package net.playerhandling;
 
 import net.packets.pingpong.PacketPing;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
 
 import static java.lang.Thread.sleep;
@@ -71,7 +72,13 @@ public class PingManager implements Runnable{
     }
 
     public void updatePing(String diffTime) {
-        ping = (ping*9 + Long.parseLong(diffTime))/10;
+        long diffTimeLong;
+        try {
+            diffTimeLong = Long.parseLong(diffTime);
+        }catch(NumberFormatException e) {
+            return;
+        }
+        ping = (ping*9 + diffTimeLong)/10;
     }
 
     public ArrayList getListOfPingTS() {
