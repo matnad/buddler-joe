@@ -112,7 +112,7 @@ public class PingManager implements Runnable{
         try {
             while (iter.hasNext()) {
                 str = iter.next();
-                if (currTime - Long.parseLong(str) > 10) {
+                if (currTime - Long.parseLong(str) > 10000) {
                     iter.remove();
                 }
             }
