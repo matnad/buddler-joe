@@ -6,12 +6,15 @@ Der relevante code für Milestone 2 ist im package **net** (Buddler-Joe\src\main
 **Code ausserhalb dieses Package ist nicht relevant für die Achievements im Milestone 2 und muss nicht berücksichtigt werden.**
 
 Server starten: net.StartServer
+
 Client starten: net.StartNetworkOnlyClient
 
 In der Konsole kann "help" eingegeben werden für eine Liste mit Befehlen.
 
 Es können mehrere Clients lokal gestartet werden. Commandline parameter werden in dieser Form unterstützt:
-client <hostadress>:<port> | server <port>
+
+`client <hostadress>:<port> | server <port>`
+
 Bei Abwesenheit werden localhost und port 11337 verwendet.
 
 Dokumente für Milestone 2:
