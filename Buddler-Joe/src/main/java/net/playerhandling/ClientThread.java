@@ -5,8 +5,8 @@ import net.packets.Packet;
 import net.packets.chat.PacketChatMessageToServer;
 import net.packets.lobby.*;
 import net.packets.login_logout.PacketDisconnect;
-import net.packets.name.PacketGetName;
 import net.packets.login_logout.PacketLogin;
+import net.packets.name.PacketGetName;
 import net.packets.name.PacketSetName;
 import net.packets.pingpong.PacketPing;
 import net.packets.pingpong.PacketPong;
@@ -14,6 +14,15 @@ import net.packets.pingpong.PacketPong;
 import java.io.*;
 import java.net.Socket;
 
+
+/**
+ * One thread for each client.
+ * This thread contains and manages the input and output streams to communicate with the client.
+ * Will receive messages from their client and process them.
+ * Can send messages to their client.
+ */
+//Client and Server code can be similar, but we don't want shared classes
+@SuppressWarnings("Duplicates")
 public class ClientThread implements Runnable {
 
     private BufferedReader input;
@@ -22,10 +31,17 @@ public class ClientThread implements Runnable {
     private final Socket socket;
     private PingManager pingManager;
 
-    public ClientThread(Socket Client, int clientId) {
+    /**
+     * Create input and output streams to communicate with the client over the specified socket.
+     * Also start the ping manager to survey the connection.
+     *
+     * @param clientSocket TCP connection socket to the server
+     * @param clientId     unique identifier of the client
+     */
+    public ClientThread(Socket clientSocket, int clientId) {
         this.clientId = clientId;
-        this.socket = Client;
-        System.out.println("Client details: "+Client.toString());
+        this.socket = clientSocket;
+        System.out.println("Client details: " + clientSocket.toString());
         try {
             input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             output = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()));
@@ -37,22 +53,47 @@ public class ClientThread implements Runnable {
         new Thread(pingManager).start();
     }
 
+    /**
+     * Called when the client thread is started.
+     * <p>
+     * Contains the logic of the client -> server communication.
+     * Receive and process messages.
+     */
     @Override
     public void run() {
-            while (true) {
-                try {
-                    String in = input.readLine();
-                    if(in == null){
-                        break;
-                    }
-                if (in.length() < 5) {
-                    System.out.println("No valid command has been sent by player No " + clientId);
+        while (true) {
+            try {
+
+                String in = input.readLine();
+
+                //Something went wrong on the client side
+                if(in == null){
                     continue;
                 }
-                String command = in.substring(0, 5);
-                String data = in.substring(5).trim();
-                System.out.println("command sent was '" + command + "' by client No " + clientId);
-                switch (Packet.lookupPacket(command)) {
+
+                //Message too short
+                if(in.length() < 5){
+                    System.out.println(in+" is not a valid message from the client.");
+                    continue;
+                }
+
+                String code = in.substring(0,5);
+                //There is a whitespace between code and data which we deliberately ignore here
+                String data;
+                //Check if the message has a data component
+                if(in.length() < 7) {
+                    data = "";
+                } else {
+                    data = in.substring(6);
+                }
+
+                //Print command to server console if it is not a ping/pong command
+                if(!code.equals(Packet.PacketTypes.PING.getPacketCode())
+                        && !code.equals(Packet.PacketTypes.PONG.getPacketCode())) {
+                    System.out.println("Client #" + clientId + " sent command '" + code + "'.");
+                }
+                Packet p = null;
+                switch (Packet.lookupPacket(code)) {
                     case LOGIN:
                         PacketLogin login = new PacketLogin(clientId, data);
                         login.processData();
@@ -61,61 +102,50 @@ public class ClientThread implements Runnable {
                         }
                         break;
                     case GET_NAME:
-                        PacketGetName getName = new PacketGetName(clientId, data);
-                        getName.processData();
+                        p = new PacketGetName(clientId, data);
                         break;
                     case SET_NAME:
-                        PacketSetName setName = new PacketSetName(clientId, data);
-                        setName.processData();
+                        p = new PacketSetName(clientId, data);
                         break;
                     case DISCONNECT:
-                        PacketDisconnect disconnect = new PacketDisconnect(clientId);
-                        disconnect.processData();
+                        p = new PacketDisconnect(clientId);
                         break;
                     case GET_LOBBIES:
-                        PacketGetLobbies getLobbies = new PacketGetLobbies(clientId);
-                        getLobbies.processData();
+                        p = new PacketGetLobbies(clientId);
                         break;
                     case CREATE_LOBBY:
-                        PacketCreateLobby createLobby = new PacketCreateLobby(clientId, data);
-                        createLobby.processData();
+                        p = new PacketCreateLobby(clientId, data);
                         break;
                     case CREATE_LOBBY_STATUS:
-                        PacketJoinLobby joinLobby = new PacketJoinLobby(clientId, data);
-                        joinLobby.processData();
+                        p = new PacketJoinLobby(clientId, data);
                         break;
                     case JOIN_LOBBY:
-                        PacketJoinLobby packetJoinLobby = new PacketJoinLobby(clientId, data);
-                        packetJoinLobby.processData();
+                        p = new PacketJoinLobby(clientId, data);
                         break;
                     case JOIN_LOBBY_STATUS:
-                        PacketJoinLobbyStatus packetJoinLobbyStatus = new PacketJoinLobbyStatus(clientId, data);
-                        packetJoinLobbyStatus.processData();
+                        p = new PacketJoinLobbyStatus(clientId, data);
                         break;
                     case GET_LOBBY_INFO:
-                        PacketGetLobbyInfo packetGetLobbyInfo = new PacketGetLobbyInfo(clientId);
-                        packetGetLobbyInfo.processData();
+                        p = new PacketGetLobbyInfo(clientId);
                         break;
                     case LEAVE_LOBBY:
-                        PacketLeaveLobby packetLeaveLobby = new PacketLeaveLobby(clientId);
-                        packetLeaveLobby.processData();
+                        p = new PacketLeaveLobby(clientId);
                         break;
                     case CHAT_MESSAGE_TO_SERVER:
-                        PacketChatMessageToServer packetChatMessageToServer = new PacketChatMessageToServer(clientId, data);
-                        packetChatMessageToServer.processData();
+                        p = new PacketChatMessageToServer(clientId, data);
                         break;
                     case PING:
-                        PacketPing packetPing = new PacketPing(clientId, data);
-                        packetPing.processData();
+                        p = new PacketPing(clientId, data);
                         break;
                     case PONG:
-                        PacketPong packetPong = new PacketPong(clientId, data);
-                        packetPong.processData();
-                        break;
-                    default:
+                        p = new PacketPong(clientId, data);
                         break;
                 }
-            } catch(IOException | NullPointerException e) {
+                if(p != null) {
+                    p.processData();
+                }
+
+            } catch (IOException | NullPointerException e) {
                 System.out.println("Client " + clientId + " left");
                 try {
                     socket.close();
@@ -127,6 +157,11 @@ public class ClientThread implements Runnable {
         }
     }
 
+    /**
+     * The packet generates the final message string and sends it to the stream.
+     *
+     * @param packet packet to send to the client
+     */
     public void sendToClient(Packet packet) {
         output.println(packet.toString());
         output.flush();
@@ -140,9 +175,12 @@ public class ClientThread implements Runnable {
         return pingManager;
     }
 
-    public void closeSocket(){
+    /**
+     * Close the connection to the client
+     */
+    public void closeSocket() {
         try {
-        socket.close();
+            socket.close();
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -2,15 +2,12 @@ package net.packets;
 
 import net.ClientLogic;
 import net.ServerLogic;
-import net.lobbyhandling.Lobby;
 import net.playerhandling.Player;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.StringJoiner;
-
-import static net.ServerLogic.getPlayerList;
 
 /**
  *  Abstract Packet class which all Packets implement and build upon.
@@ -108,7 +105,7 @@ public abstract class Packet {
      */
 
     public void sendToClient(int receiver) {
-            ServerLogic.sendPacket(receiver, this);
+            ServerLogic.sendPacketToClient(receiver, this);
     }
 
     /**
@@ -116,11 +113,7 @@ public abstract class Packet {
      * @param lobbyId the lobbyId of the lobby to which the packet should be send.
      */
     public void sendToLobby(int lobbyId){
-        Lobby lobby = ServerLogic.getLobbyList().getLobby(lobbyId);
-        ArrayList<Player> players = lobby.getLobbyPlayers();
-        for (Player p : players) {
-            sendToClient(p.getClientId());
-        }
+        ServerLogic.sendPacketToLobby(lobbyId, this);
     }
 
     public void sendToAllClients(){
