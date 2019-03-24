@@ -6,6 +6,11 @@ import java.util.Date;
 import net.playerhandling.Player;
 import java.text.SimpleDateFormat;
 
+/**
+ *  Packet that gets send from the Client to the Server, to send chat message from Client to a other Client via Server.
+ *  Packet-Code: CHATS
+ *  @author Moritz Würth
+ */
 public class PacketChatMessageToServer extends Packet {
 
     private String chatmsg;
@@ -13,8 +18,11 @@ public class PacketChatMessageToServer extends Packet {
     private String receiver;
 
     /**
-     * Packet to send a chat message to other players in the same lobby
+     * Constructor that will be used by the Client to build the Packet. Which can then be send to the Server.
+     * The constructor takes the current time and set a new String with the message, timestamp und receiver
+     * with "║" as delimiter.
      * @param chatmsg the message from the client
+     * {@link PacketChatMessageToServer#chatmsg} gets set here, to equal {@param data}.
      */
 //client
     public PacketChatMessageToServer(String chatmsg) {
@@ -28,7 +36,13 @@ public class PacketChatMessageToServer extends Packet {
         validate();
     }
 
-
+    /**
+     * Constructor that is used by the Server to build the Packet.
+     * @param clientId ClientId of the client that has sent this packet.
+     * @param data a String with the chat message, timestamp and receiver.
+     *             (names are separated by "║")
+     * {@link PacketChatMessageToServer#chatmsg} gets set here, to equal {@param data}.
+     */
 //server
     public PacketChatMessageToServer(int clientId, String data) {
         super(PacketTypes.CHAT_MESSAGE_TO_SERVER);
@@ -48,7 +62,11 @@ public class PacketChatMessageToServer extends Packet {
         validate();
     }
 
-
+    /**
+     * Check if {@link PacketChatMessageToServer} has characters.
+     * Check if {@link PacketChatMessageToServer} is shorter then 100 characters.
+     * In the case of an error it gets added with {@link Packet#addError(String)}.
+     */
     @Override
     public void validate() {
         if (chatmsg == null) {
@@ -59,7 +77,15 @@ public class PacketChatMessageToServer extends Packet {
             addError("Message to long. Maximum is 100 Characters.");
         }
     }
-
+    /**
+     * Method that lets the Server react to the receiving of this packet.
+     * Check for errors in validate.
+     * Check that the Client that has sent the packet is in a lobby.
+     * In the case of an error it gets added with {@link Packet#addError(String)}.
+     * If there are no errors constructs a {@link PacketChatMessageToClient}-Packet and send it to all player in the same lobby
+     * and constructs a {link PacketChatMessageStatus}-Packet with "OK", when there are none errors. With errors the packet
+     * has a list of the errors.
+     */
     @Override
     public void processData(){
         String status = null;

@@ -145,6 +145,15 @@ public class ServerLogic {
 
     /**
      * Remove the player from the server and inform the other players in the lobby.
+     * Check if player exist in playerlist.
+     * Check if player is in a lobby.
+     * If it is not true return.
+     * If it is true remove player from the lobby and from the playerlist.
+     * Closed the thread where one specific client in managed.
+     * Creates and sends a {@link PacketChatMessageToClient} to all clients in the same lobby
+     * that this client left the lobby during which time.
+     * Creates and sends a {@link PacketCurLobbyInfo} to all clients in the lobby
+     * to inform the players about the lobby.
      *
      * @param clientId ID of the player to remove
      */
@@ -155,8 +164,6 @@ public class ServerLogic {
         if(player == null) {
             return;
         }
-
-
 
         //Check if client is in lobby and remove him
         int lobbyId = player.getCurLobbyId();
