@@ -4,6 +4,8 @@ import net.packets.pingpong.PacketPing;
 
 
 import java.util.ArrayList;
+import java.util.Iterator;
+
 import static java.lang.Thread.sleep;
 
 /**
@@ -104,8 +106,16 @@ public class PingManager implements Runnable{
 
     public void updatePing(long diffTime) {
         ping = (ping*9 + diffTime)/10f;
-        if(listOfPingTS.size() > 9 && ping > 1000) {
+        if(listOfPingTS.size() > 9 || ping > 1000) {
             new PacketDisconnect(clientId).processData();
+            Iterator<String> iter = listOfPingTS.iterator();
+            int i = 0;
+            while(iter.hasNext()){
+                if(i < 10){
+                    iter.remove();
+                }
+                i++;
+            }
         }
     }
 
