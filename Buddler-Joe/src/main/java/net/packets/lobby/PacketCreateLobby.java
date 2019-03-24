@@ -27,7 +27,7 @@ public class PacketCreateLobby extends Packet {
         //client builds
         super(PacketTypes.CREATE_LOBBY);
         setData(data);
-        lobbyname = getData();
+        lobbyname = getData().trim();
         validate();
     }
 
@@ -42,7 +42,7 @@ public class PacketCreateLobby extends Packet {
         super(PacketTypes.CREATE_LOBBY);
         setClientId(clientId);
         setData(data);
-        lobbyname = getData();
+        lobbyname = getData().trim();
         validate();
     }
 
