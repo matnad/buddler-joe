@@ -103,8 +103,8 @@ public class PingManager implements Runnable{
      *
      * @return average ping time.
      */
-    public float getPing() {
-        return ping;
+    public long getPing() {
+        return (int) (ping);
     }
 
 }
