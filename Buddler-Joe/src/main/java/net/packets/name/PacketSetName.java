@@ -19,6 +19,13 @@ public class PacketSetName extends Packet {
         validate();
     }
 
+    public PacketSetName(String username) {
+        super(PacketTypes.SET_NAME);
+        setData(username);
+        this.username = username;
+        validate();
+    }
+
 
     @Override
     public void validate() {
@@ -27,7 +34,7 @@ public class PacketSetName extends Packet {
 
     @Override
     public void processData() {
-        String status = "";
+        String status;
         if (hasErrors()) {
             status = createErrorMessage();
         } else {
@@ -48,8 +55,8 @@ public class PacketSetName extends Packet {
             } catch (NullPointerException e) {
                 status = "Player not logged in";
             }
-            PacketSetNameStatus p = new PacketSetNameStatus(getClientId(), status);
-            p.sendToClient(getClientId());
         }
+        PacketSetNameStatus p = new PacketSetNameStatus(getClientId(), status);
+        p.sendToClient(getClientId());
     }
 }

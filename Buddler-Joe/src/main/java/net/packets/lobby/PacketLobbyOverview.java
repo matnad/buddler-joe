@@ -84,6 +84,8 @@ public class PacketLobbyOverview extends Packet {
                 System.out.println(in[i]);
             }
             System.out.println("-------------------------------------");
+            System.out.println("To join a lobby, type: join <lobby name>");
+            System.out.println("To create a new lobby, type: create <lobby name>");
         }else{
             System.out.println(in[0]);
         }

@@ -86,6 +86,8 @@ public class PacketCurLobbyInfo extends Packet {
                 System.out.println(infoArray[i]);
             }
             System.out.println("-------------------------------------");
+           System.out.println("To chat with players in this lobby, type: C <message>");
+           System.out.println("To leave this lobby, type: leave");
         }else{  //Errors ServerSide
             System.out.println(infoArray[0]);
         }

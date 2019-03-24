@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.net.SocketException;
 
 public class ClientLogic implements Runnable {
 
@@ -28,9 +29,7 @@ public class ClientLogic implements Runnable {
     private static StartNetworkOnlyClient clientGUI;
     private static Thread thread;
     private static Socket server;
-    private int clientId;
     private static int counter = 1;
-    private String username;
     private static PingManager pingManager;
 
     /**
@@ -38,11 +37,10 @@ public class ClientLogic implements Runnable {
      * the IP, port and clientGUI. It then starts a thread on this class.
      * @param IP of the server which is to be communicated with
      * @param Port of the server to which the client will be connected
-     * @param clientGUI ?
      * @throws IOException
      */
 
-    public ClientLogic(String IP, int Port, StartNetworkOnlyClient clientGUI) throws IOException {
+    public ClientLogic(String IP, int Port) throws IOException {
         server = new Socket(IP, Port);
         output = new PrintWriter(server.getOutputStream(), false);
         input = new BufferedReader(new InputStreamReader(server.getInputStream()));
@@ -82,7 +80,15 @@ public class ClientLogic implements Runnable {
     private void waitForServer() throws IOException, RuntimeException {
         //firstLogin();
         while (true) {
-            String in = input.readLine();
+            String in;
+            try {
+                in = input.readLine();
+            } catch (SocketException e) {
+                server.close();
+                System.out.println("\nThe connection to the server has been closed!");
+                break;
+            }
+
             if(in == null){break;}
             if(in.length() < 5){
                 System.out.println("No valid command has been sent by server");
@@ -163,5 +169,9 @@ public class ClientLogic implements Runnable {
 
     public static PingManager getPingManager() {
         return pingManager;
+    }
+
+    public static Socket getServer() {
+        return server;
     }
 }
