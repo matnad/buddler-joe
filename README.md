@@ -13,7 +13,7 @@ In der Konsole kann "help" eingegeben werden für eine Liste mit Befehlen.
 
 Es können mehrere Clients lokal gestartet werden. Commandline parameter werden in dieser Form unterstützt:
 
-client `<hostadress>:<port> | server <port>`
+`client <hostadress>:<port> | server <port>`
 
 Bei Abwesenheit werden localhost und port 11337 verwendet.
 
