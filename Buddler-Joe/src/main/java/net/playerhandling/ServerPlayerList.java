@@ -7,7 +7,7 @@ public class ServerPlayerList {
     private HashMap<Integer, Player> players;
 
     public ServerPlayerList() {
-        this.players = new HashMap<Integer, Player>();
+        this.players = new HashMap<>();
     }
 
     /**
@@ -20,7 +20,7 @@ public class ServerPlayerList {
      */
 
     public String addPlayer(Player player){
-        String answer = "";
+        String answer;
         if(players.containsKey(player.getClientId())){
             answer = "Already logged in.";
         } else if(isUsernameInList(player.getUsername())){

@@ -3,8 +3,6 @@ package net.packets.lobby;
 import net.ServerLogic;
 import net.packets.Packet;
 
-import java.util.StringJoiner;
-
 /**
  * A Packet that gets send from the Client to the Server, to get Information about his current lobby.
  * Packet-Code: LOBGI

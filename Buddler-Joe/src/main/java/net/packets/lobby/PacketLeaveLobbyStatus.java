@@ -9,7 +9,7 @@ import net.packets.Packet;
  */
 public class PacketLeaveLobbyStatus extends Packet {
 
-    String status;
+    private String status;
 
     /**
      * Constructor that is used by the Server to build the Packet.

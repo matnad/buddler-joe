@@ -2,9 +2,10 @@ package net.packets.chat;
 
 import net.ServerLogic;
 import net.packets.Packet;
-import java.util.Date;
 import net.playerhandling.Player;
+
 import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  *  Packet that gets send from the Client to the Server, to send chat message from Client to a other Client via Server.
@@ -27,7 +28,7 @@ public class PacketChatMessageToServer extends Packet {
 //client
     public PacketChatMessageToServer(String chatmsg) {
         super(PacketTypes.CHAT_MESSAGE_TO_SERVER);
-        this.chatmsg = chatmsg;
+        this.chatmsg = chatmsg.trim();
         SimpleDateFormat simpleFormat = new SimpleDateFormat("HH:mm");
         Date date = new Date();
         timestamp = simpleFormat.format(date);
@@ -55,7 +56,7 @@ public class PacketChatMessageToServer extends Packet {
             addError("Invalid Input");
             return;
         }
-        chatmsg = input[0];
+        chatmsg = input[0].trim();
         timestamp = input[1];
         receiver = input[2];
         setData(data);
@@ -76,6 +77,7 @@ public class PacketChatMessageToServer extends Packet {
         if(chatmsg.length() > 100){
             addError("Message to long. Maximum is 100 Characters.");
         }
+        isExtendedAscii(chatmsg);
     }
     /**
      * Method that lets the Server react to the receiving of this packet.
@@ -88,7 +90,7 @@ public class PacketChatMessageToServer extends Packet {
      */
     @Override
     public void processData(){
-        String status = null;
+        String status;
         if(!hasErrors()){
             Player client = ServerLogic.getPlayerList().getPlayer(getClientId());
             if(client == null){

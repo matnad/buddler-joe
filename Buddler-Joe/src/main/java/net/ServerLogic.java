@@ -154,6 +154,7 @@ public class ServerLogic {
      * that this client left the lobby during which time.
      * Creates and sends a {@link PacketCurLobbyInfo} to all clients in the lobby
      * to inform the players about the lobby.
+     *
      * This can be called directly from core net classes.
      * Other classes should use {@link PacketDisconnect} to disconnect a user.
      *

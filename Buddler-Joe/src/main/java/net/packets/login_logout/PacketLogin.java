@@ -1,8 +1,8 @@
 package net.packets.login_logout;
 
-import net.*;
-import net.playerhandling.Player;
+import net.ServerLogic;
 import net.packets.Packet;
+import net.playerhandling.Player;
 
 
 

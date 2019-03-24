@@ -10,7 +10,6 @@ import net.packets.Packet;
 public class PacketChatMessageStatus extends Packet{
 
     private String status;
-    private String input[];
 
 
     /**
@@ -19,12 +18,10 @@ public class PacketChatMessageStatus extends Packet{
      *             ("OK" or in the case of an error, a suitable errormessage)
      * {@link PacketChatMessageStatus#status} gets set to equal {@param data}.
      */
-    //client
     public PacketChatMessageStatus(String data){
         super(PacketTypes.CHAT_MESSAGE_STATUS);
         setData(data);
         status = getData();
-        //input = status.split(" ");
         validate();
     }
 
@@ -35,7 +32,6 @@ public class PacketChatMessageStatus extends Packet{
      *             ("OK" or in the case of an error, a suitable errormessage)
      * {@link PacketChatMessageStatus#status} gets set to equal {@param data}.
      */
-    //server
     public PacketChatMessageStatus(int clientID,String data){
         super(PacketTypes.CHAT_MESSAGE_STATUS);
         setClientId(clientID);
@@ -52,7 +48,7 @@ public class PacketChatMessageStatus extends Packet{
     public void validate() {
         if(status != null) {
             isExtendedAscii(status);
-        }else{
+        } else {
             addError("No Status found.");
         }
     }
@@ -64,11 +60,8 @@ public class PacketChatMessageStatus extends Packet{
     @Override
     public void processData() {
         if(status.startsWith("OK")){
-//            System.out.println("Successfully send a Message");
-        }else{
-//            for (String s : input) {
-//                System.out.println(s);
-//            }
+//            System.out.println("Successfully sent a Message");
+        } else {
             System.out.println(status);
         }
     }

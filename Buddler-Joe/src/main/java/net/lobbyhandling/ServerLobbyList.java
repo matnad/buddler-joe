@@ -104,7 +104,7 @@ public class ServerLobbyList {
      * If no such lobbies are available the String contains the information about that.
      */
     public String getTopTen(){
-        String s = "";
+        StringBuilder s = new StringBuilder();
         int counter = 0;
         if(lobbies.size()>0){
             for(Lobby l : lobbies.values()){
@@ -114,17 +114,17 @@ public class ServerLobbyList {
                 if(l.getPlayerAmount() == 1000){//TODO:1000 durch maximale Spielerzahl ersetzen
                     continue;
                 }else{
-                    s = s + l.toString()+"║";
+                    s.append(l.toString()).append("║");
                     counter++;
                 }
             }
-            if(s.equals("")){
-                s = "All Lobbies are full";
+            if(s.toString().equals("")){
+                s = new StringBuilder("All Lobbies are full");
             }
         } else {
-            s = "No Lobbies online";
+            s = new StringBuilder("No Lobbies online");
         }
-        return s;
+        return s.toString();
     }
 
 

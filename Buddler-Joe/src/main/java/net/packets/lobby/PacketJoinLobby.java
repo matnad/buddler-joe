@@ -1,12 +1,8 @@
 package net.packets.lobby;
 
 import net.ServerLogic;
-import net.lobbyhandling.Lobby;
 import net.packets.Packet;
-import net.packets.login_logout.PacketLoginStatus;
 import net.playerhandling.Player;
-
-import java.util.StringJoiner;
 
 /**
  * Packet that gets send from the client to the server if he wants to join a lobby.

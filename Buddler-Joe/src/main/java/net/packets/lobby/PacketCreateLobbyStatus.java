@@ -1,7 +1,5 @@
 package net.packets.lobby;
 
-import net.playerhandling.ServerPlayerList;
-import net.ServerLogic;
 import net.packets.Packet;
 
 /**

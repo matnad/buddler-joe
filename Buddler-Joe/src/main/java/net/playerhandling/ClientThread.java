@@ -30,7 +30,7 @@ public class ClientThread implements Runnable {
     private PrintWriter output;
     private final int clientId;
     private final Socket socket;
-    private PingManager pingManager;
+    private final PingManager pingManager;
 
     /**
      * Create input and output streams to communicate with the client over the specified socket.

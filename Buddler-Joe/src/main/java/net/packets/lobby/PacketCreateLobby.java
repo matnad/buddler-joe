@@ -1,11 +1,8 @@
 package net.packets.lobby;
 
-import net.lobbyhandling.Lobby;
-import net.lobbyhandling.ServerLobbyList;
 import net.ServerLogic;
+import net.lobbyhandling.Lobby;
 import net.packets.Packet;
-
-import java.util.StringJoiner;
 
 /**
  * A Packet that gets send from the Client to the Server, to create a new Lobby.
