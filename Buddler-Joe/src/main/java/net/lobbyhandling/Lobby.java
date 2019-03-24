@@ -95,4 +95,11 @@ public class Lobby {
         return s;
     }
 
+    /**
+     * @return true if the lobby has no players in it
+     */
+    public boolean isEmpty() {
+        return lobbyPlayers.size() == 0;
+    }
+
 }

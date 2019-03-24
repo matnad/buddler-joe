@@ -33,6 +33,9 @@ public class PacketChatMessageToServer extends Packet {
     public PacketChatMessageToServer(int clientId, String data) {
         super(PacketTypes.CHAT_MESSAGE_TO_SERVER);
         setClientId(clientId);
+        if(data == null) {
+            data = ""; //To prevent nullpointer when splitting
+        }
         String[] input = data.split("║");
         if(input.length != 3){
             addError("Invalid Input");
