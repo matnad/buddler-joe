@@ -30,7 +30,7 @@ public class ClientThread implements Runnable {
     private PrintWriter output;
     private final int clientId;
     private final Socket socket;
-    private PingManager pingManager;
+    private final PingManager pingManager;
 
     /**
      * Create input and output streams to communicate with the client over the specified socket.
@@ -146,15 +146,23 @@ public class ClientThread implements Runnable {
                     p.processData();
                 }
 
-            } catch (IOException | NullPointerException e) {
+            } catch (IOException e) {
                 System.out.println("Client " + clientId + " left");
-                try {
-                    socket.close();
-                    break;
-                } catch (IOException e1) {
-                    e1.printStackTrace();
-                }
+                //Properly disconnect the user
+                break;
+            } catch (NullPointerException e) {
+                //They should not happen, but if they do, we don't care
+            } catch (Exception e) {
+                //We assume any other exception is fatal and properly disconnect the user
+                break;
             }
+        }
+        //If the thread dies or a fatal exception occurs, disconnect the player and close the socket
+        ServerLogic.removePlayer(clientId);
+        try {
+            socket.close();
+        } catch (IOException e1) {
+            e1.printStackTrace();
         }
     }
 

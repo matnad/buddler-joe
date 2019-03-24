@@ -1,6 +1,5 @@
 package net.packets.lobby;
 
-import net.ServerLogic;
 import net.packets.Packet;
 
 /**
@@ -11,7 +10,7 @@ import net.packets.Packet;
  */
 public class PacketLobbyOverview extends Packet {
 
-    String[] in;
+    private String[] in;
 
 
     /**

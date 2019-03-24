@@ -1,7 +1,7 @@
 package net.packets.login_logout;
 
-import net.packets.Packet;
 import net.ServerLogic;
+import net.packets.Packet;
 
 /**
  *  * Packet that gets send from the Client to the Server, to disconnect the player from the Server.

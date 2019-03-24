@@ -64,7 +64,7 @@ public abstract class Packet {
 
     private String data;
 
-    public Packet(PacketTypes packetType) {
+    protected Packet(PacketTypes packetType) {
         this.packetType = packetType;
     }
 
@@ -103,6 +103,7 @@ public abstract class Packet {
         }
         return PacketTypes.INVALID;
     }
+
     /**
      * Communication method to send data to a client. The destination address is determined by their
      * clientId.
@@ -155,7 +156,7 @@ public abstract class Packet {
      */
 
     public void sendToServer(){
-        ClientLogic.sendToServer(this.toString());
+        ClientLogic.sendToServer(this);
     }
 
     /**
@@ -173,23 +174,23 @@ public abstract class Packet {
      * @return The packetType of the current instance of the packet
      */
 
-    public PacketTypes getPacketType() {
+    private PacketTypes getPacketType() {
         return packetType;
     }
 
-    public int getClientId() {
+    protected int getClientId() {
         return clientId;
     }
 
-    public void setClientId(int clientId) {
+    protected void setClientId(int clientId) {
         this.clientId = clientId;
     }
 
-    public void setData(String data) {
+    protected void setData(String data) {
         this.data = data;
     }
 
-    public String getData() {
+    protected String getData() {
         return data;
     }
 
@@ -198,7 +199,7 @@ public abstract class Packet {
      * @return The list of errors currently on the instance of the class
      */
 
-    public List<String> getErrors() {
+    private List<String> getErrors() {
         return errors;
     }
 
@@ -218,7 +219,7 @@ public abstract class Packet {
      * @param error The error to be added to the errorList
      */
 
-    public void addError(String error){
+    protected void addError(String error){
         errors.add(error);
     }
 
@@ -266,12 +267,11 @@ public abstract class Packet {
      */
 
     protected String createErrorMessage(){
-        String message = "";
         StringJoiner statusJ = new StringJoiner(" ","ERRORS: ","");
         for (String error : getErrors()) {
             statusJ.add(error);
         }
-        return message = statusJ.toString();
+        return statusJ.toString();
     }
 
     /**
@@ -300,7 +300,7 @@ public abstract class Packet {
      * @return true if logged in else false.
      */
 
-    public boolean isLoggedIn(){
+    protected boolean isLoggedIn(){
         try{
             if(!ServerLogic.getPlayerList().getPlayers().containsKey(getClientId())){
                 addError("Not loggedin yet.");
@@ -319,29 +319,26 @@ public abstract class Packet {
      * @return true if in a Lobby else false.
      */
 
-    public boolean isInALobby(){
+    protected boolean isInALobby(){
         try{
             int lobbyId = ServerLogic.getPlayerList().getPlayers().get(getClientId()).getCurLobbyId();
-            if(lobbyId != 0){
-                //addError("Already in a lobby");
-                return true;
-            }else{
-                return false;
-            }
+            //addError("Already in a lobby");
+            return lobbyId != 0;
         }catch(NullPointerException e){
             return false;
         }
+
+
     }
 
     /**
      * ToString method to compile all the information contained in this packet.
      * Used to send the data to either to the server or client.
-     * @return
+     * @return string to be sent over TCP socket
      */
 
     public String toString() {
         return getPacketType().getPacketCode() + " " + getData();
     }
-
 
 }

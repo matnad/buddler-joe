@@ -1,4 +1,4 @@
-﻿# Buddler Joe ReadMe
+# Buddler Joe ReadMe
 
 ## INFOS FÜR MILESTONE 2
 

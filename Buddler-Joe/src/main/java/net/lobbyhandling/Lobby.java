@@ -1,11 +1,9 @@
 package net.lobbyhandling;
 
 import net.ServerLogic;
-import net.playerhandling.ClientThread;
 import net.playerhandling.Player;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  * Main lobby class to save the vital information which the server has to access at all times.
@@ -17,8 +15,6 @@ public class Lobby {
     private String lobbyName;
     private ArrayList<Player> lobbyPlayers;
     private static int lobbyCounter = 1;
-    //private Game game;
-    //private ChatRoom chatRoom;
 
 
     /**
@@ -28,10 +24,7 @@ public class Lobby {
      * {@link Lobby#lobbyCounter} gets raised by one after every lobby construction.
      */
     public Lobby(String lobbyName)  {
-        this.lobbyId = lobbyId;
         this.lobbyName = lobbyName;
-        //this.game = new Game();
-        //this.chatRoom = new ChatRoom();
         this.lobbyPlayers = new ArrayList<>();
         this.lobbyId = lobbyCounter;
         lobbyCounter++;
@@ -82,17 +75,16 @@ public class Lobby {
      * @return A String with the usernames of all Players in this Lobby seperated by "║".
      */
     public String getPlayerNames(){
-        String s = "";
+        StringBuilder s = new StringBuilder();
         for (Player player : lobbyPlayers) {
-            s = s + player.getUsername() + "║";
+            s.append(player.getUsername()).append("║");
         }
-        return s;
+        return s.toString();
     }
 
     @Override
     public String toString(){
-        String s = "Name: " + lobbyName + ", LobbyId: " + lobbyId + ", Spieler: " + getPlayerAmount();
-        return s;
+        return "Name: " + lobbyName + ", LobbyId: " + lobbyId + ", Spieler: " + getPlayerAmount();
     }
 
     /**

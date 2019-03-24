@@ -1,7 +1,7 @@
 package net.playerhandling;
+
 import net.packets.login_logout.PacketDisconnect;
 import net.packets.pingpong.PacketPing;
-
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -16,12 +16,12 @@ import static java.lang.Thread.sleep;
  */
 
 public class PingManager implements Runnable{
-
     /**
-     * @param listOfPingTS this list contains the creation time of all sent pings.
-     * @param ping the average ping
-     * @param clientId the identity of the client
-     * @param freq frequency
+     * Class Variables
+     * listOfPingTS this list contains the creation time of all sent pings.
+     * ping the average ping
+     * clientId the identity of the client
+     * freq frequency
      */
     private ArrayList<String> listOfPingTS;
     private float ping;

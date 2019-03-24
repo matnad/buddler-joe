@@ -1,16 +1,12 @@
 package net;
 
 import net.packets.Packet;
-import net.packets.lobby.*;
 import net.packets.chat.PacketChatMessageStatus;
-import net.packets.lobby.PacketCreateLobbyStatus;
-import net.packets.lobby.PacketCurLobbyInfo;
-import net.packets.lobby.PacketJoinLobbyStatus;
-import net.packets.lobby.PacketLobbyOverview;
+import net.packets.chat.PacketChatMessageToClient;
+import net.packets.lobby.*;
 import net.packets.login_logout.PacketLoginStatus;
 import net.packets.name.PacketSendName;
 import net.packets.name.PacketSetNameStatus;
-import net.packets.chat.PacketChatMessageToClient;
 import net.packets.pingpong.PacketPing;
 import net.packets.pingpong.PacketPong;
 import net.playerhandling.PingManager;
@@ -163,10 +159,10 @@ public class ClientLogic implements Runnable {
 
     /**
      * Method to send a package to the server. Will transform the packet to a String here.
-     * @param input The packet to be sent to the Server.
+     * @param packet The packet to be sent to the Server.
      */
-    public static void sendToServer(String input) {
-        output.println(input);
+    public static void sendToServer(Packet packet) {
+        output.println(packet.toString());
         output.flush();
     }
 

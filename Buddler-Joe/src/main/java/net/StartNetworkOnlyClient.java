@@ -1,13 +1,14 @@
 package net;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import net.packets.chat.PacketChatMessageToServer;
 import net.packets.lobby.*;
 import net.packets.login_logout.PacketDisconnect;
 import net.packets.login_logout.PacketLogin;
 import net.packets.name.PacketSetName;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 
 /**
  * The client-side interface to communicate with the server.
@@ -22,7 +23,6 @@ public class StartNetworkOnlyClient {
     private static final BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
     private static String serverIP;
     private static int serverPort;
-    private static ClientLogic clientLogic;
 
     /**
      * Start the client logic and pass ip + port
@@ -30,7 +30,7 @@ public class StartNetworkOnlyClient {
      */
     private StartNetworkOnlyClient(){
         try {
-            clientLogic = new ClientLogic(serverIP, serverPort);
+            new ClientLogic(serverIP, serverPort);
         } catch (IOException e){
             System.out.println("Buffer Reader does not exist. Can't find a server at the specified location.");
         } catch (NumberFormatException e1) {
@@ -66,7 +66,7 @@ public class StartNetworkOnlyClient {
                         "help - Display this message");
             } else if (inputMessage.equals("ping")) {
                 System.out.println("Ping to the server over the last 10 packets: "
-                        + clientLogic.getPingManager().getPing() + " ms");
+                        + ClientLogic.getPingManager().getPing() + " ms");
             } else if (inputMessage.startsWith("name ") && inputMessage.length() > 5) {
                 PacketSetName p = new PacketSetName(inputMessage.substring(5));
                 p.sendToServer();
@@ -197,10 +197,4 @@ public class StartNetworkOnlyClient {
         }
     }
 
-    /**
-     * Kill the Interface and exit the program.
-     */
-    void kill() {
-        System.exit(0);
-    }
 }
