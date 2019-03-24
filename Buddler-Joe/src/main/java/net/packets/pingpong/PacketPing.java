@@ -1,5 +1,4 @@
 package net.packets.pingpong;
-
 import net.packets.Packet;
 
 /**

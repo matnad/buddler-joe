@@ -77,7 +77,7 @@ public class PacketPong extends Packet {
             try {
                 timeAtSending = Long.parseLong(getData());
             }catch(NumberFormatException e){
-                return; //stops the method
+                return;
             }
             long currTime = System.currentTimeMillis();
             long diffTime = currTime - timeAtSending;

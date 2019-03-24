@@ -4,24 +4,22 @@ public class Player {
 
     private String username;
     private int clientId;
-    private int ping;
-    ClientThread thread;
     private int curLobbyId;
 
     /**
-     * Main Player class to save the vital information which the server has to access at all times
-     * @param username for the player to be set and which is to be displayed in the game
-     * @param clientId to identify the player, unique to every player
+     * Constructor of the player class to create a new player
+     * Creates an instance of the main Player class to save the player information
+     * on the server side in the playerList. Contains vital information as well as setters and getters to access the
+     * information from the server side.
+     * @param username Unique username for the player to be set and which is to be displayed in the game
+     * @param clientId to identify the player, unique to every player and assigned by the first login by the
+     *                 ServerLogic class
      */
 
     public Player(String username, int clientId) {
         this.username = username;
         this.clientId = clientId;
         curLobbyId = 0;
-    }
-
-    public ClientThread getThread() {
-        return thread;
     }
 
     public String getUsername() {
@@ -40,14 +38,6 @@ public class Player {
         this.clientId = clientId;
     }
 
-    public int getPing() {
-        return ping;
-    }
-
-    public void setPing(int ping) {
-        this.ping = ping;
-    }
-
     public int getCurLobbyId() { return curLobbyId; }
 
     public void setCurLobbyId(int curLobbyId) { this.curLobbyId = curLobbyId; }
@@ -57,8 +47,7 @@ public class Player {
         return "Player{" +
                 "username='" + username + '\'' +
                 ", clientId=" + clientId +
-                ", ping=" + ping +
+                ", curLobbyId=" + curLobbyId +
                 '}';
     }
-
 }

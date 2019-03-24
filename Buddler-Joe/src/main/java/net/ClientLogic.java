@@ -26,6 +26,7 @@ import java.net.SocketException;
  * Client side network logic
  *
  * Communicates with the server via TCP socket. Sends, receives and processes incoming and outgoing messages.
+ * It also activates the <code>PingManager</code> to send pings to the server in a certain frequency.
  */
 public class ClientLogic implements Runnable {
 
