@@ -59,21 +59,21 @@ public class PacketPong extends Packet {
     }
 
     /**
-     * Does the time calculation. It calculates difference between the timestamp when the ping was sent and the timestamp when the pong arrived to the respective sender.
+     * Does the time calculation. It calculates the difference between the timestamp when the ping was sent and the timestamp when the pong arrived to the respective sender.
      *
      * If the clientId was not passed, the average ping of the respective client will be udated. Otherwise, the average ping of the respective clientthread will be updated.
+     * If there is an error in <code>data</code>, nothing will happen with the packet.
      *
      * @throws NumberFormatException if <code>data</code> contains non digit characters.
      */
     @Override
     public void processData() {
         if(!hasErrors()) {
-            //Here would be the time calculation
             long timeAtSending;
             try {
                 timeAtSending = Long.parseLong(getData());
             }catch(NumberFormatException e){
-                return; //stops the method
+                return;
             }
             long currTime = System.currentTimeMillis();
             long diffTime = currTime - timeAtSending;

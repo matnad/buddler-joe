@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import static java.lang.Thread.sleep;
 
 /**
- * The function of the PingManager is to send automatically pings to client and server and to calculate the respective average ping. This class is activated by the <code>ClientThread</code> and the <code>ClientLogic</code> class.
+ * The function of the PingManager is to automatically send pings to client and server and to calculate the respective average ping. This class is activated by the <code>ClientThread</code> and the <code>ClientLogic</code> class.
  *
  * @see ClientThread
  * @see net.ClientLogic
@@ -13,12 +13,12 @@ import static java.lang.Thread.sleep;
 public class PingManager implements Runnable{
 
     /**
-     * @param listOfPingTS this list contains the creation times of all sent pings.
+     * @param listOfPingTS this list contains the creation time of all sent pings.
      * @param ping the average ping
      * @param clientId the identity of the client
      */
     private ArrayList<String> listOfPingTS;
-    private long ping;
+    private float ping;
     private int clientId;
 
     /**
@@ -39,10 +39,10 @@ public class PingManager implements Runnable{
     }
 
     /**
-     * Executes every five seconds the automized sending of the pings and saves the creation times in <code>listOfPingTS</code>.
+     * Executes every second the automized sending of the pings and saves the creation time in <code>listOfPingTS</code>.
      * The destination is determined by the <code>clientId</code>.
      * If the clientId was passed, the ping would be sent to the client. Otherwise, the clientId will have the default value 0 and the ping will be sent to the server.
-     * An ping object will be created by instantiating the <code>PacketPing</code> class.
+     * A ping object will be created by instantiating the <code>PacketPing</code> class.
      *
      * @throws InterruptedException when thread is interrupted.
      * @see PacketPing
@@ -50,7 +50,7 @@ public class PingManager implements Runnable{
     public void run() {
         while(true) {
             try {
-                sleep(5000);
+                sleep(1000);
             }
             catch(InterruptedException e) {
             }
@@ -92,24 +92,18 @@ public class PingManager implements Runnable{
     /**
      * Updates the average <code>ping</code>.
      *
-     * @param diffTime the difference between the arrival time of the <code>PacketPong</code> object and the creation time of the <code>PacketPing</code> object
+     * @param diffTime the difference between the arrival time of the final <code>PacketPong</code> object and the creation time of the <code>PacketPing</code> object
      */
     public void updatePing(long diffTime) {
         ping = (ping*9 + diffTime)/10;
     }
 
-    /*
-    public ArrayList getListOfPingTS() {
-        return listOfPingTS;
-    }
-    */
-
     /**
-     * Informs the every player about their ping.
+     * Informs every player about their ping.
      *
      * @return average ping time.
      */
-    public long getPing() {
+    public float getPing() {
         return ping;
     }
 

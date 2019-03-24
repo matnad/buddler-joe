@@ -59,7 +59,8 @@ public class PacketPing extends Packet {
      * Creates a response pong packet by creating an object of the class <code>PacketPong</code> to give the client/server an answer. <code>PacketPong</code> object contains the creation time.
      * <p>
      * If the clientId was passed, the pong would be sent to the client. Otherwise, the clientId would have the default value 0 and the pong would be sent to the server.
-     * the <code>clientId</code> is declared in the super class <code>Packet</code>
+     * The <code>clientId</code> is declared in the super class <code>Packet</code>
+     * If there is an error in <code>data</code>, nothing will happen to the packet.
      * @see PacketPong
      * @see Packet
      */
@@ -73,7 +74,5 @@ public class PacketPing extends Packet {
                 pong.sendToServer();
             }
         }
-        //hasErrors() == true dann passiert nichts mit dem Packet
     }
-    //HIER: falls errors == 0 dann send, sonst nichts, packet soll verschwinden
 }
