@@ -1,9 +1,10 @@
 package net.playerhandling;
-
+import net.packets.login_logout.PacketDisconnect;
 import net.packets.pingpong.PacketPing;
 
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import static java.lang.Thread.sleep;
 
@@ -20,10 +21,12 @@ public class PingManager implements Runnable{
      * @param listOfPingTS this list contains the creation time of all sent pings.
      * @param ping the average ping
      * @param clientId the identity of the client
+     * @param freq frequency
      */
     private ArrayList<String> listOfPingTS;
     private float ping;
     private int clientId;
+    private final int freq = 1000;
 
     /**
      * Creates a <code>PingManager</code> object when sending ping from server to client. The client is determined by the <code>clientId</code>.
@@ -55,7 +58,7 @@ public class PingManager implements Runnable{
     public void run() {
         while(true) {
             try {
-                sleep(1000);
+                sleep(freq);
             }
             catch(InterruptedException e) {
             }
@@ -102,8 +105,26 @@ public class PingManager implements Runnable{
      */
 
     public void updatePing(long diffTime) {
-        ping = (ping*9 + diffTime)/10f;
+        ping = (ping * 9 + diffTime) / 10f;
+        Iterator<String> iter = listOfPingTS.iterator();
+        long currTime = System.currentTimeMillis();
+        String str;
+        try {
+            while (iter.hasNext()) {
+                str = iter.next();
+                if (currTime - Long.parseLong(str) > 10000) {
+                    iter.remove();
+                }
+            }
+        } catch (NumberFormatException e) {
+
+        }
+        if (listOfPingTS.size() > 0.9f/freq*10000 || ping > 1000) {
+            new PacketDisconnect(clientId).processData();
+        }
     }
+
+
 
     public ArrayList getListOfPingTS() {
         return listOfPingTS;
