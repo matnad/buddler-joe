@@ -18,6 +18,7 @@ public class PacketPing extends Packet {
      * @param clientId identity of the client.
      * @param data is the creation time
      */
+
     public PacketPing(int clientId, String data) {
         super(Packet.PacketTypes.PING);
         setClientId(clientId);
@@ -31,6 +32,7 @@ public class PacketPing extends Packet {
      *
      * @param data is the creation time
      */
+
     public PacketPing(String data) {
         super(Packet.PacketTypes.PING);
         setData(data);
@@ -42,6 +44,7 @@ public class PacketPing extends Packet {
      * Checks if the chars of <code>data</code> represent only digits.
      * If one of the chars is a non digit, the error will be saved.
      */
+
     @Override
     public void validate() {
         if(getData() == null) {
@@ -64,6 +67,7 @@ public class PacketPing extends Packet {
      * @see PacketPong
      * @see Packet
      */
+
     @Override
     public void processData() {
         if(!hasErrors()) {

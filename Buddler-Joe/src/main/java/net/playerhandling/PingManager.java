@@ -1,5 +1,7 @@
 package net.playerhandling;
 import net.packets.pingpong.PacketPing;
+
+
 import java.util.ArrayList;
 import static java.lang.Thread.sleep;
 
@@ -47,6 +49,7 @@ public class PingManager implements Runnable{
      * @throws InterruptedException when thread is interrupted.
      * @see PacketPing
      */
+
     public void run() {
         while(true) {
             try {
@@ -76,6 +79,7 @@ public class PingManager implements Runnable{
      *
      * @param timestamp creation time of the ping
      */
+
     private void append(String timestamp) {
         listOfPingTS.add(timestamp);
     }
@@ -94,8 +98,13 @@ public class PingManager implements Runnable{
      *
      * @param diffTime the difference between the arrival time of the final <code>PacketPong</code> object and the creation time of the <code>PacketPing</code> object
      */
+
     public void updatePing(long diffTime) {
         ping = (ping*9 + diffTime)/10f;
+    }
+
+    public ArrayList getListOfPingTS() {
+        return listOfPingTS;
     }
 
     /**

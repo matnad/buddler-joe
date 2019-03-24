@@ -22,6 +22,7 @@ public class PacketPong extends Packet {
      *
      * @param data is the creation time of the respective ping packet.
      */
+
     public PacketPong(String data) {
         super(Packet.PacketTypes.PONG);
         setData(data);
@@ -34,6 +35,7 @@ public class PacketPong extends Packet {
      * @param clientId identity of the client.
      * @param data is the creation time of the respective ping packet.
      */
+
     public PacketPong(int clientId, String data) {
         super(Packet.PacketTypes.PONG);
         setClientId(clientId);
@@ -45,6 +47,7 @@ public class PacketPong extends Packet {
      * Checks if the chars of <code>data</code> represent only digits.
      * If one of the chars is a non digit, the error will be saved.
      */
+
     @Override
     public void validate() {
         if(getData() == null) {
@@ -66,6 +69,7 @@ public class PacketPong extends Packet {
      *
      * @throws NumberFormatException if <code>data</code> contains non digit characters.
      */
+
     @Override
     public void processData() {
         if(!hasErrors()) {
