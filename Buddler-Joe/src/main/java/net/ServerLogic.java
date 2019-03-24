@@ -5,6 +5,7 @@ import net.lobbyhandling.ServerLobbyList;
 import net.packets.Packet;
 import net.packets.chat.PacketChatMessageToClient;
 import net.packets.lobby.PacketCurLobbyInfo;
+import net.packets.login_logout.PacketDisconnect;
 import net.playerhandling.ClientThread;
 import net.playerhandling.Player;
 import net.playerhandling.ServerPlayerList;
@@ -142,9 +143,10 @@ public class ServerLogic {
         return clientThreadMap.get(clientId);
     }
 
-
     /**
      * Remove the player from the server and inform the other players in the lobby.
+     * This can be called directly from core net classes.
+     * Other classes should use {@link PacketDisconnect} to disconnect a user.
      *
      * @param clientId ID of the player to remove
      */
@@ -155,8 +157,6 @@ public class ServerLogic {
         if(player == null) {
             return;
         }
-
-
 
         //Check if client is in lobby and remove him
         int lobbyId = player.getCurLobbyId();

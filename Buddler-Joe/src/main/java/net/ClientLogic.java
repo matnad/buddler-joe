@@ -162,10 +162,10 @@ public class ClientLogic implements Runnable {
 
     /**
      * Method to send a package to the server. Will transform the packet to a String here.
-     * @param input The packet to be sent to the Server.
+     * @param packet The packet to be sent to the Server.
      */
-    public static void sendToServer(String input) {
-        output.println(input);
+    public static void sendToServer(Packet packet) {
+        output.println(packet.toString());
         output.flush();
     }
 

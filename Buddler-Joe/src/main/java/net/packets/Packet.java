@@ -2,6 +2,7 @@ package net.packets;
 
 import net.ClientLogic;
 import net.ServerLogic;
+import net.packets.login_logout.PacketDisconnect;
 import net.playerhandling.Player;
 
 import java.util.ArrayList;
@@ -137,7 +138,7 @@ public abstract class Packet {
     }
 
     public void sendToServer(){
-        ClientLogic.sendToServer(this.toString());
+        ClientLogic.sendToServer(this);
     }
 
     public void setPacketType(PacketTypes packetType) {
@@ -259,6 +260,8 @@ public abstract class Packet {
         }catch(NullPointerException e){
             return false;
         }
+
+
     }
 
 
