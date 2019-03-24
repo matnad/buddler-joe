@@ -2,11 +2,25 @@ package net.packets.lobby;
 
 import net.packets.Packet;
 
+/**
+ * A packed that is send from the server to the client, which contains the names of all clients that are in the lobby.
+ * Packet-Code: LOBCI
+ * @author Sebastian Schlachter
+ */
 public class PacketCurLobbyInfo extends Packet {
 
     private String info;
     private String[] infoArray;
 
+    /**
+     * Constructor that is used by the Server to build the Packet.
+     * @param clientId clientId of the the receiver.
+     * @param data A single String that begins with "OK║" and contains the names of all clients that are in
+     *             the lobby of the receiver. (names are separated by "║")
+     *             In the case that an error occurred before, the String is an errormessage
+     *             and does not begin with "OK║".
+     * {@link PacketCurLobbyInfo#info} gets set to equal {@param data}.
+     */
    public PacketCurLobbyInfo(int clientId, String data){
        //server builds
        super(PacketTypes.CUR_LOBBY_INFO);
@@ -18,6 +32,16 @@ public class PacketCurLobbyInfo extends Packet {
        validate();
    }
 
+    /**
+     * Constructor that is used by the Client to build the Packet, after receiving the Command LOBCI.
+     * @param data A single String that begins with "OK║" and contains the names of all clients that are in
+     *             the lobby of the receiver. (names are separated by "║")
+     *             In the case that an error occurred before, the String is an errormessage
+     *             and does not begin with "OK║".
+     * {@link PacketCurLobbyInfo#info} gets set to equal {@param data}.
+     * The variable {@param data} gets split at the positions of "║".
+     * Every substring gets then saved in to the Array {@code infoArray}.
+     */
     public PacketCurLobbyInfo(String data){
         //client builds
         super(PacketTypes.CUR_LOBBY_INFO);
@@ -27,6 +51,12 @@ public class PacketCurLobbyInfo extends Packet {
         validate();
     }
 
+    /**
+     * Validation method to check the data that has, or will be send in this packet.
+     * Checks if {@code data} is not null.
+     * Checks for every element of the Array {@code infoArray}, that it consists of extendet ASCII Characters.
+     * In the case of an error it gets added with {@link Packet#addError(String)}.
+     */
     @Override
     public void validate() {
        if(info != null) {
@@ -38,6 +68,12 @@ public class PacketCurLobbyInfo extends Packet {
         }
     }
 
+    /**
+     * Method that lets the Client react to the receiving of this packet.
+     * Check for errors in validate.
+     * If {@code in[0]} equals "OK" the names of the clients get printed.
+     * Else in the case of an error only the error message gets printed.
+     */
     @Override
     public void processData() {
        if(hasErrors()){//Errors ClientSide

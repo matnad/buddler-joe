@@ -2,21 +2,30 @@ package net.lobbyhandling;
 
 import java.util.HashMap;
 
+/**
+ * This class acts as a list. It is used by the Server to handle the current lobbies.
+ * @author Sebastian Schlachter
+ */
 public class ServerLobbyList {
     private HashMap<Integer, Lobby> lobbies;
 
 
+    /**
+     * Constructs a {@link ServerLobbyList}.
+     */
     public ServerLobbyList(){
         lobbies = new HashMap<>();
     }
 
     /**
-     * Method to add a lobby tho the HashMap of all players. of this lobby
-     * @param lobby The lobby to be added to the HashMap
-     * @return statement to let for example the PackageCreatLobby instance know,
-     * whether the action was successful or not
+     * Adds a lobby to the "list" of lobbies.
+     * @param lobby The lobby to be added to the HashMap.
+     * @return statement to let the calling instance know,
+     * whether the adding-attempt was successful or not.
+     * Checks if the given lobby is already in the list.
+     * Checks if desired lobbyname is not taken yet.
+     * In the case on an error a suitable errormessage gets returned
      */
-
     public String addLobby(Lobby lobby){
         if(lobbies.containsKey(lobby.getLobbyId())){
             return "Lobby already created.";
@@ -32,9 +41,9 @@ public class ServerLobbyList {
 
 
     /**
-     * Method to remove a lobby by the lobbyId
-     * @param lobbyId the lobbyId of the lobby to be removed
-     * @return true or false depending on whether the lobby was in the list or not
+     * Removes a lobby from the "list" of lobbies.
+     * @param lobbyId The lobbyId of the lobby to be removed
+     * @return 1 or -1 depending on whether the lobby was successfully removed or not.
      */
     public int removeLobby(int lobbyId){
         if(lobbies.containsKey(lobbyId)){
@@ -46,33 +55,29 @@ public class ServerLobbyList {
     }
 
     /**
-     * Method to search for a lobbies name in the Hashmap by using the lobbyId
-     * @param lobbyId the looked for lobbyId
+     * Searches for a lobbies name in the list by using the lobbyId
+     * @param lobbyId the lobbyId of the desired Lobby
      * @return either the correct name or null
      */
-
     public String getName(int lobbyId){
         return lobbies.get(lobbyId).getLobbyName();
     }
 
     /**
-     * Method to search for a lobby by its lobbyId
-     * @param lobbyId the looked for lobbyId
-     * @return either the lobby or null
+     * Searches for a lobby in the list by using the lobbyId
+     * @param lobbyId the lobbyId of the desired Lobby.
+     * @return either the lobby or null if not found.
      */
-
     public Lobby getLobby(int lobbyId){
         return lobbies.get(lobbyId);
     }
 
 
     /**
-     * search a lobby via the lobbyName to find the lobbyId in case only one of the two was supplied
-     * to the method.
-     * @param lobbyName of the lobby to be found in the list
-     * @return either the lobbyId or -1 if not found
+     * Searches for a lobbies lobbyId in the list by using the lobbyname.
+     * @param lobbyName the lobbyName of the desired Lobby.
+     * @return either the lobbyId or null if not found.
      */
-
     public int getLobbyId(String lobbyName){
         for(Lobby l : lobbies.values()){
             if(lobbyName.equals(l.getLobbyName())) {
@@ -91,13 +96,13 @@ public class ServerLobbyList {
         return s;
     }
     */
+
     /**
-     * A method to get a List of at max 10 lobbies.
+     * Creates a listing of at max 10 lobbies.
      * @return A String that contains a List of max 10 lobbies (that are not full).
      * Each line contains the Lobbies: Name,LobbyId, and the Amount of Players in the Lobby.
      * If no such lobbies are available the String contains the information about that.
      */
-
     public String getTopTen(){
         String s = "";
         int counter = 0;
@@ -106,7 +111,7 @@ public class ServerLobbyList {
                 if(counter == 10){
                     break;
                 }
-                if(l.getPlayerAmount() == 1000){//TODO:100 durch maximale Spielerzahl ersetzen
+                if(l.getPlayerAmount() == 1000){//TODO:1000 durch maximale Spielerzahl ersetzen
                     continue;
                 }else{
                     s = s + l.toString()+"║";

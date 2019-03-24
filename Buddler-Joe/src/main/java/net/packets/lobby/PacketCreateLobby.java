@@ -10,6 +10,7 @@ import java.util.StringJoiner;
 /**
  * A Packet that gets send from the Client to the Server, to create a new Lobby.
  * Packet-Code: LOBCR
+ * @author Sebastian Schlachter
  */
 public class PacketCreateLobby extends Packet {
 

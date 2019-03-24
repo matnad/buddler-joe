@@ -11,13 +11,14 @@ import java.util.StringJoiner;
 /**
  * Packet that gets send from the client to the server if he wants to join a lobby.
  * Packet-Code: LOBJO
+ * @author Sebastian Schlachter
  */
 public class PacketJoinLobby extends Packet {
 
     private String lobbyname;
 
     /**
-     * Constructor that will be used by the Client to build the Packet, if he receives "LOBJO".
+     * Constructor that will be used by the Server to build the Packet, if he receives "LOBJO".
      * @param data The name of the desired lobby.
      * @param clientId ClientId of the client that has sent this packet.
      * {@link PacketJoinLobby#lobbyname} gets set here, to equal {@param data}.
@@ -58,7 +59,7 @@ public class PacketJoinLobby extends Packet {
      * Check if a lobby with the given lobbyname exists.
      * Check that the Client that has sent the packet is logged in and not in a lobby.
      * In the case of an error it gets added with {@link Packet#addError(String)}.
-     * If there are no errors the client get added to the lobby.
+     * If there are no errors the client gets added to the lobby.
      * Constructs a {@link PacketJoinLobbyStatus}-Packet that contains either "OK" if the join attempt  was
      * successful, or in the case of an error, a suitable errormessage.
      * Sends the {@link PacketJoinLobbyStatus}-Packet to the client that tried to join a lobby.

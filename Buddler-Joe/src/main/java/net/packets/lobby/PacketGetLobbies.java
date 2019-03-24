@@ -8,6 +8,7 @@ import java.util.StringJoiner;
 /**
  * A Packet that gets send from the Client to the Server, to get an Overview of available lobbies.
  * Packet-Code: LOBGE
+ * @author Sebastian Schlachter
  */
 public class PacketGetLobbies extends Packet {
 
@@ -44,8 +45,8 @@ public class PacketGetLobbies extends Packet {
      * Adds Error if the client that has sent the Packet, is not logged in to the Server.
      * Constructs a {@link PacketLobbyOverview}-Packet that contains either a list of max ten available lobbies
      * or, in the case of an error, a suitable errormessage.
-     * If there are no errors "OK" gets added to the String of the PacketLobbyOverview-Packet
-     * Sends the PacketLobbyOverview-packet to the client that has send this packet.
+     * If there are no errors "OK" gets added to the String of the {@link PacketLobbyOverview}-Packet
+     * Sends the {@link PacketLobbyOverview}-Packet to the client that has send this packet.
      */
     @Override
     public void processData() {

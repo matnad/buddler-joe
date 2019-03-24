@@ -7,6 +7,7 @@ import net.packets.Packet;
 /**
  * Packet that gets send from the Server to the Client, to inform the him over the result of the lobby-creation attempt.
  * Packet-Code: LOBCS
+ * @author Sebastian Schlachter
  */
 public class PacketCreateLobbyStatus extends Packet{
     private String status;
@@ -44,7 +45,7 @@ public class PacketCreateLobbyStatus extends Packet{
 
     /**
      * Validation method to check the data that has, or will be send in this packet.
-     * Checks if data is not null.
+     * Checks if {@link PacketCreateLobbyStatus#status} is not null.
      * Checks that {@link PacketCreateLobbyStatus#status} consists of extendet ASCII Characters.
      * In the case of an error it gets added with {@link Packet#addError(String)}.
      */
@@ -60,7 +61,7 @@ public class PacketCreateLobbyStatus extends Packet{
     /**
      * Method that lets the Client react to the receiving of this packet.
      * Check for errors in validate.(prints errormessages if there are some)
-     * If status starts eith "OK", the message "Lobby-Creation Successful" gets printed.
+     * If {@link PacketCreateLobbyStatus#status} starts with "OK", the message "Lobby-Creation Successful" gets printed.
      * Else in the case of an error on the serverside the error message gets printed.
      */
     @Override
