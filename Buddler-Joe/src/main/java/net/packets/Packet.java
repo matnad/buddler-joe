@@ -47,7 +47,7 @@ public abstract class Packet {
         /**
          * Constructor to assign the packet type to the subclass
          * @param packetCode to Assign the packet ID so that the subclass is
-         *                 clearly identified
+         *                   clearly identified
          */
         PacketTypes(String packetCode) {
             this.packetCode = packetCode;
@@ -58,9 +58,6 @@ public abstract class Packet {
         }
     }
 
-    /**
-     * Variables which are accessible for the subclasses with the later Getter/Setter methods.
-     */
     private List<String> errors = new ArrayList<>();
     private PacketTypes packetType;
     private int clientId;
@@ -82,13 +79,20 @@ public abstract class Packet {
      *
      * Get Package creates a package which then can be sent.
      *
-     * toString() to display the package and make it human readable.
-     *
      */
 
     public abstract void validate();
 
     public abstract void processData();
+
+    /**
+     * Method to lookup packages from the enum of possible packages
+     * Goes through the whole enum and checks whether the packetCode equals the searched for code. If
+     * none has been found, the looked up code gets returned as invalid
+     * @param code The code of the package to be looked up
+     * @return The PacketType corresponding to the code searched for or in case that the code didn't exist
+     *         it gets returned invalid
+     */
 
     public static PacketTypes lookupPacket(String code) {
         for (PacketTypes p : PacketTypes.values()) {
@@ -99,9 +103,9 @@ public abstract class Packet {
         return PacketTypes.INVALID;
     }
     /**
-     * Communication method to send data to another client. The destination address is determined by their
-     * clientId. At the same time it is also checked wheter the package has already been sent to this player.
-     * @param receiver the receiving clientId
+     * Communication method to send data to a client. The destination address is determined by their
+     * clientId.
+     * @param receiver The clientId of the receiving client
      */
 
     public void sendToClient(int receiver) {
@@ -109,12 +113,20 @@ public abstract class Packet {
     }
 
     /**
-     * This Method calls the sendToClient Method for each player in the specified lobby.
-     * @param lobbyId the lobbyId of the lobby to which the packet should be send.
+     * Communication method to send data to all clients in a lobby
+     * Loops over all player in the lobby and sends them the package by calling the
+     * sendToClient method for each player in the lobby.
+     * @param lobbyId The lobbyId of the lobby to which the packet should be sent to.
      */
+
     public void sendToLobby(int lobbyId){
         ServerLogic.sendPacketToLobby(lobbyId, this);
     }
+
+    /**
+     * Communication method to send data to all clients on the server
+     * Loops over all players on the server and calls the sendToClient for every player on the server
+     */
 
     public void sendToAllClients(){
         HashMap<Integer, Player> players = ServerLogic.getPlayerList().getPlayers();
@@ -124,25 +136,41 @@ public abstract class Packet {
     }
 
     /**
-     * This Method calls the sendToClient Method for each player on the server that is currently not in a Lobby.
+     * Communication Method to send data to all clients currently not in a lobby.
+     * Calls the sendToClient Method for each player on the server that is currently not in a Lobby.
      */
+
     public void sendToClientsNotInALobby(){
         HashMap<Integer, Player> players = ServerLogic.getPlayerList().getPlayers();
         for (Player p : players.values()) {
-            //System.out.println("Username: " + p.getUsername() + " curLobbyId: " + p.getCurLobbyId());
             if(p.getCurLobbyId() == 0) {
                 sendToClient(p.getClientId());
             }
         }
     }
 
+    /**
+     * Communication method to send data from a client to the server.
+     */
+
     public void sendToServer(){
         ClientLogic.sendToServer(this.toString());
     }
 
+    /**
+     * Setter to set the current packetType to a different one
+     * @param packetType The PacketType to which the packet should be changed to
+     */
+
     public void setPacketType(PacketTypes packetType) {
         this.packetType = packetType;
     }
+
+    /**
+     * Getter method to return the current PacketType
+     * The PacketType is determined by the enum
+     * @return The packetType of the current instance of the packet
+     */
 
     public PacketTypes getPacketType() {
         return packetType;
@@ -156,9 +184,6 @@ public abstract class Packet {
         this.clientId = clientId;
     }
 
-
-
-
     public void setData(String data) {
         this.data = data;
     }
@@ -167,23 +192,45 @@ public abstract class Packet {
         return data;
     }
 
+    /**
+     * Returns a list of all errors of a instance of this class
+     * @return The list of errors currently on the instance of the class
+     */
+
     public List<String> getErrors() {
         return errors;
     }
+
+    /**
+     * Boolean method to check whether an instance of this class has errors or not.
+     * @return either true or false, depending whether the instance of this class has errors or not. True if it
+     * has errors, false if not.
+     */
 
     public boolean hasErrors(){
         return errors.size() > 0;
     }
 
-    public void addError(String name){
-        errors.add(name);
+    /**
+     * Method to add an error to the errorList.
+     * Is used to combine multiple errors to give the client or server as detailed an errormessage as possible
+     * @param error The error to be added to the errorList
+     */
+
+    public void addError(String error){
+        errors.add(error);
     }
 
+    /**
+     * Boolean method to check whether a String is part of extended Ascii or not
+     * Goes through the provided String and checks each character whether it is part of extended Ascii or not
+     * @param s The String which should be checked
+     * @return Boolean value whether the String is extended Ascii or not. True if it is extended Ascii, false if not
+     */
+
     protected boolean isExtendedAscii(String s){
-        //System.out.println(s);
         char[] charArray = s.toCharArray();
         for (char c : charArray) {
-            //System.out.println((int)c + "   " +c);
             if(c>255){
                 addError("Invalid characters, only extended ASCII.");
                 return false;
@@ -191,6 +238,14 @@ public abstract class Packet {
         }
         return true;
     }
+
+    /**
+     * Boolean method to check whether a String is an int and thus if it is possible to convert it to an int
+     * Checks whitch a NumberFormatException whether the conversion to int is possible or not and also whether there is
+     * a String at all with a NullPointerException
+     * @param s The String which should be checked whether it contains an integer or not
+     * @return A boolelan value which is either true if it contains an Integer or false if not
+     */
 
     protected boolean isInt(String s) {
         boolean h = true;
@@ -202,6 +257,13 @@ public abstract class Packet {
         return h;
     }
 
+    /**
+     * Method to create an error message out of all errors collected throughout the validation process.
+     * Joins together all the errors present in the errorList by getting the errors with the getErrors() method
+     * and going through the list and adding the errors to a StringJoiner
+     * @return the created error message
+     */
+
     protected String createErrorMessage(){
         String message = "";
         StringJoiner statusJ = new StringJoiner(" ","ERRORS: ","");
@@ -210,6 +272,13 @@ public abstract class Packet {
         }
         return message = statusJ.toString();
     }
+
+    /**
+     * Method to check a username if it is valid or not.
+     * Checks whether there is a username at all, if it is not too long, not too short and if it is extended Ascii
+     * Used whenever a username should be validated.
+     * @param username The username to be checked by this method
+     */
 
     protected void checkUsername(String username){
         if(username == null){
@@ -226,13 +295,14 @@ public abstract class Packet {
 
     /**
      * This method checks if the client how send this Packet is logged in or not.
-     * This method should only be called on the serverside, since it will always return false on the clientside.
+     * This method should only be called from the server, since it will always return false on the client side.
      * @return true if logged in else false.
      */
+
     public boolean isLoggedIn(){
         try{
             if(!ServerLogic.getPlayerList().getPlayers().containsKey(getClientId())){
-                //addError("Not loggedin yet.");
+                addError("Not loggedin yet.");
                 return false;
             }else{
                 return true;
@@ -247,6 +317,7 @@ public abstract class Packet {
      * This method should only be called on the serverside, since it will always return false on the clientside.
      * @return true if in a Lobby else false.
      */
+
     public boolean isInALobby(){
         try{
             int lobbyId = ServerLogic.getPlayerList().getPlayers().get(getClientId()).getCurLobbyId();
@@ -261,6 +332,11 @@ public abstract class Packet {
         }
     }
 
+    /**
+     * ToString method to compile all the information contained in this packet.
+     * Used to send the data to either to the server or client.
+     * @return
+     */
 
     public String toString() {
         return getPacketType().getPacketCode() + " " + getData();

@@ -58,7 +58,7 @@ public class Lobby {
      * @return String with "OK" or "Not in a Lobby" depending on if the removing was successful or not.
      */
     public String removePlayer(int clientId){
-        if(ServerLogic.getPlayerList().isPlayerIdInList(clientId)){
+        if(ServerLogic.getPlayerList().isClientIdInList(clientId)){
             Player player = ServerLogic.getPlayerList().getPlayer(clientId);
             lobbyPlayers.remove(player);
             return "OK";
