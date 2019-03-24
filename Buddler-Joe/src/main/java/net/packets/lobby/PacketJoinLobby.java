@@ -8,15 +8,20 @@ import net.playerhandling.Player;
 
 import java.util.StringJoiner;
 
+/**
+ * Packet that gets send from the client to the server if he wants to join a lobby.
+ * Packet-Code: LOBJO
+ * @author Sebastian Schlachter
+ */
 public class PacketJoinLobby extends Packet {
 
     private String lobbyname;
+
     /**
-     * A packed which is send from the client to the Server once
-     * he has chosen a lobby to join. Server should then move the client in
-     * the chosen lobby
-     * @param clientId of the player to be added to specified lobby
-     * @param data lobbyId of the chosen lobby
+     * Constructor that will be used by the Server to build the Packet, if he receives "LOBJO".
+     * @param data The name of the desired lobby.
+     * @param clientId ClientId of the client that has sent this packet.
+     * {@link PacketJoinLobby#lobbyname} gets set here, to equal {@param data}.
      */
     public PacketJoinLobby(int clientId, String data) {
         //server builds
@@ -27,6 +32,11 @@ public class PacketJoinLobby extends Packet {
         validate();
     }
 
+    /**
+     * Constructor that will be used by the Client to build this Packet.
+     * @param data The name of the desired lobby.
+     * {@link PacketJoinLobby#lobbyname} gets set here, to equal {@param data}.
+     */
     public PacketJoinLobby(String data) {
         //client builds
         super(PacketTypes.JOIN_LOBBY);
@@ -36,14 +46,28 @@ public class PacketJoinLobby extends Packet {
     }
 
     /**
-     * This Method checks if the recived lobbyname is a valid, existing lobbyname.
-     * And if the Player that wants to join a Lobby is logged in and if so, ih he is in a Lobby already or not.
+     * Check if a {@link PacketJoinLobby#lobbyname} consists of extendet ASCII characters.
+     * In the case of an error it gets added with {@link Packet#addError(String)}.
      */
     @Override
     public void validate() {
         isExtendedAscii(lobbyname);
     }
 
+    /**
+     * Method that lets the Server react to the receiving of this packet.
+     * Check if a lobby with the given lobbyname exists.
+     * Check that the Client that has sent the packet is logged in and not in a lobby.
+     * In the case of an error it gets added with {@link Packet#addError(String)}.
+     * If there are no errors the client gets added to the lobby.
+     * Constructs a {@link PacketJoinLobbyStatus}-Packet that contains either "OK" if the join attempt  was
+     * successful, or in the case of an error, a suitable errormessage.
+     * Sends the {@link PacketJoinLobbyStatus}-Packet to the client that tried to join a lobby.
+     * If no errors:
+     * Creates and sends a {@link PacketLobbyOverview}-Packet to all clients that are not in a Lobby at the moment
+     * Creates and sends a {@link PacketCurLobbyInfo}-Packet to all clients that are in the lobby which the
+     * sender just joined. (including to the sender himself).
+     */
     @Override
     public void processData() {
         String status;
