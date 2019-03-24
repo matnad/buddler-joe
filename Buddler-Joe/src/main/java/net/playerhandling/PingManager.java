@@ -106,25 +106,20 @@ public class PingManager implements Runnable{
 
     public void updatePing(long diffTime) {
         ping = (ping * 9 + diffTime) / 10f;
-        if (listOfPingTS.size() > 9 || ping > 1000) {
-            new PacketDisconnect(clientId).processData();
-        }
         Iterator<String> iter = listOfPingTS.iterator();
         long currTime = System.currentTimeMillis();
         String str;
-        int count = 0;
         try {
             while (iter.hasNext()) {
                 str = iter.next();
                 if (currTime - Long.parseLong(str) > 10) {
                     iter.remove();
-                    count++;
                 }
             }
         } catch (NumberFormatException e) {
 
         }
-        if (count > 10) {
+        if (listOfPingTS.size() > 0.9f/freq*10000 || ping > 1000) {
             new PacketDisconnect(clientId).processData();
         }
     }
