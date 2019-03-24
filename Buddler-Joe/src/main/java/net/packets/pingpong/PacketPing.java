@@ -2,14 +2,24 @@ package net.packets.pingpong;
 
 import net.packets.Packet;
 
+/**
+ * A ping packet can be created by instantiating this PacketPing class.
+ * Ping packets are created by the <code>PingManager</code> class.
+ * This class inherits from the superclass <code>Packet</code>.
+ *
+ * @see net.playerhandling.PingManager
+ * @see Packet
+ */
+
 public class PacketPing extends Packet {
 
     /**
-     * Constructor when server gets ping from client
-     * @param clientId identity of client who sent ping
-     * @param data specifies the ping to create a matching pong and to
-     * let the client know that the pong he receives refers to the ping he sent.
+     * Creates a <code>PacketPing</code> object by server side and validates its <code>data</code>.
+     *
+     * @param clientId identity of the client.
+     * @param data is the creation time
      */
+
     public PacketPing(int clientId, String data) {
         super(Packet.PacketTypes.PING);
         setClientId(clientId);
@@ -19,8 +29,11 @@ public class PacketPing extends Packet {
     }
 
     /**
-     * Constructor when client gets ping from server
+     * Creates a <code>PacketPing</code> object by client side and validates its <code>data</code>.
+     *
+     * @param data is the creation time
      */
+
     public PacketPing(String data) {
         super(Packet.PacketTypes.PING);
         setData(data);
@@ -29,9 +42,10 @@ public class PacketPing extends Packet {
     }
 
     /**
-     * validate() checks if the String contains the reference number.
-     * We check if all chars of data are digits.
+     * Checks if the chars of <code>data</code> represent only digits.
+     * If one of the chars is a non digit, the error will be saved.
      */
+
     @Override
     public void validate() {
         if(getData() == null) {
@@ -46,15 +60,15 @@ public class PacketPing extends Packet {
     }
 
     /**
-     * This method creates a response packet "pong" to give
-     * the client/server an answer.
-     * Here, we add the identifying ping number from the
-     * validated packet to the Hashmap.
-     * If the numeric value of data is over 10'000,
-     * the ping was sent by the client.
-     * If the numeric value of data is under 10'000,
-     * the ping was sent by the server.
+     * Creates a response pong packet by creating an object of the class <code>PacketPong</code> to give the client/server an answer. <code>PacketPong</code> object contains the creation time.
+     * <p>
+     * If the clientId was passed, the pong would be sent to the client. Otherwise, the clientId would have the default value 0 and the pong would be sent to the server.
+     * The <code>clientId</code> is declared in the super class <code>Packet</code>
+     * If there is an error in <code>data</code>, nothing will happen to the packet.
+     * @see PacketPong
+     * @see Packet
      */
+
     @Override
     public void processData() {
         if(!hasErrors()) {
@@ -65,7 +79,5 @@ public class PacketPing extends Packet {
                 pong.sendToServer();
             }
         }
-        //hasErrors() == true dann passiert nichts mit dem Packet
     }
-    //HIER: falls errors == 0 dann send, sonst nichts, packet soll verschwinden
 }
