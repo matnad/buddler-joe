@@ -1,4 +1,4 @@
-# Kurze Übersicht der Struktur in Buddler Joe
+﻿# Kurze Übersicht der Struktur in Buddler Joe
 
 ## DEPENDENCIES
 - **LWJGL**: LightWeight Java Game Library
@@ -10,4 +10,4 @@
 - Präsentation Milestone 1: Presentations\Milestone 1\Präsentation_Buddler_Joe.pptx
 - Sitzungsprotokolle: Protokolle\Protokolle
 - Netzwerkprotokolldokumentation: Dokumente\Milestone 2\Netzwerkprotokoll\NetzwerkProtokollDokumentation.pdf
-- QA Konzept: Dokumente\Milestone 2\ //TODO
+- QA Konzept: Dokumente\Milestone 2\Quality Assurance\QualityAssuranceKonzept
