@@ -17,7 +17,7 @@ public class PacketSetName extends Packet {
         super(PacketTypes.SET_NAME);
         setData(data);
         setClientId(clientId);
-        username = getData();
+        username = getData().trim();
         validate();
     }
 
@@ -29,7 +29,7 @@ public class PacketSetName extends Packet {
     public PacketSetName(String username) {
         super(PacketTypes.SET_NAME);
         setData(username);
-        this.username = username;
+        this.username = getData().trim();
         validate();
     }
 
