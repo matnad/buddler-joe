@@ -132,6 +132,20 @@ public class ServerLogic {
     }
 
     /**
+     * Communication Method to send data to all clients currently not in a lobby.
+     * Calls the sendToClient Method for each player on the server that is currently not in a Lobby.
+     *
+     * @param packet packet to distribute
+     */
+    public static void sendToClientsNotInALobby(Packet packet){
+        for (Player player : getPlayerList().getPlayers().values()) {
+            if(player.getCurLobbyId() == 0) {
+                sendPacketToClient(player.getClientId(), packet);
+            }
+        }
+    }
+
+    /**
      * Returns the thread where one specific client is managed.
      *
      * @param clientId unique identifier number of the client

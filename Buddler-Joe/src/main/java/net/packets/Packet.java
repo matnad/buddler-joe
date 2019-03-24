@@ -131,6 +131,7 @@ public abstract class Packet {
      */
 
     public void sendToAllClients(){
+        //TODO: When we use this, move it to ServerLogic
         HashMap<Integer, Player> players = ServerLogic.getPlayerList().getPlayers();
         for (Player p : players.values()) {
             sendToClient(p.getClientId());
@@ -143,12 +144,7 @@ public abstract class Packet {
      */
 
     public void sendToClientsNotInALobby(){
-        HashMap<Integer, Player> players = ServerLogic.getPlayerList().getPlayers();
-        for (Player p : players.values()) {
-            if(p.getCurLobbyId() == 0) {
-                sendToClient(p.getClientId());
-            }
-        }
+        ServerLogic.sendToClientsNotInALobby(this);
     }
 
     /**
