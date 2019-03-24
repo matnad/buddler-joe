@@ -7,6 +7,11 @@ import net.packets.Packet;
 
 import java.util.StringJoiner;
 
+/**
+ * A Packet that gets send from the Client to the Server, to create a new Lobby.
+ * Packet-Code: LOBCR
+ * @author Sebastian Schlachter
+ */
 public class PacketCreateLobby extends Packet {
 
 
@@ -14,8 +19,9 @@ public class PacketCreateLobby extends Packet {
 
 
     /**
-     * A packed which is send from the client to the Server if he wants
-     * to create a new lobby. Containing the information to do so.
+     * Constructor that will be used by the Client to build the Packet. Which can then be send to the Server.
+     * @param data The name that the new lobby should have.
+     * {@link PacketCreateLobby#lobbyname} gets set here, to equal {@param data}.
      */
     public PacketCreateLobby(String data) {
         //client builds
@@ -25,6 +31,12 @@ public class PacketCreateLobby extends Packet {
         validate();
     }
 
+    /**
+     * Constructor that is used by the Server to build the Packet, after receiving the Command "LOBCR".
+     * @param clientId ClientId of the Client that has sent the command.
+     * @param data The desired name of the new lobby.
+     * {@link PacketCreateLobby#lobbyname} gets set here, to equal {@param data}.
+     * */
     public PacketCreateLobby(int clientId, String data) {
         //server builds
         super(PacketTypes.CREATE_LOBBY);
@@ -34,6 +46,13 @@ public class PacketCreateLobby extends Packet {
         validate();
     }
 
+    /**
+     * Check if a {@link PacketCreateLobby#lobbyname} has been sent.
+     * Check if {@link PacketCreateLobby#lobbyname} is shorter than 17 characters.
+     * Check if {@link PacketCreateLobby#lobbyname} is longer than 3 characters.
+     * Check if {@link PacketCreateLobby#lobbyname} consists of extended ASCII characters.
+     * In the case of an error it gets added with {@link Packet#addError(String)}.
+     */
     @Override
     public void validate() {
         if(lobbyname == null){
@@ -48,6 +67,17 @@ public class PacketCreateLobby extends Packet {
         isExtendedAscii(lobbyname);
     }
 
+    /**
+     * Method that lets the Server react to the receiving of this packet.
+     * Check that the Client that has sent the packet is logged in and not in a lobby.
+     * In the case of an error it gets added with {@link Packet#addError(String)}.
+     * If there are no errors a new lobby with the desired name gets created and added to the Lobbylist of the Server.
+     * Constructs a {@link PacketCreateLobbyStatus}-Packet that contains either "OK" if the lobby was
+     * successfully created, or in the case of an error, a suitable errormessage.
+     * Sends the {@link PacketCreateLobbyStatus}-Packet to the client that tried to create a lobby.
+     * Creates and sends a {@link PacketLobbyOverview}-Packet to all clients that are not in a Lobby at the moment
+     * (including the client that has created the new lobby).
+     */
     @Override
     public void processData() {
         if(!isLoggedIn()){

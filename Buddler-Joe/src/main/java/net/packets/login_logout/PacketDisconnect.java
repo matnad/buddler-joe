@@ -1,30 +1,34 @@
 package net.packets.login_logout;
 
 import net.packets.Packet;
+import net.playerhandling.Player;
+import net.ServerLogic;
+import net.packets.lobby.PacketLeaveLobby;
+import net.packets.chat.PacketChatMessageToServer;
 
 public class PacketDisconnect extends Packet {
 
+
     /**
      * Disconnect package to disconnect a player from the server.
-     * @param data data contains the username which is to be deleted from
-     *             the ServerPlayerList. Calls the removePlayer function from
-     *             the ServerPlayerList.
+     * @param clientId of the player who disconnect.
      */
-
-    public PacketDisconnect(int clientId, String data) {
+    public PacketDisconnect(int clientId) {
         super(PacketTypes.DISCONNECT);
         setClientId(clientId);
-        setData(data);
+        validate();
+    }
+    public PacketDisconnect(){
+        super(PacketTypes.DISCONNECT);
         validate();
     }
 
     @Override
     public void validate() {
-
     }
 
     @Override
     public void processData() {
-
+        ServerLogic.removePlayer(getClientId());
     }
 }

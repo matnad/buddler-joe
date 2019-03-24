@@ -95,7 +95,7 @@ public class PingManager implements Runnable{
      * @param diffTime the difference between the arrival time of the final <code>PacketPong</code> object and the creation time of the <code>PacketPing</code> object
      */
     public void updatePing(long diffTime) {
-        ping = (ping*9 + diffTime)/10;
+        ping = (ping*9 + diffTime)/10f;
     }
 
     /**

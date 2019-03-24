@@ -12,6 +12,10 @@ public class PacketChatMessageToServer extends Packet {
     private String timestamp;
     private String receiver;
 
+    /**
+     * Packet to send a chat message to other players in the same lobby
+     * @param chatmsg the message from the client
+     */
 //client
     public PacketChatMessageToServer(String chatmsg) {
         super(PacketTypes.CHAT_MESSAGE_TO_SERVER);

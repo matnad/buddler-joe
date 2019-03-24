@@ -1,6 +1,7 @@
 package net.packets.login_logout;
 
 import net.packets.Packet;
+import net.packets.lobby.PacketGetLobbies;
 
 public class PacketLoginStatus extends Packet {
 
@@ -38,9 +39,13 @@ public class PacketLoginStatus extends Packet {
     public void processData() {
         if (status.startsWith("OK")) {
             System.out.println("Login Successful, your username is: " + getData().substring(2));
+            PacketGetLobbies p = new PacketGetLobbies();
+            p.sendToServer();
         } else if(status.startsWith("CHANGE")){
             System.out.println("Login Successful, however your username has already been taken. " +
                     "We assigned you this username: " + getData().substring(6));
+            PacketGetLobbies p = new PacketGetLobbies();
+            p.sendToServer();
         } else {
             if (hasErrors()) {
                 System.out.println(status + "\n" + createErrorMessage());
@@ -48,5 +53,6 @@ public class PacketLoginStatus extends Packet {
                 System.out.println(status);
             }
         }
+        System.out.println("Type \"help\" at any point to see a list of commands to interact with the server.");
     }
 }
