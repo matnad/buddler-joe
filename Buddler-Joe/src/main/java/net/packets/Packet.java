@@ -69,19 +69,20 @@ public abstract class Packet {
     }
 
     /**
-     *
-     * Abstract classes which are vital to the functionality of every package.
-     *
-     * The validate method is meant to be used to validate the data sent to the specific package,
-     *
-     * Process data is where the packages do their work and handle the package according to its
-     * functionality.
-     *
-     * Get Package creates a package which then can be sent.
-     *
+     * Abstract method to validate the data on the package
+     * Used to validate the data as well as the package to either create an error message or to not do anything at all
+     * if all is in order. Different in every subclass because every packet has different standards and
+     * validation processes to be done.
      */
 
     public abstract void validate();
+
+    /**
+     * Abstract method to process the data on the package
+     * Used to do all the necessary work with the respective packet. Here all the necessary methods get called
+     * and all the work gets done. Vital for every subclass to implement because every packet has a different workload
+     * to process.
+     */
 
     public abstract void processData();
 
