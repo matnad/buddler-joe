@@ -9,3 +9,5 @@
 - ProjektTimeline: gantt/Buddler-Joe-Projekttimeline.gan
 - Präsentation Milestone 1: Presentations\Milestone 1\Präsentation_Buddler_Joe.pptx
 - Sitzungsprotokolle: Protokolle\Protokolle
+- Netzwerkprotokolldokumentation: Dokumente\Milestone 2\Netzwerkprotokoll\NetzwerkProtokollDokumentation.pdf
+- QA Konzept: Dokumente\Milestone 2\ //TODO
