@@ -21,7 +21,7 @@ public class PacketLogin extends Packet {
         super(PacketTypes.LOGIN);
         setData(data);
         setClientId(clientId);
-        username = getData();
+        username = getData().trim();
         validate();
     }
 
@@ -33,7 +33,7 @@ public class PacketLogin extends Packet {
     public PacketLogin(String username) {
         super(PacketTypes.LOGIN);
         setData(username);
-        this.username = username;
+        this.username = username.trim();
         validate();
     }
 
