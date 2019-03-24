@@ -20,6 +20,7 @@ import java.net.Socket;
  * This thread contains and manages the input and output streams to communicate with the client.
  * Will receive messages from their client and process them.
  * Can send messages to their client.
+ * It also activates the <code>PingManager</code> to send pings to the client in a certain frequency.
  */
 //Client and Server code can be similar, but we don't want shared classes
 @SuppressWarnings("Duplicates")
