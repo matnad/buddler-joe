@@ -3,7 +3,7 @@ package net.packets.name;
 import net.packets.Packet;
 
 public class PacketSendName extends Packet {
-        private String name;
+        private String username;
 
     /**
      * Constructor to be called by the client upon receiving a sendName packet
@@ -13,7 +13,7 @@ public class PacketSendName extends Packet {
     public PacketSendName(String data) {
             super(PacketTypes.SEND_NAME);
             setData(data);
-            this.name = data;
+            this.username = data;
             validate();
         }
 
@@ -28,7 +28,7 @@ public class PacketSendName extends Packet {
             super(PacketTypes.SEND_NAME);
             setData(name);
             setClientId(clientId);
-            this.name = name;
+            this.username = name;
             validate();
         }
 
@@ -40,9 +40,9 @@ public class PacketSendName extends Packet {
 
     @Override
         public void validate() {
-            if(name != null) {
-                isExtendedAscii(name);
-                if(name.startsWith("OK") && name.length()<=5){
+            if(username != null) {
+                isExtendedAscii(username);
+                if(username.startsWith("OK") && username.length()<=5){
                     addError("No name attached to the message.");
                 }
             }else{
@@ -58,17 +58,17 @@ public class PacketSendName extends Packet {
     @Override
         public void processData() {
             try {
-                if (name.substring(0,2).startsWith("OK") && !hasErrors()) {
-                    System.out.println("The player searched for is: " + name.substring(3));
+                if (username.substring(0,2).startsWith("OK") && !hasErrors()) {
+                    System.out.println("The player searched for is: " + username.substring(3));
                 } else {
                     if (hasErrors()) {
                         System.out.println(createErrorMessage());
                     } else {
-                        System.out.println(name);
+                        System.out.println(username);
                     }
                 }
             } catch (StringIndexOutOfBoundsException e){
-                System.out.println(name);
+                System.out.println(username);
             }
         }
 }

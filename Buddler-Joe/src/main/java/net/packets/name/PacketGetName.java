@@ -6,7 +6,7 @@ import net.packets.Packet;
 
 public class PacketGetName extends Packet {
 
-    private String player;
+    private String playerId;
 
     /**
      * Constructor when the package gets created from the server side
@@ -18,7 +18,7 @@ public class PacketGetName extends Packet {
         super(PacketTypes.GET_NAME);
         setClientId(clientId);
         setData(playerId);
-        this.player = playerId;
+        this.playerId = playerId;
         validate();
     }
 
@@ -30,7 +30,7 @@ public class PacketGetName extends Packet {
     public PacketGetName(String data){
         super(PacketTypes.GET_NAME);
         setData(data);
-        this.player = data;
+        this.playerId = data;
         validate();
     }
 
@@ -42,13 +42,13 @@ public class PacketGetName extends Packet {
 
     @Override
     public void validate() {
-        if(this.player != null){
-            if(!isInt(player)){
+        if(this.playerId != null){
+            if(!isInt(playerId)){
                 addError("The clientId is not a number");
                 return;
             } else {
                 try {
-                    if (!ServerLogic.getPlayerList().isClientIdInList(Integer.parseInt(player))) {
+                    if (!ServerLogic.getPlayerList().isClientIdInList(Integer.parseInt(playerId))) {
                         addError("Player is not on the server");
                     }
                 } catch (NumberFormatException nfe){
@@ -71,7 +71,7 @@ public class PacketGetName extends Packet {
         if(hasErrors()){
             playerName = createErrorMessage();
         }else{
-            playerName = ServerLogic.getPlayerList().getUsername(Integer.parseInt(player));
+            playerName = ServerLogic.getPlayerList().getUsername(Integer.parseInt(playerId));
             if (playerName != null){
                 playerName = "OK " + playerName;
             } else {
