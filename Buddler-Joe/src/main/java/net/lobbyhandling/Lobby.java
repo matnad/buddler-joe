@@ -53,7 +53,7 @@ public class Lobby {
      */
 
     public String removePlayer(int clientId){
-        if(ServerLogic.getPlayerList().isPlayerIdInList(clientId)){
+        if(ServerLogic.getPlayerList().isClientIdInList(clientId)){
             Player player = ServerLogic.getPlayerList().getPlayer(clientId);
             lobbyPlayers.remove(player);
             return "OK";

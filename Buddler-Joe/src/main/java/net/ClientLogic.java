@@ -29,7 +29,6 @@ public class ClientLogic implements Runnable {
     private static StartNetworkOnlyClient clientGUI;
     private static Thread thread;
     private static Socket server;
-    private static int counter = 1;
     private static PingManager pingManager;
 
     /**
@@ -161,10 +160,6 @@ public class ClientLogic implements Runnable {
     public static void sendToServer(String input) {
         output.println(input);
         output.flush();
-    }
-
-    public static void recommendName(String username){
-        System.out.println("The username is already taken, we would recommend: " + username + "_" + counter++);
     }
 
     public static PingManager getPingManager() {
