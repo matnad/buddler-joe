@@ -1,6 +1,6 @@
 package net.playerhandling;
 
-import net.packets.login_logout.PacketDisconnect;
+import net.packets.loginlogout.PacketDisconnect;
 import net.packets.pingpong.PacketPing;
 
 import java.util.ArrayList;

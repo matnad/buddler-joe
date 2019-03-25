@@ -1,7 +1,7 @@
 package util;
 
 
-import bin.Game;
+import game.Game;
 import org.joml.Matrix4f;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
@@ -22,11 +22,11 @@ public class Maths {
      * @param scale Scaling factor
      * @return A translation Matrix
      */
-    public static Matrix4f createTransformationMatrix(Vector3f translation, float rx, float ry, float rz, float scale) {
+    public static Matrix4f createTransformationMatrix(Vector3f translation, float rx, float ry, float rz, Vector3f scale) {
         Matrix4f matrix = new Matrix4f();
         matrix.setTranslation(translation);
         matrix.rotateZYX((float) Math.toRadians(rx), (float) Math.toRadians(ry), (float) Math.toRadians(rz));
-        matrix.scale(scale);
+        matrix.scale(scale.x, scale.y, scale.z);
         return matrix;
     }
 

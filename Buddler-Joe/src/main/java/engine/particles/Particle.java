@@ -1,7 +1,7 @@
 package engine.particles;
 
 
-import bin.Game;
+import game.Game;
 import entities.Camera;
 import entities.Player;
 import org.joml.Vector2f;

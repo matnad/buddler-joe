@@ -1,4 +1,4 @@
-package bin;
+package game;
 
 import engine.models.RawModel;
 import engine.models.TexturedModel;

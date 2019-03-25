@@ -1,8 +1,7 @@
 package entities.items;
 
-import bin.Game;
+import game.Game;
 import engine.render.Loader;
-import entities.blocks.Block;
 import org.joml.Vector3f;
 
 import java.util.*;

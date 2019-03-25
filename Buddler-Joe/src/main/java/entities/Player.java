@@ -1,6 +1,6 @@
 package entities;
 
-import bin.Game;
+import game.Game;
 import collision.BoundingBox;
 import engine.io.InputHandler;
 import engine.models.TexturedModel;
@@ -15,6 +15,7 @@ import java.util.List;
 
 import static entities.items.ItemMaster.ItemTypes.DYNAMITE;
 import static entities.items.ItemMaster.ItemTypes.TORCH;
+import static game.Game.Stage.PLAYING;
 import static org.lwjgl.glfw.GLFW.*;
 
 /**
@@ -71,13 +72,23 @@ public class Player extends NetPlayer {
     public void move(){
 
         updateCloseBlocks(BlockMaster.getBlocks()); //We don't want to check collision for all blocks every frame
-        checkInputs(); //See which relevant keys are pressed
+
+        if(Game.getActiveStages().size() == 1 && Game.getActiveStages().get(0) == PLAYING) {
+            //Only check inputs if no other stage is active (stages are menu screens)
+            checkInputs(); //See which relevant keys are pressed
+            digDamage = 1;
+        } else {
+            currentSpeed = 0;
+            digDamage = 0;
+        }
 
         //Stop turning when facing directly left or right
         if (getRotY() <= -90 && currentTurnSpeed <0) {
             currentTurnSpeed = 0;
+            setRotY(-90);
         } else if (getRotY() >= 90 && currentTurnSpeed >0) {
             currentTurnSpeed = 0;
+            setRotY(90);
         }
 
         //Update position by distance travelled
@@ -99,8 +110,8 @@ public class Player extends NetPlayer {
         //Send server update with update
         //TEMPORARY PROOF OF CONCEPT: THIS WILL GET REWORKED ONCE WE IMPLEMENT NET STUFF
         if(Game.isConnectedToServer() && (currentSpeed != 0 || upwardsSpeed != 0 || currentTurnSpeed != 0)) {
-            //Packet01Move packet = new Packet01Move(Game.getUsername(), this.getPosition(), this.getRotX(), this.getRotY(), this.getRotZ());
-            //packet.writeData(Game.getSocketClient());
+            //Packet01Move packet = new Packet01Move(Playing.getUsername(), this.getPosition(), this.getRotX(), this.getRotY(), this.getRotZ());
+            //packet.writeData(Playing.getSocketClient());
         }
     }
 
@@ -228,7 +239,7 @@ public class Player extends NetPlayer {
      */
     private void checkInputs() {
 
-        if(Game.chat.isEnabled()) {
+        if(Game.getChat().isEnabled()) {
             currentSpeed = 0;
             return;
         }

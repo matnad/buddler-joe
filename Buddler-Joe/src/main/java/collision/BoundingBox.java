@@ -105,13 +105,13 @@ public class BoundingBox {
      * Scale a box to match the new size of an entity. Usually called when an entity is scaled.
      * @param scale factor to scale with
      */
-    public void scale(float scale) {
-        minXO *= scale;
-        maxXO *= scale;
-        minYO *= scale;
-        maxYO *= scale;
-        minZO *= scale;
-        maxZO *= scale;
+    public void scale(Vector3f scale) {
+        minXO *= scale.x;
+        maxXO *= scale.x;
+        minYO *= scale.y;
+        maxYO *= scale.y;
+        minZO *= scale.z;
+        maxZO *= scale.z;
     }
 
     //Getters

@@ -2,8 +2,8 @@ package net;
 
 import net.packets.chat.PacketChatMessageToServer;
 import net.packets.lobby.*;
-import net.packets.login_logout.PacketDisconnect;
-import net.packets.login_logout.PacketLogin;
+import net.packets.loginlogout.PacketDisconnect;
+import net.packets.loginlogout.PacketLogin;
 import net.packets.name.PacketSetName;
 
 import java.io.BufferedReader;

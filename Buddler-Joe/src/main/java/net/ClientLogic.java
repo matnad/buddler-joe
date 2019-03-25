@@ -4,7 +4,7 @@ import net.packets.Packet;
 import net.packets.chat.PacketChatMessageStatus;
 import net.packets.chat.PacketChatMessageToClient;
 import net.packets.lobby.*;
-import net.packets.login_logout.PacketLoginStatus;
+import net.packets.loginlogout.PacketLoginStatus;
 import net.packets.name.PacketSendName;
 import net.packets.name.PacketSetNameStatus;
 import net.packets.pingpong.PacketPing;

@@ -1,4 +1,4 @@
-package net.packets.login_logout;
+package net.packets.loginlogout;
 
 import net.ServerLogic;
 import net.packets.Packet;

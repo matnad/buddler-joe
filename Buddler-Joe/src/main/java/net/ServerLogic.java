@@ -5,7 +5,7 @@ import net.lobbyhandling.ServerLobbyList;
 import net.packets.Packet;
 import net.packets.chat.PacketChatMessageToClient;
 import net.packets.lobby.PacketCurLobbyInfo;
-import net.packets.login_logout.PacketDisconnect;
+import net.packets.loginlogout.PacketDisconnect;
 import net.playerhandling.ClientThread;
 import net.playerhandling.Player;
 import net.playerhandling.ServerPlayerList;

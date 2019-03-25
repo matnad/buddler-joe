@@ -1,6 +1,6 @@
 package entities.blocks;
 
-import bin.Game;
+import game.Game;
 import engine.render.Loader;
 import org.joml.Vector3f;
 

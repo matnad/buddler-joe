@@ -1,6 +1,6 @@
 package engine.particles;
 
-import bin.Game;
+import game.Game;
 import org.joml.*;
 
 import java.lang.Math;

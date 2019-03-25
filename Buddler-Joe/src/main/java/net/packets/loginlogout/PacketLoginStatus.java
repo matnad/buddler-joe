@@ -1,4 +1,4 @@
-package net.packets.login_logout;
+package net.packets.loginlogout;
 
 import net.packets.Packet;
 import net.packets.lobby.PacketGetLobbies;

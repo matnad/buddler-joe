@@ -1,9 +1,8 @@
 package engine.io;
 
-import bin.Game;
+import game.Game;
 import engine.render.MasterRenderer;
 import entities.Camera;
-import org.joml.Intersectionf;
 import org.joml.Matrix3f;
 import org.joml.Vector3f;
 import org.lwjgl.BufferUtils;
@@ -11,12 +10,10 @@ import org.lwjgl.glfw.GLFWCursorPosCallback;
 import org.lwjgl.glfw.GLFWKeyCallback;
 import org.lwjgl.glfw.GLFWMouseButtonCallback;
 import org.lwjgl.glfw.GLFWScrollCallback;
-import util.MousePlacer;
 
 import java.nio.DoubleBuffer;
 
 import static org.lwjgl.glfw.GLFW.*;
-import static util.MousePlacer.modes.*;
 
 /**
  * Keystates, CursorPos, -Movement, Mousestates, Raycasting.
