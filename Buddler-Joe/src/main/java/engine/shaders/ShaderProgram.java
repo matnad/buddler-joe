@@ -13,9 +13,7 @@ import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 
-/**
- * Abstract shader class. Has the functions to actually load values into the shader.
- */
+/** Abstract shader class. Has the functions to actually load values into the shader. */
 public abstract class ShaderProgram {
 
   private static final String PATH_TO_GLSL = "src/main/java/engine/shaders/glsl/";
@@ -27,8 +25,8 @@ public abstract class ShaderProgram {
   private static final FloatBuffer matrixBuffer = BufferUtils.createFloatBuffer(16);
 
   /**
-   * Initialize the VS and FS with the specified name.
-   * Load them in openGL and attach them to VS resp. FS program
+   * Initialize the VS and FS with the specified name. Load them in openGL and attach them to VS
+   * resp. FS program
    *
    * <p>Then get UniformLocations (this is where variables we pass are stored and is defined in the
    * child classes)
@@ -55,23 +53,17 @@ public abstract class ShaderProgram {
     return GL20.glGetUniformLocation(programID, uniformName);
   }
 
-  /**
-   * Called immediately before using the shader while rendering.
-   */
+  /** Called immediately before using the shader while rendering. */
   public void start() {
     GL20.glUseProgram(programID);
   }
 
-  /**
-   * When done rendering with this shader.
-   */
+  /** When done rendering with this shader. */
   public void stop() {
     GL20.glUseProgram(0);
   }
 
-  /**
-   * Unbind both shaders.
-   */
+  /** Unbind both shaders. */
   public void cleanUp() {
     stop();
     GL20.glDetachShader(programID, vertexShaderID);
@@ -83,11 +75,10 @@ public abstract class ShaderProgram {
 
   protected abstract void bindAttributes();
 
-
   /**
    * Bind shader attribute to openGL location.
    *
-   * @param attribute    slot
+   * @param attribute slot
    * @param variableName name of the shader variable
    */
   protected void bindAttribute(int attribute, String variableName) {
@@ -95,8 +86,8 @@ public abstract class ShaderProgram {
   }
 
   /**
-   * Read GLSL code file from the file system and tell openGL to compile it.
-   * Then return the ID of the compiled and ready shader program.
+   * Read GLSL code file from the file system and tell openGL to compile it. Then return the ID of
+   * the compiled and ready shader program.
    *
    * @param file GLSL file name on file system
    * @param type type of the shader (fragment or vertex)
@@ -143,9 +134,9 @@ public abstract class ShaderProgram {
     GL20.glUniform3f(location, vector.x, vector.y, vector.z);
   }
 
-  //protected void loadVector(int location, Vector4f vector) {
+  // protected void loadVector(int location, Vector4f vector) {
   //  GL20.glUniform4f(location, vector.x, vector.y, vector.z, vector.w);
-  //}
+  // }
 
   protected void load2DVector(int location, Vector2f vector) {
     GL20.glUniform2f(location, vector.x, vector.y);
@@ -164,6 +155,5 @@ public abstract class ShaderProgram {
     if (location != -1) {
       glUniformMatrix4fv(location, false, matrixBuffer);
     }
-
   }
 }

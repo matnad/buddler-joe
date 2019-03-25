@@ -30,19 +30,15 @@ import org.lwjgl.opengl.GL20;
 /**
  * Loads models and textures into Vertex Array Objects and Textures into Buffers
  *
- * <p>Provides different methods for different kind of models:
- * - Simple Geometric Forms (just vertices)
- * - Text Models (Flat vertices and texture coords)
- * - Standard 3D Models: Vertices, Texture Coords, Normals, Indices -> everything contained in an
- * obj file
- * - Standard 3D Models with Bounding Boxes (simplified the constructor for this a bit)
+ * <p>Provides different methods for different kind of models: - Simple Geometric Forms (just
+ * vertices) - Text Models (Flat vertices and texture coords) - Standard 3D Models: Vertices,
+ * Texture Coords, Normals, Indices -> everything contained in an obj file - Standard 3D Models with
+ * Bounding Boxes (simplified the constructor for this a bit)
  *
  * <p>Provides different methods to load textures into openGL Buffers. Does not load the Textures
- * from the File System.
- * This is done in the TextureLoader class
- * - Font Map (created with Hierro or a similar tool)
- * - Regular Terrain and Entity Textures
- * Sets some options for textures such as Lod Bias (lower rendering quality with distance)
+ * from the File System. This is done in the TextureLoader class - Font Map (created with Hierro or
+ * a similar tool) - Regular Terrain and Entity Textures Sets some options for textures such as Lod
+ * Bias (lower rendering quality with distance)
  */
 public class Loader {
 
@@ -70,7 +66,7 @@ public class Loader {
    *
    * <p>For example letters or words of a text.
    *
-   * @param positions     Vertices
+   * @param positions Vertices
    * @param textureCoords TextureCoordinates
    * @return Raw Model that holds the VAO ID
    */
@@ -82,20 +78,19 @@ public class Loader {
     return vaoID;
   }
 
-
   /**
    * Load a normal model without Bounding Box.
    *
    * <p>Used for all models that dont need collision. Can just use the ModelData constructor too.
    *
-   * @param positions     Vertices
+   * @param positions Vertices
    * @param textureCoords TextureCoords
-   * @param normals       Normal vectors
-   * @param indices       Indices (Order/Combination of V/T/N)
+   * @param normals Normal vectors
+   * @param indices Indices (Order/Combination of V/T/N)
    * @return Raw Model that holds the VAO ID
    */
-  public RawModel loadToVao(float[] positions, float[] textureCoords, float[] normals,
-                            int[] indices) {
+  public RawModel loadToVao(
+      float[] positions, float[] textureCoords, float[] normals, int[] indices) {
     final int vaoID = createVao();
     bindIndicesBuffer(indices);
     storeDataInAttributeList(0, 3, positions);
@@ -106,30 +101,29 @@ public class Loader {
   }
 
   /**
-   * Shorter Constructor for models from the obj loader. Should use this for pretty much all
-   * normal 3D models.
+   * Shorter Constructor for models from the obj loader. Should use this for pretty much all normal
+   * 3D models.
    *
    * @param data Direct output of the obj loader. Contains vertices, texture coords, normals,
-   *             indices
-   *             and potentially bounding box
+   *     indices and potentially bounding box
    * @return Raw Model that holds the VAO ID
    */
   public RawModel loadToVao(ModelData data) {
-    RawModel rawModel = loadToVao(data.getVertices(), data.getTextureCoords(), data.getNormals(),
-        data.getIndices());
+    RawModel rawModel =
+        loadToVao(
+            data.getVertices(), data.getTextureCoords(), data.getNormals(), data.getIndices());
     if (data.getBoundingCoords().length == 6) {
       rawModel.setBoundingCoords(data.getBoundingCoords());
     }
     return rawModel;
   }
 
-
   /**
-   * Load FONT Texture into openGL, set some parameters and get the ID (position)
-   * The actual loading is done in the TextureLoader class.
+   * Load FONT Texture into openGL, set some parameters and get the ID (position) The actual loading
+   * is done in the TextureLoader class.
    *
-   * <p>For fonts we use slightly different parameters than for the rest of the textures.
-   * (No wrapping, no blurring, etc)
+   * <p>For fonts we use slightly different parameters than for the rest of the textures. (No
+   * wrapping, no blurring, etc)
    *
    * @param fileName font atlas. Must be png. Just file name
    * @return The OpenGL texture ID
@@ -137,14 +131,13 @@ public class Loader {
   public int loadFontTexture(String fileName) {
     Texture texture = null;
     try {
-      //Load the texture from the file system into openGL
+      // Load the texture from the file system into openGL
       texture = TextureLoader.getTexture(fileName + ".png");
 
-      //Set parameters such as rendering function and distance/quality (LOD BIAS)
+      // Set parameters such as rendering function and distance/quality (LOD BIAS)
       glGenerateMipmap(GL_TEXTURE_2D);
-      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER,
-          GL_LINEAR_MIPMAP_LINEAR);
-      glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_LOD_BIAS, 0f); //Stay sharp
+      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+      glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_LOD_BIAS, 0f); // Stay sharp
     } catch (Exception e) {
       e.printStackTrace();
       System.err.println("Tried to load texture " + fileName + ".png , didn't work");
@@ -155,8 +148,8 @@ public class Loader {
   }
 
   /**
-   * Load ENTITY and TERRAIN Texture into openGL, set some parameters and get the ID (position)
-   * The actual loading is done in the TextureLoader class.
+   * Load ENTITY and TERRAIN Texture into openGL, set some parameters and get the ID (position) The
+   * actual loading is done in the TextureLoader class.
    *
    * @param fileName font atlas. Must be png. Just file name
    * @return The OpenGL texture ID
@@ -167,12 +160,12 @@ public class Loader {
       texture = TextureLoader.getTexture("src/main/resources/assets/textures/" + fileName + ".png");
       glGenerateMipmap(GL_TEXTURE_2D);
       glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-      glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_LOD_BIAS, -.3f); //Textures appear blurred the
+      glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_LOD_BIAS, -.3f); // Textures appear blurred the
       // further away they are
-      //GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11
-      //.GL_LINEAR); //Experimental Filters
-      //GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
-      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT); //Tiling
+      // GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11
+      // .GL_LINEAR); //Experimental Filters
+      // GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
+      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT); // Tiling
       glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
     } catch (Exception e) {
       e.printStackTrace();
@@ -184,9 +177,7 @@ public class Loader {
     return textureID;
   }
 
-  /**
-   * Delete Vertex Arrays, Buffers and Textures when the game is closed. (Clean up memory)
-   */
+  /** Delete Vertex Arrays, Buffers and Textures when the game is closed. (Clean up memory) */
   public void cleanUp() {
     for (int vao : vaos) {
       glDeleteVertexArrays(vao);
@@ -199,9 +190,7 @@ public class Loader {
     }
   }
 
-  /**
-   * Returns a new ID to store a Vertex Array in Memory and binds it.
-   */
+  /** Returns a new ID to store a Vertex Array in Memory and binds it. */
   private int createVao() {
     int vaoID = glGenVertexArrays();
     vaos.add(vaoID);
@@ -213,8 +202,8 @@ public class Loader {
    * Low level openGL functions to get the model data into openGL buffers.
    *
    * @param attributeNumber slot
-   * @param coordinateSize  dim
-   * @param data            one type of model data (vertices, normals or texture coords)
+   * @param coordinateSize dim
+   * @param data one type of model data (vertices, normals or texture coords)
    */
   private void storeDataInAttributeList(int attributeNumber, int coordinateSize, float[] data) {
     int vboID = GL15.glGenBuffers();
@@ -245,6 +234,7 @@ public class Loader {
 
   /**
    * Stores data into and int buffer and returns it.
+   *
    * @param data any int data (vertices, normals, ...)
    * @return a flipped java buffer to be loaded into openGL
    */
@@ -257,6 +247,7 @@ public class Loader {
 
   /**
    * Stores data into a float buffer and returns it.
+   *
    * @param data any int data (vertices, normals, ...)
    * @return a flipped java buffer to be loaded into openGL
    */
@@ -266,5 +257,4 @@ public class Loader {
     buffer.flip();
     return buffer;
   }
-
 }

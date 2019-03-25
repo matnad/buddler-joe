@@ -10,9 +10,8 @@ import org.joml.Vector3f;
  * Represents one particle to generate particle effects.
  *
  * <p>Is a rendered quad that is always facing the camera and displaying a blending texture from a
- * texture atlas or
- * just a fixed texture. The blending goes through keyframes and is over the lifeLength of the
- * particle.
+ * texture atlas or just a fixed texture. The blending goes through keyframes and is over the
+ * lifeLength of the particle.
  */
 public class Particle {
 
@@ -29,24 +28,29 @@ public class Particle {
   private final Vector2f texOffset2 = new Vector2f();
   private float blend;
 
-
   private float elapsedTime = 0;
   private float distance;
 
   /**
    * Creates a single particle. Only called by the particle system.
    *
-   * @param texture       ParticleTexture Object.
-   * @param position      Initial 3D world position of the particle.
-   * @param velocity      Distance traveled per second.
-   * @param gravityEffect Effect of the gravity constant. 0 means no gravity, negative numbers
-   *                      mean negative gravity.
-   * @param lifeLength    Duration before the particle is removed in seconds.
-   * @param rotation      Rotation, perpendicular to the camera ray. In degrees from 0 to 360.
-   * @param scale         Size of the particle.
+   * @param texture ParticleTexture Object.
+   * @param position Initial 3D world position of the particle.
+   * @param velocity Distance traveled per second.
+   * @param gravityEffect Effect of the gravity constant. 0 means no gravity, negative numbers mean
+   *     negative gravity.
+   * @param lifeLength Duration before the particle is removed in seconds.
+   * @param rotation Rotation, perpendicular to the camera ray. In degrees from 0 to 360.
+   * @param scale Size of the particle.
    */
-  Particle(ParticleTexture texture, Vector3f position, Vector3f velocity,
-           float gravityEffect, float lifeLength, float rotation, float scale) {
+  Particle(
+      ParticleTexture texture,
+      Vector3f position,
+      Vector3f velocity,
+      float gravityEffect,
+      float lifeLength,
+      float rotation,
+      float scale) {
     this.texture = texture;
     this.position = position;
     this.velocity = velocity;
@@ -59,8 +63,7 @@ public class Particle {
 
   /**
    * Moves the particle along its direction and applies gravity to update the position for one
-   * frame.
-   * Keeps track of the lifetime.
+   * frame. Keeps track of the lifetime.
    *
    * <p>Currently uses Player Gravity as constant. TODO: Move gravity to a settings class
    *
@@ -69,8 +72,7 @@ public class Particle {
    */
   protected boolean update(Camera camera) {
     velocity.y += Player.gravity * gravityEffect * Game.window.getFrameTimeSeconds();
-    Vector3f change = new Vector3f(velocity)
-        .mul((float) Game.window.getFrameTimeSeconds());
+    Vector3f change = new Vector3f(velocity).mul((float) Game.window.getFrameTimeSeconds());
     position.add(change);
 
     /*We use distance squared since it is faster and makes no difference. It is used to
@@ -86,10 +88,10 @@ public class Particle {
   /**
    * Determine position on the texture atlas that the particle will display.
    *
-   * <p>index 1 / index 2: The two "frames" on the atlas where the particle is between
-   * blend = weight of the first index. (1-blend = weight of the second index)
+   * <p>index 1 / index 2: The two "frames" on the atlas where the particle is between blend =
+   * weight of the first index. (1-blend = weight of the second index)
    *
-   * <p>The numbers will be passed to the shader and calculated there.     *
+   * <p>The numbers will be passed to the shader and calculated there. *
    */
   private void updateTextureCoordInfo() {
     float lifeFactor = elapsedTime / lifeLength;
@@ -109,10 +111,7 @@ public class Particle {
     offset.y = (float) row / texture.getNumberOfRows();
   }
 
-  /**
-   * Destroy the particle.
-   * Sets elapsed time to total life length.
-   */
+  /** Destroy the particle. Sets elapsed time to total life length. */
   @SuppressWarnings("unused")
   public void kill() {
     elapsedTime = lifeLength;

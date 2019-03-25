@@ -1,17 +1,18 @@
 package net.packets;
 
-import net.ClientLogic;
-import net.ServerLogic;
-import net.playerhandling.Player;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.StringJoiner;
+import net.ClientLogic;
+import net.ServerLogic;
+import net.playerhandling.Player;
+
+
 
 /**
  * Abstract Packet class which all Packets implement and build upon. The enum represents all
- * possible packages which can be implemented by the server/client
+ * possible packages which can be implemented by the server/client.
  */
 public abstract class Packet {
 
@@ -43,7 +44,7 @@ public abstract class Packet {
     private final String packetCode;
 
     /**
-     * Constructor to assign the packet type to the subclass
+     * Constructor to assign the packet type to the subclass.
      *
      * @param packetCode to Assign the packet ID so that the subclass is clearly identified
      */
@@ -121,7 +122,7 @@ public abstract class Packet {
 
   /**
    * Communication method to send data to all clients on the server Loops over all players on the
-   * server and calls the sendToClient for every player on the server
+   * server and calls the sendToClient for every player on the server.
    */
   public void sendToAllClients() {
     // TODO: When we use this, move it to ServerLogic
@@ -145,7 +146,7 @@ public abstract class Packet {
   }
 
   /**
-   * Setter to set the current packetType to a different one
+   * Setter to set the current packetType to a different one.
    *
    * @param packetType The PacketType to which the packet should be changed to
    */
@@ -154,7 +155,7 @@ public abstract class Packet {
   }
 
   /**
-   * Getter method to return the current PacketType The PacketType is determined by the enum
+   * Getter method to return the current PacketType The PacketType is determined by the enum.
    *
    * @return The packetType of the current instance of the packet
    */
@@ -179,7 +180,7 @@ public abstract class Packet {
   }
 
   /**
-   * Returns a list of all errors of a instance of this class
+   * Returns a list of all errors of a instance of this class.
    *
    * @return The list of errors currently on the instance of the class
    */
@@ -199,7 +200,7 @@ public abstract class Packet {
 
   /**
    * Method to add an error to the errorList. Is used to combine multiple errors to give the client
-   * or server as detailed an errormessage as possible
+   * or server as detailed an errormessage as possible.
    *
    * @param error The error to be added to the errorList
    */
@@ -209,7 +210,7 @@ public abstract class Packet {
 
   /**
    * Boolean method to check whether a String is part of extended Ascii or not Goes through the
-   * provided String and checks each character whether it is part of extended Ascii or not
+   * provided String and checks each character whether it is part of extended Ascii or not.
    *
    * @param s The String which should be checked
    * @return Boolean value whether the String is extended Ascii or not. True if it is extended
@@ -229,7 +230,7 @@ public abstract class Packet {
   /**
    * Boolean method to check whether a String is an int and thus if it is possible to convert it to
    * an int Checks whitch a NumberFormatException whether the conversion to int is possible or not
-   * and also whether there is a String at all with a NullPointerException
+   * and also whether there is a String at all with a NullPointerException.
    *
    * @param s The String which should be checked whether it contains an integer or not
    * @return A boolelan value which is either true if it contains an Integer or false if not

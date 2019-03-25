@@ -3,8 +3,7 @@ package engine.models;
 import engine.textures.ModelTexture;
 
 /**
- * Contains a raw model and a texture.
- * See these classes for more details.
+ * Contains a raw model and a texture. See these classes for more details.
  *
  * @see RawModel
  * @see ModelTexture

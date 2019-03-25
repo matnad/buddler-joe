@@ -27,23 +27,16 @@ import org.lwjgl.glfw.GLFWScrollCallback;
  * <p>Fully static class since there is only one input to listen to. Is truly global and can be used
  * everywhere.
  *
- * <p>Has the following functionalities: *
- * Keyboard:
- * - KeyDown: Detects if a key is held down
- * - KeyPressed: Detects if a key is pressed and was not pressed last frame
+ * <p>Has the following functionalities: * Keyboard: - KeyDown: Detects if a key is held down -
+ * KeyPressed: Detects if a key is pressed and was not pressed last frame
  *
- * <p>Mouse:
- * - Button Down: Detects if a button is held down
- * - Button Pressed: Detects if a button is pressed and was not pressed last frame
- * - Scrolldistance of current frame
- * - MouseDistance traveled in X and Y of current frame
- * - MouseCursor Position via callback and directly from the buffer (important when mouse was not
- * moved but cursor
- * changed position)
+ * <p>Mouse: - Button Down: Detects if a button is held down - Button Pressed: Detects if a button
+ * is pressed and was not pressed last frame - Scrolldistance of current frame - MouseDistance
+ * traveled in X and Y of current frame - MouseCursor Position via callback and directly from the
+ * buffer (important when mouse was not moved but cursor changed position)
  *
- * <p>RayCasting:
- * - Current projected mouse cursor vector, updated every frame while MousePlacer is true
- * - Intersection point of the mouse vector with the Z+3 plane to place items in 2D
+ * <p>RayCasting: - Current projected mouse cursor vector, updated every frame while MousePlacer is
+ * true - Intersection point of the mouse vector with the Z+3 plane to place items in 2D
  *
  * @author Joe's Buddler Corp.
  */
@@ -73,78 +66,86 @@ public class InputHandler {
    * Callbacks then pass a number of arguments to an invoke method that is run every time the
    * callback fires.
    */
-  static GLFWKeyCallback keyboard = new GLFWKeyCallback() {
-    @Override
-    public void invoke(long window, int key, int scancode, int action, int mods) {
-      //save the state of the pressed key
-      keyState[key] = action;
-    }
-  };
+  static GLFWKeyCallback keyboard =
+      new GLFWKeyCallback() {
+        @Override
+        public void invoke(long window, int key, int scancode, int action, int mods) {
+          // save the state of the pressed key
+          keyState[key] = action;
+        }
+      };
 
-  static GLFWMouseButtonCallback mouse = new GLFWMouseButtonCallback() {
-    @Override
-    public void invoke(long window, int button, int action, int mods) {
-      //save the state of the pressed button
-      mouseState[button] = action;
-    }
-  };
+  static GLFWMouseButtonCallback mouse =
+      new GLFWMouseButtonCallback() {
+        @Override
+        public void invoke(long window, int button, int action, int mods) {
+          // save the state of the pressed button
+          mouseState[button] = action;
+        }
+      };
 
-  static GLFWScrollCallback scrollCallback = new GLFWScrollCallback() {
-    @Override
-    public void invoke(long window, double xoffset, double yoffset) {
-      //yoffset is the "normal" scroll direction. Simply saves the distance scrolled since the
-      // last update.
-      mouseScrollY = yoffset;
-    }
-  };
+  static GLFWScrollCallback scrollCallback =
+      new GLFWScrollCallback() {
+        @Override
+        public void invoke(long window, double xoffset, double yoffset) {
+          // yoffset is the "normal" scroll direction. Simply saves the distance scrolled since the
+          // last update.
+          mouseScrollY = yoffset;
+        }
+      };
 
-  static GLFWCursorPosCallback cursorPosCallback = new GLFWCursorPosCallback() {
-    @Override
-    public void invoke(long window, double xpos, double ypos) {
-      //This is mostly used to detect and quantify mouse movement. For mouse position we should
-      // use the glfw buffer!
-      cursorPosX = xpos;
-      cursorPosY = ypos;
+  static GLFWCursorPosCallback cursorPosCallback =
+      new GLFWCursorPosCallback() {
+        @Override
+        public void invoke(long window, double xpos, double ypos) {
+          // This is mostly used to detect and quantify mouse movement. For mouse position we should
+          // use the glfw buffer!
+          cursorPosX = xpos;
+          cursorPosY = ypos;
 
-      //Save the difference of the current position and the position in the last frame to get the
-      // delta
-      cursorPosDX = xpos - cursorPosLastFrameX;
-      cursorPosDY = ypos - cursorPosLastFrameY;
-    }
-  };
+          // Save the difference of the current position and the position in the last frame to get
+          // the
+          // delta
+          cursorPosDX = xpos - cursorPosLastFrameX;
+          cursorPosDY = ypos - cursorPosLastFrameY;
+        }
+      };
 
   /**
    * CursorPosition to 3D.
    *
-   * <p>Calculate a 3D direction vector originating from the camera.
-   * Save the vector and the intersection with the z=3 plane for static access.
-   * Is updated every frame when the MousePlacer is active.
+   * <p>Calculate a 3D direction vector originating from the camera. Save the vector and the
+   * intersection with the z=3 plane for static access. Is updated every frame when the MousePlacer
+   * is active.
    *
    * @param camera the origin of the ray
    * @author Joe's Buddler Corp. (Matthias)
    */
   private static void updateRaycasting(Camera camera) {
-    //ViewPort is used by JOML and stores x,y,width,height of the window
+    // ViewPort is used by JOML and stores x,y,width,height of the window
     int[] viewport = new int[4];
     viewport[2] = Game.window.getWidth();
     viewport[3] = Game.window.getHeight();
 
-    //We manually get mouse position here (via the glfw buffer) since when moving the player,
+    // We manually get mouse position here (via the glfw buffer) since when moving the player,
     // the mouse position changes without triggering the cursor callback function. It looks weird
     // otherwise.
 
-    //Unproject mouseRay with the projection Matrix, Viewport data and the cursor position
+    // Unproject mouseRay with the projection Matrix, Viewport data and the cursor position
     MasterRenderer.getProjectionMatrix()
-        .unprojectRay((float) getMouseX(), (float) (Game.window.getHeight() - getMouseY()),
-            viewport, new Vector3f(), mouseRay);
+        .unprojectRay(
+            (float) getMouseX(),
+            (float) (Game.window.getHeight() - getMouseY()),
+            viewport,
+            new Vector3f(),
+            mouseRay);
 
-    //Rotate mouseRay with camera
+    // Rotate mouseRay with camera
     new Matrix3f()
         .rotateY((float) Math.toRadians(-camera.getYaw()))
         .rotateX((float) Math.toRadians(-camera.getPitch()))
         .transform(mouseRay);
   }
-
 
   /**
    * Returns true if the Game is currently asking the player to place an object with the mouse
@@ -156,16 +157,15 @@ public class InputHandler {
 
   /**
    * Enter and leave placer Modes. Mouse cursor is disabled while in placer Modes to get a better
-   * view of the object
-   * being placed. Never set placerMode directly!
+   * view of the object being placed. Never set placerMode directly!
    *
    * @param placerMode True to enter placerMode, False to leave it
    */
   public static void setPlacerMode(boolean placerMode) {
     InputHandler.placerMode = placerMode;
-    //Very important to only change placer Modes with this function, otherwise it fucks up the
+    // Very important to only change placer Modes with this function, otherwise it fucks up the
     // cursor!
-    //Disable cursor when an object is being placed with the cursor
+    // Disable cursor when an object is being placed with the cursor
     if (placerMode) {
       glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
     } else {
@@ -174,30 +174,24 @@ public class InputHandler {
   }
 
   /**
-   * Returns position of the intersection with the mouse ray and the z=3 plane. Thus z will
-   * always be 3 here.
+   * Returns position of the intersection with the mouse ray and the z=3 plane. Thus z will always
+   * be 3 here.
    *
    * <p>A 3D direction vector originating from the camera is updated every frame while in placer
-   * Modes and the
-   * intersection with the z=3 plane can be found with this static method. This position vector
-   * is used to place
-   * objects in our pseudo 3D world.
+   * Modes and the intersection with the z=3 plane can be found with this static method. This
+   * position vector is used to place objects in our pseudo 3D world.
    */
-
   public static Vector3f getMouseRay() {
     return new Vector3f(mouseRay);
   }
 
-
   /**
-   * Called every frame to update states of keys and mouse.
-   * While in placer Modes it will also update the mouse ray and z=3 wall intersection
-   * It is very important that this is called before the window polling happens or the single
-   * press functions will
-   * not work.
+   * Called every frame to update states of keys and mouse. While in placer Modes it will also
+   * update the mouse ray and z=3 wall intersection It is very important that this is called before
+   * the window polling happens or the single press functions will not work.
    */
   public static void update() {
-    //Do this before polling to preserve the state from the last update
+    // Do this before polling to preserve the state from the last update
     for (int i = 0; i < keyDown.length; i++) {
       keyDown[i] = isKeyDown(i);
     }
@@ -209,7 +203,8 @@ public class InputHandler {
     cursorPosLastFrameX = cursorPosX;
     cursorPosLastFrameY = cursorPosY;
 
-    //These have to be set to 0 if not otherwise set this frame. Otherwise we get lingering movement
+    // These have to be set to 0 if not otherwise set this frame. Otherwise we get lingering
+    // movement
     cursorPosDX = 0;
     cursorPosDY = 0;
     mouseScrollY = 0;
@@ -217,9 +212,7 @@ public class InputHandler {
     if (isPlacerMode()) {
       updateRaycasting(Game.getActiveCamera());
     }
-
   }
-
 
   /**
    * Is true of the key is being pressed in the current frame.
@@ -232,9 +225,8 @@ public class InputHandler {
   }
 
   /**
-   * Is true ONCE on the first frame a key is being held down or pressed. The same key needs to
-   * be released
-   * before it can trigger this function again.
+   * Is true ONCE on the first frame a key is being held down or pressed. The same key needs to be
+   * released before it can trigger this function again.
    *
    * <p>GLFW has no built in method to detect if a key was just pressed and not held as far as we
    * can see.
@@ -262,6 +254,7 @@ public class InputHandler {
 
   /**
    * Is true if the mouse button is pressed during current frame.
+   *
    * @param button GLFW intentifier of the pressed mouse button
    * @return true if the button is not released (pressed or held) in this frame
    */
@@ -270,9 +263,8 @@ public class InputHandler {
   }
 
   /**
-   * Is true ONCE on the first frame a button is being held down or pressed. The same button
-   * needs to be released
-   * before it can trigger this function again.
+   * Is true ONCE on the first frame a button is being held down or pressed. The same button needs
+   * to be released before it can trigger this function again.
    *
    * <p>GLFW has no built in method to detect if a button was just pressed and not held as far as we
    * can see.
@@ -297,26 +289,19 @@ public class InputHandler {
     return !isMouseDown(button) && mouseDown[button];
   }
 
-
-  /**
-   * Returns the distance the mouse was moved since the last frame in the horizontal direction.
-   */
+  /** Returns the distance the mouse was moved since the last frame in the horizontal direction. */
   public static double getCursorPosDX() {
     return cursorPosDX;
   }
 
-  /**
-   * Returns the distance the mouse was moved since the last frame in the vertical direction.
-   */
+  /** Returns the distance the mouse was moved since the last frame in the vertical direction. */
   public static double getCursorPosDY() {
     return cursorPosDY;
   }
 
-
   /**
-   * Returns the X position of the cursor, in screen coordinates, relative to the upper-left
-   * corner of the client
-   * area of the specified window.
+   * Returns the X position of the cursor, in screen coordinates, relative to the upper-left corner
+   * of the client area of the specified window.
    *
    * <p>Use this if you need the cursor position even if the cursor is not moving (when callback is
    * unreliable).
@@ -328,9 +313,8 @@ public class InputHandler {
   }
 
   /**
-   * Returns the Y position of the cursor, in screen coordinates, relative to the upper-left
-   * corner of the client
-   * area of the specified window.
+   * Returns the Y position of the cursor, in screen coordinates, relative to the upper-left corner
+   * of the client area of the specified window.
    *
    * <p>Use this if you need the cursor position even if the cursor is not moving (when callback is
    * unreliable).
@@ -342,12 +326,11 @@ public class InputHandler {
   }
 
   /**
-   * Returns the "normal" scroll distance with a mouse wheel since the last frame.
-   * Positive value when scrolling the wheel "up" or away from the person, and negative value
-   * when scrolling "down"
+   * Returns the "normal" scroll distance with a mouse wheel since the last frame. Positive value
+   * when scrolling the wheel "up" or away from the person, and negative value when scrolling "down"
    * or towards the person.
    */
-  //Scrolling
+  // Scrolling
   public static double getMouseScrollY() {
     return mouseScrollY;
   }
