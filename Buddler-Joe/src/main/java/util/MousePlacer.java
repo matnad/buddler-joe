@@ -1,6 +1,5 @@
 package util;
 
-import collision.BoundingBox;
 import engine.io.InputHandler;
 import entities.Camera;
 import entities.Entity;
@@ -64,7 +63,7 @@ public class MousePlacer {
         } else if (mode == modes.BLOCK.getMode()) {
             Map<Block, Vector3f> intersections = new HashMap<>();
             for (Block block : BlockMaster.getBlocks()) {
-                AABBf aabb = block.getbBox().getAABBf();
+                AABBf aabb = block.getbBox().getAabbf();
                 Rayf ray = new Rayf(camera.getPosition(), InputHandler.getMouseRay());
                 Vector2f result = new Vector2f();
                 boolean intersectRayAab = Intersectionf.intersectRayAab(ray, aabb, result);

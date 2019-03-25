@@ -1,8 +1,8 @@
 package gui;
 
 import engine.render.Loader;
-import engine.render.fontMeshCreator.FontType;
-import engine.render.fontMeshCreator.GUIText;
+import engine.render.fontmeshcreator.FontType;
+import engine.render.fontmeshcreator.GuiText;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 
@@ -11,11 +11,11 @@ import java.io.File;
 /**
  * A GUI Text with preloaded font. Not sure this is needed.
  * Will revisit when we work on the HUD
- * For now its basically the same as GUIText
+ * For now its basically the same as GuiText
  */
 public abstract class GUIString {
 
-    private GUIText guiString;
+    private GuiText guiString;
 
     private String guiStringString;
     private Vector2f position;
@@ -39,7 +39,7 @@ public abstract class GUIString {
     }
 
     public void createGuiText() {
-        setGuiString(new GUIText(guiStringString, 1f, getFont(), getTextColour(), getAlpha(), getPosition(),  getMaxLineLength(), isCentered()));
+        setGuiString(new GuiText(guiStringString, 1f, getFont(), getTextColour(), getAlpha(), getPosition(),  getMaxLineLength(), isCentered()));
     }
 
     public void updateString() {
@@ -86,11 +86,11 @@ public abstract class GUIString {
         this.fontSize = fontSize;
     }
 
-    public GUIText getGuiString() {
+    public GuiText getGuiString() {
         return guiString;
     }
 
-    public void setGuiString(GUIText guiString) {
+    public void setGuiString(GuiText guiString) {
         this.guiString = guiString;
     }
 

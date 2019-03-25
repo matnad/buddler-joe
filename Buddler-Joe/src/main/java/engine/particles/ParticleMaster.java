@@ -32,7 +32,6 @@ public class ParticleMaster {
         Fire.init(loader);
         Explosion.init(loader);
         Smoke.init(loader);
-        Debris.init(loader);
         Cosmic.init(loader);
     }
 

@@ -1,8 +1,10 @@
 package gui;
 
 import engine.render.MasterRenderer;
-import engine.render.fontRendering.TextMaster;
+import engine.render.fontrendering.TextMaster;
+import entities.Camera;
 import entities.NetPlayer;
+import game.Game;
 import org.joml.*;
 import util.Maths;
 
@@ -33,16 +35,16 @@ public class DirectionalUsername extends GUIString{
     public void updateString() {
         if (getGuiString() != null)
             TextMaster.removeText(getGuiString());
-        setPosition(findLocation());
+        setPosition(findLocation(Game.getActiveCamera()));
 
         createGuiText();
     }
 
-    private Vector2f findLocation() {
+    private Vector2f findLocation(Camera camera) {
         //Transforms world coodinates to normalized device coordinates. Experimental feature!
         //This will generate the effect of the text pointing in the direction of the player.
         Vector4f loc = new Vector4f(player.getbBox().getMinX(), player.getbBox().getMaxY(), player.getbBox().getMaxZ()-player.getbBox().getDimZ()/2, 1f)
-                .mul(Maths.createViewMatrix())
+                .mul(Maths.createViewMatrix(camera))
                 .mul(MasterRenderer.getProjectionMatrix())
                 .normalize();
 

@@ -1,8 +1,8 @@
 package gui;
 
+import engine.render.fontmeshcreator.GuiText;
 import game.Game;
-import engine.render.fontMeshCreator.FontType;
-import engine.render.fontMeshCreator.GUIText;
+import engine.render.fontmeshcreator.FontType;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 
@@ -15,7 +15,7 @@ import java.util.Date;
  * This will change when we build a proper chat
  * We need a proper timestamp too
  */
-public class ChatText extends GUIText {
+public class ChatText extends GuiText {
 
     private String time;
     private String username;

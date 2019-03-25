@@ -2,8 +2,8 @@ package gui;
 
 import engine.io.InputHandler;
 import engine.render.Loader;
-import engine.render.fontMeshCreator.FontType;
-import engine.render.fontRendering.TextMaster;
+import engine.render.fontmeshcreator.FontType;
+import engine.render.fontrendering.TextMaster;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 

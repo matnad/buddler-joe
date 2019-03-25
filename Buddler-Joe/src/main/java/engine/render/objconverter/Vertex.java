@@ -1,10 +1,10 @@
-package engine.render.objConverter;
+package engine.render.objconverter;
 
 import org.joml.Vector3f;
 
 /**
  * One Vertex in a 3D Model with index information
- * Only used WHILE parsing obj files to keep the OBJFileLoader less cluttered. *
+ * Only used WHILE parsing obj files to keep the ObjFileLoader less cluttered. *
  */
 public class Vertex {
 

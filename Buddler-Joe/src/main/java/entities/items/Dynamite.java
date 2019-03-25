@@ -7,7 +7,7 @@ import engine.particles.systems.Explosion;
 import engine.particles.systems.Fire;
 import engine.particles.systems.Smoke;
 import engine.render.Loader;
-import engine.render.objConverter.OBJFileLoader;
+import engine.render.objconverter.ObjFileLoader;
 import engine.textures.ModelTexture;
 import entities.blocks.Block;
 import entities.blocks.BlockMaster;
@@ -107,7 +107,7 @@ public class Dynamite extends Item {
      * @param loader passed by Item Master
      */
     public static void init(Loader loader) {
-        RawModel rawDynamite = loader.loadToVAO(OBJFileLoader.loadOBJ("dynamite"));
+        RawModel rawDynamite = loader.loadToVao(ObjFileLoader.loadObj("dynamite"));
         setPreloadedModel(new TexturedModel(rawDynamite, new ModelTexture(loader.loadTexture("dynamite"))));
     }
 

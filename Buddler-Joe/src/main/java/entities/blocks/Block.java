@@ -3,7 +3,7 @@ package entities.blocks;
 import engine.models.RawModel;
 import engine.models.TexturedModel;
 import engine.render.Loader;
-import engine.render.objConverter.OBJFileLoader;
+import engine.render.objconverter.ObjFileLoader;
 import engine.textures.ModelTexture;
 import entities.Entity;
 import entities.blocks.debris.DebrisMaster;
@@ -71,7 +71,7 @@ public abstract class Block extends Entity {
      * @param loader main loader
      */
     static void loadBlockModels(Loader loader) {
-        RawModel rawBlock = loader.loadToVAO(OBJFileLoader.loadOBJ("dirt"));
+        RawModel rawBlock = loader.loadToVao(ObjFileLoader.loadObj("dirt"));
         ModelTexture blockAtlas = new ModelTexture(loader.loadTexture("blockAtlas"));
         blockAtlas.setNumberOfRows(6);
         blockModel = new TexturedModel(rawBlock, blockAtlas);

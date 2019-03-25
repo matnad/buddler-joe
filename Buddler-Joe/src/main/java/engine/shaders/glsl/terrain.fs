@@ -9,9 +9,9 @@ in float visibility;
 out vec4 out_Colour;
 
 uniform sampler2D backgroundTexture;
-uniform sampler2D rTexture;
-uniform sampler2D gTexture;
-uniform sampler2D bTexture;
+uniform sampler2D textureR;
+uniform sampler2D textureG;
+uniform sampler2D textureB;
 uniform sampler2D blendMap;
 
 uniform sampler2D modelTexture;
@@ -28,9 +28,9 @@ void main(void) {
     float backTextureAmount = 1 - (blendMapColour.r + blendMapColour.g + blendMapColour.b);
     vec2 tiledCoords = pass_textureCoordinates * 40.0;
     vec4 backgroundTextureColour = texture(backgroundTexture, tiledCoords) * backTextureAmount;
-    vec4 rTextureColour = texture(rTexture, tiledCoords) * blendMapColour.r;
-    vec4 gTextureColour = texture(gTexture, tiledCoords) * blendMapColour.g;
-    vec4 bTextureColour = texture(bTexture, tiledCoords) * blendMapColour.b;
+    vec4 rTextureColour = texture(textureR, tiledCoords) * blendMapColour.r;
+    vec4 gTextureColour = texture(textureG, tiledCoords) * blendMapColour.g;
+    vec4 bTextureColour = texture(textureB, tiledCoords) * blendMapColour.b;
 
     vec4 totalColour = backgroundTextureColour + rTextureColour + gTextureColour + bTextureColour;
 

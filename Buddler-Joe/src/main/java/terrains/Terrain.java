@@ -133,7 +133,7 @@ public class Terrain extends TerrainFlat{
                 indices[pointer++] = bottomRight;
             }
         }
-        return loader.loadToVAO(vertices, textureCoords, normals, indices);
+        return loader.loadToVao(vertices, textureCoords, normals, indices);
     }
 
     /**

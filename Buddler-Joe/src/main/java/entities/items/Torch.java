@@ -5,7 +5,7 @@ import engine.models.TexturedModel;
 import engine.particles.systems.Fire;
 import engine.particles.systems.Smoke;
 import engine.render.Loader;
-import engine.render.objConverter.OBJFileLoader;
+import engine.render.objconverter.ObjFileLoader;
 import engine.textures.ModelTexture;
 import entities.blocks.Block;
 import entities.light.Light;
@@ -85,7 +85,7 @@ public class Torch extends Item {
      * @param loader passed by Item Master
      */
     public static void init(Loader loader) {
-        RawModel rawTorch = loader.loadToVAO(OBJFileLoader.loadOBJ("torch"));
+        RawModel rawTorch = loader.loadToVao(ObjFileLoader.loadObj("torch"));
         setPreloadedModel(new TexturedModel(rawTorch, new ModelTexture(loader.loadTexture("torch"))));
     }
 

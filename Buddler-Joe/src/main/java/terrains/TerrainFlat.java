@@ -82,7 +82,7 @@ public class TerrainFlat {
                 indices[pointer++] = bottomRight;
             }
         }
-        return loader.loadToVAO(vertices, textureCoords, normals, indices);
+        return loader.loadToVao(vertices, textureCoords, normals, indices);
     }
 
     public float getHeightOfTerrain(float worldX, float worldZ) {

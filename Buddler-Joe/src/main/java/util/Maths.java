@@ -1,6 +1,7 @@
 package util;
 
 
+import entities.Camera;
 import game.Game;
 import org.joml.Matrix4f;
 import org.joml.Vector2f;
@@ -42,12 +43,12 @@ public class Maths {
      *
      * @return Camera View Matrix
      */
-    public static Matrix4f createViewMatrix() {
+    public static Matrix4f createViewMatrix(Camera camera) {
         Matrix4f matrix = new Matrix4f();
-        matrix.rotate((float) Math.toRadians(Game.camera.getPitch()), new Vector3f(1, 0, 0));
-        matrix.rotate((float) Math.toRadians(Game.camera.getYaw()), new Vector3f(0, 1, 0));
+        matrix.rotate((float) Math.toRadians(camera.getPitch()), new Vector3f(1, 0, 0));
+        matrix.rotate((float) Math.toRadians(camera.getYaw()), new Vector3f(0, 1, 0));
 //        matrix.rotate((float) Math.toRadians(camera.getRoll()), new Vector3f(0, 0, 1));
-        Vector3f cameraPos = Game.camera.getPosition();
+        Vector3f cameraPos = camera.getPosition();
         Vector3f negativeCameraPos = new Vector3f(-cameraPos.x, -cameraPos.y, -cameraPos.z);
         matrix.translate(negativeCameraPos);
         return matrix;

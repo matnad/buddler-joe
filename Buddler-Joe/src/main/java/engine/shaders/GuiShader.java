@@ -1,44 +1,41 @@
 package engine.shaders;
 
-
 import org.joml.Matrix4f;
 
 /**
- * Shader programm for gui
+ * Shader program for gui.
  * Just passing some variables to the shader
  */
-public class GuiShader extends ShaderProgram{
+public class GuiShader extends ShaderProgram {
 
-    private static final String SHADER_NAME = "gui";
+  private static final String SHADER_NAME = "gui";
 
-    private int location_transformationMatrix;
-    private int location_alpha;
-
-
-    public GuiShader() {
-        super(SHADER_NAME);
-    }
-
-    public void loadTransformation(Matrix4f matrix){
-        super.loadMatrix(location_transformationMatrix, matrix);
-    }
-
-    public void loadAlpha(float alpha) {
-        super.loadFloat(location_alpha, alpha);
-    }
-
-    @Override
-    protected void getAllUniformLocations() {
-        location_transformationMatrix = super.getUniformLocation("transformationMatrix");
-        location_alpha = super.getUniformLocation("alpha");
-    }
-
-    @Override
-    protected void bindAttributes() {
-        super.bindAttribute(0, "position");
-    }
+  private int locationTransformationMatrix;
+  private int locationAlpha;
 
 
+  public GuiShader() {
+    super(SHADER_NAME);
+  }
+
+  public void loadTransformation(Matrix4f matrix) {
+    super.loadMatrix(locationTransformationMatrix, matrix);
+  }
+
+  public void loadAlpha(float alpha) {
+    super.loadFloat(locationAlpha, alpha);
+  }
+
+  @Override
+  protected void getAllUniformLocations() {
+    locationTransformationMatrix = super.getUniformLocation("transformationMatrix");
+    locationAlpha = super.getUniformLocation("alpha");
+  }
+
+  @Override
+  protected void bindAttributes() {
+    super.bindAttribute(0, "position");
+  }
 
 
 }
