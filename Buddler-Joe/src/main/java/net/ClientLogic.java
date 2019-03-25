@@ -1,9 +1,19 @@
 package net;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.Socket;
+import java.net.SocketException;
 import net.packets.Packet;
 import net.packets.chat.PacketChatMessageStatus;
 import net.packets.chat.PacketChatMessageToClient;
-import net.packets.lobby.*;
+import net.packets.lobby.PacketCreateLobbyStatus;
+import net.packets.lobby.PacketCurLobbyInfo;
+import net.packets.lobby.PacketJoinLobbyStatus;
+import net.packets.lobby.PacketLeaveLobbyStatus;
+import net.packets.lobby.PacketLobbyOverview;
 import net.packets.loginlogout.PacketLoginStatus;
 import net.packets.name.PacketSendName;
 import net.packets.name.PacketSetNameStatus;
@@ -11,169 +21,167 @@ import net.packets.pingpong.PacketPing;
 import net.packets.pingpong.PacketPong;
 import net.playerhandling.PingManager;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.net.Socket;
-import java.net.SocketException;
-
 /**
  * Client side network logic
  *
- * Communicates with the server via TCP socket. Sends, receives and processes incoming and outgoing messages.
- * It also activates the <code>PingManager</code> to send pings to the server in a certain frequency.
+ * <p>Communicates with the server via TCP socket. Sends, receives and processes incoming and
+ * outgoing messages. It also activates the <code>PingManager</code> to send pings to the server in
+ * a certain frequency.
  */
 public class ClientLogic implements Runnable {
 
-    private static PrintWriter output;
-    private static BufferedReader input;
-    private static Socket server;
-    private static PingManager pingManager;
+  private static PrintWriter output;
+  private static BufferedReader input;
+  private static Socket server;
+  private static PingManager pingManager;
 
-    /**
-     * ClientLogic to communicate with the server. Controls the input/output from/to the player. The constructor sets
-     * the IP and port. It then starts a thread on this class.
-     * @param IP of the server which is to be communicated with
-     * @param Port of the server to which the client will be connected
-     * @throws IOException when socket fails
-     */
-    ClientLogic(String IP, int Port) throws IOException {
-        //Open socket and create buffers
-        server = new Socket(IP, Port);
-        output = new PrintWriter(server.getOutputStream(), false);
-        input = new BufferedReader(new InputStreamReader(server.getInputStream()));
+  /**
+   * ClientLogic to communicate with the server. Controls the input/output from/to the player. The
+   * constructor sets the IP and port. It then starts a thread on this class.
+   *
+   * @param ip of the server which is to be communicated with
+   * @param port of the server to which the client will be connected
+   * @throws IOException when socket fails
+   */
+  ClientLogic(String ip, int port) throws IOException {
+    // Open socket and create buffers
+    server = new Socket(ip, port);
+    output = new PrintWriter(server.getOutputStream(), false);
+    input = new BufferedReader(new InputStreamReader(server.getInputStream()));
 
-        //Run thread
-        Thread thread = new Thread(this);
-        thread.start();
+    // Run thread
+    Thread thread = new Thread(this);
+    thread.start();
 
-        //Start ping manager to survey the connection responsiveness
-        pingManager = new PingManager();
-        new Thread(pingManager).start();
+    // Start ping manager to survey the connection responsiveness
+    pingManager = new PingManager();
+    new Thread(pingManager).start();
+  }
+
+  /** Thread to run the ClientLogic on, calls the method waitforserver to start up. */
+  @Override
+  public void run() {
+    try {
+      waitForServer();
+    } catch (IOException | RuntimeException e) {
+      e.printStackTrace();
+      System.out.println("Connection lost to server");
+      try {
+        server.close();
+      } catch (IOException e1) {
+        e1.printStackTrace();
+      }
     }
+  }
 
-    /**
-     * Thread to run the ClientLogic on, calls the method waitforserver to start up.
-     */
-    @Override
-    public void run() {
-        try {
-            waitForServer();
-        } catch (IOException | RuntimeException e) {
-            e.printStackTrace();
-            System.out.println("Connection lost to server");
-            try {
-                server.close();
-            } catch (IOException e1){
-                e1.printStackTrace();
-            }
-        }
+  /**
+   * Method to wait for incoming server messages. They then get parted up in a code and data part.
+   * The code String determines the actions taken by the ClientLogic. The data will be passed on to
+   * the methods if needed. Consequently the code is passed into the switch which then processes the
+   * data.
+   *
+   * @throws IOException when the socket fails
+   * @throws RuntimeException when something unexpected happens
+   */
+  private void waitForServer() throws IOException, RuntimeException {
+    while (true) {
+
+      String in;
+      try {
+        in = input.readLine();
+      } catch (SocketException e) {
+        server.close();
+        System.out.println("\nThe connection to the server has been closed!");
+        break;
+      }
+
+      // Something went wrong on the server side
+      if (in == null) {
+        continue;
+      }
+
+      // Message too short
+      if (in.length() < 5) {
+        System.out.println(in + " is not a valid message from the server.");
+        continue;
+      }
+
+      String code = in.substring(0, 5);
+      // There is a whitespace between code and data which we deliberately ignore here
+      String data;
+      // Check if the message has a data component
+      if (in.length() < 7) {
+        data = "";
+      } else {
+        data = in.substring(6);
+      }
+
+      // Create the correct packet depending on message code
+      Packet p = null;
+      switch (Packet.lookupPacket(code)) {
+        case LOGIN_STATUS:
+          p = new PacketLoginStatus(data);
+          break;
+        case SEND_NAME:
+          p = new PacketSendName(data);
+          break;
+        case SET_NAME_STATUS:
+          p = new PacketSetNameStatus(data);
+          break;
+        case LOBBY_OVERVIEW:
+          p = new PacketLobbyOverview(data);
+          break;
+        case CREATE_LOBBY_STATUS:
+          p = new PacketCreateLobbyStatus(data);
+          break;
+        case JOIN_LOBBY_STATUS:
+          p = new PacketJoinLobbyStatus(data);
+          break;
+        case CUR_LOBBY_INFO:
+          p = new PacketCurLobbyInfo(data);
+          break;
+        case LEAVE_LOBBY_STATUS:
+          p = new PacketLeaveLobbyStatus(data);
+          break;
+        case CHAT_MESSAGE_TO_CLIENT:
+          p = new PacketChatMessageToClient(data);
+          break;
+        case CHAT_MESSAGE_STATUS:
+          p = new PacketChatMessageStatus(data);
+          break;
+        case PING:
+          p = new PacketPing(data);
+          break;
+        case PONG:
+          p = new PacketPong(data);
+          break;
+        default:
+      }
+      if (p != null) {
+        p.processData();
+      }
     }
+  }
 
-    /**
-     * Method to wait for incoming server messages. They then get parted up in a code and data part.
-     * The code String determines the actions taken by the ClientLogic. The data will be passed on to the methods
-     * if needed. Consequently the code is passed into the switch which then processes the data.
-     * @throws IOException when the socket fails
-     * @throws RuntimeException when something unexpected happens
-     */
-    private void waitForServer() throws IOException, RuntimeException {
-        while (true) {
+  /**
+   * Method to send a package to the server. Will transform the packet to a String here.
+   *
+   * @param packet The packet to be sent to the Server.
+   */
+  public static void sendToServer(Packet packet) {
+    output.println(packet.toString());
+    output.flush();
+  }
 
-            String in;
-            try {
-                in = input.readLine();
-            } catch (SocketException e) {
-                server.close();
-                System.out.println("\nThe connection to the server has been closed!");
-                break;
-            }
+  public static PingManager getPingManager() {
+    return pingManager;
+  }
 
-            //Something went wrong on the server side
-            if(in == null){
-                continue;
-            }
-
-            //Message too short
-            if(in.length() < 5){
-                System.out.println(in+" is not a valid message from the server.");
-                continue;
-            }
-
-            String code = in.substring(0,5);
-            //There is a whitespace between code and data which we deliberately ignore here
-            String data;
-            //Check if the message has a data component
-            if(in.length() < 7) {
-                data = "";
-            } else {
-                data = in.substring(6);
-            }
-
-            //Create the correct packet depending on message code
-            Packet p = null;
-            switch (Packet.lookupPacket(code)){
-                case LOGIN_STATUS:
-                    p = new PacketLoginStatus(data);
-                    break;
-                case SEND_NAME:
-                    p = new PacketSendName(data);
-                    break;
-                case SET_NAME_STATUS:
-                    p = new PacketSetNameStatus(data);
-                    break;
-                case LOBBY_OVERVIEW:
-                    p = new PacketLobbyOverview(data);
-                    break;
-                case CREATE_LOBBY_STATUS:
-                    p = new PacketCreateLobbyStatus(data);
-                    break;
-                case JOIN_LOBBY_STATUS:
-                    p = new PacketJoinLobbyStatus(data);
-                    break;
-                case CUR_LOBBY_INFO:
-                    p = new PacketCurLobbyInfo(data);
-                    break;
-                case LEAVE_LOBBY_STATUS:
-                    p = new PacketLeaveLobbyStatus(data);
-                    break;
-                case CHAT_MESSAGE_TO_CLIENT:
-                    p = new PacketChatMessageToClient(data);
-                    break;
-                case CHAT_MESSAGE_STATUS:
-                    p = new PacketChatMessageStatus(data);
-                    break;
-                case PING:
-                    p = new PacketPing(data);
-                    break;
-                case PONG:
-                    p = new PacketPong(data);
-                    break;
-            }
-            if(p != null) {
-                p.processData();
-            }
-        }
-    }
-
-    /**
-     * Method to send a package to the server. Will transform the packet to a String here.
-     * @param packet The packet to be sent to the Server.
-     */
-    public static void sendToServer(Packet packet) {
-        output.println(packet.toString());
-        output.flush();
-    }
-
-    public static PingManager getPingManager() {
-        return pingManager;
-    }
-
-    /**
-     * @return The server as a Socket object
-     */
-    public static Socket getServer() {
-        return server;
-    }
+  /**
+   * Returns the Socket.
+   * @return The server as a Socket object
+   * */
+  public static Socket getServer() {
+    return server;
+  }
 }
