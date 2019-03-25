@@ -22,7 +22,7 @@ public class ParticleMaster {
     /**
      * Initialize the renderer and load all the particle effect systems with textures.
      *
-     * @param loader Pass the main loader from the Playing class. There is no reason to have more than one loader.
+     * @param loader Pass the main loader from the Game class. There is no reason to have more than one loader.
      * @param projectionMatrix Usually just pass the matrix from the master renderer.
      */
     public static void init(Loader loader, Matrix4f projectionMatrix) {

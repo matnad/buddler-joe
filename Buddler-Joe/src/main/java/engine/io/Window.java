@@ -133,7 +133,7 @@ public class Window {
     }
 
     /**
-     * Returns true if the Playing Loop should update and render a frame. This is to limit the FPS of the game.
+     * Returns true if the Game Loop should update and render a frame. This is to limit the FPS of the game.
      */
     public boolean isUpdating() {
         delta = 0;

@@ -113,7 +113,7 @@ public class ItemMaster {
         //Get the list with the type of the block, if the list is absent, create it
         List<Item> list = itemLists.computeIfAbsent(item.getType(), k -> new ArrayList<>());
 
-        //If the item is not destroyed, add it to the Playing to be rendered
+        //If the item is not destroyed, add it to the Game to be rendered
         if (!item.isDestroyed()) {
             //Add block to its type-specific list
             list.add(item);

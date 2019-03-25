@@ -1,7 +1,7 @@
 import game.Game;
 
 /**
- * Start the Main Playing Thread
+ * Start the Main Game Thread
  */
 public class Main {
 

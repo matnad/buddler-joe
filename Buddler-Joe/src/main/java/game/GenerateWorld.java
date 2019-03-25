@@ -28,9 +28,9 @@ class GenerateWorld {
 
     // We can write something more pretty here once we have world generation down. For now this is very flexible.
     /**
-     * Generate all the Terrains and save them in static variables that can be accessed by the Playing
+     * Generate all the Terrains and save them in static variables that can be accessed by the Game
      * Generates different types of terrain and has no return value.
-     * @param loader Pass the main loader from the Playing class. There is no reason to have more than one loader.
+     * @param loader Pass the main loader from the Game class. There is no reason to have more than one loader.
      */
     public static void generateTerrain(Loader loader) {
         //Terrain Texture
@@ -86,7 +86,7 @@ class GenerateWorld {
     /**
      * Generate the diggable blocks on top of the terrain. Needs to be called only once at the start of the game.
      * Currently uses the seed of the GenerateWorld class.
-     * @param loader Pass the main loader from the Playing class. There is no reason to have more than one loader.
+     * @param loader Pass the main loader from the Game class. There is no reason to have more than one loader.
      */
     static void generateBlocks(Loader loader) {
         //Initialise blocks

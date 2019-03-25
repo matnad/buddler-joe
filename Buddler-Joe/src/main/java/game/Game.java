@@ -216,7 +216,7 @@ public class Game extends Thread {
         MainMenu.init(loader);
         GameMenu.init(loader);
 
-        addActiveStage(MAINMENU);
+        addActiveStage(PLAYING);
 
         /*
         **************************************************************

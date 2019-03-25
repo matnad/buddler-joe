@@ -147,7 +147,7 @@ public class InputHandler {
 
 
     /**
-     * Returns true if the Playing is currently asking the player to place an object with the mouse cursor.
+     * Returns true if the Game is currently asking the player to place an object with the mouse cursor.
      */
     public static boolean isPlacerMode() {
         return placerMode;

@@ -14,7 +14,7 @@ import java.util.List;
 import static org.lwjgl.glfw.GLFW.*;
 
 /**
- * The Chat Window Overlay in the Playing
+ * The Chat Window Overlay in the Game
  *
  * In its normal state it is transparent. With ENTER it can be activated to type a message.
  * Pressing ENTER while a message is typed will send the message.

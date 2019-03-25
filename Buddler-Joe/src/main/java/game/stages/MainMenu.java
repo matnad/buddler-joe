@@ -2,13 +2,11 @@ package game.stages;
 
 import engine.io.InputHandler;
 import engine.render.Loader;
-import engine.render.MasterRenderer;
 import game.Game;
 import gui.GuiTexture;
 import gui.MenuButton;
 import org.joml.Vector2f;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
