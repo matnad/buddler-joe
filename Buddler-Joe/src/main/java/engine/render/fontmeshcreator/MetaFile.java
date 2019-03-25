@@ -93,12 +93,6 @@ class MetaFile {
    * @return The value of the variable.
    */
   private int getValueOfVariable(String variable) {
-    //Map<String, String> reversedMap = new TreeMap<String, String>(values);
-    //
-    ////then you just access the reversedMap however you like...
-    //for (Map.Entry entry : reversedMap.entrySet()) {
-    //	System.out.println(entry.getKey() + ", " + entry.getValue());
-    //}
     return Integer.parseInt(values.get(variable));
   }
 

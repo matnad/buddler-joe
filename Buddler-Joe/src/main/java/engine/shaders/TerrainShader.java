@@ -15,7 +15,7 @@ import util.Maths;
 @SuppressWarnings("Duplicates")
 public class TerrainShader extends ShaderProgram {
 
-  private static final int MAX_LIGHTS = LightMaster.getMAX_LIGHTS();
+  private static final int MAX_LIGHTS = LightMaster.getMaxLights();
 
   private static final String SHADER_NAME = "terrain";
 
@@ -47,9 +47,9 @@ public class TerrainShader extends ShaderProgram {
     locationReflectivity = super.getUniformLocation("reflectivity");
     locationSkyColour = super.getUniformLocation("skyColour");
     locationBackgroundTexture = super.getUniformLocation("backgroundTexture");
-    locationRTexture = super.getUniformLocation("rTexture");
-    locationGTexture = super.getUniformLocation("gTexture");
-    locationBTexture = super.getUniformLocation("bTexture");
+    locationRTexture = super.getUniformLocation("textureR");
+    locationGTexture = super.getUniformLocation("textureG");
+    locationBTexture = super.getUniformLocation("textureB");
     locationBlendMap = super.getUniformLocation("blendMap");
 
     locationLightPosition = new int[MAX_LIGHTS];

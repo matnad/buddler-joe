@@ -36,7 +36,7 @@ import static org.lwjgl.stb.STBImageResize.stbir_resize_uint8_generic;
 import static org.lwjgl.system.MemoryStack.stackPush;
 import static org.lwjgl.system.MemoryUtil.memAlloc;
 import static org.lwjgl.system.MemoryUtil.memFree;
-import static util.IOUtil.ioResourceToByteBuffer;
+import static util.IoUtil.ioResourceToByteBuffer;
 
 import engine.textures.Texture;
 import java.io.IOException;

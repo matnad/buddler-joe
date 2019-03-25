@@ -16,7 +16,7 @@ import util.Maths;
 @SuppressWarnings("Duplicates")
 public class StaticShader extends ShaderProgram {
 
-  private static final int MAX_LIGHTS = LightMaster.getMAX_LIGHTS();
+  private static final int MAX_LIGHTS = LightMaster.getMaxLights();
 
   private static final String SHADER_NAME = "entity";
 

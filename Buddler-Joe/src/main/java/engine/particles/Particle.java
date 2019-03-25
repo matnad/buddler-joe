@@ -68,7 +68,7 @@ public class Particle {
    * @return true if the particle is still alive after the update
    */
   protected boolean update(Camera camera) {
-    velocity.y += Player.GRAVITY * gravityEffect * Game.window.getFrameTimeSeconds();
+    velocity.y += Player.gravity * gravityEffect * Game.window.getFrameTimeSeconds();
     Vector3f change = new Vector3f(velocity)
         .mul((float) Game.window.getFrameTimeSeconds());
     position.add(change);

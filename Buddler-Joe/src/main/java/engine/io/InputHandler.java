@@ -155,7 +155,7 @@ public class InputHandler {
   }
 
   /**
-   * Enter and leave placer modes. Mouse cursor is disabled while in placer modes to get a better
+   * Enter and leave placer Modes. Mouse cursor is disabled while in placer Modes to get a better
    * view of the object
    * being placed. Never set placerMode directly!
    *
@@ -163,7 +163,7 @@ public class InputHandler {
    */
   public static void setPlacerMode(boolean placerMode) {
     InputHandler.placerMode = placerMode;
-    //Very important to only change placer modes with this function, otherwise it fucks up the
+    //Very important to only change placer Modes with this function, otherwise it fucks up the
     // cursor!
     //Disable cursor when an object is being placed with the cursor
     if (placerMode) {
@@ -178,7 +178,7 @@ public class InputHandler {
    * always be 3 here.
    *
    * <p>A 3D direction vector originating from the camera is updated every frame while in placer
-   * modes and the
+   * Modes and the
    * intersection with the z=3 plane can be found with this static method. This position vector
    * is used to place
    * objects in our pseudo 3D world.
@@ -191,7 +191,7 @@ public class InputHandler {
 
   /**
    * Called every frame to update states of keys and mouse.
-   * While in placer modes it will also update the mouse ray and z=3 wall intersection
+   * While in placer Modes it will also update the mouse ray and z=3 wall intersection
    * It is very important that this is called before the window polling happens or the single
    * press functions will
    * not work.

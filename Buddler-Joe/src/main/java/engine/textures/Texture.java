@@ -6,19 +6,19 @@ package engine.textures;
  */
 public interface Texture {
 
-  ///**
-  // * Get the height of the physical texture.
-  // *
-  // * @return The height of physical texture
-  // */
-  //float getHeight();
-  //
-  ///**
-  // * Get the width of the physical texture.
-  // *
-  // * @return The width of physical texture
-  // */
-  //float getWidth();
+  /**
+   * Get the height of the physical texture.
+   *
+   * @return The height of physical texture
+   */
+  float getHeight();
+
+  /**
+   * Get the width of the physical texture.
+   *
+   * @return The width of physical texture
+   */
+  float getWidth();
 
 
   /**

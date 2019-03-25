@@ -19,12 +19,12 @@ public class BoundingBox {
   private float minZ;
   private float maxZ;
 
-  private float minXO;
-  private float maxXO;
-  private float minYO;
-  private float maxYO;
-  private float minZO;
-  private float maxZO;
+  private float minXo;
+  private float maxXo;
+  private float minYo;
+  private float maxYo;
+  private float minZo;
+  private float maxZo;
 
   private float dimX;
   private float dimY;
@@ -40,12 +40,12 @@ public class BoundingBox {
     if (bb.length < 6) {
       return;
     }
-    minXO = bb[0];
-    maxXO = bb[1];
-    minYO = bb[2];
-    maxYO = bb[3];
-    minZO = bb[4];
-    maxZO = bb[5];
+    minXo = bb[0];
+    maxXo = bb[1];
+    minYo = bb[2];
+    maxYo = bb[3];
+    minZo = bb[4];
+    maxZo = bb[5];
   }
 
   /**
@@ -54,12 +54,12 @@ public class BoundingBox {
    * @param newPos this coordinate will be the center of the new bounding box.
    */
   public void moveTo(Vector3f newPos) {
-    minX = newPos.x + minXO;
-    maxX = newPos.x + maxXO;
-    minY = newPos.y + minYO;
-    maxY = newPos.y + maxYO;
-    minZ = newPos.z + minZO;
-    maxZ = newPos.z + maxZO;
+    minX = newPos.x + minXo;
+    maxX = newPos.x + maxXo;
+    minY = newPos.y + minYo;
+    maxY = newPos.y + maxYo;
+    minZ = newPos.z + minZo;
+    maxZ = newPos.z + maxZo;
     dimX = Math.abs(Math.abs(maxX) - Math.abs(minX));
     dimY = Math.abs(Math.abs(maxY) - Math.abs(minY));
     dimZ = Math.abs(Math.abs(maxZ) - Math.abs(minZ));
@@ -118,12 +118,12 @@ public class BoundingBox {
    * @param scale factor to scale with
    */
   public void scale(Vector3f scale) {
-    minXO *= scale.x;
-    maxXO *= scale.x;
-    minYO *= scale.y;
-    maxYO *= scale.y;
-    minZO *= scale.z;
-    maxZO *= scale.z;
+    minXo *= scale.x;
+    maxXo *= scale.x;
+    minYo *= scale.y;
+    maxYo *= scale.y;
+    minZo *= scale.z;
+    maxZo *= scale.z;
   }
 
   //Getters
@@ -169,27 +169,27 @@ public class BoundingBox {
   }
 
   /*public float getMinXO() {
-    return minXO;
+    return minXo;
   }
 
   public float getMaxXO() {
-    return maxXO;
+    return maxXo;
   }
 
   public float getMinYO() {
-    return minYO;
+    return minYo;
   }
 
   public float getMaxYO() {
-    return maxYO;
+    return maxYo;
   }
 
   public float getMinZO() {
-    return minZO;
+    return minZo;
   }
 
   public float getMaxZO() {
-    return maxZO;
+    return maxZo;
   }*/
 
 

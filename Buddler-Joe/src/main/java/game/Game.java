@@ -24,8 +24,8 @@ import game.stages.GameMenu;
 import game.stages.MainMenu;
 import game.stages.Playing;
 import gui.Chat;
-import gui.FPS;
-import gui.GUIString;
+import gui.Fps;
+import gui.GuiString;
 import java.util.ArrayList;
 import java.util.List;
 import org.joml.Vector3f;
@@ -184,8 +184,8 @@ public class Game extends Thread {
     //GUI / HUD
     //TODO (Matthias): We will need a GuiMaster class to initialize and manage the GUI elements
     TextMaster.init(loader);
-    GUIString.loadFont(loader);
-    FPS fpsCounter = new FPS();
+    GuiString.loadFont(loader);
+    Fps fpsCounter = new Fps();
     //List<GuiTexture> guis = new ArrayList<>();
     chat = new Chat(loader);
     //guis.add(chat.getChatGui());
