@@ -32,3 +32,6 @@ target/
 
 # archive
 Buddler-Joe/src/main/java/archive/
+
+# build
+Buddler-Joe/build/

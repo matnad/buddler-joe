@@ -1,42 +1,42 @@
 package net.lobbyhandling;
 
-import net.playerhandling.ClientThread;
+import net.ServerLogic;
 import net.playerhandling.Player;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
+/**
+ * Main lobby class to save the vital information which the server has to access at all times.
+ * @author Sebastian Schlachter
+ */
 public class Lobby {
 
     private int lobbyId;
     private String lobbyName;
-    private ArrayList<Player> lobbyPlayers; //TODO: replace with arraylist
+    private ArrayList<Player> lobbyPlayers;
     private static int lobbyCounter = 1;
-    //private Game game;
-    //private ChatRoom chatRoom;
+
 
     /**
-     * Main Player class to save the vital information which the server has to access at all times
-     * @param lobbyName for the lobby to be set and which is to be displayed in the game
+     * Constructor of the lobby-class uses by the Server.
+     * @param lobbyName The name of the new lobby.
+     * {@link Lobby#lobbyId} gets set to equal the {@link Lobby#lobbyCounter}.
+     * {@link Lobby#lobbyCounter} gets raised by one after every lobby construction.
      */
-
     public Lobby(String lobbyName)  {
-        this.lobbyId = lobbyId;
         this.lobbyName = lobbyName;
-        //this.game = new Playing();
-        //this.chatRoom = new ChatRoom();
         this.lobbyPlayers = new ArrayList<>();
         this.lobbyId = lobbyCounter;
         lobbyCounter++;
     }
 
     /**
-     * Method to add a player the the HashMap of all players in this lobby.
-     * @param player The player to be added to the HashMap
-     * @return statement to let for example the PackageJoinLobby instance know,
-     * whether the action was successful or not
+     * Adds a player to this Lobby.
+     * @param player The player to be added to the HashMap of this Lobby.
+     * @return statement to let the calling instance know,
+     * whether the action was successful or not.
+     * ("OK" or "Already joined this lobby.")
      */
-
     public String addPlayer(Player player){
         if(lobbyPlayers.contains(player)){
             return "Already joined this lobby.";
@@ -46,18 +46,19 @@ public class Lobby {
     }
 
     /**
-     * Method to remove a player by his clientId
-     * @param player the player to be removed
-     * @return true or false depending on wheter the player was in the list or not
+     * Removes a player from this Lobby.
+     * @param clientId of the player to be removed.
+     * @return String with "OK" or "Not in a Lobby" depending on if the removing was successful or not.
      */
-
-    public int removePlayer(Player player){
-        if(lobbyPlayers.contains(player)){
+    public String removePlayer(int clientId){
+        if(ServerLogic.getPlayerList().isClientIdInList(clientId)){
+            Player player = ServerLogic.getPlayerList().getPlayer(clientId);
             lobbyPlayers.remove(player);
-            return 1;
-        } else{
-            return -1;
+            return "OK";
+        }else{
+            return "Not in a Lobby";
         }
+
     }
 
 
@@ -70,20 +71,27 @@ public class Lobby {
     }
 
     /**
-     *
-     * @return a String with the usernames of all Playeers in this Lobby seperated by "║".
+     * Creates a listing of the Players in this Lobby.
+     * @return A String with the usernames of all Players in this Lobby seperated by "║".
      */
     public String getPlayerNames(){
-        String s = "";
+        StringBuilder s = new StringBuilder();
         for (Player player : lobbyPlayers) {
-            s = s + player.getUsername() + "║";
+            s.append(player.getUsername()).append("║");
         }
-        return s;
+        return s.toString();
     }
 
+    @Override
     public String toString(){
-        String s = "Name: " + lobbyName + ", LobbyId: " + lobbyId + ", Spieler: " + getPlayerAmount();
-        return s;
+        return "Name: " + lobbyName + ", LobbyId: " + lobbyId + ", Spieler: " + getPlayerAmount();
+    }
+
+    /**
+     * @return true if the lobby has no players in it
+     */
+    public boolean isEmpty() {
+        return lobbyPlayers.size() == 0;
     }
 
 }

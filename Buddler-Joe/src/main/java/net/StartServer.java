@@ -1,32 +1,45 @@
 package net;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 
 
+/**
+ * Server Interface
+ *
+ * Starts the Server Interface and creates the Server Logic object.
+ * Port to listen on can be specified as a commandline option, otherwise the default port is used.
+ *
+ * If we ever need a server console, we will implement this here.
+ */
 public class StartServer {
 
-    private BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-    private static int serverPort;
     private static boolean created;
     private static ServerLogic serverLogic;
 
-    public StartServer() throws NumberFormatException {
-//        System.out.println("Enter Server Port: ");
-//        try {
-//            serverPort = Integer.parseInt(br.readLine());
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-        serverPort = 11337;
-    }
-
+    /**
+     * Start the Interface for the server, listening on a specific port.
+     *
+     * @param args port to start the {@link ServerLogic} with.
+     *
+     * @see ServerLogic
+     */
     public static void main(String[] args) {
 
+        //Set Port via commandline or use default port
+        int serverPort;
+        if (args.length == 1) {
+            try {
+                serverPort = Integer.parseInt(args[0]);
+            } catch (NumberFormatException e) {
+                serverPort = 11337;
+            }
+        } else {
+            serverPort = 11337;
+        }
+
+        //Create and start server logic
         while (!created) {
             try {
-                StartServer server = new StartServer();
                 serverLogic = new ServerLogic(serverPort);
                 serverLogic.waitForPlayers();
                 created = true;

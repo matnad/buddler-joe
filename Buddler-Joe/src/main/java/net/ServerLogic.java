@@ -1,84 +1,226 @@
 package net;
 
+import net.lobbyhandling.Lobby;
 import net.lobbyhandling.ServerLobbyList;
-import net.playerhandling.ClientThread;
-import net.playerhandling.ServerPlayerList;
 import net.packets.Packet;
+import net.packets.chat.PacketChatMessageToClient;
+import net.packets.lobby.PacketCurLobbyInfo;
+import net.packets.login_logout.PacketDisconnect;
+import net.playerhandling.ClientThread;
+import net.playerhandling.Player;
+import net.playerhandling.ServerPlayerList;
+
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 
+/**
+ * Server Logic is responsible for managing all the connections to the clients and for managing all the lobbies.
+ * <p>
+ * The server logic listens to and accepts new connections for clients and will create a new thread for each new client.
+ * <p>
+ * Has a list of all connected players, a list of the players with their thread and a list of all the lobbies.
+ * Any request for a player(-thread) or lobby goes through the server logic.
+ */
 public class ServerLogic {
 
-        private static ServerPlayerList playerList;
-        private static ServerLobbyList lobbyList;
-        private static HashMap<Integer, ClientThread> clientThreadMap;
-        private int portValue;
-        static ServerSocket serverSocket;
+    private static ServerPlayerList playerList;
+    private static ServerLobbyList lobbyList;
+    private static HashMap<Integer, ClientThread> clientThreadMap;
+    private static ServerSocket serverSocket;
 
     /**
-     * Basic server logic to create a new thread for every player which connects to the game
-     * @param portValue the port on which the server runs on
-     * @throws IOException
+     * Initialize a new Server Logic.
+     * Creates the Socket to listen on.
+     * You have to call {@link #waitForPlayers()} to start listening.
+     *
+     * @param portValue the port on which the server listens for new connections
+     * @throws IOException when creating the socket fails
      */
-
-
     ServerLogic(int portValue) throws IOException {
-            playerList = new ServerPlayerList();
-            clientThreadMap = new HashMap<Integer, ClientThread>();
-            this.portValue = portValue;
-            serverSocket = new ServerSocket(portValue);
-            lobbyList = new ServerLobbyList();
-            System.out.println("Started Server");
-        }
+        playerList = new ServerPlayerList();
+        clientThreadMap = new HashMap<>();
+        lobbyList = new ServerLobbyList();
+
+        serverSocket = new ServerSocket(portValue);
+        System.out.println("Started Server");
+    }
 
     /**
-     * Method to wait for incoming players and then create a new thread for them.
-     * @throws IOException
+     * Method to wait for incoming players and then create and start a new thread for them.
+     *
+     * @throws IOException when the server socket fails
      */
     void waitForPlayers() throws IOException {
-            int ClientId = 1;
+        int clientId = 1; //Player IDs start at 1
 
-            while (true) {
-                Socket Client = serverSocket.accept();
-                System.out.println("Client Arrived");
-                System.out.println("Start Thread for "+ClientId);
-                ClientThread task = new ClientThread(Client, ClientId);
-                clientThreadMap.put(ClientId++,task);
-                new Thread(task).start();
-            }
+        while (true) {
+            Socket clientSocket = serverSocket.accept();
+            System.out.println("Client Arrived");
+            System.out.println("Start Thread for " + clientId);
+            ClientThread thread = new ClientThread(clientSocket, clientId);
+            clientThreadMap.put(clientId++, thread);
+            new Thread(thread).start();
         }
+    }
 
-        public void kill() {
-            try {
-                serverSocket.close();
-            } catch (IOException e) {
-                System.out.println("Could not close ServerSocket");
-            }
+    /**
+     * Close the server socket and stop listening to new clients.
+     */
+    void kill() {
+        try {
+            serverSocket.close();
+        } catch (IOException e) {
+            System.out.println("Could not close ServerSocket");
         }
+    }
 
-        public static ServerPlayerList getPlayerList(){
-            return playerList;
-        }
+    /**
+     * Players are managed with their own handler class: {@link ServerPlayerList}
+     *
+     * @return an instance of ServerPlayerList with all the connected players and methods to manage them
+     *
+     * @see ServerPlayerList
+     */
+    public static ServerPlayerList getPlayerList() {
+        return playerList;
+    }
 
-        public static ServerLobbyList getLobbyList(){
+    /**
+     * Lobbies are managed with their own handler class: {@link ServerLobbyList}
+     *
+     * @return an instance of ServerLobbyList with all the existing lobbies and methods to manage them
+     *
+     * @see ServerLobbyList
+     */
+    public static ServerLobbyList getLobbyList() {
         return lobbyList;
     }
 
-        public static void sendPacket(int receiver, Packet packet){  //TODO: Check receiver and if he exists
-            ClientThread ct = getThreadByClientId(receiver);
-            if(ct != null){
-                ct.sendToClient(packet);
+    /**
+     * Gets the correct client thread and passes the packet to that thread.
+     *
+     * @param receiver clientId to send the packet to
+     * @param packet the packet to send
+     */
+    public static void sendPacketToClient(int receiver, Packet packet) {
+        ClientThread ct = getThreadByClientId(receiver);
+        if (ct != null) {
+            ct.sendToClient(packet);
+        }
+    }
+
+    /**
+     * Gets the correct lobby and finds all the player threads in that lobby.
+     * Then passes the packet to each thread.
+     *
+     * @param receiverLobby lobbyId to send the packet to
+     * @param packet the packet to send
+     */
+    public static void sendPacketToLobby(int receiverLobby, Packet packet) {
+        Lobby lobby = getLobbyList().getLobby(receiverLobby);
+        if (lobby == null || lobby.isEmpty()) {
+            return;
+        }
+
+        for (Player p : lobby.getLobbyPlayers()) {
+            sendPacketToClient(p.getClientId(), packet);
+        }
+    }
+
+    /**
+     * Communication Method to send data to all clients currently not in a lobby.
+     * Calls the sendToClient Method for each player on the server that is currently not in a Lobby.
+     *
+     * @param packet packet to distribute
+     */
+    public static void sendToClientsNotInALobby(Packet packet){
+        for (Player player : getPlayerList().getPlayers().values()) {
+            if(player.getCurLobbyId() == 0) {
+                sendPacketToClient(player.getClientId(), packet);
             }
         }
+    }
 
-        public static void sendPacketToLobby(int receiverLobby, Packet packet){
-
-        }
-
-    public static ClientThread getThreadByClientId(int clientId){
+    /**
+     * Returns the thread where one specific client is managed.
+     *
+     * @param clientId unique identifier number of the client
+     * @return The thread where thee communication with the client is managed
+     *
+     * @see ClientThread
+     */
+    public static ClientThread getThreadByClientId(int clientId) {
         return clientThreadMap.get(clientId);
     }
 
+    /**
+     * Remove the player from the server and inform the other players in the lobby.
+     * Check if player exist in playerlist.
+     * Check if player is in a lobby.
+     * If it is not true return.
+     * If it is true remove player from the lobby and from the playerlist.
+     * Closed the thread where one specific client in managed.
+     * Creates and sends a {@link PacketChatMessageToClient} to all clients in the same lobby
+     * that this client left the lobby during which time.
+     * Creates and sends a {@link PacketCurLobbyInfo} to all clients in the lobby
+     * to inform the players about the lobby.
+     *
+     * This can be called directly from core net classes.
+     * Other classes should use {@link PacketDisconnect} to disconnect a user.
+     *
+     * @param clientId ID of the player to remove
+     */
+    public static void removePlayer(int clientId) {
+
+        //check if the client exists
+        Player player = ServerLogic.getPlayerList().getPlayer(clientId);
+        if(player == null) {
+            return;
+        }
+
+        //Check if client is in lobby and remove him
+        int lobbyId = player.getCurLobbyId();
+        if (lobbyId == 0) {
+            return;
+        }
+        Lobby lobby = ServerLogic.getLobbyList().getLobby(lobbyId);
+        if (lobby != null) {
+            lobby.removePlayer(clientId);
+            player.setCurLobbyId(0);
+        }
+
+        //delete the player from the playerlist and threadmap
+        clientThreadMap.remove(clientId);
+        getPlayerList().removePlayer(clientId);
+
+        //Inform the lobby that a player left
+        if (lobby != null) {
+            //set the time when the player left the lobby
+            String timestamp;
+            SimpleDateFormat simpleFormat = new SimpleDateFormat("HH:mm");
+            Date date = new Date();
+            timestamp = simpleFormat.format(date);
+
+            //send the message "[SERVER 'TIME']'username' left lobby" to the lobby
+            PacketChatMessageToClient sendMessage = new PacketChatMessageToClient(clientId, "[SERVER-"
+                    + timestamp + "] " + player.getUsername() + " disconnected.");
+            sendMessage.sendToLobby(lobbyId);
+
+            //send lobbyinfo to the other player in the lobby
+            String info;
+            info = "OK║" + lobby.getPlayerNames();
+            PacketCurLobbyInfo packetCurLobbyInfo = new PacketCurLobbyInfo(clientId, info);
+            packetCurLobbyInfo.sendToLobby(lobbyId);
+
+            //close the client's thread
+            ClientThread ct = ServerLogic.getThreadByClientId(clientId);
+            if (ct != null) {
+                ct.closeSocket();
+            }
+        }
     }
+}
