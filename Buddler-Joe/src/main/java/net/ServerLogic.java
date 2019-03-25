@@ -16,8 +16,6 @@ import net.playerhandling.ClientThread;
 import net.playerhandling.Player;
 import net.playerhandling.ServerPlayerList;
 
-
-
 /**
  * Server Logic is responsible for managing all the connections to the clients and for managing all
  * the lobbies.
@@ -142,6 +140,31 @@ public class ServerLogic {
         sendPacketToClient(player.getClientId(), packet);
       }
     }
+  }
+
+  /**
+   * Broadcast Method to send a packet to all clients on the server.
+   *
+   * @param packet packet to be sent to all players
+   */
+  public static void sendBroadcastPacket(Packet packet) {
+    for (Player player : getPlayerList().getPlayers().values()) {
+      sendPacketToClient(player.getClientId(), packet);
+    }
+  }
+
+  /**
+   * Method to broadcast a message to every Client on the server.
+   * @param message the message to be sent.
+   * */
+  public static void broadcastChatMessage(String message) {
+    String timestamp;
+    SimpleDateFormat simpleFormat = new SimpleDateFormat("HH:mm");
+    Date date = new Date();
+    timestamp = simpleFormat.format(date);
+    PacketChatMessageToClient sendMessage =
+        new PacketChatMessageToClient("[SERVER-" + timestamp + "] " + message);
+    sendBroadcastPacket(sendMessage);
   }
 
   /**
