@@ -1,0 +1,9 @@
+17:49:53.110 [main] INFO  net.StartServer - info message
+17:49:53.114 [main] DEBUG net.StartServer - debugging
+17:50:59.494 [main] INFO  net.StartServer - info message
+17:50:59.497 [main] DEBUG net.StartServer - debugging
+17:54:11.835 [main] INFO  net.StartServer - info message
+17:54:11.845 [main] DEBUG net.StartServer - debugging
+17:57:53.499 [main] INFO  net.StartServer - info message
+17:57:53.504 [main] DEBUG net.StartServer - debugging
+17:57:53.506 [main] INFO  net.StartServer - We are now in the ServerLogic

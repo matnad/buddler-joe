@@ -155,8 +155,9 @@ public class ServerLogic {
 
   /**
    * Method to broadcast a message to every Client on the server.
+   *
    * @param message the message to be sent.
-   * */
+   */
   public static void broadcastChatMessage(String message) {
     String timestamp;
     SimpleDateFormat simpleFormat = new SimpleDateFormat("HH:mm");
