@@ -17,7 +17,7 @@ public class PacketChatMessageStatus extends Packet {
    *
    * @param data A String that contains Information about the leave attempt. ("OK" or in the case of
    *     an error, a suitable errormessage) {@link PacketChatMessageStatus#status} gets set to equal
-   *     {@param data}.
+   *     data.
    */
   public PacketChatMessageStatus(String data) {
     super(PacketTypes.CHAT_MESSAGE_STATUS);
@@ -32,7 +32,7 @@ public class PacketChatMessageStatus extends Packet {
    * @param clientID ClientId of the receiver.
    * @param data A String that contains Information about the leave attempt. ("OK" or in the case of
    *     an error, a suitable errormessage) {@link PacketChatMessageStatus#status} gets set to equal
-   *     {@param data}.
+   *     data.
    */
   public PacketChatMessageStatus(int clientID, String data) {
     super(PacketTypes.CHAT_MESSAGE_STATUS);

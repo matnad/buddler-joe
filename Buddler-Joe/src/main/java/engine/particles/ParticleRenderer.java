@@ -35,8 +35,11 @@ public class ParticleRenderer {
     shader.stop();
   }
 
-  /** Render all particles. Called from the Particle Master only! */
-  // TODO: createViewMatrix is still taking a static camera. Change to nonstatic.
+  /**
+   * Render all particles. Called from the Particle Master only!
+   * @param particles particles to render, lists by texture
+   * @param camera active camera for view matrix
+   */
   protected void render(Map<ParticleTexture, List<Particle>> particles, Camera camera) {
     if (particles.size() == 0) {
       return;

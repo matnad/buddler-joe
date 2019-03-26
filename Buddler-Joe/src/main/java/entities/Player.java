@@ -60,13 +60,18 @@ public class Player extends NetPlayer {
 
   private boolean isInAir = false; //Can't Jump while in the air
 
-
   /**
    * Spawn the Player. This will be handled differently in the future when we rework the Player
    * class structure.
+   * @param model player model
+   * @param position world coordinates for player position
+   * @param rotX rotation along X axis
+   * @param rotY rotation along Y axis
+   * @param rotZ rotation along Z axis
+   * @param scale scale factor
    */
-  public Player(TexturedModel model, Vector3f position, float rotX, float rotY, float rotZ,
-                float scale) {
+  public Player(
+      TexturedModel model, Vector3f position, float rotX, float rotY, float rotZ, float scale) {
     super(model, position, rotX, rotY, rotZ, scale, null, 0, Game.getUsername(), Game.myModel,
         Game.myTexture, Game.myModelSize);
   }

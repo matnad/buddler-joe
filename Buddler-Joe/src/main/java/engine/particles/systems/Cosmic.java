@@ -10,6 +10,12 @@ public class Cosmic extends ParticleSystem {
 
   /**
    * ParticleSystem with texture for cosmic pre-loaded. See ParticleSystem.java for more details.
+   * @param pps Particles per second. Will be probabilistically rounded each frame.
+   * @param speed Distance travelled per second.
+   * @param gravityComplient Effect of the gravity constant. 0 means no gravity, negative numbers
+   *     mean negative gravity.
+   * @param lifeLength Duration before the particle is removed in seconds.
+   * @param scale Size of the particle.
    */
   public Cosmic(float pps, float speed, float gravityComplient, float lifeLength, float scale) {
     super(particleTexture, pps, speed, gravityComplient, lifeLength, scale);

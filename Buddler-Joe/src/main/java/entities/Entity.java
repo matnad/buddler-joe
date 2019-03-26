@@ -45,6 +45,7 @@ public class Entity {
    * Constructor if texture atlas is used.
    *
    * @param model    Textured Model
+   * @param index    Texture index in texture atlas
    * @param position World Coordinates
    * @param rotX     X Rotation
    * @param rotY     Y Rotation
@@ -116,6 +117,7 @@ public class Entity {
 
   /**
    * Returns col in the texture atlas.
+   * @return col in the texture atlas.
    */
   public float getTextureXOffset() {
     int column = textureIndex % model.getTexture().getNumberOfRows();
@@ -124,6 +126,7 @@ public class Entity {
 
   /**
    * Returns row in the texture atlas.
+   * @return row in the texture atlas.
    */
   public float getTextureYOffset() {
     int row = textureIndex / model.getTexture().getNumberOfRows();
@@ -250,7 +253,7 @@ public class Entity {
 
 
   /**
-   * Scale this unit up (scale > 1) or down (scale < 1) by a scaling factor.
+   * Scale this unit up (scale greater than 1) or down (scale less than 1) by a scaling factor.
    * Updates Bounding Boxes.
    *
    * @param scale Scaling factor

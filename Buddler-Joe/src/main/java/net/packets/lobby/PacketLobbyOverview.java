@@ -18,7 +18,7 @@ public class PacketLobbyOverview extends Packet {
    * @param data a single String that begins with "OK║" and contains a List of max 10 Lobbies (and
    *     information to them). Each list entry is separated by "║". In the case that an error
    *     occurred before, the String is an errormessage and does not begin with "OK║". The variable
-   *     {@param data} gets split at the positions of "║". Every substring gets then saved in to the
+   *     data gets split at the positions of "║". Every substring gets then saved in to the
    *     Array called {@code in}.
    */
   public PacketLobbyOverview(String data) {
@@ -37,7 +37,7 @@ public class PacketLobbyOverview extends Packet {
    * @param data A single String that begins with "OK║" and contains a List of max 10 Lobbies (and
    *     information to them). Each list entry is separated by "║". In the case that an error
    *     occurred before the String is an errormessage and does not begin with "OK║". The variable
-   *     {@param data} gets split at the positions of "║". Every substring gets then saved in to the
+   *     data gets split at the positions of "║". Every substring gets then saved in to the
    *     Array called {@code in}.
    */
   public PacketLobbyOverview(int clientId, String data) {

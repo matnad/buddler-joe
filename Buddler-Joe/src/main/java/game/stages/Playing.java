@@ -26,6 +26,8 @@ public class Playing {
    * Game Loop.
    * This runs every frame as long as the payer is playing the game.
    * Include all rendering and input handling here.
+   *
+   * @param renderer master renderer from game loop
    */
   public static void update(MasterRenderer renderer) {
 

@@ -13,13 +13,11 @@ import org.joml.Vector3f;
 /**
  * Abstract class for Blocks.
  *
- * <p>- Loads the texture Atlas
- * - Handles damage to blocks
- * - Provides getters and setters for mandatory properties
+ * <p>- Loads the texture Atlas - Handles damage to blocks - Provides getters and setters for
+ * mandatory properties
  */
-@SuppressWarnings("unused") //TODO: Still have some unused methods
+@SuppressWarnings("unused") // TODO: Still have some unused methods
 public abstract class Block extends Entity {
-
 
   private final float hardness;
   private final float mass;
@@ -32,17 +30,25 @@ public abstract class Block extends Entity {
   /**
    * Abstract Constructor.
    *
-   * @param type     type of block, described by Block Master enum
+   * @param type type of block, described by Block Master enum
    * @param hardness damage before block is destroyed
+   * @param mass mass or weight of object for physics calculation
    * @param position 3D coordinate of block center
-   * @param rotX     rotation around X axis
-   * @param rotY     rotation around Y axis
-   * @param rotZ     rotation around Z axis
-   * @param scale    scaling multiplier
+   * @param rotX rotation around X axis
+   * @param rotY rotation around Y axis
+   * @param rotZ rotation around Z axis
+   * @param scale scaling multiplier
    */
-  public Block(BlockMaster.BlockTypes type, float hardness, float mass, Vector3f position,
-               float rotX, float rotY, float rotZ, float scale) {
-    //blockModel is a texture atlas, containing all block textures, ID is the position of the
+  public Block(
+      BlockMaster.BlockTypes type,
+      float hardness,
+      float mass,
+      Vector3f position,
+      float rotX,
+      float rotY,
+      float rotZ,
+      float scale) {
+    // blockModel is a texture atlas, containing all block textures, ID is the position of the
     // texture on the atlas
     super(blockModel, type.getTextureId(), position, rotX, rotY, rotZ, scale);
 
@@ -51,8 +57,8 @@ public abstract class Block extends Entity {
     this.mass = mass;
 
     if (blockModel == null) {
-      //Maybe need more than a warning
-      //This is loaded in the BlockMaster.init() function
+      // Maybe need more than a warning
+      // This is loaded in the BlockMaster.init() function
       System.out.println("WARNING! Load the block models first!");
     }
 
@@ -67,7 +73,6 @@ public abstract class Block extends Entity {
     this.dim = scale;
   }
 
-
   /**
    * Preload texture atlas. Called by the Block Master's init().
    *
@@ -80,7 +85,6 @@ public abstract class Block extends Entity {
     blockModel = new TexturedModel(rawBlock, blockAtlas);
   }
 
-
   /**
    * 3D distance between block and a 3D point.
    *
@@ -92,8 +96,7 @@ public abstract class Block extends Entity {
   }
 
   /**
-   * Squared 3D distance between block and a 3D point.
-   * Squared is faster
+   * Squared 3D distance between block and a 3D point. Squared is faster
    *
    * @param pos distance from block to this point
    * @return distance in units
@@ -114,8 +117,7 @@ public abstract class Block extends Entity {
 
   /**
    * Assuming the objects are on the same Z-plane, this gets the squared 2D distance between the
-   *     objects.
-   * Squared is faster!
+   * objects. Squared is faster!
    *
    * @param pos X and Y coordinates for a position in the world
    * @return distance in units
@@ -134,7 +136,7 @@ public abstract class Block extends Entity {
     this.damage += damage;
     if (this.damage > this.hardness) {
       setDestroyedBy(entity);
-      setDestroyed(true); //Destroy block
+      setDestroyed(true); // Destroy block
     }
   }
 
@@ -147,9 +149,8 @@ public abstract class Block extends Entity {
   }
 
   /**
-   * Only change destroyed status via this method, never call the super directly.
-   * This will trigger the abstract method onDestroy() for the block.
-   * -> The block type will determine what happens
+   * Only change destroyed status via this method, never call the super directly. This will trigger
+   * the abstract method onDestroy() for the block. The block type will determine what happens
    *
    * @param destroyed true if you want to destroy the block
    */
@@ -166,11 +167,10 @@ public abstract class Block extends Entity {
   }
 
   /**
-   * Specifies what happens when this block is destroyed.
-   * Must be implemented by the block child classes.
+   * Specifies what happens when this block is destroyed. Must be implemented by the block child
+   * classes.
    */
   protected abstract void onDestroy();
-
 
   public BlockMaster.BlockTypes getType() {
     return type;

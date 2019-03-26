@@ -65,7 +65,7 @@ public class ClientThread implements Runnable {
   /**
    * Called when the client thread is started.
    *
-   * <p>Contains the logic of the client -> server communication. Receive and process messages.
+   * <p>Contains the logic of the client to server communication. Receive and process messages.
    */
   @Override
   public void run() {

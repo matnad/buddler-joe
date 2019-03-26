@@ -18,7 +18,7 @@ public class PacketCreateLobby extends Packet {
    * Server.
    *
    * @param data The name that the new lobby should have. {@link PacketCreateLobby#lobbyname} gets
-   *     set here, to equal {@param data}.
+   *     set here, to equal data.
    */
   public PacketCreateLobby(String data) {
     // client builds
@@ -34,7 +34,7 @@ public class PacketCreateLobby extends Packet {
    *
    * @param clientId ClientId of the Client that has sent the command.
    * @param data The desired name of the new lobby. {@link PacketCreateLobby#lobbyname} gets set
-   *     here, to equal {@param data}.
+   *     here, to equal data.
    */
   public PacketCreateLobby(int clientId, String data) {
     // server builds

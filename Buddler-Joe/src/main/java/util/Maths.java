@@ -52,6 +52,7 @@ public class Maths {
    *
    * <p>Intuition: Shifts an object in the "opposite" directions of the camera.
    *
+   * @param camera Camera to generate matrix for
    * @return Camera View Matrix
    */
   public static Matrix4f createViewMatrix(Camera camera) {
@@ -70,7 +71,10 @@ public class Maths {
    * Only used to generate terrain with a height map. To find the exact height of a point inside
    * a vertex.
    * https://en.wikipedia.org/wiki/Barycentric_coordinate_system
-   *
+   * @param p1 point 1
+   * @param p2 point 2
+   * @param p3 point 3
+   * @param pos XZ coordinates inside triangle
    * @return height (Y) in a specified triangle
    */
   public static float barryCentric(Vector3f p1, Vector3f p2, Vector3f p3, Vector2f pos) {

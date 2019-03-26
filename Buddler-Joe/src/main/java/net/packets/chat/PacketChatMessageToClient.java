@@ -14,7 +14,7 @@ public class PacketChatMessageToClient extends Packet {
    * Constructor that is used by the Client to build the Packet.
    *
    * @param chatmsg the final message which get printed with the username from the sender, the time
-   *     and the message. {@link PacketChatMessageToServer} gets set here, to equal {@param data}.
+   *     and the message. {@link PacketChatMessageToServer} gets set here, to equal data.
    */
   public PacketChatMessageToClient(String chatmsg) {
     super(PacketTypes.CHAT_MESSAGE_TO_CLIENT);
@@ -27,7 +27,7 @@ public class PacketChatMessageToClient extends Packet {
    *
    * @param clientID ClientId of the client that has sent this packet.
    * @param data a String with the chat message, timestamp and receiver. * (names are separated by
-   *     "║") {@link PacketChatMessageToServer} gets set here, to equal {@param data}.
+   *     "║") {@link PacketChatMessageToServer} gets set here, to equal data.
    */
   public PacketChatMessageToClient(int clientID, String data) {
     super(PacketTypes.CHAT_MESSAGE_TO_CLIENT);

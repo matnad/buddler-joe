@@ -22,6 +22,7 @@ public class Light {
   /**
    * Strength of the light depends on distance and angle.
    *
+   * @param type type of light
    * @param position world coordinates
    * @param colour   r, g, b
    */
