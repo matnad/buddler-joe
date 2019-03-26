@@ -2,23 +2,21 @@ package entities;
 
 import engine.models.TexturedModel;
 import gui.DirectionalUsername;
-import java.net.DatagramPacket;
 import java.net.InetAddress;
 import org.joml.Vector3f;
 
 /**
- * This will be reworked very shortly so I will not fully document it.
- * A LOT will change and it is not really used now.
- * Ignore the class please.
+ * This will be reworked very shortly so I will not fully document it. A LOT will change and it is
+ * not really used now. Ignore the class please.
  */
 public class NetPlayer extends Entity {
 
   private InetAddress ipAddress;
   private int port;
   private String username;
-  //private String model;
-  //private String texture;
-  //private float modelSize;
+  // private String model;
+  // private String texture;
+  // private float modelSize;
 
   private DirectionalUsername directionalUsername;
 
@@ -28,33 +26,41 @@ public class NetPlayer extends Entity {
    * <p>THIS WILL SEE A MAJOR REWORK!
    *
    * @param playerModel model
-   * @param position    3D world coords
-   * @param rotX        rotation x axis
-   * @param rotY        rotation y axis
-   * @param rotZ        rotation z axis
-   * @param scale       scale factor
+   * @param position 3D world coords
+   * @param rotX rotation x axis
+   * @param rotY rotation y axis
+   * @param rotZ rotation z axis
+   * @param scale scale factor
    * @param inetAddress ip address of net player
-   * @param port        port of net player
-   * @param username    username of net player
-   * @param strModel    model file name
-   * @param texture     texture file name
-   * @param modelSize   scale factor of model
+   * @param port port of net player
+   * @param username username of net player
+   * @param strModel model file name
+   * @param texture texture file name
+   * @param modelSize scale factor of model
    */
-  NetPlayer(TexturedModel playerModel, Vector3f position, float rotX, float rotY, float rotZ,
-            float scale,
-            InetAddress inetAddress, int port, String username, String strModel, String texture,
-            float modelSize) {
+  NetPlayer(
+      TexturedModel playerModel,
+      Vector3f position,
+      float rotX,
+      float rotY,
+      float rotZ,
+      float scale,
+      InetAddress inetAddress,
+      int port,
+      String username,
+      String strModel,
+      String texture,
+      float modelSize) {
     super(playerModel, position, rotX, rotY, rotZ, modelSize);
 
     this.ipAddress = inetAddress;
     this.port = port;
     this.username = username;
-    //this.model = strModel;
-    //this.texture = texture;
-    //this.modelSize = modelSize;
+    // this.model = strModel;
+    // this.texture = texture;
+    // this.modelSize = modelSize;
 
   }
-
 
   public InetAddress getIpAddress() {
     return ipAddress;
@@ -78,21 +84,21 @@ public class NetPlayer extends Entity {
         && this.port == ((NetPlayer) obj).getPort());
   }
 
-  //public String getModelStr() {
+  // public String getModelStr() {
   //  return model;
-  //}
+  // }
   //
-  //public String getTextureStr() {
+  // public String getTextureStr() {
   //  return texture;
-  //}
+  // }
   //
-  //public float getModelSize() {
+  // public float getModelSize() {
   //  return modelSize;
-  //}
+  // }
   //
-  //public void loadDirectionalUsername() {
+  // public void loadDirectionalUsername() {
   //  this.directionalUsername = new DirectionalUsername(this);
-  //}
+  // }
 
   public DirectionalUsername getDirectionalUsername() {
     return directionalUsername;

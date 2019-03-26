@@ -39,15 +39,13 @@ import static org.lwjgl.system.MemoryUtil.memFree;
 import static util.IoUtil.ioResourceToByteBuffer;
 
 import engine.textures.Texture;
-import java.io.IOException;
-import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
 import org.lwjgl.system.MemoryStack;
 
 /**
- * Loads texture files from the file system using low level buffer manipulation
- * Creates a texture in openGL and saves the texture ID. We can then load the texture with this ID.
+ * Loads texture files from the file system using low level buffer manipulation Creates a texture in
+ * openGL and saves the texture ID. We can then load the texture with this ID.
  */
 public class TextureLoader implements Texture {
 
@@ -56,22 +54,17 @@ public class TextureLoader implements Texture {
   private final int width;
   private final int height;
   private final int comp;
-  private int texID;
+  private int texId;
 
   /**
-   * Don't call this directly.
-   * Will load an image into a Buffer and save width, height and alpha composition
+   * Don't call this directly. Will load an image into a Buffer and save width, height and alpha
+   * composition
    *
    * @param imagePath fill image path
    */
   private TextureLoader(String imagePath) {
     ByteBuffer imageBuffer;
-    try {
-      imageBuffer = ioResourceToByteBuffer(imagePath, 8 * 1024);
-    } catch (IOException e) {
-      throw new RuntimeException(e);
-    }
-
+    imageBuffer = ioResourceToByteBuffer(imagePath, 8 * 1024);
     try (MemoryStack stack = stackPush()) {
       IntBuffer w = stack.mallocInt(1);
       IntBuffer h = stack.mallocInt(1);
@@ -92,13 +85,12 @@ public class TextureLoader implements Texture {
       this.height = h.get(0);
       this.comp = comp.get(0);
 
-      texID = createTexture();
+      texId = createTexture();
     }
   }
 
   /**
-   * Don't call this directly.
-   * Will load an image into a Buffer and save width, height and comp
+   * Don't call this directly. Will load an image into a Buffer and save width, height and comp
    *
    * @param imagePath fill image path
    * @return Texture (can be accessed via texture interface)
@@ -107,9 +99,7 @@ public class TextureLoader implements Texture {
     return new TextureLoader(imagePath);
   }
 
-  /**
-   * To create transparency.
-   */
+  /** To create transparency. */
   private void premultiplyAlpha() {
     int stride = width * 4;
     for (int y = 0; y < height; y++) {
@@ -124,15 +114,15 @@ public class TextureLoader implements Texture {
   }
 
   /**
-   * Create a Texture in openGL and set up the alpha channel to render transparency properly.
-   * Also does edge clamp, so we need to make sure the models have seams.
+   * Create a Texture in openGL and set up the alpha channel to render transparency properly. Also
+   * does edge clamp, so we need to make sure the models have seams.
    *
    * @return the ID of the texture in openGL
    */
   private int createTexture() {
-    texID = glGenTextures();
+    texId = glGenTextures();
 
-    glBindTexture(GL_TEXTURE_2D, texID);
+    glBindTexture(GL_TEXTURE_2D, texId);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
@@ -165,13 +155,20 @@ public class TextureLoader implements Texture {
 
       ByteBuffer outputPixels = memAlloc(outputW * outputH * comp);
       stbir_resize_uint8_generic(
-          inputPixels, inputW, inputH, inputW * comp,
-          outputPixels, outputW, outputH, outputW * comp,
-          comp, comp == 4 ? 3 : STBIR_ALPHA_CHANNEL_NONE, STBIR_FLAG_ALPHA_PREMULTIPLIED,
+          inputPixels,
+          inputW,
+          inputH,
+          inputW * comp,
+          outputPixels,
+          outputW,
+          outputH,
+          outputW * comp,
+          comp,
+          comp == 4 ? 3 : STBIR_ALPHA_CHANNEL_NONE,
+          STBIR_FLAG_ALPHA_PREMULTIPLIED,
           STBIR_EDGE_CLAMP,
           STBIR_FILTER_MITCHELL,
-          STBIR_COLORSPACE_SRGB
-      );
+          STBIR_COLORSPACE_SRGB);
 
       if (mipmapLevel == 0) {
         stbi_image_free(image);
@@ -179,8 +176,16 @@ public class TextureLoader implements Texture {
         memFree(inputPixels);
       }
 
-      glTexImage2D(GL_TEXTURE_2D, ++mipmapLevel, format, outputW, outputH, 0, format,
-          GL_UNSIGNED_BYTE, outputPixels);
+      glTexImage2D(
+          GL_TEXTURE_2D,
+          ++mipmapLevel,
+          format,
+          outputW,
+          outputH,
+          0,
+          format,
+          GL_UNSIGNED_BYTE,
+          outputPixels);
 
       inputPixels = outputPixels;
       inputW = outputW;
@@ -192,7 +197,7 @@ public class TextureLoader implements Texture {
       memFree(inputPixels);
     }
 
-    return texID;
+    return texId;
   }
 
   @Override
@@ -205,10 +210,8 @@ public class TextureLoader implements Texture {
     return width;
   }
 
-
   @Override
-  public int getTextureID() {
-    return texID;
+  public int getTextureId() {
+    return texId;
   }
-
 }

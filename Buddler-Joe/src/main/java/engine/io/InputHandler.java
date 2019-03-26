@@ -47,20 +47,8 @@ public class InputHandler {
 
   private static final int[] mouseState = new int[GLFW_MOUSE_BUTTON_LAST];
   private static final boolean[] mouseDown = new boolean[GLFW_MOUSE_BUTTON_LAST];
-
-  private static double cursorPosX;
-  private static double cursorPosY;
-  private static double cursorPosLastFrameX;
-  private static double cursorPosLastFrameY;
-  private static double cursorPosDX;
-  private static double cursorPosDY;
-
-  private static double mouseScrollY;
   private static final Vector3f mouseRay = new Vector3f();
-  private static boolean placerMode = false;
-
   private static final long window = Game.window.getWindow();
-
   /*
    * Callbacks get triggered when an event happens that GLFW picks up.
    * Callbacks then pass a number of arguments to an invoke method that is run every time the
@@ -74,7 +62,6 @@ public class InputHandler {
           keyState[key] = action;
         }
       };
-
   static GLFWMouseButtonCallback mouse =
       new GLFWMouseButtonCallback() {
         @Override
@@ -83,17 +70,12 @@ public class InputHandler {
           mouseState[button] = action;
         }
       };
-
-  static GLFWScrollCallback scrollCallback =
-      new GLFWScrollCallback() {
-        @Override
-        public void invoke(long window, double xoffset, double yoffset) {
-          // yoffset is the "normal" scroll direction. Simply saves the distance scrolled since the
-          // last update.
-          mouseScrollY = yoffset;
-        }
-      };
-
+  private static double cursorPosX;
+  private static double cursorPosY;
+  private static double cursorPosLastFrameX;
+  private static double cursorPosLastFrameY;
+  private static double cursorPosDx;
+  private static double cursorPosDy;
   static GLFWCursorPosCallback cursorPosCallback =
       new GLFWCursorPosCallback() {
         @Override
@@ -106,10 +88,21 @@ public class InputHandler {
           // Save the difference of the current position and the position in the last frame to get
           // the
           // delta
-          cursorPosDX = xpos - cursorPosLastFrameX;
-          cursorPosDY = ypos - cursorPosLastFrameY;
+          cursorPosDx = xpos - cursorPosLastFrameX;
+          cursorPosDy = ypos - cursorPosLastFrameY;
         }
       };
+  private static double mouseScrollY;
+  static GLFWScrollCallback scrollCallback =
+      new GLFWScrollCallback() {
+        @Override
+        public void invoke(long window, double xoffset, double yoffset) {
+          // yoffset is the "normal" scroll direction. Simply saves the distance scrolled since the
+          // last update.
+          mouseScrollY = yoffset;
+        }
+      };
+  private static boolean placerMode = false;
 
   /**
    * CursorPosition to 3D.
@@ -209,8 +202,8 @@ public class InputHandler {
 
     // These have to be set to 0 if not otherwise set this frame. Otherwise we get lingering
     // movement
-    cursorPosDX = 0;
-    cursorPosDY = 0;
+    cursorPosDx = 0;
+    cursorPosDy = 0;
     mouseScrollY = 0;
 
     if (isPlacerMode()) {
@@ -298,8 +291,8 @@ public class InputHandler {
    *
    * @return the distance the mouse was moved since the last frame in the horizontal direction
    */
-  public static double getCursorPosDX() {
-    return cursorPosDX;
+  public static double getCursorPosDx() {
+    return cursorPosDx;
   }
 
   /**
@@ -307,8 +300,8 @@ public class InputHandler {
    *
    * @return the distance the mouse was moved since the last frame in the vertical direction
    */
-  public static double getCursorPosDY() {
-    return cursorPosDY;
+  public static double getCursorPosDy() {
+    return cursorPosDy;
   }
 
   /**

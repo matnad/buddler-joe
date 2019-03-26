@@ -16,22 +16,20 @@ import game.Game;
 import util.MousePlacer;
 
 /**
- * MAIN GAME LOOP specification and rendering.
- * Contains and manages the Game Loop while the player is playing the game.
- * All the rendering and updating is done here.
+ * MAIN GAME LOOP specification and rendering. Contains and manages the Game Loop while the player
+ * is playing the game. All the rendering and updating is done here.
  */
 public class Playing {
 
   /**
-   * Game Loop.
-   * This runs every frame as long as the payer is playing the game.
-   * Include all rendering and input handling here.
+   * Game Loop. This runs every frame as long as the payer is playing the game. Include all
+   * rendering and input handling here.
    *
    * @param renderer master renderer from game loop
    */
   public static void update(MasterRenderer renderer) {
 
-    //ESC = Game Menu
+    // ESC = Game Menu
     if (InputHandler.isKeyPressed(GLFW_KEY_ESCAPE)) {
       Game.addActiveStage(Game.Stage.GAMEMENU);
     }
@@ -41,25 +39,25 @@ public class Playing {
     InputHandler.update();
     Game.window.update();
 
-    //Update positions of camera, player and 3D Mouse Pointer
+    // Update positions of camera, player and 3D Mouse Pointer
     Game.getActiveCamera().move();
     Game.getActivePlayer().move();
     MousePlacer.update(Game.getActiveCamera());
 
-    //Masters check their slaves
+    // Masters check their slaves
     ItemMaster.update();
     BlockMaster.update();
     DebrisMaster.update();
     ParticleMaster.update(Game.getActiveCamera());
     LightMaster.update(Game.getActiveCamera(), Game.getActivePlayer());
 
-    //Prepare and render the entities
+    // Prepare and render the entities
     renderer.processEntity(Game.getActivePlayer());
     renderer.processTerrain(Game.getAboveGround());
     renderer.processTerrain(Game.getBelowGround());
     for (Entity entity : Game.getEntities()) {
       if (entity != null) {
-        //All the NetPlayer stuff will need to move to a different class and update it from there
+        // All the NetPlayer stuff will need to move to a different class and update it from there
         if (entity instanceof NetPlayer) {
           ((NetPlayer) entity).getDirectionalUsername().updateString();
         }
@@ -67,13 +65,12 @@ public class Playing {
       }
     }
 
-    //Render other stuff, order is important
+    // Render other stuff, order is important
     renderer.render(LightMaster.getLightsToRender(), Game.getActiveCamera());
     Game.getChat().checkInputs();
-    //GUI goes over everything else and then text on top of GUI
+    // GUI goes over everything else and then text on top of GUI
     ParticleMaster.renderParticles(Game.getActiveCamera());
-    //guiRenderer.render(guis);
+    // guiRenderer.render(guis);
     TextMaster.render();
   }
-
 }

@@ -5,7 +5,6 @@ import engine.render.Loader;
 import engine.textures.TerrainTexture;
 import engine.textures.TerrainTexturePack;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Objects;
@@ -14,9 +13,7 @@ import org.joml.Vector2f;
 import org.joml.Vector3f;
 import util.Maths;
 
-/**
- * Terrain with height map.
- */
+/** Terrain with height map. */
 public class Terrain extends TerrainFlat {
 
   private static final float MAX_HEIGHT = SIZE / 10;
@@ -27,24 +24,28 @@ public class Terrain extends TerrainFlat {
   /**
    * Create a terrain tile according to a height map.
    *
-   * @param gridX       starting point X world coordinate
-   * @param gridZ       starting point Z world coordinate
-   * @param loader      main loader
+   * @param gridX starting point X world coordinate
+   * @param gridZ starting point Z world coordinate
+   * @param loader main loader
    * @param texturePack texture pack with all the textures required for the blend map
-   * @param blendMap    "heat map" image for how to blend images (load as Texture)
-   * @param heightMap   "heat map" image for the height of the terrain at every coordinate
-   *                    (specify image name)
+   * @param blendMap "heat map" image for how to blend images (load as Texture)
+   * @param heightMap "heat map" image for the height of the terrain at every coordinate (specify
+   *     image name)
    */
-  public Terrain(int gridX, int gridZ, Loader loader, TerrainTexturePack texturePack,
-                 TerrainTexture blendMap,
-                 String heightMap) {
+  public Terrain(
+      int gridX,
+      int gridZ,
+      Loader loader,
+      TerrainTexturePack texturePack,
+      TerrainTexture blendMap,
+      String heightMap) {
     super(gridX, gridZ, loader, texturePack, blendMap);
     model = this.generateTerrain(loader, heightMap);
   }
 
   /**
-   * Used by other functions to get Y coordinate of the terrain at a point.
-   * For example to place objects on the terrain.
+   * Used by other functions to get Y coordinate of the terrain at a point. For example to place
+   * objects on the terrain.
    *
    * @param worldX X coordinate
    * @param worldZ Z coordinate
@@ -64,30 +65,35 @@ public class Terrain extends TerrainFlat {
     float coordX = (terrainX % gridSquareSize) / gridSquareSize;
     float coordZ = (terrainZ % gridSquareSize) / gridSquareSize;
 
-    //Determine which triangle in square. x = 1-z is true on the border
+    // Determine which triangle in square. x = 1-z is true on the border
     float answer;
     if (coordX <= (1 - coordZ)) {
-      answer = Maths.barryCentric(new Vector3f(0, heights[gridX][gridZ], 0), new Vector3f(1,
-          heights[gridX + 1][gridZ], 0), new Vector3f(0,
-          heights[gridX][gridZ + 1], 1), new Vector2f(coordX, coordZ));
+      answer =
+          Maths.barryCentric(
+              new Vector3f(0, heights[gridX][gridZ], 0),
+              new Vector3f(1, heights[gridX + 1][gridZ], 0),
+              new Vector3f(0, heights[gridX][gridZ + 1], 1),
+              new Vector2f(coordX, coordZ));
     } else {
-      answer = Maths.barryCentric(new Vector3f(1, heights[gridX + 1][gridZ], 0), new Vector3f(1,
-          heights[gridX + 1][gridZ + 1], 1), new Vector3f(0,
-          heights[gridX][gridZ + 1], 1), new Vector2f(coordX, coordZ));
+      answer =
+          Maths.barryCentric(
+              new Vector3f(1, heights[gridX + 1][gridZ], 0),
+              new Vector3f(1, heights[gridX + 1][gridZ + 1], 1),
+              new Vector3f(0, heights[gridX][gridZ + 1], 1),
+              new Vector2f(coordX, coordZ));
     }
 
     return answer;
   }
 
   /**
-   * Generate a Terrain with height map.
-   * Creates Vertices, Texture Coords, Normals and Indices for a Terrain according to a heat map
-   * Size and "resolution" can be set in the class vars, this is intended to be used as "Tiles"
-   * of terrain
+   * Generate a Terrain with height map. Creates Vertices, Texture Coords, Normals and Indices for a
+   * Terrain according to a heat map Size and "resolution" can be set in the class vars, this is
+   * intended to be used as "Tiles" of terrain
    *
-   * @param loader    main
+   * @param loader main
    * @param heightMap "heat map" image for the height of the terrain at every coordinate (specify
-   *                 image name)
+   *     image name)
    * @return Raw Model of Terrain
    */
   private RawModel generateTerrain(Loader loader, String heightMap) {
@@ -144,9 +150,7 @@ public class Terrain extends TerrainFlat {
     return loader.loadToVao(vertices, textureCoords, normals, indices);
   }
 
-  /**
-   * Calculate normals at a coordinate to get proper lighting and pseudo shadow effect.
-   */
+  /** Calculate normals at a coordinate to get proper lighting and pseudo shadow effect. */
   private Vector3f calculateNormal(int x, int z, BufferedImage image) {
     float heightL = getHeight(x - 1, z, image);
     float heightR = getHeight(x + 1, z, image);
@@ -162,11 +166,10 @@ public class Terrain extends TerrainFlat {
       return 0;
     }
     float height = image.getRGB(x, z);
-    //Scale and norm
+    // Scale and norm
     height += MAX_PIXEL_COLOUR / 2f;
     height /= MAX_PIXEL_COLOUR / 2f;
     height *= MAX_HEIGHT;
     return height;
   }
-
 }

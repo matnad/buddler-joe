@@ -23,6 +23,7 @@ jar {
 task cs108 {
     group = 'build'
     doLast {
+        println 'Running cs108 build task to generate a standalone jar and javadoc.'
         shadowJar
         javadoc
     }

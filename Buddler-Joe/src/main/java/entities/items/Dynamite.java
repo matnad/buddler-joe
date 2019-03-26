@@ -16,43 +16,34 @@ import game.Game;
 import java.util.Random;
 import org.joml.Vector3f;
 
-/**
- * A bundle of dynamite that can damage blocks or the player.
- */
-@SuppressWarnings("FieldCanBeLocal") //We want settings on top even if it could be local
+/** A bundle of dynamite that can damage blocks or the player. */
+@SuppressWarnings("FieldCanBeLocal") // We want settings on top even if it could be local
 public class Dynamite extends Item {
+  private static TexturedModel preloadedModel;
   private final float gravity = 20;
   private final float fuseTimer = 3f;
   private final float explosionTime = .5f;
   private final float totalEffectsTime = 2.5f;
   private final float explosionRange = 15;
   private final float maximumDamage = 50;
-
-  private static TexturedModel preloadedModel;
-
-  private float time;
-  private boolean active;
-  private boolean exploded;
-
   private final Fire particleFuse;
   private final Explosion particleExplosion;
   private final Explosion particleShrapnel;
   private final Smoke particleSmoke;
   private final Explosion particleShockwave;
+  private float time;
+  private boolean active;
+  private boolean exploded;
   private Light flash;
 
-
-  /**
-   * Extended Constructor for Dynamite. Don't use directly. Use the Item Master to create items.
-   */
+  /** Extended Constructor for Dynamite. Don't use directly. Use the Item Master to create items. */
   private Dynamite(Vector3f position, float rotX, float rotY, float rotZ, float scale) {
     super(ItemMaster.ItemTypes.DYNAMITE, getPreloadedModel(), position, rotX, rotY, rotZ, scale);
     time = 0;
     active = false;
     exploded = false;
 
-
-    //Generate Fuse Effect
+    // Generate Fuse Effect
     particleFuse = new Fire(70, 1, .01f, 1, 3);
     particleFuse.setDirection(new Vector3f(0, 1, 0), 0.1f);
     particleFuse.setLifeError(.2f);
@@ -61,35 +52,35 @@ public class Dynamite extends Item {
     particleFuse.randomizeRotation();
 
     /* Generate Fancy Particle Effects for an explosion */
-    //Generate Explosion Effect
+    // Generate Explosion Effect
     particleExplosion = new Explosion(200, 11, 0, .4f, 15);
     particleExplosion.setScaleError(.4f);
     particleExplosion.setSpeedError(.3f);
     particleExplosion.setLifeError(.2f);
 
-    //Generate Shrapnel Effect
+    // Generate Shrapnel Effect
     particleShrapnel = new Explosion(1200, 70, 0, 1.5f, .85f);
     particleShrapnel.setScaleError(.2f);
     particleShrapnel.setLifeError(.5f);
     particleShrapnel.setSpeedError(.3f);
 
-    //Generate Smoke Effect
+    // Generate Smoke Effect
     particleSmoke = new Smoke(40, 5, -.1f, 6f, 20f);
     particleSmoke.setScaleError(.2f);
     particleSmoke.setLifeError(.8f);
     particleSmoke.setSpeedError(.3f);
     particleSmoke.randomizeRotation();
 
-    //Generate Shockwave effect
-    //We can vary pps by graphic setting, but it looks very nice with a lot of particles!
+    // Generate Shockwave effect
+    // We can vary pps by graphic setting, but it looks very nice with a lot of particles!
 
     particleShockwave = new Explosion(3000, 40, 0f, .8f, 5f);
     particleShockwave.setScaleError(.1f);
     particleShockwave.setLifeError(.1f);
     particleShockwave.setDirection(new Vector3f(1, 0, 0), 0);
-    Random rnd = new Random(); //Give the shockwave a slight random tilt
-    particleShockwave.setRotationAxis(new Vector3f(rnd.nextFloat() * .4f - .2f, 1,
-        rnd.nextFloat() * .4f - .2f), 0);
+    Random rnd = new Random(); // Give the shockwave a slight random tilt
+    particleShockwave.setRotationAxis(
+        new Vector3f(rnd.nextFloat() * .4f - .2f, 1, rnd.nextFloat() * .4f - .2f), 0);
   }
 
   /**
@@ -99,7 +90,6 @@ public class Dynamite extends Item {
    */
   Dynamite(Vector3f position) {
     this(position, 0, 0, 0, 1);
-
   }
 
   /**
@@ -109,25 +99,31 @@ public class Dynamite extends Item {
    */
   public static void init(Loader loader) {
     RawModel rawDynamite = loader.loadToVao(ObjFileLoader.loadObj("dynamite"));
-    setPreloadedModel(new TexturedModel(rawDynamite, new ModelTexture(loader.loadTexture(
-        "dynamite"))));
+    setPreloadedModel(
+        new TexturedModel(rawDynamite, new ModelTexture(loader.loadTexture("dynamite"))));
+  }
+
+  private static TexturedModel getPreloadedModel() {
+    return preloadedModel;
+  }
+
+  private static void setPreloadedModel(TexturedModel preloadedModel) {
+    Dynamite.preloadedModel = preloadedModel;
   }
 
   /**
-   * Called every frame.
-   * Updates all the animations for the Dynamite and decides which particle
-   * systems will fire.
-   * Takes care of collision and removes itself when done with everything.
+   * Called every frame. Updates all the animations for the Dynamite and decides which particle
+   * systems will fire. Takes care of collision and removes itself when done with everything.
    */
   @Override
   public void update() {
 
-    //Skip if dynamite is being placed or otherwise inactive
+    // Skip if dynamite is being placed or otherwise inactive
     if (!active) {
       return;
     }
 
-    //Update the fuse time
+    // Update the fuse time
     time += Game.window.getFrameTimeSeconds();
 
     /*
@@ -150,9 +146,9 @@ public class Dynamite extends Item {
       float offset = getBbox().getDimY() * 2 * (fuseTimer - time) / fuseTimer;
       particleFuse.generateParticles(new Vector3f(0, offset, 0).add(getPosition()));
 
-    /*
-    Case 2: Explosion is finished, remove the object
-     */
+      /*
+      Case 2: Explosion is finished, remove the object
+       */
     } else if (time >= fuseTimer && time <= fuseTimer + explosionTime) {
       explode();
       particleExplosion.generateParticles(getPosition());
@@ -161,11 +157,10 @@ public class Dynamite extends Item {
         particleShrapnel.generateParticles(getPosition());
         particleShockwave.generateParticles(getPosition());
       }
-
     }
 
     if (time >= fuseTimer + totalEffectsTime) {
-      setDestroyed(true); //Remove Object
+      setDestroyed(true); // Remove Object
       flash.setDestroyed(true);
     } else if (time >= fuseTimer + .3f) {
       float scaleBrightness = (float) (1 - Game.window.getFrameTimeSeconds() * 5);
@@ -176,28 +171,25 @@ public class Dynamite extends Item {
     }
   }
 
-  /**
-   * Damage the blocks in range of the explosion and hide the dynamite.
-   */
+  /** Damage the blocks in range of the explosion and hide the dynamite. */
   private void explode() {
     if (exploded) {
       return;
     }
     exploded = true;
-    setScale(new Vector3f()); //Hide the model, but keep the object for the explosion effect to
+    setScale(new Vector3f()); // Hide the model, but keep the object for the explosion effect to
     // complete
     for (Block block : BlockMaster.getBlocks()) {
-      float distance = block.get2dDistanceFrom(getPositionXY());
+      float distance = block.get2dDistanceFrom(getPositionXy());
       if (distance < explosionRange) {
-        //Damage blocks inverse to distance (closer = more damage)
+        // Damage blocks inverse to distance (closer = more damage)
         block.increaseDamage(1 / distance * maximumDamage, this);
       }
     }
-    flash = LightMaster.generateLight(LightMaster.LightTypes.FLASH, getPosition(),
-        new Vector3f(1, 1, 1));
-
+    flash =
+        LightMaster.generateLight(
+            LightMaster.LightTypes.FLASH, getPosition(), new Vector3f(1, 1, 1));
   }
-
 
   public boolean isActive() {
     return active;
@@ -205,13 +197,5 @@ public class Dynamite extends Item {
 
   public void setActive(boolean active) {
     this.active = active;
-  }
-
-  private static void setPreloadedModel(TexturedModel preloadedModel) {
-    Dynamite.preloadedModel = preloadedModel;
-  }
-
-  private static TexturedModel getPreloadedModel() {
-    return preloadedModel;
   }
 }

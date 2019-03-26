@@ -4,15 +4,10 @@ import engine.render.fontrendering.TextMaster;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 
-/**
- * Shows FPS as text on screen.
- */
+/** Shows FPS as text on screen. */
 public class Fps extends GuiString {
 
-
-  /**
-   * Create a yellow GuiString in the top right corner ready for rendering.
-   */
+  /** Create a yellow GuiString in the top right corner ready for rendering. */
   public Fps() {
     super();
 
@@ -36,9 +31,7 @@ public class Fps extends GuiString {
       setGuiStringString("" + fpsD);
       createGuiText();
     } catch (NumberFormatException ignored) {
-      //Don't update if we get invalid string
+      // Don't update if we get invalid string
     }
   }
-
-
 }

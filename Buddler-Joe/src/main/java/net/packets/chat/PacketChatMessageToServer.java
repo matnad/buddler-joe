@@ -2,12 +2,9 @@ package net.packets.chat;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
 import net.ServerLogic;
 import net.packets.Packet;
 import net.playerhandling.Player;
-
-
 
 /**
  * Packet that gets send from the Client to the Server, to send chat message from Client to a other
@@ -83,6 +80,7 @@ public class PacketChatMessageToServer extends Packet {
     }
     isExtendedAscii(chatmsg);
   }
+
   /**
    * Method that lets the Server react to the receiving of this packet. Check for errors in
    * validate. Check that the Client that has sent the packet is in a lobby. In the case of an error
@@ -91,7 +89,6 @@ public class PacketChatMessageToServer extends Packet {
    * {link PacketChatMessageStatus}-Packet with "OK", when there are none errors. With errors the
    * packet has a list of the errors.
    */
-
   @Override
   public void processData() {
     String status;
@@ -100,8 +97,8 @@ public class PacketChatMessageToServer extends Packet {
       if (client == null) {
         addError("Not logged in");
       } else {
-        int lobbyID = client.getCurLobbyId();
-        if (lobbyID == 0) {
+        int lobbyId = client.getCurLobbyId();
+        if (lobbyId == 0) {
           addError("Must been in a Lobby to use the chat.");
         } else {
           String fullmessage = "[" + client.getUsername() + "-" + timestamp + "]  " + chatmsg;

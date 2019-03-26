@@ -10,6 +10,7 @@ public class Cosmic extends ParticleSystem {
 
   /**
    * ParticleSystem with texture for cosmic pre-loaded. See ParticleSystem.java for more details.
+   *
    * @param pps Particles per second. Will be probabilistically rounded each frame.
    * @param speed Distance travelled per second.
    * @param gravityComplient Effect of the gravity constant. 0 means no gravity, negative numbers

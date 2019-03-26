@@ -4,10 +4,7 @@ import engine.shaders.ShaderProgram;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 
-/**
- * Shader Program.
- * Passes variables to the shader
- */
+/** Shader Program. Passes variables to the shader */
 public class FontShader extends ShaderProgram {
 
   private static final String SHADER_NAME = "font";
@@ -15,7 +12,6 @@ public class FontShader extends ShaderProgram {
   private int locationColour;
   private int locationTranslation;
   private int locationAlpha;
-
 
   FontShader() {
     super(SHADER_NAME);
@@ -45,6 +41,4 @@ public class FontShader extends ShaderProgram {
   void loadAlpha(float alpha) {
     super.loadFloat(locationAlpha, alpha);
   }
-
-
 }

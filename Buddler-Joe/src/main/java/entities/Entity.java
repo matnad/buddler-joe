@@ -7,9 +7,9 @@ import org.joml.Vector3f;
 import util.MousePlacer;
 
 /**
- * All 3D entities are derived or spawned from this class.
- * Defines position, bounding box, rotation and scale of an object
- * as well as the model, texture (with index if applicable) and if it is destroyed.
+ * All 3D entities are derived or spawned from this class. Defines position, bounding box, rotation
+ * and scale of an object as well as the model, texture (with index if applicable) and if it is
+ * destroyed.
  */
 public class Entity {
 
@@ -29,31 +29,37 @@ public class Entity {
   /**
    * Default constructor if no texture atlas is used.
    *
-   * @param model    Textured Model
+   * @param model Textured Model
    * @param position World Coordinates
-   * @param rotX     X Rotation
-   * @param rotY     Y Rotation
-   * @param rotZ     Z Rotation
-   * @param scale    Scaling factor
+   * @param rotX X Rotation
+   * @param rotY Y Rotation
+   * @param rotZ Z Rotation
+   * @param scale Scaling factor
    */
-  public Entity(TexturedModel model, Vector3f position, float rotX, float rotY, float rotZ,
-                float scale) {
+  public Entity(
+      TexturedModel model, Vector3f position, float rotX, float rotY, float rotZ, float scale) {
     this(model, -1, position, rotX, rotY, rotZ, scale);
   }
 
   /**
    * Constructor if texture atlas is used.
    *
-   * @param model    Textured Model
-   * @param index    Texture index in texture atlas
+   * @param model Textured Model
+   * @param index Texture index in texture atlas
    * @param position World Coordinates
-   * @param rotX     X Rotation
-   * @param rotY     Y Rotation
-   * @param rotZ     Z Rotation
-   * @param scale    Scaling factor
+   * @param rotX X Rotation
+   * @param rotY Y Rotation
+   * @param rotZ Z Rotation
+   * @param scale Scaling factor
    */
-  public Entity(TexturedModel model, int index, Vector3f position, float rotX, float rotY,
-                float rotZ, float scale) {
+  public Entity(
+      TexturedModel model,
+      int index,
+      Vector3f position,
+      float rotX,
+      float rotY,
+      float rotZ,
+      float scale) {
     if (index > -1) {
       this.textureIndex = index;
     }
@@ -66,22 +72,19 @@ public class Entity {
     this.rotZ = rotZ;
     this.scale = new Vector3f(scale, scale, scale);
 
-    //Set bounding box which is stored in the raw model
+    // Set bounding box which is stored in the raw model
     if (model != null && model.getRawModel().getBoundingCoords().length == 6) {
       bbox = new BoundingBox(model.getRawModel().getBoundingCoords());
       bbox.scale(getScale());
       updateBoundingBox();
     }
-
   }
 
-  //Entity collision
-
+  // Entity collision
 
   /**
-   * Call this after you reposition the entity.
-   * If you use proper setters, you probably never have to call it manually. (Still leaving it
-   * public, just in case)
+   * Call this after you reposition the entity. If you use proper setters, you probably never have
+   * to call it manually. (Still leaving it public, just in case)
    */
   private void updateBoundingBox() {
     if (bbox == null) {
@@ -94,7 +97,7 @@ public class Entity {
    * Check if this entity collides with another entity in X, XY or XYZ dimension.
    *
    * @param entity The entity to check for collision with
-   * @param dim    number of dimensions 1=x, 2=xy, 3=xyz
+   * @param dim number of dimensions 1=x, 2=xy, 3=xyz
    * @return true if the two entities' Bounding Boxes overlap in dim
    */
   public boolean collidesWith(Entity entity, int dim) {
@@ -114,9 +117,9 @@ public class Entity {
     return collidesWith(entity, 2);
   }
 
-
   /**
    * Returns col in the texture atlas.
+   *
    * @return col in the texture atlas.
    */
   public float getTextureXOffset() {
@@ -126,6 +129,7 @@ public class Entity {
 
   /**
    * Returns row in the texture atlas.
+   *
    * @return row in the texture atlas.
    */
   public float getTextureYOffset() {
@@ -191,26 +195,6 @@ public class Entity {
     return position;
   }
 
-  public Vector2f getPositionXY() {
-    return new Vector2f(position.x, position.y);
-  }
-
-  public float getRotX() {
-    return rotX;
-  }
-
-  public float getRotY() {
-    return rotY;
-  }
-
-  public float getRotZ() {
-    return rotZ;
-  }
-
-  public Vector3f getScale() {
-    return scale;
-  }
-
   /**
    * Move this entity to a new point X,Y,Z in the world. Updates Bounding Box.
    *
@@ -219,6 +203,14 @@ public class Entity {
   public void setPosition(Vector3f position) {
     this.position = position;
     updateBoundingBox();
+  }
+
+  public Vector2f getPositionXy() {
+    return new Vector2f(position.x, position.y);
+  }
+
+  public float getRotX() {
+    return rotX;
   }
 
   /**
@@ -231,6 +223,10 @@ public class Entity {
     updateBoundingBox();
   }
 
+  public float getRotY() {
+    return rotY;
+  }
+
   /**
    * Rotate this entity around the Y axis. Updates Bounding Box.
    *
@@ -239,6 +235,10 @@ public class Entity {
   public void setRotY(float rotY) {
     this.rotY = rotY;
     updateBoundingBox();
+  }
+
+  public float getRotZ() {
+    return rotZ;
   }
 
   /**
@@ -251,6 +251,9 @@ public class Entity {
     updateBoundingBox();
   }
 
+  public Vector3f getScale() {
+    return scale;
+  }
 
   /**
    * Scale this unit up (scale greater than 1) or down (scale less than 1) by a scaling factor.
@@ -260,7 +263,7 @@ public class Entity {
    */
   public void setScale(Vector3f scale) {
     this.scale = scale;
-    //TODO: Update bounding box scale
+    // TODO: Update bounding box scale
   }
 
   public BoundingBox getBbox() {

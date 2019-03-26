@@ -8,10 +8,7 @@ import org.joml.Matrix4f;
 import org.joml.Vector3f;
 import util.Maths;
 
-/**
- * Shader program for terrain.
- * Just passing some variables to the shader
- */
+/** Shader program for terrain. Just passing some variables to the shader */
 @SuppressWarnings("Duplicates")
 public class TerrainShader extends ShaderProgram {
 
@@ -69,9 +66,7 @@ public class TerrainShader extends ShaderProgram {
     super.bindAttribute(2, "normal");
   }
 
-  /**
-   * Load position of the textures to blend into openGL.
-   */
+  /** Load position of the textures to blend into openGL. */
   public void connectTextureUnits() {
     super.loadInt(locationBackgroundTexture, 0);
     super.loadInt(locationRTexture, 1);
@@ -91,6 +86,7 @@ public class TerrainShader extends ShaderProgram {
 
   /**
    * Loads a list of lights to the shader. These lights will affect the terrain.
+   *
    * @param lights list of lights to load
    */
   public void loadLights(List<Light> lights) {
@@ -119,5 +115,4 @@ public class TerrainShader extends ShaderProgram {
     Matrix4f viewMatrix = Maths.createViewMatrix(camera);
     super.loadMatrix(locationViewMatrix, viewMatrix);
   }
-
 }

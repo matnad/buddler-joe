@@ -9,22 +9,19 @@ import java.util.Random;
 
 public class DebrisMaster {
 
-  private static  final float SIZE_MIN = .1f;
-  private static  final float SIZE_MAX = .6f;
-
-  static Random random;
-
-  //That's definitely how this is spelled
+  private static final float SIZE_MIN = .1f;
+  private static final float SIZE_MAX = .6f;
+  // That's definitely how this is spelled
   private static final List<Debris> debrises = new ArrayList<>();
-
+  static Random random;
 
   public static void init() {
     random = new Random();
   }
 
   /**
-   * Generate debris from a destroyed block.
-   * Debris will be randomized and depend on volume and density of base block.
+   * Generate debris from a destroyed block. Debris will be randomized and depend on volume and
+   * density of base block.
    *
    * @param block the block that was destroyed
    */
@@ -42,8 +39,8 @@ public class DebrisMaster {
   }
 
   /**
-   * Should be called every frame in the main loop.
-   * Update all debris entities and remove the ones that are past their life length
+   * Should be called every frame in the main loop. Update all debris entities and remove the ones
+   * that are past their life length
    */
   public static void update() {
     Iterator<Debris> iterator = debrises.iterator();
@@ -54,7 +51,6 @@ public class DebrisMaster {
         Game.removeEntity(d);
         iterator.remove();
       }
-
     }
   }
 }

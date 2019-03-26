@@ -1,11 +1,7 @@
 package engine.render.fontmeshcreator;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -45,7 +41,7 @@ class MetaFile {
    * @param file - the font file.
    */
   MetaFile(BufferedReader file) {
-    this.aspectRatio = 1920f / 1024f; //(double) window.getWidth() / (double) window.getHeight();
+    this.aspectRatio = 1920f / 1024f; // (double) window.getWidth() / (double) window.getHeight();
     openFile(file);
     loadPaddingData();
     loadLineSizes();
@@ -73,7 +69,7 @@ class MetaFile {
     try {
       line = reader.readLine();
     } catch (IOException ignored) {
-      //ignore IOEx
+      // ignore IOEx
     }
     if (line == null) {
       return false;
@@ -88,8 +84,7 @@ class MetaFile {
   }
 
   /**
-   * Gets the {@code int} value of the variable with a certain name on the
-   * current line.
+   * Gets the {@code int} value of the variable with a certain name on the current line.
    *
    * @param variable - the name of the variable.
    * @return The value of the variable.
@@ -114,9 +109,7 @@ class MetaFile {
     return actualValues;
   }
 
-  /**
-   * Closes the font file after finishing reading.
-   */
+  /** Closes the font file after finishing reading. */
   private void close() {
     try {
       reader.close();
@@ -139,10 +132,7 @@ class MetaFile {
     }
   }
 
-  /**
-   * Loads the data about how much padding is used around each character in
-   * the texture atlas.
-   */
+  /** Loads the data about how much padding is used around each character in the texture atlas. */
   private void loadPaddingData() {
     processNextLine();
     this.padding = getValuesOfVariable("padding");
@@ -151,9 +141,8 @@ class MetaFile {
   }
 
   /**
-   * Loads information about the line height for this font in pixels, and uses
-   * this as a way to find the conversion rate between pixels in the texture
-   * atlas and screen-space.
+   * Loads information about the line height for this font in pixels, and uses this as a way to find
+   * the conversion rate between pixels in the texture atlas and screen-space.
    */
   private void loadLineSizes() {
     processNextLine();
@@ -163,8 +152,7 @@ class MetaFile {
   }
 
   /**
-   * Loads in data about each character and stores the data in the
-   * {@link Character} class.
+   * Loads in data about each character and stores the data in the {@link Character} class.
    *
    * @param imageWidth - the width of the texture atlas in pixels.
    */
@@ -180,9 +168,8 @@ class MetaFile {
   }
 
   /**
-   * Loads all the data about one character in the texture atlas and converts
-   * it all from 'pixels' to 'screen-space' before storing. The effects of
-   * padding are also removed from the data.
+   * Loads all the data about one character in the texture atlas and converts it all from 'pixels'
+   * to 'screen-space' before storing. The effects of padding are also removed from the data.
    *
    * @param imageSize - the size of the texture atlas in pixels.
    * @return The data about the character.
@@ -203,12 +190,14 @@ class MetaFile {
     double quadHeight = height * verticalPerPixelSize;
     double texSizeX = (double) width / imageSize;
     double texSizeY = (double) height / imageSize;
-    double offX = (getValueOfVariable("xoffset") + padding[PAD_LEFT] - DESIRED_PADDING)
-        * horizontalPerPixelSize;
-    double offY = (getValueOfVariable("yoffset") + (padding[PAD_TOP] - DESIRED_PADDING))
-        * verticalPerPixelSize;
+    double offX =
+        (getValueOfVariable("xoffset") + padding[PAD_LEFT] - DESIRED_PADDING)
+            * horizontalPerPixelSize;
+    double offY =
+        (getValueOfVariable("yoffset") + (padding[PAD_TOP] - DESIRED_PADDING))
+            * verticalPerPixelSize;
     double advanceX = (getValueOfVariable("xadvance") - paddingWidth) * horizontalPerPixelSize;
-    return new Character(id, texX, texY, texSizeX, texSizeY, offX, offY, quadWidth, quadHeight,
-        advanceX);
+    return new Character(
+        id, texX, texY, texSizeX, texSizeY, offX, offY, quadWidth, quadHeight, advanceX);
   }
 }

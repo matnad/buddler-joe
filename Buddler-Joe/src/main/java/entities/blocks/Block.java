@@ -19,13 +19,13 @@ import org.joml.Vector3f;
 @SuppressWarnings("unused") // TODO: Still have some unused methods
 public abstract class Block extends Entity {
 
+  private static TexturedModel blockModel;
   private final float hardness;
   private final float mass;
-  private float damage;
   private final float dim;
   private final BlockMaster.BlockTypes type;
+  private float damage;
   private Entity destroyedBy;
-  private static TexturedModel blockModel;
 
   /**
    * Abstract Constructor.
@@ -85,6 +85,10 @@ public abstract class Block extends Entity {
     blockModel = new TexturedModel(rawBlock, blockAtlas);
   }
 
+  public static TexturedModel getBlockModel() {
+    return blockModel;
+  }
+
   /**
    * 3D distance between block and a 3D point.
    *
@@ -140,12 +144,12 @@ public abstract class Block extends Entity {
     }
   }
 
-  private void setDestroyedBy(Entity destroyedBy) {
-    this.destroyedBy = destroyedBy;
-  }
-
   Entity getDestroyedBy() {
     return destroyedBy;
+  }
+
+  private void setDestroyedBy(Entity destroyedBy) {
+    this.destroyedBy = destroyedBy;
   }
 
   /**
@@ -174,10 +178,6 @@ public abstract class Block extends Entity {
 
   public BlockMaster.BlockTypes getType() {
     return type;
-  }
-
-  public static TexturedModel getBlockModel() {
-    return blockModel;
   }
 
   public float getMass() {

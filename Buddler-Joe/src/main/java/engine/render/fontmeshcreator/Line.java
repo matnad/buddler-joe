@@ -7,7 +7,6 @@ import java.util.List;
  * Represents a line of text during the loading of a text.
  *
  * @author Karl
- *
  */
 class Line {
 
@@ -20,12 +19,9 @@ class Line {
   /**
    * Creates an empty line.
    *
-   * @param spaceWidth
-   *            - the screen-space width of a space character.
-   * @param fontSize
-   *            - the size of font being used.
-   * @param maxLength
-   *            - the screen-space maximum length of a line.
+   * @param spaceWidth - the screen-space width of a space character.
+   * @param fontSize - the size of font being used.
+   * @param maxLength - the screen-space maximum length of a line.
    */
   Line(double spaceWidth, double fontSize, double maxLength) {
     this.spaceSize = spaceWidth * fontSize;
@@ -33,12 +29,10 @@ class Line {
   }
 
   /**
-   * Attempt to add a word to the line. If the line can fit the word in
-   * without reaching the maximum line length then the word is added and the
-   * line length increased.
+   * Attempt to add a word to the line. If the line can fit the word in without reaching the maximum
+   * line length then the word is added and the line length increased.
    *
-   * @param word
-   *            - the word to try to add.
+   * @param word - the word to try to add.
    * @return {@code true} if the word has successfully been added to the line.
    */
   boolean attemptToAddWord(Word word) {
@@ -53,25 +47,18 @@ class Line {
     }
   }
 
-  /**
-   * Returns the max length of the line.
-   */
+  /** Returns the max length of the line. */
   double getMaxLength() {
     return maxLength;
   }
 
-  /**
-   * Returns the current screen-space length of the line.
-   */
+  /** Returns the current screen-space length of the line. */
   double getLineLength() {
     return currentLineLength;
   }
 
-  /**
-   * Returns the list of words in the line.
-   */
+  /** Returns the list of words in the line. */
   List<Word> getWords() {
     return words;
   }
-
 }

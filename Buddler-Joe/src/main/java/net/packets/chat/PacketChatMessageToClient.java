@@ -25,13 +25,13 @@ public class PacketChatMessageToClient extends Packet {
   /**
    * Constructor that is used by the Server to build the Packet.
    *
-   * @param clientID ClientId of the client that has sent this packet.
+   * @param clientId ClientId of the client that has sent this packet.
    * @param data a String with the chat message, timestamp and receiver. * (names are separated by
    *     "║") {@link PacketChatMessageToServer} gets set here, to equal data.
    */
-  public PacketChatMessageToClient(int clientID, String data) {
+  public PacketChatMessageToClient(int clientId, String data) {
     super(PacketTypes.CHAT_MESSAGE_TO_CLIENT);
-    setClientId(clientID);
+    setClientId(clientId);
     setData(data);
     chatmsg = getData().trim();
     validate();

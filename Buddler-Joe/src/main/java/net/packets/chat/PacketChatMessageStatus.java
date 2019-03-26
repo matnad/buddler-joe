@@ -29,24 +29,24 @@ public class PacketChatMessageStatus extends Packet {
   /**
    * Constructor that is used by the Server to build the Packet.
    *
-   * @param clientID ClientId of the receiver.
+   * @param clientId ClientId of the receiver.
    * @param data A String that contains Information about the leave attempt. ("OK" or in the case of
    *     an error, a suitable errormessage) {@link PacketChatMessageStatus#status} gets set to equal
    *     data.
    */
-  public PacketChatMessageStatus(int clientID, String data) {
+  public PacketChatMessageStatus(int clientId, String data) {
     super(PacketTypes.CHAT_MESSAGE_STATUS);
-    setClientId(clientID);
+    setClientId(clientId);
     setData(data);
     validate();
   }
+
   /**
    * Validation method to check the data that has, or will be send in this packet. Checks if {@link
    * PacketChatMessageStatus#status} is not null. Checks that {@link PacketChatMessageStatus#status}
    * consists of extendet ASCII Characters. In the case of an error it gets added with {@link
    * Packet#addError(String)}.
    */
-
   @Override
   public void validate() {
     if (status != null) {
@@ -55,12 +55,12 @@ public class PacketChatMessageStatus extends Packet {
       addError("No Status found.");
     }
   }
+
   /**
    * Method that lets the Client react to the receiving of this packet. Check for errors in
    * validate.(prints errormessages if there are some) The error message gets print, if an error on
    * the serverside exist
    */
-
   @Override
   public void processData() {
     if (status.startsWith("OK")) {

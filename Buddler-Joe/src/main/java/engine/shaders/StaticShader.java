@@ -9,10 +9,7 @@ import org.joml.Vector2f;
 import org.joml.Vector3f;
 import util.Maths;
 
-/**
- * Shader program for entities.
- * Just passing some variables to the shader
- */
+/** Shader program for entities. Just passing some variables to the shader */
 @SuppressWarnings("Duplicates")
 public class StaticShader extends ShaderProgram {
 
@@ -57,7 +54,6 @@ public class StaticShader extends ShaderProgram {
       locationLightColour[i] = super.getUniformLocation("lightColour[" + i + "]");
       locationAttenuation[i] = super.getUniformLocation("attenuation[" + i + "]");
     }
-
   }
 
   @Override
@@ -90,6 +86,7 @@ public class StaticShader extends ShaderProgram {
 
   /**
    * Loads a list of lights to the shader. These lights will affect all entities.
+   *
    * @param lights list of lights to load
    */
   public void loadLights(List<Light> lights) {

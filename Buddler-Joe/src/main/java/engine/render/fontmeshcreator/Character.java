@@ -1,8 +1,8 @@
 package engine.render.fontmeshcreator;
 
 /**
- * Simple data structure class holding information about a certain glyph in the
- * font texture atlas. All sizes are for a font-size of 1.
+ * Simple data structure class holding information about a certain glyph in the font texture atlas.
+ * All sizes are for a font-size of 1.
  *
  * @author Karl
  */
@@ -22,25 +22,30 @@ class Character {
   /**
    * Create a new Character.
    *
-   * @param id            - the ASCII value of the character.
-   * @param textureCoordX - the x texture coordinate for the top left corner of the
-   *                      character in the texture atlas.
-   * @param textureCoordY - the y texture coordinate for the top left corner of the
-   *                      character in the texture atlas.
-   * @param texSizeX      - the width of the character in the texture atlas.
-   * @param texSizeY      - the height of the character in the texture atlas.
-   * @param xoffset       - the x distance from the cursor to the left edge of the
-   *                      character's quad.
-   * @param yoffset       - the y distance from the cursor to the top edge of the
-   *                      character's quad.
-   * @param sizeX         - the width of the character's quad in screen space.
-   * @param sizeY         - the height of the character's quad in screen space.
-   * @param advanceX      - how far in pixels the cursor should advance after adding
-   *                      this character.
+   * @param id - the ASCII value of the character.
+   * @param textureCoordX - the x texture coordinate for the top left corner of the character in the
+   *     texture atlas.
+   * @param textureCoordY - the y texture coordinate for the top left corner of the character in the
+   *     texture atlas.
+   * @param texSizeX - the width of the character in the texture atlas.
+   * @param texSizeY - the height of the character in the texture atlas.
+   * @param xoffset - the x distance from the cursor to the left edge of the character's quad.
+   * @param yoffset - the y distance from the cursor to the top edge of the character's quad.
+   * @param sizeX - the width of the character's quad in screen space.
+   * @param sizeY - the height of the character's quad in screen space.
+   * @param advanceX - how far in pixels the cursor should advance after adding this character.
    */
-  Character(int id, double textureCoordX, double textureCoordY, double texSizeX,
-            double texSizeY, double xoffset, double yoffset, double sizeX, double sizeY,
-            double advanceX) {
+  Character(
+      int id,
+      double textureCoordX,
+      double textureCoordY,
+      double texSizeX,
+      double texSizeY,
+      double xoffset,
+      double yoffset,
+      double sizeX,
+      double sizeY,
+      double advanceX) {
     this.id = id;
     this.textureCoordX = textureCoordX;
     this.textureCoordY = textureCoordY;
@@ -92,5 +97,4 @@ class Character {
   double getAdvanceX() {
     return advanceX;
   }
-
 }

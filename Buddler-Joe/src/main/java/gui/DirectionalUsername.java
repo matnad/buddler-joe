@@ -37,7 +37,6 @@ public class DirectionalUsername extends GuiString {
     setGuiStringString(player.getUsername());
   }
 
-
   @Override
   public void updateString() {
     if (getGuiString() != null) {
@@ -49,18 +48,20 @@ public class DirectionalUsername extends GuiString {
   }
 
   private Vector2f findLocation(Camera camera) {
-    //Transforms world coodinates to normalized device coordinates. Experimental feature!
-    //This will generate the effect of the text pointing in the direction of the player.
-    Vector4f loc = new Vector4f(player.getBbox().getMinX(), player.getBbox().getMaxY(),
-        player.getBbox().getMaxZ() - player.getBbox().getDimZ() / 2, 1f)
-        .mul(Maths.createViewMatrix(camera))
-        .mul(MasterRenderer.getProjectionMatrix())
-        .normalize();
-
+    // Transforms world coodinates to normalized device coordinates. Experimental feature!
+    // This will generate the effect of the text pointing in the direction of the player.
+    Vector4f loc =
+        new Vector4f(
+                player.getBbox().getMinX(),
+                player.getBbox().getMaxY(),
+                player.getBbox().getMaxZ() - player.getBbox().getDimZ() / 2,
+                1f)
+            .mul(Maths.createViewMatrix(camera))
+            .mul(MasterRenderer.getProjectionMatrix())
+            .normalize();
 
     float normX = (loc.x + 1) / 2;
     float normY = (1 - loc.y) / 2;
     return new Vector2f(normX, normY);
   }
-
 }

@@ -4,9 +4,8 @@ import org.joml.AABBf;
 import org.joml.Vector3f;
 
 /**
- * A 3D Box around an object that determines the boundaries of the model.
- * has absolute and relative minimum and maximum for each of the three coordinates as well as
- * quick access to dimension
+ * A 3D Box around an object that determines the boundaries of the model. has absolute and relative
+ * minimum and maximum for each of the three coordinates as well as quick access to dimension
  *
  * @author Joe's Buddler Corp.
  */
@@ -33,8 +32,8 @@ public class BoundingBox {
   /**
    * Generate the box around (0/0/0), then wait for the Entity to move it to their position.
    *
-   * @param bb a float array of exactly size 6 with the relative coordinates for all dimensions
-   *           and 0/0/0 being the center
+   * @param bb a float array of exactly size 6 with the relative coordinates for all dimensions and
+   *     0/0/0 being the center
    */
   public BoundingBox(float[] bb) {
     if (bb.length < 6) {
@@ -126,7 +125,7 @@ public class BoundingBox {
     maxZo *= scale.z;
   }
 
-  //Getters
+  // Getters
 
   public AABBf getAabbf() {
     return new AABBf(minX, minY, minZ, maxX, maxY, maxZ);
@@ -134,14 +133,12 @@ public class BoundingBox {
 
   /**
    * Get the 3D center of the bounding box.
+   *
    * @return 3D world coordinates of the center of the box
    */
   public Vector3f getCenter() {
     return new Vector3f(
-        getMinX() + getDimX() / 2,
-        getMinY() + getDimY() / 2,
-        getMinZ() + getDimZ() / 2
-    );
+        getMinX() + getDimX() / 2, getMinY() + getDimY() / 2, getMinZ() + getDimZ() / 2);
   }
 
   public float getMinX() {
@@ -191,7 +188,6 @@ public class BoundingBox {
   public float getMaxZO() {
     return maxZo;
   }*/
-
 
   public float getDimX() {
     return dimX;

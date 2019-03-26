@@ -37,6 +37,7 @@ public class ParticleRenderer {
 
   /**
    * Render all particles. Called from the Particle Master only!
+   *
    * @param particles particles to render, lists by texture
    * @param camera active camera for view matrix
    */
@@ -56,7 +57,7 @@ public class ParticleRenderer {
       }
       // Bind Texture
       GL13.glActiveTexture(GL13.GL_TEXTURE0);
-      GL11.glBindTexture(GL11.GL_TEXTURE_2D, particleTexture.getTextureID());
+      GL11.glBindTexture(GL11.GL_TEXTURE_2D, particleTexture.getTextureId());
       for (Particle particle : particles.get(particleTexture)) {
         // Rotate the particle to face the camera
         updateModelViewMatrix(
@@ -118,7 +119,7 @@ public class ParticleRenderer {
 
   private void prepare() {
     shader.start();
-    GL30.glBindVertexArray(quad.getVaoID());
+    GL30.glBindVertexArray(quad.getVaoId());
     GL20.glEnableVertexAttribArray(0);
     GL11.glEnable(GL11.GL_BLEND);
     GL11.glDepthMask(false); // Turn of DepthMask or we get artifacts when rendering

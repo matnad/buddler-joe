@@ -9,23 +9,16 @@ import org.joml.Vector3f;
  */
 public class GrassBlock extends Block {
 
-  /**
-   * Extended Constructor, dont call directly.
-   */
+  /** Extended Constructor, dont call directly. */
   GrassBlock(Vector3f position, float rotX, float rotY, float rotZ, float scale) {
     super(BlockMaster.BlockTypes.GRASS, .7f, 1f, position, rotX, rotY, rotZ, scale);
   }
 
-  /**
-   * Shortened constructor with just position. Dont call directly.
-   */
+  /** Shortened constructor with just position. Dont call directly. */
   GrassBlock(Vector3f position) {
     this(position, 0, 0, 0, 3);
-
   }
 
   @Override
-  protected void onDestroy() {
-
-  }
+  protected void onDestroy() {}
 }

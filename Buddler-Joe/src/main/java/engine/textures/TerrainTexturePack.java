@@ -1,8 +1,6 @@
 package engine.textures;
 
-/**
- * Holds TerrainTextures for use with a blend map.
- */
+/** Holds TerrainTextures for use with a blend map. */
 public class TerrainTexturePack {
 
   private final TerrainTexture backgroundTexture;
@@ -18,8 +16,11 @@ public class TerrainTexturePack {
    * @param textureG texture blended depending on green value
    * @param textureB texture blended depending on blue value
    */
-  public TerrainTexturePack(TerrainTexture backgroundTexture, TerrainTexture textureR,
-                            TerrainTexture textureG, TerrainTexture textureB) {
+  public TerrainTexturePack(
+      TerrainTexture backgroundTexture,
+      TerrainTexture textureR,
+      TerrainTexture textureG,
+      TerrainTexture textureB) {
     this.backgroundTexture = backgroundTexture;
     this.textureR = textureR;
     this.textureG = textureG;

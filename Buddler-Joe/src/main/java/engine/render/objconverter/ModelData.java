@@ -11,19 +11,24 @@ public class ModelData {
   private float[] textureCoords;
   private float[] normals;
   private int[] indices;
-  //private float furthestPoint;
+  // private float furthestPoint;
   private float[] boundingCoords;
 
-  //We keep the variable in the constructor for now, will probably use it again later
+  // We keep the variable in the constructor for now, will probably use it again later
   @SuppressWarnings("unused")
-  ModelData(float[] vertices, float[] textureCoords, float[] normals, int[] indices,
-            float furthestPoint, float[] boundingCoords) {
+  ModelData(
+      float[] vertices,
+      float[] textureCoords,
+      float[] normals,
+      int[] indices,
+      float furthestPoint,
+      float[] boundingCoords) {
 
     this.vertices = vertices;
     this.textureCoords = textureCoords;
     this.normals = normals;
     this.indices = indices;
-    //this.furthestPoint = furthestPoint;
+    // this.furthestPoint = furthestPoint;
 
     if (boundingCoords.length == 6) {
       this.boundingCoords = boundingCoords;

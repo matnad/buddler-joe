@@ -9,13 +9,13 @@ package engine.models;
  */
 public class RawModel {
 
-  private int vaoID;
+  private int vaoId;
   private int vertexCount;
 
   private float[] boundingCoords = new float[] {};
 
-  public RawModel(int vaoID, int vertexCount) {
-    this.vaoID = vaoID;
+  public RawModel(int vaoId, int vertexCount) {
+    this.vaoId = vaoId;
     this.vertexCount = vertexCount;
   }
 
@@ -24,8 +24,8 @@ public class RawModel {
    *
    * @return a reference for the location of the model data in the memory
    */
-  public int getVaoID() {
-    return vaoID;
+  public int getVaoId() {
+    return vaoId;
   }
 
   /**
@@ -37,11 +37,11 @@ public class RawModel {
     return vertexCount;
   }
 
-  public void setBoundingCoords(float[] boundingCoords) {
-    this.boundingCoords = boundingCoords;
-  }
-
   public float[] getBoundingCoords() {
     return boundingCoords;
+  }
+
+  public void setBoundingCoords(float[] boundingCoords) {
+    this.boundingCoords = boundingCoords;
   }
 }

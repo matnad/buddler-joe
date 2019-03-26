@@ -5,28 +5,26 @@ import org.joml.Matrix4f;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 
-/**
- * Math functions to create Transformation Matrices and the barryCentric.
- */
+/** Math functions to create Transformation Matrices and the barryCentric. */
 public class Maths {
 
   /**
-   * Matrix used to TRANSLATE (=move) an object for projection.
-   * This gets us from local coordinates to world coordinates
+   * Matrix used to TRANSLATE (=move) an object for projection. This gets us from local coordinates
+   * to world coordinates
    *
    * @param translation movement along the axis
-   * @param rx          Rotation around X axis
-   * @param ry          Rotation around Y axis
-   * @param rz          Rotation around Z axis
-   * @param scale       Scaling factor
+   * @param rx Rotation around X axis
+   * @param ry Rotation around Y axis
+   * @param rz Rotation around Z axis
+   * @param scale Scaling factor
    * @return A translation Matrix
    */
-  public static Matrix4f createTransformationMatrix(Vector3f translation, float rx, float ry,
-                                                    float rz, Vector3f scale) {
+  public static Matrix4f createTransformationMatrix(
+      Vector3f translation, float rx, float ry, float rz, Vector3f scale) {
     Matrix4f matrix = new Matrix4f();
     matrix.setTranslation(translation);
-    matrix.rotateZYX((float) Math.toRadians(rx), (float) Math.toRadians(ry),
-        (float) Math.toRadians(rz));
+    matrix.rotateZYX(
+        (float) Math.toRadians(rx), (float) Math.toRadians(ry), (float) Math.toRadians(rz));
     matrix.scale(scale.x, scale.y, scale.z);
     return matrix;
   }
@@ -35,7 +33,7 @@ public class Maths {
    * Used to place and scale GUI and HUD elements.
    *
    * @param translation Position of the gui on screen
-   * @param scale       size of the gui
+   * @param scale size of the gui
    * @return Matrix to transform the GUI
    */
   public static Matrix4f createTransformationMatrix(Vector2f translation, Vector2f scale) {
@@ -44,11 +42,9 @@ public class Maths {
         .scale(new Vector3f(scale.x, scale.y, 1f));
   }
 
-
   /**
-   * View Matrix.
-   * Used to transform from World Coordinates to Camera Coordinates.
-   * Used and calculated a lot!
+   * View Matrix. Used to transform from World Coordinates to Camera Coordinates. Used and
+   * calculated a lot!
    *
    * <p>Intuition: Shifts an object in the "opposite" directions of the camera.
    *
@@ -59,7 +55,7 @@ public class Maths {
     Matrix4f matrix = new Matrix4f();
     matrix.rotate((float) Math.toRadians(camera.getPitch()), new Vector3f(1, 0, 0));
     matrix.rotate((float) Math.toRadians(camera.getYaw()), new Vector3f(0, 1, 0));
-    //matrix.rotate((float) Math.toRadians(camera.getRoll()), new Vector3f(0, 0, 1));
+    // matrix.rotate((float) Math.toRadians(camera.getRoll()), new Vector3f(0, 0, 1));
     Vector3f cameraPos = camera.getPosition();
     Vector3f negativeCameraPos = new Vector3f(-cameraPos.x, -cameraPos.y, -cameraPos.z);
     matrix.translate(negativeCameraPos);
@@ -67,10 +63,10 @@ public class Maths {
   }
 
   /**
-   * Used to get the height in a triangle
-   * Only used to generate terrain with a height map. To find the exact height of a point inside
-   * a vertex.
+   * Used to get the height in a triangle Only used to generate terrain with a height map. To find
+   * the exact height of a point inside a vertex.
    * https://en.wikipedia.org/wiki/Barycentric_coordinate_system
+   *
    * @param p1 point 1
    * @param p2 point 2
    * @param p3 point 3
@@ -84,7 +80,4 @@ public class Maths {
     float l3 = 1.0f - l1 - l2;
     return l1 * p1.y + l2 * p2.y + l3 * p3.y;
   }
-
-
-
 }

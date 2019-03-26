@@ -13,8 +13,6 @@ import net.packets.loginlogout.PacketDisconnect;
 import net.packets.loginlogout.PacketLogin;
 import net.packets.name.PacketSetName;
 
-
-
 /**
  * The client-side interface to communicate with the server.
  *
@@ -69,7 +67,7 @@ public class StartNetworkOnlyClient {
                 + "join <lobby name> - Join lobby with specified name\n"
                 + "leave - Leave your current lobby\n"
                 + "connect - reconnect if the socket has been closed, "
-                    + "display connection info otherwise\n"
+                + "display connection info otherwise\n"
                 + "disconnect - Disconnect from the server\n"
                 + "help - Display this message");
       } else if (inputMessage.equals("ping")) {
