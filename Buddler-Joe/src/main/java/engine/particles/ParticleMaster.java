@@ -15,8 +15,8 @@ import org.joml.Matrix4f;
 
 /**
  * Manages a Hash Map of particle Lists, sorted by Texture (one list for each type of particle).
- * Will remove expired particles from the list, sort the active ones by camera distance and
- * call the renderer with the lists.
+ * Will remove expired particles from the list, sort the active ones by camera distance and call the
+ * renderer with the lists.
  *
  * <p>Initializes particle systems (load textures)
  */
@@ -27,14 +27,14 @@ public class ParticleMaster {
   /**
    * Initialize the renderer and load all the particle effect systems with textures.
    *
-   * @param loader           Pass the main loader from the Game class. There is no reason to have
-   *                        more than one loader.
+   * @param loader Pass the main loader from the Game class. There is no reason to have more than
+   *     one loader.
    * @param projectionMatrix Usually just pass the matrix from the master renderer.
    */
   public static void init(Loader loader, Matrix4f projectionMatrix) {
     renderer = new ParticleRenderer(loader, projectionMatrix);
 
-    //Load the textures of all the particle effects
+    // Load the textures of all the particle effects
     Fire.init(loader);
     Explosion.init(loader);
     Smoke.init(loader);
@@ -42,9 +42,9 @@ public class ParticleMaster {
   }
 
   /**
-   * Update all the lists of particles (one list per type of particle) and remove expired ones.
-   * Sort particles within list by distance from the camera so the near particles are rendered on
-   * top of the far ones.
+   * Update all the lists of particles (one list per type of particle) and remove expired ones. Sort
+   * particles within list by distance from the camera so the near particles are rendered on top of
+   * the far ones.
    *
    * @param camera the camera the particles are facing
    */

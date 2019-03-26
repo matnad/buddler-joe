@@ -6,9 +6,7 @@ import engine.render.Loader;
 
 public class Explosion extends ParticleSystem {
 
-
   private static ParticleTexture particleTexture;
-
 
   /**
    * ParticleSystem with texture for explosion pre-loaded. See ParticleSystem.java for more details.

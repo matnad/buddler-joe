@@ -9,14 +9,13 @@ import org.joml.Vector3f;
 import org.joml.Vector4f;
 
 /**
- * Set rules of physics for particles and emits them.
- * The physics "simulation" (transformation) is done in the Particle Renderer and the shaders
+ * Set rules of physics for particles and emits them. The physics "simulation" (transformation) is
+ * done in the Particle Renderer and the shaders
  *
  * <p>This class generates and emits particles and sets rules how they behave in the 3D world.
  *
- * <p>Can set texture, amount per second, speed, gravity compliance, life duration and scale of
- * the particles including
- * a value for how much these values can deviate among particles of this system.
+ * <p>Can set texture, amount per second, speed, gravity compliance, life duration and scale of the
+ * particles including a value for how much these values can deviate among particles of this system.
  */
 @SuppressWarnings("Duplicates")
 public class ParticleSystem {
@@ -35,26 +34,30 @@ public class ParticleSystem {
   private Vector3f direction;
   private float directionDeviation = 0;
   private Vector3f rotationAxis;
-  //private float rotationDeviation = 0; //TODO (Matthias): Add some rotation noise
+  // private float rotationDeviation = 0; //TODO (Matthias): Add some rotation noise
 
   private final ParticleTexture texture;
 
   private final Random random = new Random();
 
   /**
-   * Create a new Particle System.
-   * Can specify various settings for how the particles behave.
+   * Create a new Particle System. Can specify various settings for how the particles behave.
    *
-   * @param texture          ParticleTexture Object
-   * @param pps              Particles per second. Will be probabilistically rounded each frame.
-   * @param speed            Distance travelled per second.
+   * @param texture ParticleTexture Object
+   * @param pps Particles per second. Will be probabilistically rounded each frame.
+   * @param speed Distance travelled per second.
    * @param gravityComplient Effect of the gravity constant. 0 means no gravity, negative numbers
-   *                         mean negative gravity.
-   * @param lifeLength       Duration before the particle is removed in seconds.
-   * @param scale            Size of the particle.
+   *     mean negative gravity.
+   * @param lifeLength Duration before the particle is removed in seconds.
+   * @param scale Size of the particle.
    */
-  public ParticleSystem(ParticleTexture texture, float pps, float speed, float gravityComplient,
-                        float lifeLength, float scale) {
+  public ParticleSystem(
+      ParticleTexture texture,
+      float pps,
+      float speed,
+      float gravityComplient,
+      float lifeLength,
+      float scale) {
     this.texture = texture;
     this.pps = pps;
     this.averageSpeed = speed;
@@ -67,25 +70,25 @@ public class ParticleSystem {
    * Initial movement direction vector for the particles.
    *
    * @param direction The average direction in which particles are emitted.
-   * @param deviation A value between 0 and 1 indicating how far from the chosen direction
-   *                  particles can deviate.
+   * @param deviation A value between 0 and 1 indicating how far from the chosen direction particles
+   *     can deviate.
    */
   public void setDirection(Vector3f direction, float deviation) {
     this.direction = new Vector3f(direction);
     this.directionDeviation = (float) (deviation * Math.PI);
   }
 
-
   /**
-   * Set rotation axis when generating particles on a plane.
-   * This is the normal vector to the plane, so we distribute the particles evenly on the plane.
+   * Set rotation axis when generating particles on a plane. This is the normal vector to the plane,
+   * so we distribute the particles evenly on the plane.
+   *
    * @param rotationAxis normal vector to a plane usually
    * @param deviation to get some deviation away from a flat plane
    */
-  @SuppressWarnings("UnusedParameters") //This is added as a to-do
+  @SuppressWarnings("UnusedParameters") // This is added as a to-do
   public void setRotationAxis(Vector3f rotationAxis, float deviation) {
     this.rotationAxis = rotationAxis;
-    //this.rotationDeviation = (float) (deviation * Math.PI);
+    // this.rotationDeviation = (float) (deviation * Math.PI);
   }
 
   public void randomizeRotation() {
@@ -132,17 +135,17 @@ public class ParticleSystem {
     float delta = (float) Game.window.getFrameTimeSeconds();
     float particlesToCreate = pps * delta;
 
-    //Full particles
+    // Full particles
     int count = (int) Math.floor(particlesToCreate);
 
-    //Chance to create another particle
+    // Chance to create another particle
     float partialParticle = particlesToCreate % 1;
 
     for (int i = 0; i < count; i++) {
       particles.add(emitParticle(systemCenter));
     }
     if (Math.random() < partialParticle) {
-      //Chance equal to fraction of particle
+      // Chance equal to fraction of particle
       particles.add(emitParticle(systemCenter));
     }
     return particles;
@@ -151,24 +154,29 @@ public class ParticleSystem {
   private Particle emitParticle(Vector3f center) {
     Vector3f velocity;
     if (direction != null) {
-      //Cone style random vectors
+      // Cone style random vectors
       velocity = generateRandomUnitVectorWithinCone(direction, directionDeviation);
 
       if (rotationAxis != null) {
-        //Random in a plane described by direction
+        // Random in a plane described by direction
         velocity = generateRandomUnitVectorWithinPlane(velocity, rotationAxis);
-
       }
     } else {
-      //Completely random vectors
+      // Completely random vectors
       velocity = generateRandomUnitVector();
     }
     velocity.normalize();
     velocity.mul(generateValue(averageSpeed, speedError));
     float scale = generateValue(averageScale, scaleError);
     float lifeLength = generateValue(averageLifeLength, lifeError);
-    return new Particle(texture, new Vector3f(center), velocity, gravityComplient, lifeLength,
-        generateRotation(), scale);
+    return new Particle(
+        texture,
+        new Vector3f(center),
+        velocity,
+        gravityComplient,
+        lifeLength,
+        generateRotation(),
+        scale);
   }
 
   private float generateValue(float average, float errorMargin) {
@@ -185,23 +193,18 @@ public class ParticleSystem {
   }
 
   /**
-   * Returns a direction vector randomized over a plane area (rotate direction vector around axis
-   * by a random theta).
+   * Returns a direction vector randomized over a plane area (rotate direction vector around axis by
+   * a random theta).
    */
   private static Vector3f generateRandomUnitVectorWithinPlane(Vector3f direction, Vector3f axis) {
 
     Random random = new Random();
     float theta = (float) (random.nextFloat() * 2f * Math.PI);
 
-    return new Vector3f()
-        .set(direction)
-        .rotateAxis(theta, axis.x, axis.y, axis.z);
-
+    return new Vector3f().set(direction).rotateAxis(theta, axis.x, axis.y, axis.z);
   }
 
-  /**
-   * Returns a direction vector randomized over a cone area.
-   */
+  /** Returns a direction vector randomized over a cone area. */
   private static Vector3f generateRandomUnitVectorWithinCone(Vector3f coneDirection, float angle) {
     float cosAngle = (float) Math.cos(angle);
     Random random = new Random();
@@ -212,19 +215,16 @@ public class ParticleSystem {
     float y = (float) (rootOneMinusZSquared * Math.sin(theta));
 
     Vector4f direction = new Vector4f(x, y, z, 1);
-    if (coneDirection.x != 0 || coneDirection.y != 0
+    if (coneDirection.x != 0
+        || coneDirection.y != 0
         || (coneDirection.z != 1 && coneDirection.z != -1)) {
-      Vector3f rotateAxis = new Vector3f()
-          .set(coneDirection)
-          .cross(new Vector3f(0, 0, 1))
-          .normalize();
+      Vector3f rotateAxis =
+          new Vector3f().set(coneDirection).cross(new Vector3f(0, 0, 1)).normalize();
 
-      float rotateAngle = (float) Math.acos(new Vector3f().set(coneDirection).dot(new Vector3f(0,
-          0, 1)));
+      float rotateAngle =
+          (float) Math.acos(new Vector3f().set(coneDirection).dot(new Vector3f(0, 0, 1)));
       Matrix4f rotationMatrix = new Matrix4f();
-      rotationMatrix
-          .rotate(-rotateAngle, rotateAxis)
-          .transform(direction);
+      rotationMatrix.rotate(-rotateAngle, rotateAxis).transform(direction);
     } else if (coneDirection.z == -1) {
       direction.z *= -1;
     }
@@ -239,5 +239,4 @@ public class ParticleSystem {
     float y = (float) (rootOneMinusZSquared * Math.sin(theta));
     return new Vector3f(x, y, z);
   }
-
 }

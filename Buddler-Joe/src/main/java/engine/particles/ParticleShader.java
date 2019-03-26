@@ -4,10 +4,7 @@ import engine.shaders.ShaderProgram;
 import org.joml.Matrix4f;
 import org.joml.Vector2f;
 
-/**
- * Shader programm for particles.
- * Just passing some variables to the shader
- */
+/** Shader programm for particles. Just passing some variables to the shader */
 public class ParticleShader extends ShaderProgram {
 
   private static final String SHADER_NAME = "particle";
@@ -36,8 +33,7 @@ public class ParticleShader extends ShaderProgram {
     super.bindAttribute(0, "position");
   }
 
-  void loadTextureCoordInfo(Vector2f offset1, Vector2f offset2, float numRows,
-                            float blend) {
+  void loadTextureCoordInfo(Vector2f offset1, Vector2f offset2, float numRows, float blend) {
     super.load2DVector(locationTexOffset1, offset1);
     super.load2DVector(locationTexOffset2, offset2);
     super.load2DVector(locationTexCoordInfo, new Vector2f(numRows, blend));
@@ -50,5 +46,4 @@ public class ParticleShader extends ShaderProgram {
   void loadProjectionMatrix(Matrix4f projectionMatrix) {
     super.loadMatrix(locationProjectionMatrix, projectionMatrix);
   }
-
 }
