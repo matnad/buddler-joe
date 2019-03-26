@@ -123,7 +123,11 @@ public class Window {
     time = getTime();
   }
 
-  /** Returns true if the window is about to be closed or closed already. */
+  /**
+   * Returns true if the window is about to be closed or closed already.
+   *
+   * @return true if the window is about to be closed or closed already
+   */
   public boolean isClosed() {
     return glfwWindowShouldClose(window);
   }
@@ -167,6 +171,8 @@ public class Window {
   /**
    * Returns true if the Game Loop should update and render a frame. This is to limit the FPS of the
    * game.
+   *
+   * @return true if the Game Loop should update and render a frame
    */
   public boolean isUpdating() {
     delta = 0;
@@ -207,7 +213,11 @@ public class Window {
     return height;
   }
 
-  /** Returns the GLFW window as a number. */
+  /**
+   * Returns the GLFW window as a number.
+   *
+   * @return the GLFW window as a number
+   */
   public long getWindow() {
     return window;
   }
@@ -216,7 +226,11 @@ public class Window {
     return currentFps;
   }
 
-  /** Returns true for exactly one frame every second. */
+  /**
+   * Returns true for exactly one frame every second.
+   *
+   * @return true for exactly one frame every second
+   */
   public boolean isOneSecond() {
     return isOneSecond;
   }
@@ -224,6 +238,8 @@ public class Window {
   /**
    * Returns the time the time delta between this and last frame in seconds. Is used to sync
    * frame-time tasks with real-time tasks.
+   *
+   * @return the time the time delta between this and last frame in seconds
    */
   public double getFrameTimeSeconds() {
     return delta;

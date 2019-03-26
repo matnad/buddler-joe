@@ -93,6 +93,7 @@ public class MasterRenderer {
   /**
    * Start/stop shaders and pass rendering priority for entities and terrains.
    *
+   * @param lights list of lights to render
    * @param camera active camera, used to generate view matrix
    */
   @SuppressWarnings("Duplicates")

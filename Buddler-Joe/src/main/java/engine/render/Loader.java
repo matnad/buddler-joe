@@ -32,7 +32,7 @@ import org.lwjgl.opengl.GL20;
  *
  * <p>Provides different methods for different kind of models: - Simple Geometric Forms (just
  * vertices) - Text Models (Flat vertices and texture coords) - Standard 3D Models: Vertices,
- * Texture Coords, Normals, Indices -> everything contained in an obj file - Standard 3D Models with
+ * Texture Coords, Normals, Indices. everything contained in an obj file - Standard 3D Models with
  * Bounding Boxes (simplified the constructor for this a bit)
  *
  * <p>Provides different methods to load textures into openGL Buffers. Does not load the Textures
@@ -132,7 +132,7 @@ public class Loader {
     Texture texture = null;
     try {
       // Load the texture from the file system into openGL
-      texture = TextureLoader.getTexture(fileName + ".png");
+      texture = TextureLoader.getTexture("/assets/fonts/" + fileName + ".png");
 
       // Set parameters such as rendering function and distance/quality (LOD BIAS)
       glGenerateMipmap(GL_TEXTURE_2D);
@@ -157,7 +157,7 @@ public class Loader {
   public int loadTexture(String fileName) {
     Texture texture = null;
     try {
-      texture = TextureLoader.getTexture("src/main/resources/assets/textures/" + fileName + ".png");
+      texture = TextureLoader.getTexture("/assets/textures/" + fileName + ".png");
       glGenerateMipmap(GL_TEXTURE_2D);
       glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
       glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_LOD_BIAS, -.3f); // Textures appear blurred the

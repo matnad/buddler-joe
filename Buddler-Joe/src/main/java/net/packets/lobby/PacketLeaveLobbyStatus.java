@@ -18,7 +18,7 @@ public class PacketLeaveLobbyStatus extends Packet {
    * @param clientId ClientId of the receiver.
    * @param data A String that contains Information about the leave attempt. ("OK" or in the case of
    *     an error, a suitable errormessage) {@link PacketLeaveLobbyStatus#status} gets set to equal
-   *     {@param data}.
+   *     data.
    */
   public PacketLeaveLobbyStatus(int clientId, String data) {
     // Server builds
@@ -34,7 +34,7 @@ public class PacketLeaveLobbyStatus extends Packet {
    *
    * @param data A String that contains Information about the lobby-leave attempt. ("OK" or in the
    *     case of an error, a suitable errormessage) {@link PacketLeaveLobbyStatus#status} gets set
-   *     to equal {@param data}.
+   *     to equal data.
    */
   public PacketLeaveLobbyStatus(String data) {
     // Client builds

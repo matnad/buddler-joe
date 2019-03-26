@@ -27,7 +27,7 @@ public class PacketChatMessageToServer extends Packet {
    * und receiver with "║" as delimiter.
    *
    * @param chatmsg the message from the client {@link PacketChatMessageToServer#chatmsg} gets set
-   *     here, to equal {@param data}.
+   *     here, to equal data.
    */
   // client
   public PacketChatMessageToServer(String chatmsg) {
@@ -46,7 +46,7 @@ public class PacketChatMessageToServer extends Packet {
    *
    * @param clientId ClientId of the client that has sent this packet.
    * @param data a String with the chat message, timestamp and receiver. (names are separated by
-   *     "║") {@link PacketChatMessageToServer#chatmsg} gets set here, to equal {@param data}.
+   *     "║") {@link PacketChatMessageToServer#chatmsg} gets set here, to equal data.
    */
   // server
   public PacketChatMessageToServer(int clientId, String data) {

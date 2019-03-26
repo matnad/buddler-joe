@@ -47,6 +47,8 @@ public class MousePlacer {
    * Run every frame while placer Modes is on.
    * Updates position of the entity to be placed and detects the intent to place an item.
    * If successful, it places the item and disables placer Modes.
+   *
+   * @param camera active camera (origin of mouse ray)
    */
   public static void update(Camera camera) {
 

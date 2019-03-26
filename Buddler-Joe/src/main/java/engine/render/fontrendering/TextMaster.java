@@ -34,6 +34,8 @@ public class TextMaster {
   /**
    * Load text to a VAO and store the ID.
    * The text can now be rendered.
+   *
+   * @param text guitext to load
    */
   public static void loadText(GuiText text) {
     FontType font = text.getFont();

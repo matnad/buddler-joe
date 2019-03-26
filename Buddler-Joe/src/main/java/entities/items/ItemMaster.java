@@ -55,6 +55,8 @@ public class ItemMaster {
    *
    * @param type     type of the item as described in {@link ItemMaster.ItemTypes}
    * @param position 3D coordinate to place the item
+   *
+   * @return the generated item
    */
   public static Item generateItem(ItemTypes type, Vector3f position) {
     Item item;

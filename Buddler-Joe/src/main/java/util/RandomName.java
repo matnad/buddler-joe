@@ -111,6 +111,7 @@ public class RandomName {
   /**
    * Returns a random name with an adjective and animal name in it.
    * Still need to check if it is unique!
+   * @return random name
    */
   public static String getRandomName() {
     Random random = new Random();

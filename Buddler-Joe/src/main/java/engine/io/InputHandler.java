@@ -150,6 +150,8 @@ public class InputHandler {
   /**
    * Returns true if the Game is currently asking the player to place an object with the mouse
    * cursor.
+   *
+   * @return true if placer mode is enabled (player is placing an object)
    */
   public static boolean isPlacerMode() {
     return placerMode;
@@ -180,6 +182,8 @@ public class InputHandler {
    * <p>A 3D direction vector originating from the camera is updated every frame while in placer
    * Modes and the intersection with the z=3 plane can be found with this static method. This
    * position vector is used to place objects in our pseudo 3D world.
+   *
+   * @return direction vector of mouse ray
    */
   public static Vector3f getMouseRay() {
     return new Vector3f(mouseRay);
@@ -289,12 +293,20 @@ public class InputHandler {
     return !isMouseDown(button) && mouseDown[button];
   }
 
-  /** Returns the distance the mouse was moved since the last frame in the horizontal direction. */
+  /**
+   * Returns the distance the mouse was moved since the last frame in the horizontal direction.
+   *
+   * @return the distance the mouse was moved since the last frame in the horizontal direction
+   */
   public static double getCursorPosDX() {
     return cursorPosDX;
   }
 
-  /** Returns the distance the mouse was moved since the last frame in the vertical direction. */
+  /**
+   * Returns the distance the mouse was moved since the last frame in the vertical direction.
+   *
+   * @return the distance the mouse was moved since the last frame in the vertical direction
+   */
   public static double getCursorPosDY() {
     return cursorPosDY;
   }
@@ -305,6 +317,8 @@ public class InputHandler {
    *
    * <p>Use this if you need the cursor position even if the cursor is not moving (when callback is
    * unreliable).
+   *
+   * @return mouse X position in screen coordinates
    */
   public static double getMouseX() {
     DoubleBuffer buffer = BufferUtils.createDoubleBuffer(1);
@@ -318,6 +332,8 @@ public class InputHandler {
    *
    * <p>Use this if you need the cursor position even if the cursor is not moving (when callback is
    * unreliable).
+   *
+   * @return mouse Y position in screen coordinates
    */
   public static double getMouseY() {
     DoubleBuffer buffer = BufferUtils.createDoubleBuffer(1);
@@ -329,6 +345,8 @@ public class InputHandler {
    * Returns the "normal" scroll distance with a mouse wheel since the last frame. Positive value
    * when scrolling the wheel "up" or away from the person, and negative value when scrolling "down"
    * or towards the person.
+   *
+   * @return "normal" scroll distance with a mouse wheel since the last frame.
    */
   // Scrolling
   public static double getMouseScrollY() {

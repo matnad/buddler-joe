@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -42,7 +44,7 @@ class MetaFile {
    *
    * @param file - the font file.
    */
-  MetaFile(File file) {
+  MetaFile(BufferedReader file) {
     this.aspectRatio = 1920f / 1024f; //(double) window.getWidth() / (double) window.getHeight();
     openFile(file);
     loadPaddingData();
@@ -128,9 +130,9 @@ class MetaFile {
    *
    * @param file - the font file.
    */
-  private void openFile(File file) {
+  private void openFile(BufferedReader file) {
     try {
-      reader = new BufferedReader(new FileReader(file));
+      reader = file;
     } catch (Exception e) {
       e.printStackTrace();
       System.err.println("Couldn't read font meta file!");

@@ -2,9 +2,13 @@ package engine.shaders;
 
 import static org.lwjgl.opengl.GL20.glUniformMatrix4fv;
 
+import engine.io.InputHandler;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.URL;
 import java.nio.FloatBuffer;
 import org.joml.Matrix4f;
 import org.joml.Vector2f;
@@ -16,7 +20,7 @@ import org.lwjgl.opengl.GL20;
 /** Abstract shader class. Has the functions to actually load values into the shader. */
 public abstract class ShaderProgram {
 
-  private static final String PATH_TO_GLSL = "src/main/java/engine/shaders/glsl/";
+  private static final String PATH_TO_GLSL = "/assets/glsl/";
 
   private final int programID;
   private final int vertexShaderID;
@@ -96,7 +100,8 @@ public abstract class ShaderProgram {
   private static int loadShader(String file, int type) {
     StringBuilder shaderSource = new StringBuilder();
     try {
-      BufferedReader reader = new BufferedReader(new FileReader(PATH_TO_GLSL + file));
+      InputStream in = ShaderProgram.class.getResourceAsStream(PATH_TO_GLSL + file);
+      BufferedReader reader = new BufferedReader(new InputStreamReader(in));
       String line;
       while ((line = reader.readLine()) != null) {
         shaderSource.append(line).append("//\n");

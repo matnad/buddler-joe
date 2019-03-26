@@ -40,6 +40,7 @@ import static util.IoUtil.ioResourceToByteBuffer;
 
 import engine.textures.Texture;
 import java.io.IOException;
+import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
 import org.lwjgl.system.MemoryStack;

@@ -19,7 +19,7 @@ public class PacketJoinLobby extends Packet {
    *
    * @param data The name of the desired lobby.
    * @param clientId ClientId of the client that has sent this packet. {@link
-   *     PacketJoinLobby#lobbyname} gets set here, to equal {@param data}.
+   *     PacketJoinLobby#lobbyname} gets set here, to equal data
    */
   public PacketJoinLobby(int clientId, String data) {
     // server builds
@@ -34,7 +34,7 @@ public class PacketJoinLobby extends Packet {
    * Constructor that will be used by the Client to build this Packet.
    *
    * @param data The name of the desired lobby. {@link PacketJoinLobby#lobbyname} gets set here, to
-   *     equal {@param data}.
+   *     equal data.
    */
   public PacketJoinLobby(String data) {
     // client builds

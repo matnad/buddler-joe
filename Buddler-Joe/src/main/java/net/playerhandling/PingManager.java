@@ -30,6 +30,8 @@ public class PingManager implements Runnable {
   /**
    * Creates a <code>PingManager</code> object when sending ping from server to client. The client
    * is determined by the <code>clientId</code>.
+   *
+   * @param clientId client unique identifier
    */
   public PingManager(int clientId) {
     listOfPingTS = new ArrayList<>();
@@ -50,7 +52,6 @@ public class PingManager implements Runnable {
    * the default value 0 and the ping will be sent to the server. A ping object will be created by
    * instantiating the <code>PacketPing</code> class.
    *
-   * @throws InterruptedException when thread is interrupted.
    * @see PacketPing
    */
   public void run() {

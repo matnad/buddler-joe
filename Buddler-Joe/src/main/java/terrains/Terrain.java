@@ -7,6 +7,7 @@ import engine.textures.TerrainTexturePack;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Objects;
 import javax.imageio.ImageIO;
 import org.joml.Vector2f;
@@ -92,7 +93,8 @@ public class Terrain extends TerrainFlat {
   private RawModel generateTerrain(Loader loader, String heightMap) {
     BufferedImage image = null;
     try {
-      image = ImageIO.read(new File("src/main/resources/assets/textures/" + heightMap + ".png"));
+      InputStream in = getClass().getResourceAsStream("/assets/textures/" + heightMap + ".png");
+      image = ImageIO.read(in);
     } catch (IOException e) {
       e.printStackTrace();
     }

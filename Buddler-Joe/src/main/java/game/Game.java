@@ -414,6 +414,7 @@ public class Game extends Thread {
 
   /**
    * Returns the active camera that determines which View Matrix is used in the shaders.
+   * @return returns the active camera object for the game
    */
   public static Camera getActiveCamera() {
     return camera;

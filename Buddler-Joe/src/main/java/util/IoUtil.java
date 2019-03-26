@@ -12,20 +12,13 @@ import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
-import java.nio.channels.SeekableByteChannel;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Objects;
 import org.lwjgl.BufferUtils;
 
-/**
- * Official Loader for textures from LWJGL.
- */
+/** Official Loader for textures from LWJGL. */
 public final class IoUtil {
 
-  private IoUtil() {
-  }
+  private IoUtil() {}
 
   private static ByteBuffer resizeBuffer(ByteBuffer buffer, int newCapacity) {
     ByteBuffer newBuffer = BufferUtils.createByteBuffer(newCapacity);
@@ -37,44 +30,32 @@ public final class IoUtil {
   /**
    * Reads the specified resource and returns the raw data as a ByteBuffer.
    *
-   * @param resource   the resource to read
+   * @param resource the resource to read
    * @param bufferSize the initial buffer size
    * @return the resource data
    * @throws IOException if an IO error occurs
    */
-  public static ByteBuffer ioResourceToByteBuffer(String resource, int bufferSize)
-      throws IOException {
-    ByteBuffer buffer;
+  public static ByteBuffer ioResourceToByteBuffer(String resource, int bufferSize) throws IOException {
+    ByteBuffer buffer = null;
 
-    Path path = Paths.get(resource);
-    if (Files.isReadable(path)) {
-      try (SeekableByteChannel fc = Files.newByteChannel(path)) {
-        buffer = BufferUtils.createByteBuffer((int) fc.size() + 1);
-        while (fc.read(buffer) != -1) {
-          //Do nothing
+    try {
+      InputStream source = IoUtil.class.getResourceAsStream(resource);
+      ReadableByteChannel rbc = Channels.newChannel(Objects.requireNonNull(source));
+      buffer = createByteBuffer(bufferSize);
+      while (true) {
+        int bytes = rbc.read(buffer);
+        if (bytes == -1) {
+          break;
+        }
+        if (buffer.remaining() == 0) {
+          buffer = resizeBuffer(buffer, buffer.capacity() * 3 / 2); // 50%
         }
       }
-    } else {
-      try (
-          InputStream source = IoUtil.class.getClassLoader().getResourceAsStream(resource);
-          ReadableByteChannel rbc = Channels.newChannel(Objects.requireNonNull(source))
-      ) {
-        buffer = createByteBuffer(bufferSize);
-
-        while (true) {
-          int bytes = rbc.read(buffer);
-          if (bytes == -1) {
-            break;
-          }
-          if (buffer.remaining() == 0) {
-            buffer = resizeBuffer(buffer, buffer.capacity() * 3 / 2); // 50%
-          }
-        }
-      }
+    } catch (IOException e) {
+      e.printStackTrace();
     }
 
     buffer.flip();
     return buffer.slice();
   }
-
 }

@@ -19,12 +19,20 @@ public class RawModel {
     this.vertexCount = vertexCount;
   }
 
-  /** Returns a reference for the location of the model data in the memory. */
+  /**
+   * Returns a reference for the location of the model data in the memory.
+   *
+   * @return a reference for the location of the model data in the memory
+   */
   public int getVaoID() {
     return vaoID;
   }
 
-  /** Returns the number of vertices present in this model. */
+  /**
+   * Returns the number of vertices present in this model.
+   *
+   * @return number of vertices present in this model
+   */
   public int getVertexCount() {
     return vertexCount;
   }
