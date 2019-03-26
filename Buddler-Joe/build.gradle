@@ -18,30 +18,8 @@ jar {
         )
     }
 }
-//
-//tasks.register("build-cs108") {
-//    group = 'build'
-//    shadowJar
-//
-//}
 
-//import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
-//
-//class GreetingTask extends DefaultTask {
-//    @TaskAction
-//    def greet() {
-//        println 'hello from GreetingTask'
-//    }
-//}
-//
-//// Create a task using the task type
-//def shadow = tasks.shadowJar
-//tasks.remove(shadow)
-//shadow.name = 'cs'
-//shadow.group = 'build'
-//tasks.add(shadow)
-
-//shadowJar.setGroup('build')
+//Task for milestone 3
 task cs108 {
     group = 'build'
     doLast {
@@ -49,7 +27,6 @@ task cs108 {
         javadoc
     }
 }
-
 cs108.finalizedBy shadowJar
 cs108.finalizedBy javadoc
 
@@ -101,7 +78,6 @@ dependencies {
     implementation "org.lwjgl:lwjgl-opengles:3.2.1"
     implementation "org.lwjgl:lwjgl-openvr:3.2.1"
     implementation "org.lwjgl:lwjgl-opus:3.2.1"
-    implementation "org.lwjgl:lwjgl-ovr:3.2.1"
     implementation "org.lwjgl:lwjgl-par:3.2.1"
     implementation "org.lwjgl:lwjgl-remotery:3.2.1"
     implementation "org.lwjgl:lwjgl-rpmalloc:3.2.1"
@@ -133,7 +109,6 @@ dependencies {
     runtimeOnly "org.lwjgl:lwjgl-opengles:3.2.1:$lwjglNatives"
     runtimeOnly "org.lwjgl:lwjgl-openvr:3.2.1:$lwjglNatives"
     runtimeOnly "org.lwjgl:lwjgl-opus:3.2.1:$lwjglNatives"
-    runtimeOnly "org.lwjgl:lwjgl-ovr:3.2.1:$lwjglNatives"
     runtimeOnly "org.lwjgl:lwjgl-par:3.2.1:$lwjglNatives"
     runtimeOnly "org.lwjgl:lwjgl-remotery:3.2.1:$lwjglNatives"
     runtimeOnly "org.lwjgl:lwjgl-rpmalloc:3.2.1:$lwjglNatives"

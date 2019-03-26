@@ -132,7 +132,6 @@ public class Loader {
     Texture texture = null;
     try {
       // Load the texture from the file system into openGL
-      System.out.println(Loader.class.getResource("/assets/fonts/" + fileName + ".png"));
       texture = TextureLoader.getTexture("/assets/fonts/" + fileName + ".png");
 
       // Set parameters such as rendering function and distance/quality (LOD BIAS)
