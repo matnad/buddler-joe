@@ -8,14 +8,16 @@ public class Fire extends ParticleSystem {
 
   private static ParticleTexture particleTexture;
 
-  /** ParticleSystem with texture for fire pre-loaded. See ParticleSystem.java for more details.
+  /**
+   * ParticleSystem with texture for fire pre-loaded. See ParticleSystem.java for more details.
+   *
    * @param pps Particles per second. Will be probabilistically rounded each frame.
    * @param speed Distance travelled per second.
    * @param gravityComplient Effect of the gravity constant. 0 means no gravity, negative numbers
    *     mean negative gravity.
    * @param lifeLength Duration before the particle is removed in seconds.
    * @param scale Size of the particle.
-   * */
+   */
   public Fire(float pps, float speed, float gravityComplient, float lifeLength, float scale) {
     super(particleTexture, pps, speed, gravityComplient, lifeLength, scale);
   }

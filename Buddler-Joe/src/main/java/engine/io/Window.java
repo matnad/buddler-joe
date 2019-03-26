@@ -40,12 +40,12 @@ import org.lwjgl.opengl.GL;
  * <p>Controls
  */
 public class Window {
+  private final double fpsCap;
+  private final String title;
   private int width;
   private int height;
-  private final double fpsCap;
   private double time;
   private double processedTime;
-  private final String title;
   private long window;
   private double delta;
   private int frames;

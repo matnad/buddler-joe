@@ -25,10 +25,9 @@ import terrains.TerrainFlat;
 import util.Maths;
 
 /**
- * Renders Terrains.
- * Gets a list of terrain from the Master Renderer that is pre-processed and with the general
- * openGL settings
- * correctly enabled. This class does the rest required to render the terrain.
+ * Renders Terrains. Gets a list of terrain from the Master Renderer that is pre-processed and with
+ * the general openGL settings correctly enabled. This class does the rest required to render the
+ * terrain.
  */
 public class TerrainRenderer {
 
@@ -38,7 +37,7 @@ public class TerrainRenderer {
    * This is called form the master renderer. Passes correct shader and projection matrix for the
    * shader
    *
-   * @param shader           Terrain Shader
+   * @param shader Terrain Shader
    * @param projectionMatrix matrix for shader
    */
   TerrainRenderer(TerrainShader shader, Matrix4f projectionMatrix) {
@@ -46,7 +45,7 @@ public class TerrainRenderer {
     shader.start();
     shader.loadProjectionMatrix(projectionMatrix);
 
-    //This is to load the positions of the textures into the shader so we can blend them
+    // This is to load the positions of the textures into the shader so we can blend them
     // according to the blend map
     shader.connectTextureUnits();
 
@@ -60,13 +59,13 @@ public class TerrainRenderer {
    */
   public void render(List<TerrainFlat> terrains) {
     for (TerrainFlat terrain : terrains) {
-      prepareTerrain(terrain); //Bind Model
-      loadModelMatrix(terrain); //Pass matrix to shader
+      prepareTerrain(terrain); // Bind Model
+      loadModelMatrix(terrain); // Pass matrix to shader
 
-      //Render Terrain
+      // Render Terrain
       glDrawElements(GL_TRIANGLES, terrain.getModel().getVertexCount(), GL_UNSIGNED_INT, 0);
 
-      unbindTexturedModel(); //Unbind
+      unbindTexturedModel(); // Unbind
     }
   }
 
@@ -77,13 +76,12 @@ public class TerrainRenderer {
    */
   private void prepareTerrain(TerrainFlat terrain) {
     RawModel rawModel = terrain.getModel();
-    glBindVertexArray(rawModel.getVaoID());
+    glBindVertexArray(rawModel.getVaoId());
     glEnableVertexAttribArray(0);
     glEnableVertexAttribArray(1);
     glEnableVertexAttribArray(2);
     bindTextures(terrain);
     shader.loadShineVariables(1, 0);
-
   }
 
   /**
@@ -93,24 +91,21 @@ public class TerrainRenderer {
    */
   private void bindTextures(TerrainFlat terrain) {
     TerrainTexturePack texturePack = terrain.getTexturePack();
-    //Here we actually load the textures in slots 0-4. We pass this info to the shader in the
+    // Here we actually load the textures in slots 0-4. We pass this info to the shader in the
     // constructor
     glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, texturePack.getBackgroundTexture().getTextureID());
+    glBindTexture(GL_TEXTURE_2D, texturePack.getBackgroundTexture().getTextureId());
     glActiveTexture(GL_TEXTURE1);
-    glBindTexture(GL_TEXTURE_2D, texturePack.getTextureR().getTextureID());
+    glBindTexture(GL_TEXTURE_2D, texturePack.getTextureR().getTextureId());
     glActiveTexture(GL_TEXTURE2);
-    glBindTexture(GL_TEXTURE_2D, texturePack.getTextureG().getTextureID());
+    glBindTexture(GL_TEXTURE_2D, texturePack.getTextureG().getTextureId());
     glActiveTexture(GL_TEXTURE3);
-    glBindTexture(GL_TEXTURE_2D, texturePack.getTextureB().getTextureID());
+    glBindTexture(GL_TEXTURE_2D, texturePack.getTextureB().getTextureId());
     glActiveTexture(GL_TEXTURE4);
-    glBindTexture(GL_TEXTURE_2D, terrain.getBlendMap().getTextureID());
-
+    glBindTexture(GL_TEXTURE_2D, terrain.getBlendMap().getTextureId());
   }
 
-  /**
-   * Cleanup.
-   */
+  /** Cleanup. */
   private void unbindTexturedModel() {
     glDisableVertexAttribArray(0);
     glDisableVertexAttribArray(1);
@@ -124,11 +119,13 @@ public class TerrainRenderer {
    * @param terrain terrain to render
    */
   private void loadModelMatrix(TerrainFlat terrain) {
-    Matrix4f transformationMatrix = Maths.createTransformationMatrix(
-        new Vector3f(terrain.getCoordX(),
-        0, terrain.getCoordZ()), terrain.getRotation().x, terrain.getRotation().y,
-        terrain.getRotation().z, new Vector3f(1, 1, 1));
+    Matrix4f transformationMatrix =
+        Maths.createTransformationMatrix(
+            new Vector3f(terrain.getCoordX(), 0, terrain.getCoordZ()),
+            terrain.getRotation().x,
+            terrain.getRotation().y,
+            terrain.getRotation().z,
+            new Vector3f(1, 1, 1));
     shader.loadTransformationMatrix(transformationMatrix);
   }
-
 }

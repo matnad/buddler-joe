@@ -18,35 +18,18 @@ import org.joml.Vector2f;
 import org.joml.Vector3f;
 
 /**
- * Uses Ray Casting in {@link InputHandler} to place an entity with the mouse cursor.
- * Checks if the item collides with a block to make sure the item is placed in an empty space.
+ * Uses Ray Casting in {@link InputHandler} to place an entity with the mouse cursor. Checks if the
+ * item collides with a block to make sure the item is placed in an empty space.
  */
 public class MousePlacer {
-
-  public enum Modes {
-
-    Z3OFFSET(0), //Place on an XY plane with Z=3 (centered on blocks with dim=3)
-    BLOCK(1); //Full 3D placement around the wall terrain and the blocks
-
-    private int mode;
-
-    Modes(int mode) {
-      this.mode = mode;
-    }
-
-    public int getMode() {
-      return mode;
-    }
-  }
 
   private static Entity entity;
   private static int mode;
 
-
   /**
-   * Run every frame while placer Modes is on.
-   * Updates position of the entity to be placed and detects the intent to place an item.
-   * If successful, it places the item and disables placer Modes.
+   * Run every frame while placer Modes is on. Updates position of the entity to be placed and
+   * detects the intent to place an item. If successful, it places the item and disables placer
+   * Modes.
    *
    * @param camera active camera (origin of mouse ray)
    */
@@ -56,10 +39,10 @@ public class MousePlacer {
       return;
     }
 
-    //Placing the item
+    // Placing the item
     if (mode == Modes.Z3OFFSET.getMode()) {
       entity.setPosition(getZ3Intersection(camera));
-      //Place only if not colliding with a block
+      // Place only if not colliding with a block
       if (InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1) && !doesCollide(2)) {
         InputHandler.setPlacerMode(false);
         if (entity instanceof Dynamite) {
@@ -78,9 +61,7 @@ public class MousePlacer {
           Vector3f intersection =
               new Vector3f(InputHandler.getMouseRay())
                   .mul(result.x)
-                  .add(camera.getPosition().x,
-                      camera.getPosition().y,
-                      camera.getPosition().z);
+                  .add(camera.getPosition().x, camera.getPosition().y, camera.getPosition().z);
           intersections.put(block, new Vector3f(intersection.x, intersection.y, intersection.z));
         }
       }
@@ -90,19 +71,19 @@ public class MousePlacer {
       Block intersectionBlock = null;
       if (intersections.size() == 0) {
         /*When no block intersection was found, use normal wall intersection,
-          but we place it closer to the wall.
-         */
+         but we place it closer to the wall.
+        */
         Vector3f wallIntersection = getZ3Intersection(camera);
-        entity.setPosition(new Vector3f(wallIntersection.x, wallIntersection.y,
-            wallIntersection.z - 2));
+        entity.setPosition(
+            new Vector3f(wallIntersection.x, wallIntersection.y, wallIntersection.z - 2));
       } else if (intersections.size() == 1) {
-        //If exactly one intersection was found, we just use that
+        // If exactly one intersection was found, we just use that
         for (Block block : intersections.keySet()) {
           intersection = intersections.get(block);
           intersectionBlock = block;
         }
       } else {
-        //More than 1 candidate for intersection, find the closest to the camera
+        // More than 1 candidate for intersection, find the closest to the camera
         for (Block block : intersections.keySet()) {
           Vector3f inters = intersections.get(block);
           if (intersection == null) {
@@ -117,19 +98,20 @@ public class MousePlacer {
         }
       }
       if (intersection != null && intersectionBlock != null) {
-        //Ensure some distance from the intersecting block.
+        // Ensure some distance from the intersecting block.
 
-        //Add an offset as a percentage of the distance from the center of the block to the object
+        // Add an offset as a percentage of the distance from the center of the block to the object
         float offset = .35f;
 
         /*Take the vector that goes from the center of the block to the entity
-          scale that Vector by the offset factor, then add it to the intersection point.
-          This "pushes the entity away" from the block.
-         */
-        Vector3f scaledDistance = new Vector3f(intersection)
-            .sub(intersectionBlock.getBbox().getCenter())
-            .normalize()
-            .mul(offset);
+         scale that Vector by the offset factor, then add it to the intersection point.
+         This "pushes the entity away" from the block.
+        */
+        Vector3f scaledDistance =
+            new Vector3f(intersection)
+                .sub(intersectionBlock.getBbox().getCenter())
+                .normalize()
+                .mul(offset);
 
         intersection.add(scaledDistance);
 
@@ -137,30 +119,32 @@ public class MousePlacer {
       }
 
       if (InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1) && !doesCollide(3)) {
-        //Bind torches to a block if placed in a block.
+        // Bind torches to a block if placed in a block.
         if (entity instanceof Torch) {
           ((Torch) entity).setBlock(intersectionBlock);
         }
 
         InputHandler.setPlacerMode(false);
         MousePlacer.entity = null;
-
       }
-
     }
   }
 
   private static Vector3f getZ3Intersection(Camera camera) {
-    float distance = Intersectionf.intersectRayPlane(camera.getPosition(),
-        InputHandler.getMouseRay(),
-        new Vector3f(0, 0, 3), new Vector3f(0, 0, 1), 1e-5f);
-    //Calculate intersection of plane and ray
+    float distance =
+        Intersectionf.intersectRayPlane(
+            camera.getPosition(),
+            InputHandler.getMouseRay(),
+            new Vector3f(0, 0, 3),
+            new Vector3f(0, 0, 1),
+            1e-5f);
+    // Calculate intersection of plane and ray
     return getPointOnRay(camera.getPosition(), InputHandler.getMouseRay(), distance);
   }
 
   /**
-   * Check if the entity collides with a block.
-   * (other entities might be added here or in another method in the future)
+   * Check if the entity collides with a block. (other entities might be added here or in another
+   * method in the future)
    *
    * <p>Returns true if the entity is not in an empty space
    */
@@ -173,7 +157,6 @@ public class MousePlacer {
     return false;
   }
 
-
   public static Entity getEntity() {
     return entity;
   }
@@ -184,9 +167,9 @@ public class MousePlacer {
    * @param entity entity to place
    */
   public static void placeEntity(Entity entity) {
-    //Set entity if valid and if the placer is currently not used
+    // Set entity if valid and if the placer is currently not used
     if (entity == null || InputHandler.isPlacerMode()) {
-      //Can't place nothing or placer is already active
+      // Can't place nothing or placer is already active
       return;
     }
     MousePlacer.entity = entity;
@@ -195,9 +178,7 @@ public class MousePlacer {
     InputHandler.setPlacerMode(true);
   }
 
-  /**
-   * Cancel mouse placing and destroy the object being placed.
-   */
+  /** Cancel mouse placing and destroy the object being placed. */
   public static void cancelPlacing() {
     InputHandler.setPlacerMode(false);
     entity.setDestroyed(true);
@@ -207,8 +188,8 @@ public class MousePlacer {
   /**
    * Simple vector math to get point on a ray.
    *
-   * @param origin   starting point of the ray. Usually a camera position
-   * @param ray      direction vector
+   * @param origin starting point of the ray. Usually a camera position
+   * @param ray direction vector
    * @param distance distance to travel on the vector
    * @return point at distance from origin in direction of the ray
    */
@@ -224,5 +205,20 @@ public class MousePlacer {
 
   public static void setMode(int mode) {
     MousePlacer.mode = mode;
+  }
+
+  public enum Modes {
+    Z3OFFSET(0), // Place on an XY plane with Z=3 (centered on blocks with dim=3)
+    BLOCK(1); // Full 3D placement around the wall terrain and the blocks
+
+    private int mode;
+
+    Modes(int mode) {
+      this.mode = mode;
+    }
+
+    public int getMode() {
+      return mode;
+    }
   }
 }

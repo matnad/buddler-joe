@@ -6,19 +6,15 @@ import engine.textures.TerrainTexture;
 import engine.textures.TerrainTexturePack;
 import org.joml.Vector3f;
 
-
-/**
- * Flat Terrain with blend map.
- */
+/** Flat Terrain with blend map. */
 @SuppressWarnings("Duplicates")
 public class TerrainFlat {
 
   static final float SIZE = 200;
   private static final int VERTEX_COUNT = 128;
-
+  RawModel model;
   private float coordX;
   private float coordZ;
-  RawModel model;
   private TerrainTexturePack texturePack;
   private TerrainTexture blendMap;
 
@@ -27,14 +23,18 @@ public class TerrainFlat {
   /**
    * Create a flat terrain tile.
    *
-   * @param gridX       starting point X world coordinate
-   * @param gridZ       starting point Z world coordinate
-   * @param loader      main loader
+   * @param gridX starting point X world coordinate
+   * @param gridZ starting point Z world coordinate
+   * @param loader main loader
    * @param texturePack texture pack with all the textures required for the blend map
-   * @param blendMap    "heat map" image for how to blend images (load as Texture)
+   * @param blendMap "heat map" image for how to blend images (load as Texture)
    */
-  public TerrainFlat(int gridX, int gridZ, Loader loader, TerrainTexturePack texturePack,
-                     TerrainTexture blendMap) {
+  public TerrainFlat(
+      int gridX,
+      int gridZ,
+      Loader loader,
+      TerrainTexturePack texturePack,
+      TerrainTexture blendMap) {
 
     this.texturePack = texturePack;
     this.blendMap = blendMap;
@@ -47,9 +47,8 @@ public class TerrainFlat {
    * Generate Flat Terrain.
    *
    * <p>Creates Vertices, Texture Coords, Normals and Indices for a Flat terrain and loads them into
-   * a raw model
-   * Size and "resolution" can be set in the class vars, this is intended to be used as "Tiles" of
-   * terrain
+   * a raw model Size and "resolution" can be set in the class vars, this is intended to be used as
+   * "Tiles" of terrain
    *
    * @param loader main loader
    * @return Raw Model of Terrain

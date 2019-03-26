@@ -3,8 +3,8 @@ package engine.render.objconverter;
 import org.joml.Vector3f;
 
 /**
- * One Vertex in a 3D Model with index information
- * Only used WHILE parsing obj files to keep the ObjFileLoader less cluttered. *
+ * One Vertex in a 3D Model with index information Only used WHILE parsing obj files to keep the
+ * ObjFileLoader less cluttered. *
  */
 public class Vertex {
 
@@ -39,14 +39,6 @@ public class Vertex {
     return textureIndexOther == textureIndex && normalIndexOther == normalIndex;
   }
 
-  void setTextureIndex(int textureIndex) {
-    this.textureIndex = textureIndex;
-  }
-
-  void setNormalIndex(int normalIndex) {
-    this.normalIndex = normalIndex;
-  }
-
   public Vector3f getPosition() {
     return position;
   }
@@ -55,8 +47,16 @@ public class Vertex {
     return textureIndex;
   }
 
+  void setTextureIndex(int textureIndex) {
+    this.textureIndex = textureIndex;
+  }
+
   int getNormalIndex() {
     return normalIndex;
+  }
+
+  void setNormalIndex(int normalIndex) {
+    this.normalIndex = normalIndex;
   }
 
   Vertex getDuplicateVertex() {
@@ -66,5 +66,4 @@ public class Vertex {
   void setDuplicateVertex(Vertex duplicateVertex) {
     this.duplicateVertex = duplicateVertex;
   }
-
 }

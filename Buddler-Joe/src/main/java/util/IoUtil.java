@@ -33,9 +33,8 @@ public final class IoUtil {
    * @param resource the resource to read
    * @param bufferSize the initial buffer size
    * @return the resource data
-   * @throws IOException if an IO error occurs
    */
-  public static ByteBuffer ioResourceToByteBuffer(String resource, int bufferSize) throws IOException {
+  public static ByteBuffer ioResourceToByteBuffer(String resource, int bufferSize) {
     ByteBuffer buffer = null;
 
     try {

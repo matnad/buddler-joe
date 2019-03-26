@@ -2,13 +2,10 @@ package engine.shaders;
 
 import static org.lwjgl.opengl.GL20.glUniformMatrix4fv;
 
-import engine.io.InputHandler;
 import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.URL;
 import java.nio.FloatBuffer;
 import org.joml.Matrix4f;
 import org.joml.Vector2f;
@@ -21,12 +18,10 @@ import org.lwjgl.opengl.GL20;
 public abstract class ShaderProgram {
 
   private static final String PATH_TO_GLSL = "/assets/glsl/";
-
-  private final int programID;
-  private final int vertexShaderID;
-  private final int fragmentShaderID;
-
   private static final FloatBuffer matrixBuffer = BufferUtils.createFloatBuffer(16);
+  private final int programId;
+  private final int vertexShaderId;
+  private final int fragmentShaderId;
 
   /**
    * Initialize the VS and FS with the specified name. Load them in openGL and attach them to VS
@@ -40,53 +35,15 @@ public abstract class ShaderProgram {
   public ShaderProgram(String shaderName) {
     String vertexFile = shaderName + ".vs";
     String fragmentFile = shaderName + ".fs";
-    vertexShaderID = loadShader(vertexFile, GL20.GL_VERTEX_SHADER);
-    fragmentShaderID = loadShader(fragmentFile, GL20.GL_FRAGMENT_SHADER);
-    programID = GL20.glCreateProgram();
-    GL20.glAttachShader(programID, vertexShaderID);
-    GL20.glAttachShader(programID, fragmentShaderID);
+    vertexShaderId = loadShader(vertexFile, GL20.GL_VERTEX_SHADER);
+    fragmentShaderId = loadShader(fragmentFile, GL20.GL_FRAGMENT_SHADER);
+    programId = GL20.glCreateProgram();
+    GL20.glAttachShader(programId, vertexShaderId);
+    GL20.glAttachShader(programId, fragmentShaderId);
     bindAttributes();
-    GL20.glLinkProgram(programID);
-    GL20.glValidateProgram(programID);
+    GL20.glLinkProgram(programId);
+    GL20.glValidateProgram(programId);
     getAllUniformLocations();
-  }
-
-  protected abstract void getAllUniformLocations();
-
-  protected int getUniformLocation(String uniformName) {
-    return GL20.glGetUniformLocation(programID, uniformName);
-  }
-
-  /** Called immediately before using the shader while rendering. */
-  public void start() {
-    GL20.glUseProgram(programID);
-  }
-
-  /** When done rendering with this shader. */
-  public void stop() {
-    GL20.glUseProgram(0);
-  }
-
-  /** Unbind both shaders. */
-  public void cleanUp() {
-    stop();
-    GL20.glDetachShader(programID, vertexShaderID);
-    GL20.glDetachShader(programID, fragmentShaderID);
-    GL20.glDeleteShader(vertexShaderID);
-    GL20.glDeleteShader(fragmentShaderID);
-    GL20.glDeleteProgram(programID);
-  }
-
-  protected abstract void bindAttributes();
-
-  /**
-   * Bind shader attribute to openGL location.
-   *
-   * @param attribute slot
-   * @param variableName name of the shader variable
-   */
-  protected void bindAttribute(int attribute, String variableName) {
-    GL20.glBindAttribLocation(programID, attribute, variableName);
   }
 
   /**
@@ -111,15 +68,53 @@ public abstract class ShaderProgram {
       e.printStackTrace();
       System.exit(-1);
     }
-    int shaderID = GL20.glCreateShader(type);
-    GL20.glShaderSource(shaderID, shaderSource);
-    GL20.glCompileShader(shaderID);
-    if (GL20.glGetShaderi(shaderID, GL20.GL_COMPILE_STATUS) == GL11.GL_FALSE) {
-      System.out.println(GL20.glGetShaderInfoLog(shaderID, 500));
+    int shaderId = GL20.glCreateShader(type);
+    GL20.glShaderSource(shaderId, shaderSource);
+    GL20.glCompileShader(shaderId);
+    if (GL20.glGetShaderi(shaderId, GL20.GL_COMPILE_STATUS) == GL11.GL_FALSE) {
+      System.out.println(GL20.glGetShaderInfoLog(shaderId, 500));
       System.err.println("Could not compile shader!");
       System.exit(-1);
     }
-    return shaderID;
+    return shaderId;
+  }
+
+  protected abstract void getAllUniformLocations();
+
+  protected int getUniformLocation(String uniformName) {
+    return GL20.glGetUniformLocation(programId, uniformName);
+  }
+
+  /** Called immediately before using the shader while rendering. */
+  public void start() {
+    GL20.glUseProgram(programId);
+  }
+
+  /** When done rendering with this shader. */
+  public void stop() {
+    GL20.glUseProgram(0);
+  }
+
+  /** Unbind both shaders. */
+  public void cleanUp() {
+    stop();
+    GL20.glDetachShader(programId, vertexShaderId);
+    GL20.glDetachShader(programId, fragmentShaderId);
+    GL20.glDeleteShader(vertexShaderId);
+    GL20.glDeleteShader(fragmentShaderId);
+    GL20.glDeleteProgram(programId);
+  }
+
+  protected abstract void bindAttributes();
+
+  /**
+   * Bind shader attribute to openGL location.
+   *
+   * @param attribute slot
+   * @param variableName name of the shader variable
+   */
+  protected void bindAttribute(int attribute, String variableName) {
+    GL20.glBindAttribLocation(programId, attribute, variableName);
   }
 
   /*

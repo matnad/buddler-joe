@@ -55,10 +55,10 @@ public class Loader {
    * @return Raw Model that holds the VAO ID
    */
   public RawModel loadToVao(float[] positions) {
-    int vaoID = createVao();
+    int vaoId = createVao();
     this.storeDataInAttributeList(0, 2, positions);
     unbindVao();
-    return new RawModel(vaoID, positions.length / 2);
+    return new RawModel(vaoId, positions.length / 2);
   }
 
   /**
@@ -71,11 +71,11 @@ public class Loader {
    * @return Raw Model that holds the VAO ID
    */
   public int loadToVao(float[] positions, float[] textureCoords) {
-    final int vaoID = createVao();
+    final int vaoId = createVao();
     storeDataInAttributeList(0, 2, positions);
     storeDataInAttributeList(1, 2, textureCoords);
     unbindVao();
-    return vaoID;
+    return vaoId;
   }
 
   /**
@@ -91,13 +91,13 @@ public class Loader {
    */
   public RawModel loadToVao(
       float[] positions, float[] textureCoords, float[] normals, int[] indices) {
-    final int vaoID = createVao();
+    final int vaoId = createVao();
     bindIndicesBuffer(indices);
     storeDataInAttributeList(0, 3, positions);
     storeDataInAttributeList(1, 2, textureCoords);
     storeDataInAttributeList(2, 3, normals);
     unbindVao();
-    return new RawModel(vaoID, indices.length);
+    return new RawModel(vaoId, indices.length);
   }
 
   /**
@@ -143,8 +143,8 @@ public class Loader {
       System.err.println("Tried to load texture " + fileName + ".png , didn't work");
       System.exit(-1);
     }
-    textures.add(texture.getTextureID());
-    return texture.getTextureID();
+    textures.add(texture.getTextureId());
+    return texture.getTextureId();
   }
 
   /**
@@ -172,9 +172,9 @@ public class Loader {
       System.err.println("Tried to load texture " + fileName + ".png , didn't work");
       System.exit(-1);
     }
-    int textureID = texture.getTextureID();
-    textures.add(textureID);
-    return textureID;
+    int textureId = texture.getTextureId();
+    textures.add(textureId);
+    return textureId;
   }
 
   /** Delete Vertex Arrays, Buffers and Textures when the game is closed. (Clean up memory) */
@@ -192,10 +192,10 @@ public class Loader {
 
   /** Returns a new ID to store a Vertex Array in Memory and binds it. */
   private int createVao() {
-    int vaoID = glGenVertexArrays();
-    vaos.add(vaoID);
-    glBindVertexArray(vaoID);
-    return vaoID;
+    int vaoId = glGenVertexArrays();
+    vaos.add(vaoId);
+    glBindVertexArray(vaoId);
+    return vaoId;
   }
 
   /**
@@ -206,9 +206,9 @@ public class Loader {
    * @param data one type of model data (vertices, normals or texture coords)
    */
   private void storeDataInAttributeList(int attributeNumber, int coordinateSize, float[] data) {
-    int vboID = GL15.glGenBuffers();
-    vbos.add(vboID);
-    GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vboID);
+    int vboId = GL15.glGenBuffers();
+    vbos.add(vboId);
+    GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vboId);
     FloatBuffer buffer = storeDataInFloatBuffer(data);
     GL15.glBufferData(GL15.GL_ARRAY_BUFFER, buffer, GL15.GL_STATIC_DRAW);
     GL20.glVertexAttribPointer(attributeNumber, coordinateSize, GL_FLOAT, false, 0, 0);
@@ -225,9 +225,9 @@ public class Loader {
    * @param indices indices for 3D model
    */
   private void bindIndicesBuffer(int[] indices) {
-    int vboID = GL15.glGenBuffers();
-    vbos.add(vboID);
-    GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, vboID);
+    int vboId = GL15.glGenBuffers();
+    vbos.add(vboId);
+    GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, vboId);
     IntBuffer buffer = storeDataInIntBuffer(indices);
     GL15.glBufferData(GL15.GL_ELEMENT_ARRAY_BUFFER, buffer, GL15.GL_STATIC_DRAW);
   }

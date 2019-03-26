@@ -1,8 +1,8 @@
 package engine.textures;
 
 /**
- * The description of a texture. Used by the Texture loader.
- * TODO: Evaluate if we really need the interface
+ * The description of a texture. Used by the Texture loader. TODO: Evaluate if we really need the
+ * interface
  */
 public interface Texture {
 
@@ -20,12 +20,10 @@ public interface Texture {
    */
   float getWidth();
 
-
   /**
    * Get the OpenGL texture ID for this texture.
    *
    * @return The OpenGL texture ID
    */
-  int getTextureID();
-
+  int getTextureId();
 }

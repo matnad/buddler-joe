@@ -33,13 +33,10 @@ import terrains.Terrain;
 import terrains.TerrainFlat;
 import util.RandomName;
 
-
 /**
- * Playing is static for all intents and purposes. There will never be multiple instances of
- * Playing in the same execution.
- * Getters and setters should be static so we can access them from anywhere, but we have to be
- * very careful
- * which variables we want to be "global"
+ * Playing is static for all intents and purposes. There will never be multiple instances of Playing
+ * in the same execution. Getters and setters should be static so we can access them from anywhere,
+ * but we have to be very careful which variables we want to be "global"
  */
 public class Game extends Thread {
 
@@ -52,55 +49,16 @@ public class Game extends Thread {
   private static final int WIDTH = 800;
   private static final int HEIGHT = 600;
   private static final int FPS = 60;
-
-
-  //Set up GLFW Window
-  private static final boolean fullscreen = false;
   public static final Window window = new Window(WIDTH, HEIGHT, FPS, "Buddler Joe");
-
-  //Valid Stages
-  public enum Stage {
-    MAINMENU, LOBBIES, GAMEMENU, PLAYING
-  }
-
+  // Set up GLFW Window
+  private static final boolean fullscreen = false;
   private static final List<Stage> activeStages = new ArrayList<>();
-
-  //Playing instance and player settings
-  //private static ClientLogic socketClient;
-
-  //Network related variables, still temporary/dummies
-  //private static boolean doConnectToServer = false; //Multiplayer: true, Singleplayer: false
+  // Network related variables, still temporary/dummies
+  // private static boolean doConnectToServer = false; //Multiplayer: true, Singleplayer: false
   private static final boolean connectedToServer = false;
-  public static String username = RandomName.getRandomName(); //TODO (Server Team): Username
-  // maybe needs its own class or should at least be moved to NetPlayer
 
-  //This probably needs to go somewhere else when we work on the chat
-  private static Chat chat;
-
-  /*
-   * TODO (Matthias): Change camera to non-static.
-   * We want everything set up so we could use multiple cameras, even if we don't end up needing
-   * them.
-   * Everything that relies on a camera object should know which camera it is using
-   */
-  public static Camera camera;
-
-  private static Player player;
-  /*
-   * A Temporary, crude "skin-selector". We will work on this when we do GUI Stuff.
-   */
-  public static String myModel;
-  public static String myTexture;
-  public static float myModelSize;
-
-  /*
-   * Keep track of connected players.
-   * TODO (Client Network Team): This needs to be moved to a different class that handles
-   * connected players.
-   */
-  //private List<NetPlayer> netPlayers = new ArrayList<>();
-  //private List<NetPlayer> loadedNetPlayers = new ArrayList<>();
-
+  // Playing instance and player settings
+  // private static ClientLogic socketClient;
   /*
    * All entities that need to be rendered. I can see this moving to a "EntityMaster" class, but
    * is absolutely fine for now.
@@ -108,165 +66,35 @@ public class Game extends Thread {
    * list with minimal maintenance.
    */
   private static final List<Entity> entities = new ArrayList<>();
+  public static String username = RandomName.getRandomName(); // TODO (Server Team): Username
+  // maybe needs its own class or should at least be moved to NetPlayer
+  /*
+   * TODO (Matthias): Change camera to non-static.
+   * We want everything set up so we could use multiple cameras, even if we don't end up needing
+   * them.
+   * Everything that relies on a camera object should know which camera it is using
+   */
+  public static Camera camera;
+  /*
+   * A Temporary, crude "skin-selector". We will work on this when we do GUI Stuff.
+   */
+  public static String myModel;
+  public static String myTexture;
+  public static float myModelSize;
+  // This probably needs to go somewhere else when we work on the chat
+  private static Chat chat;
+  private static Player player;
 
+  /*
+   * Keep track of connected players.
+   * TODO (Client Network Team): This needs to be moved to a different class that handles
+   * connected players.
+   */
+  // private List<NetPlayer> netPlayers = new ArrayList<>();
+  // private List<NetPlayer> loadedNetPlayers = new ArrayList<>();
   private static Terrain aboveGround;
   private static TerrainFlat belowGround;
-
   private static GuiRenderer guiRenderer;
-
-  /**
-   * Initialize the Playing Thread (Treat this like a constructor).
-   */
-  @Override
-  public synchronized void start() {
-
-    //select model
-    /*//Penguin
-    myModel = "penguin";
-    myTexture = "penguin";
-    myModelSize = 2.5f;
-
-    //Rabbit
-    myModel = "bunny";
-    myTexture = "bunny";
-    myModelSize = .15f;*/
-
-    //Person
-    myModel = "person";
-    myTexture = "person";
-    myModelSize = .4f;
-
-    //Start the thread
-    super.start();
-  }
-
-  /**
-   * Here we initialize all the Masters and other classes and generate the world.
-   */
-  @Override
-  public void run() {
-    //Create GLFW Window, we run this in a thread.
-    window.setSize(WIDTH, HEIGHT);
-    window.setFullscreen(fullscreen);
-    window.create();
-
-
-    //Used to load 3D models (.obj) and convert them to coordinates for the shaders, also
-    // initializes the Bounding Boxes
-    Loader loader = new Loader();
-
-    //Initialize World. We can do this a little better once we have a proper algorithm to
-    // generate the world
-    GenerateWorld.generateTerrain(loader);
-    GenerateWorld.generateBlocks(loader);
-    aboveGround = GenerateWorld.getAboveGround();
-    belowGround = GenerateWorld.getBelowGround();
-    if (aboveGround == null || belowGround == null) {
-      System.err.println("Could not generate terrain.");
-    }
-
-    //Initialize items
-    ItemMaster.init(loader);
-
-    //Initialize debris
-    DebrisMaster.init();
-
-    //Initiate the master renderer class
-    MasterRenderer renderer = new MasterRenderer();
-
-    //Generate the player. TODO (later): Move this in some player related class when more work on
-    // network is done
-    RawModel rawPlayer = loader.loadToVao(ObjFileLoader.loadObj(myModel));
-    TexturedModel playerModel = new TexturedModel(rawPlayer,
-        new ModelTexture(loader.loadTexture(myTexture)));
-    player = new Player(playerModel, new Vector3f(90, 2, 3), 0, 0, 0, myModelSize);
-
-    //GUI / HUD
-    //TODO (Matthias): We will need a GuiMaster class to initialize and manage the GUI elements
-    TextMaster.init(loader);
-    GuiString.loadFont(loader);
-    Fps fpsCounter = new Fps();
-    //List<GuiTexture> guis = new ArrayList<>();
-    chat = new Chat(loader);
-    //guis.add(chat.getChatGui());
-    guiRenderer = new GuiRenderer(loader);
-
-    //Load Particle Master
-    ParticleMaster.init(loader, MasterRenderer.getProjectionMatrix());
-
-
-    //Lights and cameras (just one for now)
-    LightMaster.generateLight(
-        LightMaster.LightTypes.SUN,
-        new Vector3f(0, 600, 200),
-        new Vector3f(.3f, .3f, .3f));
-    camera = new Camera(player, window);
-
-    MainMenu.init(loader);
-    GameMenu.init(loader);
-
-    addActiveStage(PLAYING);
-
-    /*
-    **************************************************************
-    ---------HERE STARTS THE GAME LOOP!
-    **************************************************************
-    */
-    while (!window.isClosed()) {
-      if (window.isOneSecond()) {
-        //This runs once per second, we can use it for stuff that needs less frequent updates
-        fpsCounter.updateString("" + window.getCurrentFps());
-      }
-
-      //...
-
-      //This runs super often, we shouldn't use it
-
-      //...
-
-      if (window.isUpdating()) {
-        /* This runs once per frame. Do all the updating here.
-           The order of things is quite relevant here
-           Optimally this should be mostly Masters here
-        */
-        if (activeStages.contains(PLAYING)) {
-          Playing.update(renderer);
-        }
-
-        if (activeStages.contains(MAINMENU)) {
-          MainMenu.update();
-        }
-
-        if (activeStages.contains(GAMEMENU)) {
-          GameMenu.update();
-        }
-
-        //Done with one frame
-        window.swapBuffers();
-      }
-    }
-
-    /*
-    **************************************************************
-    ---------HERE ENDS THE GAME LOOP!
-    **************************************************************
-    */
-
-    //Clean up memory and unbind openGL shader programs
-    TextMaster.cleanUp();
-    guiRenderer.cleanUp();
-    renderer.cleanUp();
-    loader.cleanUp();
-    ParticleMaster.cleanUp();
-
-    //Close and disconnect (still need a window close callback)
-    window.kill();
-    if (connectedToServer) {
-      disconnectFromServer();
-    }
-    System.exit(1); //For now...
-
-  }
 
   /**
    * Any entity added via this function will be passed to the Master Renderer and rendered in the
@@ -280,8 +108,7 @@ public class Game extends Thread {
 
   /**
    * Stops an entity from being passed to the Master Renderer and being rendered in the Playing
-   * World.
-   * Can be used to effectively destroy an entity in the game.
+   * World. Can be used to effectively destroy an entity in the game.
    *
    * @param entity entity that should no longer be rendered
    */
@@ -293,14 +120,31 @@ public class Game extends Thread {
     return entities;
   }
 
+  // Getters
+  public static boolean isConnectedToServer() {
+    return connectedToServer;
+  }
+
+  public static String getUsername() {
+    return username;
+  }
+
+  /**
+   * Returns the active camera that determines which View Matrix is used in the shaders.
+   *
+   * @return returns the active camera object for the game
+   */
+  public static Camera getActiveCamera() {
+    return camera;
+  }
 
   /*
    * Here are some functions that have no other place yet, but they all need to get out of this file
    * Most of them will be moved to the net package when working on the protocol
    */
 
-  private void disconnectFromServer() {
-    //Stuff to do on disconnect
+  public static Player getActivePlayer() {
+    return player;
   }
 
   /*
@@ -402,28 +246,6 @@ public class Game extends Thread {
     }
   }*/
 
-  //Getters
-  public static boolean isConnectedToServer() {
-    return connectedToServer;
-  }
-
-  public static String getUsername() {
-    return username;
-  }
-
-
-  /**
-   * Returns the active camera that determines which View Matrix is used in the shaders.
-   * @return returns the active camera object for the game
-   */
-  public static Camera getActiveCamera() {
-    return camera;
-  }
-
-  public static Player getActivePlayer() {
-    return player;
-  }
-
   public static Terrain getAboveGround() {
     return aboveGround;
   }
@@ -442,10 +264,10 @@ public class Game extends Thread {
 
   /**
    * Add a stage to the game loop.
-   * <p>
-   * Will include this stage to be processed each game loop.
-   * Can not add the same stage multiple times.
-   * </p>
+   *
+   * <p>Will include this stage to be processed each game loop. Can not add the same stage multiple
+   * times.
+   *
    * @param stage stage to add to the game loop
    */
   public static void addActiveStage(Stage stage) {
@@ -461,5 +283,161 @@ public class Game extends Thread {
   public static GuiRenderer getGuiRenderer() {
     return guiRenderer;
   }
-}
 
+  /** Initialize the Playing Thread (Treat this like a constructor). */
+  @Override
+  public synchronized void start() {
+
+    // select model
+    /*//Penguin
+    myModel = "penguin";
+    myTexture = "penguin";
+    myModelSize = 2.5f;
+
+    //Rabbit
+    myModel = "bunny";
+    myTexture = "bunny";
+    myModelSize = .15f;*/
+
+    // Person
+    myModel = "person";
+    myTexture = "person";
+    myModelSize = .4f;
+
+    // Start the thread
+    super.start();
+  }
+
+  /** Here we initialize all the Masters and other classes and generate the world. */
+  @Override
+  public void run() {
+    // Create GLFW Window, we run this in a thread.
+    window.setSize(WIDTH, HEIGHT);
+    window.setFullscreen(fullscreen);
+    window.create();
+
+    // Used to load 3D models (.obj) and convert them to coordinates for the shaders, also
+    // initializes the Bounding Boxes
+    Loader loader = new Loader();
+
+    // Initialize World. We can do this a little better once we have a proper algorithm to
+    // generate the world
+    GenerateWorld.generateTerrain(loader);
+    GenerateWorld.generateBlocks(loader);
+    aboveGround = GenerateWorld.getAboveGround();
+    belowGround = GenerateWorld.getBelowGround();
+    if (aboveGround == null || belowGround == null) {
+      System.err.println("Could not generate terrain.");
+    }
+
+    // Initialize items
+    ItemMaster.init(loader);
+
+    // Initialize debris
+    DebrisMaster.init();
+
+    // Initiate the master renderer class
+    MasterRenderer renderer = new MasterRenderer();
+
+    // Generate the player. TODO (later): Move this in some player related class when more work on
+    // network is done
+    RawModel rawPlayer = loader.loadToVao(ObjFileLoader.loadObj(myModel));
+    TexturedModel playerModel =
+        new TexturedModel(rawPlayer, new ModelTexture(loader.loadTexture(myTexture)));
+    player = new Player(playerModel, new Vector3f(90, 2, 3), 0, 0, 0, myModelSize);
+
+    // GUI / HUD
+    // TODO (Matthias): We will need a GuiMaster class to initialize and manage the GUI elements
+    TextMaster.init(loader);
+    GuiString.loadFont(loader);
+    Fps fpsCounter = new Fps();
+    // List<GuiTexture> guis = new ArrayList<>();
+    chat = new Chat(loader);
+    // guis.add(chat.getChatGui());
+    guiRenderer = new GuiRenderer(loader);
+
+    // Load Particle Master
+    ParticleMaster.init(loader, MasterRenderer.getProjectionMatrix());
+
+    // Lights and cameras (just one for now)
+    LightMaster.generateLight(
+        LightMaster.LightTypes.SUN, new Vector3f(0, 600, 200), new Vector3f(.3f, .3f, .3f));
+    camera = new Camera(player, window);
+
+    MainMenu.init(loader);
+    GameMenu.init(loader);
+
+    addActiveStage(PLAYING);
+
+    /*
+    **************************************************************
+    ---------HERE STARTS THE GAME LOOP!
+    **************************************************************
+    */
+    while (!window.isClosed()) {
+      if (window.isOneSecond()) {
+        // This runs once per second, we can use it for stuff that needs less frequent updates
+        fpsCounter.updateString("" + window.getCurrentFps());
+      }
+
+      // ...
+
+      // This runs super often, we shouldn't use it
+
+      // ...
+
+      if (window.isUpdating()) {
+        /* This runs once per frame. Do all the updating here.
+           The order of things is quite relevant here
+           Optimally this should be mostly Masters here
+        */
+        if (activeStages.contains(PLAYING)) {
+          Playing.update(renderer);
+        }
+
+        if (activeStages.contains(MAINMENU)) {
+          MainMenu.update();
+        }
+
+        if (activeStages.contains(GAMEMENU)) {
+          GameMenu.update();
+        }
+
+        // Done with one frame
+        window.swapBuffers();
+      }
+    }
+
+    /*
+    **************************************************************
+    ---------HERE ENDS THE GAME LOOP!
+    **************************************************************
+    */
+
+    // Clean up memory and unbind openGL shader programs
+    TextMaster.cleanUp();
+    guiRenderer.cleanUp();
+    renderer.cleanUp();
+    loader.cleanUp();
+    ParticleMaster.cleanUp();
+
+    // Close and disconnect (still need a window close callback)
+    window.kill();
+    if (connectedToServer) {
+      disconnectFromServer();
+    }
+    System.exit(1); // For now...
+  }
+
+  private void disconnectFromServer() {
+    // Stuff to do on disconnect
+  }
+
+  // Valid Stages
+  public enum Stage {
+    MAINMENU,
+    LOBBIES,
+    GAMEMENU,
+    PLAYING
+  }
+}

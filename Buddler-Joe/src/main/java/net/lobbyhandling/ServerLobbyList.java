@@ -12,7 +12,7 @@ public class ServerLobbyList {
 
   /**
    * Constructs a {@link ServerLobbyList}.
-   * */
+   */
   public ServerLobbyList() {
     lobbies = new HashMap<>();
   }

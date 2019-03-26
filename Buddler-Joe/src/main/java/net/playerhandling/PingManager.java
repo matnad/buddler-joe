@@ -4,7 +4,6 @@ import static java.lang.Thread.sleep;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-
 import net.packets.loginlogout.PacketDisconnect;
 import net.packets.pingpong.PacketPing;
 
@@ -17,15 +16,14 @@ import net.packets.pingpong.PacketPing;
  * @see net.ClientLogic
  */
 public class PingManager implements Runnable {
+  private final int freq = 1000;
   /**
-   * Class Variables listOfPingTS this list contains the creation time of all sent pings. ping the
+   * Class Variables listOfPingTs this list contains the creation time of all sent pings. ping the
    * average ping clientId the identity of the client freq frequency
    */
-  private ArrayList<String> listOfPingTS;
-
+  private ArrayList<String> listOfPingTs;
   private float ping;
   private int clientId;
-  private final int freq = 1000;
 
   /**
    * Creates a <code>PingManager</code> object when sending ping from server to client. The client
@@ -34,20 +32,20 @@ public class PingManager implements Runnable {
    * @param clientId client unique identifier
    */
   public PingManager(int clientId) {
-    listOfPingTS = new ArrayList<>();
+    listOfPingTs = new ArrayList<>();
     ping = 0;
     this.clientId = clientId;
   }
 
   /** Creates a <code>PingManager</code> object when sending ping from client to server. */
   public PingManager() {
-    listOfPingTS = new ArrayList<>();
+    listOfPingTs = new ArrayList<>();
     ping = 0;
   }
 
   /**
    * Executes every second the automized sending of the pings and saves the creation time in <code>
-   * listOfPingTS</code>. The destination is determined by the <code>clientId</code>. If the
+   * listOfPingTs</code>. The destination is determined by the <code>clientId</code>. If the
    * clientId was passed, the ping would be sent to the client. Otherwise, the clientId will have
    * the default value 0 and the ping will be sent to the server. A ping object will be created by
    * instantiating the <code>PacketPing</code> class.
@@ -79,22 +77,22 @@ public class PingManager implements Runnable {
   }
 
   /**
-   * Appends the creation time of the <code>PacketPing</code> object to <code>listOfPingTS</code>.
+   * Appends the creation time of the <code>PacketPing</code> object to <code>listOfPingTs</code>.
    *
    * @param timestamp creation time of the ping
    */
   private void append(String timestamp) {
-    listOfPingTS.add(timestamp);
+    listOfPingTs.add(timestamp);
   }
 
   /**
-   * Deletes the creation time of the <code>PacketPing</code> object in <code>listOfPingTS</code> if
+   * Deletes the creation time of the <code>PacketPing</code> object in <code>listOfPingTs</code> if
    * the respective <code>PacketPong</code> object returned successfully.
    *
    * @param timestamp creation time of the ping
    */
   public void delete(String timestamp) {
-    listOfPingTS.remove(timestamp);
+    listOfPingTs.remove(timestamp);
   }
 
   /**
@@ -105,7 +103,7 @@ public class PingManager implements Runnable {
    */
   public void updatePing(long diffTime) {
     ping = (ping * 9 + diffTime) / 10f;
-    Iterator<String> iter = listOfPingTS.iterator();
+    Iterator<String> iter = listOfPingTs.iterator();
     long currTime = System.currentTimeMillis();
     String str;
     try {
@@ -118,13 +116,13 @@ public class PingManager implements Runnable {
     } catch (NumberFormatException e) {
       System.out.println("Number Exception");
     }
-    if (listOfPingTS.size() > 0.9f / freq * 10000 || ping > 1000) {
+    if (listOfPingTs.size() > 0.9f / freq * 10000 || ping > 1000) {
       new PacketDisconnect(clientId).processData();
     }
   }
 
-  public ArrayList getListOfPingTS() {
-    return listOfPingTS;
+  public ArrayList getListOfPingTs() {
+    return listOfPingTs;
   }
 
   /**

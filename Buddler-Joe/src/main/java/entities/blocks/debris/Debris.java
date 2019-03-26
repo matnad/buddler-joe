@@ -6,77 +6,76 @@ import entities.blocks.BlockMaster;
 import game.Game;
 import org.joml.Vector3f;
 
-/**
- * IN DEVELOPMENT
- * Try to create debris that adheres to physics.
- */
+/** IN DEVELOPMENT Try to create debris that adheres to physics. */
 public class Debris extends Entity {
 
+  private final float weight;
   private Vector3f direction;
   private float lifeLength;
   private Vector3f spin;
-  private final float weight;
 
-  //private BlockMaster.BlockTypes type;
-
+  // private BlockMaster.BlockTypes type;
   private float elapsedTime = 0;
 
   /**
-   * Create a (small) copy of a block with physics and a lifeLength attached.
-   * Don't call this directly, use {@link DebrisMaster#generateDebris(Block)} instead.
+   * Create a (small) copy of a block with physics and a lifeLength attached. Don't call this
+   * directly, use {@link DebrisMaster#generateDebris(Block)} instead.
    *
    * @param block base type to create debris from
-   * @param size  size for the debris
+   * @param size size for the debris
    */
   Debris(Block block, float size) {
-    super(Block.getBlockModel(), block.getType().getTextureId(), block.getPosition(), 0, 0, 0,
-        size);
+    super(
+        Block.getBlockModel(), block.getType().getTextureId(), block.getPosition(), 0, 0, 0, size);
     float volume = (float) Math.pow(size, 3);
     float mass = block.getMass();
-    float gravity = 80; //TODO: Gravity constant in settings?
+    float gravity = 80; // TODO: Gravity constant in settings?
     this.weight = mass * volume * gravity;
     this.randomize();
   }
 
   /**
-   * Randomize various parameters of the debris behaviour.
-   * Randomize lifeLength along a normal distribution,
-   * Randomize spin, direction and position along an uniform distribution with a Z bias for
-   * direction
-   * -> this creates the effect of more blocks falling "off the stage"
+   * Randomize various parameters of the debris behaviour. Randomize lifeLength along a normal
+   * distribution, Randomize spin, direction and position along an uniform distribution with a Z
+   * bias for direction -> this creates the effect of more blocks falling "off the stage"
    */
   private void randomize() {
     lifeLength = (float) (2 + DebrisMaster.random.nextGaussian() * 4);
-    direction = new Vector3f(DebrisMaster.random.nextFloat() * 3 - 1.5f,
-        DebrisMaster.random.nextFloat() * 3 - 1.5f, DebrisMaster.random.nextFloat() * 4);
-    spin = new Vector3f(DebrisMaster.random.nextFloat(), DebrisMaster.random.nextFloat(),
-        DebrisMaster.random.nextFloat()).mul(100);
-    setPosition(new Vector3f(getPosition().x + DebrisMaster.random.nextFloat() * 4 - 2,
-        getPosition().y + DebrisMaster.random.nextFloat() * 4 - 2,
-        getPosition().z + DebrisMaster.random.nextFloat() * 4 - 2));
+    direction =
+        new Vector3f(
+            DebrisMaster.random.nextFloat() * 3 - 1.5f,
+            DebrisMaster.random.nextFloat() * 3 - 1.5f,
+            DebrisMaster.random.nextFloat() * 4);
+    spin =
+        new Vector3f(
+                DebrisMaster.random.nextFloat(),
+                DebrisMaster.random.nextFloat(),
+                DebrisMaster.random.nextFloat())
+            .mul(100);
+    setPosition(
+        new Vector3f(
+            getPosition().x + DebrisMaster.random.nextFloat() * 4 - 2,
+            getPosition().y + DebrisMaster.random.nextFloat() * 4 - 2,
+            getPosition().z + DebrisMaster.random.nextFloat() * 4 - 2));
   }
 
   /**
-   * Very simple physics simulation.
-   * Update y position of the block according to (mass * density * gravity) = weight
-   * Then translate along direction vector and rotate around spin vector
+   * Very simple physics simulation. Update y position of the block according to (mass * density *
+   * gravity) = weight Then translate along direction vector and rotate around spin vector
    */
   public void update() {
     elapsedTime += Game.window.getFrameTimeSeconds();
     direction.y -= weight * Game.window.getFrameTimeSeconds();
     handleCollision();
     float speed = 2;
-    increasePosition(new Vector3f(direction)
-        .mul(speed)
-        .mul((float) Game.window.getFrameTimeSeconds()));
-    increaseRotation(new Vector3f(spin)
-        .mul((float) Game.window.getFrameTimeSeconds()));
+    increasePosition(
+        new Vector3f(direction).mul(speed).mul((float) Game.window.getFrameTimeSeconds()));
+    increaseRotation(new Vector3f(spin).mul((float) Game.window.getFrameTimeSeconds()));
   }
 
   /**
-   * Stop all movement when it collides with a surface. Will get us some clipping.
-   * The next step, to do constraint based collision with multiple contact points, is probably a
-   * bit too much.
+   * Stop all movement when it collides with a surface. Will get us some clipping. The next step, to
+   * do constraint based collision with multiple contact points, is probably a bit too much.
    */
   private void handleCollision() {
     if (getPosition().z <= getScale().z) {

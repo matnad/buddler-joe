@@ -2,9 +2,7 @@ package gui;
 
 import org.joml.Vector2f;
 
-/**
- * Simple quad with a texture that can be scaled, faded, textured and positioned.
- */
+/** Simple quad with a texture that can be scaled, faded, textured and positioned. */
 public class GuiTexture {
 
   private final int texture;

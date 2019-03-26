@@ -38,7 +38,7 @@ public class FontRenderer {
   public void render(Map<FontType, List<GuiText>> texts) {
     prepare();
     for (FontType fontType : texts.keySet()) {
-      //For each font atlas, bind the font atlas and then render all texts in that font
+      // For each font atlas, bind the font atlas and then render all texts in that font
       glActiveTexture(GL_TEXTURE0);
       glBindTexture(GL_TEXTURE_2D, fontType.getTextureAtlas());
       for (GuiText guiText : texts.get(fontType)) {
@@ -48,16 +48,12 @@ public class FontRenderer {
     endRendering();
   }
 
-  /**
-   * Clean up memory.
-   */
+  /** Clean up memory. */
   void cleanUp() {
     shader.cleanUp();
   }
 
-  /**
-   * Set up openGL parameters for text rendering.
-   */
+  /** Set up openGL parameters for text rendering. */
   private void prepare() {
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -67,32 +63,30 @@ public class FontRenderer {
 
   /**
    * Load variables to shader and bind/enable VAOs, then draw the objects on screen.
+   *
    * @param text text to render
    */
   private void renderText(GuiText text) {
-    //Bind
+    // Bind
     glBindVertexArray(text.getMesh());
     glEnableVertexAttribArray(0);
     glEnableVertexAttribArray(1);
-    //Pass variables to shader
+    // Pass variables to shader
     shader.loadColour(text.getColour());
     shader.loadTranslation(text.getPosition());
     shader.loadAlpha(text.getAlpha());
-    //Render Text
+    // Render Text
     glDrawArrays(GL_TRIANGLES, 0, text.getVertexCount());
-    //Unbind
+    // Unbind
     glDisableVertexAttribArray(0);
     glDisableVertexAttribArray(1);
     glBindVertexArray(0);
   }
 
-  /**
-   * Set openGL parameters back to project level defaults.
-   */
+  /** Set openGL parameters back to project level defaults. */
   private void endRendering() {
     shader.stop();
     glDisable(GL_BLEND);
     glEnable(GL_DEPTH_TEST);
   }
-
 }

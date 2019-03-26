@@ -11,8 +11,8 @@ import java.util.List;
 class Word {
 
   private final List<Character> characters = new ArrayList<>();
-  private double width = 0;
   private final double fontSize;
+  private double width = 0;
 
   /**
    * Create a new empty word.
@@ -34,18 +34,13 @@ class Word {
     width += character.getAdvanceX() * fontSize;
   }
 
-  /**
-   * Returns he list of characters in the word.
-   */
+  /** Returns he list of characters in the word. */
   List<Character> getCharacters() {
     return characters;
   }
 
-  /**
-   * Returns the width of the word in terms of screen size.
-   */
+  /** Returns the width of the word in terms of screen size. */
   double getWordWidth() {
     return width;
   }
-
 }

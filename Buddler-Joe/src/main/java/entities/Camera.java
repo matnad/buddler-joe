@@ -17,42 +17,32 @@ import org.joml.Vector3f;
 import util.Maths;
 
 /**
- * The main camera of the game that stays around the player character.
- * It can be
- * - moved (pan): Middle Mouse Button or Arrow Keys
- * - tilted (pitch): Left Mouse Button
- * - turned (yaw): Right Mouse Button
- * - zoomed: Scroll Wheel
- * - reset: R
+ * The main camera of the game that stays around the player character. It can be - moved (pan):
+ * Middle Mouse Button or Arrow Keys - tilted (pitch): Left Mouse Button - turned (yaw): Right Mouse
+ * Button - zoomed: Scroll Wheel - reset: R
  *
  * <p>All the movement options have maximum and minimum values to keep the character somewhat in
- *     frame.
- * If more than one button is pressed at the same time, the camera can be moved along all
+ * frame. If more than one button is pressed at the same time, the camera can be moved along all
  * selected axes
  *
- * <p>Currently we only have one camera, but support for multiple cameras is definitely possible
- * and relatively easy to accomplish.
+ * <p>Currently we only have one camera, but support for multiple cameras is definitely possible and
+ * relatively easy to accomplish.
  *
  * <p>This object will be used in a lot of places to calculate the transformation of the World
- * Coordinates.
- * See here: {@link Maths#createViewMatrix(Camera)}
+ * Coordinates. See here: {@link Maths#createViewMatrix(Camera)}
  */
 public class Camera {
-
-  private final Window window;
 
   private static final Vector3f position = new Vector3f(0, 0, 0);
   private static float pitch;
   private static float yaw;
-  private float roll; //Not used right now, but we might
-
+  private final Window window;
+  private final float panSpeed = 20;
+  private final Player player;
+  private float roll; // Not used right now, but we might
   private float offsetX;
   private float offsetY;
   private float offsetZ;
-
-  private final float panSpeed = 20;
-
-  private final Player player;
 
   /**
    * Create a new Camera.
@@ -66,11 +56,7 @@ public class Camera {
     resetCam();
   }
 
-
-  /**
-   * Update function.
-   * Call this every frame to update position and transformation of camera.
-   */
+  /** Update function. Call this every frame to update position and transformation of camera. */
   public void move() {
 
     if (Game.getActiveStages().size() == 1 && Game.getActiveStages().get(0) == PLAYING) {
@@ -85,21 +71,16 @@ public class Camera {
     position.z = offsetZ;
     position.x = player.getPosition().x + offsetX;
     position.y = player.getPosition().y + offsetY;
-
   }
 
-  /**
-   * Check if a reset is requested by the player and reset the camera.
-   */
+  /** Check if a reset is requested by the player and reset the camera. */
   private void isReset() {
     if (InputHandler.isKeyDown(GLFW_KEY_R)) {
       resetCam();
     }
   }
 
-  /**
-   * Reset the camera to the default position and orientation.
-   */
+  /** Reset the camera to the default position and orientation. */
   private void resetCam() {
     pitch = 35;
     yaw = 0;
@@ -110,14 +91,12 @@ public class Camera {
   }
 
   /**
-   * Update pan for the current frame.
-   * Camera can be panned with the arrow keys or by holding down the middle mouse button and
-   * moving the mouse
-   * This will update camera position and make sure the pan never goes above the maximum distance
-   * from the character
+   * Update pan for the current frame. Camera can be panned with the arrow keys or by holding down
+   * the middle mouse button and moving the mouse This will update camera position and make sure the
+   * pan never goes above the maximum distance from the character
    */
   private void calculatePan() {
-    float speed = (float) (panSpeed * window.getFrameTimeSeconds()); //panSpeed is in seconds, so
+    float speed = (float) (panSpeed * window.getFrameTimeSeconds()); // panSpeed is in seconds, so
     // we multiply by frame delta
     if (InputHandler.isKeyDown(GLFW_KEY_LEFT)) {
       offsetX -= speed;
@@ -130,8 +109,8 @@ public class Camera {
     }
 
     if (InputHandler.isMouseDown(GLFW_MOUSE_BUTTON_3)) {
-      offsetX += (float) (InputHandler.getCursorPosDX() * 0.1f);
-      offsetY -= (float) (InputHandler.getCursorPosDY() * 0.1f);
+      offsetX += (float) (InputHandler.getCursorPosDx() * 0.1f);
+      offsetY -= (float) (InputHandler.getCursorPosDy() * 0.1f);
     }
 
     if (offsetX > 30) {
@@ -143,13 +122,11 @@ public class Camera {
     } else if (offsetY < -30) {
       offsetY = -30;
     }
-
   }
 
   /**
-   * Camera can be zoomed in and out by scrolling the mouse wheel.
-   * This will update camera position and make sure the zoom never goes above or below the
-   * allowed distances
+   * Camera can be zoomed in and out by scrolling the mouse wheel. This will update camera position
+   * and make sure the zoom never goes above or below the allowed distances
    */
   private void calculateZoom() {
     float zoomLevel = (float) (InputHandler.getMouseScrollY() * 2f);
@@ -163,16 +140,15 @@ public class Camera {
   }
 
   /**
-   * Camera can be pitched up and down while holding the left mouse button.
-   * This will update update and bound the pitch. "Updating" of the position based on pitch is
-   * done in
-   * {@link Maths#createViewMatrix(Camera)}
+   * Camera can be pitched up and down while holding the left mouse button. This will update update
+   * and bound the pitch. "Updating" of the position based on pitch is done in {@link
+   * Maths#createViewMatrix(Camera)}
    *
    * <p>Pitch is also used for Ray Casting calculations.
    */
   private void calculatePitch() {
     if (InputHandler.isMouseDown(GLFW_MOUSE_BUTTON_1)) {
-      float pitchChange = (float) (InputHandler.getCursorPosDY() * 0.2f);
+      float pitchChange = (float) (InputHandler.getCursorPosDy() * 0.2f);
       pitch += pitchChange;
       if (pitch > 60) {
         pitch = 60;
@@ -183,15 +159,15 @@ public class Camera {
   }
 
   /**
-   * Camera can be yawed left and right while holding the right mouse button.
-   * This will update update and bound the yaw. "Updating" of the position based on yaw is done in
-   * {@link Maths#createViewMatrix(Camera)}
+   * Camera can be yawed left and right while holding the right mouse button. This will update
+   * update and bound the yaw. "Updating" of the position based on yaw is done in {@link
+   * Maths#createViewMatrix(Camera)}
    *
    * <p>Yaw is also used for Ray Casting calculations.
    */
   private void calculateYaw() {
     if (InputHandler.isMouseDown(GLFW_MOUSE_BUTTON_2)) {
-      float yawChange = (float) (InputHandler.getCursorPosDX() * 0.2f);
+      float yawChange = (float) (InputHandler.getCursorPosDx() * 0.2f);
       yaw += yawChange;
       if (yaw < -75) {
         yaw = -75;
@@ -201,18 +177,16 @@ public class Camera {
     }
   }
 
-
   public Vector3f getPosition() {
     return position;
   }
 
-
-  ///**
+  /// **
   // * Maybe as a setting.?
   // */
-  //public void invertPitch() {
+  // public void invertPitch() {
   //  pitch = -pitch;
-  //}
+  // }
 
   public float getPitch() {
     return pitch;
@@ -225,6 +199,4 @@ public class Camera {
   public float getRoll() {
     return roll;
   }
-
-
 }

@@ -11,7 +11,6 @@ import engine.io.InputHandler;
 import engine.render.Loader;
 import engine.render.fontmeshcreator.FontType;
 import engine.render.fontrendering.TextMaster;
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import org.joml.Vector2f;
@@ -21,8 +20,8 @@ import org.joml.Vector3f;
  * The Chat Window Overlay in the Game
  *
  * <p>In its normal state it is transparent. With ENTER it can be activated to type a message.
- * Pressing ENTER while a message is typed will send the message.
- * Pressing ENTER while no message is typed will fade out the chat.
+ * Pressing ENTER while a message is typed will send the message. Pressing ENTER while no message is
+ * typed will fade out the chat.
  *
  * <p>This class is only a mock up and not functional yet, except for the fading and positioning.
  * TODO (anyone): Build a proper message handler
@@ -53,27 +52,39 @@ public class Chat {
     enabled = false;
     alpha = ALPHA_OFF;
 
-    //Load the background image of the chat and set rendering parameters
-    chatGui = new GuiTexture(loader.loadTexture("chat"), new Vector2f(-.6f, -.6f),
-        new Vector2f(.4f, .4f), ALPHA_OFF);
+    // Load the background image of the chat and set rendering parameters
+    chatGui =
+        new GuiTexture(
+            loader.loadTexture("chat"),
+            new Vector2f(-.6f, -.6f),
+            new Vector2f(.4f, .4f),
+            ALPHA_OFF);
     chatText = "";
 
-    //Load font and text properties for all messages
+    // Load font and text properties for all messages
     font = new FontType(loader, "verdana");
     textColour = new Vector3f(1f, 1f, 1f);
-    guiText = new ChatText(chatText, 1, new Vector3f(textColour.x, textColour.y, textColour.z),
-        alpha, font, new Vector2f(.06f, .91f), 1f, false, false);
+    guiText =
+        new ChatText(
+            chatText,
+            1,
+            new Vector3f(textColour.x, textColour.y, textColour.z),
+            alpha,
+            font,
+            new Vector2f(.06f, .91f),
+            1f,
+            false,
+            false);
 
     messages = new ArrayList<>();
     msgSize = 0;
   }
 
-
   /**
    * TEMPORARY METHOD.!!!!!
    *
-   * <p>Called every frame. Reads chat input and toggles chat window
-   * TODO (anyone): Build a keyboard text input handler
+   * <p>Called every frame. Reads chat input and toggles chat window TODO (anyone): Build a keyboard
+   * text input handler
    */
   public void checkInputs() {
     if (InputHandler.isKeyPressed(GLFW_KEY_ENTER)) {
@@ -120,7 +131,6 @@ public class Chat {
       updateGuiText();
     }
     arrangeMessages();
-
   }
 
   /**
@@ -131,20 +141,34 @@ public class Chat {
    */
   private ChatText clearChatText(ChatText text) {
     TextMaster.removeText(text);
-    return new ChatText("", text.getFontSize(), text.getColour(), text.getAlpha(),
-        text.getFont(), text.getPosition(), text.getMaxLineSize(), text.isCentered(),
+    return new ChatText(
+        "",
+        text.getFontSize(),
+        text.getColour(),
+        text.getAlpha(),
+        text.getFont(),
+        text.getPosition(),
+        text.getMaxLineSize(),
+        text.isCentered(),
         text.isSent());
   }
 
   /**
-   * Mock up.
-   * Add timestamp and user to message.
-   * Adds message to a message handler (currently just a list)
-   * Clears the message.
+   * Mock up. Add timestamp and user to message. Adds message to a message handler (currently just a
+   * list) Clears the message.
    */
   private void sendMessage() {
-    ChatText messageText = new ChatText(guiText.getTime() + chatText, .7f, textColour, alpha,
-        font, new Vector2f(.06f, .91f), 1f, false, false);
+    ChatText messageText =
+        new ChatText(
+            guiText.getTime() + chatText,
+            .7f,
+            textColour,
+            alpha,
+            font,
+            new Vector2f(.06f, .91f),
+            1f,
+            false,
+            false);
     guiText = clearChatText(guiText);
     messages.add(messageText);
     chatText = "";
@@ -153,38 +177,34 @@ public class Chat {
   /**
    * TEMPORARY MOCK UP.!!
    *
-   * <p>This should get its own class later to handle network messages
-   * Maybe validate first if there are invalid messages
+   * <p>This should get its own class later to handle network messages Maybe validate first if there
+   * are invalid messages
    *
    * <p>Check if messages changed so we don't have to create them every frame
    */
   private void arrangeMessages() {
-    if (messages.size() != msgSize) { //Something changed
+    if (messages.size() != msgSize) { // Something changed
       float posY = .64f;
       float posX = .045f;
       for (ChatText message : messages) {
         message.setPosition(new Vector2f(posX, posY));
         posY += .02f;
       }
-      msgSize = messages.size(); //Update size so we can detect further changes
+      msgSize = messages.size(); // Update size so we can detect further changes
     }
   }
 
-  /**
-   * We need to fully recreate and render if even a single letter changes.
-   */
+  /** We need to fully recreate and render if even a single letter changes. */
   private void updateGuiText() {
-    //guiText.setTextString(chatText); // doesn't work, we need to reload the texture and
-    //create a new text
+    // guiText.setTextString(chatText); // doesn't work, we need to reload the texture and
+    // create a new text
     TextMaster.removeText(guiText);
-    guiText = new ChatText(chatText, 1, textColour, alpha, font, new Vector2f(.06f, .91f), 1f,
-        false, false);
-
+    guiText =
+        new ChatText(
+            chatText, 1, textColour, alpha, font, new Vector2f(.06f, .91f), 1f, false, false);
   }
 
-  /**
-   * Chat fading.
-   */
+  /** Chat fading. */
   private void updateAlpha() {
     if (enabled && alpha < ALPHA_ON) {
       alpha += .02f;
@@ -211,15 +231,15 @@ public class Chat {
     this.enabled = enabled;
   }
 
-  //public String getChatText() {
+  // public String getChatText() {
   //  return chatText;
-  //}
+  // }
   //
-  //public void setChatText(String chatText) {
+  // public void setChatText(String chatText) {
   //  this.chatText = chatText;
-  //}
+  // }
   //
-  //public GuiTexture getChatGui() {
+  // public GuiTexture getChatGui() {
   //  return chatGui;
-  //}
+  // }
 }

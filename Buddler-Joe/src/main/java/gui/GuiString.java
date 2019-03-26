@@ -3,31 +3,26 @@ package gui;
 import engine.render.Loader;
 import engine.render.fontmeshcreator.FontType;
 import engine.render.fontmeshcreator.GuiText;
-import java.io.File;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 
 /**
- * A GUI Text with preloaded font. Not sure this is needed.
- * Will revisit when we work on the HUD
- * For now its basically the same as GuiText
+ * A GUI Text with preloaded font. Not sure this is needed. Will revisit when we work on the HUD For
+ * now its basically the same as GuiText
  */
 public abstract class GuiString {
 
+  private static FontType font;
   private GuiText guiString;
-
   private String guiStringString;
   private Vector2f position;
-  private static FontType font;
   private Vector3f textColour;
   private float alpha;
   private float fontSize;
   private boolean centered;
   private float maxLineLength;
 
-  /**
-   * Generate a GUI String that can be rendered on the screen.
-   */
+  /** Generate a GUI String that can be rendered on the screen. */
   public GuiString() {
     position = new Vector2f(0, 0);
     textColour = new Vector3f(1, 1, 1);
@@ -40,45 +35,57 @@ public abstract class GuiString {
     font = new FontType(loader, "verdana");
   }
 
+  /**
+   * Re-Creates the gui text. This needs to be called whenever the text (guiStringString) is changed
+   * because we need to re-arrange the glyphs.
+   */
   public void createGuiText() {
-    setGuiString(new GuiText(guiStringString, 1f, getFont(), getTextColour(), getAlpha(),
-        getPosition(), getMaxLineLength(), isCentered()));
+    setGuiString(
+        new GuiText(
+            guiStringString,
+            1f,
+            getFont(),
+            getTextColour(),
+            getAlpha(),
+            getPosition(),
+            getMaxLineLength(),
+            isCentered()));
   }
 
   public void updateString() {
     createGuiText();
   }
 
-  public void setAlpha(float alpha) {
-    this.alpha = alpha;
+  public Vector2f getPosition() {
+    return position;
   }
 
   public void setPosition(Vector2f position) {
     this.position = position;
   }
 
-  public Vector2f getPosition() {
-    return position;
-  }
-
-  public void setTextColour(Vector3f textColour) {
-    this.textColour = textColour;
-  }
-
   public FontType getFont() {
     return font;
+  }
+
+  public void setFont(FontType font) {
+    GuiString.font = font;
   }
 
   public Vector3f getTextColour() {
     return textColour;
   }
 
+  public void setTextColour(Vector3f textColour) {
+    this.textColour = textColour;
+  }
+
   public float getAlpha() {
     return alpha;
   }
 
-  public void setFont(FontType font) {
-    GuiString.font = font;
+  public void setAlpha(float alpha) {
+    this.alpha = alpha;
   }
 
   public float getFontSize() {
@@ -103,7 +110,7 @@ public abstract class GuiString {
 
   public void setGuiStringString(String guiStringString) {
     this.guiStringString = guiStringString;
-    //updateString();
+    // updateString();
   }
 
   public boolean isCentered() {

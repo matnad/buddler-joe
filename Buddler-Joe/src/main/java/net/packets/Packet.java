@@ -8,79 +8,20 @@ import net.ClientLogic;
 import net.ServerLogic;
 import net.playerhandling.Player;
 
-
-
 /**
  * Abstract Packet class which all Packets implement and build upon. The enum represents all
  * possible packages which can be implemented by the server/client.
  */
 public abstract class Packet {
 
-  public enum PacketTypes {
-    INVALID("INVAL"),
-    LOGIN("PLOGI"),
-    LOGIN_STATUS("PLOGS"),
-    DISCONNECT("DISCP"),
-    GET_NAME("GETNM"),
-    SEND_NAME("SENDN"),
-    SET_NAME("SETNM"),
-    SET_NAME_STATUS("STNMS"),
-    GET_LOBBIES("LOBGE"),
-    LEAVE_LOBBY("LOBLE"),
-    JOIN_LOBBY("LOBJO"),
-    CREATE_LOBBY("LOBCR"),
-    PING("UPING"),
-    PONG("PONGU"),
-    CREATE_LOBBY_STATUS("LOBCS"),
-    JOIN_LOBBY_STATUS("LOBJS"),
-    LOBBY_OVERVIEW("LOBOV"),
-    CUR_LOBBY_INFO("LOBCI"),
-    GET_LOBBY_INFO("LOBGI"),
-    LEAVE_LOBBY_STATUS("LOBLS"),
-    CHAT_MESSAGE_TO_SERVER("CHATS"),
-    CHAT_MESSAGE_TO_CLIENT("CHATC"),
-    CHAT_MESSAGE_STATUS("CHATN");
-
-    private final String packetCode;
-
-    /**
-     * Constructor to assign the packet type to the subclass.
-     *
-     * @param packetCode to Assign the packet ID so that the subclass is clearly identified
-     */
-    PacketTypes(String packetCode) {
-      this.packetCode = packetCode;
-    }
-
-    public String getPacketCode() {
-      return packetCode;
-    }
-  }
-
   private List<String> errors = new ArrayList<>();
   private PacketTypes packetType;
   private int clientId;
-
   private String data;
 
   protected Packet(PacketTypes packetType) {
     this.packetType = packetType;
   }
-
-  /**
-   * Abstract method to validate the data on the package Used to validate the data as well as the
-   * package to either create an error message or to not do anything at all if all is in order.
-   * Different in every subclass because every packet has different standards and validation
-   * processes to be done.
-   */
-  public abstract void validate();
-
-  /**
-   * Abstract method to process the data on the package Used to do all the necessary work with the
-   * respective packet. Here all the necessary methods get called and all the work gets done. Vital
-   * for every subclass to implement because every packet has a different workload to process.
-   */
-  public abstract void processData();
 
   /**
    * Method to lookup packages from the enum of possible packages Goes through the whole enum and
@@ -99,6 +40,21 @@ public abstract class Packet {
     }
     return PacketTypes.INVALID;
   }
+
+  /**
+   * Abstract method to validate the data on the package Used to validate the data as well as the
+   * package to either create an error message or to not do anything at all if all is in order.
+   * Different in every subclass because every packet has different standards and validation
+   * processes to be done.
+   */
+  public abstract void validate();
+
+  /**
+   * Abstract method to process the data on the package Used to do all the necessary work with the
+   * respective packet. Here all the necessary methods get called and all the work gets done. Vital
+   * for every subclass to implement because every packet has a different workload to process.
+   */
+  public abstract void processData();
 
   /**
    * Communication method to send data to a client. The destination address is determined by their
@@ -146,21 +102,21 @@ public abstract class Packet {
   }
 
   /**
-   * Setter to set the current packetType to a different one.
-   *
-   * @param packetType The PacketType to which the packet should be changed to
-   */
-  public void setPacketType(PacketTypes packetType) {
-    this.packetType = packetType;
-  }
-
-  /**
    * Getter method to return the current PacketType The PacketType is determined by the enum.
    *
    * @return The packetType of the current instance of the packet
    */
   private PacketTypes getPacketType() {
     return packetType;
+  }
+
+  /**
+   * Setter to set the current packetType to a different one.
+   *
+   * @param packetType The PacketType to which the packet should be changed to
+   */
+  public void setPacketType(PacketTypes packetType) {
+    this.packetType = packetType;
   }
 
   protected int getClientId() {
@@ -171,12 +127,12 @@ public abstract class Packet {
     this.clientId = clientId;
   }
 
-  protected void setData(String data) {
-    this.data = data;
-  }
-
   protected String getData() {
     return data;
+  }
+
+  protected void setData(String data) {
+    this.data = data;
   }
 
   /**
@@ -323,5 +279,46 @@ public abstract class Packet {
    */
   public String toString() {
     return getPacketType().getPacketCode() + " " + getData();
+  }
+
+  public enum PacketTypes {
+    INVALID("INVAL"),
+    LOGIN("PLOGI"),
+    LOGIN_STATUS("PLOGS"),
+    DISCONNECT("DISCP"),
+    GET_NAME("GETNM"),
+    SEND_NAME("SENDN"),
+    SET_NAME("SETNM"),
+    SET_NAME_STATUS("STNMS"),
+    GET_LOBBIES("LOBGE"),
+    LEAVE_LOBBY("LOBLE"),
+    JOIN_LOBBY("LOBJO"),
+    CREATE_LOBBY("LOBCR"),
+    PING("UPING"),
+    PONG("PONGU"),
+    CREATE_LOBBY_STATUS("LOBCS"),
+    JOIN_LOBBY_STATUS("LOBJS"),
+    LOBBY_OVERVIEW("LOBOV"),
+    CUR_LOBBY_INFO("LOBCI"),
+    GET_LOBBY_INFO("LOBGI"),
+    LEAVE_LOBBY_STATUS("LOBLS"),
+    CHAT_MESSAGE_TO_SERVER("CHATS"),
+    CHAT_MESSAGE_TO_CLIENT("CHATC"),
+    CHAT_MESSAGE_STATUS("CHATN");
+
+    private final String packetCode;
+
+    /**
+     * Constructor to assign the packet type to the subclass.
+     *
+     * @param packetCode to Assign the packet ID so that the subclass is clearly identified
+     */
+    PacketTypes(String packetCode) {
+      this.packetCode = packetCode;
+    }
+
+    public String getPacketCode() {
+      return packetCode;
+    }
   }
 }

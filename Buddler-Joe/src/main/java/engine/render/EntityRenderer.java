@@ -25,8 +25,7 @@ import util.Maths;
  * Renders models defined by the Entity class.
  *
  * <p>Gets a list of entities from the Master renderer that is pre-processed and with the general
- * openGL settings
- * correctly enabled. This class does the rest required to render the entities.
+ * openGL settings correctly enabled. This class does the rest required to render the entities.
  */
 public class EntityRenderer {
 
@@ -36,7 +35,7 @@ public class EntityRenderer {
    * This is called form the master renderer. Passes correct shader and projection matrix for the
    * shader
    *
-   * @param shader           Terrain Shader
+   * @param shader Terrain Shader
    * @param projectionMatrix matrix for shader
    */
   EntityRenderer(StaticShader shader, Matrix4f projectionMatrix) {
@@ -46,33 +45,30 @@ public class EntityRenderer {
     shader.stop();
   }
 
-
   /**
-   * Renders entities by model. Will prepare a model, then render all entities of that model,
-   * then load the next
-   * model. This is standard optimization so we have to load each model only once.
+   * Renders entities by model. Will prepare a model, then render all entities of that model, then
+   * load the next model. This is standard optimization so we have to load each model only once.
    *
    * @param entities A map that has a list of entities for each model
    */
   public void render(Map<TexturedModel, List<Entity>> entities) {
     for (TexturedModel texturedModel : entities.keySet()) {
-      //Loop through models and prepare the model
+      // Loop through models and prepare the model
       prepareTexturedModels(texturedModel);
       List<Entity> batch = entities.get(texturedModel);
       for (Entity entity : batch) {
-        //Loop through entities of that model and render them
+        // Loop through entities of that model and render them
         prepareInstance(entity);
-        glDrawElements(GL_TRIANGLES, texturedModel.getRawModel().getVertexCount(),
-            GL_UNSIGNED_INT, 0);
+        glDrawElements(
+            GL_TRIANGLES, texturedModel.getRawModel().getVertexCount(), GL_UNSIGNED_INT, 0);
       }
-      unbindTexturedModel(); //Unbind model
+      unbindTexturedModel(); // Unbind model
     }
   }
 
   /**
-   * Binds model and texture. Do everything that needs to be done once per model.
-   * Also disables culling if the texture is transparent to make sure we only render the backside
-   * when we see it.
+   * Binds model and texture. Do everything that needs to be done once per model. Also disables
+   * culling if the texture is transparent to make sure we only render the backside when we see it.
    *
    * <p>Also loads variables for the model that are the same across all entities to the shader
    *
@@ -80,7 +76,7 @@ public class EntityRenderer {
    */
   private void prepareTexturedModels(TexturedModel model) {
     RawModel rawModel = model.getRawModel();
-    glBindVertexArray(rawModel.getVaoID());
+    glBindVertexArray(rawModel.getVaoId());
     glEnableVertexAttribArray(0);
     glEnableVertexAttribArray(1);
     glEnableVertexAttribArray(2);
@@ -92,12 +88,10 @@ public class EntityRenderer {
     shader.loadFakeLightingVariable(texture.isUseFakeLighting());
     shader.loadShineVariables(texture.getShineDamper(), texture.getReflectivity());
     glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, model.getTexture().getID());
+    glBindTexture(GL_TEXTURE_2D, model.getTexture().getId());
   }
 
-  /**
-   * Unbind the model from openGL.
-   */
+  /** Unbind the model from openGL. */
   private void unbindTexturedModel() {
     MasterRenderer.enableCulling();
     glDisableVertexAttribArray(0);
@@ -113,10 +107,14 @@ public class EntityRenderer {
    * @param entity the entity to render
    */
   private void prepareInstance(Entity entity) {
-    Matrix4f transformationMatrix = Maths.createTransformationMatrix(entity.getPosition(),
-        entity.getRotX(), entity.getRotY(), entity.getRotZ(), entity.getScale());
+    Matrix4f transformationMatrix =
+        Maths.createTransformationMatrix(
+            entity.getPosition(),
+            entity.getRotX(),
+            entity.getRotY(),
+            entity.getRotZ(),
+            entity.getScale());
     shader.loadTransformationMatrix(transformationMatrix);
     shader.loadOffset(entity.getTextureXOffset(), entity.getTextureYOffset());
   }
-
 }

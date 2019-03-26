@@ -18,8 +18,8 @@ public class PacketLobbyOverview extends Packet {
    * @param data a single String that begins with "OK║" and contains a List of max 10 Lobbies (and
    *     information to them). Each list entry is separated by "║". In the case that an error
    *     occurred before, the String is an errormessage and does not begin with "OK║". The variable
-   *     data gets split at the positions of "║". Every substring gets then saved in to the
-   *     Array called {@code in}.
+   *     data gets split at the positions of "║". Every substring gets then saved in to the Array
+   *     called {@code in}.
    */
   public PacketLobbyOverview(String data) {
     // Client receives
@@ -37,8 +37,8 @@ public class PacketLobbyOverview extends Packet {
    * @param data A single String that begins with "OK║" and contains a List of max 10 Lobbies (and
    *     information to them). Each list entry is separated by "║". In the case that an error
    *     occurred before the String is an errormessage and does not begin with "OK║". The variable
-   *     data gets split at the positions of "║". Every substring gets then saved in to the
-   *     Array called {@code in}.
+   *     data gets split at the positions of "║". Every substring gets then saved in to the Array
+   *     called {@code in}.
    */
   public PacketLobbyOverview(int clientId, String data) {
     // server builds
@@ -75,8 +75,7 @@ public class PacketLobbyOverview extends Packet {
   public void processData() {
     if (hasErrors()) {
       System.out.println(createErrorMessage());
-    } else if (in[0].equals(
-        "OK")) { // the "OK" gets added in PacketCreatLobby.processData and
+    } else if (in[0].equals("OK")) { // the "OK" gets added in PacketCreatLobby.processData and
       System.out.println("-------------------------------------");
       System.out.println("Available Lobbies:");
       for (int i = 1; i < in.length; i++) {

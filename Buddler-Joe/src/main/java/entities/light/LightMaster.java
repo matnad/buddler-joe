@@ -8,66 +8,40 @@ import java.util.List;
 import java.util.Map;
 import org.joml.Vector3f;
 
-/**
- * Create and manage lights.
- * Only ever create lights using this class
- */
+/** Create and manage lights. Only ever create lights using this class */
 public class LightMaster {
 
   /*The Maximum amount of lights that will be passed to the shader.
-    This is limited to keep the amount of work for the shaders bounded.
-    Depending on how it feels, we can increase or decrease the max lights, but it shouldn't be
-    uncapped.
-    CHANGING THIS VARIABLE IS NOT ENOUGH! You also need to change the shader code in
-          -> entity.vs, entity.fs, terrain.fs and terrain.vs
-   */
+   This is limited to keep the amount of work for the shaders bounded.
+   Depending on how it feels, we can increase or decrease the max lights, but it shouldn't be
+   uncapped.
+   CHANGING THIS VARIABLE IS NOT ENOUGH! You also need to change the shader code in
+         -> entity.vs, entity.fs, terrain.fs and terrain.vs
+  */
   private static final int maxLights = 8;
 
-  //Organize Items in lists that can be accessed by their PRIORITY (ItemTypes.TYPE.getPriority())
+  // Organize Items in lists that can be accessed by their PRIORITY (ItemTypes.TYPE.getPriority())
   private static final Map<Integer, List<Light>> lightLists = new HashMap<>();
 
-  //Keep a list with all active lights
+  // Keep a list with all active lights
   private static final List<Light> allLights = new ArrayList<>();
 
-  //Keep a list with the closest maxLights to pass to the renderer
+  // Keep a list with the closest maxLights to pass to the renderer
   private static List<Light> lightsToRender = new ArrayList<>();
 
-
-  public enum LightTypes {
-    SUN(0, new Vector3f(1, 0, 0)),
-    FLASH(1, new Vector3f(1, .001f, .0005f)),
-    TORCH(2, new Vector3f(1, .01f, .002f));
-
-    private final int priority;
-    private final Vector3f baseAttenuation;
-
-    LightTypes(int priority, Vector3f baseAttenuation) {
-      this.priority = priority;
-      this.baseAttenuation = baseAttenuation;
-    }
-
-    int getPriority() {
-      return priority;
-    }
-
-    public Vector3f getBaseAttenuation() {
-      return baseAttenuation;
-    }
-  }
-
   public static void init() {
-    //Currently we don't need to initialize anything for lights. But every master has an init().
+    // Currently we don't need to initialize anything for lights. But every master has an init().
   }
 
   /**
    * ONLY USE THIS METHOD TO GENERATE LIGHTS.
    *
-   * <p>Generates a light of the chosen type and adds it to all relevant lists.
-   * Keeps track of the light and cleans it up when destroyed.
+   * <p>Generates a light of the chosen type and adds it to all relevant lists. Keeps track of the
+   * light and cleans it up when destroyed.
    *
-   * @param type     Light type
+   * @param type Light type
    * @param position Position in world coordinates
-   * @param colour   colour in R, G, B
+   * @param colour colour in R, G, B
    * @return The generated light object
    */
   public static Light generateLight(LightTypes type, Vector3f position, Vector3f colour) {
@@ -92,10 +66,8 @@ public class LightMaster {
   }
 
   /**
-   * Game loop update function.
-   * Called every frame to update lights.
-   * Will determine which lights are rendered depending on their distance to the camera:
-   * The closest maxLights will be rendered.
+   * Game loop update function. Called every frame to update lights. Will determine which lights are
+   * rendered depending on their distance to the camera: The closest maxLights will be rendered.
    *
    * @param camera active camera
    * @param player active player
@@ -106,18 +78,17 @@ public class LightMaster {
       light.update(camera);
 
       if (light.getType() == LightTypes.SUN) {
-        //Adjust sun strength according to depth Depth 200 = Darkness
-        float col = Math.max(0, 200 + player.getPositionXY().y) / 200;
+        // Adjust sun strength according to depth Depth 200 = Darkness
+        float col = Math.max(0, 200 + player.getPositionXy().y) / 200;
         light.setColour(new Vector3f(col, col, col));
       }
-
     }
 
-    //Go through all the lists in ascending priority until all lists have been processed
+    // Go through all the lists in ascending priority until all lists have been processed
     int numberOfLists = lightLists.size();
     int processedLists = 0;
     int prioCounter = 0;
-    lightsToRender = new ArrayList<>(); //Reset rendered Lights
+    lightsToRender = new ArrayList<>(); // Reset rendered Lights
     while (processedLists < numberOfLists) {
       List<Light> list = lightLists.get(prioCounter);
       if (list != null) {
@@ -135,7 +106,7 @@ public class LightMaster {
             list.remove(lightIndex);
           } else if (lightsToRender.size() < maxLights
               && list.get(lightIndex).getColour().length() > 0) {
-            //If a light has a colour of 0 (all dark), then dont add it
+            // If a light has a colour of 0 (all dark), then dont add it
             lightsToRender.add(list.get(lightIndex));
           }
         }
@@ -145,14 +116,13 @@ public class LightMaster {
     }
   }
 
-
   private static void sortByDistance(List<Light> list) {
     for (int i = 1; i < list.size(); i++) {
       Light light = list.get(i);
       if (light.getDistanceSq() < list.get(i - 1).getDistanceSq()) {
         int attemptPos = i - 1;
-        while (attemptPos != 0 && list.get(attemptPos - 1).getDistanceSq()
-            > light.getDistanceSq()) {
+        while (attemptPos != 0
+            && list.get(attemptPos - 1).getDistanceSq() > light.getDistanceSq()) {
           attemptPos--;
         }
         //noinspection SuspiciousListRemoveInLoop
@@ -163,18 +133,17 @@ public class LightMaster {
   }
 
   private static void addToLightList(Light light) {
-    //Get the list with the priority of the light, if the list is absent, create it
-    List<Light> list = lightLists.computeIfAbsent(light.getType().getPriority(),
-        k -> new ArrayList<>());
+    // Get the list with the priority of the light, if the list is absent, create it
+    List<Light> list =
+        lightLists.computeIfAbsent(light.getType().getPriority(), k -> new ArrayList<>());
 
-    //Add block to its priority-specific list
+    // Add block to its priority-specific list
     list.add(light);
-    //Add to type-unspecific list
+    // Add to type-unspecific list
     allLights.add(light);
 
-    //Adding to render-list will be done in update
+    // Adding to render-list will be done in update
   }
-
 
   public static int getMaxLights() {
     return maxLights;
@@ -182,5 +151,27 @@ public class LightMaster {
 
   public static List<Light> getLightsToRender() {
     return lightsToRender;
+  }
+
+  public enum LightTypes {
+    SUN(0, new Vector3f(1, 0, 0)),
+    FLASH(1, new Vector3f(1, .001f, .0005f)),
+    TORCH(2, new Vector3f(1, .01f, .002f));
+
+    private final int priority;
+    private final Vector3f baseAttenuation;
+
+    LightTypes(int priority, Vector3f baseAttenuation) {
+      this.priority = priority;
+      this.baseAttenuation = baseAttenuation;
+    }
+
+    int getPriority() {
+      return priority;
+    }
+
+    public Vector3f getBaseAttenuation() {
+      return baseAttenuation;
+    }
   }
 }

@@ -25,20 +25,16 @@ public class ParticleSystem {
   private final float gravityComplient;
   private final float averageLifeLength;
   private final float averageScale;
-
+  private final ParticleTexture texture;
+  private final Random random = new Random();
   private float speedError;
   private float lifeError;
   private float scaleError = 0;
-
   private boolean randomRotation = false;
   private Vector3f direction;
+  // private float rotationDeviation = 0; //TODO (Matthias): Add some rotation noise
   private float directionDeviation = 0;
   private Vector3f rotationAxis;
-  // private float rotationDeviation = 0; //TODO (Matthias): Add some rotation noise
-
-  private final ParticleTexture texture;
-
-  private final Random random = new Random();
 
   /**
    * Create a new Particle System. Can specify various settings for how the particles behave.
@@ -64,6 +60,45 @@ public class ParticleSystem {
     this.gravityComplient = gravityComplient;
     this.averageLifeLength = lifeLength;
     this.averageScale = scale;
+  }
+
+  /**
+   * Returns a direction vector randomized over a plane area (rotate direction vector around axis by
+   * a random theta).
+   */
+  private static Vector3f generateRandomUnitVectorWithinPlane(Vector3f direction, Vector3f axis) {
+
+    Random random = new Random();
+    float theta = (float) (random.nextFloat() * 2f * Math.PI);
+
+    return new Vector3f().set(direction).rotateAxis(theta, axis.x, axis.y, axis.z);
+  }
+
+  /** Returns a direction vector randomized over a cone area. */
+  private static Vector3f generateRandomUnitVectorWithinCone(Vector3f coneDirection, float angle) {
+    float cosAngle = (float) Math.cos(angle);
+    Random random = new Random();
+    float theta = (float) (random.nextFloat() * 2f * Math.PI);
+    float z = cosAngle + (random.nextFloat() * (1 - cosAngle));
+    float rootOneMinusZSquared = (float) Math.sqrt(1 - z * z);
+    float x = (float) (rootOneMinusZSquared * Math.cos(theta));
+    float y = (float) (rootOneMinusZSquared * Math.sin(theta));
+
+    Vector4f direction = new Vector4f(x, y, z, 1);
+    if (coneDirection.x != 0
+        || coneDirection.y != 0
+        || (coneDirection.z != 1 && coneDirection.z != -1)) {
+      Vector3f rotateAxis =
+          new Vector3f().set(coneDirection).cross(new Vector3f(0, 0, 1)).normalize();
+
+      float rotateAngle =
+          (float) Math.acos(new Vector3f().set(coneDirection).dot(new Vector3f(0, 0, 1)));
+      Matrix4f rotationMatrix = new Matrix4f();
+      rotationMatrix.rotate(-rotateAngle, rotateAxis).transform(direction);
+    } else if (coneDirection.z == -1) {
+      direction.z *= -1;
+    }
+    return new Vector3f(direction.x, direction.y, direction.z);
   }
 
   /**
@@ -190,45 +225,6 @@ public class ParticleSystem {
     } else {
       return 0;
     }
-  }
-
-  /**
-   * Returns a direction vector randomized over a plane area (rotate direction vector around axis by
-   * a random theta).
-   */
-  private static Vector3f generateRandomUnitVectorWithinPlane(Vector3f direction, Vector3f axis) {
-
-    Random random = new Random();
-    float theta = (float) (random.nextFloat() * 2f * Math.PI);
-
-    return new Vector3f().set(direction).rotateAxis(theta, axis.x, axis.y, axis.z);
-  }
-
-  /** Returns a direction vector randomized over a cone area. */
-  private static Vector3f generateRandomUnitVectorWithinCone(Vector3f coneDirection, float angle) {
-    float cosAngle = (float) Math.cos(angle);
-    Random random = new Random();
-    float theta = (float) (random.nextFloat() * 2f * Math.PI);
-    float z = cosAngle + (random.nextFloat() * (1 - cosAngle));
-    float rootOneMinusZSquared = (float) Math.sqrt(1 - z * z);
-    float x = (float) (rootOneMinusZSquared * Math.cos(theta));
-    float y = (float) (rootOneMinusZSquared * Math.sin(theta));
-
-    Vector4f direction = new Vector4f(x, y, z, 1);
-    if (coneDirection.x != 0
-        || coneDirection.y != 0
-        || (coneDirection.z != 1 && coneDirection.z != -1)) {
-      Vector3f rotateAxis =
-          new Vector3f().set(coneDirection).cross(new Vector3f(0, 0, 1)).normalize();
-
-      float rotateAngle =
-          (float) Math.acos(new Vector3f().set(coneDirection).dot(new Vector3f(0, 0, 1)));
-      Matrix4f rotationMatrix = new Matrix4f();
-      rotationMatrix.rotate(-rotateAngle, rotateAxis).transform(direction);
-    } else if (coneDirection.z == -1) {
-      direction.z *= -1;
-    }
-    return new Vector3f(direction.x, direction.y, direction.z);
   }
 
   private Vector3f generateRandomUnitVector() {

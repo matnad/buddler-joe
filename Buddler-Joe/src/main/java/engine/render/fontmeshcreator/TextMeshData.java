@@ -26,5 +26,4 @@ public class TextMeshData {
   public int getVertexCount() {
     return vertexPositions.length / 2;
   }
-
 }

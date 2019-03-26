@@ -4,18 +4,15 @@ import entities.Camera;
 import org.joml.Vector3f;
 
 /**
- * Simple Light Object with position and colour.
- * Used in the shaders to calculate color of objects
+ * Simple Light Object with position and colour. Used in the shaders to calculate color of objects
  *
  * <p>We will expand on this if time permits!
  */
 public class Light {
+  private final LightMaster.LightTypes type;
   private Vector3f position;
   private Vector3f colour;
   private Vector3f attenuation;
-
-  private final LightMaster.LightTypes type;
-
   private boolean destroyed;
   private float distanceSq;
 
@@ -24,7 +21,7 @@ public class Light {
    *
    * @param type type of light
    * @param position world coordinates
-   * @param colour   r, g, b
+   * @param colour r, g, b
    */
   public Light(LightMaster.LightTypes type, Vector3f position, Vector3f colour) {
     this.type = type;
@@ -43,19 +40,18 @@ public class Light {
     /*We use distance squared since it is faster and makes no difference. It is used to measure
     which particle is closer to the camera.*/
     distanceSq = position.distanceSquared(camera.getPosition());
-
   }
 
   public Vector3f getPosition() {
     return position;
   }
 
-  public Vector3f getColour() {
-    return colour;
-  }
-
   public void setPosition(Vector3f position) {
     this.position = position;
+  }
+
+  public Vector3f getColour() {
+    return colour;
   }
 
   public void setColour(Vector3f colour) {

@@ -4,22 +4,20 @@ import engine.render.Loader;
 import engine.render.fontmeshcreator.FontType;
 import engine.render.fontmeshcreator.GuiText;
 import engine.render.fontmeshcreator.TextMeshData;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 /**
- * Manage the text objects that appear on screen, organized by font type.
- * When a new text object is added, the text mesh is loaded and a VAO is generated to store the
- * text model.
- * Will pass the text objects to the renderer.
+ * Manage the text objects that appear on screen, organized by font type. When a new text object is
+ * added, the text mesh is loaded and a VAO is generated to store the text model. Will pass the text
+ * objects to the renderer.
  */
 public class TextMaster {
 
-  private static Loader loader;
   private static final Map<FontType, List<GuiText>> texts = new HashMap<>();
+  private static Loader loader;
   private static FontRenderer renderer;
 
   public static void init(Loader theLoader) {
@@ -32,8 +30,7 @@ public class TextMaster {
   }
 
   /**
-   * Load text to a VAO and store the ID.
-   * The text can now be rendered.
+   * Load text to a VAO and store the ID. The text can now be rendered.
    *
    * @param text guitext to load
    */
@@ -47,8 +44,7 @@ public class TextMaster {
   }
 
   /**
-   * Removes a GuiText.
-   * This will no longer render it and eventually collect it from memory.
+   * Removes a GuiText. This will no longer render it and eventually collect it from memory.
    *
    * @param text GuiText object to remove
    */
@@ -64,8 +60,7 @@ public class TextMaster {
     renderer.cleanUp();
   }
 
-
-  //public static Map<FontType, List<GuiText>> getTexts() {
+  // public static Map<FontType, List<GuiText>> getTexts() {
   //  return texts;
-  //}
+  // }
 }

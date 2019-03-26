@@ -22,7 +22,7 @@ import terrains.TerrainFlat;
 
 class GenerateWorld {
 
-  //Static random seed for world generation
+  // Static random seed for world generation
   private static final Random random = new Random(676453);
 
   private static Terrain aboveGround;
@@ -36,20 +36,20 @@ class GenerateWorld {
    * Generates different types of terrain and has no return value.
    *
    * @param loader Pass the main loader from the Game class. There is no reason to have more than
-   *              one loader.
+   *     one loader.
    */
   static void generateTerrain(Loader loader) {
-    //Terrain Texture
+    // Terrain Texture
     TerrainTexture grass = new TerrainTexture(loader.loadTexture("grass"));
     TerrainTexture mud = new TerrainTexture(loader.loadTexture("mud"));
     TerrainTexture grassFlowers = new TerrainTexture(loader.loadTexture("grassFlowers"));
     TerrainTexture path = new TerrainTexture(loader.loadTexture("path"));
-    //Blend map defines how the textures get applies (each color = one texture with smooth
+    // Blend map defines how the textures get applies (each color = one texture with smooth
     // transition)
-    //Check out the picture in resources
+    // Check out the picture in resources
     TerrainTexture blendMap = new TerrainTexture(loader.loadTexture("blendMap"));
 
-    //Terrain Generation
+    // Terrain Generation
     TerrainTexturePack texturePack = new TerrainTexturePack(grass, mud, grassFlowers, path);
     aboveGround = new Terrain(0, -1, loader, texturePack, blendMap, "heightMap");
 
@@ -57,64 +57,69 @@ class GenerateWorld {
     belowGround = new TerrainFlat(0, 0, loader, texturePack, blendMap);
     belowGround.setRotation(new Vector3f(0, 0, 90));
 
-    //Tree
+    // Tree
     ModelData data = ObjFileLoader.loadObj("tree");
     RawModel rawTree = loader.loadToVao(data);
     TexturedModel tree = new TexturedModel(rawTree, new ModelTexture(loader.loadTexture("tree")));
 
-    //Tree2
+    // Tree2
     data = ObjFileLoader.loadObj("lowPolyTree");
-    RawModel rawTree2 = loader.loadToVao(data.getVertices(), data.getTextureCoords(),
-        data.getNormals(), data.getIndices());
-    TexturedModel tree2 = new TexturedModel(rawTree2, new ModelTexture(loader.loadTexture(
-        "lowPolyTree")));
+    RawModel rawTree2 =
+        loader.loadToVao(
+            data.getVertices(), data.getTextureCoords(), data.getNormals(), data.getIndices());
+    TexturedModel tree2 =
+        new TexturedModel(rawTree2, new ModelTexture(loader.loadTexture("lowPolyTree")));
 
-    //Fern
+    // Fern
     data = ObjFileLoader.loadObj("fern");
-    RawModel rawFern = loader.loadToVao(data.getVertices(), data.getTextureCoords(),
-        data.getNormals(), data.getIndices());
+    RawModel rawFern =
+        loader.loadToVao(
+            data.getVertices(), data.getTextureCoords(), data.getNormals(), data.getIndices());
     ModelTexture fernAtlas = new ModelTexture(loader.loadTexture("fernAtlas"));
     fernAtlas.setNumberOfRows(2);
     TexturedModel fern = new TexturedModel(rawFern, fernAtlas);
     fern.getTexture().setHasTransparency(true);
 
-
-    //Place some vegetation
+    // Place some vegetation
     for (int i = 0; i < 200; i++) {
       if (i % 3 == 0) {
-        Game.addEntity(new Entity(fern, random.nextInt(4), getNextRandomVector3f(aboveGround), 0,
-            0, 0, .9f));
-        Game.addEntity(new Entity(tree2, getNextRandomVector3f(aboveGround), 0,
-            random.nextFloat() * 360, 0,
-            random.nextFloat() * 0.4f + .2f));
-        Game.addEntity(new Entity(tree, getNextRandomVector3f(aboveGround), 0, 0, 0,
-            random.nextFloat() * 1 + 4));
-
+        Game.addEntity(
+            new Entity(fern, random.nextInt(4), getNextRandomVector3f(aboveGround), 0, 0, 0, .9f));
+        Game.addEntity(
+            new Entity(
+                tree2,
+                getNextRandomVector3f(aboveGround),
+                0,
+                random.nextFloat() * 360,
+                0,
+                random.nextFloat() * 0.4f + .2f));
+        Game.addEntity(
+            new Entity(
+                tree, getNextRandomVector3f(aboveGround), 0, 0, 0, random.nextFloat() * 1 + 4));
       }
     }
   }
 
-  //We change seed management once we have World generation down.
+  // We change seed management once we have World generation down.
 
   /**
-   * Generate the diggable blocks on top of the terrain. Needs to be called only once at the
-   * start of the game.
-   * Currently uses the seed of the GenerateWorld class.
+   * Generate the diggable blocks on top of the terrain. Needs to be called only once at the start
+   * of the game. Currently uses the seed of the GenerateWorld class.
    *
    * @param loader Pass the main loader from the Game class. There is no reason to have more than
-   *              one loader.
+   *     one loader.
    */
   static void generateBlocks(Loader loader) {
-    //Initialise blocks
+    // Initialise blocks
     BlockMaster.init(loader);
 
-    //Generate some blocks
-    float padding = .0f; //Distance between blocks
-    float size = 3; //If this is not 3, you need to use the full block constructor and modify the
+    // Generate some blocks
+    float padding = .0f; // Distance between blocks
+    float size = 3; // If this is not 3, you need to use the full block constructor and modify the
     // Block Master or the Block Files. Just use 3 for now.
     float dim = size * 2 + padding;
 
-    //First row is grass
+    // First row is grass
     for (int i = 0; i < 33; i++) {
       BlockMaster.generateBlock(GRASS, new Vector3f(i * dim + 3f, -size, size));
     }
@@ -140,9 +145,8 @@ class GenerateWorld {
 
   /**
    * Get a random point on the terrain surface for a 200x200 standard terrain, respecting height
-   * maps.
-   * Only use this for terrains with height map, otherwise simply randomize two coordinates on a
-   * plane.
+   * maps. Only use this for terrains with height map, otherwise simply randomize two coordinates on
+   * a plane.
    *
    * @param terrain the Terrain you want to place the object on
    * @return an xyz position coordinate

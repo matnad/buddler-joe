@@ -39,9 +39,8 @@ public class PacketCurLobbyInfo extends Packet {
    * @param data A single String that begins with "OK║" and contains the names of all clients that
    *     are in the lobby of the receiver. (names are separated by "║") In the case that an error
    *     occurred before, the String is an errormessage and does not begin with "OK║". {@link
-   *     PacketCurLobbyInfo#info} gets set to equal data. The variable data gets
-   *     split at the positions of "║". Every substring gets then saved in to the Array {@code
-   *     infoArray}.
+   *     PacketCurLobbyInfo#info} gets set to equal data. The variable data gets split at the
+   *     positions of "║". Every substring gets then saved in to the Array {@code infoArray}.
    */
   public PacketCurLobbyInfo(String data) {
     // client builds

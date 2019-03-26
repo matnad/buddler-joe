@@ -17,59 +17,58 @@ import util.MousePlacer;
 public class Torch extends Item {
 
   private static TexturedModel preloadedModel;
-
-  private Block block;
-
-  private Vector3f colour;
   private final float brightness;
-
   private final Light light;
-
-  private Vector3f flamePosition;
   private final Vector3f flameOffset;
   private final Fire flame;
   private final Smoke smoke;
-
-  private float flickerFactor;
   private final Random random;
+  private Block block;
+  private Vector3f colour;
+  private Vector3f flamePosition;
+  private float flickerFactor;
 
-  /**
-   * Extended Constructor for Torch. Don't use directly. Use the Item Master to create items.
-   */
-  Torch(Vector3f position, Block block, Vector3f colour, float rotX, float rotY, float rotZ,
-        float scale) {
+  /** Extended Constructor for Torch. Don't use directly. Use the Item Master to create items. */
+  Torch(
+      Vector3f position,
+      Block block,
+      Vector3f colour,
+      float rotX,
+      float rotY,
+      float rotZ,
+      float scale) {
     super(ItemMaster.ItemTypes.TORCH, getPreloadedModel(), position, rotX, rotY, rotZ, scale);
 
-    setPlacerMode(MousePlacer.Modes.BLOCK.getMode()); //Torches can be placed on blocks
+    setPlacerMode(MousePlacer.Modes.BLOCK.getMode()); // Torches can be placed on blocks
 
     this.colour = colour;
     this.brightness = 2;
     this.block = block;
 
     random = new Random();
-    flameOffset = new Vector3f(
-        getBbox().getDimX() / 2,
-        getBbox().getDimY() - getBbox().getDimY() / 20,
-        getBbox().getDimZ() / 2
-    );
+    flameOffset =
+        new Vector3f(
+            getBbox().getDimX() / 2,
+            getBbox().getDimY() - getBbox().getDimY() / 20,
+            getBbox().getDimZ() / 2);
 
     flamePosition = new Vector3f(position).add(flameOffset);
-    light = LightMaster.generateLight(LightMaster.LightTypes.TORCH, flamePosition,
-        colour.mul(brightness));
+    light =
+        LightMaster.generateLight(
+            LightMaster.LightTypes.TORCH, flamePosition, colour.mul(brightness));
 
-    //Generate Fuse Effect
+    // Generate Fuse Effect
     flame = new Fire(15, .4f, 0, 2f, 1.5f);
     flame.setDirection(new Vector3f(0, 1, 0), 0f);
     flame.setLifeError(.2f);
     flame.setSpeedError(.5f);
     flame.setScaleError(.3f);
 
-    //Generate Smoke Effect
+    // Generate Smoke Effect
     smoke = new Smoke(20, 0, -.017f, 3f, 1f);
     smoke.setDirection(new Vector3f(0, 1, 0), .2f);
     smoke.setLifeError(.3f);
     smoke.randomizeRotation();
-
   }
 
   Torch(Vector3f position) {
@@ -90,20 +89,19 @@ public class Torch extends Item {
     setPreloadedModel(new TexturedModel(rawTorch, new ModelTexture(loader.loadTexture("torch"))));
   }
 
-  private static void setPreloadedModel(TexturedModel preloadedModel) {
-    Torch.preloadedModel = preloadedModel;
-  }
-
   private static TexturedModel getPreloadedModel() {
     return preloadedModel;
   }
 
+  private static void setPreloadedModel(TexturedModel preloadedModel) {
+    Torch.preloadedModel = preloadedModel;
+  }
 
   @Override
   public void update() {
     flame.generateParticles(flamePosition);
-    //smoke.generateParticles(new Vector3f(flamePosition.x, flamePosition.y+0.2f,
-    //flamePosition.z));
+    // smoke.generateParticles(new Vector3f(flamePosition.x, flamePosition.y+0.2f,
+    // flamePosition.z));
     updateAttenuationNoise();
     if (block != null && block.isDestroyed()) {
       setDestroyed(true);
@@ -131,15 +129,15 @@ public class Torch extends Item {
   public void setDestroyed(boolean destroyed) {
     super.setDestroyed(destroyed);
     light.setDestroyed(destroyed);
-
   }
 
   private void updateAttenuationNoise() {
-    //Add "light flicker" effect with gaussian random walk and pull to the average
+    // Add "light flicker" effect with gaussian random walk and pull to the average
     flickerFactor += (float) (random.nextGaussian() / 5000);
     flickerFactor -= flickerFactor * .05f;
-    light.setAttenuation(new Vector3f(light.getType().getBaseAttenuation()).add(new Vector3f(0,
-        flickerFactor, flickerFactor / 5f)));
+    light.setAttenuation(
+        new Vector3f(light.getType().getBaseAttenuation())
+            .add(new Vector3f(0, flickerFactor, flickerFactor / 5f)));
   }
 
   @Override

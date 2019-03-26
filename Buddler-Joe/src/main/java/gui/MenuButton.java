@@ -14,8 +14,8 @@ public class MenuButton {
   private float maxY;
 
   /**
-   * Generate a Menu Button that keeps track of its position and size.
-   * Has a texture for hovered and not hovered and can tell if it is being hovered.
+   * Generate a Menu Button that keeps track of its position and size. Has a texture for hovered and
+   * not hovered and can tell if it is being hovered.
    *
    * @param loader main loader
    * @param fileUp file name of texture while not hovering
@@ -23,8 +23,8 @@ public class MenuButton {
    * @param position position on the screen
    * @param scale 1 = full screen
    */
-  public MenuButton(Loader loader, String fileUp, String fileDown, Vector2f position,
-                    Vector2f scale) {
+  public MenuButton(
+      Loader loader, String fileUp, String fileDown, Vector2f position, Vector2f scale) {
     stateStatic = new GuiTexture(loader.loadTexture(fileUp), position, scale, 1);
     stateHover = new GuiTexture(loader.loadTexture(fileDown), position, scale, 1);
     minX = position.x - scale.x;
@@ -35,6 +35,7 @@ public class MenuButton {
 
   /**
    * Get the current texture of the button for the renderer, depending on hover status.
+   *
    * @param mouseX current mouse X position
    * @param mouseY current mouse Y position
    * @return hover or non-hover texture
@@ -57,5 +58,4 @@ public class MenuButton {
   public boolean isHover(double mouseX, double mouseY) {
     return (mouseX > minX && mouseX < maxX) && (mouseY > minY && mouseY < maxY);
   }
-
 }

@@ -9,40 +9,16 @@ import java.util.List;
 import java.util.Map;
 import org.joml.Vector3f;
 
-/**
- * Create and manage blocks.
- * Only ever create blocks using this class
- */
+/** Create and manage blocks. Only ever create blocks using this class */
 public class BlockMaster {
-  //Organize Blocks in lists that can be accessed by their type
+  // Organize Blocks in lists that can be accessed by their type
   private static final Map<BlockTypes, List<Block>> blockLists = new HashMap<>();
-  //Keep a list with just blocks
+  // Keep a list with just blocks
   private static final List<Block> blocks = new ArrayList<>();
-  //List of debris (small blocks)
+  // List of debris (small blocks)
 
   /**
-   * Easy access to block types by their name.
-   */
-  public enum BlockTypes {
-    GRASS(4),
-    DIRT(31),
-    GOLD(30),
-    STONE(11);
-
-    private final int textureId;
-
-    BlockTypes(int textureId) {
-      this.textureId = textureId;
-    }
-
-    public int getTextureId() {
-      return textureId;
-    }
-  }
-
-  /**
-   * Init is called once while loading the game.
-   * Pre-loads the block texture atlas
+   * Init is called once while loading the game. Pre-loads the block texture atlas
    *
    * @param loader main loader
    */
@@ -53,10 +29,10 @@ public class BlockMaster {
   /**
    * ONLY USE THIS METHOD TO GENERATE BLOCKS.
    *
-   * <p>Generates a block of the chosen type and adds it to all relevant lists.
-   * Keeps track of the block and cleans it up when destroyed.
+   * <p>Generates a block of the chosen type and adds it to all relevant lists. Keeps track of the
+   * block and cleans it up when destroyed.
    *
-   * @param type     type of the block as described in {@link BlockTypes}
+   * @param type type of the block as described in {@link BlockTypes}
    * @param position 3D coordinate to place the block
    */
   public static void generateBlock(BlockTypes type, Vector3f position) {
@@ -82,11 +58,11 @@ public class BlockMaster {
   }
 
   /**
-   * Called every frame to update if a block has been destroyed.
-   * If so, remove that block from all relevant lists (and clean out empty lists).
+   * Called every frame to update if a block has been destroyed. If so, remove that block from all
+   * relevant lists (and clean out empty lists).
    */
   public static void update() {
-    //Remove destroyed blocks from the list and update entities
+    // Remove destroyed blocks from the list and update entities
     Iterator<Map.Entry<BlockTypes, List<Block>>> mapIterator = blockLists.entrySet().iterator();
     while (mapIterator.hasNext()) {
       List<Block> list = mapIterator.next().getValue();
@@ -94,11 +70,11 @@ public class BlockMaster {
       while (iterator.hasNext()) {
         Block block = iterator.next();
         if (block.isDestroyed()) {
-          //Remove block from list and entities
+          // Remove block from list and entities
           Game.removeEntity(block);
           iterator.remove();
           blocks.remove(block);
-          //Clean up list if empty
+          // Clean up list if empty
           if (list.isEmpty()) {
             mapIterator.remove();
           }
@@ -115,25 +91,43 @@ public class BlockMaster {
    * @param block freshly generated block
    */
   private static void addBlockToList(Block block) {
-    //Get the list with the type of the block, if the list is absent, create it
+    // Get the list with the type of the block, if the list is absent, create it
     List<Block> list = blockLists.computeIfAbsent(block.getType(), k -> new ArrayList<>());
 
-    //If the block is not destroyed, add it to the Game to be rendered
+    // If the block is not destroyed, add it to the Game to be rendered
     if (!block.isDestroyed()) {
-      //Add block to its type-specific list
+      // Add block to its type-specific list
       list.add(block);
-      //Add to type-unspecific list
+      // Add to type-unspecific list
       blocks.add(block);
-      //Add to render list
+      // Add to render list
       Game.addEntity(block);
     }
   }
 
-  //public static Map<BlockTypes, List<Block>> getBlockLists() {
-  //  return blockLists;
-  //}
-
   public static List<Block> getBlocks() {
     return blocks;
+  }
+
+  // public static Map<BlockTypes, List<Block>> getBlockLists() {
+  //  return blockLists;
+  // }
+
+  /** Easy access to block types by their name. */
+  public enum BlockTypes {
+    GRASS(4),
+    DIRT(31),
+    GOLD(30),
+    STONE(11);
+
+    private final int textureId;
+
+    BlockTypes(int textureId) {
+      this.textureId = textureId;
+    }
+
+    public int getTextureId() {
+      return textureId;
+    }
   }
 }

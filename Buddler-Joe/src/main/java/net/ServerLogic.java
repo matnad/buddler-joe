@@ -50,33 +50,6 @@ public class ServerLogic {
   }
 
   /**
-   * Method to wait for incoming players and then create and start a new thread for them.
-   *
-   * @throws IOException when the server socket fails
-   */
-  void waitForPlayers() throws IOException {
-    int clientId = 1; // Player IDs start at 1
-
-    while (true) {
-      Socket clientSocket = serverSocket.accept();
-      System.out.println("Client Arrived");
-      System.out.println("Start Thread for " + clientId);
-      ClientThread thread = new ClientThread(clientSocket, clientId);
-      clientThreadMap.put(clientId++, thread);
-      new Thread(thread).start();
-    }
-  }
-
-  /** Close the server socket and stop listening to new clients. */
-  void kill() {
-    try {
-      serverSocket.close();
-    } catch (IOException e) {
-      System.out.println("Could not close ServerSocket");
-    }
-  }
-
-  /**
    * Players are managed with their own handler class: {@link ServerPlayerList}.
    *
    * @return an instance of ServerPlayerList with all the connected players and methods to manage
@@ -155,8 +128,9 @@ public class ServerLogic {
 
   /**
    * Method to broadcast a message to every Client on the server.
+   *
    * @param message the message to be sent.
-   * */
+   */
   public static void broadcastChatMessage(String message) {
     String timestamp;
     SimpleDateFormat simpleFormat = new SimpleDateFormat("HH:mm");
@@ -239,6 +213,33 @@ public class ServerLogic {
       if (ct != null) {
         ct.closeSocket();
       }
+    }
+  }
+
+  /**
+   * Method to wait for incoming players and then create and start a new thread for them.
+   *
+   * @throws IOException when the server socket fails
+   */
+  void waitForPlayers() throws IOException {
+    int clientId = 1; // Player IDs start at 1
+
+    while (true) {
+      Socket clientSocket = serverSocket.accept();
+      System.out.println("Client Arrived");
+      System.out.println("Start Thread for " + clientId);
+      ClientThread thread = new ClientThread(clientSocket, clientId);
+      clientThreadMap.put(clientId++, thread);
+      new Thread(thread).start();
+    }
+  }
+
+  /** Close the server socket and stop listening to new clients. */
+  void kill() {
+    try {
+      serverSocket.close();
+    } catch (IOException e) {
+      System.out.println("Could not close ServerSocket");
     }
   }
 }

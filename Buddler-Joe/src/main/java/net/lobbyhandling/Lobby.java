@@ -1,11 +1,8 @@
 package net.lobbyhandling;
 
 import java.util.ArrayList;
-
 import net.ServerLogic;
 import net.playerhandling.Player;
-
-
 
 /**
  * Main lobby class to save the vital information which the server has to access at all times.
@@ -14,10 +11,10 @@ import net.playerhandling.Player;
  */
 public class Lobby {
 
+  private static int lobbyCounter = 1;
   private int lobbyId;
   private String lobbyName;
   private ArrayList<Player> lobbyPlayers;
-  private static int lobbyCounter = 1;
 
   /**
    * Constructor of the lobby-class uses by the Server.
@@ -101,8 +98,9 @@ public class Lobby {
 
   /**
    * Method to check whether lobby is empty.
+   *
    * @return true if the lobby has no players in it
-   * */
+   */
   public boolean isEmpty() {
     return lobbyPlayers.size() == 0;
   }

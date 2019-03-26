@@ -58,6 +58,29 @@ public class ClientLogic implements Runnable {
     new Thread(pingManager).start();
   }
 
+  /**
+   * Method to send a package to the server. Will transform the packet to a String here.
+   *
+   * @param packet The packet to be sent to the Server.
+   */
+  public static void sendToServer(Packet packet) {
+    output.println(packet.toString());
+    output.flush();
+  }
+
+  public static PingManager getPingManager() {
+    return pingManager;
+  }
+
+  /**
+   * Returns the Socket.
+   *
+   * @return The server as a Socket object
+   */
+  public static Socket getServer() {
+    return server;
+  }
+
   /** Thread to run the ClientLogic on, calls the method waitforserver to start up. */
   @Override
   public void run() {
@@ -161,27 +184,5 @@ public class ClientLogic implements Runnable {
         p.processData();
       }
     }
-  }
-
-  /**
-   * Method to send a package to the server. Will transform the packet to a String here.
-   *
-   * @param packet The packet to be sent to the Server.
-   */
-  public static void sendToServer(Packet packet) {
-    output.println(packet.toString());
-    output.flush();
-  }
-
-  public static PingManager getPingManager() {
-    return pingManager;
-  }
-
-  /**
-   * Returns the Socket.
-   * @return The server as a Socket object
-   * */
-  public static Socket getServer() {
-    return server;
   }
 }

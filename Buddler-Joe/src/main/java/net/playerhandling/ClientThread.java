@@ -22,8 +22,6 @@ import net.packets.name.PacketSetName;
 import net.packets.pingpong.PacketPing;
 import net.packets.pingpong.PacketPong;
 
-
-
 /**
  * One thread for each client. This thread contains and manages the input and output streams to
  * communicate with the client. Will receive messages from their client and process them. Can send
@@ -34,11 +32,11 @@ import net.packets.pingpong.PacketPong;
 @SuppressWarnings("Duplicates")
 public class ClientThread implements Runnable {
 
-  private BufferedReader input;
-  private PrintWriter output;
   private final int clientId;
   private final Socket socket;
   private final PingManager pingManager;
+  private BufferedReader input;
+  private PrintWriter output;
 
   /**
    * Create input and output streams to communicate with the client over the specified socket. Also
@@ -195,9 +193,7 @@ public class ClientThread implements Runnable {
     return pingManager;
   }
 
-  /** Close the connection to the client.
-   *
-   */
+  /** Close the connection to the client. */
   public void closeSocket() {
     try {
       socket.close();
