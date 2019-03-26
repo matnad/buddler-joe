@@ -56,6 +56,8 @@ repositories {
 }
 
 dependencies {
+    compile group: 'ch.qos.logback', name:'logback-classic', version: '1.0.9'
+    compile group: 'ch.qos.logback', name:'logback-core', version: '1.0.9'
     implementation "org.lwjgl:lwjgl:3.2.1"
     implementation "org.lwjgl:lwjgl-assimp:3.2.1"
     implementation "org.lwjgl:lwjgl-bgfx:3.2.1"

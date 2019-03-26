@@ -1,6 +1,8 @@
 package net;
 
 import java.io.IOException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Server Interface
@@ -12,6 +14,8 @@ import java.io.IOException;
  */
 public class StartServer {
 
+  public static final Logger log = LoggerFactory.getLogger(StartServer.class);
+
   private static boolean created;
   private static ServerLogic serverLogic;
 
@@ -22,6 +26,9 @@ public class StartServer {
    * @see ServerLogic
    */
   public static void main(String[] args) {
+
+    //log.info("info message");
+    //log.debug("debugging");
 
     // Set Port via commandline or use default port
     int serverPort;
