@@ -9,6 +9,8 @@ import static org.lwjgl.BufferUtils.createByteBuffer;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URI;
+import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
@@ -42,7 +44,7 @@ public final class IoUtil {
    * @return the resource data
    * @throws IOException if an IO error occurs
    */
-  public static ByteBuffer ioResourceToByteBuffer(String resource, int bufferSize)
+  public static ByteBuffer ioResourceToByteBuffer(URI resource, int bufferSize)
       throws IOException {
     ByteBuffer buffer;
 
@@ -56,7 +58,7 @@ public final class IoUtil {
       }
     } else {
       try (
-          InputStream source = IoUtil.class.getClassLoader().getResourceAsStream(resource);
+          InputStream source = IoUtil.class.getClassLoader().getResourceAsStream(resource.toString());
           ReadableByteChannel rbc = Channels.newChannel(Objects.requireNonNull(source))
       ) {
         buffer = createByteBuffer(bufferSize);

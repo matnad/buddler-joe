@@ -40,6 +40,8 @@ import static util.IoUtil.ioResourceToByteBuffer;
 
 import engine.textures.Texture;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
 import org.lwjgl.system.MemoryStack;
@@ -63,7 +65,7 @@ public class TextureLoader implements Texture {
    *
    * @param imagePath fill image path
    */
-  private TextureLoader(String imagePath) {
+  private TextureLoader(URI imagePath) {
     ByteBuffer imageBuffer;
     try {
       imageBuffer = ioResourceToByteBuffer(imagePath, 8 * 1024);
@@ -102,7 +104,7 @@ public class TextureLoader implements Texture {
    * @param imagePath fill image path
    * @return Texture (can be accessed via texture interface)
    */
-  public static Texture getTexture(String imagePath) {
+  public static Texture getTexture(URI imagePath) {
     return new TextureLoader(imagePath);
   }
 

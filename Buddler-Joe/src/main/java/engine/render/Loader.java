@@ -137,8 +137,10 @@ public class Loader {
   public int loadFontTexture(String fileName) {
     Texture texture = null;
     try {
-      //Load the texture from the file system into openGL
-      texture = TextureLoader.getTexture(fileName + ".png");
+      // Load the texture from the file system into openGL
+      System.out.println(Loader.class.getResource("/assets/fonts/" + fileName + ".png"));
+      texture = TextureLoader.getTexture(Loader.class.getResource(
+          "/assets/fonts/" + fileName + ".png").toURI());
 
       //Set parameters such as rendering function and distance/quality (LOD BIAS)
       glGenerateMipmap(GL_TEXTURE_2D);
@@ -164,7 +166,7 @@ public class Loader {
   public int loadTexture(String fileName) {
     Texture texture = null;
     try {
-      texture = TextureLoader.getTexture("src/main/resources/assets/textures/" + fileName + ".png");
+      texture = TextureLoader.getTexture(Loader.class.getResource("/assets/textures/" + fileName + ".png").toURI());
       glGenerateMipmap(GL_TEXTURE_2D);
       glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
       glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_LOD_BIAS, -.3f); //Textures appear blurred the

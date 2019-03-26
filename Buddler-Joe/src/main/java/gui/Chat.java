@@ -59,7 +59,7 @@ public class Chat {
     chatText = "";
 
     //Load font and text properties for all messages
-    font = new FontType(loader.loadFontTexture("src/main/resources/assets/fonts/verdana"),
+    font = new FontType(loader.loadFontTexture("verdana"),
         new File("src/main/resources/assets/fonts/verdana.fnt"));
     textColour = new Vector3f(1f, 1f, 1f);
     guiText = new ChatText(chatText, 1, new Vector3f(textColour.x, textColour.y, textColour.z),

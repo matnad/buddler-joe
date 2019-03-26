@@ -37,7 +37,7 @@ public abstract class GuiString {
   }
 
   public static void loadFont(Loader loader) {
-    font = new FontType(loader.loadFontTexture("src/main/resources/assets/fonts/verdana"),
+    font = new FontType(loader.loadFontTexture("verdana"),
         new File("src/main/resources/assets/fonts/verdana.fnt"));
   }
 

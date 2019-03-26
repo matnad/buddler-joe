@@ -1,6 +1,7 @@
 plugins {
     id 'java'
     id 'checkstyle'
+    id 'com.github.johnrengelman.shadow' version '5.0.0'
 }
 
 sourceCompatibility = 1.11
@@ -8,6 +9,15 @@ targetCompatibility = 1.11
 
 group 'Buddler Joe'
 version '1.0-SNAPSHOT'
+
+
+jar {
+    manifest {
+        attributes(
+                'Main-Class': 'Main'
+        )
+    }
+}
 
 import org.gradle.internal.os.OperatingSystem
 
@@ -23,14 +33,10 @@ switch (OperatingSystem.current()) {
         break
 }
 
-sourceSets {
-    main
-}
 
 checkstyle { 
     toolVersion = '8.5'
 }
-
 
 repositories {
     mavenCentral()
