@@ -1,6 +1,8 @@
 package engine.render.fontmeshcreator;
 
-import java.io.File;
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,8 +14,10 @@ class TextMeshCreator {
 
   private final MetaFile metaData;
 
-  TextMeshCreator(File metaFile) {
-    metaData = new MetaFile(metaFile);
+  TextMeshCreator(String fontFileName) {
+    InputStream in = getClass().getResourceAsStream("/assets/fonts/" + fontFileName + ".fnt");
+    BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(in));
+    metaData = new MetaFile(bufferedReader);
   }
 
   TextMeshData createTextMesh(GuiText text) {
@@ -24,8 +28,8 @@ class TextMeshCreator {
   private List<Line> createStructure(GuiText text) {
     char[] chars = text.getTextString().toCharArray();
     List<Line> lines = new ArrayList<>();
-    Line currentLine = new Line(metaData.getSpaceWidth(), text.getFontSize(),
-        text.getMaxLineSize());
+    Line currentLine =
+        new Line(metaData.getSpaceWidth(), text.getFontSize(), text.getMaxLineSize());
     Word currentWord = new Word(text.getFontSize());
     for (char c : chars) {
       int ascii = (int) c;
@@ -33,8 +37,8 @@ class TextMeshCreator {
         boolean added = currentLine.attemptToAddWord(currentWord);
         if (!added) {
           lines.add(currentLine);
-          currentLine = new Line(metaData.getSpaceWidth(), text.getFontSize(),
-              text.getMaxLineSize());
+          currentLine =
+              new Line(metaData.getSpaceWidth(), text.getFontSize(), text.getMaxLineSize());
           currentLine.attemptToAddWord(currentWord);
         }
         currentWord = new Word(text.getFontSize());
@@ -47,8 +51,8 @@ class TextMeshCreator {
     return lines;
   }
 
-  private void completeStructure(List<Line> lines, Line currentLine, Word currentWord,
-                                 GuiText text) {
+  private void completeStructure(
+      List<Line> lines, Line currentLine, Word currentWord, GuiText text) {
     boolean added = currentLine.attemptToAddWord(currentWord);
     if (!added) {
       lines.add(currentLine);
@@ -71,8 +75,12 @@ class TextMeshCreator {
       for (Word word : line.getWords()) {
         for (Character letter : word.getCharacters()) {
           addVerticesForCharacter(curserX, curserY, letter, text.getFontSize(), vertices);
-          addTexCoords(textureCoords, letter.getTextureCoordX(), letter.getTextureCoordY(),
-              letter.getXMaxTextureCoord(), letter.getYMaxTextureCoord());
+          addTexCoords(
+              textureCoords,
+              letter.getTextureCoordX(),
+              letter.getTextureCoordY(),
+              letter.getXMaxTextureCoord(),
+              letter.getYMaxTextureCoord());
           curserX += letter.getAdvanceX() * text.getFontSize();
         }
         curserX += metaData.getSpaceWidth() * text.getFontSize();
@@ -83,9 +91,8 @@ class TextMeshCreator {
     return new TextMeshData(listToArray(vertices), listToArray(textureCoords));
   }
 
-  private void addVerticesForCharacter(double curserX, double curserY, Character character,
-                                       double fontSize,
-                                       List<Float> vertices) {
+  private void addVerticesForCharacter(
+      double curserX, double curserY, Character character, double fontSize, List<Float> vertices) {
     double x = curserX + (character.getXoffset() * fontSize);
     double y = curserY + (character.getYoffset() * fontSize);
     double maxX = x + (character.getSizeX() * fontSize);
@@ -97,8 +104,8 @@ class TextMeshCreator {
     addVertices(vertices, properX, properY, properMaxX, properMaxY);
   }
 
-  private static void addVertices(List<Float> vertices, double x, double y, double maxX,
-                                  double maxY) {
+  private static void addVertices(
+      List<Float> vertices, double x, double y, double maxX, double maxY) {
     vertices.add((float) x);
     vertices.add((float) y);
     vertices.add((float) x);
@@ -113,8 +120,8 @@ class TextMeshCreator {
     vertices.add((float) y);
   }
 
-  private static void addTexCoords(List<Float> texCoords, double x, double y, double maxX,
-                                   double maxY) {
+  private static void addTexCoords(
+      List<Float> texCoords, double x, double y, double maxX, double maxY) {
     texCoords.add((float) x);
     texCoords.add((float) y);
     texCoords.add((float) x);
@@ -128,7 +135,6 @@ class TextMeshCreator {
     texCoords.add((float) x);
     texCoords.add((float) y);
   }
-
 
   private static float[] listToArray(List<Float> listOfFloats) {
     float[] array = new float[listOfFloats.size()];
@@ -137,5 +143,4 @@ class TextMeshCreator {
     }
     return array;
   }
-
 }

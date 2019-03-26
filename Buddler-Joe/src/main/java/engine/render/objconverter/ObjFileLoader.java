@@ -5,6 +5,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 import org.joml.Vector2f;
@@ -17,7 +19,7 @@ import org.joml.Vector3f;
  */
 public class ObjFileLoader {
 
-  private static final String RES_LOC = "src/main/resources/assets/models/";
+  private static final String RES_LOC = "/assets/models/";
 
   /**
    * Open a .obj model file and parse the content to write vertices, texture coords, normals,
@@ -30,17 +32,9 @@ public class ObjFileLoader {
    * @return ModelData contains all the info of an obj file, parsed into arrays
    */
   public static ModelData loadObj(String objFileName) {
-    FileReader isr = null;
-    File objFile = new File(RES_LOC + objFileName + ".obj");
-    try {
-      isr = new FileReader(objFile);
-    } catch (FileNotFoundException e) {
-      System.err.println("File not found in res; don't use any extension");
-    }
-    BufferedReader reader = null;
-    if (isr != null) {
-      reader = new BufferedReader(isr);
-    }
+    InputStream in = ObjFileLoader.class.getResourceAsStream(RES_LOC + objFileName + ".obj");
+    InputStreamReader isr = new InputStreamReader(in);
+    BufferedReader reader = new BufferedReader(isr);
     String line;
     List<Vertex> vertices = new ArrayList<>();
     List<Vector2f> textures = new ArrayList<>();

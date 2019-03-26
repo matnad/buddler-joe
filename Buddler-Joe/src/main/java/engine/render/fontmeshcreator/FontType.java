@@ -1,5 +1,6 @@
 package engine.render.fontmeshcreator;
 
+import engine.render.Loader;
 import java.io.File;
 
 /**
@@ -21,9 +22,10 @@ public class FontType {
    * @param fontFile     - the font file containing information about each character in
    *                     the texture atlas.
    */
-  public FontType(int textureAtlas, File fontFile) {
-    this.textureAtlas = textureAtlas;
-    this.loader = new TextMeshCreator(fontFile);
+  public FontType(Loader loader, String fontFileName) {
+
+    this.textureAtlas = loader.loadFontTexture(fontFileName);
+    this.loader = new TextMeshCreator(fontFileName);
   }
 
   /**
