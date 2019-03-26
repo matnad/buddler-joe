@@ -41,6 +41,18 @@ jar {
 //shadow.group = 'build'
 //tasks.add(shadow)
 
+//shadowJar.setGroup('build')
+task cs108 {
+    group = 'build'
+    doLast {
+        shadowJar
+        javadoc
+    }
+}
+
+cs108.finalizedBy shadowJar
+cs108.finalizedBy javadoc
+
 
 import org.gradle.internal.os.OperatingSystem
 
