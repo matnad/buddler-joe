@@ -134,7 +134,7 @@ public class Player extends NetPlayer {
     // Send server update with update
      if (Game.isConnectedToServer()
         && (currentSpeed != 0 || upwardsSpeed != 0 || currentTurnSpeed != 0)) {
-      new PacketPos(getPositionXy().x, getPositionXy().y).sendToServer();
+      new PacketPos(getPositionXy().x, getPositionXy().y, getRotY()).sendToServer();
      }
   }
 

@@ -87,10 +87,11 @@ public class NetPlayerMaster {
     return sj.toString();
   }
 
-  public static void updatePosition(int clientId, float posX, float posY) {
+  public static void updatePosition(int clientId, float posX, float posY, float rotY) {
     NetPlayer netPlayer = netPlayers.get(clientId);
     if (netPlayer != null) {
       netPlayer.setPosition(new Vector3f(posX, posY, netPlayer.getPosition().z));
+      netPlayer.setRotY(rotY);
     }
   }
 }

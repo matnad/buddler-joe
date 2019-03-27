@@ -9,13 +9,15 @@ public class PacketPos extends Packet {
   private int playerId;
   private float posX;
   private float posY;
+  private float rotY;
 
   // Client sends
-  public PacketPos(float posX, float posY) {
+  public PacketPos(float posX, float posY, float rotY) {
     super(PacketTypes.POSITION_UPDATE);
-    this.posX = posX;
-    this.posY = posY;
-    setData(posX + "║" + posY);
+    //this.posX = posX;
+    //this.posY = posY;
+    //this.rotY = rotY;
+    setData(posX + "║" + posY + "║" + rotY);
     // No validation here to save performance
   }
 
@@ -41,7 +43,7 @@ public class PacketPos extends Packet {
       return;
     }
     String[] posArray = getData().split("║");
-    if (posArray.length != 3) {
+    if (posArray.length != 4) {
       addError("Invalid position data.");
       return;
     }
@@ -49,6 +51,7 @@ public class PacketPos extends Packet {
       this.playerId = Integer.parseInt(posArray[0]);
       this.posX = Float.parseFloat(posArray[1]);
       this.posY = Float.parseFloat(posArray[2]);
+      this.rotY = Float.parseFloat(posArray[3]);
     } catch (NumberFormatException e) {
       addError("Invalid position data.");
     }
@@ -62,7 +65,7 @@ public class PacketPos extends Packet {
         sendToLobby(ServerLogic.getPlayerList().getPlayer(getClientId()).getCurLobbyId());
       } else {
         // Client
-        NetPlayerMaster.updatePosition(playerId, posX, posY);
+        NetPlayerMaster.updatePosition(playerId, posX, posY, rotY);
       }
     }
   }
