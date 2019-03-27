@@ -32,3 +32,6 @@ src/main/java/archive/
 # gradle
 .gradle/
 build/
+
+# gitlab
+.gitlab/
