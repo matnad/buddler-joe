@@ -71,15 +71,7 @@ public class Player extends NetPlayer {
    */
   public Player(
       TexturedModel model, Vector3f position, float rotX, float rotY, float rotZ, float scale) {
-    super(
-        0,
-        Game.getUsername(),
-        model,
-        position,
-        rotX,
-        rotY,
-        rotZ,
-        scale);
+    super(0, Game.getUsername(), model, position, rotX, rotY, rotZ, scale);
   }
 
   /**
@@ -128,14 +120,11 @@ public class Player extends NetPlayer {
       handleCollision(closeBlock);
     }
 
-
-
-
     // Send server update with update
-     if (Game.isConnectedToServer()
+    if (Game.isConnectedToServer()
         && (currentSpeed != 0 || upwardsSpeed != 0 || currentTurnSpeed != 0)) {
       new PacketPos(getPositionXy().x, getPositionXy().y, getRotY()).sendToServer();
-     }
+    }
   }
 
   /**

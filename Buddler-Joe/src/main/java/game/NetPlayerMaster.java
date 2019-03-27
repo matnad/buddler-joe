@@ -29,6 +29,11 @@ public class NetPlayerMaster {
     defaultSize = 0.4f;
   }
 
+  /**
+   * Initialize once at the start to load textures.
+   *
+   * @param loader main loader
+   */
   public static void init(Loader loader) {
     defaultSkin =
         new TexturedModel(
@@ -47,6 +52,13 @@ public class NetPlayerMaster {
     }
   }
 
+  /**
+   * Adds a new player object that is linked to a client on the server. Will mainly be used by the
+   * lobby overview packet that sends updates for new players.
+   *
+   * @param clientId server-side client id
+   * @param username username of the player
+   */
   public static void addPlayer(int clientId, String username) {
     if (!netPlayers.containsKey(clientId)) {
       NetPlayer newPlayer =
@@ -57,6 +69,12 @@ public class NetPlayerMaster {
     }
   }
 
+  /**
+   * Checks if a player left the lobby and removes the player from the game. Mainly called by the
+   * lobby overview packet that will send a full list of all players.
+   *
+   * @param presentIds list of all currently connected (to the lobby) players by their client id
+   */
   public static void removeMissing(ArrayList<Integer> presentIds) {
     getIds().removeIf(netId -> !presentIds.contains(netId));
     System.out.println(NetPlayerMaster.staticToString());
@@ -79,14 +97,28 @@ public class NetPlayerMaster {
     NetPlayerMaster.lobbyname = lobbyname;
   }
 
+  /**
+   * String representation of the Game Lobby.
+   *
+   * @return string with all players in the lobby excluding the player
+   */
   public static String staticToString() {
-    StringJoiner sj = new StringJoiner(", ", "Players in my Lobby: ", ".");
+    StringJoiner sj = new StringJoiner(", ", "Players in my Lobby: ", "");
     for (NetPlayer netPlayer : netPlayers.values()) {
       sj.add(netPlayer.getUsername());
     }
     return sj.toString();
   }
 
+  /**
+   * Updates the position of a connected player. Called by {@link net.packets.playerprop.PacketPos}
+   * to propagate player movement.
+   *
+   * @param clientId player to update
+   * @param posX new X position
+   * @param posY new Y position
+   * @param rotY new Y rotation
+   */
   public static void updatePosition(int clientId, float posX, float posY, float rotY) {
     NetPlayer netPlayer = netPlayers.get(clientId);
     if (netPlayer != null) {

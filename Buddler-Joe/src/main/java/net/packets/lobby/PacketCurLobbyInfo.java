@@ -1,10 +1,8 @@
 package net.packets.lobby;
 
-import entities.NetPlayer;
 import game.Game;
 import game.NetPlayerMaster;
 import java.util.ArrayList;
-import java.util.Iterator;
 import net.ServerLogic;
 import net.lobbyhandling.Lobby;
 import net.packets.Packet;
@@ -48,7 +46,7 @@ public class PacketCurLobbyInfo extends Packet {
   }
 
   /**
-   * Constructor that is used by the Server to build the Packet with an error string
+   * Constructor that is used by the Server to build the Packet with an error string.
    *
    * @param clientId clientId of the the receiver.
    * @param data A single String that is an errormessage and does not begin with "OK║". {@link
@@ -122,7 +120,7 @@ public class PacketCurLobbyInfo extends Packet {
 
       // Game Logic updates
 
-      //Add missing players and create list of present players
+      // Add missing players and create list of present players
       NetPlayerMaster.setLobbyname(infoArray[1]);
       ArrayList<Integer> presentIds = new ArrayList<>();
       for (int i = 2; i < infoArray.length; i += 2) {
@@ -140,7 +138,7 @@ public class PacketCurLobbyInfo extends Packet {
                   + ", Username: "
                   + infoArray[i + 1]);
         } catch (NullPointerException ignored) {
-          //This is a network only client and no game is running, or the game has not loaded yet
+          // This is a network only client and no game is running, or the game has not loaded yet
         }
       }
       // Check if we need to remove a player
