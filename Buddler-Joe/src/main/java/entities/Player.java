@@ -21,6 +21,7 @@ import entities.items.ItemMaster;
 import game.Game;
 import java.util.ArrayList;
 import java.util.List;
+import net.packets.playerprop.PacketPos;
 import org.joml.Vector3f;
 import util.MousePlacer;
 
@@ -127,14 +128,14 @@ public class Player extends NetPlayer {
       handleCollision(closeBlock);
     }
 
+
+
+
     // Send server update with update
-    // TEMPORARY PROOF OF CONCEPT: THIS WILL GET REWORKED ONCE WE IMPLEMENT NET STUFF
-    // if (Game.isConnectedToServer()
-    //    && (currentSpeed != 0 || upwardsSpeed != 0 || currentTurnSpeed != 0)) {
-    //  //Packet01Move packet = new Packet01Move(Playing.getUsername(), this.getPosition(), this
-    //  // .getRotX(), this.getRotY(), this.getRotZ());
-    //  //packet.writeData(Playing.getSocketClient());
-    // }
+     if (Game.isConnectedToServer()
+        && (currentSpeed != 0 || upwardsSpeed != 0 || currentTurnSpeed != 0)) {
+      new PacketPos(getPositionXy().x, getPositionXy().y).sendToServer();
+     }
   }
 
   /**

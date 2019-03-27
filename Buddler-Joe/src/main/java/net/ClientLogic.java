@@ -20,6 +20,7 @@ import net.packets.name.PacketSendName;
 import net.packets.name.PacketSetNameStatus;
 import net.packets.pingpong.PacketPing;
 import net.packets.pingpong.PacketPong;
+import net.packets.playerprop.PacketPos;
 import net.playerhandling.PingManager;
 
 /**
@@ -181,6 +182,9 @@ public class ClientLogic implements Runnable {
           break;
         case PONG:
           p = new PacketPong(data);
+          break;
+        case POSITION_UPDATE:
+          p = new PacketPos(data);
           break;
         default:
       }

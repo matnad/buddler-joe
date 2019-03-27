@@ -28,6 +28,7 @@ import gui.Fps;
 import gui.GuiString;
 import java.util.ArrayList;
 import java.util.List;
+import net.StartNetworkOnlyClient;
 import org.joml.Vector3f;
 import terrains.Terrain;
 import terrains.TerrainFlat;
@@ -55,7 +56,7 @@ public class Game extends Thread {
   private static final List<Stage> activeStages = new ArrayList<>();
   // Network related variables, still temporary/dummies
   // private static boolean doConnectToServer = false; //Multiplayer: true, Singleplayer: false
-  private static final boolean connectedToServer = false;
+  private static boolean connectedToServer = false;
 
   // Playing instance and player settings
   // private static ClientLogic socketClient;
@@ -120,9 +121,13 @@ public class Game extends Thread {
     return entities;
   }
 
-  // Getters
+
   public static boolean isConnectedToServer() {
     return connectedToServer;
+  }
+
+  public static void setConnectedToServer(boolean connectedToServer) {
+    Game.connectedToServer = connectedToServer;
   }
 
   public static String getUsername() {
@@ -146,6 +151,8 @@ public class Game extends Thread {
   public static Player getActivePlayer() {
     return player;
   }
+
+
 
   /*
   public void addNetPlayer(NetPlayer netPlayer) {
@@ -371,6 +378,8 @@ public class Game extends Thread {
     GameMenu.init(loader);
 
     addActiveStage(PLAYING);
+
+    //Connect after everything is loaded
 
     /*
     **************************************************************

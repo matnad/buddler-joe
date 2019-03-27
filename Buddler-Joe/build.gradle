@@ -20,34 +20,18 @@ jar {
 }
 
 //Task for milestone 3
-task cs108 {
+tasks.register("build-cs108") {
     group = 'build'
     doLast {
         println 'Running cs108 build task to generate a standalone jar and javadoc.'
-        shadowJar
-        javadoc
     }
 }
-cs108.finalizedBy shadowJar
-cs108.finalizedBy javadoc
+tasks.getByName("build-cs108").finalizedBy shadowJar
+tasks.getByName("build-cs108").finalizedBy javadoc
 
+//import org.gradle.internal.os.OperatingSystem
 
-import org.gradle.internal.os.OperatingSystem
-
-switch (OperatingSystem.current()) {
-    case OperatingSystem.LINUX:
-        project.ext.lwjglNatives = "natives-linux"
-        break
-    case OperatingSystem.MAC_OS:
-        project.ext.lwjglNatives = "natives-macos"
-        break
-    case OperatingSystem.WINDOWS:
-        project.ext.lwjglNatives = "natives-windows"
-        break
-}
-
-
-checkstyle { 
+checkstyle {
     toolVersion = '8.5'
 }
 
@@ -56,8 +40,8 @@ repositories {
 }
 
 dependencies {
-    compile group: 'ch.qos.logback', name:'logback-classic', version: '1.0.9'
-    compile group: 'ch.qos.logback', name:'logback-core', version: '1.0.9'
+    compile group: 'ch.qos.logback', name: 'logback-classic', version: '1.0.9'
+    compile group: 'ch.qos.logback', name: 'logback-core', version: '1.0.9'
     implementation "org.lwjgl:lwjgl:3.2.1"
     implementation "org.lwjgl:lwjgl-assimp:3.2.1"
     implementation "org.lwjgl:lwjgl-bgfx:3.2.1"
@@ -94,36 +78,51 @@ dependencies {
     implementation "org.lwjgl:lwjgl-xxhash:3.2.1"
     implementation "org.lwjgl:lwjgl-yoga:3.2.1"
     implementation "org.lwjgl:lwjgl-zstd:3.2.1"
-    runtimeOnly "org.lwjgl:lwjgl:3.2.1:$lwjglNatives"
-    runtimeOnly "org.lwjgl:lwjgl-assimp:3.2.1:$lwjglNatives"
-    runtimeOnly "org.lwjgl:lwjgl-bgfx:3.2.1:$lwjglNatives"
-    runtimeOnly "org.lwjgl:lwjgl-glfw:3.2.1:$lwjglNatives"
-    runtimeOnly "org.lwjgl:lwjgl-jemalloc:3.2.1:$lwjglNatives"
-    runtimeOnly "org.lwjgl:lwjgl-libdivide:3.2.1:$lwjglNatives"
-    runtimeOnly "org.lwjgl:lwjgl-llvm:3.2.1:$lwjglNatives"
-    runtimeOnly "org.lwjgl:lwjgl-lmdb:3.2.1:$lwjglNatives"
-    runtimeOnly "org.lwjgl:lwjgl-lz4:3.2.1:$lwjglNatives"
-    runtimeOnly "org.lwjgl:lwjgl-meow:3.2.1:$lwjglNatives"
-    runtimeOnly "org.lwjgl:lwjgl-nanovg:3.2.1:$lwjglNatives"
-    runtimeOnly "org.lwjgl:lwjgl-nfd:3.2.1:$lwjglNatives"
-    runtimeOnly "org.lwjgl:lwjgl-nuklear:3.2.1:$lwjglNatives"
-    runtimeOnly "org.lwjgl:lwjgl-openal:3.2.1:$lwjglNatives"
-    runtimeOnly "org.lwjgl:lwjgl-opengl:3.2.1:$lwjglNatives"
-    runtimeOnly "org.lwjgl:lwjgl-opengles:3.2.1:$lwjglNatives"
-    runtimeOnly "org.lwjgl:lwjgl-openvr:3.2.1:$lwjglNatives"
-    runtimeOnly "org.lwjgl:lwjgl-opus:3.2.1:$lwjglNatives"
-    runtimeOnly "org.lwjgl:lwjgl-par:3.2.1:$lwjglNatives"
-    runtimeOnly "org.lwjgl:lwjgl-remotery:3.2.1:$lwjglNatives"
-    runtimeOnly "org.lwjgl:lwjgl-rpmalloc:3.2.1:$lwjglNatives"
-    runtimeOnly "org.lwjgl:lwjgl-sse:3.2.1:$lwjglNatives"
-    runtimeOnly "org.lwjgl:lwjgl-stb:3.2.1:$lwjglNatives"
-    runtimeOnly "org.lwjgl:lwjgl-tinyexr:3.2.1:$lwjglNatives"
-    runtimeOnly "org.lwjgl:lwjgl-tinyfd:3.2.1:$lwjglNatives"
-    runtimeOnly "org.lwjgl:lwjgl-tootle:3.2.1:$lwjglNatives"
-    runtimeOnly "org.lwjgl:lwjgl-vma:3.2.1:$lwjglNatives"
-    if (lwjglNatives == "natives-macos") runtimeOnly "org.lwjgl:lwjgl-vulkan:3.2.1:$lwjglNatives"
-    runtimeOnly "org.lwjgl:lwjgl-xxhash:3.2.1:$lwjglNatives"
-    runtimeOnly "org.lwjgl:lwjgl-yoga:3.2.1:$lwjglNatives"
-    runtimeOnly "org.lwjgl:lwjgl-zstd:3.2.1:$lwjglNatives"
-    implementation "org.joml:joml:1.9.13"
+
+    //Just add all the natives so we have 1 jar.
+    for (int i = 0; i <= 1; i++) {
+        switch (i) {
+            case 0:
+                project.ext.lwjglNatives = "natives-linux"
+                break
+            case 1:
+                project.ext.lwjglNatives = "natives-windows"
+                break
+            case 2:
+                project.ext.lwjglNatives = "natives-macos"
+                break
+        }
+        runtimeOnly "org.lwjgl:lwjgl:3.2.1:$lwjglNatives"
+        runtimeOnly "org.lwjgl:lwjgl-assimp:3.2.1:$lwjglNatives"
+        runtimeOnly "org.lwjgl:lwjgl-bgfx:3.2.1:$lwjglNatives"
+        runtimeOnly "org.lwjgl:lwjgl-glfw:3.2.1:$lwjglNatives"
+        runtimeOnly "org.lwjgl:lwjgl-jemalloc:3.2.1:$lwjglNatives"
+        runtimeOnly "org.lwjgl:lwjgl-libdivide:3.2.1:$lwjglNatives"
+        runtimeOnly "org.lwjgl:lwjgl-llvm:3.2.1:$lwjglNatives"
+        runtimeOnly "org.lwjgl:lwjgl-lmdb:3.2.1:$lwjglNatives"
+        runtimeOnly "org.lwjgl:lwjgl-lz4:3.2.1:$lwjglNatives"
+        runtimeOnly "org.lwjgl:lwjgl-meow:3.2.1:$lwjglNatives"
+        runtimeOnly "org.lwjgl:lwjgl-nanovg:3.2.1:$lwjglNatives"
+        runtimeOnly "org.lwjgl:lwjgl-nfd:3.2.1:$lwjglNatives"
+        runtimeOnly "org.lwjgl:lwjgl-nuklear:3.2.1:$lwjglNatives"
+        runtimeOnly "org.lwjgl:lwjgl-openal:3.2.1:$lwjglNatives"
+        runtimeOnly "org.lwjgl:lwjgl-opengl:3.2.1:$lwjglNatives"
+        runtimeOnly "org.lwjgl:lwjgl-opengles:3.2.1:$lwjglNatives"
+        runtimeOnly "org.lwjgl:lwjgl-openvr:3.2.1:$lwjglNatives"
+        runtimeOnly "org.lwjgl:lwjgl-opus:3.2.1:$lwjglNatives"
+        runtimeOnly "org.lwjgl:lwjgl-par:3.2.1:$lwjglNatives"
+        runtimeOnly "org.lwjgl:lwjgl-remotery:3.2.1:$lwjglNatives"
+        runtimeOnly "org.lwjgl:lwjgl-rpmalloc:3.2.1:$lwjglNatives"
+        runtimeOnly "org.lwjgl:lwjgl-sse:3.2.1:$lwjglNatives"
+        runtimeOnly "org.lwjgl:lwjgl-stb:3.2.1:$lwjglNatives"
+        runtimeOnly "org.lwjgl:lwjgl-tinyexr:3.2.1:$lwjglNatives"
+        runtimeOnly "org.lwjgl:lwjgl-tinyfd:3.2.1:$lwjglNatives"
+        runtimeOnly "org.lwjgl:lwjgl-tootle:3.2.1:$lwjglNatives"
+        runtimeOnly "org.lwjgl:lwjgl-vma:3.2.1:$lwjglNatives"
+        if (lwjglNatives == "natives-macos") runtimeOnly "org.lwjgl:lwjgl-vulkan:3.2.1:$lwjglNatives"
+        runtimeOnly "org.lwjgl:lwjgl-xxhash:3.2.1:$lwjglNatives"
+        runtimeOnly "org.lwjgl:lwjgl-yoga:3.2.1:$lwjglNatives"
+        runtimeOnly "org.lwjgl:lwjgl-zstd:3.2.1:$lwjglNatives"
+        implementation "org.joml:joml:1.9.13"
+    }
 }

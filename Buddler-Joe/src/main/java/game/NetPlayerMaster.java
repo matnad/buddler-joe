@@ -51,7 +51,7 @@ public class NetPlayerMaster {
     if (!netPlayers.containsKey(clientId)) {
       NetPlayer newPlayer =
           new NetPlayer(
-              clientId, username, defaultSkin, new Vector3f(0, 0, 0), 0, 0, 0, defaultSize);
+              clientId, username, defaultSkin, new Vector3f(1000, 1000, 3), 0, 0, 0, defaultSize);
       netPlayers.put(clientId, newPlayer);
       System.out.println(NetPlayerMaster.staticToString());
     }
@@ -85,5 +85,12 @@ public class NetPlayerMaster {
       sj.add(netPlayer.getUsername());
     }
     return sj.toString();
+  }
+
+  public static void updatePosition(int clientId, float posX, float posY) {
+    NetPlayer netPlayer = netPlayers.get(clientId);
+    if (netPlayer != null) {
+      netPlayer.setPosition(new Vector3f(posX, posY, netPlayer.getPosition().z));
+    }
   }
 }

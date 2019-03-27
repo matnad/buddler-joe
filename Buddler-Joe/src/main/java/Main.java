@@ -7,6 +7,11 @@ public class Main {
   public static void main(String[] args) {
     Game game = new Game();
     game.start();
+    try {
+      Thread.sleep(2000);
+    } catch (InterruptedException e) {
+      e.printStackTrace();
+    }
     StartNetworkOnlyClient.main(new String[] {});
   }
 }
