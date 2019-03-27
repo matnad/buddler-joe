@@ -29,5 +29,6 @@ target/
 # archive
 src/main/java/archive/
 
-# build
+# gradle
+.gradle/
 build/
