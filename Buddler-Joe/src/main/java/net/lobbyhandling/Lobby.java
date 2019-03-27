@@ -91,6 +91,19 @@ public class Lobby {
     return s.toString();
   }
 
+  /**
+   * Creates a listing of the Players with their IDs in this Lobby.
+   *
+   * @return A String with the usernames of all IDs and Players in this Lobby separated by "║".
+   */
+  public String getPlayerNamesAndIds() {
+    StringBuilder s = new StringBuilder();
+    for (Player player : lobbyPlayers) {
+      s.append(player.getClientId()).append("║").append(player.getUsername()).append("║");
+    }
+    return s.toString();
+  }
+
   @Override
   public String toString() {
     return "Name: " + lobbyName + ", LobbyId: " + lobbyId + ", Spieler: " + getPlayerAmount();

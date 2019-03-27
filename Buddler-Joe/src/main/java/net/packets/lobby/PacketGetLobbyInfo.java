@@ -50,6 +50,7 @@ public class PacketGetLobbyInfo extends Packet {
    */
   @Override
   public void processData() {
+    PacketCurLobbyInfo pcli;
     if (!isLoggedIn()) {
       addError("Not loggedin yet.");
     }
@@ -59,11 +60,13 @@ public class PacketGetLobbyInfo extends Packet {
     String info;
     if (hasErrors()) {
       info = createErrorMessage();
+      pcli = new PacketCurLobbyInfo(getClientId(), info);
     } else {
       int lobbyId = ServerLogic.getPlayerList().getPlayers().get(getClientId()).getCurLobbyId();
-      info = "OK║" + ServerLogic.getLobbyList().getLobby(lobbyId).getPlayerNames();
+      //info = "OK║" + ServerLogic.getLobbyList().getLobby(lobbyId).getPlayerNames();
+      pcli = new PacketCurLobbyInfo(getClientId(), lobbyId);
     }
-    PacketCurLobbyInfo pcli = new PacketCurLobbyInfo(getClientId(), info);
+
     pcli.sendToClient(getClientId());
   }
 }

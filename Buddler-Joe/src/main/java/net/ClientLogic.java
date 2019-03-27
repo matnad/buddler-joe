@@ -15,6 +15,7 @@ import net.packets.lobby.PacketJoinLobbyStatus;
 import net.packets.lobby.PacketLeaveLobbyStatus;
 import net.packets.lobby.PacketLobbyOverview;
 import net.packets.loginlogout.PacketLoginStatus;
+import net.packets.loginlogout.PacketUpdateClientId;
 import net.packets.name.PacketSendName;
 import net.packets.name.PacketSetNameStatus;
 import net.packets.pingpong.PacketPing;
@@ -144,6 +145,9 @@ public class ClientLogic implements Runnable {
       switch (Packet.lookupPacket(code)) {
         case LOGIN_STATUS:
           p = new PacketLoginStatus(data);
+          break;
+        case UPDATE_CLIENT_ID:
+          p = new PacketUpdateClientId(data);
           break;
         case SEND_NAME:
           p = new PacketSendName(data);

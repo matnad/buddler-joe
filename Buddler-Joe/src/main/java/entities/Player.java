@@ -71,18 +71,14 @@ public class Player extends NetPlayer {
   public Player(
       TexturedModel model, Vector3f position, float rotX, float rotY, float rotZ, float scale) {
     super(
+        0,
+        Game.getUsername(),
         model,
         position,
         rotX,
         rotY,
         rotZ,
-        scale,
-        null,
-        0,
-        Game.getUsername(),
-        Game.myModel,
-        Game.myTexture,
-        Game.myModelSize);
+        scale);
   }
 
   /**

@@ -32,7 +32,7 @@ public class StartNetworkOnlyClient {
    *
    * @see ClientLogic
    */
-  private StartNetworkOnlyClient() {
+  StartNetworkOnlyClient() {
     try {
       new ClientLogic(serverIP, serverPort);
     } catch (IOException e) {

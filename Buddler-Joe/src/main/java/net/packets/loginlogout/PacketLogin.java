@@ -62,5 +62,8 @@ public class PacketLogin extends Packet {
     }
     PacketLoginStatus p = new PacketLoginStatus(getClientId(), status);
     p.sendToClient(getClientId());
+
+    //Send update for clientid to player
+    new PacketUpdateClientId(getClientId()).sendToClient(getClientId());
   }
 }

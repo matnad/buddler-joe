@@ -285,6 +285,7 @@ public abstract class Packet {
     INVALID("INVAL"),
     LOGIN("PLOGI"),
     LOGIN_STATUS("PLOGS"),
+    UPDATE_CLIENT_ID("UPCID"),
     DISCONNECT("DISCP"),
     GET_NAME("GETNM"),
     SEND_NAME("SENDN"),

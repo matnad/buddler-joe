@@ -330,6 +330,9 @@ public class Game extends Thread {
       System.err.println("Could not generate terrain.");
     }
 
+    // Initialize NetPlayerModels
+    NetPlayerMaster.init(loader);
+
     // Initialize items
     ItemMaster.init(loader);
 

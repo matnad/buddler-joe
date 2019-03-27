@@ -81,8 +81,8 @@ public class PacketLeaveLobby extends Packet {
       PacketLobbyOverview p = new PacketLobbyOverview(getClientId(), info);
       p.sendToClientsNotInALobby();
       // CurrentLobbyInfo Update for clients in this Lobby.
-      info = "OK║" + ServerLogic.getLobbyList().getLobby(lobbyId).getPlayerNames();
-      PacketCurLobbyInfo packetCurLobbyInfo = new PacketCurLobbyInfo(getClientId(), info);
+      //info = "OK║" + ServerLogic.getLobbyList().getLobby(lobbyId).getPlayerNames();
+      PacketCurLobbyInfo packetCurLobbyInfo = new PacketCurLobbyInfo(getClientId(), lobbyId);
       packetCurLobbyInfo.sendToLobby(lobbyId);
     }
   }
