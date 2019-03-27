@@ -192,13 +192,12 @@ public abstract class Packet {
    * @return A boolelan value which is either true if it contains an Integer or false if not
    */
   protected boolean isInt(String s) {
-    boolean h = true;
     try {
-      int i = Integer.parseInt(s);
-    } catch (NumberFormatException | NullPointerException nfe) {
-      h = false;
+      Integer.parseInt(s);
+    } catch (NumberFormatException e) {
+      return false;
     }
-    return h;
+    return true;
   }
 
   /**
@@ -285,6 +284,7 @@ public abstract class Packet {
     INVALID("INVAL"),
     LOGIN("PLOGI"),
     LOGIN_STATUS("PLOGS"),
+    UPDATE_CLIENT_ID("UPCID"),
     DISCONNECT("DISCP"),
     GET_NAME("GETNM"),
     SEND_NAME("SENDN"),
@@ -304,7 +304,8 @@ public abstract class Packet {
     LEAVE_LOBBY_STATUS("LOBLS"),
     CHAT_MESSAGE_TO_SERVER("CHATS"),
     CHAT_MESSAGE_TO_CLIENT("CHATC"),
-    CHAT_MESSAGE_STATUS("CHATN");
+    CHAT_MESSAGE_STATUS("CHATN"),
+    POSITION_UPDATE("POSXY");
 
     private final String packetCode;
 

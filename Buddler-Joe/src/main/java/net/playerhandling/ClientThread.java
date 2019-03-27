@@ -21,6 +21,7 @@ import net.packets.name.PacketGetName;
 import net.packets.name.PacketSetName;
 import net.packets.pingpong.PacketPing;
 import net.packets.pingpong.PacketPong;
+import net.packets.playerprop.PacketPos;
 
 /**
  * One thread for each client. This thread contains and manages the input and output streams to
@@ -95,7 +96,8 @@ public class ClientThread implements Runnable {
 
         // Print command to server console if it is not a ping/pong command
         if (!code.equals(Packet.PacketTypes.PING.getPacketCode())
-            && !code.equals(Packet.PacketTypes.PONG.getPacketCode())) {
+            && !code.equals(Packet.PacketTypes.PONG.getPacketCode())
+            && !code.equals(Packet.PacketTypes.POSITION_UPDATE.getPacketCode())) {
           System.out.println("Client #" + clientId + " sent command '" + code + "'.");
         }
         Packet p = null;
@@ -148,6 +150,9 @@ public class ClientThread implements Runnable {
             break;
           case PONG:
             p = new PacketPong(clientId, data);
+            break;
+          case POSITION_UPDATE:
+            p = new PacketPos(clientId, data);
             break;
           default:
         }

@@ -15,10 +15,12 @@ import net.packets.lobby.PacketJoinLobbyStatus;
 import net.packets.lobby.PacketLeaveLobbyStatus;
 import net.packets.lobby.PacketLobbyOverview;
 import net.packets.loginlogout.PacketLoginStatus;
+import net.packets.loginlogout.PacketUpdateClientId;
 import net.packets.name.PacketSendName;
 import net.packets.name.PacketSetNameStatus;
 import net.packets.pingpong.PacketPing;
 import net.packets.pingpong.PacketPong;
+import net.packets.playerprop.PacketPos;
 import net.playerhandling.PingManager;
 
 /**
@@ -145,6 +147,9 @@ public class ClientLogic implements Runnable {
         case LOGIN_STATUS:
           p = new PacketLoginStatus(data);
           break;
+        case UPDATE_CLIENT_ID:
+          p = new PacketUpdateClientId(data);
+          break;
         case SEND_NAME:
           p = new PacketSendName(data);
           break;
@@ -177,6 +182,9 @@ public class ClientLogic implements Runnable {
           break;
         case PONG:
           p = new PacketPong(data);
+          break;
+        case POSITION_UPDATE:
+          p = new PacketPos(data);
           break;
         default:
       }

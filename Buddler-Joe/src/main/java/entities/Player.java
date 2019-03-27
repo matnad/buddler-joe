@@ -21,6 +21,7 @@ import entities.items.ItemMaster;
 import game.Game;
 import java.util.ArrayList;
 import java.util.List;
+import net.packets.playerprop.PacketPos;
 import org.joml.Vector3f;
 import util.MousePlacer;
 
@@ -70,19 +71,7 @@ public class Player extends NetPlayer {
    */
   public Player(
       TexturedModel model, Vector3f position, float rotX, float rotY, float rotZ, float scale) {
-    super(
-        model,
-        position,
-        rotX,
-        rotY,
-        rotZ,
-        scale,
-        null,
-        0,
-        Game.getUsername(),
-        Game.myModel,
-        Game.myTexture,
-        Game.myModelSize);
+    super(0, Game.getUsername(), model, position, rotX, rotY, rotZ, scale);
   }
 
   /**
@@ -132,13 +121,10 @@ public class Player extends NetPlayer {
     }
 
     // Send server update with update
-    // TEMPORARY PROOF OF CONCEPT: THIS WILL GET REWORKED ONCE WE IMPLEMENT NET STUFF
-    // if (Game.isConnectedToServer()
-    //    && (currentSpeed != 0 || upwardsSpeed != 0 || currentTurnSpeed != 0)) {
-    //  //Packet01Move packet = new Packet01Move(Playing.getUsername(), this.getPosition(), this
-    //  // .getRotX(), this.getRotY(), this.getRotZ());
-    //  //packet.writeData(Playing.getSocketClient());
-    // }
+    if (Game.isConnectedToServer()
+        && (currentSpeed != 0 || upwardsSpeed != 0 || currentTurnSpeed != 0)) {
+      new PacketPos(getPositionXy().x, getPositionXy().y, getRotY()).sendToServer();
+    }
   }
 
   /**

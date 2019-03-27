@@ -205,7 +205,7 @@ public class ServerLogic {
       // send lobbyinfo to the other player in the lobby
       String info;
       info = "OK║" + lobby.getPlayerNames();
-      PacketCurLobbyInfo packetCurLobbyInfo = new PacketCurLobbyInfo(clientId, info);
+      PacketCurLobbyInfo packetCurLobbyInfo = new PacketCurLobbyInfo(clientId, lobbyId);
       packetCurLobbyInfo.sendToLobby(lobbyId);
 
       // close the client's thread

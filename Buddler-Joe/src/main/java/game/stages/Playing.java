@@ -13,6 +13,7 @@ import entities.blocks.debris.DebrisMaster;
 import entities.items.ItemMaster;
 import entities.light.LightMaster;
 import game.Game;
+import game.NetPlayerMaster;
 import util.MousePlacer;
 
 /**
@@ -53,14 +54,15 @@ public class Playing {
 
     // Prepare and render the entities
     renderer.processEntity(Game.getActivePlayer());
+    NetPlayerMaster.update(renderer);
     renderer.processTerrain(Game.getAboveGround());
     renderer.processTerrain(Game.getBelowGround());
     for (Entity entity : Game.getEntities()) {
       if (entity != null) {
         // All the NetPlayer stuff will need to move to a different class and update it from there
-        if (entity instanceof NetPlayer) {
-          ((NetPlayer) entity).getDirectionalUsername().updateString();
-        }
+        //if (entity instanceof NetPlayer) {
+        //  ((NetPlayer) entity).getDirectionalUsername().updateString();
+        //}
         renderer.processEntity(entity);
       }
     }

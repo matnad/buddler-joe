@@ -22,7 +22,7 @@ import net.packets.name.PacketSetName;
  *
  * @see ClientLogic
  */
-public class StartNetworkOnlyClient {
+public class StartNetworkOnlyClient implements Runnable {
   private static final BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
   private static String serverIP;
   private static int serverPort;
@@ -32,7 +32,7 @@ public class StartNetworkOnlyClient {
    *
    * @see ClientLogic
    */
-  private StartNetworkOnlyClient() {
+  public StartNetworkOnlyClient() {
     try {
       new ClientLogic(serverIP, serverPort);
     } catch (IOException e) {
@@ -213,5 +213,10 @@ public class StartNetworkOnlyClient {
       PacketLogin p = new PacketLogin(answer);
       p.sendToServer();
     }
+  }
+
+  @Override
+  public void run() {
+    main(new String[] {});
   }
 }
