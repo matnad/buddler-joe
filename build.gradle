@@ -4,11 +4,12 @@ plugins {
     id 'com.github.johnrengelman.shadow' version '5.0.0'
 }
 
-sourceCompatibility = 1.11
-targetCompatibility = 1.11
+sourceCompatibility = '1.11'
+targetCompatibility = '1.11'
 
-group 'Buddler Joe'
-version '1.0-SNAPSHOT'
+
+group 'gruppe-8'
+version 'buddlerjoe-early-alpha'
 
 
 jar {

@@ -3,10 +3,9 @@ Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm, CLion, An
 
 # all idea
 .idea/
-Buddler-Joe/.idea/
 
 # gradle
-Buddler-Joe/.gradle/
+.gradle/
 
 # CMake
 cmake-build-*/
@@ -31,7 +30,7 @@ lib/
 target/
 
 # archive
-Buddler-Joe/src/main/java/archive/
+src/main/java/archive/
 
 # build
-Buddler-Joe/build/
+build/
