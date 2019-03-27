@@ -1,0 +1,25 @@
+Buddler Joe: Spielmechaniken
+
+Input: 
+? Steuerung der Spielfigur:
+? Der Spieler steuert die Spielfigur durch ein Tastaturinput durch die Welt. Er hat dabei grunds„tzlich 4 Tasten zur Verfgung. A um nach links zu gehen, S um nach unten zu gehen, D um nach rechts zu gehen und W um nach oben zu springen. Bei A, S oder D l„uft die Spielfigur, solange es kein Hinderniss hat. Ab einem Hinderniss f„ngt die Spielfigur entweder an zu graben (wenn Erde) oder l„uft nicht mehr weiter (wenn Stein). Beim springen mit W kann der Spieler maximal einen Block nach oben springen. Durch W und A zusammen springt der Charakter nach links oben, durch W und D zusammen nach rechts oben. 
+? Interaktion der Spielfigur mit der Welt: 
+? Die Spielfigur kann durch Erd-Bl”cke graben. Dies geht in die Richtung links, rechts oder nach unten. Die Erd-Bl”cke l”sen sich nach einer ?Buddelzeit? auf.
+? Durch Steinbl”cke kann sich die Spielfigur nicht graben. Die Steinbl”cke fallen nach unten, wenn sich kein anderer Block mehr unter ihnen befindet. Wenn ein Steinblock auf den Spieler f„llt, verliert dieser ein Leben. Weiter k”nnen Steinbl”cke durch das Dynamit in den Fragezeichenbl”cken zerst”rt werden. 
+? Die Spielfigur kann sich auch durch die Fragezeichenbl”cke graben. Diese beinhalten zuf„lligerweise entweder Dynamit, einen Stern, Eis oder ein Herz. Diese werden jeweils zuf„lligerweise bei der Maperstellung verteilt und kommen jeweils mit einer ¬ Wahrscheinlichkeit vor. Die Items werden automatisch ausgefhrt und haben die folgenden funktionen: 
+ş Dynamit: 
+? Explodiert und legt einen Radius von 3x3 frei, kann den Spieler verletzen und ein Leben kosten.
+ş Stern: 
+? Friert die Gegner ein und 
+ş Eis:
+? Friert den Spieler selber ein
+ş Herz:
+? Regeneriert ein Leben
+? Die Spielfigur kann sich auch durch Gold graben und so Punkte verdienen. Desto tiefer das Gold ist, desto mehr ist es Wert. 
+? Anzeigen w„hrend dem Spiel:	
+? Anzahl Herzen:
+ş Jeder Spieler beginnt mit 2 Herzen, welche oben links angezeigt werden. Wenn der Spieler ein Herz verliert ergraut ein Herz.
+? Zeit:
+ş Der Timer zeigt an, wieviel Zeit dem Spieler brig bleibt, um noch mehr Gold als die Gegner zu sammeln. Der Timer befindet sich oben rechts.
+? Tiefe:
+ş Die Tiefe wird aus der Anzahl Bl”cke errechnet. Wird unter der Zeit angezeigt.
