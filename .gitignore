@@ -4,9 +4,6 @@ Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm, CLion, An
 # all idea
 .idea/
 
-# gradle
-.gradle/
-
 # CMake
 cmake-build-*/
 
