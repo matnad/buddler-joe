@@ -110,9 +110,6 @@ class GenerateWorld {
    *     one loader.
    */
   static void generateBlocks(Loader loader) {
-    // Initialise blocks
-    BlockMaster.init(loader);
-
     // Generate some blocks
     float padding = .0f; // Distance between blocks
     float size = 3; // If this is not 3, you need to use the full block constructor and modify the

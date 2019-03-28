@@ -17,9 +17,12 @@ import engine.textures.ModelTexture;
 import entities.Camera;
 import entities.Entity;
 import entities.Player;
+import entities.blocks.BlockMaster;
 import entities.blocks.debris.DebrisMaster;
 import entities.items.ItemMaster;
 import entities.light.LightMaster;
+import game.map.ClientMap;
+import game.map.Map;
 import game.stages.GameMenu;
 import game.stages.MainMenu;
 import game.stages.Playing;
@@ -28,7 +31,6 @@ import gui.Fps;
 import gui.GuiString;
 import java.util.ArrayList;
 import java.util.List;
-import net.StartNetworkOnlyClient;
 import org.joml.Vector3f;
 import terrains.Terrain;
 import terrains.TerrainFlat;
@@ -85,6 +87,9 @@ public class Game extends Thread {
   // This probably needs to go somewhere else when we work on the chat
   private static Chat chat;
   private static Player player;
+
+  //map
+  private static ClientMap map;
 
   /*
    * Keep track of connected players.
@@ -269,6 +274,10 @@ public class Game extends Thread {
     return activeStages;
   }
 
+  public static ClientMap getMap() {
+    return map;
+  }
+
   /**
    * Add a stage to the game loop.
    *
@@ -328,14 +337,22 @@ public class Game extends Thread {
     Loader loader = new Loader();
 
     // Initialize World. We can do this a little better once we have a proper algorithm to
+
+    // Initialise blocks
+    BlockMaster.init(loader);
+
     // generate the world
     GenerateWorld.generateTerrain(loader);
-    GenerateWorld.generateBlocks(loader);
+    //GenerateWorld.generateBlocks(loader);
     aboveGround = GenerateWorld.getAboveGround();
     belowGround = GenerateWorld.getBelowGround();
     if (aboveGround == null || belowGround == null) {
       System.err.println("Could not generate terrain.");
     }
+
+    // generate map
+    map = new ClientMap(30, 40, 1);
+    System.out.println(map);
 
     // Initialize NetPlayerModels
     NetPlayerMaster.init(loader);

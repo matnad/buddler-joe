@@ -13,7 +13,7 @@ public class GoldBlock extends Block {
 
   /** Extended Constructor, dont call directly. */
   GoldBlock(Vector3f position, float rotX, float rotY, float rotZ, float scale) {
-    super(BlockMaster.BlockTypes.GOLD, 2f, 3f, position, rotX, rotY, rotZ, scale);
+    super(BlockMaster.BlockTypes.GOLD, hardness, 3f, position, rotX, rotY, rotZ, scale);
   }
 
   /** Shortened constructor with just position. Dont call directly. */
@@ -26,5 +26,9 @@ public class GoldBlock extends Block {
     // Drop some dynamite!
     // Item dynamite = ItemMaster.generateItem(ItemMaster.ItemTypes.DYNAMITE, getPosition());
     // ((Dynamite) dynamite).setActive(true);
+  }
+
+  public static float getHardness() {
+    return hardness;
   }
 }

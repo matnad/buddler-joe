@@ -16,6 +16,6 @@ public class Main {
     } catch (InterruptedException e) {
       e.printStackTrace();
     }
-    StartNetworkOnlyClient.main(new String[] {});
+    //StartNetworkOnlyClient.main(new String[] {});
   }
 }

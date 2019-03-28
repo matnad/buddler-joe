@@ -9,10 +9,12 @@ import org.joml.Vector3f;
  */
 public class DirtBlock extends Block {
 
+  private static float hardness = 0.9f;
+
   /** Extended Constructor, dont call directly. */
   DirtBlock(Vector3f position, float rotX, float rotY, float rotZ, float scale) {
     // Must pass block type and hardness here as they are required
-    super(BlockMaster.BlockTypes.DIRT, 0.9f, 1f, position, rotX, rotY, rotZ, scale);
+    super(BlockMaster.BlockTypes.DIRT, hardness, 1f, position, rotX, rotY, rotZ, scale);
   }
 
   /** Shortened constructer with just position. Dont call directly. */
@@ -22,4 +24,8 @@ public class DirtBlock extends Block {
 
   @Override
   protected void onDestroy() {}
+
+  public static float getHardness() {
+    return hardness;
+  }
 }
