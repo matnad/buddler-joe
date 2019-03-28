@@ -25,9 +25,9 @@ public class ServerMap extends Map<ServerBlock> {
     float[][] noiseMap = generateNoiseMap(rng);
 
     /* Threshold function
-    */
-    for (int x = 0; x < width; x++) {
-      for (int y = 0; y < height; y++) {
+     */
+    for (int y = 0; y < height; y++) {
+      for (int x = 0; x < width; x++) {
         if (noiseMap[x][y] < thresholds[0]) {
           blocks[x][y] = new ServerBlock(BlockMaster.BlockTypes.AIR); // Air
         } else {
@@ -36,7 +36,7 @@ public class ServerMap extends Map<ServerBlock> {
           } else if ((int) (noiseMap[x][y] * 100) % 50 == 0) {
             blocks[x][y] =
                 new ServerBlock(BlockMaster.BlockTypes.GRASS); // Item Block: 1 in 50 chance
-          } else if (noiseMap[x][y] <  thresholds[1]) {
+          } else if (noiseMap[x][y] < thresholds[1]) {
             blocks[x][y] = new ServerBlock(BlockMaster.BlockTypes.DIRT); // Dirt
           } else {
             blocks[x][y] = new ServerBlock(BlockMaster.BlockTypes.STONE); // Stone

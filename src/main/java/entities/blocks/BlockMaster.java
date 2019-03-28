@@ -7,7 +7,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import org.joml.Vector2f;
 import org.joml.Vector3f;
 
 /** Create and manage blocks. Only ever create blocks using this class */
@@ -35,7 +34,6 @@ public class BlockMaster {
    *
    * @param type type of the block as described in {@link BlockTypes}
    * @param position 3D coordinate to place the block
-   *
    * @return the created block
    */
   public static Block generateBlock(BlockTypes type, Vector3f position) {
@@ -57,7 +55,11 @@ public class BlockMaster {
         block = null;
         break;
     }
-    addBlockToList(block);
+
+    if (block != null) {
+      addBlockToList(block);
+    }
+
     return block;
   }
 
@@ -128,7 +130,11 @@ public class BlockMaster {
   //  return blockLists;
   // }
 
-  /** Easy access to block types by their name. */
+  /**
+   * Easy access to block types by their name.
+   *
+   * <p>Includes representation with color and symbol for the console.
+   */
   public enum BlockTypes {
     GRASS(4, "\u001B[34m█\u001B[0m"),
     DIRT(31, "\u001B[31;1m█\u001B[0m"),

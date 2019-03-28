@@ -30,12 +30,12 @@ public class ClientMap extends Map<Block> {
     // Threshold function and random gold/item blocks can replace stone/dirt blocks
     int size = 3; // Block scale factor
     int dim = 2 * size; // Block dimension
-
-    for (int x = 0; x < width; x++) {
-      for (int y = 0; y < height; y++) {
+    
+    for (int y = 0; y < height; y++) {
+      for (int x = 0; x < width; x++) {
         float posX = x * dim + 3;
         float posY = -y * dim - size;
-        if (noiseMap[x][y] <  thresholds[0]) {
+        if (noiseMap[x][y] < thresholds[0]) {
           blocks[x][y] = new AirBlock();
         } else {
           if ((int) (noiseMap[x][y] * 100) % 40 == 0) {
@@ -48,7 +48,7 @@ public class ClientMap extends Map<Block> {
             blocks[x][y] =
                 BlockMaster.generateBlock(
                     BlockMaster.BlockTypes.GRASS, new Vector3f(posX, posY, (float) size));
-          } else if (noiseMap[x][y] <  thresholds[1]) {
+          } else if (noiseMap[x][y] < thresholds[1]) {
             blocks[x][y] =
                 BlockMaster.generateBlock(
                     BlockMaster.BlockTypes.DIRT, new Vector3f(posX, posY, (float) size));

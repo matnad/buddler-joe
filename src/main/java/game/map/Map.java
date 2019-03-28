@@ -42,16 +42,16 @@ public abstract class Map<T> {
   abstract void generateMap();
 
   /**
-   * Generates a noise map for map generation.
-   * TODO (Sanja): Implement map generation algorithm
+   * Generates a noise map for map generation. TODO (Sanja): Implement map generation algorithm
+   *
    * @param rng a random generator
    * @return the noise map for the specified random generator
    */
   protected float[][] generateNoiseMap(Random rng) {
     // Generate Noise here (now its purely random)
     float[][] noiseMap = new float[width][height];
-    for (int x = 0; x < width; x++) {
-      for (int y = 0; y < height; y++) {
+    for (int y = 0; y < height; y++) {
+      for (int x = 0; x < width; x++) {
         noiseMap[x][y] = rng.nextFloat();
       }
     }
