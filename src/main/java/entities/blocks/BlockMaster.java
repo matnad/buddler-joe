@@ -35,6 +35,8 @@ public class BlockMaster {
    *
    * @param type type of the block as described in {@link BlockTypes}
    * @param position 3D coordinate to place the block
+   *
+   * @return the created block
    */
   public static Block generateBlock(BlockTypes type, Vector3f position) {
     Block block;
