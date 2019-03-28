@@ -47,6 +47,7 @@ public class Playing {
 
     // Masters check their slaves
     ItemMaster.update();
+    Game.getMap().checkFallingBlocks();
     BlockMaster.update();
     DebrisMaster.update();
     ParticleMaster.update(Game.getActiveCamera());

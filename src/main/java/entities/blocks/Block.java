@@ -7,6 +7,7 @@ import engine.render.objconverter.ObjFileLoader;
 import engine.textures.ModelTexture;
 import entities.Entity;
 import entities.blocks.debris.DebrisMaster;
+import game.Game;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 
@@ -26,6 +27,12 @@ public abstract class Block extends Entity {
   private final BlockMaster.BlockTypes type;
   private float damage;
   private Entity destroyedBy;
+
+  private Vector3f moveTo;
+  private Vector3f moveStartPos;
+  private float moveDistance;
+  private Vector3f speed;
+  private Vector3f acceleration;
 
   /**
    * Abstract Constructor.
@@ -71,6 +78,8 @@ public abstract class Block extends Entity {
     This allows us to override it from sub-blocks.
     */
     this.dim = scale;
+    this.moveTo = getPosition();
+    this.acceleration = new Vector3f(0,1,0); // Added per second
   }
 
   /**
@@ -164,6 +173,7 @@ public abstract class Block extends Entity {
       DebrisMaster.generateDebris(this);
       onDestroy();
     }
+    //Game.getMap().destroyBlock(this);
   }
 
   public float getDim() {
@@ -183,4 +193,44 @@ public abstract class Block extends Entity {
   public float getMass() {
     return mass;
   }
+
+  public Vector3f getMoveTo() {
+    return moveTo;
+  }
+
+  public Vector3f getMoveStartPos() {
+    return moveStartPos;
+  }
+
+  public float getMoveDistance() {
+    return moveDistance;
+  }
+
+  /**
+   * Settings a moveTo target will start the block to move there.
+   * Make sure speed and acceleration parameters allow the movement in this direction.
+   * Currently only downwards acceleration (=Gravity) is implemented.
+   * If you need other impulses, you have to implement them via an acceleration setter.
+   *
+   * @param moveTo target to move the block to*/
+  public void setMoveTo(Vector3f moveTo) {
+    this.moveTo = moveTo;
+    this.speed = new Vector3f(0,0,0);
+    this.moveStartPos = new Vector3f(getPosition());
+    this.moveDistance = getPosition().distance(moveTo);
+  }
+
+  public void accelerate(float delta) {
+    this.speed.add(new Vector3f(acceleration).mul(delta));
+  }
+
+  public Vector3f getSpeed() {
+    return speed;
+  }
+
+  @Override
+  public String toString() {
+    return getType().toString();
+  }
+
 }

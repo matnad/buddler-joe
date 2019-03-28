@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import org.joml.Vector2f;
 import org.joml.Vector3f;
 
 /** Create and manage blocks. Only ever create blocks using this class */
@@ -35,7 +36,7 @@ public class BlockMaster {
    * @param type type of the block as described in {@link BlockTypes}
    * @param position 3D coordinate to place the block
    */
-  public static void generateBlock(BlockTypes type, Vector3f position) {
+  public static Block generateBlock(BlockTypes type, Vector3f position) {
     Block block;
     switch (type) {
       case GRASS:
@@ -55,6 +56,7 @@ public class BlockMaster {
         break;
     }
     addBlockToList(block);
+    return block;
   }
 
   /**
@@ -77,6 +79,17 @@ public class BlockMaster {
           // Clean up list if empty
           if (list.isEmpty()) {
             mapIterator.remove();
+          }
+        } else {
+          if (block.getPosition() != block.getMoveTo()) {
+            // Slowly move the block
+            block.accelerate((float) Game.window.getFrameTimeSeconds());
+            if (block.getPosition().distance(block.getMoveStartPos()) > block.getMoveDistance()) {
+              block.setPosition(block.getMoveTo());
+            } else {
+              Vector3f dir = new Vector3f(block.getMoveTo()).sub(block.getMoveStartPos());
+              block.increasePosition(dir.normalize().mul(block.getSpeed()));
+            }
           }
         }
       }
@@ -115,19 +128,27 @@ public class BlockMaster {
 
   /** Easy access to block types by their name. */
   public enum BlockTypes {
-    GRASS(4),
-    DIRT(31),
-    GOLD(30),
-    STONE(11);
+    GRASS(4, "\u001B[34m█\u001B[0m"),
+    DIRT(31, "\u001B[31;1m█\u001B[0m"),
+    GOLD(30, "\u001B[33m█\u001B[0m"),
+    STONE(11, "\u001B[37m█\u001B[0m"),
+    AIR(0, "\u001B[35;1m█\u001B[0m");
 
     private final int textureId;
+    private final String repr;
 
-    BlockTypes(int textureId) {
+    BlockTypes(int textureId, String repr) {
       this.textureId = textureId;
+      this.repr = repr;
     }
 
     public int getTextureId() {
       return textureId;
+    }
+
+    @Override
+    public String toString() {
+      return repr;
     }
   }
 }
