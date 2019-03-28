@@ -28,7 +28,7 @@ import org.joml.Vector3f;
  */
 public class Chat {
 
-  private static final float ALPHA_OFF = .3f;
+  private static final float ALPHA_OFF = .1f;
   private static final float ALPHA_ON = .8f;
 
   private boolean enabled;
@@ -239,7 +239,7 @@ public class Chat {
   //  this.chatText = chatText;
   // }
   //
-  // public GuiTexture getChatGui() {
-  //  return chatGui;
-  // }
+   public GuiTexture getChatGui() {
+    return chatGui;
+   }
 }

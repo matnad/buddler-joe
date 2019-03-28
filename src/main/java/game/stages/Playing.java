@@ -14,6 +14,9 @@ import entities.items.ItemMaster;
 import entities.light.LightMaster;
 import game.Game;
 import game.NetPlayerMaster;
+import gui.GuiTexture;
+import java.util.ArrayList;
+import java.util.List;
 import util.MousePlacer;
 
 /**
@@ -29,6 +32,9 @@ public class Playing {
    * @param renderer master renderer from game loop
    */
   public static void update(MasterRenderer renderer) {
+
+    List<GuiTexture> guis = new ArrayList<>();
+    guis.add(Game.getChat().getChatGui());
 
     // ESC = Game Menu
     if (InputHandler.isKeyPressed(GLFW_KEY_ESCAPE)) {
@@ -60,10 +66,6 @@ public class Playing {
     renderer.processTerrain(Game.getBelowGround());
     for (Entity entity : Game.getEntities()) {
       if (entity != null) {
-        // All the NetPlayer stuff will need to move to a different class and update it from there
-        //if (entity instanceof NetPlayer) {
-        //  ((NetPlayer) entity).getDirectionalUsername().updateString();
-        //}
         renderer.processEntity(entity);
       }
     }
@@ -73,7 +75,7 @@ public class Playing {
     Game.getChat().checkInputs();
     // GUI goes over everything else and then text on top of GUI
     ParticleMaster.renderParticles(Game.getActiveCamera());
-    // guiRenderer.render(guis);
+    Game.getGuiRenderer().render(guis);
     TextMaster.render();
   }
 }

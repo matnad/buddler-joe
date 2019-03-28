@@ -148,115 +148,9 @@ public class Game extends Thread {
     return camera;
   }
 
-  /*
-   * Here are some functions that have no other place yet, but they all need to get out of this file
-   * Most of them will be moved to the net package when working on the protocol
-   */
-
   public static Player getActivePlayer() {
     return player;
   }
-
-
-
-  /*
-  public void addNetPlayer(NetPlayer netPlayer) {
-
-    if (!netPlayer.getUsername().equals(username)) {
-      boolean found = false;
-      for (NetPlayer player : netPlayers) {
-        if (player.equals(netPlayer)) {
-          found = true;
-        }
-      }
-      if (!found) {
-        System.out.println("Adding " + netPlayer.getUsername() + " as a " +
-         netPlayer.getModelStr() + ".");
-        this.netPlayers.add(netPlayer);
-      }
-    }
-  }
-
-  public void removeNetPlayer(NetPlayer netPlayer) {
-    this.netPlayers.remove(netPlayer);
-  }
-
-  public void removeNetPlayer(String username) {
-    if (netPlayers.size() == 0) {
-      return;
-    }
-
-    int index = 0;
-    for (NetPlayer netPlayer : netPlayers) {
-      if (netPlayer.getUsername().equals(username)) {
-        break;
-      }
-      index++;
-    }
-    netPlayers.remove(index);
-
-  }
-
-  //This is just a quick mock up, please rewrite properly from scratch
-  public void checkAndLoadNetPlayers(Loader loader) {
-
-    if (loadedNetPlayers.size() < netPlayers.size()) {
-      boolean found = false;
-      NetPlayer enteringPlayer = null;
-      for (NetPlayer netPlayer : netPlayers) {
-
-        for (NetPlayer loadedNetPlayer : loadedNetPlayers) {
-          if (netPlayer.equals(loadedNetPlayer)) {
-            found = true;
-            break;
-          }
-        }
-        if (!found) {
-          enteringPlayer = netPlayer;
-        }
-      }
-      if (!found) {
-        System.out.println("" + enteringPlayer.getUsername() + " has joined the game.");
-        if (enteringPlayer.getModel() == null) {
-          RawModel rawPlayer =
-              loader.loadToVao(ObjFileLoader.loadObj(enteringPlayer.getModelStr()));
-          TexturedModel defaultModel = new TexturedModel(rawPlayer,
-              new ModelTexture(loader.loadTexture(enteringPlayer.getTextureStr())));
-          enteringPlayer.setModel(defaultModel);
-        }
-        enteringPlayer.loadDirectionalUsername();
-        entities.add(enteringPlayer);
-        loadedNetPlayers.add(enteringPlayer);
-      }
-    } else if (loadedNetPlayers.size() > netPlayers.size()) {
-      boolean found = false;
-      NetPlayer leavingPlayer = null;
-      for (NetPlayer loadedNetPlayer : loadedNetPlayers) {
-        for (NetPlayer netPlayer : netPlayers) {
-          if (loadedNetPlayer.equals(netPlayer)) {
-            found = true;
-            break;
-          }
-        }
-        if (!found) {
-          leavingPlayer = loadedNetPlayer;
-        }
-      }
-      if (!found && leavingPlayer != null) {
-        System.out.println("" + leavingPlayer.getUsername() + " has left the game.");
-        loadedNetPlayers.remove(leavingPlayer);
-        int index = 0;
-        for (Entity entity : entities) {
-          if (entity instanceof NetPlayer && entity.equals(leavingPlayer)) {
-            break;
-          }
-          index++;
-        }
-        entities.remove(index);
-
-      }
-    }
-  }*/
 
   public static Terrain getAboveGround() {
     return aboveGround;
@@ -380,7 +274,6 @@ public class Game extends Thread {
     Fps fpsCounter = new Fps();
     // List<GuiTexture> guis = new ArrayList<>();
     chat = new Chat(loader);
-    // guis.add(chat.getChatGui());
     guiRenderer = new GuiRenderer(loader);
 
     // Load Particle Master

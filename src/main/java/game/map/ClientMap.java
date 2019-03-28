@@ -30,7 +30,7 @@ public class ClientMap extends Map<Block> {
     // Threshold function and random gold/item blocks can replace stone/dirt blocks
     int size = 3; // Block scale factor
     int dim = 2 * size; // Block dimension
-    
+
     for (int y = 0; y < height; y++) {
       for (int x = 0; x < width; x++) {
         float posX = x * dim + 3;
