@@ -102,43 +102,43 @@ class GenerateWorld {
 
   // We change seed management once we have World generation down.
 
-  /**
-   * Generate the diggable blocks on top of the terrain. Needs to be called only once at the start
-   * of the game. Currently uses the seed of the GenerateWorld class.
-   *
-   * @param loader Pass the main loader from the Game class. There is no reason to have more than
-   *     one loader.
-   */
-  static void generateBlocks(Loader loader) {
-    // Generate some blocks
-    float padding = .0f; // Distance between blocks
-    float size = 3; // If this is not 3, you need to use the full block constructor and modify the
-    // Block Master or the Block Files. Just use 3 for now.
-    float dim = size * 2 + padding;
-
-    // First row is grass
-    for (int i = 0; i < 33; i++) {
-      BlockMaster.generateBlock(GRASS, new Vector3f(i * dim + 3f, -size, size));
-    }
-
-    /*
-     * Just slap some random blocks in there for now
-     * BlockMaster will manage everything and pass them to the renderer
-     */
-    for (int i = 0; i < 33; i++) {
-      for (int j = 0; j < 33; j++) {
-        float k = random.nextFloat();
-        Vector3f position = new Vector3f(i * dim + 3f, -j * dim - size * 3, size);
-        if (k < .4f) {
-          BlockMaster.generateBlock(DIRT, position);
-        } else if (k < .8f) {
-          BlockMaster.generateBlock(STONE, position);
-        } else if (k < .85f) {
-          BlockMaster.generateBlock(GOLD, position);
-        }
-      }
-    }
-  }
+//  /**
+//   * Generate the diggable blocks on top of the terrain. Needs to be called only once at the start
+//   * of the game. Currently uses the seed of the GenerateWorld class.
+//   *
+//   * @param loader Pass the main loader from the Game class. There is no reason to have more than
+//   *     one loader.
+//   */
+//  static void generateBlocks(Loader loader) {
+//    // Generate some blocks
+//    float padding = .0f; // Distance between blocks
+//    float size = 3; // If this is not 3, you need to use the full block constructor and modify the
+//    // Block Master or the Block Files. Just use 3 for now.
+//    float dim = size * 2 + padding;
+//
+//    // First row is grass
+//    for (int i = 0; i < 33; i++) {
+//      BlockMaster.generateBlock(GRASS, new Vector3f(i * dim + 3f, -size, size));
+//    }
+//
+//    /*
+//     * Just slap some random blocks in there for now
+//     * BlockMaster will manage everything and pass them to the renderer
+//     */
+//    for (int i = 0; i < 33; i++) {
+//      for (int j = 0; j < 33; j++) {
+//        float k = random.nextFloat();
+//        Vector3f position = new Vector3f(i * dim + 3f, -j * dim - size * 3, size);
+//        if (k < .4f) {
+//          BlockMaster.generateBlock(DIRT, position);
+//        } else if (k < .8f) {
+//          BlockMaster.generateBlock(STONE, position);
+//        } else if (k < .85f) {
+//          BlockMaster.generateBlock(GOLD, position);
+//        }
+//      }
+//    }
+//  }
 
   /**
    * Get a random point on the terrain surface for a 200x200 standard terrain, respecting height

@@ -8,9 +8,10 @@ import engine.textures.ModelTexture;
 import entities.Entity;
 import entities.blocks.debris.DebrisMaster;
 import game.Game;
-import java.util.Random;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
+
+import java.util.Random;
 
 /**
  * Abstract class for Blocks.
@@ -28,6 +29,10 @@ public abstract class Block extends Entity {
   private final BlockMaster.BlockTypes type;
   private float damage;
   private Entity destroyedBy;
+
+  // Grid Position for Map
+  private int gridX;
+  private int gridY;
 
   // Variables for moving and shaking a block
   private Vector3f moveTo;
@@ -58,7 +63,9 @@ public abstract class Block extends Entity {
       float rotX,
       float rotY,
       float rotZ,
-      float scale) {
+      float scale,
+      int gridX,
+      int gridY) {
     // blockModel is a texture atlas, containing all block textures, ID is the position of the
     // texture on the atlas
     super(blockModel, type.getTextureId(), position, rotX, rotY, rotZ, scale);
@@ -66,6 +73,9 @@ public abstract class Block extends Entity {
     this.type = type;
     this.hardness = hardness;
     this.mass = mass;
+    this.gridX = gridX;
+    this.gridY = gridY;
+
 
     if (blockModel == null) {
       // Maybe need more than a warning
@@ -148,12 +158,10 @@ public abstract class Block extends Entity {
    * Add damage to the block.
    *
    * @param damage damage done to the block
-   * @param entity entity that inflicted the damage
    */
-  public void increaseDamage(float damage, Entity entity) {
+  public void increaseDamage(float damage) {
     this.damage += damage;
     if (this.damage > this.hardness) {
-      setDestroyedBy(entity);
       setDestroyed(true); // Destroy block
     }
   }
@@ -289,6 +297,22 @@ public abstract class Block extends Entity {
         toggleShake();
       }
     }
+  }
+
+  public int getGridX() {
+    return gridX;
+  }
+
+  public int getGridY() {
+    return gridY;
+  }
+
+  public void setGridX(int gridX) {
+    this.gridX = gridX;
+  }
+
+  public void setGridY(int gridY) {
+    this.gridY = gridY;
   }
 
   @Override

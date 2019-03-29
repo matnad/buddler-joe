@@ -13,8 +13,10 @@ import entities.blocks.BlockMaster;
 import entities.light.Light;
 import entities.light.LightMaster;
 import game.Game;
-import java.util.Random;
+import net.packets.block.PacketBlockDamage;
 import org.joml.Vector3f;
+
+import java.util.Random;
 
 /** A bundle of dynamite that can damage blocks or the player. */
 @SuppressWarnings("FieldCanBeLocal") // We want settings on top even if it could be local
@@ -183,7 +185,10 @@ public class Dynamite extends Item {
       float distance = block.get2dDistanceFrom(getPositionXy());
       if (distance < explosionRange) {
         // Damage blocks inverse to distance (closer = more damage)
-        block.increaseDamage(1 / distance * maximumDamage, this);
+        // block.increaseDamage(1 / distance * maximumDamage);
+        if (Game.isConnectedToServer()) {
+          new PacketBlockDamage(block.getGridX(), block.getGridY(), 1 / distance * maximumDamage);
+        }
       }
     }
     flash =

@@ -1,6 +1,9 @@
 package game.map;
 
 import entities.blocks.BlockMaster;
+import net.ServerLogic;
+import net.packets.block.PacketBlockDamage;
+
 import java.util.Random;
 
 public class ServerMap extends Map<ServerBlock> {
@@ -76,9 +79,14 @@ public class ServerMap extends Map<ServerBlock> {
    * @param posY Y position of the block
    * @param damage damage to deal to the block
    */
-  public void damageBlock(int posX, int posY, float damage) {
+  @Override
+  public void damageBlock(int clientId, int posX, int posY, float damage) {
     if (blocks[posX][posY] != null) {
       blocks[posX][posY].damageBlock(damage);
+      int lobId = ServerLogic.getLobbyForClient(clientId).getLobbyId();
+      if(lobId > 0) {
+        new PacketBlockDamage(posX, posY, damage).sendToLobby(lobId);
+      }
     }
   }
 
@@ -88,7 +96,7 @@ public class ServerMap extends Map<ServerBlock> {
    * @param args nothing
    */
   public static void main(String[] args) {
-    ServerMap testMap = new ServerMap(30, 30, System.currentTimeMillis());
+    ServerMap testMap = new ServerMap(30, 20, System.currentTimeMillis());
     System.out.println(testMap);
   }
 }

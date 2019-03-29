@@ -37,20 +37,20 @@ public class BlockMaster {
    * @param position 3D coordinate to place the block
    * @return the created block
    */
-  public static Block generateBlock(BlockTypes type, Vector3f position) {
+  public static Block generateBlock(BlockTypes type, Vector3f position, int gridX, int gridY) {
     Block block;
     switch (type) {
       case GRASS:
-        block = new GrassBlock(position);
+        block = new GrassBlock(position, gridX, gridY);
         break;
       case DIRT:
-        block = new DirtBlock(position);
+        block = new DirtBlock(position, gridX, gridY);
         break;
       case GOLD:
-        block = new GoldBlock(position);
+        block = new GoldBlock(position, gridX, gridY);
         break;
       case STONE:
-        block = new StoneBlock(position);
+        block = new StoneBlock(position, gridX, gridY);
         break;
       default:
         block = null;

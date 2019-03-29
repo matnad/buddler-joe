@@ -1,17 +1,20 @@
 package net.packets.block;
 
+import game.Game;
 import game.map.ServerMap;
 import net.ServerLogic;
 import net.lobbyhandling.Lobby;
 import net.packets.Packet;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class PacketBlockDamage extends Packet {
 
-  int blockX;
-  int blockY;
-  float damage;
-
-  String[] dataArray;
+  private static final Logger logger = LoggerFactory.getLogger(PacketBlockDamage.class);
+  private int blockX;
+  private int blockY;
+  private float damage;
+  private String[] dataArray;
 
   /**
    * Created by the client to send the damage done to a block to the server.
@@ -33,11 +36,23 @@ public class PacketBlockDamage extends Packet {
    * Server recieves packet, validates it and is then ready to pass it to the ServerMap.
    *
    * @param clientId clientId who sent the packet
-   * @param data contains position of the block and damage dealt to the block
+   * @param data     contains position of the block and damage dealt to the block
    */
   public PacketBlockDamage(int clientId, String data) {
     super(PacketTypes.BLOCK_DAMAGE);
     setClientId(clientId);
+    setData(data);
+    dataArray = data.split("║");
+    validate(); // Validate and assign in one step
+  }
+
+  /**
+   * Server recieves packet, validates it and is then ready to pass it to the ServerMap.
+   *
+   * @param data     contains position of the block and damage dealt to the block
+   */
+  public PacketBlockDamage(String data) {
+    super(PacketTypes.BLOCK_DAMAGE);
     setData(data);
     dataArray = data.split("║");
     validate(); // Validate and assign in one step
@@ -64,20 +79,27 @@ public class PacketBlockDamage extends Packet {
 
   @Override
   public void processData() {
-    Lobby lobby = ServerLogic.getLobbyForClient(getClientId());
-    ServerMap map = null;
-    if (lobby == null) {
-      addError("Client is not in a lobby.");
+    if (getClientId() > 0) {
+      //Server side
+      Lobby lobby = ServerLogic.getLobbyForClient(getClientId());
+      ServerMap map = null;
+      if (lobby == null) {
+        addError("Client is not in a lobby.");
+      } else {
+        map = lobby.getMap();
+      }
+      if (map == null) {
+        addError("No map found for lobby.");
+      }
+      if (!hasErrors()) {
+        map.damageBlock(getClientId(), blockX, blockY, damage);
+      } else {
+        logger.error(
+            "Validation errors while sending Block Damage Packet. " + createErrorMessage());
+      }
     } else {
-      map = lobby.getMap();
-    }
-    if (map == null) {
-      addError("No map found for lobby.");
-    }
-    if (!hasErrors()) {
-      map.damageBlock(blockX, blockY, damage);
-    } else {
-      // log errors.
+      //Client side
+      Game.getMap().damageBlock(0, blockX, blockY, damage);
     }
   }
 }

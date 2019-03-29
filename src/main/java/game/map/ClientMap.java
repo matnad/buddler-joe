@@ -3,8 +3,9 @@ package game.map;
 import entities.blocks.AirBlock;
 import entities.blocks.Block;
 import entities.blocks.BlockMaster;
-import java.util.Random;
 import org.joml.Vector3f;
+
+import java.util.Random;
 
 public class ClientMap extends Map<Block> {
 
@@ -36,26 +37,26 @@ public class ClientMap extends Map<Block> {
         float posX = x * dim + 3;
         float posY = -y * dim - size;
         if (noiseMap[x][y] < thresholds[0]) {
-          blocks[x][y] = new AirBlock();
+          blocks[x][y] = new AirBlock(x, y);
         } else {
           if ((int) (noiseMap[x][y] * 100) % 40 == 0) {
             // Gold Block: 1 in 40 chance
             blocks[x][y] =
                 BlockMaster.generateBlock(
-                    BlockMaster.BlockTypes.GOLD, new Vector3f(posX, posY, (float) size));
+                    BlockMaster.BlockTypes.GOLD, new Vector3f(posX, posY, (float) size), x, y);
           } else if ((int) (noiseMap[x][y] * 100) % 50 == 0) {
             // Item Block: 1 in 50 chance
             blocks[x][y] =
                 BlockMaster.generateBlock(
-                    BlockMaster.BlockTypes.GRASS, new Vector3f(posX, posY, (float) size));
+                    BlockMaster.BlockTypes.GRASS, new Vector3f(posX, posY, (float) size), x, y);
           } else if (noiseMap[x][y] < thresholds[1]) {
             blocks[x][y] =
                 BlockMaster.generateBlock(
-                    BlockMaster.BlockTypes.DIRT, new Vector3f(posX, posY, (float) size));
+                    BlockMaster.BlockTypes.DIRT, new Vector3f(posX, posY, (float) size), x, y);
           } else {
             blocks[x][y] =
                 BlockMaster.generateBlock(
-                    BlockMaster.BlockTypes.STONE, new Vector3f(posX, posY, (float) size));
+                    BlockMaster.BlockTypes.STONE, new Vector3f(posX, posY, (float) size), x, y);
           }
         }
       }
@@ -95,11 +96,17 @@ public class ClientMap extends Map<Block> {
                 new Vector3f(b.getPosition().x, -(y + 1) * 6 - 3, b.getPosition().z), moveDelay);
             // Update the grid
             blocks[x][y + 1] = b;
-            blocks[x][y] = new AirBlock();
+            b.setGridY(b.getGridY() + 1);
+            blocks[x][y] = new AirBlock(x, y);
             done = false;
           }
         }
       }
     } while (!done);
+  }
+
+  @Override
+  public void damageBlock(int clientId, int blockX, int blockY, float damage) {
+    blocks[blockX][blockY].increaseDamage(damage);
   }
 }

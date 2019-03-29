@@ -7,6 +7,7 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.SocketException;
 import net.packets.Packet;
+import net.packets.block.PacketBlockDamage;
 import net.packets.chat.PacketChatMessageStatus;
 import net.packets.chat.PacketChatMessageToClient;
 import net.packets.lobby.PacketCreateLobbyStatus;
@@ -185,6 +186,9 @@ public class ClientLogic implements Runnable {
           break;
         case POSITION_UPDATE:
           p = new PacketPos(data);
+          break;
+        case BLOCK_DAMAGE:
+          p = new PacketBlockDamage(data);
           break;
         default:
       }

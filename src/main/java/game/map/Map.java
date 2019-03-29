@@ -41,6 +41,8 @@ public abstract class Map<T> {
 
   abstract void generateMap();
 
+  abstract void damageBlock(int clientId, int posX, int posY, float damage);
+
   /**
    * Generates a noise map for map generation. TODO (Sanja): Implement map generation algorithm
    *

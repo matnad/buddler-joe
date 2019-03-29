@@ -8,6 +8,7 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import net.ServerLogic;
 import net.packets.Packet;
+import net.packets.block.PacketBlockDamage;
 import net.packets.chat.PacketChatMessageToServer;
 import net.packets.lobby.PacketCreateLobby;
 import net.packets.lobby.PacketGetLobbies;
@@ -153,6 +154,9 @@ public class ClientThread implements Runnable {
             break;
           case POSITION_UPDATE:
             p = new PacketPos(clientId, data);
+            break;
+          case BLOCK_DAMAGE:
+            p = new PacketBlockDamage(clientId, data);
             break;
           default:
         }
