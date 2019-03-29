@@ -95,6 +95,7 @@ public abstract class Block extends Entity {
 
     this.moveTo = getPosition();
     this.acceleration = new Vector3f(0, 1f, 0); // Added per second
+    this.speed = new Vector3f(0, 0, 0);
   }
 
   /**
@@ -187,6 +188,10 @@ public abstract class Block extends Entity {
       onDestroy();
     }
     // Game.getMap().destroyBlock(this);
+  }
+
+  public void remove() {
+    super.setDestroyed(true);
   }
 
   public float getDim() {

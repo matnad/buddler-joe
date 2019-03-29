@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * Manage the text objects that appear on screen, organized by font type. When a new text object is
@@ -16,7 +18,7 @@ import java.util.Map;
  */
 public class TextMaster {
 
-  private static final Map<FontType, List<GuiText>> texts = new HashMap<>();
+  private static final Map<FontType, CopyOnWriteArrayList<GuiText>> texts = new ConcurrentHashMap<>();
   private static Loader loader;
   private static FontRenderer renderer;
 
@@ -39,7 +41,7 @@ public class TextMaster {
     TextMeshData data = font.loadText(text);
     int vao = loader.loadToVao(data.getVertexPositions(), data.getTextureCoords());
     text.setMeshInfo(vao, data.getVertexCount());
-    List<GuiText> textBatch = texts.computeIfAbsent(font, k -> new ArrayList<>());
+    List<GuiText> textBatch = texts.computeIfAbsent(font, k -> new CopyOnWriteArrayList<>());
     textBatch.add(text);
   }
 
@@ -50,6 +52,9 @@ public class TextMaster {
    */
   public static void removeText(GuiText text) {
     List<GuiText> textBatch = texts.get(text.getFont());
+    if (textBatch == null) {
+      return;
+    }
     textBatch.remove(text);
     if (textBatch.isEmpty()) {
       texts.remove(text.getFont());

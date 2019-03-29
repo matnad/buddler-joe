@@ -96,11 +96,11 @@ public class ClientThread implements Runnable {
         }
 
         // Print command to server console if it is not a ping/pong command
-        if (!code.equals(Packet.PacketTypes.PING.getPacketCode())
-            && !code.equals(Packet.PacketTypes.PONG.getPacketCode())
-            && !code.equals(Packet.PacketTypes.POSITION_UPDATE.getPacketCode())) {
-          System.out.println("Client #" + clientId + " sent command '" + code + "'.");
-        }
+        //if (!code.equals(Packet.PacketTypes.PING.getPacketCode())
+        //    && !code.equals(Packet.PacketTypes.PONG.getPacketCode())
+        //    && !code.equals(Packet.PacketTypes.POSITION_UPDATE.getPacketCode())) {
+        //  System.out.println("Client #" + clientId + " sent command '" + code + "'.");
+        //}
         Packet p = null;
         switch (Packet.lookupPacket(code)) {
           case LOGIN:

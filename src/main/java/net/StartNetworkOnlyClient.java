@@ -174,15 +174,6 @@ public class StartNetworkOnlyClient implements Runnable {
     new StartNetworkOnlyClient();
     try {
       //      firstLogin();
-      try {
-        new PacketLogin("Matthias").sendToServer();
-        Thread.sleep(1);
-        new PacketCreateLobby("lob1").sendToServer();
-        Thread.sleep(1);
-        new PacketJoinLobby("lob1").sendToServer();
-      } catch (InterruptedException e) {
-        System.out.println("Problem with thread.");
-      }
     } catch (StringIndexOutOfBoundsException e) {
       System.out.println("Server disconnected.");
     }

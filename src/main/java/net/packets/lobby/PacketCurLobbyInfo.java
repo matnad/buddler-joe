@@ -3,6 +3,7 @@ package net.packets.lobby;
 import game.Game;
 import game.NetPlayerMaster;
 import java.util.ArrayList;
+import java.util.Arrays;
 import net.ServerLogic;
 import net.lobbyhandling.Lobby;
 import net.packets.Packet;
@@ -123,6 +124,7 @@ public class PacketCurLobbyInfo extends Packet {
       // Add missing players and create list of present players
       NetPlayerMaster.setLobbyname(infoArray[1]);
       ArrayList<Integer> presentIds = new ArrayList<>();
+      System.out.println(Arrays.toString(infoArray));
       for (int i = 2; i < infoArray.length; i += 2) {
         try {
           int id = Integer.parseInt(infoArray[i]);

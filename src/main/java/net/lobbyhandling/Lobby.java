@@ -3,6 +3,7 @@ package net.lobbyhandling;
 import game.map.ServerMap;
 import java.util.ArrayList;
 import net.ServerLogic;
+import net.packets.map.PacketBroadcastMap;
 import net.playerhandling.Player;
 
 /**
@@ -31,6 +32,7 @@ public class Lobby {
     this.lobbyId = lobbyCounter;
     lobbyCounter++;
     map = new ServerMap(30, 30, System.currentTimeMillis());
+    //System.out.println(map);
   }
 
   /**

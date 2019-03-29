@@ -21,6 +21,7 @@ import engine.render.fontmeshcreator.FontType;
 import engine.render.fontmeshcreator.GuiText;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class FontRenderer {
 
@@ -35,7 +36,7 @@ public class FontRenderer {
    *
    * @param texts list of texts to render
    */
-  public void render(Map<FontType, List<GuiText>> texts) {
+  public void render(Map<FontType, CopyOnWriteArrayList<GuiText>> texts) {
     prepare();
     for (FontType fontType : texts.keySet()) {
       // For each font atlas, bind the font atlas and then render all texts in that font

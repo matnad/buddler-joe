@@ -1,5 +1,6 @@
 package net.packets.loginlogout;
 
+import game.Game;
 import net.packets.Packet;
 import net.packets.lobby.PacketGetLobbies;
 
@@ -61,6 +62,7 @@ public class PacketLoginStatus extends Packet {
       System.out.println("Login Successful, your username is: " + getData().substring(2));
       PacketGetLobbies p = new PacketGetLobbies();
       p.sendToServer();
+      Game.setLoggedIn(true);
     } else if (status.startsWith("CHANGE") && !hasErrors() && status.length() > 6) {
       System.out.println(
           "Login Successful, however your username has already been taken. "
@@ -68,6 +70,7 @@ public class PacketLoginStatus extends Packet {
               + getData().substring(6));
       PacketGetLobbies p = new PacketGetLobbies();
       p.sendToServer();
+      Game.setLoggedIn(true);
     } else {
       if (hasErrors()) {
         System.out.println(status + "\n" + createErrorMessage());

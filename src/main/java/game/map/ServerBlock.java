@@ -48,6 +48,9 @@ public class ServerBlock {
    */
   public void damageBlock(float damage) {
     hardness -= damage;
+    if (hardness < 0) {
+      this.type = BlockMaster.BlockTypes.AIR;
+    }
   }
 
   @Override

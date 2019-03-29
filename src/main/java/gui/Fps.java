@@ -14,6 +14,8 @@ public class Fps extends GuiString {
     setPosition(new Vector2f(.92f, .02f));
     setTextColour(new Vector3f(1f, 1f, 0f));
     setAlpha(1);
+    setText("0");
+    createGuiText();
   }
 
   /**
@@ -22,13 +24,13 @@ public class Fps extends GuiString {
    * @param fps pass current fps from the window class
    */
   public void updateString(String fps) {
-    if (getGuiString() != null) {
-      TextMaster.removeText(getGuiString());
+    if (getGuiText() != null) {
+      TextMaster.removeText(getGuiText());
     }
     try {
       double fpsD = Double.parseDouble(fps);
       fpsD = Math.round(fpsD);
-      setGuiStringString("" + fpsD);
+      setText("" + fpsD);
       createGuiText();
     } catch (NumberFormatException ignored) {
       // Don't update if we get invalid string

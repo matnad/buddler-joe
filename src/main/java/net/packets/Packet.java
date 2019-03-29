@@ -306,7 +306,8 @@ public abstract class Packet {
     CHAT_MESSAGE_TO_CLIENT("CHATC"),
     CHAT_MESSAGE_STATUS("CHATN"),
     POSITION_UPDATE("POSXY"),
-    BLOCK_DAMAGE("BLDMG");
+    BLOCK_DAMAGE("BLDMG"),
+    FULL_MAP_BROADCAST("MAPBC");
 
     private final String packetCode;
 

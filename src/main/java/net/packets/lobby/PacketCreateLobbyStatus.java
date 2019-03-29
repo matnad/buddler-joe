@@ -1,5 +1,6 @@
 package net.packets.lobby;
 
+import game.Game;
 import net.packets.Packet;
 
 /**
@@ -65,7 +66,8 @@ public class PacketCreateLobbyStatus extends Packet {
    * error on the serverside the error message gets printed.
    */
   @Override
-  public void processData() {
+  public synchronized void processData() {
+    Game.setLobbyCreated(true); //Duplicate Lobby is okay
     if (hasErrors()) {
       System.out.println(createErrorMessage());
     } else if (status.startsWith("OK")) {

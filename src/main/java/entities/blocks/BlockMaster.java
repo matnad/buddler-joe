@@ -3,19 +3,20 @@ package entities.blocks;
 import engine.render.Loader;
 import game.Game;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 import org.joml.Vector3f;
 
 /** Create and manage blocks. Only ever create blocks using this class */
 public class BlockMaster {
   // Organize Blocks in lists that can be accessed by their type
-  private static final Map<BlockTypes, List<Block>> blockLists = new HashMap<>();
+  private static final Map<BlockTypes, CopyOnWriteArrayList<Block>> blockLists =
+      new ConcurrentHashMap<>();
   // Keep a list with just blocks
-  private static final List<Block> blocks = new ArrayList<>();
+  private static final List<Block> blocks = new CopyOnWriteArrayList<>();
   // List of debris (small blocks)
 
   /**
@@ -52,6 +53,9 @@ public class BlockMaster {
       case STONE:
         block = new StoneBlock(position, gridX, gridY);
         break;
+      case AIR:
+        block = new AirBlock(gridX, gridY);
+        break;
       default:
         block = null;
         break;
@@ -70,7 +74,7 @@ public class BlockMaster {
    */
   public static void update() {
     // Remove destroyed blocks from the list and update entities
-    Iterator<Map.Entry<BlockTypes, List<Block>>> mapIterator = blockLists.entrySet().iterator();
+    Iterator<Map.Entry<BlockTypes, CopyOnWriteArrayList<Block>>> mapIterator = blockLists.entrySet().iterator();
     while (mapIterator.hasNext()) {
       List<Block> list = mapIterator.next().getValue();
       Iterator<Block> iterator = list.iterator();
@@ -79,7 +83,7 @@ public class BlockMaster {
         if (block.isDestroyed()) {
           // Remove block from list and entities
           Game.removeEntity(block);
-          iterator.remove();
+          list.remove(iterator);
           blocks.remove(block);
           // Clean up list if empty
           if (list.isEmpty()) {
@@ -120,7 +124,7 @@ public class BlockMaster {
    */
   private static void addBlockToList(Block block) {
     // Get the list with the type of the block, if the list is absent, create it
-    List<Block> list = blockLists.computeIfAbsent(block.getType(), k -> new ArrayList<>());
+    List<Block> list = blockLists.computeIfAbsent(block.getType(), k -> new CopyOnWriteArrayList<>());
 
     // If the block is not destroyed, add it to the Game to be rendered
     if (!block.isDestroyed()) {
@@ -147,22 +151,43 @@ public class BlockMaster {
    * <p>Includes representation with color and symbol for the console.
    */
   public enum BlockTypes {
-    GRASS(4, "\u001B[34m█\u001B[0m"),
-    DIRT(31, "\u001B[31;1m█\u001B[0m"),
-    GOLD(30, "\u001B[33m█\u001B[0m"),
-    STONE(11, "\u001B[37m█\u001B[0m"),
-    AIR(0, "\u001B[35;1m█\u001B[0m");
+    GRASS(4, 4, "\u001B[34m█\u001B[0m"),
+    DIRT(31, 1, "\u001B[31;1m█\u001B[0m"),
+    GOLD(30, 3, "\u001B[33m█\u001B[0m"),
+    STONE(11, 2, "\u001B[37m█\u001B[0m"),
+    AIR(0, 0, "\u001B[35;1m█\u001B[0m");
 
     private final int textureId;
     private final String repr;
+    private final int id;
 
-    BlockTypes(int textureId, String repr) {
+    BlockTypes(int textureId, int id, String repr) {
       this.textureId = textureId;
       this.repr = repr;
+      this.id = id;
     }
 
     public int getTextureId() {
       return textureId;
+    }
+
+    public int getId() {
+      return id;
+    }
+
+    /**
+     * Returns the Block Type associated with the given ID or AIR if the ID is not found.
+     *
+     * @param id id of block type
+     * @return the block type associated with that id
+     */
+    public static BlockTypes getBlockTypeById(int id) {
+      for (BlockTypes blockType : BlockTypes.values()) {
+        if (blockType.id == id) {
+          return blockType;
+        }
+      }
+      return AIR;
     }
 
     @Override

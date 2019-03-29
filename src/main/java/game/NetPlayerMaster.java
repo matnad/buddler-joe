@@ -25,6 +25,7 @@ public class NetPlayerMaster {
   private static float defaultSize;
 
   static {
+    lobbyname = "";
     netPlayers = new HashMap<>();
     defaultSize = 0.4f;
   }
@@ -60,6 +61,7 @@ public class NetPlayerMaster {
    * @param username username of the player
    */
   public static void addPlayer(int clientId, String username) {
+    System.out.println("adding "+username);
     if (!netPlayers.containsKey(clientId)) {
       NetPlayer newPlayer =
           new NetPlayer(

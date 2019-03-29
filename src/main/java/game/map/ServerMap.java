@@ -1,10 +1,9 @@
 package game.map;
 
 import entities.blocks.BlockMaster;
+import java.util.Random;
 import net.ServerLogic;
 import net.packets.block.PacketBlockDamage;
-
-import java.util.Random;
 
 public class ServerMap extends Map<ServerBlock> {
 
@@ -83,8 +82,9 @@ public class ServerMap extends Map<ServerBlock> {
   public void damageBlock(int clientId, int posX, int posY, float damage) {
     if (blocks[posX][posY] != null) {
       blocks[posX][posY].damageBlock(damage);
+      checkFallingBlocks();
       int lobId = ServerLogic.getLobbyForClient(clientId).getLobbyId();
-      if(lobId > 0) {
+      if (lobId > 0) {
         new PacketBlockDamage(posX, posY, damage).sendToLobby(lobId);
       }
     }
@@ -98,5 +98,16 @@ public class ServerMap extends Map<ServerBlock> {
   public static void main(String[] args) {
     ServerMap testMap = new ServerMap(30, 20, System.currentTimeMillis());
     System.out.println(testMap);
+  }
+
+  public String toPacketString() {
+    StringBuilder sb = new StringBuilder();
+    for (int y = 0; y < height; y++) {
+      for (int x = 0; x < width; x++) {
+        sb.append(blocks[x][y].getType().getId());
+      }
+      sb.append("║");
+    }
+    return sb.toString().substring(0, sb.length() - 1);
   }
 }

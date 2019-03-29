@@ -2,6 +2,7 @@ package net.packets.lobby;
 
 import net.ServerLogic;
 import net.packets.Packet;
+import net.packets.map.PacketBroadcastMap;
 import net.playerhandling.Player;
 
 /**
@@ -97,6 +98,9 @@ public class PacketJoinLobby extends Packet {
       info = "OK║" + ServerLogic.getLobbyList().getTopTen();
       PacketLobbyOverview packetLobbyOverview = new PacketLobbyOverview(getClientId(), info);
       packetLobbyOverview.sendToClientsNotInALobby();
+
+      new PacketBroadcastMap(ServerLogic.getLobbyList().getLobby(lobbyId).getMap())
+          .sendToClient(getClientId());
     }
   }
 }

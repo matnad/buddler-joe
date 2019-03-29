@@ -3,11 +3,13 @@ package game.map;
 import entities.blocks.AirBlock;
 import entities.blocks.Block;
 import entities.blocks.BlockMaster;
+import game.Game;
+import java.util.Random;
 import org.joml.Vector3f;
 
-import java.util.Random;
-
 public class ClientMap extends Map<Block> {
+
+  private boolean local;
 
   /**
    * Generate a map for the client and generate the blocks in the world.
@@ -18,9 +20,10 @@ public class ClientMap extends Map<Block> {
    */
   public ClientMap(int width, int height, long seed) {
     super(width, height, seed);
+    local = true;
     blocks = new Block[width][height];
     generateMap();
-    checkFallingBlocks();
+    checkFallingBlocks(true);
   }
 
   @Override
@@ -29,9 +32,6 @@ public class ClientMap extends Map<Block> {
     float[][] noiseMap = generateNoiseMap(rng);
 
     // Threshold function and random gold/item blocks can replace stone/dirt blocks
-    int size = 3; // Block scale factor
-    int dim = 2 * size; // Block dimension
-
     for (int y = 0; y < height; y++) {
       for (int x = 0; x < width; x++) {
         float posX = x * dim + 3;
@@ -63,6 +63,10 @@ public class ClientMap extends Map<Block> {
     }
   }
 
+  public void checkFallingBlocks() {
+    checkFallingBlocks(false);
+  }
+
   /**
    * This will proably be done by the server exclusively and done via packets on client side. So
    * this is temporary.
@@ -70,7 +74,7 @@ public class ClientMap extends Map<Block> {
    * <p>Add a random delay to falling blocks but make sure blocks below other blocks will always
    * fall first.
    */
-  public void checkFallingBlocks() {
+  private void checkFallingBlocks(boolean instantUpdate) {
     boolean done;
     do {
       done = true;
@@ -85,15 +89,20 @@ public class ClientMap extends Map<Block> {
               && (blocks[x][y + 1].getType() == BlockMaster.BlockTypes.AIR
                   || blocks[x][y + 1].isDestroyed())) {
             // Stone block can fall, set a minimum delay of .5 seconds but randomize the actual
-            // delay
-            float moveDelay = Math.max(.5f, (float) ((new Random().nextGaussian() + 1) * 2));
-            // Never fall sooner than a block below, otherwise blocks could clip eachother
-            if (y + 2 < height && blocks[x][y + 2].getType() == BlockMaster.BlockTypes.STONE) {
-              moveDelay = Math.max(moveDelay, blocks[x][y + 2].getMoveDelay());
+            Vector3f newPos = new Vector3f(b.getPosition().x, -(y + 1) * 6 - 3, b.getPosition().z);
+            if (!instantUpdate) {
+              // delay
+              float moveDelay = Math.max(.5f, (float) ((new Random().nextGaussian() + 1) * 2));
+              // Never fall sooner than a block below, otherwise blocks could clip eachother
+              if (y + 2 < height && blocks[x][y + 2].getType() == BlockMaster.BlockTypes.STONE) {
+                moveDelay = Math.max(moveDelay, blocks[x][y + 2].getMoveDelay());
+              }
+              // Queue the movement for the block. Move updating is done in the BlockMaster update.
+              b.setMoveTo(newPos, moveDelay);
+            } else {
+              b.setMoveTo(newPos, 0);
+              b.setPosition(newPos);
             }
-            // Queue the movement for the block. Move updating is done in the BlockMaster update.
-            b.setMoveTo(
-                new Vector3f(b.getPosition().x, -(y + 1) * 6 - 3, b.getPosition().z), moveDelay);
             // Update the grid
             blocks[x][y + 1] = b;
             b.setGridY(b.getGridY() + 1);
@@ -108,5 +117,44 @@ public class ClientMap extends Map<Block> {
   @Override
   public void damageBlock(int clientId, int blockX, int blockY, float damage) {
     blocks[blockX][blockY].increaseDamage(damage);
+  }
+
+  /**
+   * Replace map with a new map. Only use from Packet {@link net.packets.map.PacketBroadcastMap}.
+   * Map must be validated by packet. This will guarantee Integers only and correct lengths.
+   *
+   * @param mapArray mapArray from {@link net.packets.map.PacketBroadcastMap}.
+   */
+  public void reloadMap(String[] mapArray) {
+    // Kill old map
+    for (int y = 0; y < height; y++) {
+      for (int x = 0; x < width; x++) {
+        blocks[x][y].remove();
+      }
+    }
+
+    // Create new map
+    width = mapArray[0].length();
+    height = mapArray.length;
+    blocks = new Block[width][height];
+    for (int y = 0; y < mapArray.length; y++) {
+      char[] line = mapArray[y].toCharArray();
+      for (int x = 0; x < line.length; x++) {
+        int type = Character.getNumericValue(line[x]);
+        float posX = x * dim + 3;
+        float posY = -y * dim - size;
+        blocks[x][y] =
+            BlockMaster.generateBlock(
+                BlockMaster.BlockTypes.getBlockTypeById(type),
+                new Vector3f(posX, posY, (float) size),
+                x,
+                y);
+      }
+    }
+    local = false;
+  }
+
+  public boolean isLocal() {
+    return local;
   }
 }

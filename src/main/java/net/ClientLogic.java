@@ -1,5 +1,6 @@
 package net;
 
+import game.Game;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -17,6 +18,7 @@ import net.packets.lobby.PacketLeaveLobbyStatus;
 import net.packets.lobby.PacketLobbyOverview;
 import net.packets.loginlogout.PacketLoginStatus;
 import net.packets.loginlogout.PacketUpdateClientId;
+import net.packets.map.PacketBroadcastMap;
 import net.packets.name.PacketSendName;
 import net.packets.name.PacketSetNameStatus;
 import net.packets.pingpong.PacketPing;
@@ -37,6 +39,8 @@ public class ClientLogic implements Runnable {
   private static BufferedReader input;
   private static Socket server;
   private static PingManager pingManager;
+
+  private static boolean connected;
 
   /**
    * ClientLogic to communicate with the server. Controls the input/output from/to the player. The
@@ -59,6 +63,11 @@ public class ClientLogic implements Runnable {
     // Start ping manager to survey the connection responsiveness
     pingManager = new PingManager();
     new Thread(pingManager).start();
+
+    // Connected
+    if (input != null && output != null) {
+      connected = true;
+    }
   }
 
   /**
@@ -67,8 +76,10 @@ public class ClientLogic implements Runnable {
    * @param packet The packet to be sent to the Server.
    */
   public static void sendToServer(Packet packet) {
-    output.println(packet.toString());
-    output.flush();
+    if (Game.isConnectedToServer()) {
+      output.println(packet.toString());
+      output.flush();
+    }
   }
 
   public static PingManager getPingManager() {
@@ -190,11 +201,18 @@ public class ClientLogic implements Runnable {
         case BLOCK_DAMAGE:
           p = new PacketBlockDamage(data);
           break;
+        case FULL_MAP_BROADCAST:
+          p = new PacketBroadcastMap(data);
+          break;
         default:
       }
       if (p != null) {
         p.processData();
       }
     }
+  }
+
+  public static boolean isConnected() {
+    return connected;
   }
 }

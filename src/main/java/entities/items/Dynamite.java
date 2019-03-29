@@ -187,7 +187,7 @@ public class Dynamite extends Item {
         // Damage blocks inverse to distance (closer = more damage)
         // block.increaseDamage(1 / distance * maximumDamage);
         if (Game.isConnectedToServer()) {
-          new PacketBlockDamage(block.getGridX(), block.getGridY(), 1 / distance * maximumDamage);
+          new PacketBlockDamage(block.getGridX(), block.getGridY(), 1 / distance * maximumDamage).sendToServer();
         }
       }
     }

@@ -17,6 +17,9 @@ public abstract class Map<T> {
   protected int height;
   protected long seed;
 
+  protected final int dim = 6;
+  protected final int size = 3;
+
   protected T[][] blocks;
 
   /* Threshold function:
