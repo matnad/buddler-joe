@@ -8,6 +8,7 @@ import engine.textures.ModelTexture;
 import entities.Entity;
 import entities.blocks.debris.DebrisMaster;
 import game.Game;
+import java.util.Random;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 
@@ -28,11 +29,14 @@ public abstract class Block extends Entity {
   private float damage;
   private Entity destroyedBy;
 
+  // Variables for moving and shaking a block
   private Vector3f moveTo;
   private Vector3f moveStartPos;
   private float moveDistance;
   private Vector3f speed;
   private Vector3f acceleration;
+  private float moveDelay;
+  private boolean shakeLeft;
 
   /**
    * Abstract Constructor.
@@ -78,8 +82,9 @@ public abstract class Block extends Entity {
     This allows us to override it from sub-blocks.
     */
     this.dim = scale;
+
     this.moveTo = getPosition();
-    this.acceleration = new Vector3f(0,1,0); // Added per second
+    this.acceleration = new Vector3f(0, 1f, 0); // Added per second
   }
 
   /**
@@ -173,7 +178,7 @@ public abstract class Block extends Entity {
       DebrisMaster.generateDebris(this);
       onDestroy();
     }
-    //Game.getMap().destroyBlock(this);
+    // Game.getMap().destroyBlock(this);
   }
 
   public float getDim() {
@@ -207,19 +212,27 @@ public abstract class Block extends Entity {
   }
 
   /**
-   * Settings a moveTo target will start the block to move there.
-   * Make sure speed and acceleration parameters allow the movement in this direction.
-   * Currently only downwards acceleration (=Gravity) is implemented.
-   * If you need other impulses, you have to implement them via an acceleration setter.
+   * Settings a moveTo target will start the block to move there. Make sure speed and acceleration
+   * parameters allow the movement in this direction. Currently only downwards acceleration
+   * (=Gravity) is implemented. If you need other impulses, you have to implement them via an
+   * acceleration setter.
    *
-   * @param moveTo target to move the block to*/
-  public void setMoveTo(Vector3f moveTo) {
+   * @param moveTo target to move the block to
+   * @param moveDelay seconds to wait before moving
+   */
+  public void setMoveTo(Vector3f moveTo, float moveDelay) {
+    this.moveDelay = moveDelay;
     this.moveTo = moveTo;
-    this.speed = new Vector3f(0,0,0);
+    this.speed = new Vector3f(0, 0, 0);
     this.moveStartPos = new Vector3f(getPosition());
     this.moveDistance = getPosition().distance(moveTo);
   }
 
+  /**
+   * Add the acceleration to the speed once per second, normalized by frame time.
+   *
+   * @param delta duration of the last frame
+   */
   public void accelerate(float delta) {
     this.speed.add(new Vector3f(acceleration).mul(delta));
   }
@@ -228,9 +241,58 @@ public abstract class Block extends Entity {
     return speed;
   }
 
+  public void decreaseMoveDelay(float delta) {
+    moveDelay -= delta;
+  }
+
+  public float getMoveDelay() {
+    return moveDelay;
+  }
+
+  /**
+   * Check if a block has to wait or can move.
+   *
+   * @return True if the move delay has run out
+   */
+  public boolean canMove() {
+    return moveDelay <= 0;
+  }
+
+  /**
+   * Determines the direction the block should turn while shaking.
+   *
+   * @return true if the block should turn to the left
+   */
+  private boolean isShakeLeft() {
+    return shakeLeft;
+  }
+
+  /** Reverse the direction the block is turning while shaking. */
+  private void toggleShake() {
+    shakeLeft = !shakeLeft;
+  }
+
+  /**
+   * Manipulate the X rotation with some variance to simulate shaking of the block. Call this every
+   * frame for as long as you want the block to jiggle.
+   */
+  public void shake() {
+    float speed = (float) Game.window.getFrameTimeSeconds() * (new Random().nextFloat() * 60f + 45);
+    if (isShakeLeft()) {
+      setRotX(getRotX() - speed);
+      if (getRotX() < -3) {
+        toggleShake();
+      }
+    } else {
+      setRotX(getRotX() + speed);
+      if (getRotX() > 3) {
+        toggleShake();
+      }
+    }
+  }
+
   @Override
   public String toString() {
     return getType().toString();
   }
-
 }

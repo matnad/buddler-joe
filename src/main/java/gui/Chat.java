@@ -239,7 +239,7 @@ public class Chat {
   //  this.chatText = chatText;
   // }
   //
-   public GuiTexture getChatGui() {
+  public GuiTexture getChatGui() {
     return chatGui;
-   }
+  }
 }

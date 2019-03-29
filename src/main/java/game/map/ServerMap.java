@@ -56,19 +56,30 @@ public class ServerMap extends Map<ServerBlock> {
       done = true;
       for (int y = 0; y < height; y++) {
         for (int x = 0; x < width; x++) {
-          if (blocks[x][y] == null) {
-            continue;
-          }
           if (blocks[x][y].getType() == BlockMaster.BlockTypes.STONE
               && y + 1 < height
-              && blocks[x][y + 1] == null) {
+              && blocks[x][y + 1].getType() == BlockMaster.BlockTypes.AIR) {
             blocks[x][y + 1] = blocks[x][y];
-            blocks[x][y] = null;
+            blocks[x][y] = new ServerBlock(BlockMaster.BlockTypes.AIR);
             done = false;
           }
         }
       }
     } while (!done);
+  }
+
+  /**
+   * Deal damage to a block. Gets called from a client packet.
+   *
+   * @see net.packets.block.PacketBlockDamage
+   * @param posX X position of the block
+   * @param posY Y position of the block
+   * @param damage damage to deal to the block
+   */
+  public void damageBlock(int posX, int posY, float damage) {
+    if (blocks[posX][posY] != null) {
+      blocks[posX][posY].damageBlock(damage);
+    }
   }
 
   /**

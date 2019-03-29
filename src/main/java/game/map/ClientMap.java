@@ -65,13 +65,16 @@ public class ClientMap extends Map<Block> {
   /**
    * This will proably be done by the server exclusively and done via packets on client side. So
    * this is temporary.
+   *
+   * <p>Add a random delay to falling blocks but make sure blocks below other blocks will always
+   * fall first.
    */
   public void checkFallingBlocks() {
     boolean done;
     do {
       done = true;
-      for (int y = 0; y < height; y++) {
-        for (int x = 0; x < width; x++) {
+      for (int x = 0; x < width; x++) {
+        for (int y = 0; y < height; y++) {
           Block b = blocks[x][y];
           if (b == null) {
             continue;
@@ -80,8 +83,17 @@ public class ClientMap extends Map<Block> {
               && y + 1 < height
               && (blocks[x][y + 1].getType() == BlockMaster.BlockTypes.AIR
                   || blocks[x][y + 1].isDestroyed())) {
-            // Stone block can fall
-            b.setMoveTo(new Vector3f(b.getPosition().x, -(y + 1) * 6 - 3, b.getPosition().z));
+            // Stone block can fall, set a minimum delay of .5 seconds but randomize the actual
+            // delay
+            float moveDelay = Math.max(.5f, (float) ((new Random().nextGaussian() + 1) * 2));
+            // Never fall sooner than a block below, otherwise blocks could clip eachother
+            if (y + 2 < height && blocks[x][y + 2].getType() == BlockMaster.BlockTypes.STONE) {
+              moveDelay = Math.max(moveDelay, blocks[x][y + 2].getMoveDelay());
+            }
+            // Queue the movement for the block. Move updating is done in the BlockMaster update.
+            b.setMoveTo(
+                new Vector3f(b.getPosition().x, -(y + 1) * 6 - 3, b.getPosition().z), moveDelay);
+            // Update the grid
             blocks[x][y + 1] = b;
             blocks[x][y] = new AirBlock();
             done = false;

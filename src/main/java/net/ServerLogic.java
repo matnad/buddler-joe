@@ -242,4 +242,18 @@ public class ServerLogic {
       System.out.println("Could not close ServerSocket");
     }
   }
+
+  /**
+   * Return the Lobby for a client or null if the player doesn't exist or is not in a Lobby.
+   *
+   * @param clientId client to get the lobby for
+   * @return Lobby of the client
+   */
+  public static Lobby getLobbyForClient(int clientId) {
+    Player player = playerList.getPlayer(clientId);
+    if (player != null) {
+      return player.getLobby();
+    }
+    return null;
+  }
 }

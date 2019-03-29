@@ -41,6 +41,15 @@ public class ServerBlock {
     return hardness;
   }
 
+  /**
+   * Damage a block.
+   *
+   * @param damage damage to deal to a block
+   */
+  public void damageBlock(float damage) {
+    hardness -= damage;
+  }
+
   @Override
   public String toString() {
     return getType().toString();

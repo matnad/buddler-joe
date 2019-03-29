@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import org.joml.Vector3f;
 
 /** Create and manage blocks. Only ever create blocks using this class */
@@ -85,14 +86,24 @@ public class BlockMaster {
             mapIterator.remove();
           }
         } else {
+          // Check is the block is queued to move
           if (block.getPosition() != block.getMoveTo()) {
-            // Slowly move the block
-            block.accelerate((float) Game.window.getFrameTimeSeconds());
-            if (block.getPosition().distance(block.getMoveStartPos()) > block.getMoveDistance()) {
-              block.setPosition(block.getMoveTo());
+            if (!block.canMove()) {
+              // Block is waiting to move. Update the delay
+              block.decreaseMoveDelay((float) Game.window.getFrameTimeSeconds());
+              // "Shake"/jiggle the block while it is waiting to move
+              block.shake();
             } else {
-              Vector3f dir = new Vector3f(block.getMoveTo()).sub(block.getMoveStartPos());
-              block.increasePosition(dir.normalize().mul(block.getSpeed()));
+              // Reset Orientation
+              block.setRotX(0);
+              // Slowly move the block
+              block.accelerate((float) Game.window.getFrameTimeSeconds());
+              if (block.getPosition().distance(block.getMoveStartPos()) > block.getMoveDistance()) {
+                block.setPosition(block.getMoveTo());
+              } else {
+                Vector3f dir = new Vector3f(block.getMoveTo()).sub(block.getMoveStartPos());
+                block.increasePosition(dir.normalize().mul(block.getSpeed()));
+              }
             }
           }
         }
