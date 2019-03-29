@@ -49,8 +49,8 @@ public class Game extends Thread {
    * If someone wants to work on this, edit this comment or add an issue to the tracker in gitlab
    */
 
-  private static final int WIDTH = 1280;
-  private static final int HEIGHT = 800;
+  private static final int WIDTH = 1920;
+  private static final int HEIGHT = 1080;
   private static final int FPS = 60;
   public static final Window window = new Window(WIDTH, HEIGHT, FPS, "Buddler Joe");
   // Set up GLFW Window

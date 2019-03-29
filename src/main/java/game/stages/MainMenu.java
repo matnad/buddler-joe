@@ -38,17 +38,17 @@ public class MainMenu {
 
     // Main Menu
     mainMenu =
-        new GuiTexture(loader.loadTexture("mainMenu"), new Vector2f(0, 0), new Vector2f(1, 1), 1);
+        new GuiTexture(loader.loadTexture("mainMenuBackground"), new Vector2f(0, 0), new Vector2f(1, 1), 1);
 
     // Join Game
     joinGame =
         new MenuButton(
-            loader, "joinGame1", "joinGame2", new Vector2f(0, 0), new Vector2f(.4f, .4f / 3));
+            loader, "lobbyOverviewButton_norm", "lobbyOverviewButton_hover", new Vector2f(0, 0.0740f), new Vector2f(.305521f, .128333f));
 
     // Exit Game
     exitGame =
         new MenuButton(
-            loader, "exitGame1", "exitGame2", new Vector2f(0, -.3f), new Vector2f(.4f, .4f / 3));
+            loader, "buttonTest", "buttonTest", new Vector2f(0, -.3f), new Vector2f(.4f, .4f / 3));
   }
 
   /**
