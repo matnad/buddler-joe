@@ -112,4 +112,12 @@ public class Light {
   public float getCutoff() {
     return cutoff;
   }
+
+  public void setDirection(Vector3f direction) {
+    this.direction = direction;
+  }
+
+  public void setCutoff(float cutoff) {
+    this.cutoff = (float) Math.cos(Math.toRadians(cutoff));
+  }
 }

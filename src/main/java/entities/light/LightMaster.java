@@ -2,6 +2,7 @@ package entities.light;
 
 import entities.Camera;
 import entities.Player;
+import game.Game;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -56,6 +57,9 @@ public class LightMaster {
       case TORCH:
         light = new Light(LightTypes.TORCH, position, colour);
         break;
+      case SPOT:
+        light = new Light(LightTypes.SPOT, position, colour, new Vector3f(1, 0, 0), 60);
+        break;
       default:
         light = null;
         break;
@@ -81,6 +85,8 @@ public class LightMaster {
         // Adjust sun strength according to depth Depth 200 = Darkness
         float col = Math.max(0, 200 + player.getPositionXy().y) / 200;
         light.setColour(new Vector3f(col, col, col));
+      } else if (light.getType() == LightTypes.SPOT) {
+        light.setPosition(Game.getActivePlayer().getPosition());
       }
     }
 
