@@ -7,7 +7,6 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.SocketException;
 
-import net.lobbyhandling.ClientCurrentLobby;
 import net.packets.lists.PacketGamesOverview;
 import net.packets.Packet;
 import net.packets.chat.PacketChatMessageStatus;
@@ -39,7 +38,6 @@ public class ClientLogic implements Runnable {
   private static BufferedReader input;
   private static Socket server;
   private static PingManager pingManager;
-  private static ClientCurrentLobby currentLobby;
 
   /**
    * ClientLogic to communicate with the server. Controls the input/output from/to the player. The
@@ -61,7 +59,6 @@ public class ClientLogic implements Runnable {
 
     // Start ping manager to survey the connection responsiveness
     pingManager = new PingManager();
-    currentLobby = new ClientCurrentLobby();
     new Thread(pingManager).start();
   }
 
@@ -88,9 +85,6 @@ public class ClientLogic implements Runnable {
     return server;
   }
 
-  public static ClientCurrentLobby getCurrentLobby() {
-    return currentLobby;
-  }
 
   /** Thread to run the ClientLogic on, calls the method waitforserver to start up. */
   @Override
