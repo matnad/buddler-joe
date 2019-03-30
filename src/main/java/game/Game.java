@@ -22,13 +22,13 @@ import entities.blocks.debris.DebrisMaster;
 import entities.items.ItemMaster;
 import entities.light.LightMaster;
 import game.map.ClientMap;
-import game.map.Map;
 import game.stages.GameMenu;
 import game.stages.MainMenu;
 import game.stages.Playing;
 import gui.Chat;
 import gui.Fps;
 import gui.GuiString;
+
 import java.util.ArrayList;
 import java.util.List;
 import org.joml.Vector3f;
@@ -45,16 +45,14 @@ public class Game extends Thread {
 
   /*
    * Set your resolution here, feel free to add new entries and comment them with your name/machine
-   * TODO (anyone): We need a JSON file to store user settings.
    * If someone wants to work on this, edit this comment or add an issue to the tracker in gitlab
    */
 
-  private static final int WIDTH = 1280;
-  private static final int HEIGHT = 800;
-  private static final int FPS = 60;
-  public static final Window window = new Window(WIDTH, HEIGHT, FPS, "Buddler Joe");
+  private static Settings settings = new Settings();
+  private static SettingsSerialiser settingsSerialiser = new SettingsSerialiser(settings);
+
+  public static final Window window = new Window(settings.getWIDTH(), settings.getHEIGHT(), settings.getFPS(), "Buddler Joe");
   // Set up GLFW Window
-  private static final boolean fullscreen = false;
   private static final List<Stage> activeStages = new ArrayList<>();
   // Network related variables, still temporary/dummies
   // private static boolean doConnectToServer = false; //Multiplayer: true, Singleplayer: false
@@ -221,9 +219,10 @@ public class Game extends Thread {
   /** Here we initialize all the Masters and other classes and generate the world. */
   @Override
   public void run() {
+
     // Create GLFW Window, we run this in a thread.
-    window.setSize(WIDTH, HEIGHT);
-    window.setFullscreen(fullscreen);
+    window.setSize(settings.getWIDTH(), settings.getHEIGHT());
+    window.setFullscreen(settings.isFullscreen());
     window.create();
 
     // Used to load 3D models (.obj) and convert them to coordinates for the shaders, also
