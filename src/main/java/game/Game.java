@@ -19,10 +19,7 @@ import entities.items.ItemMaster;
 import entities.light.LightMaster;
 import game.map.ClientMap;
 import game.map.Map;
-import game.stages.ChooseLobby;
-import game.stages.GameMenu;
-import game.stages.MainMenu;
-import game.stages.Playing;
+import game.stages.*;
 import gui.Chat;
 import gui.Fps;
 import gui.GuiString;
@@ -285,6 +282,12 @@ public class Game extends Thread {
 
     MainMenu.init(loader);
     GameMenu.init(loader);
+    ChooseLobby.init(loader);
+    Credits.init(loader);
+    Options.init(loader);
+    Welcome.init(loader);
+    Login.init(loader);
+    InLobby.init(loader);
 
     addActiveStage(PLAYING);
 
@@ -328,6 +331,28 @@ public class Game extends Thread {
           ChooseLobby.update();
         }
 
+        if (activeStages.contains(CREDITS)) {
+          Credits.update();
+        }
+
+        if (activeStages.contains(OPTIONS)) {
+          Options.update();
+        }
+
+        if (activeStages.contains(WELCOME)) {
+          Welcome.update();
+        }
+
+        if (activeStages.contains(LOGIN)) {
+          Login.update();
+        }
+
+        if (activeStages.contains(INLOBBBY)) {
+          InLobby.update();
+        }
+
+        System.out.println("-----------------------------------");
+        System.out.println(activeStages);
         // Done with one frame
         window.swapBuffers();
       }
@@ -363,6 +388,11 @@ public class Game extends Thread {
     MAINMENU,
     CHOOSELOBBY,
     GAMEMENU,
-    PLAYING
+    CREDITS,
+    OPTIONS,
+    WELCOME,
+    LOGIN,
+    INLOBBBY,
+    PLAYING,
   }
 }

@@ -60,7 +60,7 @@ public class MainMenu {
     // Exit Game
     exitGame =
         new MenuButton(
-            loader, "lobbyOverviewButton_norm", "lobbyOverviewButton_hover", new Vector2f(0.75f, -0.75f), new Vector2f(.105521f, .128333f));
+            loader, "back_placeholder", "back_placeholder", new Vector2f(0.75f, -0.75f), new Vector2f(.105521f, .128333f));
   }
 
   /**
@@ -116,6 +116,15 @@ public class MainMenu {
     */
     if (InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1) && chooseLobby.isHover(x, y)) {
       Game.addActiveStage(Game.Stage.CHOOSELOBBY);
+      Game.removeActiveStage(Game.Stage.MAINMENU);
+    }else if(InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1) && credits.isHover(x,y)){
+      Game.addActiveStage(Game.Stage.CREDITS);
+      Game.removeActiveStage(Game.Stage.MAINMENU);
+    }else if(InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1) && options.isHover(x,y)){
+      Game.addActiveStage(Game.Stage.OPTIONS);
+      Game.removeActiveStage(Game.Stage.MAINMENU);
+    }else if (InputHandler.isKeyPressed(GLFW_KEY_ESCAPE)){
+      Game.addActiveStage(Game.Stage.WELCOME);
       Game.removeActiveStage(Game.Stage.MAINMENU);
     }
 

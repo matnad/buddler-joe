@@ -12,17 +12,16 @@ import java.util.List;
 
 import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_1;
 
-public class ChooseLobby {
+public class Credits {
 
     private static final float FADE_TIME = .5f;
     private static float fadeTimer;
     private static float currentAlpha;
 
     private static  GuiTexture background;
-    private  static GuiTexture lobbyOverview;
+    private  static GuiTexture Credits;
 
     private static MenuButton back;
-    private static MenuButton join;
 
     public static void init(Loader loader) {
 
@@ -32,17 +31,13 @@ public class ChooseLobby {
         background =
                 new GuiTexture(loader.loadTexture("mainMenuBackground"), new Vector2f(0, 0), new Vector2f(1, 1), 1);
 
-        lobbyOverview =  new GuiTexture(loader.loadTexture("lobbyOverview_placeholder"), new Vector2f(0, 0), new Vector2f(0.5f, 0.5f), 1);
+        Credits =  new GuiTexture(loader.loadTexture("credits_placeholder"), new Vector2f(0, 0), new Vector2f(0.5f, 0.5f), 1);
 
         // Back
         back =
                 new MenuButton(
                         loader, "back_placeholder", "back_placeholder", new Vector2f(0.75f, -0.75f), new Vector2f(.105521f, .128333f));
 
-        // Join
-        join =
-                new MenuButton(
-                        loader, "join_placeholder", "join_placeholder", new Vector2f(0.3f, -0.3f), new Vector2f(.105521f, .128333f));
 
     }
 
@@ -51,7 +46,7 @@ public class ChooseLobby {
         List<GuiTexture> guis = new ArrayList<>();
         //add textures here
         guis.add(background);
-        guis.add(lobbyOverview);
+        guis.add(Credits);
 
         // OpenGL Coordinates (0/0 = center of screen, -1/1 = corners)
         double x = 2 * (InputHandler.getMouseX() / Game.window.getWidth()) - 1;
@@ -59,13 +54,10 @@ public class ChooseLobby {
 
         //add buttons here
         guis.add(back.getHoverTexture(x,y));
-        guis.add(join.getHoverTexture(x,y));
 
         if (InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1) && back.isHover(x, y)) {
             Game.addActiveStage(Game.Stage.MAINMENU);
-            Game.removeActiveStage(Game.Stage.CHOOSELOBBY);
-        }else if (InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1) && join.isHover(x, y)) {
-            //TODO trigger joining
+            Game.removeActiveStage(Game.Stage.CREDITS);
         }
 
 
