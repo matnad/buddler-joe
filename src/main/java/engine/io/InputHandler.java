@@ -80,7 +80,13 @@ public class InputHandler {
         public void invoke(long window, int codepoint) {
           if (isReadInputOn()) {
             if (codepoint <= 255) {
-              inputString.append((char) codepoint);
+              if (codepoint == 127) {
+                InputHandler.resetInputString();
+              } else if (codepoint == 8) {
+                inputString.deleteCharAt(inputString.length());
+              } else {
+                inputString.append((char) codepoint);
+              }
             }
           } else {
             return;
@@ -389,10 +395,7 @@ public class InputHandler {
     InputHandler.inputString = inputString;
   }
 
-  /**
-   * Reset the Input String to clear it for further use.
-   */
-
+  /** Reset the Input String to clear it for further use. */
   public static void resetInputString() {
     InputHandler.inputString = new StringBuilder();
   }

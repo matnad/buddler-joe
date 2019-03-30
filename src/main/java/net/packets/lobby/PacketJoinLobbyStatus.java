@@ -1,5 +1,6 @@
 package net.packets.lobby;
 
+import net.ClientLogic;
 import net.packets.Packet;
 
 /**
@@ -68,6 +69,7 @@ public class PacketJoinLobbyStatus extends Packet {
       System.out.println(createErrorMessage());
     } else if (status.startsWith("OK")) {
       System.out.println("Successfully joined lobby");
+      //ClientLogic.getCurrentLobby().setLobbyName();
     } else { // Errors on Server
       System.out.println(status);
     }
