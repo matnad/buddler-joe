@@ -15,8 +15,9 @@ uniform mat4 projectionMatrix;
 uniform mat4 viewMatrix;
 uniform vec3 lightPosition[8];
 
-const float density = 0.009;
+const float density = 0.01;
 const float gradient = 5;
+
 
 void main(void) {
 
@@ -33,6 +34,6 @@ void main(void) {
 
     float distance = length(positionRelativeToCam.xyz);
     visibility = exp(-pow((distance * density), gradient));
-    visibility = clamp(visibility, 0.0, 1.0);
+    visibility = clamp(visibility, 0.0, 1.0) * 1.0/100;
 
 }

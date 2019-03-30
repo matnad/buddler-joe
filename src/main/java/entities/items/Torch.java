@@ -76,7 +76,7 @@ public class Torch extends Item {
   }
 
   Torch(Vector3f position, Block block) {
-    this(position, block, new Vector3f(1f, 244 / 255f, 229 / 255f), 0, 0, 0, .2f);
+    this(position, block, new Vector3f(1f, 244 / 255f, 229 / 255f).mul(1), 0, 0, 0, .2f);
   }
 
   /**

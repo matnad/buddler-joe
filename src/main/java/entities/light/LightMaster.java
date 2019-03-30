@@ -156,7 +156,7 @@ public class LightMaster {
   public enum LightTypes {
     SUN(0, new Vector3f(1, 0, 0)),
     FLASH(1, new Vector3f(1, .001f, .0005f)),
-    TORCH(2, new Vector3f(1, .01f, .002f));
+    TORCH(2, new Vector3f(1, .02f, .01f));
 
     private final int priority;
     private final Vector3f baseAttenuation;
