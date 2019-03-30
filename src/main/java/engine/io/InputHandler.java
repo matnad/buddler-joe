@@ -16,6 +16,7 @@ import java.nio.DoubleBuffer;
 import org.joml.Matrix3f;
 import org.joml.Vector3f;
 import org.lwjgl.BufferUtils;
+import org.lwjgl.glfw.GLFWCharCallback;
 import org.lwjgl.glfw.GLFWCursorPosCallback;
 import org.lwjgl.glfw.GLFWKeyCallback;
 import org.lwjgl.glfw.GLFWMouseButtonCallback;
@@ -70,6 +71,15 @@ public class InputHandler {
           mouseState[button] = action;
         }
       };
+
+  static GLFWCharCallback charCallback =
+      new GLFWCharCallback() {
+        @Override
+        public void invoke(long window, int codepoint) {
+          System.out.println(codepoint);
+        }
+      };
+
   private static double cursorPosX;
   private static double cursorPosY;
   private static double cursorPosLastFrameX;
