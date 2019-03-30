@@ -17,12 +17,14 @@ public class Credits {
     private static final float FADE_TIME = .5f;
     private static float fadeTimer;
     private static float currentAlpha;
+    private static GuiTexture buddlerJoe;
 
     private static  GuiTexture background;
     private  static GuiTexture Credits;
 
     private static MenuButton back;
 
+    @SuppressWarnings("Duplicates")
     public static void init(Loader loader) {
 
         currentAlpha = 1;
@@ -30,6 +32,10 @@ public class Credits {
         // Background
         background =
                 new GuiTexture(loader.loadTexture("mainMenuBackground"), new Vector2f(0, 0), new Vector2f(1, 1), 1);
+
+        buddlerJoe =
+                new GuiTexture(loader.loadTexture("buddlerjoe"), new Vector2f(-0.730208f, -0.32963f), new Vector2f(0.181771f, 0.67963f), 1);
+
 
         Credits =  new GuiTexture(loader.loadTexture("credits_placeholder"), new Vector2f(0, 0), new Vector2f(0.5f, 0.5f), 1);
 
@@ -47,6 +53,7 @@ public class Credits {
         //add textures here
         guis.add(background);
         guis.add(Credits);
+        guis.add(buddlerJoe);
 
         // OpenGL Coordinates (0/0 = center of screen, -1/1 = corners)
         double x = 2 * (InputHandler.getMouseX() / Game.window.getWidth()) - 1;

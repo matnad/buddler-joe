@@ -20,9 +20,11 @@ public class ChooseLobby {
 
     private static  GuiTexture background;
     private  static GuiTexture lobbyOverview;
+    private static GuiTexture buddlerJoe;
 
     private static MenuButton back;
     private static MenuButton join;
+
 
     public static void init(Loader loader) {
 
@@ -32,7 +34,10 @@ public class ChooseLobby {
         background =
                 new GuiTexture(loader.loadTexture("mainMenuBackground"), new Vector2f(0, 0), new Vector2f(1, 1), 1);
 
-        lobbyOverview =  new GuiTexture(loader.loadTexture("lobbyOverview_placeholder"), new Vector2f(0, 0), new Vector2f(0.5f, 0.5f), 1);
+        buddlerJoe =
+                new GuiTexture(loader.loadTexture("buddlerjoe"), new Vector2f(-0.730208f, -0.32963f), new Vector2f(0.181771f, 0.67963f), 1);
+
+        lobbyOverview =  new GuiTexture(loader.loadTexture("lobbyOverview"), new Vector2f(0, -0.040741f), new Vector2f(0.554167f, 0.757804f), 1);
 
         // Back
         back =
@@ -52,6 +57,7 @@ public class ChooseLobby {
         //add textures here
         guis.add(background);
         guis.add(lobbyOverview);
+        guis.add(buddlerJoe);
 
         // OpenGL Coordinates (0/0 = center of screen, -1/1 = corners)
         double x = 2 * (InputHandler.getMouseX() / Game.window.getWidth()) - 1;

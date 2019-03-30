@@ -21,12 +21,15 @@ public class MainMenu {
   private static final float FADE_TIME = .5f;
   private static float fadeTimer;
   private static float currentAlpha;
+  private static GuiTexture titel;
 
   private static GuiTexture background;
+  private static GuiTexture buddlerJoe;
   private static MenuButton chooseLobby;
   private static MenuButton exitGame;
   private static MenuButton credits;
   private static MenuButton options;
+
 
   /**
    * * Initialize Game Menu. Will load the texture files and generate the basic menu parts. This
@@ -42,25 +45,32 @@ public class MainMenu {
     background =
         new GuiTexture(loader.loadTexture("mainMenuBackground"), new Vector2f(0, 0), new Vector2f(1, 1), 1);
 
+
+    buddlerJoe =
+            new GuiTexture(loader.loadTexture("buddlerjoe"), new Vector2f(-0.730208f, -0.32963f), new Vector2f(0.181771f, 0.67963f), 1);
+
+    titel =
+            new GuiTexture(loader.loadTexture("titelBig"), new Vector2f(0, 0.588889f), new Vector2f(0.291667f, 0.3f), 1);
+
     // Choose Lobby
     chooseLobby =
         new MenuButton(
-            loader, "lobbyOverviewButton_norm", "lobbyOverviewButton_hover", new Vector2f(0, 0.0740f), new Vector2f(.305521f, .128333f));
+            loader, "lobbyOverviewWood_norm", "LobbyOverviewWood_hover", new Vector2f(0, 0.0740f), new Vector2f(.305521f, .128333f));
 
     // Credits
     credits =
             new MenuButton(
-                    loader, "lobbyOverviewButton_norm", "lobbyOverviewButton_hover", new Vector2f(0, -0.2f), new Vector2f(.305521f, .128333f));
+                    loader, "lobbyOverviewWood_norm", "LobbyOverviewWood_hover", new Vector2f(0, -0.2f), new Vector2f(.305521f, .128333f));
 
     // Options
     options =
             new MenuButton(
-                    loader, "lobbyOverviewButton_norm", "lobbyOverviewButton_hover", new Vector2f(0, -0.474074f), new Vector2f(.305521f, .128333f));
+                    loader, "lobbyOverviewWood_norm", "LobbyOverviewWood_hover", new Vector2f(0, -0.474074f), new Vector2f(.305521f, .128333f));
 
     // Exit Game
     exitGame =
         new MenuButton(
-            loader, "back_placeholder", "back_placeholder", new Vector2f(0.75f, -0.75f), new Vector2f(.105521f, .128333f));
+            loader, "quitWood_norm", "quitWood_hover", new Vector2f(0.75f, -0.851852f), new Vector2f(.097094f, .082347f));
   }
 
   /**
@@ -71,6 +81,8 @@ public class MainMenu {
   public static void update() {
     List<GuiTexture> guis = new ArrayList<>();
     guis.add(background);
+    guis.add(buddlerJoe);
+    guis.add(titel);
 
     // OpenGL Coordinates (0/0 = center of screen, -1/1 = corners)
     double x = 2 * (InputHandler.getMouseX() / Game.window.getWidth()) - 1;
@@ -126,8 +138,9 @@ public class MainMenu {
     }else if (InputHandler.isKeyPressed(GLFW_KEY_ESCAPE)){
       Game.addActiveStage(Game.Stage.WELCOME);
       Game.removeActiveStage(Game.Stage.MAINMENU);
+    }else if ((InputHandler.isMouseDown(GLFW_MOUSE_BUTTON_1) && exitGame.isHover(x, y))) {
+      Game.window.stop();
     }
-
     InputHandler.update();
     Game.window.update();
 

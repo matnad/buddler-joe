@@ -19,7 +19,7 @@ public class Options {
 
     private static GuiTexture background;
     private  static GuiTexture options;
-
+    private static GuiTexture buddlerJoe;
 
     private static MenuButton back;
     private static MenuButton r2160;
@@ -28,6 +28,7 @@ public class Options {
     private static MenuButton r720;
     private static MenuButton r480;
     private static MenuButton fullscreen;
+
 
     @SuppressWarnings("Duplicates")
     public static void init(Loader loader) {
@@ -39,6 +40,10 @@ public class Options {
         // Background
         background =
                 new GuiTexture(loader.loadTexture("mainMenuBackground"), new Vector2f(0, 0), new Vector2f(1, 1), 1);
+
+        buddlerJoe =
+                new GuiTexture(loader.loadTexture("buddlerjoe"), new Vector2f(-0.730208f, -0.32963f), new Vector2f(0.181771f, 0.67963f), 1);
+
 
         options =  new GuiTexture(loader.loadTexture("options_placeholder"), new Vector2f(0, 0), new Vector2f(0.5f, 0.5f), 1);
 
@@ -79,6 +84,7 @@ public class Options {
         //add textures here
         guis.add(background);
         guis.add(options);
+        guis.add(buddlerJoe);
 
         // OpenGL Coordinates (0/0 = center of screen, -1/1 = corners)
         double x = 2 * (InputHandler.getMouseX() / Game.window.getWidth()) - 1;
