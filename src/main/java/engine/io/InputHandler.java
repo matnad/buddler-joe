@@ -45,9 +45,11 @@ import org.lwjgl.glfw.GLFWScrollCallback;
 public class InputHandler {
   private static final int[] keyState = new int[GLFW_KEY_LAST];
   private static final boolean[] keyDown = new boolean[GLFW_KEY_LAST];
+  private static boolean readInput = false;
 
   private static final int[] mouseState = new int[GLFW_MOUSE_BUTTON_LAST];
   private static final boolean[] mouseDown = new boolean[GLFW_MOUSE_BUTTON_LAST];
+  private static StringBuilder inputString = new StringBuilder();
   private static final Vector3f mouseRay = new Vector3f();
   private static final long window = Game.window.getWindow();
   /*
@@ -76,7 +78,13 @@ public class InputHandler {
       new GLFWCharCallback() {
         @Override
         public void invoke(long window, int codepoint) {
-          System.out.println(codepoint);
+          if (isReadInputOn()) {
+            if (codepoint <= 255) {
+              inputString.append((char) codepoint);
+            }
+          } else {
+            return;
+          }
         }
       };
 
@@ -342,6 +350,51 @@ public class InputHandler {
     DoubleBuffer buffer = BufferUtils.createDoubleBuffer(1);
     glfwGetCursorPos(Game.window.getWindow(), null, buffer);
     return buffer.get(0);
+  }
+
+  /**
+   * Returns the boolean whether the readInput is on or not.
+   *
+   * @return boolean whether the readInput is on or not.
+   */
+  public static boolean isReadInputOn() {
+    return readInput;
+  }
+
+  /** Set the readInput to On to start reading input. */
+  public static void readInputOn() {
+    InputHandler.readInput = true;
+  }
+
+  /** Set the readInput to Off to stop reading input. */
+  public static void readInputOff() {
+    InputHandler.readInput = false;
+  }
+
+  /**
+   * Method to get the Input String which has been collected by the StringBuilder.
+   *
+   * @return The string in the Stringbuilder
+   */
+  public static String getInputString() {
+    return inputString.toString();
+  }
+
+  /**
+   * Method to set the inputString to a certain Stringbuilder.
+   *
+   * @param inputString The Stringbuilder to replace the current one.
+   */
+  public static void setInputString(StringBuilder inputString) {
+    InputHandler.inputString = inputString;
+  }
+
+  /**
+   * Reset the Input String to clear it for further use.
+   */
+
+  public static void resetInputString() {
+    InputHandler.inputString = new StringBuilder();
   }
 
   /**

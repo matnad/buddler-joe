@@ -1,14 +1,8 @@
 package gui;
 
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_A;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_B;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_BACKSPACE;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_DELETE;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_ENTER;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_LEFT_SHIFT;
 
 import engine.io.InputHandler;
-import engine.io.KeyboardInputHandler;
 import engine.render.Loader;
 import engine.render.fontmeshcreator.FontType;
 import engine.render.fontrendering.TextMaster;
@@ -41,7 +35,6 @@ public class Chat {
   private Vector3f textColour;
 
   private List<ChatText> messages;
-  private KeyboardInputHandler keyboardInputHandler;
   private int msgSize;
 
   /**
@@ -52,7 +45,6 @@ public class Chat {
   public Chat(Loader loader) {
     enabled = false;
     alpha = ALPHA_OFF;
-    this.keyboardInputHandler = new KeyboardInputHandler();
 
     // Load the background image of the chat and set rendering parameters
     chatGui =
@@ -92,8 +84,16 @@ public class Chat {
     if (InputHandler.isKeyPressed(GLFW_KEY_ENTER)) {
       if (chatText.length() > 0 && enabled) {
         sendMessage();
+        InputHandler.resetInputString();
       } else {
+        if(enabled){
+          setEnabled(false);
+          InputHandler.readInputOff();
+        } else {
+          InputHandler.readInputOn();
+        }
         toggleChat();
+        InputHandler.resetInputString();
       }
     }
 
@@ -105,7 +105,7 @@ public class Chat {
 
     String newChatText = chatText;
 
-    newChatText = keyboardInputHandler.getText(newChatText);
+    newChatText = InputHandler.getInputString();
 
     if (!chatText.equals(newChatText)) {
       chatText = newChatText;
