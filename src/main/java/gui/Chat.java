@@ -85,6 +85,7 @@ public class Chat {
       if (chatText.length() > 0 && enabled) {
         sendMessage();
         InputHandler.resetInputString();
+        chatText = "";
       } else {
         if(enabled){
           setEnabled(false);
