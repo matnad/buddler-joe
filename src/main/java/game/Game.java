@@ -1,9 +1,5 @@
 package game;
 
-import static game.Game.Stage.GAMEMENU;
-import static game.Game.Stage.MAINMENU;
-import static game.Game.Stage.PLAYING;
-
 import engine.io.Window;
 import engine.models.RawModel;
 import engine.models.TexturedModel;
@@ -23,6 +19,7 @@ import entities.items.ItemMaster;
 import entities.light.LightMaster;
 import game.map.ClientMap;
 import game.map.Map;
+import game.stages.ChooseLobby;
 import game.stages.GameMenu;
 import game.stages.MainMenu;
 import game.stages.Playing;
@@ -35,6 +32,8 @@ import org.joml.Vector3f;
 import terrains.Terrain;
 import terrains.TerrainFlat;
 import util.RandomName;
+
+import static game.Game.Stage.*;
 
 /**
  * Playing is static for all intents and purposes. There will never be multiple instances of Playing
@@ -325,6 +324,10 @@ public class Game extends Thread {
           GameMenu.update();
         }
 
+        if (activeStages.contains(CHOOSELOBBY)) {
+          ChooseLobby.update();
+        }
+
         // Done with one frame
         window.swapBuffers();
       }
@@ -358,7 +361,7 @@ public class Game extends Thread {
   // Valid Stages
   public enum Stage {
     MAINMENU,
-    LOBBIES,
+    CHOOSELOBBY,
     GAMEMENU,
     PLAYING
   }

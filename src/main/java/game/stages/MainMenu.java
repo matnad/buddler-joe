@@ -22,9 +22,11 @@ public class MainMenu {
   private static float fadeTimer;
   private static float currentAlpha;
 
-  private static GuiTexture mainMenu;
-  private static MenuButton joinGame;
+  private static GuiTexture background;
+  private static MenuButton chooseLobby;
   private static MenuButton exitGame;
+  private static MenuButton credits;
+  private static MenuButton options;
 
   /**
    * * Initialize Game Menu. Will load the texture files and generate the basic menu parts. This
@@ -36,19 +38,29 @@ public class MainMenu {
 
     currentAlpha = 1;
 
-    // Main Menu
-    mainMenu =
+    // Background
+    background =
         new GuiTexture(loader.loadTexture("mainMenuBackground"), new Vector2f(0, 0), new Vector2f(1, 1), 1);
 
-    // Join Game
-    joinGame =
+    // Choose Lobby
+    chooseLobby =
         new MenuButton(
             loader, "lobbyOverviewButton_norm", "lobbyOverviewButton_hover", new Vector2f(0, 0.0740f), new Vector2f(.305521f, .128333f));
+
+    // Credits
+    credits =
+            new MenuButton(
+                    loader, "lobbyOverviewButton_norm", "lobbyOverviewButton_hover", new Vector2f(0, -0.2f), new Vector2f(.305521f, .128333f));
+
+    // Options
+    options =
+            new MenuButton(
+                    loader, "lobbyOverviewButton_norm", "lobbyOverviewButton_hover", new Vector2f(0, -0.474074f), new Vector2f(.305521f, .128333f));
 
     // Exit Game
     exitGame =
         new MenuButton(
-            loader, "buttonTest", "buttonTest", new Vector2f(0, -.3f), new Vector2f(.4f, .4f / 3));
+            loader, "lobbyOverviewButton_norm", "lobbyOverviewButton_hover", new Vector2f(0.75f, -0.75f), new Vector2f(.105521f, .128333f));
   }
 
   /**
@@ -58,19 +70,22 @@ public class MainMenu {
   @SuppressWarnings("Duplicates")
   public static void update() {
     List<GuiTexture> guis = new ArrayList<>();
-    guis.add(mainMenu);
+    guis.add(background);
 
     // OpenGL Coordinates (0/0 = center of screen, -1/1 = corners)
     double x = 2 * (InputHandler.getMouseX() / Game.window.getWidth()) - 1;
     double y = 1 - 2 * (InputHandler.getMouseY() / Game.window.getHeight());
 
-    guis.add(joinGame.getHoverTexture(x, y));
+    guis.add(chooseLobby.getHoverTexture(x, y));
     guis.add(exitGame.getHoverTexture(x, y));
+    guis.add(credits.getHoverTexture(x, y));
+    guis.add(options.getHoverTexture(x, y));
+
 
     for (GuiTexture gui : guis) {
       gui.setAlpha(currentAlpha);
     }
-
+    /*
     if (fadeTimer > 0) {
 
       // Main Menu fading out, no longer accepting inputs, just rendering
@@ -86,17 +101,25 @@ public class MainMenu {
 
     } else {
       // Active Main Menu, accepting inputs
+
       if (InputHandler.isKeyPressed(GLFW_KEY_ESCAPE)
           || ((InputHandler.isMouseDown(GLFW_MOUSE_BUTTON_1) && exitGame.isHover(x, y)))) {
         Game.window.stop();
-      } else if (InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1) && joinGame.isHover(x, y)) {
-        Game.addActiveStage(Game.Stage.PLAYING);
+      } else if (InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1) && chooseLobby.isHover(x, y)) {
+        Game.addActiveStage(Game.Stage.PLAYING);/*
         fadeTimer = (float) Game.window.getFrameTimeSeconds();
         currentAlpha = (FADE_TIME - fadeTimer) / FADE_TIME;
       }
-      InputHandler.update();
+
+
+    }
+    */
+    if (InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1) && chooseLobby.isHover(x, y)) {
+      Game.addActiveStage(Game.Stage.CHOOSELOBBY);
+      Game.removeActiveStage(Game.Stage.MAINMENU);
     }
 
+    InputHandler.update();
     Game.window.update();
 
     Game.getGuiRenderer().render(guis);
