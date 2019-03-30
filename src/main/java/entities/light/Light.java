@@ -15,8 +15,11 @@ public class Light {
   private Vector3f attenuation;
   private boolean destroyed;
   private float distanceSq;
+  private Vector3f direction;
+  private float cutoff;
 
   /**
+   * POINT LIGHT.
    * Strength of the light depends on distance and angle.
    *
    * @param type type of light
@@ -28,6 +31,26 @@ public class Light {
     this.position = position;
     this.colour = colour;
     this.attenuation = type.getBaseAttenuation();
+    this.distanceSq = 0;
+    this.direction = new Vector3f();
+    this.cutoff = (float) Math.cos(Math.toRadians(360f));
+  }
+
+  /**
+   * SPOT LIGHT.
+   * Strength of the light depends on distance and angle.
+   *
+   * @param type type of light
+   * @param position world coordinates
+   * @param colour r, g, b
+   */
+  public Light(LightMaster.LightTypes type, Vector3f position, Vector3f colour, Vector3f direction, float cutoff) {
+    this.type = type;
+    this.position = position;
+    this.colour = colour;
+    this.attenuation = type.getBaseAttenuation();
+    this.direction = direction;
+    this.cutoff = (float) Math.cos(Math.toRadians(cutoff));
     this.distanceSq = 0;
   }
 
@@ -80,5 +103,13 @@ public class Light {
 
   float getDistanceSq() {
     return distanceSq;
+  }
+
+  public Vector3f getDirection() {
+    return direction;
+  }
+
+  public float getCutoff() {
+    return cutoff;
   }
 }

@@ -11,6 +11,8 @@ out vec4 out_Colour;
 uniform sampler2D modelTexture;
 uniform vec3 lightColour[8];
 uniform vec3 attenuation[8];
+uniform vec3 lightDirection[8];
+uniform float lightCutoff[8];
 uniform float shineDamper;
 uniform float reflectivity;
 uniform vec3 skyColour;
@@ -24,12 +26,14 @@ void main(void) {
     vec3 totalSpecular = vec3(0.0);
 
     for(int i=0; i<8; i++) {
-    float lightMul;
-    if (i > 0) {
-              lightMul = 100;
-            } else {
-              lightMul = 10;
-            }
+      float lightMul;
+      if (i > 0) {
+                lightMul = 100;
+      } else {
+        lightMul = 10;
+      }
+      float theta = dot(toLightVector[i], normalize(-lightDirection[i]));
+      if(theta > lightCutoff[i]) {
         float distance = length(toLightVector[i]);
         float attFactor = attenuation[i].x + (attenuation[i].y * distance) + (attenuation[i].z * distance * distance);
         vec3 unitLightVector = normalize(toLightVector[i]);
@@ -42,6 +46,9 @@ void main(void) {
         float dampedFactor = pow(specularFactor, shineDamper);
         totalDiffuse = totalDiffuse + (brightness * lightColour[i] * lightMul) / attFactor;
         totalSpecular = totalSpecular + (dampedFactor * reflectivity * lightColour[i]) / attFactor;
+      } else {
+
+      }
     }
     totalDiffuse = max(totalDiffuse, 0.2);
 
