@@ -84,16 +84,16 @@ public class Chat {
     if (InputHandler.isKeyPressed(GLFW_KEY_ENTER)) {
       if (chatText.length() > 0 && enabled) {
         sendMessage();
-        InputHandler.resetInputString();
         chatText = "";
+        InputHandler.resetInputString();
       } else {
         if(enabled){
           setEnabled(false);
           InputHandler.readInputOff();
         } else {
+          setEnabled(true);
           InputHandler.readInputOn();
         }
-        toggleChat();
         InputHandler.resetInputString();
       }
     }
