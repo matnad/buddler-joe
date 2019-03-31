@@ -7,7 +7,6 @@ import engine.render.objconverter.ObjFileLoader;
 import engine.textures.ModelTexture;
 import entities.Entity;
 import entities.blocks.debris.DebrisMaster;
-import game.Game;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 
@@ -79,7 +78,7 @@ public abstract class Block extends Entity {
     */
     this.dim = scale;
     this.moveTo = getPosition();
-    this.acceleration = new Vector3f(0,1,0); // Added per second
+    this.acceleration = new Vector3f(0, 1, 0); // Added per second
   }
 
   /**
@@ -147,6 +146,17 @@ public abstract class Block extends Entity {
    */
   public void increaseDamage(float damage, Entity entity) {
     this.damage += damage;
+    float percentIntegrity = (this.hardness - this.damage) / hardness;
+    if (percentIntegrity < .25) {
+      setTextureIndex(3);
+    } else if (percentIntegrity < .5) {
+      setTextureIndex(2);
+    } else if (percentIntegrity < .75) {
+      setTextureIndex(1);
+    } else {
+      setTextureIndex(0);
+    }
+
     if (this.damage > this.hardness) {
       setDestroyedBy(entity);
       setDestroyed(true); // Destroy block
@@ -173,7 +183,7 @@ public abstract class Block extends Entity {
       DebrisMaster.generateDebris(this);
       onDestroy();
     }
-    //Game.getMap().destroyBlock(this);
+    // Game.getMap().destroyBlock(this);
   }
 
   public float getDim() {
@@ -207,15 +217,16 @@ public abstract class Block extends Entity {
   }
 
   /**
-   * Settings a moveTo target will start the block to move there.
-   * Make sure speed and acceleration parameters allow the movement in this direction.
-   * Currently only downwards acceleration (=Gravity) is implemented.
-   * If you need other impulses, you have to implement them via an acceleration setter.
+   * Settings a moveTo target will start the block to move there. Make sure speed and acceleration
+   * parameters allow the movement in this direction. Currently only downwards acceleration
+   * (=Gravity) is implemented. If you need other impulses, you have to implement them via an
+   * acceleration setter.
    *
-   * @param moveTo target to move the block to*/
+   * @param moveTo target to move the block to
+   */
   public void setMoveTo(Vector3f moveTo) {
     this.moveTo = moveTo;
-    this.speed = new Vector3f(0,0,0);
+    this.speed = new Vector3f(0, 0, 0);
     this.moveStartPos = new Vector3f(getPosition());
     this.moveDistance = getPosition().distance(moveTo);
   }
@@ -232,5 +243,4 @@ public abstract class Block extends Entity {
   public String toString() {
     return getType().toString();
   }
-
 }

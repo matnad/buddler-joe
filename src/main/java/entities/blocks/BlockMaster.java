@@ -24,6 +24,10 @@ public class BlockMaster {
    */
   public static void init(Loader loader) {
     Block.loadBlockModels(loader);
+    DirtBlock.init(loader);
+    GoldBlock.init(loader);
+    StoneBlock.init(loader);
+    GrassBlock.init(loader);
   }
 
   /**

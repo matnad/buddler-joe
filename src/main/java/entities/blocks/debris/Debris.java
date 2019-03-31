@@ -26,7 +26,7 @@ public class Debris extends Entity {
    */
   Debris(Block block, float size) {
     super(
-        Block.getBlockModel(), block.getType().getTextureId(), block.getPosition(), 0, 0, 0, size);
+        block.getModel(), 0, block.getPosition(), 0, 0, 0, size);
     float volume = (float) Math.pow(size, 3);
     float mass = block.getMass();
     float gravity = 80; // TODO: Gravity constant in settings?
