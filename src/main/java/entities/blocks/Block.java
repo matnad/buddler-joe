@@ -7,7 +7,6 @@ import engine.render.objconverter.ObjFileLoader;
 import engine.textures.ModelTexture;
 import entities.Entity;
 import entities.blocks.debris.DebrisMaster;
-import game.Game;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 
@@ -162,6 +161,17 @@ public abstract class Block extends Entity {
    */
   public void increaseDamage(float damage) {
     this.damage += damage;
+    float percentIntegrity = (this.hardness - this.damage) / hardness;
+    if (percentIntegrity < .25) {
+      setTextureIndex(3);
+    } else if (percentIntegrity < .5) {
+      setTextureIndex(2);
+    } else if (percentIntegrity < .75) {
+      setTextureIndex(1);
+    } else {
+      setTextureIndex(0);
+    }
+
     if (this.damage > this.hardness) {
       setDestroyed(true); // Destroy block
     }

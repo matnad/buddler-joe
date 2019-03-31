@@ -312,4 +312,12 @@ public class Entity {
   public void setPlacerMode(int placerMode) {
     this.placerMode = placerMode;
   }
+
+  public void setModel(TexturedModel model) {
+    this.model = model;
+  }
+
+  public void setTextureIndex(int textureIndex) {
+    this.textureIndex = textureIndex;
+  }
 }
