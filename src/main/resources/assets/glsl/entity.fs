@@ -29,7 +29,9 @@ void main(void) {
 
     for(int i=0; i<8; i++) {
       float theta = dot(normalize(toLightVector[i]), normalize(-lightDirection[i]));
-      if(theta > lightCutoff[i]) {
+      float epsilon = lightCutoff[i] - lightCutoff[i]+0.15;
+      float intensity = clamp((theta - lightCutoff[i]+0.15) / epsilon, 0.0, 1.0);
+      //if(theta > lightCutoff[i]) {
         float distance = length(toLightVector[i]);
         float attFactor = attenuation[i].x + (attenuation[i].y * distance) + (attenuation[i].z * distance * distance);
         vec3 unitLightVector = normalize(toLightVector[i]);
@@ -40,9 +42,9 @@ void main(void) {
         float specularFactor = dot(reflectedLightDirection, unitVectorToCamera);
         specularFactor = max(specularFactor, 0.0);
         float dampedFactor = pow(specularFactor, shineDamper);
-        totalDiffuse = totalDiffuse + (brightness * lightColour[i] * lightMul) / attFactor;
-        totalSpecular = totalSpecular + (dampedFactor * reflectivity * lightColour[i] * lightMul) / attFactor;
-      }
+        totalDiffuse = totalDiffuse + (brightness * lightColour[i] * lightMul * intensity) / attFactor ;
+        totalSpecular = totalSpecular + (dampedFactor * reflectivity * lightColour[i] * lightMul * intensity) / attFactor;
+      //}
     }
     totalDiffuse = max(totalDiffuse, 0.2);
 

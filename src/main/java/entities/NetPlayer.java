@@ -49,7 +49,7 @@ public class NetPlayer extends Entity {
             LightMaster.LightTypes.SPOT,
             getHeadlightPosition(),
             new Vector3f(1,1,1));
-    headLight.setCutoff(35f);
+    headLight.setCutoff(25f);
     headLightGlow =
         LightMaster.generateLight(
             LightMaster.LightTypes.TORCH,
@@ -79,7 +79,7 @@ public class NetPlayer extends Entity {
   }
 
   public void turnHeadlightOn() {
-    headLight.setBrightness(3);
+    headLight.setBrightness(5);
     headLightGlow.setBrightness(1);
   }
 

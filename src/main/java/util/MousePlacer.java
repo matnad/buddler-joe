@@ -149,7 +149,6 @@ public class MousePlacer {
       if (itemType != null) {
         // Send packet
         if (Game.isConnectedToServer() && ((Item) entity).isOwned()) {
-          System.out.println("ok- sending");
           new PacketSpawnItem(itemType, entity.getPosition()).sendToServer();
         }
       }

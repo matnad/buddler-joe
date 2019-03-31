@@ -84,7 +84,7 @@ public class LightMaster {
       if (light.getType() == LightTypes.SUN) {
         // Adjust sun strength according to depth
         float pctBrightness = Game.getMap().getLightLevel(player.getPosition().y);
-        light.setColour(new Vector3f(pctBrightness, pctBrightness, pctBrightness));
+        light.setBrightness(pctBrightness * 1.5f);
       }
     }
 
