@@ -12,7 +12,7 @@ public class ServerLobbyList {
 
   /**
    * Constructs a {@link ServerLobbyList}.
-   */
+   * */
   public ServerLobbyList() {
     lobbies = new HashMap<>();
   }
@@ -126,6 +126,30 @@ public class ServerLobbyList {
       }
     } else {
       s = new StringBuilder("No Lobbies online");
+    }
+    return s.toString();
+  }
+
+  /**
+   * Creates a list of all lobbies currently in a game.
+   *
+   * @return A String that contains a list of all lobbies in a game. Each Line contains Lobbies:
+   *     Name,LobbyId, and the Amount of Players in the Lobby. If no lobbies currently in a game are
+   *     available, the String contains the information about that.
+   */
+  public String getLobbiesInGame() {
+    StringBuilder s = new StringBuilder();
+    if (lobbies.size() > 0) {
+      for (Lobby l : lobbies.values()) {
+        if (l.isInGame()) {
+          s.append(l.toString()).append("║");
+        }
+      }
+    } else {
+      s = new StringBuilder("No Lobbies online");
+    }
+    if (s.toString().equals("")) {
+      return "No Games active";
     }
     return s.toString();
   }

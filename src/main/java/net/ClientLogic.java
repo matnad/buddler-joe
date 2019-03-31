@@ -7,6 +7,8 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.SocketException;
+
+import net.packets.lists.PacketGamesOverview;
 import net.packets.Packet;
 import net.packets.block.PacketBlockDamage;
 import net.packets.chat.PacketChatMessageStatus;
@@ -95,6 +97,7 @@ public class ClientLogic implements Runnable {
   public static Socket getServer() {
     return server;
   }
+
 
   /** Thread to run the ClientLogic on, calls the method waitforserver to start up. */
   @Override
@@ -207,6 +210,9 @@ public class ClientLogic implements Runnable {
           break;
         case SPAWN_ITEM:
           p = new PacketSpawnItem(data);
+          break;
+        case GAMES_OVERVIEW:
+          p = new PacketGamesOverview(data);
           break;
         default:
       }

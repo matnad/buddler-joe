@@ -296,6 +296,8 @@ public abstract class Packet {
     CREATE_LOBBY("LOBCR"),
     PING("UPING"),
     PONG("PONGU"),
+    GET_GAME_LIST("GTGML"),
+    GAMES_OVERVIEW("GMLOV"),
     CREATE_LOBBY_STATUS("LOBCS"),
     JOIN_LOBBY_STATUS("LOBJS"),
     LOBBY_OVERVIEW("LOBOV"),
