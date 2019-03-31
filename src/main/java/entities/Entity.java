@@ -181,10 +181,7 @@ public class Entity {
    * @param spin Rotate this entity along all 3 axes
    */
   public void increaseRotation(Vector3f spin) {
-    this.rotX += spin.x;
-    this.rotY += spin.y;
-    this.rotZ += spin.z;
-    updateBoundingBox();
+    increaseRotation(spin.x, spin.y, spin.z);
   }
 
   public TexturedModel getModel() {

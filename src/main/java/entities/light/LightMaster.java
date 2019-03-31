@@ -49,13 +49,13 @@ public class LightMaster {
     Light light;
     switch (type) {
       case SUN:
-        light = new Light(LightTypes.SUN, position, colour);
+        light = new Light(LightTypes.SUN, position, colour, new Vector3f(1, 0, 0), 180);
         break;
       case FLASH:
-        light = new Light(LightTypes.FLASH, position, colour);
+        light = new Light(LightTypes.FLASH, position, colour, new Vector3f(1, 0, 0), 180);
         break;
       case TORCH:
-        light = new Light(LightTypes.TORCH, position, colour);
+        light = new Light(LightTypes.TORCH, position, colour, new Vector3f(1, 0, 0), 180);
         break;
       case SPOT:
         light = new Light(LightTypes.SPOT, position, colour, new Vector3f(1, 0, 0), 60);
@@ -86,7 +86,7 @@ public class LightMaster {
         float col = Math.max(0, 200 + player.getPositionXy().y) / 200;
         light.setColour(new Vector3f(col, col, col));
       } else if (light.getType() == LightTypes.SPOT) {
-        light.setPosition(Game.getActivePlayer().getPosition());
+        light.setPosition(new Vector3f(Game.getActivePlayer().getPosition()).add(0,4f,0));
       }
     }
 

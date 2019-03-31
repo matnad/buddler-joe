@@ -28,11 +28,11 @@ void main(void) {
     for(int i=0; i<8; i++) {
       float lightMul;
       if (i > 0) {
-                lightMul = 100;
+                lightMul = 50;
       } else {
         lightMul = 10;
       }
-      float theta = dot(toLightVector[i], normalize(-lightDirection[i]));
+      float theta = dot(normalize(toLightVector[i]), normalize(-lightDirection[i]));
       if(theta > lightCutoff[i]) {
         float distance = length(toLightVector[i]);
         float attFactor = attenuation[i].x + (attenuation[i].y * distance) + (attenuation[i].z * distance * distance);

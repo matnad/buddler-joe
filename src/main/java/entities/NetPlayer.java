@@ -1,7 +1,9 @@
 package entities;
 
 import engine.models.TexturedModel;
-import gui.DirectionalUsername;
+import entities.light.Light;
+import entities.light.LightMaster;
+import org.joml.Rayf;
 import org.joml.Vector3f;
 
 /**
@@ -12,7 +14,8 @@ public class NetPlayer extends Entity {
 
   private int clientId;
   private String username;
-  //private DirectionalUsername directionalUsername;
+  private Light headlight;
+  // private DirectionalUsername directionalUsername;
 
   /**
    * Create a net player.
@@ -41,6 +44,12 @@ public class NetPlayer extends Entity {
 
     this.clientId = clientId;
     this.username = username;
+    headlight =
+        LightMaster.generateLight(
+            LightMaster.LightTypes.SPOT,
+            getHeadlightPosition(),
+            new Vector3f(1f, 244 / 255f, 229 / 255f).mul(1));
+    headlight.setCutoff(35f);
   }
 
   public String getUsername() {
@@ -57,5 +66,36 @@ public class NetPlayer extends Entity {
 
   public void setClientId(int clientId) {
     this.clientId = clientId;
+  }
+
+  private Vector3f getHeadlightPosition() {
+    return new Vector3f(getPosition()).add(.3f, 4, 0);
+  }
+
+  private void updateHeadlightPosition() {
+    headlight.setPosition(getHeadlightPosition());
+  }
+
+  private void updateHeadlightDirection() {
+    Vector3f direction = new Vector3f(0, 0, 1).rotateY((float) Math.toRadians(getRotY()));
+    headlight.setDirection(direction);
+  }
+
+  @Override
+  public void setRotY(float rotY) {
+    super.setRotY(rotY);
+    updateHeadlightDirection();
+  }
+
+  @Override
+  public void increaseRotation(float dx, float dy, float dz) {
+    super.increaseRotation(dx, dy, dz);
+    updateHeadlightDirection();
+  }
+
+  @Override
+  public void increaseRotation(Vector3f spin) {
+    increaseRotation(spin.x, spin.y, spin.z);
+    updateHeadlightDirection();
   }
 }

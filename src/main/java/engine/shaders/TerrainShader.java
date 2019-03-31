@@ -22,6 +22,8 @@ public class TerrainShader extends ShaderProgram {
   private int[] locationLightPosition;
   private int[] locationLightColour;
   private int[] locationAttenuation;
+  private int[] locationLightDirection;
+  private int[] locationCutoff;
   private int locationShineDamper;
   private int locationReflectivity;
   private int locationSkyColour;
@@ -52,10 +54,14 @@ public class TerrainShader extends ShaderProgram {
     locationLightPosition = new int[MAX_LIGHTS];
     locationLightColour = new int[MAX_LIGHTS];
     locationAttenuation = new int[MAX_LIGHTS];
+    locationLightDirection = new int[MAX_LIGHTS];
+    locationCutoff = new int[MAX_LIGHTS];
     for (int i = 0; i < MAX_LIGHTS; i++) {
       locationLightPosition[i] = super.getUniformLocation("lightPosition[" + i + "]");
       locationLightColour[i] = super.getUniformLocation("lightColour[" + i + "]");
       locationAttenuation[i] = super.getUniformLocation("attenuation[" + i + "]");
+      locationLightDirection[i] = super.getUniformLocation("lightDirection[" + i + "]");
+      locationCutoff[i] = super.getUniformLocation("lightCutoff[" + i + "]");
     }
   }
 
@@ -95,10 +101,14 @@ public class TerrainShader extends ShaderProgram {
         super.loadVector(locationLightPosition[i], lights.get(i).getPosition());
         super.loadVector(locationLightColour[i], lights.get(i).getColour());
         super.loadVector(locationAttenuation[i], lights.get(i).getAttenuation());
+        super.loadVector(locationLightDirection[i], lights.get(i).getDirection());
+        super.loadFloat(locationCutoff[i], lights.get(i).getCutoff());
       } else {
         super.loadVector(locationLightPosition[i], new Vector3f());
         super.loadVector(locationLightColour[i], new Vector3f());
         super.loadVector(locationAttenuation[i], new Vector3f(1, 0, 0));
+        super.loadVector(locationLightDirection[i], new Vector3f());
+        super.loadFloat(locationCutoff[i], 0);
       }
     }
   }

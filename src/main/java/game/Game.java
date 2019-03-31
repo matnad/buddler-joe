@@ -310,10 +310,6 @@ public class Game extends Thread {
     LightMaster.generateLight(
         LightMaster.LightTypes.SUN, new Vector3f(0, 600, 200), new Vector3f(.3f, .3f, .3f));
 
-    Light spot = LightMaster.generateLight(LightMaster.LightTypes.SPOT, new Vector3f(100, 5, 3), new Vector3f(1,1,1).mul(3));
-    spot.setDirection(new Vector3f(-1, 0, 0));
-    spot.setCutoff(30f);
-    System.out.println(spot.getCutoff());
 
     // Connect after everything is loaded
 
