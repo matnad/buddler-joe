@@ -13,6 +13,7 @@ public class Lobby {
 
   private static int lobbyCounter = 1;
   private int lobbyId;
+  private boolean inGame;
   private String lobbyName;
   private ArrayList<Player> lobbyPlayers;
 
@@ -25,6 +26,7 @@ public class Lobby {
    */
   public Lobby(String lobbyName) {
     this.lobbyName = lobbyName;
+    this.inGame = false;
     this.lobbyPlayers = new ArrayList<>();
     this.lobbyId = lobbyCounter;
     lobbyCounter++;
@@ -116,5 +118,23 @@ public class Lobby {
    */
   public boolean isEmpty() {
     return lobbyPlayers.size() == 0;
+  }
+
+  /**
+   * Getter to check whether a lobby is currently in a game or not.
+   *
+   * @return a boolean value which says whether the lobby is in a game or not.
+   */
+  public boolean isInGame() {
+    return inGame;
+  }
+
+  /**
+   * Setter to change the state of the Lobby to inGame.
+   *
+   * @param inGame The boolean value to which the Lobby should be changed to.
+   */
+  public void setInGame(boolean inGame) {
+    this.inGame = inGame;
   }
 }

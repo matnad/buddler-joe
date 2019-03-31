@@ -16,6 +16,7 @@ import static org.lwjgl.glfw.GLFW.glfwGetVideoMode;
 import static org.lwjgl.glfw.GLFW.glfwInit;
 import static org.lwjgl.glfw.GLFW.glfwMakeContextCurrent;
 import static org.lwjgl.glfw.GLFW.glfwPollEvents;
+import static org.lwjgl.glfw.GLFW.glfwSetCharCallback;
 import static org.lwjgl.glfw.GLFW.glfwSetCursorPosCallback;
 import static org.lwjgl.glfw.GLFW.glfwSetInputMode;
 import static org.lwjgl.glfw.GLFW.glfwSetKeyCallback;
@@ -105,6 +106,7 @@ public class Window {
     glfwSetMouseButtonCallback(window, InputHandler.mouse);
     glfwSetScrollCallback(window, InputHandler.scrollCallback);
     glfwSetCursorPosCallback(window, InputHandler.cursorPosCallback);
+    glfwSetCharCallback(window, InputHandler.charCallback);
 
     // To tell openGL we are now in this window
     glfwMakeContextCurrent(window);

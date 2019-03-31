@@ -14,7 +14,7 @@ import java.util.Map;
 import org.joml.Matrix4f;
 
 /**
- * Manages a Hash Map of particle Lists, sorted by Texture (one list for each type of particle).
+ * Manages a Hash Map of particle lists, sorted by Texture (one list for each type of particle).
  * Will remove expired particles from the list, sort the active ones by camera distance and call the
  * renderer with the lists.
  *

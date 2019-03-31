@@ -93,7 +93,7 @@ public class PacketJoinLobby extends Packet {
       String info = "OK║" + ServerLogic.getLobbyList().getLobby(lobbyId).getPlayerNames();
       PacketCurLobbyInfo pcli = new PacketCurLobbyInfo(getClientId(), lobbyId);
       pcli.sendToLobby(lobbyId);
-      // LobbyOverview update jor clients currently not in a Lobby
+      // LobbyOverview update for clients currently not in a Lobby
       info = "OK║" + ServerLogic.getLobbyList().getTopTen();
       PacketLobbyOverview packetLobbyOverview = new PacketLobbyOverview(getClientId(), info);
       packetLobbyOverview.sendToClientsNotInALobby();

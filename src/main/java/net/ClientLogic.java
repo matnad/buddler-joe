@@ -6,6 +6,8 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.SocketException;
+
+import net.packets.lists.PacketGamesOverview;
 import net.packets.Packet;
 import net.packets.chat.PacketChatMessageStatus;
 import net.packets.chat.PacketChatMessageToClient;
@@ -82,6 +84,7 @@ public class ClientLogic implements Runnable {
   public static Socket getServer() {
     return server;
   }
+
 
   /** Thread to run the ClientLogic on, calls the method waitforserver to start up. */
   @Override
@@ -186,6 +189,8 @@ public class ClientLogic implements Runnable {
         case POSITION_UPDATE:
           p = new PacketPos(data);
           break;
+        case GAMES_OVERVIEW:
+          p = new PacketGamesOverview(data);
         default:
       }
       if (p != null) {

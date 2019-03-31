@@ -24,7 +24,6 @@ public class PacketLobbyOverview extends Packet {
   public PacketLobbyOverview(String data) {
     // Client receives
     super(PacketTypes.LOBBY_OVERVIEW);
-    // System.out.print(data);
     setData(data);
     in = getData().split("║");
     validate();
