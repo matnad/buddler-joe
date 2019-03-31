@@ -3,6 +3,8 @@ package engine.io;
 import static org.lwjgl.glfw.GLFW.GLFW_CURSOR;
 import static org.lwjgl.glfw.GLFW.GLFW_CURSOR_HIDDEN;
 import static org.lwjgl.glfw.GLFW.GLFW_CURSOR_NORMAL;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_BACKSPACE;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_DELETE;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_LAST;
 import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_LAST;
 import static org.lwjgl.glfw.GLFW.GLFW_RELEASE;
@@ -212,6 +214,13 @@ public class InputHandler {
    * the window polling happens or the single press functions will not work.
    */
   public static void update() {
+    if(isReadInputOn()) {
+      if(isKeyPressed(GLFW_KEY_DELETE)) {
+        resetInputString();
+      } else if (isKeyPressed(GLFW_KEY_BACKSPACE) && inputString.length() > 0) {
+        inputString.deleteCharAt(inputString.length()-1);
+      }
+    }
     // Do this before polling to preserve the state from the last update
     for (int i = 0; i < keyDown.length; i++) {
       keyDown[i] = isKeyDown(i);
