@@ -100,6 +100,12 @@ public class ServerMap extends Map<ServerBlock> {
     System.out.println(testMap);
   }
 
+  /**
+   * Creates a String that describes every block of the map. This string can be sent over the
+   * network protocol with {@link net.packets.map.PacketBroadcastMap}
+   *
+   * @return transferable string representation of the map
+   */
   public String toPacketString() {
     StringBuilder sb = new StringBuilder();
     for (int y = 0; y < height; y++) {

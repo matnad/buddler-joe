@@ -18,8 +18,19 @@ public class GrassBlock extends Block {
   private static TexturedModel blockModel;
 
   /** Extended Constructor, dont call directly. */
-  GrassBlock(Vector3f position, float rotX, float rotY, float rotZ, float scale, int gridX, int gridY) {
-    super(BlockMaster.BlockTypes.GRASS, hardness, 1f, position, rotX, rotY, rotZ, scale, gridX, gridY);
+  GrassBlock(
+      Vector3f position, float rotX, float rotY, float rotZ, float scale, int gridX, int gridY) {
+    super(
+        BlockMaster.BlockTypes.GRASS,
+        hardness,
+        1f,
+        position,
+        rotX,
+        rotY,
+        rotZ,
+        scale,
+        gridX,
+        gridY);
     setModel(blockModel);
     setTextureIndex(0);
   }

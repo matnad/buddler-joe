@@ -1,14 +1,17 @@
 package net;
 
-import net.packets.chat.PacketChatMessageToServer;
-import net.packets.lobby.*;
-import net.packets.loginlogout.PacketDisconnect;
-import net.packets.loginlogout.PacketLogin;
-import net.packets.name.PacketSetName;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import net.packets.chat.PacketChatMessageToServer;
+import net.packets.lobby.PacketCreateLobby;
+import net.packets.lobby.PacketGetLobbies;
+import net.packets.lobby.PacketGetLobbyInfo;
+import net.packets.lobby.PacketJoinLobby;
+import net.packets.lobby.PacketLeaveLobby;
+import net.packets.loginlogout.PacketDisconnect;
+import net.packets.loginlogout.PacketLogin;
+import net.packets.name.PacketSetName;
 
 /**
  * The client-side interface to communicate with the server.

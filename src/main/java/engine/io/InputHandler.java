@@ -214,11 +214,11 @@ public class InputHandler {
    * the window polling happens or the single press functions will not work.
    */
   public static void update() {
-    if(isReadInputOn()) {
-      if(isKeyPressed(GLFW_KEY_DELETE)) {
+    if (isReadInputOn()) {
+      if (isKeyPressed(GLFW_KEY_DELETE)) {
         resetInputString();
       } else if (isKeyPressed(GLFW_KEY_BACKSPACE) && inputString.length() > 0) {
-        inputString.deleteCharAt(inputString.length()-1);
+        inputString.deleteCharAt(inputString.length() - 1);
       }
     }
     // Do this before polling to preserve the state from the last update

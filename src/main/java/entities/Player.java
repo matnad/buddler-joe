@@ -1,5 +1,17 @@
 package entities;
 
+import static entities.items.ItemMaster.ItemTypes.DYNAMITE;
+import static entities.items.ItemMaster.ItemTypes.TORCH;
+import static game.Game.Stage.PLAYING;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_A;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_D;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_E;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_Q;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_S;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_SPACE;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_T;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_W;
+
 import collision.BoundingBox;
 import engine.io.InputHandler;
 import engine.models.TexturedModel;
@@ -7,18 +19,12 @@ import entities.blocks.Block;
 import entities.blocks.BlockMaster;
 import entities.items.ItemMaster;
 import game.Game;
+import java.util.ArrayList;
+import java.util.List;
 import net.packets.block.PacketBlockDamage;
 import net.packets.playerprop.PacketPos;
 import org.joml.Vector3f;
 import util.MousePlacer;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import static entities.items.ItemMaster.ItemTypes.DYNAMITE;
-import static entities.items.ItemMaster.ItemTypes.TORCH;
-import static game.Game.Stage.PLAYING;
-import static org.lwjgl.glfw.GLFW.*;
 
 /**
  * NOTE: This is derived from NetPlayer, but doesn't really use anything from NetPlayer. We will

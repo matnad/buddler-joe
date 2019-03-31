@@ -126,7 +126,13 @@ public class ItemMaster {
       return itemId;
     }
 
-    public static ItemTypes getItemById(int id) {
+    /**
+     * Get an ItemType by its id. Id is used to transmit item type via network protocol.
+     *
+     * @param id id of the item type
+     * @return item type associated with the id
+     */
+    public static ItemTypes getItemTypeById(int id) {
       for (ItemTypes itemType : ItemTypes.values()) {
         if (itemType.itemId == id) {
           return itemType;

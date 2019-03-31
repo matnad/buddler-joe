@@ -77,8 +77,7 @@ public class Chat {
   /**
    * Method to check user input which calls the keyboardInputHandler
    *
-   * <p>Called every frame. Reads chat input and toggles chat window
-   * text input handler
+   * <p>Called every frame. Reads chat input and toggles chat window text input handler
    */
   public void checkInputs() {
     if (InputHandler.isKeyPressed(GLFW_KEY_ENTER)) {
@@ -87,7 +86,7 @@ public class Chat {
         chatText = "";
         InputHandler.resetInputString();
       } else {
-        if(enabled){
+        if (enabled) {
           setEnabled(false);
           InputHandler.readInputOff();
         } else {

@@ -2,7 +2,6 @@ package entities.blocks;
 
 import engine.render.Loader;
 import game.Game;
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -40,6 +39,8 @@ public class BlockMaster {
    *
    * @param type type of the block as described in {@link BlockTypes}
    * @param position 3D coordinate to place the block
+   * @param gridX X coordinate for the block (map grid)
+   * @param gridY Y coordinate for the block (map grid)
    * @return the created block
    */
   public static Block generateBlock(BlockTypes type, Vector3f position, int gridX, int gridY) {
@@ -78,7 +79,8 @@ public class BlockMaster {
    */
   public static void update() {
     // Remove destroyed blocks from the list and update entities
-    Iterator<Map.Entry<BlockTypes, CopyOnWriteArrayList<Block>>> mapIterator = blockLists.entrySet().iterator();
+    Iterator<Map.Entry<BlockTypes, CopyOnWriteArrayList<Block>>> mapIterator =
+        blockLists.entrySet().iterator();
     while (mapIterator.hasNext()) {
       List<Block> list = mapIterator.next().getValue();
       Iterator<Block> iterator = list.iterator();
@@ -128,7 +130,8 @@ public class BlockMaster {
    */
   private static void addBlockToList(Block block) {
     // Get the list with the type of the block, if the list is absent, create it
-    List<Block> list = blockLists.computeIfAbsent(block.getType(), k -> new CopyOnWriteArrayList<>());
+    List<Block> list =
+        blockLists.computeIfAbsent(block.getType(), k -> new CopyOnWriteArrayList<>());
 
     // If the block is not destroyed, add it to the Game to be rendered
     if (!block.isDestroyed()) {

@@ -4,8 +4,6 @@ import engine.render.Loader;
 import engine.render.fontmeshcreator.FontType;
 import engine.render.fontmeshcreator.GuiText;
 import engine.render.fontmeshcreator.TextMeshData;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -18,7 +16,8 @@ import java.util.concurrent.CopyOnWriteArrayList;
  */
 public class TextMaster {
 
-  private static final Map<FontType, CopyOnWriteArrayList<GuiText>> texts = new ConcurrentHashMap<>();
+  private static final Map<FontType, CopyOnWriteArrayList<GuiText>> texts =
+      new ConcurrentHashMap<>();
   private static Loader loader;
   private static FontRenderer renderer;
 

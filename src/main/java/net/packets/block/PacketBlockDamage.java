@@ -1,6 +1,7 @@
 package net.packets.block;
 
 import game.Game;
+import game.map.ClientMap;
 import game.map.ServerMap;
 import net.ServerLogic;
 import net.lobbyhandling.Lobby;
@@ -17,7 +18,8 @@ public class PacketBlockDamage extends Packet {
   private String[] dataArray;
 
   /**
-   * Created by the client to send the damage done to a block to the server.
+   * Created by the client to send the damage done to a block to the server. Coordinates are in map
+   * grid format, not world coordinates.
    *
    * @param blockX X position of the damaged block
    * @param blockY Y position of the damaged block
@@ -33,10 +35,10 @@ public class PacketBlockDamage extends Packet {
   }
 
   /**
-   * Server recieves packet, validates it and is then ready to pass it to the ServerMap.
+   * Server receives packet, validates it and is then ready to pass it to the ServerMap.
    *
    * @param clientId clientId who sent the packet
-   * @param data     contains position of the block and damage dealt to the block
+   * @param data contains position of the block and damage dealt to the block
    */
   public PacketBlockDamage(int clientId, String data) {
     super(PacketTypes.BLOCK_DAMAGE);
@@ -47,9 +49,9 @@ public class PacketBlockDamage extends Packet {
   }
 
   /**
-   * Server recieves packet, validates it and is then ready to pass it to the ServerMap.
+   * Client receives packet, validates it and is then ready to pass it to the ClientMap.
    *
-   * @param data     contains position of the block and damage dealt to the block
+   * @param data contains position of the block and damage dealt to the block
    */
   public PacketBlockDamage(String data) {
     super(PacketTypes.BLOCK_DAMAGE);
@@ -58,6 +60,7 @@ public class PacketBlockDamage extends Packet {
     validate(); // Validate and assign in one step
   }
 
+  /** Validate if the packet contains properly formatted numbers and is of the right size. */
   @Override
   public void validate() {
     if (dataArray.length != 3) {
@@ -77,10 +80,14 @@ public class PacketBlockDamage extends Packet {
     }
   }
 
+  /**
+   * Passes the coordinates and data to the map for processing and further action. Will make sure
+   * there is a map and will validate the coordinates to lie within the map.
+   */
   @Override
   public void processData() {
     if (getClientId() > 0) {
-      //Server side
+      // Server side
       Lobby lobby = ServerLogic.getLobbyForClient(getClientId());
       ServerMap map = null;
       if (lobby == null) {
@@ -90,16 +97,29 @@ public class PacketBlockDamage extends Packet {
       }
       if (map == null) {
         addError("No map found for lobby.");
+
+      } else if (blockX > map.getWidth() - 1 || blockY > map.getHeight() - 1) {
+        addError("Block lies outside of server map range.");
       }
+
       if (!hasErrors()) {
         map.damageBlock(getClientId(), blockX, blockY, damage);
       } else {
-        logger.error(
-            "Validation errors while sending Block Damage Packet. " + createErrorMessage());
+        logger.error("Errors while sending Block Damage Packet to Server. " + createErrorMessage());
       }
     } else {
-      //Client side
-      Game.getMap().damageBlock(0, blockX, blockY, damage);
+      // Client side
+      ClientMap map = Game.getMap();
+      if (map == null) {
+        addError("No map found on the client side.");
+      } else if (blockX > map.getWidth() - 1 || blockY > map.getHeight() - 1) {
+        addError("Block lies outside of client map range.");
+      }
+      if (!hasErrors()) {
+        Game.getMap().damageBlock(0, blockX, blockY, damage);
+      } else {
+        logger.error("Errors while sending Block Damage Packet to Client. " + createErrorMessage());
+      }
     }
   }
 }

@@ -8,6 +8,7 @@ import net.packets.Packet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/** Packet to send the full map from server to client. */
 public class PacketBroadcastMap extends Packet {
 
   private String mapString;
@@ -15,14 +16,22 @@ public class PacketBroadcastMap extends Packet {
 
   private static final Logger logger = LoggerFactory.getLogger(PacketBroadcastMap.class);
 
-  // Server sends
+  /**
+   * The server prepares to send a serverMap to the client.
+   *
+   * @param serverMap map to send
+   */
   public PacketBroadcastMap(ServerMap serverMap) {
     super(PacketTypes.FULL_MAP_BROADCAST);
     mapString = serverMap.toPacketString();
     setData(mapString);
   }
 
-  // Client receives
+  /**
+   * The client receives the full map from the server and prepares to process it.
+   *
+   * @param data id for every block on the map
+   */
   public PacketBroadcastMap(String data) {
     super(PacketTypes.FULL_MAP_BROADCAST);
     setData(data);
@@ -55,10 +64,17 @@ public class PacketBroadcastMap extends Packet {
     }
   }
 
+  /**
+   * The client will try to reload the map to the map he just received. Logic is in {@link
+   * ClientMap}.
+   *
+   * @see ClientMap
+   */
   @Override
   public void processData() {
     ClientMap map = Game.getMap();
     if (map == null) {
+      // Do we need to handle this case? TODO: Decide if we need this and how we want to handle it.
       map = new ClientMap(1, 1, 1); // Dummy map
     }
     if (!hasErrors()) {

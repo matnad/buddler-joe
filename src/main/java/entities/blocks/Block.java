@@ -8,10 +8,9 @@ import engine.textures.ModelTexture;
 import entities.Entity;
 import entities.blocks.debris.DebrisMaster;
 import game.Game;
+import java.util.Random;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
-
-import java.util.Random;
 
 /**
  * Abstract class for Blocks.
@@ -54,6 +53,8 @@ public abstract class Block extends Entity {
    * @param rotY rotation around Y axis
    * @param rotZ rotation around Z axis
    * @param scale scaling multiplier
+   * @param gridX X coordinate for the block (map grid)
+   * @param gridY Y coordinate for the block (map grid)
    */
   public Block(
       BlockMaster.BlockTypes type,
@@ -75,7 +76,6 @@ public abstract class Block extends Entity {
     this.mass = mass;
     this.gridX = gridX;
     this.gridY = gridY;
-
 
     if (blockModel == null) {
       // Maybe need more than a warning

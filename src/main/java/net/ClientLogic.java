@@ -7,13 +7,12 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.SocketException;
-
-import net.packets.lists.PacketGamesOverview;
 import net.packets.Packet;
 import net.packets.block.PacketBlockDamage;
 import net.packets.chat.PacketChatMessageStatus;
 import net.packets.chat.PacketChatMessageToClient;
 import net.packets.items.PacketSpawnItem;
+import net.packets.lists.PacketGamesOverview;
 import net.packets.lobby.PacketCreateLobbyStatus;
 import net.packets.lobby.PacketCurLobbyInfo;
 import net.packets.lobby.PacketJoinLobbyStatus;
@@ -97,7 +96,6 @@ public class ClientLogic implements Runnable {
   public static Socket getServer() {
     return server;
   }
-
 
   /** Thread to run the ClientLogic on, calls the method waitforserver to start up. */
   @Override

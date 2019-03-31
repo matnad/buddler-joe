@@ -8,14 +8,13 @@ import game.Game;
 import net.ServerLogic;
 import net.lobbyhandling.Lobby;
 import net.packets.Packet;
-import net.packets.block.PacketBlockDamage;
 import org.joml.Vector3f;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class PacketSpawnItem extends Packet {
 
-  private static final Logger logger = LoggerFactory.getLogger(PacketBlockDamage.class);
+  private static final Logger logger = LoggerFactory.getLogger(PacketSpawnItem.class);
   private int owner;
   private Vector3f position;
   private int type;
@@ -23,7 +22,8 @@ public class PacketSpawnItem extends Packet {
   private String[] dataArray;
 
   /**
-   * Created by the client to tell the server he spawned an item.
+   * Created by the client to tell the server he spawned an item. Contains a dummy variable for
+   * owner (will be set by the server).
    *
    * @param type item type according to {@link ItemMaster.ItemTypes}
    * @param position position of the item
@@ -35,10 +35,11 @@ public class PacketSpawnItem extends Packet {
   }
 
   /**
-   * Server recieves packet, validates it and is then ready to pass it to the ServerMap.
+   * Server receives packet, validates it and is then ready to broadcast it to the lobby. Will pass
+   * on the same data but set the owner of the id equal to the owner of the packet.
    *
    * @param clientId clientId who sent the packet
-   * @param data contains position of the block and damage dealt to the block
+   * @param data string that contains type and position of item
    */
   public PacketSpawnItem(int clientId, String data) {
     super(PacketTypes.SPAWN_ITEM);
@@ -51,9 +52,9 @@ public class PacketSpawnItem extends Packet {
   }
 
   /**
-   * Server recieves packet, validates it and is then ready to pass it to the ServerMap.
+   * Client receives packet and creates an item owned by someone else.
    *
-   * @param data contains position of the block and damage dealt to the block
+   * @param data string that contains owner, type and position of an item
    */
   public PacketSpawnItem(String data) {
     super(Packet.PacketTypes.SPAWN_ITEM);
@@ -92,9 +93,19 @@ public class PacketSpawnItem extends Packet {
     }
   }
 
+  /**
+   * Server and client logic for item spawning.
+   *
+   * <p>The server will check the type of the item and if the player is in a lobby. Then the item
+   * will be broadcast.
+   *
+   * <p>The client will do nothing if he owns the item (the item should already be spawned in that
+   * case). If the client doesn't own the item, he will create it at the specified position with the
+   * ownership flag set to false. Item specific flags / actions can be triggered from here as well.
+   */
   @Override
   public void processData() {
-    ItemMaster.ItemTypes itemType = ItemMaster.ItemTypes.getItemById(type);
+    ItemMaster.ItemTypes itemType = ItemMaster.ItemTypes.getItemTypeById(type);
     if (itemType == null) {
       addError("Invalid item id.");
     }
@@ -121,9 +132,9 @@ public class PacketSpawnItem extends Packet {
         Item item = ItemMaster.generateItem(itemType, position);
         item.setOwned(false);
         if (item instanceof Torch) {
-          ((Torch) item).checkForBlock();
+          ((Torch) item).checkForBlock(); // Attach to a block if placed on one.
         } else if (item instanceof Dynamite) {
-          ((Dynamite) item).setActive(true);
+          ((Dynamite) item).setActive(true); // Start ticking
         }
       } else {
         logger.error(

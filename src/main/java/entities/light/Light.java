@@ -20,8 +20,7 @@ public class Light {
   private float cutoff;
 
   /**
-   * POINT LIGHT.
-   * Strength of the light depends on distance and angle.
+   * POINT LIGHT. Strength of the light depends on distance and angle.
    *
    * @param type type of light
    * @param position world coordinates
@@ -32,14 +31,21 @@ public class Light {
   }
 
   /**
-   * SPOT LIGHT.
-   * Strength of the light depends on distance and angle.
+   * SPOT LIGHT. Strength of the light depends on distance and angle.
    *
    * @param type type of light
    * @param position world coordinates
    * @param colour r, g, b
+   * @param direction direction vector of the light if it is a spot light
+   * @param cutoff cutoff angle for a spotlight (the angle is deviation from the direction, so it
+   *     will be doubled).
    */
-  public Light(LightMaster.LightTypes type, Vector3f position, Vector3f colour, Vector3f direction, float cutoff) {
+  public Light(
+      LightMaster.LightTypes type,
+      Vector3f position,
+      Vector3f colour,
+      Vector3f direction,
+      float cutoff) {
     this.type = type;
     this.position = position;
     this.colour = colour;

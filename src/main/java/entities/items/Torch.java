@@ -132,6 +132,7 @@ public class Torch extends Item {
     light.setDestroyed(destroyed);
   }
 
+  /** Creates a subtle flicker effect for the torch. */
   private void updateAttenuationNoise() {
     // Add "light flicker" effect with gaussian random walk and pull to the average
     flickerFactor += (float) (random.nextGaussian() / 5000);
@@ -152,10 +153,20 @@ public class Torch extends Item {
     return block;
   }
 
+  /**
+   * Bind torch to a block. If the block dies, the torch will be destroyed.
+   *
+   * @param block Block to attach to the torch
+   */
   public void setBlock(Block block) {
     this.block = block;
   }
 
+  /**
+   * Check if the Torch is on a block and attach to the block.
+   *
+   * <p>This will check by distance.
+   */
   public void checkForBlock() {
     Block closestBlock = null;
     float closestDistSq = 25;

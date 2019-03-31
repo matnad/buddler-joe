@@ -74,4 +74,12 @@ public abstract class Map<T> {
     }
     return map.toString();
   }
+
+  public int getWidth() {
+    return width;
+  }
+
+  public int getHeight() {
+    return height;
+  }
 }

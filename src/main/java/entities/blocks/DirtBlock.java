@@ -21,7 +21,8 @@ public class DirtBlock extends Block {
   DirtBlock(
       Vector3f position, float rotX, float rotY, float rotZ, float scale, int gridX, int gridY) {
     // Must pass block type and hardness here as they are required
-    super(BlockMaster.BlockTypes.DIRT, hardness, 1f, position, rotX, rotY, rotZ, scale, gridX, gridY);
+    super(
+        BlockMaster.BlockTypes.DIRT, hardness, 1f, position, rotX, rotY, rotZ, scale, gridX, gridY);
     setModel(blockModel);
     setTextureIndex(0);
   }
