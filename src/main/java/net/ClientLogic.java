@@ -11,6 +11,7 @@ import net.packets.Packet;
 import net.packets.block.PacketBlockDamage;
 import net.packets.chat.PacketChatMessageStatus;
 import net.packets.chat.PacketChatMessageToClient;
+import net.packets.items.PacketSpawnItem;
 import net.packets.lobby.PacketCreateLobbyStatus;
 import net.packets.lobby.PacketCurLobbyInfo;
 import net.packets.lobby.PacketJoinLobbyStatus;
@@ -203,6 +204,9 @@ public class ClientLogic implements Runnable {
           break;
         case FULL_MAP_BROADCAST:
           p = new PacketBroadcastMap(data);
+          break;
+        case SPAWN_ITEM:
+          p = new PacketSpawnItem(data);
           break;
         default:
       }

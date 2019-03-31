@@ -7,6 +7,7 @@ import engine.render.objconverter.ObjFileLoader;
 import engine.textures.ModelTexture;
 import entities.Entity;
 import entities.blocks.debris.DebrisMaster;
+import game.Game;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 

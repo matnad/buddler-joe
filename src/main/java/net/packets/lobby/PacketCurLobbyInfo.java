@@ -124,7 +124,6 @@ public class PacketCurLobbyInfo extends Packet {
       // Add missing players and create list of present players
       NetPlayerMaster.setLobbyname(infoArray[1]);
       ArrayList<Integer> presentIds = new ArrayList<>();
-      System.out.println(Arrays.toString(infoArray));
       for (int i = 2; i < infoArray.length; i += 2) {
         try {
           int id = Integer.parseInt(infoArray[i]);

@@ -115,6 +115,14 @@ public class Player extends NetPlayer {
       handleCollision(closeBlock);
     }
 
+    // Turn Headlight on/off
+    float pctBrightness = Game.getMap().getLightLevel(getPosition().y);
+    if (pctBrightness > .7f) {
+      turnHeadlightOff();
+    } else {
+      turnHeadlightOn();
+    }
+
     // Send server update with update
     if (Game.isConnectedToServer()
         && (currentSpeed != 0 || upwardsSpeed != 0 || currentTurnSpeed != 0)) {

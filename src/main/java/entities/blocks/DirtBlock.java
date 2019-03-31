@@ -21,7 +21,7 @@ public class DirtBlock extends Block {
   DirtBlock(
       Vector3f position, float rotX, float rotY, float rotZ, float scale, int gridX, int gridY) {
     // Must pass block type and hardness here as they are required
-    super(BlockMaster.BlockTypes.DIRT, hardness, 1f, position, rotX, rotY, rotZ, scale);
+    super(BlockMaster.BlockTypes.DIRT, hardness, 1f, position, rotX, rotY, rotZ, scale, gridX, gridY);
     setModel(blockModel);
     setTextureIndex(0);
   }
@@ -44,7 +44,4 @@ public class DirtBlock extends Block {
   public static float getHardness() {
     return hardness;
   }
-
-  @Override
-  protected void onDestroy() {}
 }

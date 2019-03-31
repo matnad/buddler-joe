@@ -3,7 +3,6 @@ package game.map;
 import entities.blocks.AirBlock;
 import entities.blocks.Block;
 import entities.blocks.BlockMaster;
-import game.Game;
 import java.util.Random;
 import org.joml.Vector3f;
 
@@ -92,7 +91,8 @@ public class ClientMap extends Map<Block> {
             Vector3f newPos = new Vector3f(b.getPosition().x, -(y + 1) * 6 - 3, b.getPosition().z);
             if (!instantUpdate) {
               // delay
-              float moveDelay = Math.max(.5f, (float) ((new Random().nextGaussian() + 1) * 2));
+              long seed = (long) (b.getPosition().x + b.getPosition().y);
+              float moveDelay = Math.max(.5f, (float) ((new Random(seed).nextGaussian() + 1) * 2));
               // Never fall sooner than a block below, otherwise blocks could clip eachother
               if (y + 2 < height && blocks[x][y + 2].getType() == BlockMaster.BlockTypes.STONE) {
                 moveDelay = Math.max(moveDelay, blocks[x][y + 2].getMoveDelay());
@@ -152,6 +152,11 @@ public class ClientMap extends Map<Block> {
       }
     }
     local = false;
+  }
+
+  public float getLightLevel(float playerPosY) {
+    float pctLevel =  1 - (-playerPosY / (height * dim));
+    return (float) Math.max(0.1, (float) Math.pow(pctLevel, 4));
   }
 
   public boolean isLocal() {

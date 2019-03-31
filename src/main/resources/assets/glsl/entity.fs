@@ -25,13 +25,9 @@ void main(void) {
     vec3 totalDiffuse = vec3(0.0);
     vec3 totalSpecular = vec3(0.0);
 
+    float lightMul = 100;
+
     for(int i=0; i<8; i++) {
-      float lightMul;
-      if (i > 0) {
-                lightMul = 50;
-      } else {
-        lightMul = 10;
-      }
       float theta = dot(normalize(toLightVector[i]), normalize(-lightDirection[i]));
       if(theta > lightCutoff[i]) {
         float distance = length(toLightVector[i]);
@@ -45,9 +41,7 @@ void main(void) {
         specularFactor = max(specularFactor, 0.0);
         float dampedFactor = pow(specularFactor, shineDamper);
         totalDiffuse = totalDiffuse + (brightness * lightColour[i] * lightMul) / attFactor;
-        totalSpecular = totalSpecular + (dampedFactor * reflectivity * lightColour[i]) / attFactor;
-      } else {
-
+        totalSpecular = totalSpecular + (dampedFactor * reflectivity * lightColour[i] * lightMul) / attFactor;
       }
     }
     totalDiffuse = max(totalDiffuse, 0.2);
@@ -58,6 +52,6 @@ void main(void) {
     }
 
     out_Colour = vec4(totalDiffuse, 1.0) * textureColour + vec4(totalSpecular, 1.0);
-    out_Colour = mix(vec4(skyColour, 1.0), out_Colour, visibility);
+    out_Colour = mix(vec4(skyColour, 1.0), out_Colour, visibility / lightMul);
 
 }

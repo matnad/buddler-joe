@@ -3,7 +3,6 @@ package entities;
 import engine.models.TexturedModel;
 import entities.light.Light;
 import entities.light.LightMaster;
-import org.joml.Rayf;
 import org.joml.Vector3f;
 
 /**
@@ -14,7 +13,8 @@ public class NetPlayer extends Entity {
 
   private int clientId;
   private String username;
-  private Light headlight;
+  private Light headLight;
+  private Light headLightGlow;
   // private DirectionalUsername directionalUsername;
 
   /**
@@ -44,12 +44,17 @@ public class NetPlayer extends Entity {
 
     this.clientId = clientId;
     this.username = username;
-    headlight =
+    headLight =
         LightMaster.generateLight(
             LightMaster.LightTypes.SPOT,
             getHeadlightPosition(),
-            new Vector3f(1f, 244 / 255f, 229 / 255f).mul(1));
-    headlight.setCutoff(35f);
+            new Vector3f(1,1,1));
+    headLight.setCutoff(35f);
+    headLightGlow =
+        LightMaster.generateLight(
+            LightMaster.LightTypes.TORCH,
+            getHeadlightPosition(),
+            new Vector3f(1,1,1));
   }
 
   public String getUsername() {
@@ -68,17 +73,28 @@ public class NetPlayer extends Entity {
     this.clientId = clientId;
   }
 
+  public void turnHeadlightOff() {
+    headLight.setBrightness(0);
+    headLightGlow.setBrightness(0);
+  }
+
+  public void turnHeadlightOn() {
+    headLight.setBrightness(3);
+    headLightGlow.setBrightness(1);
+  }
+
   private Vector3f getHeadlightPosition() {
     return new Vector3f(getPosition()).add(.3f, 4, 0);
   }
 
   private void updateHeadlightPosition() {
-    headlight.setPosition(getHeadlightPosition());
+    headLight.setPosition(getHeadlightPosition());
+    headLightGlow.setPosition(getHeadlightPosition());
   }
 
   private void updateHeadlightDirection() {
     Vector3f direction = new Vector3f(0, 0, 1).rotateY((float) Math.toRadians(getRotY()));
-    headlight.setDirection(direction);
+    headLight.setDirection(direction);
   }
 
   @Override
@@ -96,6 +112,17 @@ public class NetPlayer extends Entity {
   @Override
   public void increaseRotation(Vector3f spin) {
     increaseRotation(spin.x, spin.y, spin.z);
-    updateHeadlightDirection();
+  }
+
+  @Override
+  public void setPosition(Vector3f position) {
+    super.setPosition(position);
+    updateHeadlightPosition();
+  }
+
+  @Override
+  public void increasePosition(Vector3f velocity) {
+    super.increasePosition(velocity);
+    updateHeadlightPosition();
   }
 }

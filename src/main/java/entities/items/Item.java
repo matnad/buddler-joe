@@ -34,7 +34,7 @@ public abstract class Item extends Entity {
       System.out.println("WARNING! No model preloaded!");
     }
     this.type = type;
-    this.owned = false;
+    this.owned = true;
   }
 
   public abstract void update();
@@ -50,4 +50,5 @@ public abstract class Item extends Entity {
   public ItemMaster.ItemTypes getType() {
     return type;
   }
+
 }

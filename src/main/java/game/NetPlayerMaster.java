@@ -48,7 +48,14 @@ public class NetPlayerMaster {
    * @param renderer master renderer instance
    */
   public static void update(MasterRenderer renderer) {
+
     for (NetPlayer netPlayer : netPlayers.values()) {
+      float pctBrightness = Game.getMap().getLightLevel(netPlayer.getPosition().y);
+      if (pctBrightness > .7f) {
+        netPlayer.turnHeadlightOff();
+      } else {
+        netPlayer.turnHeadlightOn();
+      }
       renderer.processEntity(netPlayer);
     }
   }
@@ -61,7 +68,7 @@ public class NetPlayerMaster {
    * @param username username of the player
    */
   public static void addPlayer(int clientId, String username) {
-    System.out.println("adding "+username);
+    System.out.println("adding " + username);
     if (!netPlayers.containsKey(clientId)) {
       NetPlayer newPlayer =
           new NetPlayer(

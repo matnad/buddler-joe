@@ -8,6 +8,7 @@ import engine.render.Loader;
 import engine.render.objconverter.ObjFileLoader;
 import engine.textures.ModelTexture;
 import entities.blocks.Block;
+import entities.blocks.BlockMaster;
 import entities.light.Light;
 import entities.light.LightMaster;
 import java.util.Random;
@@ -153,5 +154,20 @@ public class Torch extends Item {
 
   public void setBlock(Block block) {
     this.block = block;
+  }
+
+  public void checkForBlock() {
+    Block closestBlock = null;
+    float closestDistSq = 25;
+    for (Block block : BlockMaster.getBlocks()) {
+      float distSq = block.getDistanceSquaredFrom(getPosition());
+      if (distSq < closestDistSq) {
+        closestDistSq = distSq;
+        closestBlock = block;
+      }
+    }
+    if (closestBlock != null) {
+      setBlock(closestBlock);
+    }
   }
 }

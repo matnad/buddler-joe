@@ -118,12 +118,21 @@ public class ItemMaster {
 
     private final int itemId;
 
-    ItemTypes(int textureId) {
-      this.itemId = textureId;
+    ItemTypes(int itemId) {
+      this.itemId = itemId;
     }
 
     public int getItemId() {
       return itemId;
+    }
+
+    public static ItemTypes getItemById(int id) {
+      for (ItemTypes itemType : ItemTypes.values()) {
+        if (itemType.itemId == id) {
+          return itemType;
+        }
+      }
+      return null;
     }
   }
 }

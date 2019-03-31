@@ -10,6 +10,7 @@ import net.ServerLogic;
 import net.packets.Packet;
 import net.packets.block.PacketBlockDamage;
 import net.packets.chat.PacketChatMessageToServer;
+import net.packets.items.PacketSpawnItem;
 import net.packets.lobby.PacketCreateLobby;
 import net.packets.lobby.PacketGetLobbies;
 import net.packets.lobby.PacketGetLobbyInfo;
@@ -157,6 +158,9 @@ public class ClientThread implements Runnable {
             break;
           case BLOCK_DAMAGE:
             p = new PacketBlockDamage(clientId, data);
+            break;
+          case SPAWN_ITEM:
+            p = new PacketSpawnItem(clientId, data);
             break;
           default:
         }

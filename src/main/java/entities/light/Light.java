@@ -12,6 +12,7 @@ public class Light {
   private final LightMaster.LightTypes type;
   private Vector3f position;
   private Vector3f colour;
+  private float brightness;
   private Vector3f attenuation;
   private boolean destroyed;
   private float distanceSq;
@@ -27,13 +28,7 @@ public class Light {
    * @param colour r, g, b
    */
   public Light(LightMaster.LightTypes type, Vector3f position, Vector3f colour) {
-    this.type = type;
-    this.position = position;
-    this.colour = colour;
-    this.attenuation = type.getBaseAttenuation();
-    this.distanceSq = 0;
-    this.direction = new Vector3f();
-    this.cutoff = (float) Math.cos(Math.toRadians(360f));
+    this(type, position, colour, new Vector3f(), (float) Math.cos(Math.toRadians(180f)));
   }
 
   /**
@@ -48,6 +43,7 @@ public class Light {
     this.type = type;
     this.position = position;
     this.colour = colour;
+    this.brightness = 1;
     this.attenuation = type.getBaseAttenuation();
     this.direction = direction;
     this.cutoff = (float) Math.cos(Math.toRadians(cutoff));
@@ -73,8 +69,20 @@ public class Light {
     this.position = position;
   }
 
+  public Vector3f getAdjustedColour() {
+    return new Vector3f(colour).mul(brightness);
+  }
+
   public Vector3f getColour() {
     return colour;
+  }
+
+  public float getBrightness() {
+    return brightness;
+  }
+
+  public void setBrightness(float brightness) {
+    this.brightness = brightness;
   }
 
   public void setColour(Vector3f colour) {

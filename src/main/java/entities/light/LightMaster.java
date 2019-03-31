@@ -82,11 +82,9 @@ public class LightMaster {
       light.update(camera);
 
       if (light.getType() == LightTypes.SUN) {
-        // Adjust sun strength according to depth Depth 200 = Darkness
-        float col = Math.max(0, 200 + player.getPositionXy().y) / 200;
-        light.setColour(new Vector3f(col, col, col));
-      } else if (light.getType() == LightTypes.SPOT) {
-        light.setPosition(new Vector3f(Game.getActivePlayer().getPosition()).add(0,4f,0));
+        // Adjust sun strength according to depth
+        float pctBrightness = Game.getMap().getLightLevel(player.getPosition().y);
+        light.setColour(new Vector3f(pctBrightness, pctBrightness, pctBrightness));
       }
     }
 
@@ -111,7 +109,7 @@ public class LightMaster {
             //noinspection SuspiciousListRemoveInLoop
             list.remove(lightIndex);
           } else if (lightsToRender.size() < maxLights
-              && list.get(lightIndex).getColour().length() > 0) {
+              && list.get(lightIndex).getAdjustedColour().length() > 0) {
             // If a light has a colour of 0 (all dark), then dont add it
             lightsToRender.add(list.get(lightIndex));
           }

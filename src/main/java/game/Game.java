@@ -21,7 +21,6 @@ import entities.Player;
 import entities.blocks.BlockMaster;
 import entities.blocks.debris.DebrisMaster;
 import entities.items.ItemMaster;
-import entities.light.Light;
 import entities.light.LightMaster;
 import game.map.ClientMap;
 import game.stages.GameMenu;
@@ -269,7 +268,7 @@ public class Game extends Thread {
     TexturedModel playerModel =
         new TexturedModel(rawPlayer, new ModelTexture(loader.loadTexture(myTexture)));
 
-    //Stages
+    // Stages
     MainMenu.init(loader);
     GameMenu.init(loader);
 
@@ -284,15 +283,16 @@ public class Game extends Thread {
     GuiString.loadFont(loader);
     LoadingScreen.init(loader);
     addActiveStage(LOADINGSCREEN);
+    // Connect to server and load level in an extra thread
     new Thread(
-            () -> {
-              try {
-                loadGame(playerModel);
-              } catch (InterruptedException e) {
-                logger.error("Problem with sleep in Game Loader.");
-              }
-            })
-        .start();
+        () -> {
+          try {
+            loadGame(playerModel);
+          } catch (InterruptedException e) {
+            logger.error("Problem with sleep in Game Loader.");
+          }
+        })
+      .start();
 
     chat = new Chat(loader);
     fpsCounter = new Fps();
@@ -308,10 +308,8 @@ public class Game extends Thread {
 
     // Lights and cameras (just one for now)
     LightMaster.generateLight(
-        LightMaster.LightTypes.SUN, new Vector3f(0, 600, 200), new Vector3f(.3f, .3f, .3f));
+        LightMaster.LightTypes.SUN, new Vector3f(0, 600, 200), new Vector3f(1, 1, 1));
 
-
-    // Connect after everything is loaded
 
     /*
     **************************************************************
@@ -321,7 +319,7 @@ public class Game extends Thread {
     while (!window.isClosed()) {
       if (window.isOneSecond() && activeStages.contains(PLAYING)) {
         // This runs once per second, we can use it for stuff that needs less frequent updates
-         fpsCounter.updateString("" + window.getCurrentFps());
+        fpsCounter.updateString("" + window.getCurrentFps());
       }
 
       // ...
