@@ -1,4 +1,3 @@
 package entities.items;
 
-public class Diamond {
-}
+public class Diamond {}

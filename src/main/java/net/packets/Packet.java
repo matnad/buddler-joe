@@ -222,17 +222,19 @@ public abstract class Packet {
    *
    * @param username The username to be checked by this method
    */
-  protected void checkUsername(String username) {
+  protected boolean checkUsername(String username) {
     if (username == null) {
       addError("No username found.");
-      return;
+      return false;
     }
     if (username.length() > 30) {
       addError("Username to long. Maximum is 30 Characters.");
+      return false;
     } else if (username.length() < 4) {
       addError("Username to short. Minimum is 4 Characters.");
+      return false;
     }
-    isExtendedAscii(username);
+    return isExtendedAscii(username);
   }
 
   /**
@@ -252,6 +254,28 @@ public abstract class Packet {
     } catch (NullPointerException e) {
       return false;
     }
+  }
+
+  /**
+   * Check whether a block position data is correct or not. This method can be accessed by both the
+   * client and the server.
+   *
+   * @return true if correct Position data, false if incorrect.
+   */
+  protected boolean checkBlockPosInfo() {
+    try {
+      if (data == null) {
+        addError("No data available.");
+        return false;
+      }
+      String[] dataArray = dataArray = data.split("║");
+      int blockX = Integer.parseInt(dataArray[0]);
+      int blockY = Integer.parseInt(dataArray[1]);
+    } catch (NumberFormatException e) {
+      addError("Invalid position data.");
+      return false;
+    }
+    return true;
   }
 
   /**
@@ -309,6 +333,7 @@ public abstract class Packet {
     CHAT_MESSAGE_STATUS("CHATN"),
     POSITION_UPDATE("POSXY"),
     BLOCK_DAMAGE("BLDMG"),
+    ITEM_INFO("ITINF"),
     FULL_MAP_BROADCAST("MAPBC"),
     SPAWN_ITEM("ITMSP");
 

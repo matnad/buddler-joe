@@ -1,4 +1,3 @@
 package entities.items;
 
-public class Ice {
-}
+public class Ice {}

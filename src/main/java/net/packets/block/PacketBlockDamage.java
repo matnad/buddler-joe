@@ -67,12 +67,7 @@ public class PacketBlockDamage extends Packet {
       addError("Invalid data.");
       return;
     }
-    try {
-      blockX = Integer.parseInt(dataArray[0]);
-      blockY = Integer.parseInt(dataArray[1]);
-    } catch (NumberFormatException e) {
-      addError("Invalid position data.");
-    }
+    checkBlockPosInfo();
     try {
       damage = Float.parseFloat(dataArray[2]);
     } catch (NumberFormatException e) {

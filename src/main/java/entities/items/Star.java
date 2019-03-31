@@ -1,4 +1,3 @@
 package entities.items;
 
-public class Star {
-}
+public class Star {}

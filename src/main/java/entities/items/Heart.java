@@ -1,4 +1,3 @@
 package entities.items;
 
-public class Heart {
-}
+public class Heart {}

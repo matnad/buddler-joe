@@ -1,17 +1,17 @@
-//package entities.blocks;
+// package entities.blocks;
 //
-//import engine.models.RawModel;
-//import engine.models.TexturedModel;
-//import engine.render.Loader;
-//import engine.render.objconverter.ObjFileLoader;
-//import engine.textures.ModelTexture;
-//import entities.items.Dynamite;
-//import entities.items.Item;
-//import entities.items.ItemMaster;
-//import org.joml.Random;
-//import org.joml.Vector3f;
+// import engine.models.RawModel;
+// import engine.models.TexturedModel;
+// import engine.render.Loader;
+// import engine.render.objconverter.ObjFileLoader;
+// import engine.textures.ModelTexture;
+// import entities.items.Dynamite;
+// import entities.items.Item;
+// import entities.items.ItemMaster;
+// import org.joml.Random;
+// import org.joml.Vector3f;
 //
-//public class QmarkBlock extends Block {
+// public class QmarkBlock extends Block {
 //
 //  private static float hardness = 1f;
 //  private static TexturedModel blockModel;
@@ -72,4 +72,4 @@
 //  public static float getHardness() {
 //    return hardness;
 //  }
-//}
+// }
