@@ -6,6 +6,10 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
+/**
+ * Class to serialise the settings of the player to save them for another purpose. Contains the main serialising methods.
+ */
+
 public class SettingsSerialiser {
 
     private Settings settings;
@@ -13,6 +17,10 @@ public class SettingsSerialiser {
     public SettingsSerialiser(Settings settings) {
         this.settings = settings;
     }
+
+    /**
+     * Method to serialise the settings and to save them at the chosen path.
+     */
 
     public void serialiseSettings(){
         try {
@@ -27,6 +35,11 @@ public class SettingsSerialiser {
             i.printStackTrace();
         }
     }
+
+    /**
+     * Method to deserialise the settings to make them available and to read them again.
+     * @return The settings, which have been serialised previously.
+     */
 
     public Settings readSettings() {
         try {
