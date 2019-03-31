@@ -55,17 +55,17 @@ public class MainMenu {
     // Choose Lobby
     chooseLobby =
         new MenuButton(
-            loader, "lobbyOverviewWood_norm", "LobbyOverviewWood_hover", new Vector2f(0, 0.0740f), new Vector2f(.305521f, .128333f));
+            loader, "lobbyOverviewWood_norm", "lobbyOverviewWood_hover", new Vector2f(0, 0.0740f), new Vector2f(.305521f, .128333f));
 
     // Credits
     credits =
             new MenuButton(
-                    loader, "lobbyOverviewWood_norm", "LobbyOverviewWood_hover", new Vector2f(0, -0.2f), new Vector2f(.305521f, .128333f));
+                    loader, "credits_norm", "credits_hover", new Vector2f(0, -0.2f), new Vector2f(.305521f, .128333f));
 
     // Options
     options =
             new MenuButton(
-                    loader, "lobbyOverviewWood_norm", "LobbyOverviewWood_hover", new Vector2f(0, -0.474074f), new Vector2f(.305521f, .128333f));
+                    loader, "options_norm", "options_hover", new Vector2f(0, -0.474074f), new Vector2f(.305521f, .128333f));
 
     // Exit Game
     exitGame =

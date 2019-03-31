@@ -10,6 +10,7 @@ import org.joml.Vector2f;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_ESCAPE;
 import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_1;
 
 public class Options {
@@ -73,7 +74,7 @@ public class Options {
         // Back
         back =
                 new MenuButton(
-                        loader, "back_placeholder", "back_placeholder", new Vector2f(0.75f, -0.75f), new Vector2f(.105521f, .128333f));
+                        loader, "back_norm", "back_hover", new Vector2f(0.75f, -0.851852f), new Vector2f(.097094f, .082347f));
 
 
     }
@@ -99,7 +100,8 @@ public class Options {
         guis.add(r480.getHoverTexture(x,y));
         guis.add(fullscreen.getHoverTexture(x,y));
 
-        if (InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1) && back.isHover(x, y)) {
+        if (InputHandler.isKeyPressed(GLFW_KEY_ESCAPE)
+                || InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1) && back.isHover(x, y)) {
             Game.addActiveStage(Game.Stage.MAINMENU);
             Game.removeActiveStage(Game.Stage.OPTIONS);
         }else if (InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1) && r2160.isHover(x, y)) {

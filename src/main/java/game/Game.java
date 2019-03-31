@@ -351,8 +351,8 @@ public class Game extends Thread {
           InLobby.update();
         }
 
-        System.out.println("-----------------------------------");
-        System.out.println(activeStages);
+        //System.out.println("-----------------------------------");
+        //System.out.println(activeStages);
         // Done with one frame
         window.swapBuffers();
       }

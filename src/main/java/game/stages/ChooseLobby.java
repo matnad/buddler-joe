@@ -10,7 +10,8 @@ import org.joml.Vector2f;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_1;
+import static org.lwjgl.glfw.GLFW.*;
+
 
 public class ChooseLobby {
 
@@ -21,11 +22,17 @@ public class ChooseLobby {
     private static  GuiTexture background;
     private  static GuiTexture lobbyOverview;
     private static GuiTexture buddlerJoe;
+    private static GuiTexture titel;
 
     private static MenuButton back;
-    private static MenuButton join;
+    private static MenuButton[] join = new MenuButton[6];
+
+    private static int n = 6; //varibale that defines how many join buttons are displayed. Max is 6.
+
+    private static float[] joinY = {0.312963f, 0.175926f, 0.037037f, -0.1f, -0.238889f, -0.375926f};
 
 
+    @SuppressWarnings("Duplicates")
     public static void init(Loader loader) {
 
         currentAlpha = 1;
@@ -39,16 +46,18 @@ public class ChooseLobby {
 
         lobbyOverview =  new GuiTexture(loader.loadTexture("lobbyOverview"), new Vector2f(0, -0.040741f), new Vector2f(0.554167f, 0.757804f), 1);
 
+        titel =  new GuiTexture(loader.loadTexture("availableLobbiesType"), new Vector2f(-0.053125f, 0.446296f), new Vector2f(0.379167f, 0.052778f), 1);
+
         // Back
         back =
                 new MenuButton(
-                        loader, "back_placeholder", "back_placeholder", new Vector2f(0.75f, -0.75f), new Vector2f(.105521f, .128333f));
+                        loader, "back_norm", "back_hover", new Vector2f(0.75f, -0.851852f), new Vector2f(.097094f, .082347f));
 
-        // Join
-        join =
-                new MenuButton(
-                        loader, "join_placeholder", "join_placeholder", new Vector2f(0.3f, -0.3f), new Vector2f(.105521f, .128333f));
-
+        //initialize all join Buttens
+       for(int i = 0; i < joinY.length;i++){
+           join[i] = new MenuButton(
+                           loader, "join_norm", "join_hover", new Vector2f(0.391667f, joinY[i]), new Vector2f(0.082365f, .069444f));
+       }
     }
 
     @SuppressWarnings("Duplicates")
@@ -58,6 +67,7 @@ public class ChooseLobby {
         guis.add(background);
         guis.add(lobbyOverview);
         guis.add(buddlerJoe);
+        guis.add(titel);
 
         // OpenGL Coordinates (0/0 = center of screen, -1/1 = corners)
         double x = 2 * (InputHandler.getMouseX() / Game.window.getWidth()) - 1;
@@ -65,20 +75,41 @@ public class ChooseLobby {
 
         //add buttons here
         guis.add(back.getHoverTexture(x,y));
-        guis.add(join.getHoverTexture(x,y));
 
-        if (InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1) && back.isHover(x, y)) {
-            Game.addActiveStage(Game.Stage.MAINMENU);
-            Game.removeActiveStage(Game.Stage.CHOOSELOBBY);
-        }else if (InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1) && join.isHover(x, y)) {
-            //TODO trigger joining
+
+        for(int i = 0; i < n; i++) {
+            guis.add(join[i].getHoverTexture(x,y));
+        }
+        for(int i = 5; i > -1 + n; i--) {
+            guis.remove(join[i].getHoverTexture(x,y));
         }
 
+        if (InputHandler.isKeyPressed(GLFW_KEY_ESCAPE)
+                || InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1) && back.isHover(x, y)) {
+            Game.addActiveStage(Game.Stage.MAINMENU);
+            Game.removeActiveStage(Game.Stage.CHOOSELOBBY);
+        } else {
+            for(int i = 0; i < n; i++) {
+                if (InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1) && join[i].isHover(x, y)){
+                    //TODO trigger join lobby at position i
+                    break;
+                }
+            }
+        }
 
         InputHandler.update();
 
         Game.window.update();
 
         Game.getGuiRenderer().render(guis);
+    }
+
+    public static void setN(int n) {
+        if(n > 6){
+            n = 6;
+        }else if (n < 0){
+            n = 0;
+        }
+        ChooseLobby.n = n;
     }
 }
