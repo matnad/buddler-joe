@@ -18,7 +18,7 @@ public class ServerMap extends Map<ServerBlock> {
     super(width, height, seed);
     blocks = new ServerBlock[width][height];
     generateMap();
-    checkFallingBlocks();
+    //checkFallingBlocks();
   }
 
   @Override
@@ -31,17 +31,17 @@ public class ServerMap extends Map<ServerBlock> {
     for (int y = 0; y < height; y++) {
       for (int x = 0; x < width; x++) {
         if (noiseMap[x][y] < thresholds[0]) {
-          blocks[x][y] = new ServerBlock(BlockMaster.BlockTypes.AIR); // Air
+          blocks[x][y] = new ServerBlock(BlockMaster.BlockTypes.STONE); // Air
         } else {
-          if ((int) (noiseMap[x][y] * 100) % 40 == 0) {
+          if (rng.nextFloat() < .02f) {
             blocks[x][y] = new ServerBlock(BlockMaster.BlockTypes.GOLD); // Gold: 1 in 40 chance
-          } else if ((int) (noiseMap[x][y] * 100) % 50 == 0) {
+          } else if (rng.nextFloat() < .01f) {
             blocks[x][y] =
                 new ServerBlock(BlockMaster.BlockTypes.GRASS); // Item Block: 1 in 50 chance
           } else if (noiseMap[x][y] < thresholds[1]) {
             blocks[x][y] = new ServerBlock(BlockMaster.BlockTypes.DIRT); // Dirt
           } else {
-            blocks[x][y] = new ServerBlock(BlockMaster.BlockTypes.STONE); // Stone
+            blocks[x][y] = new ServerBlock(BlockMaster.BlockTypes.AIR); // Stone
           }
         }
       }
@@ -96,7 +96,7 @@ public class ServerMap extends Map<ServerBlock> {
    * @param args nothing
    */
   public static void main(String[] args) {
-    ServerMap testMap = new ServerMap(30, 20, System.currentTimeMillis());
+    ServerMap testMap = new ServerMap(100, 110, System.currentTimeMillis());
     System.out.println(testMap);
   }
 

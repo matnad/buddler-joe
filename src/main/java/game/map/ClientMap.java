@@ -154,8 +154,14 @@ public class ClientMap extends Map<Block> {
     local = false;
   }
 
+  /**
+   * Determine the light level in percent based on the passed depth in world coordinates.
+   *
+   * @param playerPosY depth of the player (or object) to calculate the light for
+   * @return light level in percent [0, 1]
+   */
   public float getLightLevel(float playerPosY) {
-    float pctLevel =  1 - (-playerPosY / (height * dim));
+    float pctLevel = 1 - (-playerPosY / (height * dim));
     return (float) Math.max(0.1, (float) Math.pow(pctLevel, 4));
   }
 

@@ -201,6 +201,7 @@ public abstract class Block extends Entity {
     // Game.getMap().destroyBlock(this);
   }
 
+  /** Removes block from the world without triggering onDestroy actions. */
   public void remove() {
     super.setDestroyed(true);
   }
