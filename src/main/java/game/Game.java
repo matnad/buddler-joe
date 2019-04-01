@@ -1,5 +1,15 @@
 package game;
 
+import static game.Game.Stage.CHOOSELOBBY;
+import static game.Game.Stage.CREDITS;
+import static game.Game.Stage.GAMEMENU;
+import static game.Game.Stage.INLOBBBY;
+import static game.Game.Stage.LOGIN;
+import static game.Game.Stage.MAINMENU;
+import static game.Game.Stage.OPTIONS;
+import static game.Game.Stage.PLAYING;
+import static game.Game.Stage.WELCOME;
+
 import engine.io.Window;
 import engine.models.RawModel;
 import engine.models.TexturedModel;
@@ -19,18 +29,27 @@ import entities.items.ItemMaster;
 import entities.light.LightMaster;
 import game.map.ClientMap;
 import game.map.Map;
-import game.stages.*;
+import game.stages.ChooseLobby;
+import game.stages.Credits;
+import game.stages.GameMenu;
+import game.stages.InLobby;
+import game.stages.Login;
+import game.stages.MainMenu;
+import game.stages.Options;
+import game.stages.Playing;
+import game.stages.Welcome;
 import gui.Chat;
 import gui.Fps;
 import gui.GuiString;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import org.joml.Vector3f;
 import terrains.Terrain;
 import terrains.TerrainFlat;
 import util.RandomName;
 
-import static game.Game.Stage.*;
 
 /**
  * Playing is static for all intents and purposes. There will never be multiple instances of Playing
@@ -190,7 +209,9 @@ public class Game extends Thread {
     return guiRenderer;
   }
 
-  /** Initialize the Playing Thread (Treat this like a constructor). */
+  /**
+   * Initialize the Playing Thread (Treat this like a constructor).
+   */
   @Override
   public synchronized void start() {
 
@@ -214,7 +235,9 @@ public class Game extends Thread {
     super.start();
   }
 
-  /** Here we initialize all the Masters and other classes and generate the world. */
+  /**
+   * Here we initialize all the Masters and other classes and generate the world.
+   */
   @Override
   public void run() {
     // Create GLFW Window, we run this in a thread.
@@ -260,7 +283,7 @@ public class Game extends Thread {
     // network is done
     RawModel rawPlayer = loader.loadToVao(ObjFileLoader.loadObj(myModel));
     TexturedModel playerModel =
-        new TexturedModel(rawPlayer, new ModelTexture(loader.loadTexture(myTexture)));
+            new TexturedModel(rawPlayer, new ModelTexture(loader.loadTexture(myTexture)));
     player = new Player(playerModel, new Vector3f(90, 2, 3), 0, 0, 0, myModelSize);
 
     // GUI / HUD
@@ -277,7 +300,7 @@ public class Game extends Thread {
 
     // Lights and cameras (just one for now)
     LightMaster.generateLight(
-        LightMaster.LightTypes.SUN, new Vector3f(0, 600, 200), new Vector3f(.3f, .3f, .3f));
+            LightMaster.LightTypes.SUN, new Vector3f(0, 600, 200), new Vector3f(.3f, .3f, .3f));
     camera = new Camera(player, window);
 
     MainMenu.init(loader);
