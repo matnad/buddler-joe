@@ -33,7 +33,7 @@ public class Lobby {
     this.lobbyPlayers = new ArrayList<>();
     this.lobbyId = lobbyCounter;
     lobbyCounter++;
-    map = new ServerMap(60, 130, System.currentTimeMillis());
+    map = new ServerMap(60, 40, System.currentTimeMillis());
     //System.out.println(map);
   }
 

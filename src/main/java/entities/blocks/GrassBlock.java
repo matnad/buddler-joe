@@ -37,7 +37,7 @@ public class GrassBlock extends Block {
 
   /** Shortened constructor with just position. Dont call directly. */
   GrassBlock(Vector3f position, int gridX, int gridY) {
-    this(position, 0, 0, 0, 3, gridX, gridY);
+    this(position, 0, 0, -90, 3, gridX, gridY);
   }
 
   static void init(Loader loader) {
@@ -49,4 +49,8 @@ public class GrassBlock extends Block {
 
   @Override
   protected void onDestroy() {}
+
+  public static float getHardness() {
+    return hardness;
+  }
 }

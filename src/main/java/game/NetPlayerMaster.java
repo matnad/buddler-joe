@@ -56,6 +56,7 @@ public class NetPlayerMaster {
       } else {
         netPlayer.turnHeadlightOn();
       }
+      netPlayer.updateNameplate();
       renderer.processEntity(netPlayer);
     }
   }
