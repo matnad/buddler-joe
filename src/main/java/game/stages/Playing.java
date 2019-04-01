@@ -7,7 +7,6 @@ import engine.particles.ParticleMaster;
 import engine.render.MasterRenderer;
 import engine.render.fontrendering.TextMaster;
 import entities.Entity;
-import entities.NetPlayer;
 import entities.blocks.BlockMaster;
 import entities.blocks.debris.DebrisMaster;
 import entities.items.ItemMaster;

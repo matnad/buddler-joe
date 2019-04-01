@@ -59,6 +59,8 @@ public class Torch extends Item {
             LightMaster.LightTypes.TORCH, flamePosition, colour);
     light.setBrightness(brightness);
 
+    setPosition(position);
+
     // Generate Fuse Effect
     flame = new Fire(15, .4f, 0, 2f, 1.5f);
     flame.setDirection(new Vector3f(0, 1, 0), 0f);
@@ -78,7 +80,7 @@ public class Torch extends Item {
   }
 
   Torch(Vector3f position, Block block) {
-    this(position, block, new Vector3f(1f, 244 / 255f, 229 / 255f).mul(1), 0, 0, 0, .2f);
+    this(position, block, new Vector3f(1f, 244 / 255f, 229 / 255f), 0, 0, 0, .2f);
   }
 
   /**

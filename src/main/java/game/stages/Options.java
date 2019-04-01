@@ -8,10 +8,8 @@ import engine.render.Loader;
 import game.Game;
 import gui.GuiTexture;
 import gui.MenuButton;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import org.joml.Vector2f;
 
 public class Options {
@@ -44,55 +42,80 @@ public class Options {
 
     // Background
     background =
-            new GuiTexture(loader.loadTexture("mainMenuBackground"), new Vector2f(0, 0),
-                    new Vector2f(1, 1), 1);
+        new GuiTexture(
+            loader.loadTexture("mainMenuBackground"), new Vector2f(0, 0), new Vector2f(1, 1), 1);
 
     buddlerJoe =
-            new GuiTexture(loader.loadTexture("buddlerjoe"), new Vector2f(-0.730208f, -0.32963f),
-                    new Vector2f(0.181771f, 0.67963f), 1);
+        new GuiTexture(
+            loader.loadTexture("buddlerjoe"),
+            new Vector2f(-0.730208f, -0.32963f),
+            new Vector2f(0.181771f, 0.67963f),
+            1);
 
-
-    options = new GuiTexture(loader.loadTexture("options_placeholder"), new Vector2f(0, 0),
-            new Vector2f(0.5f, 0.5f), 1);
+    options =
+        new GuiTexture(
+            loader.loadTexture("options_placeholder"),
+            new Vector2f(0, 0),
+            new Vector2f(0.5f, 0.5f),
+            1);
 
     float buttonWidht = .035521f;
     float buttonHight = .048333f;
 
     r2160 =
-            new MenuButton(
-                    loader, "r2160_placeholder", "r2160_placeholder", new Vector2f(0, 0.1f),
-                    new Vector2f(buttonWidht, buttonHight));
+        new MenuButton(
+            loader,
+            "r2160_placeholder",
+            "r2160_placeholder",
+            new Vector2f(0, 0.1f),
+            new Vector2f(buttonWidht, buttonHight));
 
     r1440 =
-            new MenuButton(
-                    loader, "r1440_placeholder", "r1440_placeholder", new Vector2f(0, 0),
-                    new Vector2f(buttonWidht, buttonHight));
+        new MenuButton(
+            loader,
+            "r1440_placeholder",
+            "r1440_placeholder",
+            new Vector2f(0, 0),
+            new Vector2f(buttonWidht, buttonHight));
 
     r1080 =
-            new MenuButton(
-                    loader, "r1080_placeholder", "r1080_placeholder", new Vector2f(0, -0.1f),
-                    new Vector2f(buttonWidht, buttonHight));
+        new MenuButton(
+            loader,
+            "r1080_placeholder",
+            "r1080_placeholder",
+            new Vector2f(0, -0.1f),
+            new Vector2f(buttonWidht, buttonHight));
 
     r720 =
-            new MenuButton(
-                    loader, "r720_placeholder", "r720_placeholder", new Vector2f(0, -0.2f),
-                    new Vector2f(buttonWidht, buttonHight));
+        new MenuButton(
+            loader,
+            "r720_placeholder",
+            "r720_placeholder",
+            new Vector2f(0, -0.2f),
+            new Vector2f(buttonWidht, buttonHight));
     r480 =
-            new MenuButton(
-                    loader, "r480_placeholder", "r480_placeholder", new Vector2f(0, -0.3f),
-                    new Vector2f(buttonWidht, buttonHight));
+        new MenuButton(
+            loader,
+            "r480_placeholder",
+            "r480_placeholder",
+            new Vector2f(0, -0.3f),
+            new Vector2f(buttonWidht, buttonHight));
     fullscreen =
-            new MenuButton(
-                    loader, "toggleFullscreen_placeholder", "toggleFullscreen_placeholder",
-                    new Vector2f(0, -0.45f), new Vector2f(buttonWidht, buttonHight));
+        new MenuButton(
+            loader,
+            "toggleFullscreen_placeholder",
+            "toggleFullscreen_placeholder",
+            new Vector2f(0, -0.45f),
+            new Vector2f(buttonWidht, buttonHight));
 
     // Back
     back =
-            new MenuButton(
-                    loader, "back_norm", "back_hover", new Vector2f(0.75f, -0.851852f),
-                    new Vector2f(.097094f, .082347f));
-
-
+        new MenuButton(
+            loader,
+            "back_norm",
+            "back_hover",
+            new Vector2f(0.75f, -0.851852f),
+            new Vector2f(.097094f, .082347f));
   }
 
   /**
@@ -102,7 +125,7 @@ public class Options {
   @SuppressWarnings("Duplicates")
   public static void update() {
     List<GuiTexture> guis = new ArrayList<>();
-    //add textures here
+    // add textures here
     guis.add(background);
     guis.add(options);
     guis.add(buddlerJoe);
@@ -111,7 +134,7 @@ public class Options {
     double x = 2 * (InputHandler.getMouseX() / Game.window.getWidth()) - 1;
     double y = 1 - 2 * (InputHandler.getMouseY() / Game.window.getHeight());
 
-    //add buttons here
+    // add buttons here
     guis.add(back.getHoverTexture(x, y));
     guis.add(r2160.getHoverTexture(x, y));
     guis.add(r1440.getHoverTexture(x, y));
@@ -121,21 +144,21 @@ public class Options {
     guis.add(fullscreen.getHoverTexture(x, y));
 
     if (InputHandler.isKeyPressed(GLFW_KEY_ESCAPE)
-            || InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1) && back.isHover(x, y)) {
+        || InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1) && back.isHover(x, y)) {
       Game.addActiveStage(Game.Stage.MAINMENU);
       Game.removeActiveStage(Game.Stage.OPTIONS);
     } else if (InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1) && r2160.isHover(x, y)) {
-      //TODO set Resolution
+      // TODO set Resolution
     } else if (InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1) && r1440.isHover(x, y)) {
-      //TODO set Resolution
+      // TODO set Resolution
     } else if (InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1) && r1080.isHover(x, y)) {
-      //TODO set Resolution
+      // TODO set Resolution
     } else if (InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1) && r720.isHover(x, y)) {
-      //TODO set Resolution
+      // TODO set Resolution
     } else if (InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1) && r480.isHover(x, y)) {
-      //TODO set Resolution
+      // TODO set Resolution
     } else if (InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1) && fullscreen.isHover(x, y)) {
-      //TODO toggle Fullscreen
+      // TODO toggle Fullscreen
     }
 
     InputHandler.update();

@@ -83,6 +83,14 @@ public class LoadingScreen {
    */
   public static void updateLoadingMessage(String loadingMessage) {
     message = loadingMessage;
+    progess();
+  }
+
+  /** Progress the dots and render one screen. */
+  public static void progess() {
+    elapsedSinceChange += 1f;
+    update();
+    Game.window.swapBuffers();
   }
 
   private static void generateDottedText() {
