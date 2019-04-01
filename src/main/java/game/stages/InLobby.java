@@ -10,6 +10,7 @@ import org.joml.Vector2f;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_ESCAPE;
 import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_1;
 
 public class InLobby {
@@ -22,7 +23,7 @@ public class InLobby {
 
 
     private static MenuButton leave;
-    private static MenuButton send;
+
     private static MenuButton ready;
 
     @SuppressWarnings("Duplicates")
@@ -36,20 +37,17 @@ public class InLobby {
         background =
                 new GuiTexture(loader.loadTexture("mainMenuBackground"), new Vector2f(0, 0), new Vector2f(1, 1), 1);
 
-        inLobby =  new GuiTexture(loader.loadTexture("options_placeholder"), new Vector2f(0, 0), new Vector2f(0.5f, 0.5f), 1);
+        inLobby =   new GuiTexture(loader.loadTexture("inLobbyTable"), new Vector2f(0, -0.040741f), new Vector2f(0.554167f, 0.757804f), 1);
 
 
         leave =
                 new MenuButton(
-                        loader, "leave_placeholder", "leave_placeholder", new Vector2f(0, 0.1f), new Vector2f(rWidht, rHIght));
+                        loader, "leave_norm", "leave_hover", new Vector2f(-0.107511f, -0.9f), new Vector2f(.097094f, .082347f));
 
-        send =
-                new MenuButton(
-                        loader, "send_placeholder", "send_placeholder", new Vector2f(0, 0), new Vector2f(rWidht, rHIght));
 
         ready =
                 new MenuButton(
-                        loader, "ready_placeholder", "ready_placeholder", new Vector2f(0, -0.1f), new Vector2f(rWidht, rHIght));
+                        loader, "ready_norm", "ready_hover", new Vector2f(0.107511f, -0.9f), new Vector2f(.097094f, .082347f));
 
 
 
@@ -68,16 +66,18 @@ public class InLobby {
 
         //add buttons here
         guis.add(leave.getHoverTexture(x,y));
-        guis.add(send.getHoverTexture(x,y));
+
         guis.add(ready.getHoverTexture(x,y));
 
 
         if (InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1) && leave.isHover(x, y)) {
             //TODO trigger Lobbyleave
-        }else if (InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1) && send.isHover(x, y)) {
-            //TODO trigger chat send message
         }else if (InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1) && ready.isHover(x, y)) {
             //TODO trigger Playerready
+        }else if (InputHandler.isKeyPressed(GLFW_KEY_ESCAPE)) {
+            //TODO: Removce this part
+            Game.addActiveStage(Game.Stage.MAINMENU);
+            Game.removeActiveStage(Game.Stage.INLOBBBY);
         }
 
         InputHandler.update();

@@ -1,8 +1,5 @@
 package game.stages;
 
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_ESCAPE;
-import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_1;
-
 import engine.io.InputHandler;
 import engine.render.Loader;
 import game.Game;
@@ -11,6 +8,8 @@ import gui.MenuButton;
 import java.util.ArrayList;
 import java.util.List;
 import org.joml.Vector2f;
+
+import static org.lwjgl.glfw.GLFW.*;
 
 /**
  * Main Menu specification and rendering. Must be initialized. Specifies all the elements in the
@@ -140,6 +139,10 @@ public class MainMenu {
       Game.removeActiveStage(Game.Stage.MAINMENU);
     }else if ((InputHandler.isMouseDown(GLFW_MOUSE_BUTTON_1) && exitGame.isHover(x, y))) {
       Game.window.stop();
+    }else if (InputHandler.isKeyPressed(GLFW_KEY_L)) {
+      //TODO: remove this if option
+      Game.addActiveStage(Game.Stage.INLOBBBY);
+      Game.removeActiveStage(Game.Stage.MAINMENU);
     }
     InputHandler.update();
     Game.window.update();
