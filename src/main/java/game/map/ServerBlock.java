@@ -54,7 +54,11 @@ public class ServerBlock {
     }
   }
 
-
+  /**
+   * Get Base hardness of this block's type.
+   *
+   * @return starting hardness of this block's type.
+   */
   public float getBaseHardness() {
     switch (type) {
       case DIRT:

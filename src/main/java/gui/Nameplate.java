@@ -30,9 +30,11 @@ public class Nameplate extends GuiString {
     super();
     this.player = player;
 
-    setAlpha(.5f);
+    setAlpha(1f);
     setTextColour(new Vector3f(1, 1, 1));
-    setFontSize(.5f);
+    setFontSize(.8f);
+    setMaxLineLength(0.3f);
+    setCentered(true);
 
     setText(player.getUsername());
   }
@@ -43,31 +45,32 @@ public class Nameplate extends GuiString {
       TextMaster.removeText(getGuiText());
     }
     Vector2f loc = findLocation(Game.getActiveCamera());
-    setPosition(loc);
+    if (loc != null) {
+      setPosition(loc);
+    }
+    float fontSize = (50 / (player.getPosition().distance(Game.getActiveCamera().getPosition())));
+    setFontSize(fontSize);
 
     createGuiText();
   }
 
   private Vector2f findLocation(Camera camera) {
-    // Transforms world coodinates to normalized device coordinates. Experimental feature!
-    // This will generate the effect of the text pointing in the direction of the player.
+    // Transforms world coodinates to normalized device coordinates with some offsets for centering.
+    // Experimental feature!
     Vector4f loc =
         new Vector4f(
-                player.getBbox().getMinX(),
-                player.getBbox().getMaxY(),
+                player.getBbox().getMaxX() - player.getBbox().getDimX() / 2,
+                player.getBbox().getMaxY() + 2,
                 player.getBbox().getMaxZ() - player.getBbox().getDimZ() / 2,
                 1f)
             .mul(Maths.createViewMatrix(camera))
             .mul(MasterRenderer.getProjectionMatrix());
-
-    System.out.println(loc);
-    System.out.println(MasterRenderer.getProjectionMatrix());
 
     if (loc.w <= 0) {
       return null;
     }
     float x = (loc.x / loc.w + 1) / 2f;
     float y = 1 - (loc.y / loc.w + 1) / 2f;
-    return new Vector2f(x, y);
+    return new Vector2f(x - 0.15f, y);
   }
 }
