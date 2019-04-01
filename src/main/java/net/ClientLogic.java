@@ -13,6 +13,8 @@ import net.packets.chat.PacketChatMessageStatus;
 import net.packets.chat.PacketChatMessageToClient;
 import net.packets.items.PacketSpawnItem;
 import net.packets.lists.PacketGamesOverview;
+import net.packets.lists.PacketGamesOverview;
+
 import net.packets.lobby.PacketCreateLobbyStatus;
 import net.packets.lobby.PacketCurLobbyInfo;
 import net.packets.lobby.PacketJoinLobbyStatus;

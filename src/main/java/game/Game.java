@@ -1,9 +1,15 @@
 package game;
 
+import static game.Game.Stage.CHOOSELOBBY;
+import static game.Game.Stage.CREDITS;
 import static game.Game.Stage.GAMEMENU;
+import static game.Game.Stage.INLOBBBY;
+import static game.Game.Stage.LOGIN;
 import static game.Game.Stage.LOADINGSCREEN;
 import static game.Game.Stage.MAINMENU;
+import static game.Game.Stage.OPTIONS;
 import static game.Game.Stage.PLAYING;
+import static game.Game.Stage.WELCOME;
 
 import engine.io.Window;
 import engine.models.RawModel;
@@ -23,13 +29,21 @@ import entities.blocks.debris.DebrisMaster;
 import entities.items.ItemMaster;
 import entities.light.LightMaster;
 import game.map.ClientMap;
+import game.map.Map;
+import game.stages.ChooseLobby;
+import game.stages.Credits;
 import game.stages.GameMenu;
 import game.stages.LoadingScreen;
+import game.stages.InLobby;
+import game.stages.Login;
 import game.stages.MainMenu;
+import game.stages.Options;
 import game.stages.Playing;
+import game.stages.Welcome;
 import gui.Chat;
 import gui.Fps;
 import gui.GuiString;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -38,12 +52,14 @@ import net.StartNetworkOnlyClient;
 import net.packets.lobby.PacketCreateLobby;
 import net.packets.lobby.PacketJoinLobby;
 import net.packets.loginlogout.PacketLogin;
+
 import org.joml.Vector3f;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import terrains.Terrain;
 import terrains.TerrainFlat;
 import util.RandomName;
+
 
 /**
  * Playing is static for all intents and purposes. There will never be multiple instances of Playing
@@ -60,8 +76,8 @@ public class Game extends Thread {
    * If someone wants to work on this, edit this comment or add an issue to the tracker in gitlab
    */
 
-  private static final int WIDTH = 1280;
-  private static final int HEIGHT = 800;
+  private static final int WIDTH = 1920;
+  private static final int HEIGHT = 1080;
   private static final int FPS = 60;
   public static final Window window = new Window(WIDTH, HEIGHT, FPS, "Buddler Joe");
   // Set up GLFW Window
@@ -215,7 +231,9 @@ public class Game extends Thread {
     return guiRenderer;
   }
 
-  /** Initialize the Playing Thread (Treat this like a constructor). */
+  /**
+   * Initialize the Playing Thread (Treat this like a constructor).
+   */
   @Override
   public synchronized void start() {
 
@@ -239,7 +257,9 @@ public class Game extends Thread {
     super.start();
   }
 
-  /** Here we initialize all the Masters and other classes and generate the world. */
+  /**
+   * Here we initialize all the Masters and other classes and generate the world.
+   */
   @Override
   public void run() {
     // Create GLFW Window, we run this in a thread.
@@ -310,6 +330,14 @@ public class Game extends Thread {
     LightMaster.generateLight(
         LightMaster.LightTypes.SUN, new Vector3f(0, 600, 200), new Vector3f(1, 1, 1));
 
+    MainMenu.init(loader);
+    GameMenu.init(loader);
+    ChooseLobby.init(loader);
+    Credits.init(loader);
+    Options.init(loader);
+    Welcome.init(loader);
+    Login.init(loader);
+    InLobby.init(loader);
 
     /*
     **************************************************************
@@ -351,6 +379,32 @@ public class Game extends Thread {
           }
         }
 
+        if (activeStages.contains(CHOOSELOBBY)) {
+          ChooseLobby.update();
+        }
+
+        if (activeStages.contains(CREDITS)) {
+          Credits.update();
+        }
+
+        if (activeStages.contains(OPTIONS)) {
+          Options.update();
+        }
+
+        if (activeStages.contains(WELCOME)) {
+          Welcome.update();
+        }
+
+        if (activeStages.contains(LOGIN)) {
+          Login.update();
+        }
+
+        if (activeStages.contains(INLOBBBY)) {
+          InLobby.update();
+        }
+
+        //System.out.println("-----------------------------------");
+        //System.out.println(activeStages);
         // Done with one frame
         window.swapBuffers();
       }
@@ -437,9 +491,14 @@ public class Game extends Thread {
   // Valid Stages
   public enum Stage {
     MAINMENU,
-    LOBBIES,
+    CHOOSELOBBY,
     GAMEMENU,
     PLAYING,
     LOADINGSCREEN
+    CREDITS,
+    OPTIONS,
+    WELCOME,
+    LOGIN,
+    INLOBBBY,
   }
 }
