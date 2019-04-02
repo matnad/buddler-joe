@@ -2,10 +2,12 @@ package net.playerhandling;
 
 import static java.lang.Thread.sleep;
 
-import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.concurrent.CopyOnWriteArrayList;
+import net.ClientLogic;
 import net.packets.loginlogout.PacketDisconnect;
 import net.packets.pingpong.PacketPing;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * The function of the PingManager is to automatically send pings to client and server and to
@@ -16,12 +18,17 @@ import net.packets.pingpong.PacketPing;
  * @see net.ClientLogic
  */
 public class PingManager implements Runnable {
+
+  public static final Logger logger = LoggerFactory.getLogger(PingManager.class);
+
+  private volatile boolean exit = false;
   private final int freq = 1000;
   /**
    * Class Variables listOfPingTs this list contains the creation time of all sent pings. ping the
    * average ping clientId the identity of the client freq frequency
    */
-  private ArrayList<String> listOfPingTs;
+  private CopyOnWriteArrayList<String> listOfPingTs;
+
   private float ping;
   private int clientId;
 
@@ -32,15 +39,16 @@ public class PingManager implements Runnable {
    * @param clientId client unique identifier
    */
   public PingManager(int clientId) {
-    listOfPingTs = new ArrayList<>();
+    listOfPingTs = new CopyOnWriteArrayList<>();
     ping = 0;
     this.clientId = clientId;
   }
 
   /** Creates a <code>PingManager</code> object when sending ping from client to server. */
   public PingManager() {
-    listOfPingTs = new ArrayList<>();
+    listOfPingTs = new CopyOnWriteArrayList<>();
     ping = 0;
+    this.clientId = 0;
   }
 
   /**
@@ -53,12 +61,13 @@ public class PingManager implements Runnable {
    * @see PacketPing
    */
   public void run() {
-    while (true) {
+    while (!exit) {
       try {
         sleep(freq);
       } catch (InterruptedException e) {
         System.out.println("Sleep interrupted");
       }
+      checkForDisconnect();
       long currTime;
       if (clientId > 0) { // from server to client
         currTime = System.currentTimeMillis();
@@ -103,26 +112,43 @@ public class PingManager implements Runnable {
    */
   public void updatePing(long diffTime) {
     ping = (ping * 9 + diffTime) / 10f;
-    Iterator<String> iter = listOfPingTs.iterator();
-    long currTime = System.currentTimeMillis();
-    String str;
-    try {
-      while (iter.hasNext()) {
-        str = iter.next();
-        if (currTime - Long.parseLong(str) > 10000) {
-          iter.remove();
-        }
-      }
-    } catch (NumberFormatException e) {
-      System.out.println("Number Exception");
-    }
-    if (listOfPingTs.size() > 0.9f / freq * 10000 || ping > 1000) {
-      new PacketDisconnect(clientId).processData();
-    }
   }
 
-  public ArrayList getListOfPingTs() {
-    return listOfPingTs;
+  /**
+   * Check if connection is timed out. First remove old pings. Then check for packet loss and max
+   * ping.
+   */
+  private void checkForDisconnect() {
+
+    // Delete pings older than 10 seconds
+    long currTime = System.currentTimeMillis();
+    for (String pingElement : listOfPingTs) {
+      try {
+        long pingStart = Long.parseLong(pingElement);
+        if (currTime - pingStart > freq * 10) {
+          delete(pingElement);
+          logger.info("Ping Expired.");
+        }
+      } catch (NumberFormatException e) {
+        logger.warn("Ping time has wrong formatting: " + pingElement);
+      }
+    }
+
+    // Check for disconnect conditions
+    if(listOfPingTs.size() > 0) {
+      logger.debug("Number of unanswered pings: " + listOfPingTs.size());
+    }
+    if (listOfPingTs.size() >= 0.8f / freq * 10000 || ping > 1000) {
+      if (clientId > 0) {
+        // Server kicks client out
+        new PacketDisconnect(clientId).processData();
+        stop(); // Stop this thread
+      } else {
+        // Client disconnects from server
+        ClientLogic.setDisconnectFromServer(true);
+        stop(); // Stop this thread
+      }
+    }
   }
 
   /**
@@ -132,5 +158,10 @@ public class PingManager implements Runnable {
    */
   public long getPing() {
     return (int) (ping);
+  }
+
+  /** Stop this thread. */
+  public void stop() {
+    exit = true;
   }
 }

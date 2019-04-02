@@ -41,6 +41,7 @@ public class ClientLogic implements Runnable {
   private static BufferedReader input;
   private static Socket server;
   private static PingManager pingManager;
+  private static boolean disconnectFromServer;
 
   private static boolean connected;
 
@@ -57,6 +58,7 @@ public class ClientLogic implements Runnable {
     server = new Socket(ip, port);
     output = new PrintWriter(server.getOutputStream(), false);
     input = new BufferedReader(new InputStreamReader(server.getInputStream()));
+    disconnectFromServer = false;
 
     // Run thread
     Thread thread = new Thread(this);
@@ -123,7 +125,7 @@ public class ClientLogic implements Runnable {
    * @throws RuntimeException when something unexpected happens
    */
   private void waitForServer() throws IOException, RuntimeException {
-    while (true) {
+    while (!disconnectFromServer) {
 
       String in;
       try {
@@ -218,9 +220,19 @@ public class ClientLogic implements Runnable {
         p.processData();
       }
     }
+    server.close();
+    System.out.println("Connection to the server timed out or was interrupted. Socket has been closed.");
   }
 
   public static boolean isConnected() {
     return connected;
+  }
+
+  public static boolean isDisconnectFromServer() {
+    return disconnectFromServer;
+  }
+
+  public static void setDisconnectFromServer(boolean disconnectFromServer) {
+    ClientLogic.disconnectFromServer = disconnectFromServer;
   }
 }

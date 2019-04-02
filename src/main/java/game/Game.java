@@ -285,9 +285,6 @@ public class Game extends Thread {
       logger.error("Could not generate terrain.");
     }
 
-    RawModel rawPlayer = loader.loadToVao(ObjFileLoader.loadObj(myModel));
-    TexturedModel playerModel =
-        new TexturedModel(rawPlayer, new ModelTexture(loader.loadTexture(myTexture)));
 
     // Initialize NetPlayerModels
     NetPlayerMaster.init(loader);
@@ -303,25 +300,11 @@ public class Game extends Thread {
     LoadingScreen.init(loader);
     addActiveStage(LOADINGSCREEN);
     LoadingScreen.updateLoadingMessage("starting game");
-    MainMenu.init(loader);
-    LoadingScreen.progess();
-    GameMenu.init(loader);
-    LoadingScreen.progess();
-    ChooseLobby.init(loader);
-    LoadingScreen.progess();
-    Credits.init(loader);
-    LoadingScreen.progess();
-    Options.init(loader);
-    LoadingScreen.progess();
-    Welcome.init(loader);
-    LoadingScreen.progess();
-    Login.init(loader);
-    LoadingScreen.progess();
-    InLobby.init(loader);
+
 
     // Connect to server and load level in an extra thread
     try {
-      loadGame(playerModel);
+      loadGame(loader);
     } catch (InterruptedException e) {
       e.printStackTrace();
     }
@@ -434,10 +417,31 @@ public class Game extends Thread {
     System.exit(1); // For now...
   }
 
-  private void loadGame(TexturedModel playerModel) throws InterruptedException {
+  private void loadGame(Loader loader) throws InterruptedException {
+    //Load Stages
+    MainMenu.init(loader);
+    LoadingScreen.progess();
+    GameMenu.init(loader);
+    LoadingScreen.progess();
+    ChooseLobby.init(loader);
+    LoadingScreen.progess();
+    Credits.init(loader);
+    LoadingScreen.progess();
+    Options.init(loader);
+    LoadingScreen.progess();
+    Welcome.init(loader);
+    LoadingScreen.progess();
+    Login.init(loader);
+    LoadingScreen.progess();
+    InLobby.init(loader);
 
     // Generate Player
+    RawModel rawPlayer = loader.loadToVao(ObjFileLoader.loadObj(myModel));
+    TexturedModel playerModel =
+        new TexturedModel(rawPlayer, new ModelTexture(loader.loadTexture(myTexture)));
     player = new Player(playerModel, new Vector3f(90, 2, 3), 0, 0, 0, myModelSize);
+
+
 
     // Connecting to Server
     LoadingScreen.updateLoadingMessage("connecting to server");

@@ -15,3 +15,1016 @@
 [112111221011011121301212222112111111101210111111223012211111, 112101222111111121111111111112111101111111111111110111112110, 101131111111111111121012101131111111121221122211101211122111, 211111210122111121111111111101111222221121111111142111122111, 221012221121100111113211012211222211111011111122101101122112, 111112221112211111221111121211222101011111211121111101221011, 101011111111111211121111111110121112111110111121121001211112, 011111111100111110011110131110112222111110112121011111121111, 111221112101221011111211211131111211011110111111111111121111, 211111112111221104210112201101210113412111110111111111111111, 100111111110121011111112111211221311111112100111122112211012, 011211111111111111113101112222221121111011210122222211210111, 131221121312113111011111001112110122221112221111221211111221, 211121111111111111111221012101141122111122221111311111111121, 211111411210121111121111321011111011111011111221111210121311, 111111211111111111343111110011111112211111013222111141110311, 112211111112111111111212101121011222101211011221101111100111, 112111211122111110111111111210110121001111110111112121011221, 112212101122111001321012111111210111011112211112211111112222, 011111101312222113230111311111210121012111221001210031111113, 111000311211112211111111111111311122111111221111411001111101, 221101111221111221012111112111222112211011221121210112111101, 221011221221101221111101101111221112211111122111111121112211, 111111122111011122111112111111211111141310012100011111112211, 111111111110111112222121112210110111112210012210011111113031, 112122101101210001221121112211411110111111112111121011001111, 112221111111111211111011112211122111111000421101111112111222, 212211111121222211141111112111111111112111111111111112112222, 211100124111121101111122101103111111112210111211121110111211, 101110110121011111211122111111011412211101210111121111100110, 111211121122111110111122131222111112211112210121121112221111, 110111222222111110122111111111123001212222101221111111111121, 110111111211011004121010311111121001111111112221221111111111, 141101210111111012210121111111113001111111111122210122210011, 111211221112221112221221122222221012222111011012101212211122, 112213111111211111211110112211210122221111122011132211101222, 001210111111221210110111112110100111111131321111121101111211, 012231101122111111110121111111111111111111110121111011131111, 122211100011101112100122111122101211011112101111011111111111, 111112211111012101111122110122111211112111100121042231122101�]
 15:39:42.099 [Thread-2] ERROR net.packets.map.PacketBroadcastMap - Error trying to reload map: ERRORS: Invalid map data received: 111112211111012101111122110122111211112111300121012211122101�
 [142111221011011121001212222112111111101210111111221012211111, 112101222111111121111111111112111104111111111111110311112110, 101111131111111111121012101111111111121221122211101211122131, 211111210122111121111111131401111222221121111111112111122111, 221012221121100111111211012211222211111011111122101101122112, 111112221112211111221111121211222101011111211121111101221011, 101011111111111211121111114130121112111110311121121001214112, 011111111100111110041110111110142222111110112121011111121111, 111221132101221011311211211111111231011110111111111111121111, 211113112111221101210112201101210110112111110111111111111111, 100111111110121011111112111211221111111312100111122112211012, 011211111111111111111101112222221121111011210122222211210111, 114223121112111131011111001112110122221112221111221211111221, 211121111111111111111221012301111122111122221111111111111121, 211111111210121111121111121011111011111011111221111210121011, 311111211144111111131111110011111112211141011222111341110111, 112211111112111111141212101121011222101211011221101111100111, 112111211122111110111111411210110121001111110111112121011221, 112212101322141001121012111111210111011112211112211111112222, 011111101112222111210111111111210121012111221001210001111111, 111000111211112211111111111111311122111111221111111001111101, 221101111221111221012111112111222112211011221121210112111101, 221011221221101221111101101111221112211111122111111121112211, 131111122131011122111112311111211111111110312100013111112211, 111111111110111112222121112210110111112210012210011111131011, 112122101101210001221121112211111110111111112114121011001111, 112221111111111211111011112231122111111000121101113112111222, 212211111121222211111141112111113111112111111111111112112222, 211100121111121101111122101101111111112210111211121110111211, 101110110121011113211122111111011112211101210111121111100110, 111211321122111110111122111222111112211112210121121112221111, 110111222222111110122111113111421001212222101221111111111121, 110111111211011001121010111111421001111111112221221111111111, 101101210141111012210121113114111001113111111122210122210011, 111211221112221112221221122222221012222111011012101212211122, 112211111111211111211110112211210122221111122011112211141222, 001210111111221210110141112110100111141111121111121101411211, 012211101122111111140121113111111111111111110121111011311111, 122211100011101112100122111122101211011112101111011111311111, 111112211111012101111122110122111211112111300121012211122101�]
+21:43:41.625 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:43:42.629 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:43:43.630 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:43:44.630 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:43:45.631 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:43:46.631 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:43:47.632 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:43:48.632 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:43:49.632 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:43:50.633 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:43:51.633 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:43:52.633 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:43:53.634 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:43:54.635 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:43:55.635 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:43:56.636 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:43:57.636 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:43:58.636 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:43:59.637 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:44:00.637 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:44:01.643 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:44:02.643 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:44:03.643 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:44:04.643 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:44:05.644 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:44:06.644 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:44:07.644 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:44:08.644 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:44:09.644 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:44:10.644 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:44:11.644 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:44:12.645 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:44:13.646 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:44:14.647 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:44:15.647 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 1
+21:44:16.648 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 2
+21:44:17.648 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 3
+21:44:18.649 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 4
+21:44:19.649 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 5
+21:44:20.650 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 6
+21:44:21.651 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 7
+21:44:22.651 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 8
+21:44:23.651 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 9
+21:44:24.651 [Thread-3] INFO  net.playerhandling.PingManager - Ping Expired.
+21:44:24.652 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 9
+21:44:25.653 [Thread-3] INFO  net.playerhandling.PingManager - Ping Expired.
+21:44:25.653 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 9
+21:44:26.653 [Thread-3] INFO  net.playerhandling.PingManager - Ping Expired.
+21:44:26.653 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 9
+21:44:27.654 [Thread-3] INFO  net.playerhandling.PingManager - Ping Expired.
+21:44:27.654 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 9
+21:44:28.654 [Thread-3] INFO  net.playerhandling.PingManager - Ping Expired.
+21:44:28.654 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 9
+21:44:29.654 [Thread-3] INFO  net.playerhandling.PingManager - Ping Expired.
+21:44:29.654 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 9
+21:44:30.655 [Thread-3] INFO  net.playerhandling.PingManager - Ping Expired.
+21:44:30.655 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 9
+21:44:31.655 [Thread-3] INFO  net.playerhandling.PingManager - Ping Expired.
+21:44:31.655 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 9
+21:44:32.655 [Thread-3] INFO  net.playerhandling.PingManager - Ping Expired.
+21:44:32.655 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 9
+21:44:33.656 [Thread-3] INFO  net.playerhandling.PingManager - Ping Expired.
+21:44:33.656 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 9
+21:44:34.656 [Thread-3] INFO  net.playerhandling.PingManager - Ping Expired.
+21:44:34.656 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 9
+21:44:35.656 [Thread-3] INFO  net.playerhandling.PingManager - Ping Expired.
+21:44:35.656 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 9
+21:44:36.656 [Thread-3] INFO  net.playerhandling.PingManager - Ping Expired.
+21:44:36.656 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 9
+21:44:37.657 [Thread-3] INFO  net.playerhandling.PingManager - Ping Expired.
+21:44:37.657 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 9
+21:44:38.657 [Thread-3] INFO  net.playerhandling.PingManager - Ping Expired.
+21:44:38.663 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 9
+21:44:39.668 [Thread-3] INFO  net.playerhandling.PingManager - Ping Expired.
+21:44:39.668 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 9
+21:44:40.668 [Thread-3] INFO  net.playerhandling.PingManager - Ping Expired.
+21:44:40.668 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 9
+21:44:41.668 [Thread-3] INFO  net.playerhandling.PingManager - Ping Expired.
+21:44:41.668 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 9
+21:44:42.668 [Thread-3] INFO  net.playerhandling.PingManager - Ping Expired.
+21:44:42.668 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 9
+21:44:43.668 [Thread-3] INFO  net.playerhandling.PingManager - Ping Expired.
+21:44:43.668 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 9
+21:44:44.669 [Thread-3] INFO  net.playerhandling.PingManager - Ping Expired.
+21:44:44.669 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 9
+21:44:45.676 [Thread-3] INFO  net.playerhandling.PingManager - Ping Expired.
+21:44:45.677 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 9
+21:44:46.677 [Thread-3] INFO  net.playerhandling.PingManager - Ping Expired.
+21:44:46.677 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 9
+21:44:47.677 [Thread-3] INFO  net.playerhandling.PingManager - Ping Expired.
+21:44:47.677 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 9
+21:44:48.678 [Thread-3] INFO  net.playerhandling.PingManager - Ping Expired.
+21:44:48.679 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 9
+21:44:56.375 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:44:56.394 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:44:57.378 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:44:57.398 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:44:58.380 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:44:58.399 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:44:59.380 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:44:59.400 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:45:00.381 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:45:00.400 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:45:01.381 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:45:01.401 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:45:02.381 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:45:02.401 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:45:03.381 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:45:03.402 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:45:04.382 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:45:04.402 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:45:05.382 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:45:05.403 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:45:06.382 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:45:06.403 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:45:07.382 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:45:08.382 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 1
+21:45:09.382 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 2
+21:45:10.383 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 3
+21:45:11.384 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 4
+21:45:12.384 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 5
+21:45:13.385 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 6
+21:45:14.385 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 7
+21:45:15.386 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 8
+21:45:16.386 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 9
+21:45:17.386 [Thread-0] INFO  net.playerhandling.PingManager - Ping Expired.
+21:45:17.386 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 9
+21:45:18.387 [Thread-0] INFO  net.playerhandling.PingManager - Ping Expired.
+21:45:18.387 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 9
+21:45:19.395 [Thread-0] INFO  net.playerhandling.PingManager - Ping Expired.
+21:45:19.396 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 9
+21:45:20.398 [Thread-0] INFO  net.playerhandling.PingManager - Ping Expired.
+21:45:20.398 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 9
+21:45:21.399 [Thread-0] INFO  net.playerhandling.PingManager - Ping Expired.
+21:45:21.399 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 9
+21:45:22.399 [Thread-0] INFO  net.playerhandling.PingManager - Ping Expired.
+21:45:22.399 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 9
+21:45:23.399 [Thread-0] INFO  net.playerhandling.PingManager - Ping Expired.
+21:45:23.399 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 9
+21:45:24.399 [Thread-0] INFO  net.playerhandling.PingManager - Ping Expired.
+21:45:24.399 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 9
+21:45:25.400 [Thread-0] INFO  net.playerhandling.PingManager - Ping Expired.
+21:45:25.400 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 9
+21:45:26.400 [Thread-0] INFO  net.playerhandling.PingManager - Ping Expired.
+21:45:26.400 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 9
+21:45:27.401 [Thread-0] INFO  net.playerhandling.PingManager - Ping Expired.
+21:45:27.401 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 9
+21:45:28.401 [Thread-0] INFO  net.playerhandling.PingManager - Ping Expired.
+21:45:28.401 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 9
+21:45:29.401 [Thread-0] INFO  net.playerhandling.PingManager - Ping Expired.
+21:45:29.401 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 9
+21:45:30.402 [Thread-0] INFO  net.playerhandling.PingManager - Ping Expired.
+21:45:30.403 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 9
+21:45:31.403 [Thread-0] INFO  net.playerhandling.PingManager - Ping Expired.
+21:45:31.403 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 9
+21:45:32.403 [Thread-0] INFO  net.playerhandling.PingManager - Ping Expired.
+21:45:32.403 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 9
+21:45:33.403 [Thread-0] INFO  net.playerhandling.PingManager - Ping Expired.
+21:45:33.403 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 9
+21:45:34.404 [Thread-0] INFO  net.playerhandling.PingManager - Ping Expired.
+21:45:34.404 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 9
+21:45:35.404 [Thread-0] INFO  net.playerhandling.PingManager - Ping Expired.
+21:45:35.404 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 9
+21:45:36.405 [Thread-0] INFO  net.playerhandling.PingManager - Ping Expired.
+21:45:36.405 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 9
+21:45:37.405 [Thread-0] INFO  net.playerhandling.PingManager - Ping Expired.
+21:45:37.405 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 9
+21:45:38.405 [Thread-0] INFO  net.playerhandling.PingManager - Ping Expired.
+21:45:38.406 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 9
+21:45:39.406 [Thread-0] INFO  net.playerhandling.PingManager - Ping Expired.
+21:45:39.406 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 9
+21:45:40.407 [Thread-0] INFO  net.playerhandling.PingManager - Ping Expired.
+21:45:40.407 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 9
+21:45:41.407 [Thread-0] INFO  net.playerhandling.PingManager - Ping Expired.
+21:45:41.408 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 9
+21:45:42.408 [Thread-0] INFO  net.playerhandling.PingManager - Ping Expired.
+21:45:42.408 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 9
+21:45:43.409 [Thread-0] INFO  net.playerhandling.PingManager - Ping Expired.
+21:45:43.409 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 9
+21:45:44.409 [Thread-0] INFO  net.playerhandling.PingManager - Ping Expired.
+21:45:44.409 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 9
+21:45:45.409 [Thread-0] INFO  net.playerhandling.PingManager - Ping Expired.
+21:45:45.409 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 9
+21:45:46.410 [Thread-0] INFO  net.playerhandling.PingManager - Ping Expired.
+21:45:46.410 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 9
+21:45:47.411 [Thread-0] INFO  net.playerhandling.PingManager - Ping Expired.
+21:45:47.411 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 9
+21:45:48.411 [Thread-0] INFO  net.playerhandling.PingManager - Ping Expired.
+21:45:48.411 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 9
+21:45:49.411 [Thread-0] INFO  net.playerhandling.PingManager - Ping Expired.
+21:45:49.411 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 9
+21:45:50.411 [Thread-0] INFO  net.playerhandling.PingManager - Ping Expired.
+21:45:50.411 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 9
+21:45:51.412 [Thread-0] INFO  net.playerhandling.PingManager - Ping Expired.
+21:45:51.412 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 9
+21:45:52.412 [Thread-0] INFO  net.playerhandling.PingManager - Ping Expired.
+21:45:52.412 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 9
+21:45:53.412 [Thread-0] INFO  net.playerhandling.PingManager - Ping Expired.
+21:45:53.413 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 9
+21:45:54.414 [Thread-0] INFO  net.playerhandling.PingManager - Ping Expired.
+21:45:54.414 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 9
+21:45:55.415 [Thread-0] INFO  net.playerhandling.PingManager - Ping Expired.
+21:45:55.415 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 9
+21:45:56.415 [Thread-0] INFO  net.playerhandling.PingManager - Ping Expired.
+21:45:56.415 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 9
+21:45:57.415 [Thread-0] INFO  net.playerhandling.PingManager - Ping Expired.
+21:45:57.415 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 9
+21:45:58.416 [Thread-0] INFO  net.playerhandling.PingManager - Ping Expired.
+21:45:58.417 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 9
+21:45:59.417 [Thread-0] INFO  net.playerhandling.PingManager - Ping Expired.
+21:45:59.417 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 9
+21:46:00.418 [Thread-0] INFO  net.playerhandling.PingManager - Ping Expired.
+21:46:00.418 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 9
+21:46:01.419 [Thread-0] INFO  net.playerhandling.PingManager - Ping Expired.
+21:46:01.419 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 9
+21:46:02.419 [Thread-0] INFO  net.playerhandling.PingManager - Ping Expired.
+21:46:02.419 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 9
+21:46:03.419 [Thread-0] INFO  net.playerhandling.PingManager - Ping Expired.
+21:46:03.419 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 9
+21:46:04.419 [Thread-0] INFO  net.playerhandling.PingManager - Ping Expired.
+21:46:04.419 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 9
+21:46:05.419 [Thread-0] INFO  net.playerhandling.PingManager - Ping Expired.
+21:46:05.419 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 9
+21:46:06.419 [Thread-0] INFO  net.playerhandling.PingManager - Ping Expired.
+21:46:06.419 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 9
+21:46:07.420 [Thread-0] INFO  net.playerhandling.PingManager - Ping Expired.
+21:46:07.420 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 9
+21:46:08.420 [Thread-0] INFO  net.playerhandling.PingManager - Ping Expired.
+21:46:08.420 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 9
+21:46:09.420 [Thread-0] INFO  net.playerhandling.PingManager - Ping Expired.
+21:46:09.420 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 9
+21:46:10.421 [Thread-0] INFO  net.playerhandling.PingManager - Ping Expired.
+21:46:10.421 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 9
+21:46:11.422 [Thread-0] INFO  net.playerhandling.PingManager - Ping Expired.
+21:46:11.422 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 9
+21:46:12.422 [Thread-0] INFO  net.playerhandling.PingManager - Ping Expired.
+21:46:12.422 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 9
+21:46:13.422 [Thread-0] INFO  net.playerhandling.PingManager - Ping Expired.
+21:46:13.422 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 9
+21:46:14.423 [Thread-0] INFO  net.playerhandling.PingManager - Ping Expired.
+21:46:14.423 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 9
+21:46:15.423 [Thread-0] INFO  net.playerhandling.PingManager - Ping Expired.
+21:46:15.423 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 9
+21:46:16.424 [Thread-0] INFO  net.playerhandling.PingManager - Ping Expired.
+21:46:16.424 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 9
+21:46:17.425 [Thread-0] INFO  net.playerhandling.PingManager - Ping Expired.
+21:46:17.425 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 9
+21:46:18.425 [Thread-0] INFO  net.playerhandling.PingManager - Ping Expired.
+21:46:18.425 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 9
+21:46:19.425 [Thread-0] INFO  net.playerhandling.PingManager - Ping Expired.
+21:46:19.425 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 9
+21:46:20.425 [Thread-0] INFO  net.playerhandling.PingManager - Ping Expired.
+21:46:20.425 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 9
+21:46:21.425 [Thread-0] INFO  net.playerhandling.PingManager - Ping Expired.
+21:46:21.425 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 9
+21:46:22.426 [Thread-0] INFO  net.playerhandling.PingManager - Ping Expired.
+21:46:22.426 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 9
+21:46:23.427 [Thread-0] INFO  net.playerhandling.PingManager - Ping Expired.
+21:46:23.427 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 9
+21:46:24.427 [Thread-0] INFO  net.playerhandling.PingManager - Ping Expired.
+21:46:24.427 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 9
+21:46:25.427 [Thread-0] INFO  net.playerhandling.PingManager - Ping Expired.
+21:46:25.427 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 9
+21:46:26.427 [Thread-0] INFO  net.playerhandling.PingManager - Ping Expired.
+21:46:26.427 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 9
+21:46:27.428 [Thread-0] INFO  net.playerhandling.PingManager - Ping Expired.
+21:46:27.428 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 9
+21:46:28.429 [Thread-0] INFO  net.playerhandling.PingManager - Ping Expired.
+21:46:28.429 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 9
+21:46:29.429 [Thread-0] INFO  net.playerhandling.PingManager - Ping Expired.
+21:46:29.429 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 9
+21:46:30.429 [Thread-0] INFO  net.playerhandling.PingManager - Ping Expired.
+21:46:30.429 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 9
+21:46:31.430 [Thread-0] INFO  net.playerhandling.PingManager - Ping Expired.
+21:46:31.430 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 9
+21:46:32.430 [Thread-0] INFO  net.playerhandling.PingManager - Ping Expired.
+21:46:32.430 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 9
+21:46:33.431 [Thread-0] INFO  net.playerhandling.PingManager - Ping Expired.
+21:46:33.432 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 9
+21:46:34.432 [Thread-0] INFO  net.playerhandling.PingManager - Ping Expired.
+21:46:34.432 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 9
+21:46:35.432 [Thread-0] INFO  net.playerhandling.PingManager - Ping Expired.
+21:46:35.432 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 9
+21:46:36.432 [Thread-0] INFO  net.playerhandling.PingManager - Ping Expired.
+21:46:36.432 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 9
+21:46:37.433 [Thread-0] INFO  net.playerhandling.PingManager - Ping Expired.
+21:46:37.433 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 9
+21:46:38.433 [Thread-0] INFO  net.playerhandling.PingManager - Ping Expired.
+21:46:38.433 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 9
+21:46:39.433 [Thread-0] INFO  net.playerhandling.PingManager - Ping Expired.
+21:46:39.433 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 9
+21:46:40.434 [Thread-0] INFO  net.playerhandling.PingManager - Ping Expired.
+21:46:40.434 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 9
+21:46:41.434 [Thread-0] INFO  net.playerhandling.PingManager - Ping Expired.
+21:46:41.434 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 9
+21:46:42.436 [Thread-0] INFO  net.playerhandling.PingManager - Ping Expired.
+21:46:42.436 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 9
+21:46:43.437 [Thread-0] INFO  net.playerhandling.PingManager - Ping Expired.
+21:46:43.437 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 9
+21:46:44.438 [Thread-0] INFO  net.playerhandling.PingManager - Ping Expired.
+21:46:44.438 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 9
+21:46:45.438 [Thread-0] INFO  net.playerhandling.PingManager - Ping Expired.
+21:46:45.438 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 9
+21:46:46.438 [Thread-0] INFO  net.playerhandling.PingManager - Ping Expired.
+21:46:46.438 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 9
+21:46:47.379 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:46:47.424 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:46:47.439 [Thread-0] INFO  net.playerhandling.PingManager - Ping Expired.
+21:46:47.439 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 9
+21:46:48.381 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:46:48.427 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:46:48.440 [Thread-0] INFO  net.playerhandling.PingManager - Ping Expired.
+21:46:48.440 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 9
+21:46:49.382 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:46:49.428 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:46:49.440 [Thread-0] INFO  net.playerhandling.PingManager - Ping Expired.
+21:46:49.440 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 9
+21:46:50.382 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:46:50.428 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:46:50.441 [Thread-0] INFO  net.playerhandling.PingManager - Ping Expired.
+21:46:50.441 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 9
+21:46:51.383 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:46:51.428 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:46:51.441 [Thread-0] INFO  net.playerhandling.PingManager - Ping Expired.
+21:46:51.441 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 9
+21:46:52.384 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:46:52.428 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:46:52.441 [Thread-0] INFO  net.playerhandling.PingManager - Ping Expired.
+21:46:52.441 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 9
+21:46:53.432 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:46:54.433 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 1
+21:46:55.434 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 2
+21:46:56.434 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 3
+21:46:57.434 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 4
+21:46:58.434 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 5
+21:46:59.435 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 6
+21:47:00.435 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 7
+21:47:01.435 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 8
+21:47:02.436 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 9
+21:47:03.436 [Thread-3] INFO  net.playerhandling.PingManager - Ping Expired.
+21:47:03.437 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 9
+21:47:04.438 [Thread-3] INFO  net.playerhandling.PingManager - Ping Expired.
+21:47:04.438 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 9
+21:47:05.438 [Thread-3] INFO  net.playerhandling.PingManager - Ping Expired.
+21:47:05.438 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 9
+21:47:06.438 [Thread-3] INFO  net.playerhandling.PingManager - Ping Expired.
+21:47:06.438 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 9
+21:47:07.438 [Thread-3] INFO  net.playerhandling.PingManager - Ping Expired.
+21:47:07.438 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 9
+21:47:08.443 [Thread-3] INFO  net.playerhandling.PingManager - Ping Expired.
+21:47:08.443 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 9
+21:47:09.443 [Thread-3] INFO  net.playerhandling.PingManager - Ping Expired.
+21:47:09.443 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 9
+21:47:10.444 [Thread-3] INFO  net.playerhandling.PingManager - Ping Expired.
+21:47:10.444 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 9
+21:47:11.444 [Thread-3] INFO  net.playerhandling.PingManager - Ping Expired.
+21:47:11.444 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 9
+21:47:12.444 [Thread-3] INFO  net.playerhandling.PingManager - Ping Expired.
+21:47:12.444 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 9
+21:47:13.444 [Thread-3] INFO  net.playerhandling.PingManager - Ping Expired.
+21:47:13.444 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 9
+21:49:34.562 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:49:34.630 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:49:35.565 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:49:35.634 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:49:36.565 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:49:36.634 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:49:37.566 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:49:37.634 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:49:38.566 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:49:38.634 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:49:39.567 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:49:39.635 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:49:40.568 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:49:40.635 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:49:41.569 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:49:41.635 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:49:42.569 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:49:42.635 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:49:43.569 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:49:43.636 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:49:44.569 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:49:44.636 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:49:45.569 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:49:45.636 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:49:46.569 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:49:46.636 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:49:47.570 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:49:47.636 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:49:48.570 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:49:48.636 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:49:49.570 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:49:49.637 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:49:50.571 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:49:50.638 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:49:51.571 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:49:51.638 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:49:52.572 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:49:52.638 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:49:53.572 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:49:53.638 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:49:54.572 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:49:54.643 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:49:55.572 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:49:55.643 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:49:55.774 [Thread-1] DEBUG net.ServerLogic - Removing client no. 1
+21:49:56.572 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:49:57.573 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 1
+21:49:58.574 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 2
+21:49:59.575 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 3
+21:50:00.575 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 4
+21:50:01.576 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 5
+21:50:02.576 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 6
+21:50:03.576 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 7
+21:50:04.577 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 8
+21:50:04.577 [Thread-0] DEBUG net.ServerLogic - Removing client no. 1
+21:50:30.445 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:50:30.476 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:50:31.446 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:50:31.479 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:50:32.446 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:50:32.480 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:50:33.446 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:50:33.480 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:50:34.447 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:50:34.481 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:50:35.447 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:50:35.481 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:50:36.447 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:50:36.482 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:50:37.448 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:50:37.482 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:50:38.448 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:50:38.482 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:50:39.448 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:50:39.483 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:50:40.448 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:50:40.483 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:50:41.448 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:50:41.483 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:50:42.448 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:50:42.483 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:50:43.448 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:50:43.484 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:50:44.449 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:50:44.484 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:50:45.450 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:50:45.485 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:50:46.450 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:50:46.485 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:50:47.450 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:50:47.485 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:50:48.451 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:50:48.485 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:50:49.451 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:50:49.486 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:50:50.451 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:50:50.491 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:50:51.452 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:50:51.491 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:50:52.452 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:50:52.491 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:50:53.452 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:50:53.491 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:50:54.453 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:50:54.492 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:50:55.454 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:50:55.493 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:50:56.454 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:50:56.493 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:50:57.454 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:50:57.494 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:50:58.454 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:50:58.494 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:50:59.454 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:50:59.494 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:51:00.495 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+21:51:01.495 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 1
+21:51:02.496 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 2
+21:51:03.497 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 3
+21:51:04.498 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 4
+21:51:05.498 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 5
+21:51:06.498 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 6
+21:51:07.498 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 7
+21:51:08.499 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 8
+22:01:51.311 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:01:52.314 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:01:53.315 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:01:54.315 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:01:55.315 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:01:56.315 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:01:57.316 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:01:58.317 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:01:59.317 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:02:00.318 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:02:01.318 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:02:02.319 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:02:03.319 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:02:04.319 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:02:05.319 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:02:06.320 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:02:07.320 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:02:08.320 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:02:09.321 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:02:10.321 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:02:11.326 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:02:12.327 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:02:13.327 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:02:14.328 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:02:15.328 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:02:16.328 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:02:17.328 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:02:18.328 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:02:19.328 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:02:20.329 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:02:21.329 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:02:22.329 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:02:23.329 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:02:24.329 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:02:25.329 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:02:26.329 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:02:27.329 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:02:28.329 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:02:29.330 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:02:30.330 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:02:31.330 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:02:32.331 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:02:33.331 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:02:34.331 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:02:35.331 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:02:36.332 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:02:37.332 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:02:38.332 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:02:39.333 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:02:40.333 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:02:41.333 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:02:42.334 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:02:43.334 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:02:44.334 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:02:45.334 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:02:46.334 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:02:47.334 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:02:48.335 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:02:49.336 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:02:50.336 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:02:51.337 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:02:52.337 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:02:53.337 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:02:54.337 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:02:55.337 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:02:56.338 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:02:57.339 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:02:58.339 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:02:59.339 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:03:00.339 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:03:01.340 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:03:02.340 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:03:03.341 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:03:04.342 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:03:05.342 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:03:06.343 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:03:07.344 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:03:08.344 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:03:09.344 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:03:10.363 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:03:11.365 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 1
+22:03:12.365 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 2
+22:03:13.365 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 3
+22:03:14.366 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 4
+22:03:15.366 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 5
+22:03:16.366 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 6
+22:03:17.366 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 7
+22:03:18.367 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 8
+22:07:40.842 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:07:40.849 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:07:41.846 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:07:41.853 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:07:42.846 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:07:42.854 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:07:43.847 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:07:43.854 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:07:44.848 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:07:44.854 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:07:45.848 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:07:45.854 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:07:46.849 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:07:46.855 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:07:47.850 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:07:47.856 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:07:48.850 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:07:48.856 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:07:49.851 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:07:49.857 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:07:50.851 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:07:50.857 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:07:51.851 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:07:51.857 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:07:52.851 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:07:52.857 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:07:53.851 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:07:53.857 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:07:54.851 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:07:54.857 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:07:55.852 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:07:55.857 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:07:56.852 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:07:56.857 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:07:57.853 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:07:57.858 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:07:58.853 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:07:58.858 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:07:59.853 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:07:59.859 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:08:00.853 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:08:00.864 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:08:01.854 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:08:01.865 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:08:02.858 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:08:02.865 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:08:03.858 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:08:03.865 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:08:04.858 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:08:04.866 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:08:05.859 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:08:05.866 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:08:06.859 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:08:06.867 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:08:07.860 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:08:07.867 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:08:08.860 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:08:08.868 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:08:09.860 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:08:09.868 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:08:10.860 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:08:10.869 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:08:11.860 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:08:11.869 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:08:12.860 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:08:12.870 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:08:13.860 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:08:13.870 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:08:14.861 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:08:14.871 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:08:15.862 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:08:15.871 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:08:16.862 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:08:16.872 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:08:17.862 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:08:17.873 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:08:18.863 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:08:18.873 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:08:19.864 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:08:19.873 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:08:20.864 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:08:20.873 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:08:21.864 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:08:21.873 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:08:22.864 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:08:22.873 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:08:23.865 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:08:23.874 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:08:24.865 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:08:24.874 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:08:25.865 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:08:25.874 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:08:26.865 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:08:26.874 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:08:27.865 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:08:27.875 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:08:28.865 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:08:28.875 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:08:29.866 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:08:29.876 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:08:30.867 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:08:30.876 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:08:31.867 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:08:31.876 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:08:32.867 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:08:32.877 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:08:33.868 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:08:33.877 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:08:34.868 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:08:34.878 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:08:35.868 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:08:35.878 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:08:36.869 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:08:36.879 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:08:37.869 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:08:37.880 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:08:38.882 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:08:38.882 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:08:39.883 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:08:39.883 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:08:40.884 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:08:40.884 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:08:41.884 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:08:41.884 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:08:42.885 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:08:42.885 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:08:43.886 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:08:43.886 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:08:44.887 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:08:44.887 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:08:45.887 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:08:45.888 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:08:46.888 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:08:46.888 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:08:47.888 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:08:47.888 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:08:48.889 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:08:48.889 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:08:49.889 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:08:49.889 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:08:50.890 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:08:50.890 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:08:51.825 [Thread-1] DEBUG net.ServerLogic - Removing client no. 1
+22:08:51.891 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:08:52.891 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 1
+22:08:53.892 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 2
+22:08:54.892 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 3
+22:08:55.893 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 4
+22:08:56.893 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 5
+22:08:57.893 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 6
+22:08:58.895 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 7
+22:08:59.896 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 8
+22:08:59.896 [Thread-0] DEBUG net.ServerLogic - Removing client no. 1
+22:09:03.648 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:09:03.683 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:09:04.648 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:09:04.687 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:09:05.649 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:09:05.687 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:09:06.649 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:09:06.687 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:09:07.649 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:09:07.688 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:09:08.649 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:09:08.688 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:09:09.649 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:09:09.688 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:09:10.650 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:09:10.689 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:09:11.650 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:09:11.689 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:09:12.650 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:09:12.690 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:09:13.651 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:09:13.690 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:09:14.651 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:09:14.690 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:09:15.652 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:09:15.690 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:09:16.653 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:09:16.691 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:09:17.653 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:09:17.691 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:09:18.654 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:09:18.691 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:09:19.654 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:09:19.691 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:09:20.654 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:09:20.691 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:09:21.654 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:09:21.691 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:09:22.654 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:09:22.692 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:09:23.654 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:09:23.698 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:09:24.654 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:09:24.699 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:09:25.655 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:09:25.700 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:09:26.655 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:09:26.700 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:09:27.656 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:09:27.700 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:09:28.657 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:09:28.700 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:09:29.657 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:09:29.700 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:09:30.657 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:09:30.701 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:09:31.657 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:09:31.701 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:09:32.657 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:09:32.701 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:09:33.658 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:09:33.702 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:09:34.658 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:09:34.702 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:09:35.658 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:09:35.702 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:09:36.658 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:09:36.702 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:09:37.658 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:09:37.703 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:09:38.658 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:09:38.703 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:09:39.658 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:09:39.703 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:09:40.659 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:09:40.704 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:09:41.659 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:09:41.704 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:09:42.659 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:09:42.705 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:09:43.660 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:09:43.706 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:09:44.660 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:09:44.706 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:09:45.660 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:09:45.707 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:09:46.661 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:09:46.708 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:09:47.661 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:09:47.708 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:09:48.663 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:09:48.709 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:09:49.663 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:09:49.709 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:09:50.664 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:09:50.710 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:09:51.664 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:09:51.711 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:09:52.665 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:09:52.711 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:09:53.665 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:09:53.712 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:09:54.666 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:09:54.713 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:09:55.666 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:09:55.714 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:09:56.667 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:09:56.715 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:09:57.667 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:09:57.715 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:09:58.667 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:09:58.716 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:09:59.667 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:09:59.716 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:10:00.668 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:10:00.717 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:10:01.669 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:10:01.717 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:10:02.669 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:10:02.717 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:10:03.669 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:10:03.717 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:10:04.670 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:10:04.718 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:10:05.670 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:10:05.718 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:10:06.670 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:10:06.718 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:10:07.671 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:10:07.719 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:10:08.671 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:10:08.719 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:10:09.671 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:10:09.720 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:10:10.672 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:10:10.720 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:10:11.672 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:10:11.720 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:10:12.673 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:10:12.721 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:10:13.674 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:10:13.721 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:10:14.674 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:10:14.721 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:10:15.674 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:10:15.721 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:10:16.674 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:10:16.721 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:10:17.675 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:10:17.721 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:10:18.675 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:10:18.721 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:10:19.676 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:10:19.722 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:10:20.676 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:10:20.722 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:10:21.676 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:10:21.722 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:10:22.676 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:10:22.722 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:10:23.677 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:10:23.723 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:10:24.677 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:10:24.723 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:10:25.677 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:10:25.723 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:10:26.677 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:10:26.724 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:10:27.678 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:10:27.724 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:10:28.678 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:10:28.724 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:10:29.679 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:10:29.724 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:10:30.679 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:10:30.724 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:10:31.680 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:10:31.724 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:10:32.680 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:10:32.725 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:10:33.681 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:10:33.725 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:10:34.681 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:10:34.725 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:10:35.681 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:10:35.725 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:10:36.681 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:10:36.726 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:10:37.682 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:10:37.726 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:10:38.682 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:10:38.726 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:10:39.682 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:10:39.726 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:10:40.683 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:10:40.727 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:10:41.683 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:10:41.727 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:10:42.683 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:10:42.727 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:10:43.683 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:10:43.727 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:10:44.683 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:10:44.727 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:10:45.683 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:10:45.727 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:10:46.684 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:10:46.728 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:10:47.684 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:10:47.728 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:10:48.685 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:10:48.729 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:10:49.685 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:10:49.729 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:10:50.685 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:10:50.729 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:10:51.685 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:10:51.729 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:10:52.685 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:10:52.730 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:10:53.686 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:10:53.730 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:10:54.686 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:10:54.731 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:10:55.686 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:10:55.731 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:10:56.686 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:10:56.732 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:10:57.687 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:10:57.733 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:10:58.687 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:10:58.733 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:10:59.687 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:10:59.733 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:11:00.687 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:11:00.733 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:11:01.688 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:11:01.733 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:11:02.689 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:11:02.733 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:11:03.689 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:11:03.733 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:11:04.689 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:11:04.733 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:11:05.689 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:11:05.734 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:11:06.689 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:11:06.734 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:11:07.689 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:11:07.734 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:11:08.690 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:11:08.735 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:11:09.691 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:11:09.735 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:11:10.691 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:11:10.735 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:11:11.691 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:11:11.735 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:11:12.692 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:11:12.735 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:11:13.693 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:11:13.735 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:11:14.694 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:11:14.736 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:11:15.694 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:11:15.789 [Thread-3] DEBUG net.ServerLogic - Removing client no. 2
+22:11:16.694 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 0
+22:12:13.449 [Thread-1] DEBUG net.ServerLogic - Removing client no. 1
+22:12:14.845 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 1
+22:12:15.846 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 2
+22:12:16.847 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 3
+22:12:17.847 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 4
+22:12:18.847 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 5
+22:12:19.848 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 6
+22:12:20.849 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 7
+22:12:21.849 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 8
+22:12:21.849 [Thread-0] DEBUG net.ServerLogic - Removing client no. 1
+22:12:56.124 [Thread-3] DEBUG net.ServerLogic - Removing client no. 2
+22:12:56.748 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 1
+22:12:57.749 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 2
+22:12:58.749 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 3
+22:12:59.749 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 4
+22:13:00.749 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 5
+22:13:01.751 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 6
+22:13:02.751 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 7
+22:13:03.753 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 8
+22:13:03.753 [Thread-2] DEBUG net.ServerLogic - Removing client no. 2
