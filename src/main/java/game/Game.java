@@ -471,7 +471,7 @@ public class Game extends Thread {
     // Camera
     camera = new Camera(player, window);
 
-    LoadingScreen.updateLoadingMessage("done!");
+    LoadingScreen.updateLoadingMessage("Ready!");
     Thread.sleep(500);
     LoadingScreen.done();
     addActiveStage(PLAYING);

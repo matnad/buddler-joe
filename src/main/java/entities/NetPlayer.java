@@ -110,6 +110,8 @@ public class NetPlayer extends Entity {
     headLight.setDirection(direction);
   }
 
+
+
   @Override
   public void setRotY(float rotY) {
     super.setRotY(rotY);

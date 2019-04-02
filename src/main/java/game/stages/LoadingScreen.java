@@ -34,14 +34,25 @@ public class LoadingScreen {
    * @param loader main loader
    */
   public static void init(Loader loader) {
+    // GuiTexture loadingScreen =
+    //    new GuiTexture(loader.loadTexture("ffffff"), new Vector2f(0, 0), new Vector2f(1, 1), 1);
     GuiTexture loadingScreen =
-        new GuiTexture(loader.loadTexture("ffffff"), new Vector2f(0, 0), new Vector2f(1, 1), 1);
+        new GuiTexture(
+            loader.loadTexture("mainMenuBackground"), new Vector2f(0, 0), new Vector2f(1, 1), 1);
+    GuiTexture buddlerJoe =
+        new GuiTexture(
+            loader.loadTexture("buddlerjoe"),
+            new Vector2f(-0.730208f, -0.32963f),
+            new Vector2f(0.181771f, 0.67963f),
+            1);
+
     guis.add(loadingScreen);
+    guis.add(buddlerJoe);
     message = "LOADING";
     text = new ChangableGuiText();
     text.setPosition(new Vector2f(0, 0.5f));
     text.setFontSize(3);
-    text.setTextColour(new Vector3f());
+    text.setTextColour(new Vector3f(1,1,1));
     generateDottedText();
   }
 
@@ -95,7 +106,7 @@ public class LoadingScreen {
 
   private static void generateDottedText() {
 
-    if (message.equals("done!")) {
+    if (message.equals("Ready!")) {
       text.changeText(message);
     } else {
       StringBuilder sb = new StringBuilder();
