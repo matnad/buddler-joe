@@ -24,7 +24,11 @@ public class Credits {
 
   private static MenuButton back;
 
-  /** Initializes the textures for this GUI-menu. */
+  /**
+   * Initializes the textures for this GUI-menu.
+   *
+   * @param loader main loader
+   */
   @SuppressWarnings("Duplicates")
   public static void init(Loader loader) {
 

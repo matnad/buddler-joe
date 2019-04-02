@@ -109,6 +109,7 @@ public class PacketCurLobbyInfo extends Packet {
     if (hasErrors()) { // Errors ClientSide
       String s = createErrorMessage();
       System.out.println(s);
+      System.out.println(getData());
     } else if (infoArray[0].equals("OK")) { // No Errors ServerSide
       System.out.println("-------------------------------------");
       System.out.println("Players in Lobby \"" + infoArray[1] + "\":");

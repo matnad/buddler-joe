@@ -24,7 +24,7 @@ import net.packets.name.PacketSetName;
  */
 public class StartNetworkOnlyClient implements Runnable {
   private static final BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-  private static String serverIP;
+  private static String serverIp;
   private static int serverPort;
 
   /**
@@ -34,7 +34,7 @@ public class StartNetworkOnlyClient implements Runnable {
    */
   public StartNetworkOnlyClient() {
     try {
-      new ClientLogic(serverIP, serverPort);
+      new ClientLogic(serverIp, serverPort);
     } catch (IOException e) {
       System.out.println(
           "Buffer Reader does not exist. Can't find a server at the specified location.");
@@ -106,7 +106,7 @@ public class StartNetworkOnlyClient implements Runnable {
       } else if (inputMessage.equals("connect")) {
         if (ClientLogic.getServer().isClosed()) {
           // Try to reconnect to the server
-          new ClientLogic(serverIP, serverPort);
+          new ClientLogic(serverIp, serverPort);
           if (ClientLogic.getServer().isClosed()) {
             System.out.println("Connection could not be re-established. Exiting program.");
             System.exit(-1);
@@ -114,11 +114,6 @@ public class StartNetworkOnlyClient implements Runnable {
             System.out.println(
                 "Connection to the server re-established. Socket status: "
                     + ClientLogic.getServer());
-            try {
-              firstLogin();
-            } catch (IOException | StringIndexOutOfBoundsException e) {
-              System.out.println("Server disconnected.");
-            }
           }
         } else {
           System.out.println(
@@ -137,49 +132,15 @@ public class StartNetworkOnlyClient implements Runnable {
    */
   public static void main(String[] args) {
 
-    serverIP = "127.0.0.1";
-    serverPort = 11337;
+    startWith("127.0.0.1", 11337);
+  }
 
-    // Take ip and port from commandline and validate them
-    if (args.length == 1) {
-      String[] ipPort = args[0].split(":");
-      if (ipPort.length == 2) {
-        // Validate IP
-        try {
-          serverIP = ipPort[0];
-          String[] parts = serverIP.split(".");
-          if (parts.length != 4) {
-            throw new IllegalArgumentException("IPv4 not formatted properly.");
-          }
-          for (String part : parts) {
-            // This throws NumberFormatException, which is subclass of IllegalArgumentException
-            int i = Integer.parseInt(part);
-            if (i < 0 || i > 255) {
-              throw new IllegalArgumentException("IPv4 not formatted properly.");
-            }
-          }
-        } catch (IllegalArgumentException e) {
-          serverIP = "127.0.0.1";
-        }
-        // Validate Port
-        try {
-          serverPort = Integer.parseInt(ipPort[1]);
-          if (serverPort <= 0 || serverPort > 65535) { // 0 can't be used for TCP connections
-            throw new IllegalArgumentException("Port out of range.");
-          }
-        } catch (IllegalArgumentException e) {
-          serverPort = 11337;
-        }
-      }
-    }
+  public static void startWith(String serverIp, int serverPort) {
+    StartNetworkOnlyClient.serverIp = serverIp;
+    StartNetworkOnlyClient.serverPort = serverPort;
 
     // Start Interface
     new StartNetworkOnlyClient();
-    try {
-      //      firstLogin();
-    } catch (StringIndexOutOfBoundsException e) {
-      System.out.println("Server disconnected.");
-    }
     try {
       takeInputAndAct();
     } catch (IOException e) {
@@ -187,33 +148,34 @@ public class StartNetworkOnlyClient implements Runnable {
     }
   }
 
-  /**
-   * Welcome message on the first login that asks for a username and provides a suggestion based on
-   * the system name.
-   *
-   * <p>Will create and send a login packet.
-   *
-   * @throws IOException when buffer reader fails
-   */
-  private static void firstLogin() throws IOException {
-    System.out.println(
-        "Welcome player! What name would you like to give yourself? "
-            + "\n"
-            + "Your System says, that you are "
-            + System.getProperty("user.name")
-            + "."
-            + "\n"
-            + "Would you like to choose that name? Type Yes or "
-            + "the username you would like to choose.\n");
-    String answer = br.readLine();
-    if (answer.trim().toLowerCase().equals("yes")) {
-      PacketLogin p = new PacketLogin(System.getProperty("user.name"));
-      p.sendToServer();
-    } else {
-      PacketLogin p = new PacketLogin(answer);
-      p.sendToServer();
-    }
-  }
+  /// **
+  // * Welcome message on the first login that asks for a username and provides a suggestion based
+  // on
+  // * the system name.
+  // *
+  // * <p>Will create and send a login packet.
+  // *
+  // * @throws IOException when buffer reader fails
+  // */
+  // private static void firstLogin() throws IOException {
+  //  System.out.println(
+  //      "Welcome player! What name would you like to give yourself? "
+  //          + "\n"
+  //          + "Your System says, that you are "
+  //          + System.getProperty("user.name")
+  //          + "."
+  //          + "\n"
+  //          + "Would you like to choose that name? Type Yes or "
+  //          + "the username you would like to choose.\n");
+  //  String answer = br.readLine();
+  //  if (answer.trim().toLowerCase().equals("yes")) {
+  //    PacketLogin p = new PacketLogin(System.getProperty("user.name"));
+  //    p.sendToServer();
+  //  } else {
+  //    PacketLogin p = new PacketLogin(answer);
+  //    p.sendToServer();
+  //  }
+  // }
 
   @Override
   public void run() {
