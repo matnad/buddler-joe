@@ -1,8 +1,11 @@
 package net.packets.items;
 
 import entities.items.Dynamite;
+import entities.items.Heart;
+import entities.items.Ice;
 import entities.items.Item;
 import entities.items.ItemMaster;
+import entities.items.Star;
 import entities.items.Torch;
 import game.Game;
 import net.ServerLogic;
@@ -17,7 +20,7 @@ public class PacketSpawnItem extends Packet {
   private static final Logger logger = LoggerFactory.getLogger(PacketSpawnItem.class);
   private int owner;
   private Vector3f position;
-  private int type;
+  private String type;
 
   private String[] dataArray;
 
@@ -31,6 +34,14 @@ public class PacketSpawnItem extends Packet {
   public PacketSpawnItem(ItemMaster.ItemTypes type, Vector3f position) {
     super(Packet.PacketTypes.SPAWN_ITEM);
     setData("0║" + type.getItemId() + "║" + position.x + "║" + position.y + "║" + position.z);
+    // No need to validate. No user input
+  }
+
+  //TODO clientId handling and then process the data correctly!
+
+  public PacketSpawnItem(ItemMaster.ItemTypes type, Vector3f position, int clientId) {
+    super(Packet.PacketTypes.SPAWN_ITEM);
+    setData(clientId + "║" + type.getItemId() + "║" + position.x + "║" + position.y + "║" + position.z);
     // No need to validate. No user input
   }
 
@@ -83,14 +94,7 @@ public class PacketSpawnItem extends Packet {
     } catch (NumberFormatException e) {
       addError("Invalid item position data.");
     }
-    try {
-      type = Integer.parseInt(dataArray[1]);
-    } catch (NumberFormatException e) {
-      addError("Invalid item type variable.");
-    }
-    if (type < 1) {
-      addError("Invalid item type.");
-    }
+    isExtendedAscii(dataArray[1]);
   }
 
   /**
@@ -135,6 +139,12 @@ public class PacketSpawnItem extends Packet {
           ((Torch) item).checkForBlock(); // Attach to a block if placed on one.
         } else if (item instanceof Dynamite) {
           ((Dynamite) item).setActive(true); // Start ticking
+        } else if (item instanceof Heart) {
+          //((Heart) item).giveHeart(true); //give a heart to the owner
+        } else if (item instanceof Ice) {
+          ((Ice) item).setActive(true);
+        } else if (item instanceof Star) {
+          ((Star) item).setActive(true);
         }
       } else {
         logger.error(

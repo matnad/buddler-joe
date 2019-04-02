@@ -4,13 +4,28 @@ import entities.blocks.BlockMaster;
 import entities.blocks.DirtBlock;
 import entities.blocks.GoldBlock;
 import entities.blocks.StoneBlock;
+import entities.items.Dynamite;
+import entities.items.Heart;
+import entities.items.Ice;
+import entities.items.Item;
+import entities.items.ItemMaster;
+import entities.items.Star;
+import net.packets.items.PacketSpawnItem;
+import org.joml.Vector3f;
+
+import java.util.Random;
 
 public class ServerBlock {
 
   private BlockMaster.BlockTypes type;
   private float hardness;
+  private int gridX;
+  private int gridY;
+  private final int gridZ = Map.getSize();
 
-  ServerBlock(BlockMaster.BlockTypes type) {
+  ServerBlock(BlockMaster.BlockTypes type, int gridX, int gridY) {
+    this.gridX = gridX;
+    this.gridY = gridY;
     this.type = type;
     switch (type) {
       case DIRT:
@@ -27,6 +42,9 @@ public class ServerBlock {
         break;
       case AIR:
         hardness = 0;
+        break;
+      case QMARK:
+        hardness = GoldBlock.getHardness();
         break;
       default:
         hardness = 0;
@@ -46,9 +64,12 @@ public class ServerBlock {
    *
    * @param damage damage to deal to a block
    */
-  public void damageBlock(float damage) {
+  public void damageBlock(float damage, int clientId) {
     hardness -= damage;
     if (hardness < 0) {
+      if (this.type == BlockMaster.BlockTypes.QMARK) {
+        onQmarkDestroy(clientId);
+      }
       this.type = BlockMaster.BlockTypes.AIR;
     }
   }
@@ -56,5 +77,21 @@ public class ServerBlock {
   @Override
   public String toString() {
     return getType().toString();
+  }
+
+  private void onQmarkDestroy(int clientId) {
+
+    Random random = new Random(1);
+    int r = random.nextInt(5);
+    if (r == 0) {
+      PacketSpawnItem packetSpawnItem =
+          new PacketSpawnItem(ItemMaster.ItemTypes.DYNAMITE, new Vector3f(gridX, gridY, gridZ));
+    } else if (r == 1) {
+      new PacketSpawnItem(ItemMaster.ItemTypes.HEART, new Vector3f(gridX, gridY, gridZ));
+    } else if (r == 2) {
+      new PacketSpawnItem(ItemMaster.ItemTypes.STAR, new Vector3f(gridX, gridY, gridZ));
+    } else if (r == 3) {
+      new PacketSpawnItem(ItemMaster.ItemTypes.ICE, new Vector3f(gridX, gridY, gridZ));
+    }
   }
 }

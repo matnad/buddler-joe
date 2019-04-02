@@ -18,7 +18,7 @@ public abstract class Map<T> {
   protected long seed;
 
   protected final int dim = 6;
-  protected final int size = 3;
+  protected static final int size = 3;
 
   protected T[][] blocks;
 
@@ -81,5 +81,9 @@ public abstract class Map<T> {
 
   public int getHeight() {
     return height;
+  }
+
+  public static int getSize() {
+    return size;
   }
 }

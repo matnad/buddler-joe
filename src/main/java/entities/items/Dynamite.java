@@ -209,6 +209,5 @@ public class Dynamite extends Item {
 
   public void setActive(boolean active) {
     this.active = active;
-
   }
 }

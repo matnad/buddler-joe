@@ -31,17 +31,17 @@ public class ServerMap extends Map<ServerBlock> {
     for (int y = 0; y < height; y++) {
       for (int x = 0; x < width; x++) {
         if (noiseMap[x][y] < thresholds[0]) {
-          blocks[x][y] = new ServerBlock(BlockMaster.BlockTypes.AIR); // Air
+          blocks[x][y] = new ServerBlock(BlockMaster.BlockTypes.AIR, x, y); // Air
         } else {
           if ((int) (noiseMap[x][y] * 100) % 40 == 0) {
-            blocks[x][y] = new ServerBlock(BlockMaster.BlockTypes.GOLD); // Gold: 1 in 40 chance
+            blocks[x][y] = new ServerBlock(BlockMaster.BlockTypes.GOLD, x, y); // Gold: 1 in 40 chance
           } else if ((int) (noiseMap[x][y] * 100) % 50 == 0) {
             blocks[x][y] =
-                new ServerBlock(BlockMaster.BlockTypes.GRASS); // Item Block: 1 in 50 chance
+                new ServerBlock(BlockMaster.BlockTypes.GRASS, x, y); // Item Block: 1 in 50 chance
           } else if (noiseMap[x][y] < thresholds[1]) {
-            blocks[x][y] = new ServerBlock(BlockMaster.BlockTypes.DIRT); // Dirt
+            blocks[x][y] = new ServerBlock(BlockMaster.BlockTypes.DIRT, x, y); // Dirt
           } else {
-            blocks[x][y] = new ServerBlock(BlockMaster.BlockTypes.STONE); // Stone
+            blocks[x][y] = new ServerBlock(BlockMaster.BlockTypes.STONE, x, y); // Stone
           }
         }
       }
@@ -62,7 +62,7 @@ public class ServerMap extends Map<ServerBlock> {
               && y + 1 < height
               && blocks[x][y + 1].getType() == BlockMaster.BlockTypes.AIR) {
             blocks[x][y + 1] = blocks[x][y];
-            blocks[x][y] = new ServerBlock(BlockMaster.BlockTypes.AIR);
+            blocks[x][y] = new ServerBlock(BlockMaster.BlockTypes.AIR, x, y);
             done = false;
           }
         }
@@ -81,7 +81,7 @@ public class ServerMap extends Map<ServerBlock> {
   @Override
   public void damageBlock(int clientId, int posX, int posY, float damage) {
     if (blocks[posX][posY] != null) {
-      blocks[posX][posY].damageBlock(damage);
+      blocks[posX][posY].damageBlock(damage, clientId);
       checkFallingBlocks();
       int lobId = ServerLogic.getLobbyForClient(clientId).getLobbyId();
       if (lobId > 0) {
