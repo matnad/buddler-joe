@@ -13,8 +13,6 @@ import net.packets.chat.PacketChatMessageStatus;
 import net.packets.chat.PacketChatMessageToClient;
 import net.packets.items.PacketSpawnItem;
 import net.packets.lists.PacketGamesOverview;
-import net.packets.lists.PacketGamesOverview;
-
 import net.packets.lobby.PacketCreateLobbyStatus;
 import net.packets.lobby.PacketCurLobbyInfo;
 import net.packets.lobby.PacketJoinLobbyStatus;
@@ -159,8 +157,6 @@ public class ClientLogic implements Runnable {
 
       // Create the correct packet depending on message code
       Packet p = null;
-      if(Packet.lookupPacket(code) != Packet.PacketTypes.PING && Packet.lookupPacket(code) != Packet.PacketTypes.PONG)
-      System.out.println(data);
       switch (Packet.lookupPacket(code)) {
         case LOGIN_STATUS:
           p = new PacketLoginStatus(data);

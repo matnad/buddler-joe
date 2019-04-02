@@ -34,7 +34,6 @@ public class StartNetworkOnlyClient implements Runnable {
    */
   public StartNetworkOnlyClient() {
     try {
-      System.out.println("starting with "+serverIp+":"+serverPort);
       new ClientLogic(serverIp, serverPort);
     } catch (IOException e) {
       System.out.println(
@@ -134,7 +133,6 @@ public class StartNetworkOnlyClient implements Runnable {
   public static void main(String[] args) {
 
     startWith("127.0.0.1", 11337);
-
   }
 
   public static void startWith(String serverIp, int serverPort) {
@@ -150,15 +148,16 @@ public class StartNetworkOnlyClient implements Runnable {
     }
   }
 
-  ///**
-  // * Welcome message on the first login that asks for a username and provides a suggestion based on
+  /// **
+  // * Welcome message on the first login that asks for a username and provides a suggestion based
+  // on
   // * the system name.
   // *
   // * <p>Will create and send a login packet.
   // *
   // * @throws IOException when buffer reader fails
   // */
-  //private static void firstLogin() throws IOException {
+  // private static void firstLogin() throws IOException {
   //  System.out.println(
   //      "Welcome player! What name would you like to give yourself? "
   //          + "\n"
@@ -176,7 +175,7 @@ public class StartNetworkOnlyClient implements Runnable {
   //    PacketLogin p = new PacketLogin(answer);
   //    p.sendToServer();
   //  }
-  //}
+  // }
 
   @Override
   public void run() {

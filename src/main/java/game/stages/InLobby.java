@@ -24,7 +24,11 @@ public class InLobby {
 
   private static MenuButton ready;
 
-  /** Initialisation of the textures for this GUI-menu. */
+  /**
+   * Initialisation of the textures for this GUI-menu.
+   *
+   * @param loader main loader
+   */
   @SuppressWarnings("Duplicates")
   public static void init(Loader loader) {
 

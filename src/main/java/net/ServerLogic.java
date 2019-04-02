@@ -46,7 +46,7 @@ public class ServerLogic {
     lobbyList = new ServerLobbyList();
 
     serverSocket = new ServerSocket(portValue);
-    System.out.println("Started Server on port "+portValue);
+    System.out.println("Started Server on port " + portValue);
   }
 
   /**
