@@ -8,7 +8,8 @@ public class Main {
 
   // DEFAULT VALUES
   private static boolean client = true;
-  private static String ipAddress = "185.162.250.84";
+//  private static String ipAddress = "185.162.250.84";
+  private static String ipAddress = "192.168.1.121";
   private static int port = 11337;
   private static String username = util.RandomName.getRandomName();
 
