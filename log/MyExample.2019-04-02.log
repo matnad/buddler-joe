@@ -1028,6 +1028,133 @@
 22:13:02.751 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 7
 22:13:03.753 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 8
 22:13:03.753 [Thread-2] DEBUG net.ServerLogic - Removing client no. 2
+22:18:43.324 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 1
+22:18:44.326 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 2
+22:18:45.327 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 3
+22:18:46.328 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 4
+22:18:47.328 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 5
+22:18:48.328 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 6
+22:18:49.329 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 7
+22:18:50.329 [Thread-0] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 8
+22:18:50.330 [Thread-0] DEBUG net.ServerLogic - Removing client no. 1
+22:19:01.226 [Thread-1] DEBUG net.ServerLogic - Removing client no. 1
+22:23:46.551 [Thread-4] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 1
+22:23:47.551 [Thread-4] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 2
+22:23:48.551 [Thread-4] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 3
+22:23:49.551 [Thread-4] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 4
+22:23:50.551 [Thread-4] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 5
+22:23:51.551 [Thread-4] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 6
+22:23:52.551 [Thread-4] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 7
+22:23:53.551 [Thread-4] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 8
+22:23:53.551 [Thread-4] DEBUG net.ServerLogic - Removing client no. 3
+22:24:04.452 [Thread-5] DEBUG net.ServerLogic - Removing client no. 3
+22:26:17.530 [Thread-6] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 1
+22:26:18.531 [Thread-6] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 2
+22:26:19.531 [Thread-6] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 3
+22:26:20.531 [Thread-6] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 4
+22:26:21.531 [Thread-6] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 5
+22:26:22.532 [Thread-6] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 6
+22:26:23.532 [Thread-6] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 7
+22:26:24.533 [Thread-6] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 8
+22:26:24.533 [Thread-6] DEBUG net.ServerLogic - Removing client no. 4
+22:26:35.436 [Thread-7] DEBUG net.ServerLogic - Removing client no. 4
+22:27:57.706 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 1
+22:27:57.724 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 1
+22:27:58.706 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 2
+22:27:58.727 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 2
+22:27:59.707 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 3
+22:27:59.727 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 3
+22:28:00.707 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 4
+22:28:00.728 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 4
+22:28:01.707 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 5
+22:28:01.728 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 5
+22:28:02.707 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 6
+22:28:02.729 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 6
+22:28:03.707 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 7
+22:28:03.729 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 7
+22:28:04.707 [Thread-2] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 8
+22:28:04.707 [Thread-2] DEBUG net.ServerLogic - Removing client no. 2
+22:28:04.729 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 8
+22:28:40.776 [Thread-8] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 1
+22:28:41.776 [Thread-8] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 2
+22:28:42.776 [Thread-8] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 3
+22:28:43.777 [Thread-8] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 4
+22:28:44.777 [Thread-8] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 5
+22:28:45.777 [Thread-8] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 6
+22:28:46.777 [Thread-8] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 7
+22:28:47.778 [Thread-8] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 8
+22:28:47.778 [Thread-8] DEBUG net.ServerLogic - Removing client no. 5
+22:28:58.682 [Thread-9] DEBUG net.ServerLogic - Removing client no. 5
+22:30:26.711 [Thread-10] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 1
+22:30:27.712 [Thread-10] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 2
+22:30:28.712 [Thread-10] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 3
+22:30:29.712 [Thread-10] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 4
+22:30:30.712 [Thread-10] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 5
+22:30:31.713 [Thread-10] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 6
+22:30:32.713 [Thread-10] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 7
+22:30:33.714 [Thread-10] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 8
+22:30:33.714 [Thread-10] DEBUG net.ServerLogic - Removing client no. 6
+22:30:44.617 [Thread-11] DEBUG net.ServerLogic - Removing client no. 6
+22:31:31.291 [Thread-12] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 1
+22:31:32.291 [Thread-12] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 2
+22:31:33.292 [Thread-12] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 3
+22:31:34.292 [Thread-12] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 4
+22:31:35.292 [Thread-12] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 5
+22:31:36.292 [Thread-12] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 6
+22:31:37.292 [Thread-12] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 7
+22:31:38.293 [Thread-12] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 8
+22:31:38.293 [Thread-12] DEBUG net.ServerLogic - Removing client no. 7
+22:31:49.195 [Thread-13] DEBUG net.ServerLogic - Removing client no. 7
+22:35:24.501 [Thread-14] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 1
+22:35:25.501 [Thread-14] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 2
+22:35:26.501 [Thread-14] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 3
+22:35:27.501 [Thread-14] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 4
+22:35:28.501 [Thread-14] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 5
+22:35:29.501 [Thread-14] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 6
+22:35:30.502 [Thread-14] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 7
+22:35:31.502 [Thread-14] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 8
+22:35:31.502 [Thread-14] DEBUG net.ServerLogic - Removing client no. 8
+22:35:42.413 [Thread-15] DEBUG net.ServerLogic - Removing client no. 8
+22:37:28.177 [Thread-16] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 1
+22:37:29.177 [Thread-16] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 2
+22:37:30.177 [Thread-16] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 3
+22:37:31.178 [Thread-16] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 4
+22:37:32.179 [Thread-16] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 5
+22:37:33.179 [Thread-16] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 6
+22:37:34.179 [Thread-16] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 7
+22:37:35.180 [Thread-16] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 8
+22:37:35.180 [Thread-16] DEBUG net.ServerLogic - Removing client no. 9
+22:37:46.079 [Thread-17] DEBUG net.ServerLogic - Removing client no. 9
+22:39:55.146 [Thread-18] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 1
+22:39:56.146 [Thread-18] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 2
+22:39:57.146 [Thread-18] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 3
+22:39:58.147 [Thread-18] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 4
+22:39:59.147 [Thread-18] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 5
+22:40:00.148 [Thread-18] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 6
+22:40:01.148 [Thread-18] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 7
+22:40:02.149 [Thread-18] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 8
+22:40:02.149 [Thread-18] DEBUG net.ServerLogic - Removing client no. 10
+22:40:13.050 [Thread-19] DEBUG net.ServerLogic - Removing client no. 10
+22:42:00.507 [Thread-20] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 1
+22:42:01.508 [Thread-20] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 2
+22:42:02.508 [Thread-20] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 3
+22:42:03.509 [Thread-20] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 4
+22:42:04.509 [Thread-20] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 5
+22:42:05.510 [Thread-20] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 6
+22:42:06.510 [Thread-20] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 7
+22:42:07.510 [Thread-20] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 8
+22:42:07.510 [Thread-20] DEBUG net.ServerLogic - Removing client no. 11
+22:42:18.419 [Thread-21] DEBUG net.ServerLogic - Removing client no. 11
+22:44:43.572 [Thread-22] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 1
+22:44:44.573 [Thread-22] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 2
+22:44:45.573 [Thread-22] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 3
+22:44:46.573 [Thread-22] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 4
+22:44:47.574 [Thread-22] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 5
+22:44:48.574 [Thread-22] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 6
+22:44:49.575 [Thread-22] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 7
+22:44:50.575 [Thread-22] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 8
+22:44:50.575 [Thread-22] DEBUG net.ServerLogic - Removing client no. 12
+22:45:01.702 [Thread-23] DEBUG net.ServerLogic - Removing client no. 12
 22:18:55.382 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 1
 22:18:56.386 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 2
 22:18:57.386 [Thread-3] DEBUG net.playerhandling.PingManager - Number of unanswered pings: 3
