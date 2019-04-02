@@ -8,6 +8,7 @@ import org.joml.Vector3f;
 public abstract class Item extends Entity {
 
   private final ItemMaster.ItemTypes type;
+  private boolean owned;
 
   /**
    * Abstract Constructor.
@@ -33,11 +34,21 @@ public abstract class Item extends Entity {
       System.out.println("WARNING! No model preloaded!");
     }
     this.type = type;
+    this.owned = true;
   }
 
   public abstract void update();
 
+  public boolean isOwned() {
+    return owned;
+  }
+
+  public void setOwned(boolean owned) {
+    this.owned = owned;
+  }
+
   public ItemMaster.ItemTypes getType() {
     return type;
   }
+
 }

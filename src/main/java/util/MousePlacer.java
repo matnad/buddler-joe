@@ -8,9 +8,13 @@ import entities.Entity;
 import entities.blocks.Block;
 import entities.blocks.BlockMaster;
 import entities.items.Dynamite;
+import entities.items.Item;
+import entities.items.ItemMaster;
 import entities.items.Torch;
+import game.Game;
 import java.util.HashMap;
 import java.util.Map;
+import net.packets.items.PacketSpawnItem;
 import org.joml.AABBf;
 import org.joml.Intersectionf;
 import org.joml.Rayf;
@@ -25,6 +29,7 @@ public class MousePlacer {
 
   private static Entity entity;
   private static int mode;
+  private static Block intersectionBlock;
 
   /**
    * Run every frame while placer Modes is on. Updates position of the entity to be placed and
@@ -45,9 +50,10 @@ public class MousePlacer {
       // Place only if not colliding with a block
       if (InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1) && !doesCollide(2)) {
         InputHandler.setPlacerMode(false);
-        if (entity instanceof Dynamite) {
-          ((Dynamite) entity).setActive(true);
-        }
+
+        // Place item
+        onPlace();
+
         MousePlacer.entity = null;
       }
     } else if (mode == Modes.BLOCK.getMode()) {
@@ -68,7 +74,7 @@ public class MousePlacer {
 
       Vector3f intersection = null;
       float distanceSq = Float.POSITIVE_INFINITY;
-      Block intersectionBlock = null;
+      intersectionBlock = null;
       if (intersections.size() == 0) {
         /*When no block intersection was found, use normal wall intersection,
          but we place it closer to the wall.
@@ -119,13 +125,32 @@ public class MousePlacer {
       }
 
       if (InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1) && !doesCollide(3)) {
-        // Bind torches to a block if placed in a block.
-        if (entity instanceof Torch) {
-          ((Torch) entity).setBlock(intersectionBlock);
-        }
+        // Place item
+        onPlace();
 
         InputHandler.setPlacerMode(false);
         MousePlacer.entity = null;
+      }
+    }
+
+
+
+  }
+
+  private static void onPlace() {
+    if (entity instanceof Dynamite) {
+      ((Dynamite) entity).setActive(true);
+    } else if (entity instanceof Torch) {
+      ((Torch) entity).setBlock(intersectionBlock);
+    }
+
+    if (entity instanceof Item) {
+      ItemMaster.ItemTypes itemType = ((Item) entity).getType();
+      if (itemType != null) {
+        // Send packet
+        if (Game.isConnectedToServer() && ((Item) entity).isOwned()) {
+          new PacketSpawnItem(itemType, entity.getPosition()).sendToServer();
+        }
       }
     }
   }

@@ -1,7 +1,9 @@
 package net.lobbyhandling;
 
+import game.map.ServerMap;
 import java.util.ArrayList;
 import net.ServerLogic;
+import net.packets.map.PacketBroadcastMap;
 import net.playerhandling.Player;
 
 /**
@@ -16,6 +18,7 @@ public class Lobby {
   private boolean inGame;
   private String lobbyName;
   private ArrayList<Player> lobbyPlayers;
+  private ServerMap map;
 
   /**
    * Constructor of the lobby-class uses by the Server.
@@ -30,6 +33,8 @@ public class Lobby {
     this.lobbyPlayers = new ArrayList<>();
     this.lobbyId = lobbyCounter;
     lobbyCounter++;
+    map = new ServerMap(60, 40, System.currentTimeMillis());
+    //System.out.println(map);
   }
 
   /**
@@ -136,5 +141,9 @@ public class Lobby {
    */
   public void setInGame(boolean inGame) {
     this.inGame = inGame;
+  }
+
+  public ServerMap getMap() {
+    return map;
   }
 }

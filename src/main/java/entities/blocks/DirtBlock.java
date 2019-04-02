@@ -18,16 +18,18 @@ public class DirtBlock extends Block {
   private static TexturedModel blockModel;
 
   /** Extended Constructor, dont call directly. */
-  DirtBlock(Vector3f position, float rotX, float rotY, float rotZ, float scale) {
+  DirtBlock(
+      Vector3f position, float rotX, float rotY, float rotZ, float scale, int gridX, int gridY) {
     // Must pass block type and hardness here as they are required
-    super(BlockMaster.BlockTypes.DIRT, hardness, 1f, position, rotX, rotY, rotZ, scale);
+    super(
+        BlockMaster.BlockTypes.DIRT, hardness, 1f, position, rotX, rotY, rotZ, scale, gridX, gridY);
     setModel(blockModel);
     setTextureIndex(0);
   }
 
   /** Shortened constructer with just position. Dont call directly. */
-  DirtBlock(Vector3f position) {
-    this(position, 0, 0, 0, 3);
+  DirtBlock(Vector3f position, int gridX, int gridY) {
+    this(position, 0, 0, 0, 3, gridX, gridY);
   }
 
   static void init(Loader loader) {

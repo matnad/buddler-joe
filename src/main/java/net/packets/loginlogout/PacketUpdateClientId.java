@@ -53,7 +53,6 @@ public class PacketUpdateClientId extends Packet {
         int id = Integer.parseInt(clientIdString);
         try {
           Game.getActivePlayer().setClientId(id);
-          Game.setConnectedToServer(true);
         } catch (NullPointerException ignored) {
           //This is a network only client and no game is running, or the game has not loaded yet
         }

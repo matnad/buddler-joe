@@ -8,6 +8,7 @@ import engine.render.Loader;
 import engine.render.objconverter.ObjFileLoader;
 import engine.textures.ModelTexture;
 import entities.blocks.Block;
+import entities.blocks.BlockMaster;
 import entities.light.Light;
 import entities.light.LightMaster;
 import java.util.Random;
@@ -42,7 +43,7 @@ public class Torch extends Item {
     setPlacerMode(MousePlacer.Modes.BLOCK.getMode()); // Torches can be placed on blocks
 
     this.colour = colour;
-    this.brightness = 2;
+    this.brightness = 4;
     this.block = block;
 
     random = new Random();
@@ -55,7 +56,10 @@ public class Torch extends Item {
     flamePosition = new Vector3f(position).add(flameOffset);
     light =
         LightMaster.generateLight(
-            LightMaster.LightTypes.TORCH, flamePosition, colour.mul(brightness));
+            LightMaster.LightTypes.TORCH, flamePosition, colour);
+    light.setBrightness(brightness);
+
+    setPosition(position);
 
     // Generate Fuse Effect
     flame = new Fire(15, .4f, 0, 2f, 1.5f);
@@ -114,7 +118,6 @@ public class Torch extends Item {
 
   public void setColour(Vector3f colour) {
     this.colour = colour;
-    light.setColour(colour.mul(brightness));
   }
 
   public Vector3f getAttenuation() {
@@ -131,6 +134,7 @@ public class Torch extends Item {
     light.setDestroyed(destroyed);
   }
 
+  /** Creates a subtle flicker effect for the torch. */
   private void updateAttenuationNoise() {
     // Add "light flicker" effect with gaussian random walk and pull to the average
     flickerFactor += (float) (random.nextGaussian() / 5000);
@@ -144,14 +148,44 @@ public class Torch extends Item {
   public void setPosition(Vector3f position) {
     super.setPosition(position);
     flamePosition = new Vector3f(getPosition()).add(flameOffset);
-    light.setPosition(flamePosition);
+    // Better illumination if the light source is away from the wall
+    if (getPosition().z > 6) {
+      light.setPosition(new Vector3f(flamePosition).add(new Vector3f(0,0,5)));
+    } else {
+      light.setPosition(flamePosition);
+    }
   }
 
   public Block getBlock() {
     return block;
   }
 
+  /**
+   * Bind torch to a block. If the block dies, the torch will be destroyed.
+   *
+   * @param block Block to attach to the torch
+   */
   public void setBlock(Block block) {
     this.block = block;
+  }
+
+  /**
+   * Check if the Torch is on a block and attach to the block.
+   *
+   * <p>This will check by distance.
+   */
+  public void checkForBlock() {
+    Block closestBlock = null;
+    float closestDistSq = 25;
+    for (Block block : BlockMaster.getBlocks()) {
+      float distSq = block.getDistanceSquaredFrom(getPosition());
+      if (distSq < closestDistSq) {
+        closestDistSq = distSq;
+        closestBlock = block;
+      }
+    }
+    if (closestBlock != null) {
+      setBlock(closestBlock);
+    }
   }
 }

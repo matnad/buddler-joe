@@ -15,14 +15,20 @@ import static org.lwjgl.glfw.GLFW.GLFW_KEY_W;
 import collision.BoundingBox;
 import engine.io.InputHandler;
 import engine.models.TexturedModel;
+import engine.render.MasterRenderer;
 import entities.blocks.Block;
 import entities.blocks.BlockMaster;
 import entities.items.ItemMaster;
 import game.Game;
+import gui.Fps;
 import java.util.ArrayList;
 import java.util.List;
+import net.packets.block.PacketBlockDamage;
 import net.packets.playerprop.PacketPos;
+import org.joml.Vector2f;
 import org.joml.Vector3f;
+import org.joml.Vector4f;
+import util.Maths;
 import util.MousePlacer;
 
 /**
@@ -120,6 +126,14 @@ public class Player extends NetPlayer {
       handleCollision(closeBlock);
     }
 
+    // Turn Headlight on/off
+    float pctBrightness = Game.getMap().getLightLevel(getPosition().y);
+    if (pctBrightness > .7f) {
+      turnHeadlightOff();
+    } else {
+      turnHeadlightOn();
+    }
+
     // Send server update with update
     if (Game.isConnectedToServer()
         && (currentSpeed != 0 || upwardsSpeed != 0 || currentTurnSpeed != 0)) {
@@ -201,7 +215,14 @@ public class Player extends NetPlayer {
    */
   private void digBlock(Block block) {
     // Scale with frame time
-    block.increaseDamage((float) (digDamage * Game.window.getFrameTimeSeconds()), this);
+    //    block.increaseDamage((float) (digDamage * Game.window.getFrameTimeSeconds()), this);
+    if (Game.isConnectedToServer()) {
+      new PacketBlockDamage(
+              block.getGridX(),
+              block.getGridY(),
+              (float) (digDamage * Game.window.getFrameTimeSeconds()))
+          .sendToServer();
+    }
   }
 
   /** VERY simple jump. */

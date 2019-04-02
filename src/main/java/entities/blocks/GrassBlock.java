@@ -18,19 +18,30 @@ public class GrassBlock extends Block {
   private static TexturedModel blockModel;
 
   /** Extended Constructor, dont call directly. */
-  GrassBlock(Vector3f position, float rotX, float rotY, float rotZ, float scale) {
-    super(BlockMaster.BlockTypes.GRASS, hardness, 1f, position, rotX, rotY, rotZ, scale);
+  GrassBlock(
+      Vector3f position, float rotX, float rotY, float rotZ, float scale, int gridX, int gridY) {
+    super(
+        BlockMaster.BlockTypes.GRASS,
+        hardness,
+        1f,
+        position,
+        rotX,
+        rotY,
+        rotZ,
+        scale,
+        gridX,
+        gridY);
     setModel(blockModel);
     setTextureIndex(0);
   }
 
   /** Shortened constructor with just position. Dont call directly. */
-  GrassBlock(Vector3f position) {
-    this(position, 0, 0, 0, 3);
+  GrassBlock(Vector3f position, int gridX, int gridY) {
+    this(position, 0, 180, 0, 3, gridX, gridY);
   }
 
   static void init(Loader loader) {
-    RawModel rawBlock = loader.loadToVao(ObjFileLoader.loadObj("dirt"));
+    RawModel rawBlock = loader.loadToVao(ObjFileLoader.loadObj("block"));
     ModelTexture blockAtlas = new ModelTexture(loader.loadTexture("item4x4"));
     blockAtlas.setNumberOfRows(2);
     blockModel = new TexturedModel(rawBlock, blockAtlas);
@@ -38,4 +49,8 @@ public class GrassBlock extends Block {
 
   @Override
   protected void onDestroy() {}
+
+  public static float getHardness() {
+    return hardness;
+  }
 }

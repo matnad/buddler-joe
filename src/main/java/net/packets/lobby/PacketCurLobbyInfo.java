@@ -3,6 +3,7 @@ package net.packets.lobby;
 import game.Game;
 import game.NetPlayerMaster;
 import java.util.ArrayList;
+import java.util.Arrays;
 import net.ServerLogic;
 import net.lobbyhandling.Lobby;
 import net.packets.Packet;

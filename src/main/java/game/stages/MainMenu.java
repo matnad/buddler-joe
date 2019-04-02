@@ -1,5 +1,9 @@
 package game.stages;
 
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_ESCAPE;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_L;
+import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_1;
+
 import engine.io.InputHandler;
 import engine.render.Loader;
 import game.Game;
@@ -8,8 +12,6 @@ import gui.MenuButton;
 import java.util.ArrayList;
 import java.util.List;
 import org.joml.Vector2f;
-
-import static org.lwjgl.glfw.GLFW.*;
 
 /**
  * Main Menu specification and rendering. Must be initialized. Specifies all the elements in the
@@ -29,7 +31,6 @@ public class MainMenu {
   private static MenuButton credits;
   private static MenuButton options;
 
-
   /**
    * * Initialize Game Menu. Will load the texture files and generate the basic menu parts. This
    * needs to be called once before using the menu.
@@ -42,34 +43,58 @@ public class MainMenu {
 
     // Background
     background =
-        new GuiTexture(loader.loadTexture("mainMenuBackground"), new Vector2f(0, 0), new Vector2f(1, 1), 1);
-
+        new GuiTexture(
+            loader.loadTexture("mainMenuBackground"), new Vector2f(0, 0), new Vector2f(1, 1), 1);
 
     buddlerJoe =
-            new GuiTexture(loader.loadTexture("buddlerjoe"), new Vector2f(-0.730208f, -0.32963f), new Vector2f(0.181771f, 0.67963f), 1);
+        new GuiTexture(
+            loader.loadTexture("buddlerjoe"),
+            new Vector2f(-0.730208f, -0.32963f),
+            new Vector2f(0.181771f, 0.67963f),
+            1);
 
     titel =
-            new GuiTexture(loader.loadTexture("titelBig"), new Vector2f(0, 0.588889f), new Vector2f(0.291667f, 0.3f), 1);
+        new GuiTexture(
+            loader.loadTexture("titelBig"),
+            new Vector2f(0, 0.588889f),
+            new Vector2f(0.291667f, 0.3f),
+            1);
 
     // Choose Lobby
     chooseLobby =
         new MenuButton(
-            loader, "lobbyOverviewWood_norm", "lobbyOverviewWood_hover", new Vector2f(0, 0.0740f), new Vector2f(.305521f, .128333f));
+            loader,
+            "lobbyOverviewWood_norm",
+            "lobbyOverviewWood_hover",
+            new Vector2f(0, 0.0740f),
+            new Vector2f(.305521f, .128333f));
 
     // Credits
     credits =
-            new MenuButton(
-                    loader, "credits_norm", "credits_hover", new Vector2f(0, -0.2f), new Vector2f(.305521f, .128333f));
+        new MenuButton(
+            loader,
+            "credits_norm",
+            "credits_hover",
+            new Vector2f(0, -0.2f),
+            new Vector2f(.305521f, .128333f));
 
     // Options
     options =
-            new MenuButton(
-                    loader, "options_norm", "options_hover", new Vector2f(0, -0.474074f), new Vector2f(.305521f, .128333f));
+        new MenuButton(
+            loader,
+            "options_norm",
+            "options_hover",
+            new Vector2f(0, -0.474074f),
+            new Vector2f(.305521f, .128333f));
 
     // Exit Game
     exitGame =
         new MenuButton(
-            loader, "quitWood_norm", "quitWood_hover", new Vector2f(0.75f, -0.851852f), new Vector2f(.097094f, .082347f));
+            loader,
+            "quitWood_norm",
+            "quitWood_hover",
+            new Vector2f(0.75f, -0.851852f),
+            new Vector2f(.097094f, .082347f));
   }
 
   /**
@@ -91,7 +116,6 @@ public class MainMenu {
     guis.add(exitGame.getHoverTexture(x, y));
     guis.add(credits.getHoverTexture(x, y));
     guis.add(options.getHoverTexture(x, y));
-
 
     for (GuiTexture gui : guis) {
       gui.setAlpha(currentAlpha);
@@ -128,19 +152,19 @@ public class MainMenu {
     if (InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1) && chooseLobby.isHover(x, y)) {
       Game.addActiveStage(Game.Stage.CHOOSELOBBY);
       Game.removeActiveStage(Game.Stage.MAINMENU);
-    }else if(InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1) && credits.isHover(x,y)){
+    } else if (InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1) && credits.isHover(x, y)) {
       Game.addActiveStage(Game.Stage.CREDITS);
       Game.removeActiveStage(Game.Stage.MAINMENU);
-    }else if(InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1) && options.isHover(x,y)){
+    } else if (InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1) && options.isHover(x, y)) {
       Game.addActiveStage(Game.Stage.OPTIONS);
       Game.removeActiveStage(Game.Stage.MAINMENU);
-    }else if (InputHandler.isKeyPressed(GLFW_KEY_ESCAPE)){
+    } else if (InputHandler.isKeyPressed(GLFW_KEY_ESCAPE)) {
       Game.addActiveStage(Game.Stage.WELCOME);
       Game.removeActiveStage(Game.Stage.MAINMENU);
-    }else if ((InputHandler.isMouseDown(GLFW_MOUSE_BUTTON_1) && exitGame.isHover(x, y))) {
+    } else if ((InputHandler.isMouseDown(GLFW_MOUSE_BUTTON_1) && exitGame.isHover(x, y))) {
       Game.window.stop();
-    }else if (InputHandler.isKeyPressed(GLFW_KEY_L)) {
-      //TODO: remove this if option
+    } else if (InputHandler.isKeyPressed(GLFW_KEY_L)) {
+      // TODO: remove this if option
       Game.addActiveStage(Game.Stage.INLOBBBY);
       Game.removeActiveStage(Game.Stage.MAINMENU);
     }

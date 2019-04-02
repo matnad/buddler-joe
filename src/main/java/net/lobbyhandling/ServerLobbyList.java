@@ -35,6 +35,7 @@ public class ServerLobbyList {
       }
     }
     lobbies.put(lobby.getLobbyId(), lobby);
+    System.out.println(lobby.getMap());
     return "OK";
   }
 

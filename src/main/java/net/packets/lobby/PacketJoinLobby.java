@@ -1,7 +1,10 @@
 package net.packets.lobby;
 
+import game.map.ServerMap;
 import net.ServerLogic;
 import net.packets.Packet;
+import net.packets.block.PacketBlockDamage;
+import net.packets.map.PacketBroadcastMap;
 import net.playerhandling.Player;
 
 /**
@@ -97,6 +100,13 @@ public class PacketJoinLobby extends Packet {
       info = "OK║" + ServerLogic.getLobbyList().getTopTen();
       PacketLobbyOverview packetLobbyOverview = new PacketLobbyOverview(getClientId(), info);
       packetLobbyOverview.sendToClientsNotInALobby();
+
+      // Broadcast Map
+      ServerMap map = ServerLogic.getLobbyList().getLobby(lobbyId).getMap();
+      new PacketBroadcastMap(map).sendToClient(getClientId());
+      for (PacketBlockDamage damagePacket : map.getDamagePackets()) {
+        damagePacket.sendToClient(getClientId());
+      }
     }
   }
 }

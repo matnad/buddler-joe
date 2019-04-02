@@ -17,22 +17,24 @@ import util.Maths;
  *
  * <p>Disregard this as it is not implemented yet
  */
-public class DirectionalUsername extends GuiString {
+public class Nameplate extends GuiString {
 
   private NetPlayer player;
 
   /**
-   * Create directional username. WIP/TEMPORARY CLASS!
+   * WIP.
    *
    * @param player player to generate name for
    */
-  public DirectionalUsername(NetPlayer player) {
+  public Nameplate(NetPlayer player) {
     super();
     this.player = player;
 
-    setAlpha(.5f);
+    setAlpha(1f);
     setTextColour(new Vector3f(1, 1, 1));
-    setFontSize(.5f);
+    setFontSize(.8f);
+    setMaxLineLength(0.3f);
+    setCentered(true);
 
     setText(player.getUsername());
   }
@@ -42,26 +44,33 @@ public class DirectionalUsername extends GuiString {
     if (getGuiText() != null) {
       TextMaster.removeText(getGuiText());
     }
-    setPosition(findLocation(Game.getActiveCamera()));
+    Vector2f loc = findLocation(Game.getActiveCamera());
+    if (loc != null) {
+      setPosition(loc);
+    }
+    float fontSize = (50 / (player.getPosition().distance(Game.getActiveCamera().getPosition())));
+    setFontSize(fontSize);
 
     createGuiText();
   }
 
   private Vector2f findLocation(Camera camera) {
-    // Transforms world coodinates to normalized device coordinates. Experimental feature!
-    // This will generate the effect of the text pointing in the direction of the player.
+    // Transforms world coodinates to normalized device coordinates with some offsets for centering.
+    // Experimental feature!
     Vector4f loc =
         new Vector4f(
-                player.getBbox().getMinX(),
-                player.getBbox().getMaxY(),
+                player.getBbox().getMaxX() - player.getBbox().getDimX() / 2,
+                player.getBbox().getMaxY() + 2,
                 player.getBbox().getMaxZ() - player.getBbox().getDimZ() / 2,
                 1f)
             .mul(Maths.createViewMatrix(camera))
-            .mul(MasterRenderer.getProjectionMatrix())
-            .normalize();
+            .mul(MasterRenderer.getProjectionMatrix());
 
-    float normX = (loc.x + 1) / 2;
-    float normY = (1 - loc.y) / 2;
-    return new Vector2f(normX, normY);
+    if (loc.w <= 0) {
+      return null;
+    }
+    float x = (loc.x / loc.w + 1) / 2f;
+    float y = 1 - (loc.y / loc.w + 1) / 2f;
+    return new Vector2f(x - 0.15f, y);
   }
 }

@@ -6,13 +6,14 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class DebrisMaster {
 
   private static final float SIZE_MIN = .1f;
   private static final float SIZE_MAX = .6f;
   // That's definitely how this is spelled
-  private static final List<Debris> debrises = new ArrayList<>();
+  private static final List<Debris> debrises = new CopyOnWriteArrayList<>();
   static Random random;
 
   public static void init() {
@@ -29,7 +30,7 @@ public class DebrisMaster {
 
     float blockMass = (float) Math.pow(block.getDim(), 3);
     float debrisMass = 0;
-    while (debrisMass < blockMass / 8f) {
+    while (debrisMass < blockMass / 12f) {
       float size = Math.max(SIZE_MIN, random.nextFloat() * SIZE_MAX);
       debrisMass += Math.pow(size, 3);
       Debris debris = new Debris(block, size);
@@ -43,13 +44,11 @@ public class DebrisMaster {
    * that are past their life length
    */
   public static void update() {
-    Iterator<Debris> iterator = debrises.iterator();
-    while (iterator.hasNext()) {
-      Debris d = iterator.next();
+    for (Debris d : debrises) {
       d.update();
       if (d.getElapsedTime() > d.getLifeLength()) {
         Game.removeEntity(d);
-        iterator.remove();
+        debrises.remove(d);
       }
     }
   }

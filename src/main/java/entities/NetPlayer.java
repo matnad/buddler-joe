@@ -1,7 +1,10 @@
 package entities;
 
 import engine.models.TexturedModel;
-import gui.DirectionalUsername;
+import entities.light.Light;
+import entities.light.LightMaster;
+import gui.Nameplate;
+import javax.naming.Name;
 import org.joml.Vector3f;
 
 /**
@@ -12,7 +15,18 @@ public class NetPlayer extends Entity {
 
   private int clientId;
   private String username;
-  //private DirectionalUsername directionalUsername;
+  private Light headLight;
+  private Light headLightGlow;
+
+  private static final Vector3f[] lampColors = {
+    new Vector3f(1, 1, 1).normalize(),
+    new Vector3f(3f, 1, 1).normalize(),
+    new Vector3f(1, 3f, 1).normalize(),
+    new Vector3f(1, 1, 3f).normalize()
+  };
+  private static int counter;
+  // private DirectionalUsername directionalUsername;
+  private Nameplate nameplate;
 
   /**
    * Create a net player.
@@ -41,6 +55,15 @@ public class NetPlayer extends Entity {
 
     this.clientId = clientId;
     this.username = username;
+    headLight =
+        LightMaster.generateLight(
+            LightMaster.LightTypes.SPOT, getHeadlightPosition(), lampColors[counter++]);
+    headLight.setCutoff(25f);
+    headLightGlow =
+        LightMaster.generateLight(
+            LightMaster.LightTypes.TORCH, getHeadlightPosition(), new Vector3f(1f, 1, 1));
+
+    nameplate = new Nameplate(this);
   }
 
   public String getUsername() {
@@ -57,5 +80,64 @@ public class NetPlayer extends Entity {
 
   public void setClientId(int clientId) {
     this.clientId = clientId;
+  }
+
+  public void updateNameplate() {
+    nameplate.updateString();
+  }
+
+  public void turnHeadlightOff() {
+    headLight.setBrightness(0);
+    headLightGlow.setBrightness(0);
+  }
+
+  public void turnHeadlightOn() {
+    headLight.setBrightness(8);
+    headLightGlow.setBrightness(2);
+  }
+
+  private Vector3f getHeadlightPosition() {
+    return new Vector3f(getPosition()).add(.3f, 4, 0);
+  }
+
+  private void updateHeadlightPosition() {
+    headLight.setPosition(getHeadlightPosition());
+    headLightGlow.setPosition(getHeadlightPosition());
+  }
+
+  private void updateHeadlightDirection() {
+    Vector3f direction = new Vector3f(0, 0, 1).rotateY((float) Math.toRadians(getRotY()));
+    headLight.setDirection(direction);
+  }
+
+
+
+  @Override
+  public void setRotY(float rotY) {
+    super.setRotY(rotY);
+    updateHeadlightDirection();
+  }
+
+  @Override
+  public void increaseRotation(float dx, float dy, float dz) {
+    super.increaseRotation(dx, dy, dz);
+    updateHeadlightDirection();
+  }
+
+  @Override
+  public void increaseRotation(Vector3f spin) {
+    increaseRotation(spin.x, spin.y, spin.z);
+  }
+
+  @Override
+  public void setPosition(Vector3f position) {
+    super.setPosition(position);
+    updateHeadlightPosition();
+  }
+
+  @Override
+  public void increasePosition(Vector3f velocity) {
+    super.increasePosition(velocity);
+    updateHeadlightPosition();
   }
 }

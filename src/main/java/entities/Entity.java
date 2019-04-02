@@ -145,10 +145,7 @@ public class Entity {
    * @param dz move this entity by dz units in the positive z direction
    */
   public void increasePosition(float dx, float dy, float dz) {
-    this.position.x += dx;
-    this.position.y += dy;
-    this.position.z += dz;
-    updateBoundingBox();
+    increasePosition(new Vector3f(dx, dy, dz));
   }
 
   /**
@@ -181,10 +178,7 @@ public class Entity {
    * @param spin Rotate this entity along all 3 axes
    */
   public void increaseRotation(Vector3f spin) {
-    this.rotX += spin.x;
-    this.rotY += spin.y;
-    this.rotZ += spin.z;
-    updateBoundingBox();
+    increaseRotation(spin.x, spin.y, spin.z);
   }
 
   public TexturedModel getModel() {
@@ -277,7 +271,6 @@ public class Entity {
    */
   public void setPositionX(float x) {
     setPosition(new Vector3f(x, getPosition().y, getPosition().z));
-    updateBoundingBox();
   }
 
   /**
@@ -287,7 +280,6 @@ public class Entity {
    */
   public void setPositionY(float y) {
     setPosition(new Vector3f(getPosition().x, y, getPosition().z));
-    updateBoundingBox();
   }
 
   /**
@@ -297,7 +289,6 @@ public class Entity {
    */
   public void setPositionZ(float z) {
     setPosition(new Vector3f(getPosition().x, getPosition().y, z));
-    updateBoundingBox();
   }
 
   public boolean isDestroyed() {

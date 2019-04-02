@@ -14,6 +14,8 @@ import entities.light.Light;
 import entities.light.LightMaster;
 import game.Game;
 import java.util.Random;
+import net.packets.block.PacketBlockDamage;
+import net.packets.items.PacketSpawnItem;
 import org.joml.Vector3f;
 
 /** A bundle of dynamite that can damage blocks or the player. */
@@ -39,6 +41,7 @@ public class Dynamite extends Item {
   /** Extended Constructor for Dynamite. Don't use directly. Use the Item Master to create items. */
   private Dynamite(Vector3f position, float rotX, float rotY, float rotZ, float scale) {
     super(ItemMaster.ItemTypes.DYNAMITE, getPreloadedModel(), position, rotX, rotY, rotZ, scale);
+
     time = 0;
     active = false;
     exploded = false;
@@ -164,10 +167,10 @@ public class Dynamite extends Item {
       flash.setDestroyed(true);
     } else if (time >= fuseTimer + .3f) {
       float scaleBrightness = (float) (1 - Game.window.getFrameTimeSeconds() * 5);
-      flash.getColour().mul(scaleBrightness);
+      flash.getAdjustedColour().mul(scaleBrightness);
     } else if (time > fuseTimer) {
       float scaleBrightness = (float) (1 + Game.window.getFrameTimeSeconds() * 10);
-      flash.getColour().mul(scaleBrightness);
+      flash.getAdjustedColour().mul(scaleBrightness);
     }
   }
 
@@ -178,17 +181,26 @@ public class Dynamite extends Item {
     }
     exploded = true;
     setScale(new Vector3f()); // Hide the model, but keep the object for the explosion effect to
-    // complete
+    flash =
+        LightMaster.generateLight(
+            LightMaster.LightTypes.FLASH, getPosition(), new Vector3f(1, 1, 1));
+
+    // Deal Damage if dynamite is owned
+    if (!isOwned()) {
+      return;
+    }
+
     for (Block block : BlockMaster.getBlocks()) {
       float distance = block.get2dDistanceFrom(getPositionXy());
       if (distance < explosionRange) {
         // Damage blocks inverse to distance (closer = more damage)
-        block.increaseDamage(1 / distance * maximumDamage, this);
+        // block.increaseDamage(1 / distance * maximumDamage);
+        if (Game.isConnectedToServer()) {
+          new PacketBlockDamage(block.getGridX(), block.getGridY(), 1 / distance * maximumDamage)
+              .sendToServer();
+        }
       }
     }
-    flash =
-        LightMaster.generateLight(
-            LightMaster.LightTypes.FLASH, getPosition(), new Vector3f(1, 1, 1));
   }
 
   public boolean isActive() {
@@ -197,5 +209,6 @@ public class Dynamite extends Item {
 
   public void setActive(boolean active) {
     this.active = active;
+
   }
 }

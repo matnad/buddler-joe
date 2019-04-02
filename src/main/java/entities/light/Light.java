@@ -12,22 +12,47 @@ public class Light {
   private final LightMaster.LightTypes type;
   private Vector3f position;
   private Vector3f colour;
+  private float brightness;
   private Vector3f attenuation;
   private boolean destroyed;
   private float distanceSq;
+  private Vector3f direction;
+  private float cutoff;
 
   /**
-   * Strength of the light depends on distance and angle.
+   * POINT LIGHT. Strength of the light depends on distance and angle.
    *
    * @param type type of light
    * @param position world coordinates
    * @param colour r, g, b
    */
   public Light(LightMaster.LightTypes type, Vector3f position, Vector3f colour) {
+    this(type, position, colour, new Vector3f(), (float) Math.cos(Math.toRadians(180f)));
+  }
+
+  /**
+   * SPOT LIGHT. Strength of the light depends on distance and angle.
+   *
+   * @param type type of light
+   * @param position world coordinates
+   * @param colour r, g, b
+   * @param direction direction vector of the light if it is a spot light
+   * @param cutoff cutoff angle for a spotlight (the angle is deviation from the direction, so it
+   *     will be doubled).
+   */
+  public Light(
+      LightMaster.LightTypes type,
+      Vector3f position,
+      Vector3f colour,
+      Vector3f direction,
+      float cutoff) {
     this.type = type;
     this.position = position;
     this.colour = colour;
+    this.brightness = 1;
     this.attenuation = type.getBaseAttenuation();
+    this.direction = direction;
+    this.cutoff = (float) Math.cos(Math.toRadians(cutoff));
     this.distanceSq = 0;
   }
 
@@ -50,8 +75,20 @@ public class Light {
     this.position = position;
   }
 
+  public Vector3f getAdjustedColour() {
+    return new Vector3f(colour).mul(brightness);
+  }
+
   public Vector3f getColour() {
     return colour;
+  }
+
+  public float getBrightness() {
+    return brightness;
+  }
+
+  public void setBrightness(float brightness) {
+    this.brightness = brightness;
   }
 
   public void setColour(Vector3f colour) {
@@ -80,5 +117,21 @@ public class Light {
 
   float getDistanceSq() {
     return distanceSq;
+  }
+
+  public Vector3f getDirection() {
+    return direction;
+  }
+
+  public float getCutoff() {
+    return cutoff;
+  }
+
+  public void setDirection(Vector3f direction) {
+    this.direction = direction;
+  }
+
+  public void setCutoff(float cutoff) {
+    this.cutoff = (float) Math.cos(Math.toRadians(cutoff));
   }
 }

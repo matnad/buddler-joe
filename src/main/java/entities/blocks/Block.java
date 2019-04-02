@@ -7,6 +7,8 @@ import engine.render.objconverter.ObjFileLoader;
 import engine.textures.ModelTexture;
 import entities.Entity;
 import entities.blocks.debris.DebrisMaster;
+import game.Game;
+import java.util.Random;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 
@@ -27,11 +29,18 @@ public abstract class Block extends Entity {
   private float damage;
   private Entity destroyedBy;
 
+  // Grid Position for Map
+  private int gridX;
+  private int gridY;
+
+  // Variables for moving and shaking a block
   private Vector3f moveTo;
   private Vector3f moveStartPos;
   private float moveDistance;
   private Vector3f speed;
   private Vector3f acceleration;
+  private float moveDelay;
+  private boolean shakeLeft;
 
   /**
    * Abstract Constructor.
@@ -44,6 +53,8 @@ public abstract class Block extends Entity {
    * @param rotY rotation around Y axis
    * @param rotZ rotation around Z axis
    * @param scale scaling multiplier
+   * @param gridX X coordinate for the block (map grid)
+   * @param gridY Y coordinate for the block (map grid)
    */
   public Block(
       BlockMaster.BlockTypes type,
@@ -53,7 +64,9 @@ public abstract class Block extends Entity {
       float rotX,
       float rotY,
       float rotZ,
-      float scale) {
+      float scale,
+      int gridX,
+      int gridY) {
     // blockModel is a texture atlas, containing all block textures, ID is the position of the
     // texture on the atlas
     super(blockModel, type.getTextureId(), position, rotX, rotY, rotZ, scale);
@@ -61,6 +74,8 @@ public abstract class Block extends Entity {
     this.type = type;
     this.hardness = hardness;
     this.mass = mass;
+    this.gridX = gridX;
+    this.gridY = gridY;
 
     if (blockModel == null) {
       // Maybe need more than a warning
@@ -77,8 +92,10 @@ public abstract class Block extends Entity {
     This allows us to override it from sub-blocks.
     */
     this.dim = scale;
+
     this.moveTo = getPosition();
-    this.acceleration = new Vector3f(0, 1, 0); // Added per second
+    this.acceleration = new Vector3f(0, 1f, 0); // Added per second
+    this.speed = new Vector3f(0, 0, 0);
   }
 
   /**
@@ -142,9 +159,8 @@ public abstract class Block extends Entity {
    * Add damage to the block.
    *
    * @param damage damage done to the block
-   * @param entity entity that inflicted the damage
    */
-  public void increaseDamage(float damage, Entity entity) {
+  public void increaseDamage(float damage) {
     this.damage += damage;
     float percentIntegrity = (this.hardness - this.damage) / hardness;
     if (percentIntegrity < .25) {
@@ -158,7 +174,6 @@ public abstract class Block extends Entity {
     }
 
     if (this.damage > this.hardness) {
-      setDestroyedBy(entity);
       setDestroyed(true); // Destroy block
     }
   }
@@ -184,6 +199,11 @@ public abstract class Block extends Entity {
       onDestroy();
     }
     // Game.getMap().destroyBlock(this);
+  }
+
+  /** Removes block from the world without triggering onDestroy actions. */
+  public void remove() {
+    super.setDestroyed(true);
   }
 
   public float getDim() {
@@ -223,20 +243,93 @@ public abstract class Block extends Entity {
    * acceleration setter.
    *
    * @param moveTo target to move the block to
+   * @param moveDelay seconds to wait before moving
    */
-  public void setMoveTo(Vector3f moveTo) {
+  public void setMoveTo(Vector3f moveTo, float moveDelay) {
+    this.moveDelay = moveDelay;
     this.moveTo = moveTo;
     this.speed = new Vector3f(0, 0, 0);
     this.moveStartPos = new Vector3f(getPosition());
     this.moveDistance = getPosition().distance(moveTo);
   }
 
+  /**
+   * Add the acceleration to the speed once per second, normalized by frame time.
+   *
+   * @param delta duration of the last frame
+   */
   public void accelerate(float delta) {
     this.speed.add(new Vector3f(acceleration).mul(delta));
   }
 
   public Vector3f getSpeed() {
     return speed;
+  }
+
+  public void decreaseMoveDelay(float delta) {
+    moveDelay -= delta;
+  }
+
+  public float getMoveDelay() {
+    return moveDelay;
+  }
+
+  /**
+   * Check if a block has to wait or can move.
+   *
+   * @return True if the move delay has run out
+   */
+  public boolean canMove() {
+    return moveDelay <= 0;
+  }
+
+  /**
+   * Determines the direction the block should turn while shaking.
+   *
+   * @return true if the block should turn to the left
+   */
+  private boolean isShakeLeft() {
+    return shakeLeft;
+  }
+
+  /** Reverse the direction the block is turning while shaking. */
+  private void toggleShake() {
+    shakeLeft = !shakeLeft;
+  }
+
+  /**
+   * Manipulate the X rotation with some variance to simulate shaking of the block. Call this every
+   * frame for as long as you want the block to jiggle.
+   */
+  public void shake() {
+    float speed = (float) Game.window.getFrameTimeSeconds() * (new Random().nextFloat() * 60f + 45);
+    if (isShakeLeft()) {
+      setRotX(getRotX() - speed);
+      if (getRotX() < -3) {
+        toggleShake();
+      }
+    } else {
+      setRotX(getRotX() + speed);
+      if (getRotX() > 3) {
+        toggleShake();
+      }
+    }
+  }
+
+  public int getGridX() {
+    return gridX;
+  }
+
+  public int getGridY() {
+    return gridY;
+  }
+
+  public void setGridX(int gridX) {
+    this.gridX = gridX;
+  }
+
+  public void setGridY(int gridY) {
+    this.gridY = gridY;
   }
 
   @Override

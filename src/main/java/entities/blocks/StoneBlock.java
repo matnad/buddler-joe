@@ -18,15 +18,26 @@ public class StoneBlock extends Block {
   private static TexturedModel blockModel;
 
   /** Extended Constructor, dont call directly. */
-  StoneBlock(Vector3f position, float rotX, float rotY, float rotZ, float scale) {
-    super(BlockMaster.BlockTypes.STONE, hardness, 2f, position, rotX, rotY, rotZ, scale);
+  StoneBlock(
+      Vector3f position, float rotX, float rotY, float rotZ, float scale, int gridX, int gridY) {
+    super(
+        BlockMaster.BlockTypes.STONE,
+        hardness,
+        2f,
+        position,
+        rotX,
+        rotY,
+        rotZ,
+        scale,
+        gridX,
+        gridY);
     setModel(blockModel);
     setTextureIndex(0);
   }
 
   /** Shortened constructor with just position. Dont call directly. */
-  StoneBlock(Vector3f position) {
-    this(position, 0, 0, 0, 3);
+  StoneBlock(Vector3f position, int gridX, int gridY) {
+    this(position, 0, 0, 0, 3, gridX, gridY);
   }
 
   static void init(Loader loader) {

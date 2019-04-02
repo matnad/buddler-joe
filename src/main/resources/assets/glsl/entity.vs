@@ -20,7 +20,7 @@ uniform float useFakeLighting;
 uniform float numberOfRows;
 uniform vec2 offset;
 
-const float density = 0.009;
+const float density = 0.01;
 const float gradient = 5;
 
 void main(void) {

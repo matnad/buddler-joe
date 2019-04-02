@@ -8,7 +8,9 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import net.ServerLogic;
 import net.packets.Packet;
+import net.packets.block.PacketBlockDamage;
 import net.packets.chat.PacketChatMessageToServer;
+import net.packets.items.PacketSpawnItem;
 import net.packets.lobby.PacketCreateLobby;
 import net.packets.lobby.PacketGetLobbies;
 import net.packets.lobby.PacketGetLobbyInfo;
@@ -95,11 +97,11 @@ public class ClientThread implements Runnable {
         }
 
         // Print command to server console if it is not a ping/pong command
-        if (!code.equals(Packet.PacketTypes.PING.getPacketCode())
-            && !code.equals(Packet.PacketTypes.PONG.getPacketCode())
-            && !code.equals(Packet.PacketTypes.POSITION_UPDATE.getPacketCode())) {
-          System.out.println("Client #" + clientId + " sent command '" + code + "'.");
-        }
+        //if (!code.equals(Packet.PacketTypes.PING.getPacketCode())
+        //    && !code.equals(Packet.PacketTypes.PONG.getPacketCode())
+        //    && !code.equals(Packet.PacketTypes.POSITION_UPDATE.getPacketCode())) {
+        //  System.out.println("Client #" + clientId + " sent command '" + code + "'.");
+        //}
         Packet p = null;
         switch (Packet.lookupPacket(code)) {
           case LOGIN:
@@ -153,6 +155,12 @@ public class ClientThread implements Runnable {
             break;
           case POSITION_UPDATE:
             p = new PacketPos(clientId, data);
+            break;
+          case BLOCK_DAMAGE:
+            p = new PacketBlockDamage(clientId, data);
+            break;
+          case SPAWN_ITEM:
+            p = new PacketSpawnItem(clientId, data);
             break;
           default:
         }

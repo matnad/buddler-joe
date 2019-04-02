@@ -176,8 +176,8 @@ public class StartNetworkOnlyClient implements Runnable {
     // Start Interface
     new StartNetworkOnlyClient();
     try {
-      firstLogin();
-    } catch (IOException | StringIndexOutOfBoundsException e) {
+      //      firstLogin();
+    } catch (StringIndexOutOfBoundsException e) {
       System.out.println("Server disconnected.");
     }
     try {
