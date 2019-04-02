@@ -50,5 +50,4 @@ public abstract class Item extends Entity {
   public ItemMaster.ItemTypes getType() {
     return type;
   }
-
 }

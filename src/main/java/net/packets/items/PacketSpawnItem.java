@@ -37,11 +37,20 @@ public class PacketSpawnItem extends Packet {
     // No need to validate. No user input
   }
 
-  //TODO clientId handling and then process the data correctly!
+  // TODO clientId handling and then process the data correctly!
 
+  /**
+   * Constructor to be used when a questionmark block gets destroyed to spawn an item and have
+   * certain effects on certain players.
+   *
+   * @param type type of the item to be spawned
+   * @param position position of the item to be spawned
+   * @param clientId The client who destroyed the questionmark block
+   */
   public PacketSpawnItem(ItemMaster.ItemTypes type, Vector3f position, int clientId) {
     super(Packet.PacketTypes.SPAWN_ITEM);
-    setData(clientId + "║" + type.getItemId() + "║" + position.x + "║" + position.y + "║" + position.z);
+    setData(
+        clientId + "║" + type.getItemId() + "║" + position.x + "║" + position.y + "║" + position.z);
     // No need to validate. No user input
   }
 
@@ -140,7 +149,7 @@ public class PacketSpawnItem extends Packet {
         } else if (item instanceof Dynamite) {
           ((Dynamite) item).setActive(true); // Start ticking
         } else if (item instanceof Heart) {
-          //((Heart) item).giveHeart(true); //give a heart to the owner
+          // ((Heart) item).giveHeart(true); //give a heart to the owner
         } else if (item instanceof Ice) {
           ((Ice) item).setActive(true);
         } else if (item instanceof Star) {

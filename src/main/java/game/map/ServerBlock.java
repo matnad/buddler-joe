@@ -4,16 +4,12 @@ import entities.blocks.BlockMaster;
 import entities.blocks.DirtBlock;
 import entities.blocks.GoldBlock;
 import entities.blocks.StoneBlock;
-import entities.items.Dynamite;
-import entities.items.Heart;
-import entities.items.Ice;
-import entities.items.Item;
 import entities.items.ItemMaster;
-import entities.items.Star;
-import net.packets.items.PacketSpawnItem;
-import org.joml.Vector3f;
 
 import java.util.Random;
+
+import net.packets.items.PacketSpawnItem;
+import org.joml.Vector3f;
 
 public class ServerBlock {
 

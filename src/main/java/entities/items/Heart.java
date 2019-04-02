@@ -37,6 +37,11 @@ public class Heart extends Item {
     }
   }
 
+  /**
+   * The loader to load the model of the heart in the initialisation.
+   *
+   * @param loader the loader to be passed on to this method.
+   */
   public static void init(Loader loader) {
     RawModel rawDynamite = loader.loadToVao(ObjFileLoader.loadObj("heart"));
     setPreloadedModel(
@@ -59,5 +64,5 @@ public class Heart extends Item {
     this.active = active;
   }
 
-  //TODO: (Viktor) write method give heart to give the destroyer of the block a heart
+  // TODO: (Viktor) write method give heart to give the destroyer of the block a heart
 }
