@@ -14,8 +14,9 @@ public class Settings implements Serializable {
 
     private int WIDTH = 1280;
     private int HEIGHT = 800;
-    private int FPS = 60;
     private boolean fullscreen = false;
+
+    //TODO: (Viktor) Spielername und Ip
 
     public boolean isFullscreen() {
         return fullscreen;
@@ -41,11 +42,4 @@ public class Settings implements Serializable {
         this.HEIGHT = HEIGHT;
     }
 
-    public int getFPS() {
-        return FPS;
-    }
-
-    public void setFPS(int FPS) {
-        this.FPS = FPS;
-    }
 }

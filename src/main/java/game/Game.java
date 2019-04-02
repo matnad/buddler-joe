@@ -52,7 +52,7 @@ public class Game extends Thread {
   private static SettingsSerialiser settingsSerialiser = new SettingsSerialiser();
 
   public static final Window window =
-      new Window(settings.getWIDTH(), settings.getHEIGHT(), settings.getFPS(), "Buddler Joe");
+      new Window(settings.getWIDTH(), settings.getHEIGHT(), 60, "Buddler Joe");
   // Set up GLFW Window
   private static final List<Stage> activeStages = new ArrayList<>();
   // Network related variables, still temporary/dummies
