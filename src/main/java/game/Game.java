@@ -85,6 +85,10 @@ public class Game extends Thread {
   private static boolean loggedIn = false;
   private static boolean lobbyCreated = false; // temporary
 
+  private static String serverIp;
+  private static int serverPort;
+  public static String username = RandomName.getRandomName();
+
   // Playing instance and player settings
   // private static ClientLogic socketClient;
   /*
@@ -94,10 +98,9 @@ public class Game extends Thread {
    * list with minimal maintenance.
    */
   private static final List<Entity> entities = new CopyOnWriteArrayList<>();
-  public static String username = RandomName.getRandomName(); // TODO (Server Team): Username
+
   // maybe needs its own class or should at least be moved to NetPlayer
   /*
-   * TODO (Matthias): Change camera to non-static.
    * We want everything set up so we could use multiple cameras, even if we don't end up needing
    * them.
    * Everything that relies on a camera object should know which camera it is using
@@ -127,6 +130,12 @@ public class Game extends Thread {
   private static Terrain aboveGround;
   private static TerrainFlat belowGround;
   private static GuiRenderer guiRenderer;
+
+  public Game(String ipAddress, int port, String username) {
+    serverIp = ipAddress;
+    serverPort = port;
+    Game.username = username;
+  }
 
   /**
    * Any entity added via this function will be passed to the Master Renderer and rendered in the
@@ -280,7 +289,6 @@ public class Game extends Thread {
     TexturedModel playerModel =
         new TexturedModel(rawPlayer, new ModelTexture(loader.loadTexture(myTexture)));
 
-
     // Initialize NetPlayerModels
     NetPlayerMaster.init(loader);
 
@@ -433,7 +441,7 @@ public class Game extends Thread {
 
     // Connecting to Server
     LoadingScreen.updateLoadingMessage("connecting to server");
-    new Thread(() -> StartNetworkOnlyClient.main(new String[] {})).start();
+    new Thread(() -> StartNetworkOnlyClient.startWith(serverIp, serverPort)).start();
     while (!ClientLogic.isConnected()) {
       Thread.sleep(50);
     }
@@ -456,16 +464,14 @@ public class Game extends Thread {
 
     // Generate dummy map
     map = new ClientMap(1, 1, 1);
-
     new PacketJoinLobby("lob1").sendToServer();
     while (!NetPlayerMaster.getLobbyname().equals("lob1")) {
       Thread.sleep(50);
     }
 
     LoadingScreen.updateLoadingMessage("generating map");
-
     while (map.isLocal()) {
-      Thread.sleep(50);
+      Thread.sleep(500);
     }
 
     // Camera

@@ -4,6 +4,7 @@ import entities.blocks.BlockMaster;
 import game.Game;
 import game.map.ClientMap;
 import game.map.ServerMap;
+import java.util.Arrays;
 import net.packets.Packet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,7 +50,7 @@ public class PacketBroadcastMap extends Packet {
     int len = mapArray[0].length();
     for (String s : mapArray) {
       if (s.length() != len) {
-        addError("Invalid map data received.");
+        addError("Invalid map data received: " + s);
         return;
       }
       // Each line can only contain numbers
@@ -80,7 +81,8 @@ public class PacketBroadcastMap extends Packet {
     if (!hasErrors()) {
       map.reloadMap(mapArray);
     } else {
-      logger.error("Error trying to reload map: " + createErrorMessage());
+      logger.error(
+          "Error trying to reload map: " + createErrorMessage() + "\n" + Arrays.toString(mapArray));
     }
   }
 }

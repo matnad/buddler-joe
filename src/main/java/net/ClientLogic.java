@@ -159,6 +159,8 @@ public class ClientLogic implements Runnable {
 
       // Create the correct packet depending on message code
       Packet p = null;
+      if(Packet.lookupPacket(code) != Packet.PacketTypes.PING && Packet.lookupPacket(code) != Packet.PacketTypes.PONG)
+      System.out.println(data);
       switch (Packet.lookupPacket(code)) {
         case LOGIN_STATUS:
           p = new PacketLoginStatus(data);

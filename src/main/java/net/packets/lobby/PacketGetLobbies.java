@@ -56,7 +56,7 @@ public class PacketGetLobbies extends Packet {
     if (hasErrors()) {
       info = createErrorMessage();
     } else {
-      info = "OK║" + ServerLogic.getLobbyList().getTopTen();
+      info = "OK\u2551" + ServerLogic.getLobbyList().getTopTen();
     }
     PacketLobbyOverview p = new PacketLobbyOverview(getClientId(), info);
     p.sendToClient(getClientId());

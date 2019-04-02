@@ -14,34 +14,43 @@ import org.slf4j.LoggerFactory;
  */
 public class StartServer {
 
-  public static final Logger log = LoggerFactory.getLogger(StartServer.class);
+  public static final Logger logger = LoggerFactory.getLogger(StartServer.class);
 
-  private static boolean created;
-  private static ServerLogic serverLogic;
+  private boolean created;
+  private ServerLogic serverLogic;
+  private int serverPort;
+
+
+
+
+  /**
+   * Start the Interface for the server, listening on a default.
+   *
+   * @param args none. Use Main to start via commandline.
+   * @see ServerLogic
+   */
+  public static void main(String[] args) {
+    StartServer startServer = new StartServer(11337);
+    startServer.startServer();
+  }
 
   /**
    * Start the Interface for the server, listening on a specific port.
    *
-   * @param args port to start the {@link ServerLogic} with.
+   * @param serverPort Port to listen to
    * @see ServerLogic
    */
-  public static void main(String[] args) {
+  public StartServer(int serverPort) {
+    this.serverPort = serverPort;
+  }
 
-    //log.info("info message");
-    //log.debug("debugging");
 
-    // Set Port via commandline or use default port
-    int serverPort;
-    if (args.length == 1) {
-      try {
-        serverPort = Integer.parseInt(args[0]);
-      } catch (NumberFormatException e) {
-        serverPort = 11337;
-      }
-    } else {
-      serverPort = 11337;
-    }
-
+  /**
+   * Start the Interface for the server, listening on a specific port.
+   *
+   * @see ServerLogic
+   */
+  public void startServer() {
     // Create and start server logic
     while (!created) {
       try {
@@ -49,9 +58,9 @@ public class StartServer {
         serverLogic.waitForPlayers();
         created = true;
       } catch (IOException e) {
-        System.out.println("Could not create Server - Use different Port - IO");
+        logger.error("Could not create Server - Use different Port - IO");
       } catch (NumberFormatException nfe) {
-        System.out.println("Entered Server Port Incorrectly");
+        logger.error("Entered Server Port Incorrectly");
       } finally {
         if (serverLogic != null) {
           serverLogic.kill();

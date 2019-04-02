@@ -113,9 +113,11 @@ public class ServerMap extends Map<ServerBlock> {
       for (int x = 0; x < width; x++) {
         sb.append(blocks[x][y].getType().getId());
       }
-      sb.append("║");
+      if (y < height - 1) {
+        sb.append("║");
+      }
     }
-    return sb.toString().substring(0, sb.length() - 1);
+    return sb.toString();
   }
 
   /**
