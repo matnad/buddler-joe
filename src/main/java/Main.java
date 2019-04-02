@@ -10,6 +10,7 @@ public class Main {
    * @param args not used*/
   public static void main(String[] args) {
     Game game = new Game();
+    game.loadSettings();
     game.start();
     try {
       Thread.sleep(2000);

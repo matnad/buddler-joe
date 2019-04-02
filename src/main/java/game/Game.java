@@ -48,10 +48,11 @@ public class Game extends Thread {
    * If someone wants to work on this, edit this comment or add an issue to the tracker in gitlab
    */
 
-  private static Settings settings = new Settings();
-  private static SettingsSerialiser settingsSerialiser = new SettingsSerialiser(settings);
+  private static Settings settings;
+  private static SettingsSerialiser settingsSerialiser = new SettingsSerialiser();
 
-  public static final Window window = new Window(settings.getWIDTH(), settings.getHEIGHT(), settings.getFPS(), "Buddler Joe");
+  public static final Window window =
+      new Window(settings.getWIDTH(), settings.getHEIGHT(), settings.getFPS(), "Buddler Joe");
   // Set up GLFW Window
   private static final List<Stage> activeStages = new ArrayList<>();
   // Network related variables, still temporary/dummies
@@ -86,7 +87,7 @@ public class Game extends Thread {
   private static Chat chat;
   private static Player player;
 
-  //map
+  // map
   private static ClientMap map;
 
   /*
@@ -123,7 +124,6 @@ public class Game extends Thread {
   public static List<Entity> getEntities() {
     return entities;
   }
-
 
   public static boolean isConnectedToServer() {
     return connectedToServer;
@@ -236,7 +236,7 @@ public class Game extends Thread {
 
     // generate the world
     GenerateWorld.generateTerrain(loader);
-    //GenerateWorld.generateBlocks(loader);
+    // GenerateWorld.generateBlocks(loader);
     aboveGround = GenerateWorld.getAboveGround();
     belowGround = GenerateWorld.getBelowGround();
     if (aboveGround == null || belowGround == null) {
@@ -288,7 +288,7 @@ public class Game extends Thread {
 
     addActiveStage(PLAYING);
 
-    //Connect after everything is loaded
+    // Connect after everything is loaded
 
     /*
     **************************************************************
@@ -360,5 +360,13 @@ public class Game extends Thread {
     LOBBIES,
     GAMEMENU,
     PLAYING
+  }
+
+  public void loadSettings() {
+    if (settingsSerialiser.readSettings() != null) {
+      this.settings = settingsSerialiser.readSettings();
+    } else {
+      this.settings = new Settings();
+    }
   }
 }
