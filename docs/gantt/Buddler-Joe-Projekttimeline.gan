@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><project name="Untitled Gantt Project" company="" webLink="http://" view-date="2019-03-26" view-index="0" gantt-divider-location="376" resource-divider-location="300" version="2.8.10" locale="en_CH">
+<?xml version="1.0" encoding="UTF-8"?><project name="Untitled Gantt Project" company="" webLink="http://" view-date="2019-03-31" view-index="0" gantt-divider-location="376" resource-divider-location="300" version="2.8.10" locale="en_CH">
     <description/>
     <view zooming-state="default:2" id="gantt-chart">
         <field id="tpd3" name="Name" width="182" order="0"/>
@@ -146,35 +146,23 @@ Chatverlauf]]>
             </notes>
             <depend id="410" type="2" difference="0" hardness="Strong"/>
         </task>
-        <task id="410" name="Funktion: StartGame" meeting="false" start="2019-04-02" duration="1" complete="0" expand="true">
+        <task id="410" name="Funktion: StartGame" color="#8cb6ce" meeting="false" start="2019-04-02" duration="1" complete="0" thirdDate="2019-04-02" thirdDate-constraint="0" expand="true">
             <depend id="411" type="2" difference="0" hardness="Strong"/>
         </task>
-        <task id="411" name="GUI: ChatOverlay Game" meeting="false" start="2019-04-03" duration="1" complete="0" expand="true">
+        <task id="411" name="GUI: ChatOverlay Game" color="#8cb6ce" meeting="false" start="2019-04-03" duration="1" complete="0" thirdDate="2019-04-03" thirdDate-constraint="0" expand="true">
             <depend id="412" type="2" difference="0" hardness="Strong"/>
         </task>
-        <task id="412" name="GUI: MainMenu" meeting="false" start="2019-04-04" duration="1" complete="0" expand="true">
+        <task id="412" name="GUI: MainMenu" color="#8cb6ce" meeting="false" start="2019-04-04" duration="1" complete="0" thirdDate="2019-04-04" thirdDate-constraint="0" expand="true">
             <depend id="413" type="2" difference="0" hardness="Strong"/>
         </task>
-        <task id="413" name="GUI: LobbyBrowser" meeting="false" start="2019-04-05" duration="1" complete="0" expand="true">
+        <task id="413" name="GUI: LobbyBrowser" color="#8cb6ce" meeting="false" start="2019-04-05" duration="1" complete="0" thirdDate="2019-04-05" thirdDate-constraint="0" expand="true">
             <depend id="424" type="2" difference="0" hardness="Strong"/>
         </task>
         <task id="424" name="GUI: GameMenu esc" color="#8cb6ce" meeting="false" start="2019-04-08" duration="1" complete="0" thirdDate="2019-03-22" thirdDate-constraint="0" expand="true"/>
-        <task id="464" name="Gradle" color="#8cb6ce" meeting="false" start="2019-03-28" duration="3" complete="0" thirdDate="2019-03-19" thirdDate-constraint="0" expand="true">
-            <depend id="466" type="2" difference="0" hardness="Strong"/>
-        </task>
-        <task id="466" name="Multiplayer Move" color="#8cb6ce" meeting="false" start="2019-04-02" duration="4" complete="0" thirdDate="2019-04-04" thirdDate-constraint="0" expand="true"/>
-        <task id="460" name="Preferences" color="#8cb6ce" meeting="false" start="2019-03-26" duration="5" complete="0" thirdDate="2019-03-25" thirdDate-constraint="0" expand="true">
-            <notes>
-                <![CDATA[Server: 
-	Highscore
-	etc.
-
-Client:
-	Username
-	Auflösung]]>
-            </notes>
-        </task>
-        <task id="448" name="Items erstellen" color="#8cb6ce" meeting="false" start="2019-03-29" duration="5" complete="0" thirdDate="2019-03-22" thirdDate-constraint="0" expand="true"/>
+        <task id="464" name="Gradle" color="#8cb6ce" meeting="false" start="2019-03-28" duration="3" complete="0" thirdDate="2019-03-19" thirdDate-constraint="0" expand="true"/>
+        <task id="466" name="Multiplayer Move" color="#8cb6ce" meeting="false" start="2019-03-29" duration="4" complete="0" thirdDate="2019-04-04" thirdDate-constraint="0" expand="true"/>
+        <task id="507" name="Preferences serialising" color="#8cb6ce" meeting="false" start="2019-03-28" duration="3" complete="0" thirdDate="2019-03-25" thirdDate-constraint="0" expand="true"/>
+        <task id="448" name="Items erstellen" color="#8cb6ce" meeting="false" start="2019-03-27" duration="5" complete="0" thirdDate="2019-03-22" thirdDate-constraint="0" expand="true"/>
         <task id="125" name="Server: Keeps game state" color="#8cb6ce" meeting="false" start="2019-04-02" duration="3" complete="0" thirdDate="2019-04-01" thirdDate-constraint="0" expand="true">
             <depend id="128" type="2" difference="0" hardness="Strong"/>
         </task>
@@ -184,57 +172,53 @@ Client:
         <task id="101" name="Build: Script creates jar &amp; javadoc" color="#8cb6ce" meeting="false" start="2019-04-03" duration="3" complete="0" thirdDate="2019-03-15" thirdDate-constraint="0" expand="true">
             <depend id="104" type="2" difference="0" hardness="Strong"/>
         </task>
-        <task id="115" name="Product: Create a working prototype" color="#8cb6ce" meeting="false" start="2019-04-01" duration="6" complete="0" thirdDate="2019-03-21" thirdDate-constraint="0" expand="true">
-            <depend id="135" type="2" difference="0" hardness="Strong"/>
+        <task id="115" name="Product: Create a working prototype" color="#8cb6ce" meeting="false" start="2019-03-29" duration="6" complete="0" thirdDate="2019-03-21" thirdDate-constraint="0" expand="true">
             <depend id="139" type="2" difference="0" hardness="Strong"/>
-            <depend id="153" type="2" difference="0" hardness="Strong"/>
         </task>
         <task id="104" name="Client/Server: Command Line Arguments" color="#8cb6ce" meeting="false" start="2019-04-08" duration="2" complete="0" thirdDate="2019-04-10" thirdDate-constraint="0" expand="true"/>
         <task id="149" name="QA: Konzept dokumentieren und Konzept aufsetzen" color="#8cb6ce" meeting="false" start="2019-04-08" duration="2" complete="0" thirdDate="2019-04-01" thirdDate-constraint="0" expand="true"/>
-        <task id="154" name="Präsentation: Technologie vorstellen" color="#8cb6ce" meeting="false" start="2019-04-08" duration="3" complete="0" thirdDate="2019-04-01" thirdDate-constraint="0" expand="true"/>
-        <task id="139" name="Präsentation: Netzwerk Übersicht erstellen" color="#8cb6ce" meeting="false" start="2019-04-09" duration="2" complete="0" thirdDate="2019-04-09" thirdDate-constraint="0" expand="true"/>
-        <task id="162" name="Präsentation: Projekttimeline und schwierigkeiten" color="#8cb6ce" meeting="false" start="2019-04-09" duration="2" complete="0" thirdDate="2019-04-03" thirdDate-constraint="0" expand="true"/>
-        <task id="153" name="Präsentation: Prototyp" color="#8cb6ce" meeting="false" start="2019-04-09" duration="3" complete="0" thirdDate="2019-04-09" thirdDate-constraint="0" expand="true">
-            <depend id="172" type="2" difference="0" hardness="Strong"/>
-        </task>
-        <task id="135" name="Manual: Aufsetzen" color="#8cb6ce" meeting="false" start="2019-04-09" duration="3" complete="0" thirdDate="2019-04-09" thirdDate-constraint="0" expand="true"/>
-        <task id="147" name="Netzwerkprotokoll: Komplett definiert und dokumentiert" color="#8cb6ce" meeting="false" start="2019-04-09" duration="3" complete="0" thirdDate="2019-03-26" thirdDate-constraint="0" expand="true"/>
-        <task id="107" name="Commited: Alles ist im repo" color="#8cb6ce" meeting="false" start="2019-04-11" duration="2" complete="0" thirdDate="2019-04-08" thirdDate-constraint="0" expand="true"/>
-        <task id="112" name="Diary: Update" color="#8cb6ce" meeting="false" start="2019-04-11" duration="2" complete="0" thirdDate="2019-04-02" thirdDate-constraint="0" expand="true"/>
-        <task id="95" name="Milestone 3" color="#8cb6ce" meeting="true" start="2019-04-15" duration="0" complete="0" thirdDate="2019-03-18" thirdDate-constraint="0" expand="true"/>
+        <task id="154" name="Präsentation: Technologie vorstellen" color="#8cb6ce" meeting="false" start="2019-04-08" duration="2" complete="0" thirdDate="2019-04-01" thirdDate-constraint="0" expand="true"/>
+        <task id="139" name="Präsentation: Netzwerk Übersicht erstellen" color="#8cb6ce" meeting="false" start="2019-04-08" duration="2" complete="0" thirdDate="2019-04-09" thirdDate-constraint="0" expand="true"/>
+        <task id="162" name="Präsentation: Projekttimeline und schwierigkeiten" color="#8cb6ce" meeting="false" start="2019-04-08" duration="2" complete="0" thirdDate="2019-04-03" thirdDate-constraint="0" expand="true"/>
+        <task id="153" name="Präsentation: Prototyp" color="#8cb6ce" meeting="false" start="2019-04-05" duration="2" complete="0" thirdDate="2019-04-09" thirdDate-constraint="0" expand="true"/>
+        <task id="135" name="Manual: Aufsetzen" color="#8cb6ce" meeting="false" start="2019-04-05" duration="2" complete="0" thirdDate="2019-04-09" thirdDate-constraint="0" expand="true"/>
+        <task id="147" name="Netzwerkprotokoll: Komplett definiert und dokumentiert" color="#8cb6ce" meeting="false" start="2019-04-05" duration="3" complete="0" thirdDate="2019-03-26" thirdDate-constraint="0" expand="true"/>
+        <task id="107" name="Commited: Alles ist im repo" color="#8cb6ce" meeting="false" start="2019-04-08" duration="2" complete="0" thirdDate="2019-04-08" thirdDate-constraint="0" expand="true"/>
+        <task id="112" name="Diary: Update" color="#8cb6ce" meeting="false" start="2019-04-08" duration="2" complete="0" thirdDate="2019-04-02" thirdDate-constraint="0" expand="true"/>
+        <task id="95" name="Milestone 3" color="#8cb6ce" meeting="true" start="2019-04-10" duration="0" complete="0" thirdDate="2019-03-18" thirdDate-constraint="0" expand="true"/>
         <task id="176" name="Game logic: Regeln werden angewandt" color="#8cb6ce" meeting="false" start="2019-04-15" duration="4" complete="0" thirdDate="2019-04-09" thirdDate-constraint="0" expand="true">
             <depend id="185" type="2" difference="0" hardness="Strong"/>
         </task>
         <task id="185" name="Game logic: Gewinner wird korrekt ermittelt" color="#8cb6ce" meeting="false" start="2019-04-19" duration="2" complete="0" thirdDate="2019-04-19" thirdDate-constraint="0" expand="true">
             <depend id="217" type="2" difference="0" hardness="Strong"/>
         </task>
-        <task id="172" name="GUI: Spiel ist grafisch räpresentiert" color="#8cb6ce" meeting="false" start="2019-04-12" duration="10" complete="0" thirdDate="2019-04-04" thirdDate-constraint="0" expand="true">
+        <task id="172" name="GUI: Spiel ist grafisch räpresentiert" color="#8cb6ce" meeting="false" start="2019-04-11" duration="10" complete="0" thirdDate="2019-04-04" thirdDate-constraint="0" expand="true">
             <depend id="178" type="2" difference="0" hardness="Strong"/>
             <depend id="214" type="2" difference="0" hardness="Strong"/>
         </task>
         <task id="181" name="Unit Test: Alle Teile sind getestet" color="#8cb6ce" meeting="false" start="2019-04-17" duration="7" complete="0" thirdDate="2019-04-09" thirdDate-constraint="0" expand="true"/>
-        <task id="178" name="Präsentation: Spiel funktioniert" color="#8cb6ce" meeting="false" start="2019-04-26" duration="2" complete="0" thirdDate="2019-04-24" thirdDate-constraint="0" expand="true">
+        <task id="178" name="Präsentation: Spiel funktioniert" color="#8cb6ce" meeting="false" start="2019-04-25" duration="2" complete="0" thirdDate="2019-04-24" thirdDate-constraint="0" expand="true">
             <depend id="191" type="2" difference="0" hardness="Strong"/>
         </task>
         <task id="166" name="Commited: Alles auf git" color="#8cb6ce" meeting="false" start="2019-05-02" duration="2" complete="0" thirdDate="2019-04-09" thirdDate-constraint="0" expand="true"/>
         <task id="169" name="Diary: Update" color="#8cb6ce" meeting="false" start="2019-05-02" duration="2" complete="0" thirdDate="2019-04-23" thirdDate-constraint="0" expand="true"/>
         <task id="364" name="Diary Webseite" color="#8cb6ce" meeting="false" start="2019-05-02" duration="2" complete="0" thirdDate="2019-04-23" thirdDate-constraint="0" expand="true"/>
         <task id="164" name="Milestone 4" color="#8cb6ce" meeting="true" start="2019-05-06" duration="0" complete="0" thirdDate="2019-04-10" thirdDate-constraint="0" expand="true"/>
-        <task id="191" name="Präsentation: Outline des Spiels" color="#8cb6ce" meeting="false" start="2019-04-30" duration="4" complete="0" thirdDate="2019-04-26" thirdDate-constraint="0" expand="true">
+        <task id="191" name="Präsentation: Outline des Spiels" color="#8cb6ce" meeting="false" start="2019-04-29" duration="4" complete="0" thirdDate="2019-04-26" thirdDate-constraint="0" expand="true">
             <depend id="211" type="2" difference="0" hardness="Strong"/>
         </task>
         <task id="217" name="Game logic: Anwesend und funktioniert" color="#8cb6ce" meeting="false" start="2019-04-23" duration="12" complete="0" thirdDate="2019-04-26" thirdDate-constraint="0" expand="true"/>
         <task id="222" name="Feature: High Score" color="#8cb6ce" meeting="false" start="2019-05-06" duration="3" complete="0" thirdDate="2019-04-30" thirdDate-constraint="0" expand="true"/>
         <task id="194" name="Archidektur: Dokumentiert" color="#8cb6ce" meeting="false" start="2019-05-07" duration="3" complete="0" thirdDate="2019-04-25" thirdDate-constraint="0" expand="true"/>
-        <task id="211" name="Präsentation: Demo" color="#8cb6ce" meeting="false" start="2019-05-06" duration="5" complete="0" thirdDate="2019-04-25" thirdDate-constraint="0" expand="true">
+        <task id="211" name="Präsentation: Demo" color="#8cb6ce" meeting="false" start="2019-05-03" duration="5" complete="0" thirdDate="2019-04-25" thirdDate-constraint="0" expand="true">
             <depend id="226" type="2" difference="0" hardness="Strong"/>
             <depend id="229" type="2" difference="0" hardness="Strong"/>
             <depend id="251" type="2" difference="0" hardness="Strong"/>
         </task>
         <task id="224" name="Präsentation: Logo" color="#8cb6ce" meeting="false" start="2019-05-13" duration="1" complete="0" thirdDate="2019-05-06" thirdDate-constraint="0" expand="true"/>
-        <task id="251" name="Präsentation: Video" color="#8cb6ce" meeting="false" start="2019-05-13" duration="1" complete="0" thirdDate="2019-05-13" thirdDate-constraint="0" expand="true"/>
+        <task id="251" name="Präsentation: Video" color="#8cb6ce" meeting="false" start="2019-05-10" duration="1" complete="0" thirdDate="2019-05-13" thirdDate-constraint="0" expand="true"/>
         <task id="235" name="Screenshot!" color="#8cb6ce" meeting="false" start="2019-05-13" duration="1" complete="0" thirdDate="2019-05-06" thirdDate-constraint="0" expand="true"/>
-        <task id="214" name="GUI: Funktioniert ohne Fehler" color="#8cb6ce" meeting="false" start="2019-04-26" duration="12" complete="0" thirdDate="2019-04-26" thirdDate-constraint="0" expand="true">
+        <task id="214" name="GUI: Funktioniert ohne Fehler" color="#8cb6ce" meeting="false" start="2019-04-25" duration="12" complete="0" thirdDate="2019-04-26" thirdDate-constraint="0" expand="true">
             <depend id="246" type="2" difference="0" hardness="Strong"/>
         </task>
         <task id="241" name="Netzwerkprotokoll: Fertig dokumentiert" color="#8cb6ce" meeting="false" start="2019-05-10" duration="3" complete="0" thirdDate="2019-05-01" thirdDate-constraint="0" expand="true"/>
@@ -244,12 +228,12 @@ Client:
             <depend id="202" type="2" difference="0" hardness="Strong"/>
         </task>
         <task id="232" name="Gradle: Alle externen Libraries werden verwaltet" color="#8cb6ce" meeting="false" start="2019-05-10" duration="3" complete="0" thirdDate="2019-05-02" thirdDate-constraint="0" expand="true"/>
-        <task id="226" name="Präsentation: Geschichte" color="#8cb6ce" meeting="false" start="2019-05-13" duration="3" complete="0" thirdDate="2019-05-13" thirdDate-constraint="0" expand="true"/>
+        <task id="226" name="Präsentation: Geschichte" color="#8cb6ce" meeting="false" start="2019-05-10" duration="3" complete="0" thirdDate="2019-05-13" thirdDate-constraint="0" expand="true"/>
         <task id="256" name="Präsentation: Lessons learned" color="#8cb6ce" meeting="false" start="2019-05-13" duration="3" complete="0" thirdDate="2019-05-07" thirdDate-constraint="0" expand="true"/>
         <task id="202" name="Command Line: Funktioniert" color="#8cb6ce" meeting="false" start="2019-05-15" duration="1" complete="0" thirdDate="2019-05-15" thirdDate-constraint="0" expand="true"/>
-        <task id="229" name="Manual: Schönes Manual vorhanden" color="#8cb6ce" meeting="false" start="2019-05-13" duration="4" complete="0" thirdDate="2019-05-06" thirdDate-constraint="0" expand="true"/>
+        <task id="229" name="Manual: Schönes Manual vorhanden" color="#8cb6ce" meeting="false" start="2019-05-10" duration="4" complete="0" thirdDate="2019-05-06" thirdDate-constraint="0" expand="true"/>
         <task id="253" name="Unit Tests: Alle auf grün" color="#8cb6ce" meeting="false" start="2019-05-13" duration="5" complete="0" thirdDate="2019-05-03" thirdDate-constraint="0" expand="true"/>
-        <task id="246" name="Präsentation: Funktionierendes Produkt" color="#8cb6ce" meeting="false" start="2019-05-14" duration="4" complete="0" thirdDate="2019-05-14" thirdDate-constraint="0" expand="true"/>
+        <task id="246" name="Präsentation: Funktionierendes Produkt" color="#8cb6ce" meeting="false" start="2019-05-13" duration="4" complete="0" thirdDate="2019-05-14" thirdDate-constraint="0" expand="true"/>
         <task id="204" name="Commited: Alles auf git" color="#8cb6ce" meeting="false" start="2019-05-15" duration="3" complete="0" thirdDate="2019-05-07" thirdDate-constraint="0" expand="true"/>
         <task id="208" name="Diary: Update" color="#8cb6ce" meeting="false" start="2019-05-15" duration="3" complete="0" thirdDate="2019-05-07" thirdDate-constraint="0" expand="true"/>
         <task id="189" name="Milestone 5" color="#8cb6ce" meeting="true" start="2019-05-20" duration="0" complete="0" thirdDate="2019-04-24" thirdDate-constraint="0" expand="true"/>
@@ -275,9 +259,7 @@ Client:
         <allocation task-id="33" resource-id="0" function="Default:0" responsible="true" load="40.0"/>
         <allocation task-id="93" resource-id="0" function="Default:0" responsible="true" load="30.0"/>
         <allocation task-id="89" resource-id="0" function="Default:0" responsible="true" load="40.0"/>
-        <allocation task-id="117" resource-id="0" function="Default:0" responsible="true" load="40.0"/>
         <allocation task-id="132" resource-id="0" function="Default:0" responsible="true" load="40.0"/>
-        <allocation task-id="128" resource-id="0" function="Default:0" responsible="false" load="20.0"/>
         <allocation task-id="122" resource-id="0" function="Default:0" responsible="false" load="30.0"/>
         <allocation task-id="115" resource-id="0" function="Default:0" responsible="true" load="20.0"/>
         <allocation task-id="153" resource-id="0" function="Default:0" responsible="true" load="40.0"/>
@@ -291,6 +273,7 @@ Client:
         <allocation task-id="226" resource-id="0" function="Default:0" responsible="true" load="40.0"/>
         <allocation task-id="229" resource-id="0" function="Default:0" responsible="false" load="40.0"/>
         <allocation task-id="208" resource-id="0" function="Default:0" responsible="false" load="10.0"/>
+        <allocation task-id="404" resource-id="0" function="Default:0" responsible="true" load="20.0"/>
         <allocation task-id="78" resource-id="1" function="Default:0" responsible="true" load="25.0"/>
         <allocation task-id="57" resource-id="1" function="Default:0" responsible="false" load="20.0"/>
         <allocation task-id="69" resource-id="1" function="Default:0" responsible="true" load="50.0"/>
@@ -310,7 +293,6 @@ Client:
         <allocation task-id="147" resource-id="1" function="Default:0" responsible="true" load="40.0"/>
         <allocation task-id="122" resource-id="1" function="Default:0" responsible="true" load="60.0"/>
         <allocation task-id="104" resource-id="1" function="Default:0" responsible="true" load="40.0"/>
-        <allocation task-id="139" resource-id="1" function="Default:0" responsible="true" load="40.0"/>
         <allocation task-id="112" resource-id="1" function="Default:0" responsible="false" load="20.0"/>
         <allocation task-id="176" resource-id="1" function="Default:0" responsible="true" load="40.0"/>
         <allocation task-id="181" resource-id="1" function="Default:0" responsible="true" load="60.0"/>
@@ -323,6 +305,13 @@ Client:
         <allocation task-id="202" resource-id="1" function="Default:0" responsible="true" load="20.0"/>
         <allocation task-id="253" resource-id="1" function="Default:0" responsible="true" load="30.0"/>
         <allocation task-id="208" resource-id="1" function="Default:0" responsible="false" load="10.0"/>
+        <allocation task-id="365" resource-id="1" function="Default:0" responsible="true" load="20.0"/>
+        <allocation task-id="117" resource-id="1" function="Default:0" responsible="true" load="40.0"/>
+        <allocation task-id="437" resource-id="1" function="Default:0" responsible="true" load="30.0"/>
+        <allocation task-id="448" resource-id="1" function="Default:0" responsible="true" load="40.0"/>
+        <allocation task-id="507" resource-id="1" function="Default:0" responsible="true" load="30.0"/>
+        <allocation task-id="128" resource-id="1" function="Default:0" responsible="true" load="20.0"/>
+        <allocation task-id="162" resource-id="1" function="Default:0" responsible="true" load="40.0"/>
         <allocation task-id="55" resource-id="2" function="Default:0" responsible="false" load="20.0"/>
         <allocation task-id="75" resource-id="2" function="Default:0" responsible="true" load="50.0"/>
         <allocation task-id="59" resource-id="2" function="Default:0" responsible="false" load="10.0"/>
@@ -336,13 +325,10 @@ Client:
         <allocation task-id="42" resource-id="2" function="Default:0" responsible="true" load="20.0"/>
         <allocation task-id="44" resource-id="2" function="Default:0" responsible="true" load="20.0"/>
         <allocation task-id="27" resource-id="2" function="Default:0" responsible="false" load="20.0"/>
-        <allocation task-id="117" resource-id="2" function="Default:0" responsible="false" load="20.0"/>
-        <allocation task-id="119" resource-id="2" function="Default:0" responsible="true" load="20.0"/>
         <allocation task-id="147" resource-id="2" function="Default:0" responsible="false" load="20.0"/>
         <allocation task-id="125" resource-id="2" function="Default:0" responsible="false" load="30.0"/>
         <allocation task-id="122" resource-id="2" function="Default:0" responsible="false" load="40.0"/>
         <allocation task-id="115" resource-id="2" function="Default:0" responsible="false" load="20.0"/>
-        <allocation task-id="162" resource-id="2" function="Default:0" responsible="true" load="40.0"/>
         <allocation task-id="135" resource-id="2" function="Default:0" responsible="true" load="20.0"/>
         <allocation task-id="112" resource-id="2" function="Default:0" responsible="true" load="20.0"/>
         <allocation task-id="176" resource-id="2" function="Default:0" responsible="false" load="20.0"/>
@@ -356,6 +342,14 @@ Client:
         <allocation task-id="232" resource-id="2" function="Default:0" responsible="true" load="20.0"/>
         <allocation task-id="229" resource-id="2" function="Default:0" responsible="true" load="20.0"/>
         <allocation task-id="208" resource-id="2" function="Default:0" responsible="false" load="10.0"/>
+        <allocation task-id="415" resource-id="2" function="Default:0" responsible="true" load="30.0"/>
+        <allocation task-id="409" resource-id="2" function="Default:0" responsible="true" load="30.0"/>
+        <allocation task-id="410" resource-id="2" function="Default:0" responsible="true" load="30.0"/>
+        <allocation task-id="411" resource-id="2" function="Default:0" responsible="true" load="20.0"/>
+        <allocation task-id="412" resource-id="2" function="Default:0" responsible="true" load="20.0"/>
+        <allocation task-id="413" resource-id="2" function="Default:0" responsible="true" load="20.0"/>
+        <allocation task-id="424" resource-id="2" function="Default:0" responsible="true" load="20.0"/>
+        <allocation task-id="139" resource-id="2" function="Default:0" responsible="false" load="40.0"/>
         <allocation task-id="73" resource-id="3" function="Default:0" responsible="true" load="50.0"/>
         <allocation task-id="55" resource-id="3" function="Default:0" responsible="true" load="50.0"/>
         <allocation task-id="57" resource-id="3" function="Default:0" responsible="false" load="10.0"/>
@@ -367,13 +361,10 @@ Client:
         <allocation task-id="89" resource-id="3" function="Default:0" responsible="false" load="20.0"/>
         <allocation task-id="86" resource-id="3" function="Default:0" responsible="true" load="20.0"/>
         <allocation task-id="97" resource-id="3" function="Default:0" responsible="true" load="30.0"/>
-        <allocation task-id="142" resource-id="3" function="Default:0" responsible="true" load="40.0"/>
         <allocation task-id="132" resource-id="3" function="Default:0" responsible="false" load="20.0"/>
         <allocation task-id="151" resource-id="3" function="Default:0" responsible="true" load="40.0"/>
         <allocation task-id="122" resource-id="3" function="Default:0" responsible="false" load="30.0"/>
-        <allocation task-id="101" resource-id="3" function="Default:0" responsible="true" load="10.0"/>
         <allocation task-id="149" resource-id="3" function="Default:0" responsible="true" load="40.0"/>
-        <allocation task-id="153" resource-id="3" function="Default:0" responsible="false" load="40.0"/>
         <allocation task-id="135" resource-id="3" function="Default:0" responsible="false" load="20.0"/>
         <allocation task-id="107" resource-id="3" function="Default:0" responsible="true" load="30.0"/>
         <allocation task-id="172" resource-id="3" function="Default:0" responsible="false" load="60.0"/>
@@ -387,6 +378,8 @@ Client:
         <allocation task-id="246" resource-id="3" function="Default:0" responsible="false" load="20.0"/>
         <allocation task-id="204" resource-id="3" function="Default:0" responsible="true" load="20.0"/>
         <allocation task-id="208" resource-id="3" function="Default:0" responsible="true" load="10.0"/>
+        <allocation task-id="367" resource-id="3" function="Default:0" responsible="true" load="30.0"/>
+        <allocation task-id="371" resource-id="3" function="Default:0" responsible="true" load="30.0"/>
         <allocation task-id="294" resource-id="4" function="Default:0" responsible="false" load="20.0"/>
         <allocation task-id="14" resource-id="4" function="Default:0" responsible="false" load="60.0"/>
         <allocation task-id="22" resource-id="4" function="Default:0" responsible="false" load="20.0"/>
@@ -395,7 +388,6 @@ Client:
         <allocation task-id="298" resource-id="4" function="Default:0" responsible="true" load="40.0"/>
         <allocation task-id="159" resource-id="4" function="Default:0" responsible="true" load="20.0"/>
         <allocation task-id="125" resource-id="4" function="Default:0" responsible="true" load="40.0"/>
-        <allocation task-id="128" resource-id="4" function="Default:0" responsible="true" load="20.0"/>
         <allocation task-id="122" resource-id="4" function="Default:0" responsible="false" load="50.0"/>
         <allocation task-id="101" resource-id="4" function="Default:0" responsible="false" load="10.0"/>
         <allocation task-id="115" resource-id="4" function="Default:0" responsible="false" load="20.0"/>
@@ -410,6 +402,12 @@ Client:
         <allocation task-id="249" resource-id="4" function="Default:0" responsible="false" load="10.0"/>
         <allocation task-id="246" resource-id="4" function="Default:0" responsible="true" load="60.0"/>
         <allocation task-id="208" resource-id="4" function="Default:0" responsible="false" load="10.0"/>
+        <allocation task-id="119" resource-id="4" function="Default:0" responsible="true" load="20.0"/>
+        <allocation task-id="142" resource-id="4" function="Default:0" responsible="true" load="20.0"/>
+        <allocation task-id="370" resource-id="4" function="Default:0" responsible="true" load="20.0"/>
+        <allocation task-id="435" resource-id="4" function="Default:0" responsible="true" load="30.0"/>
+        <allocation task-id="464" resource-id="4" function="Default:0" responsible="true" load="30.0"/>
+        <allocation task-id="466" resource-id="4" function="Default:0" responsible="true" load="40.0"/>
     </allocations>
     <vacations>
         <vacation start="2019-03-11" end="2019-03-15" resourceid="0"/>

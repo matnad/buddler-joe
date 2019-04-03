@@ -45,7 +45,10 @@ void main(void) {
     float lightMul = 100;
 
     for(int i=0; i<8; i++) {
-
+        float damper = 6;
+        if (i == 0) {
+          damper = 2;
+        }
         float theta = dot(normalize(toLightVector[i]), normalize(-lightDirection[i]));
         float epsilon = 0.15;
         float intensity = clamp((theta - lightCutoff[i]+epsilon) / epsilon, 0.0, 1.0);
@@ -60,7 +63,7 @@ void main(void) {
           float specularFactor = dot(reflectedLightDirection, unitVectorToCamera);
           specularFactor = max(specularFactor, 0.0);
           float dampedFactor = pow(specularFactor, shineDamper);
-          totalDiffuse = totalDiffuse + (brightness * lightColour[i] / 2  * lightMul * intensity) / attFactor;
+          totalDiffuse = totalDiffuse + (brightness * lightColour[i] / damper  * lightMul * intensity) / attFactor;
           totalSpecular = totalSpecular + (dampedFactor * reflectivity * lightColour[i] / 2 * lightMul * intensity) / attFactor;
         //}
     }

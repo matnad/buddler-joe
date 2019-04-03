@@ -43,7 +43,7 @@ public class Torch extends Item {
     setPlacerMode(MousePlacer.Modes.BLOCK.getMode()); // Torches can be placed on blocks
 
     this.colour = colour;
-    this.brightness = 2;
+    this.brightness = 4;
     this.block = block;
 
     random = new Random();
@@ -56,7 +56,10 @@ public class Torch extends Item {
     flamePosition = new Vector3f(position).add(flameOffset);
     light =
         LightMaster.generateLight(
-            LightMaster.LightTypes.TORCH, flamePosition, colour.mul(brightness));
+            LightMaster.LightTypes.TORCH, flamePosition, colour);
+    light.setBrightness(brightness);
+
+    setPosition(position);
 
     // Generate Fuse Effect
     flame = new Fire(15, .4f, 0, 2f, 1.5f);
@@ -77,7 +80,7 @@ public class Torch extends Item {
   }
 
   Torch(Vector3f position, Block block) {
-    this(position, block, new Vector3f(1f, 244 / 255f, 229 / 255f).mul(1), 0, 0, 0, .2f);
+    this(position, block, new Vector3f(1f, 244 / 255f, 229 / 255f), 0, 0, 0, .2f);
   }
 
   /**
@@ -115,7 +118,6 @@ public class Torch extends Item {
 
   public void setColour(Vector3f colour) {
     this.colour = colour;
-    light.setColour(colour.mul(brightness));
   }
 
   public Vector3f getAttenuation() {
@@ -146,7 +148,12 @@ public class Torch extends Item {
   public void setPosition(Vector3f position) {
     super.setPosition(position);
     flamePosition = new Vector3f(getPosition()).add(flameOffset);
-    light.setPosition(flamePosition);
+    // Better illumination if the light source is away from the wall
+    if (getPosition().z > 6) {
+      light.setPosition(new Vector3f(flamePosition).add(new Vector3f(0,0,5)));
+    } else {
+      light.setPosition(flamePosition);
+    }
   }
 
   public Block getBlock() {

@@ -110,6 +110,19 @@ public class ServerPlayerList {
     return false;
   }
 
+  @Override
+  public String toString() {
+    StringBuilder s = new StringBuilder();
+    if (players.size() > 0) {
+      for (Player l : players.values()) {
+        s.append(l.toString()).append("║");
+      }
+    } else {
+      s = new StringBuilder("No Players online");
+    }
+    return s.toString();
+  }
+
   /**
    * Method to return all players in the playerList.
    *

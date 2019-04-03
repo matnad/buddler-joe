@@ -13,8 +13,11 @@ import net.packets.chat.PacketChatMessageToClient;
 import net.packets.lobby.PacketCurLobbyInfo;
 import net.packets.loginlogout.PacketDisconnect;
 import net.playerhandling.ClientThread;
+import net.playerhandling.PingManager;
 import net.playerhandling.Player;
 import net.playerhandling.ServerPlayerList;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Server Logic is responsible for managing all the connections to the clients and for managing all
@@ -27,6 +30,8 @@ import net.playerhandling.ServerPlayerList;
  * the lobbies. Any request for a player(-thread) or lobby goes through the server logic.
  */
 public class ServerLogic {
+
+  public static final Logger logger = LoggerFactory.getLogger(ServerLogic.class);
 
   private static ServerPlayerList playerList;
   private static ServerLobbyList lobbyList;
@@ -46,7 +51,7 @@ public class ServerLogic {
     lobbyList = new ServerLobbyList();
 
     serverSocket = new ServerSocket(portValue);
-    System.out.println("Started Server");
+    System.out.println("Started Server on port " + portValue);
   }
 
   /**
@@ -166,6 +171,8 @@ public class ServerLogic {
    * @param clientId ID of the player to remove
    */
   public static void removePlayer(int clientId) {
+
+    logger.debug("Removing client no. " + clientId);
 
     // check if the client exists
     Player player = ServerLogic.getPlayerList().getPlayer(clientId);

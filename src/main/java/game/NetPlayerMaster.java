@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.StringJoiner;
+import java.util.concurrent.ConcurrentHashMap;
 import org.joml.Vector3f;
 
 /**
@@ -26,7 +27,7 @@ public class NetPlayerMaster {
 
   static {
     lobbyname = "";
-    netPlayers = new HashMap<>();
+    netPlayers = new ConcurrentHashMap<>();
     defaultSize = 0.4f;
   }
 
@@ -56,6 +57,7 @@ public class NetPlayerMaster {
       } else {
         netPlayer.turnHeadlightOn();
       }
+      netPlayer.updateNameplate(); // Kinda expensive?
       renderer.processEntity(netPlayer);
     }
   }

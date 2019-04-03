@@ -3,6 +3,7 @@ package game.map;
 import entities.blocks.BlockMaster;
 import entities.blocks.DirtBlock;
 import entities.blocks.GoldBlock;
+import entities.blocks.GrassBlock;
 import entities.blocks.StoneBlock;
 import entities.items.ItemMaster;
 
@@ -48,6 +49,28 @@ public class ServerBlock {
         onQmarkDestroy(clientId);
       }
       this.type = BlockMaster.BlockTypes.AIR;
+    }
+  }
+
+  /**
+   * Get Base hardness of this block's type.
+   *
+   * @return starting hardness of this block's type.
+   */
+  public float getBaseHardness() {
+    switch (type) {
+      case DIRT:
+        return DirtBlock.getHardness();
+      case STONE:
+        return StoneBlock.getHardness();
+      case GOLD:
+        return GoldBlock.getHardness();
+      case GRASS:
+        return GrassBlock.getHardness();
+      case AIR:
+        return 0;
+      default:
+        return 0;
     }
   }
 

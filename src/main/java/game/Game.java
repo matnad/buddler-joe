@@ -1,9 +1,15 @@
 package game;
 
+import static game.Game.Stage.CHOOSELOBBY;
+import static game.Game.Stage.CREDITS;
 import static game.Game.Stage.GAMEMENU;
+import static game.Game.Stage.INLOBBBY;
 import static game.Game.Stage.LOADINGSCREEN;
+import static game.Game.Stage.LOGIN;
 import static game.Game.Stage.MAINMENU;
+import static game.Game.Stage.OPTIONS;
 import static game.Game.Stage.PLAYING;
+import static game.Game.Stage.WELCOME;
 
 import engine.io.Window;
 import engine.models.RawModel;
@@ -23,10 +29,16 @@ import entities.blocks.debris.DebrisMaster;
 import entities.items.ItemMaster;
 import entities.light.LightMaster;
 import game.map.ClientMap;
+import game.stages.ChooseLobby;
+import game.stages.Credits;
 import game.stages.GameMenu;
+import game.stages.InLobby;
 import game.stages.LoadingScreen;
+import game.stages.Login;
 import game.stages.MainMenu;
+import game.stages.Options;
 import game.stages.Playing;
+import game.stages.Welcome;
 import gui.Chat;
 import gui.Fps;
 import gui.GuiString;
@@ -61,7 +73,7 @@ public class Game extends Thread {
    */
 
   private static final int WIDTH = 1280;
-  private static final int HEIGHT = 800;
+  private static final int HEIGHT = 720;
   private static final int FPS = 60;
   public static final Window window = new Window(WIDTH, HEIGHT, FPS, "Buddler Joe");
   // Set up GLFW Window
@@ -73,6 +85,10 @@ public class Game extends Thread {
   private static boolean loggedIn = false;
   private static boolean lobbyCreated = false; // temporary
 
+  private static String serverIp;
+  private static int serverPort;
+  public static String username = RandomName.getRandomName();
+
   // Playing instance and player settings
   // private static ClientLogic socketClient;
   /*
@@ -82,10 +98,9 @@ public class Game extends Thread {
    * list with minimal maintenance.
    */
   private static final List<Entity> entities = new CopyOnWriteArrayList<>();
-  public static String username = RandomName.getRandomName(); // TODO (Server Team): Username
+
   // maybe needs its own class or should at least be moved to NetPlayer
   /*
-   * TODO (Matthias): Change camera to non-static.
    * We want everything set up so we could use multiple cameras, even if we don't end up needing
    * them.
    * Everything that relies on a camera object should know which camera it is using
@@ -115,6 +130,19 @@ public class Game extends Thread {
   private static Terrain aboveGround;
   private static TerrainFlat belowGround;
   private static GuiRenderer guiRenderer;
+
+  /**
+   * The constructor for the game to be called from the main class.
+   * @param ipAddress The ip address to be connected to
+   * @param port The port to be connected to
+   * @param username The chosen username of the user
+   */
+
+  public Game(String ipAddress, int port, String username) {
+    serverIp = ipAddress;
+    serverPort = port;
+    Game.username = username;
+  }
 
   /**
    * Any entity added via this function will be passed to the Master Renderer and rendered in the
@@ -264,13 +292,6 @@ public class Game extends Thread {
       logger.error("Could not generate terrain.");
     }
 
-    RawModel rawPlayer = loader.loadToVao(ObjFileLoader.loadObj(myModel));
-    TexturedModel playerModel =
-        new TexturedModel(rawPlayer, new ModelTexture(loader.loadTexture(myTexture)));
-
-    // Stages
-    MainMenu.init(loader);
-    GameMenu.init(loader);
 
     // Initialize NetPlayerModels
     NetPlayerMaster.init(loader);
@@ -281,18 +302,19 @@ public class Game extends Thread {
     BlockMaster.init(loader);
     guiRenderer = new GuiRenderer(loader);
     GuiString.loadFont(loader);
+
+    // Stages
     LoadingScreen.init(loader);
     addActiveStage(LOADINGSCREEN);
+    LoadingScreen.updateLoadingMessage("starting game");
+
+
     // Connect to server and load level in an extra thread
-    new Thread(
-        () -> {
-          try {
-            loadGame(playerModel);
-          } catch (InterruptedException e) {
-            logger.error("Problem with sleep in Game Loader.");
-          }
-        })
-      .start();
+    try {
+      loadGame(loader);
+    } catch (InterruptedException e) {
+      e.printStackTrace();
+    }
 
     chat = new Chat(loader);
     fpsCounter = new Fps();
@@ -309,7 +331,6 @@ public class Game extends Thread {
     // Lights and cameras (just one for now)
     LightMaster.generateLight(
         LightMaster.LightTypes.SUN, new Vector3f(0, 600, 200), new Vector3f(1, 1, 1));
-
 
     /*
     **************************************************************
@@ -349,8 +370,34 @@ public class Game extends Thread {
           if (activeStages.contains(GAMEMENU)) {
             GameMenu.update();
           }
+
+          if (activeStages.contains(CHOOSELOBBY)) {
+            ChooseLobby.update();
+          }
+
+          if (activeStages.contains(CREDITS)) {
+            Credits.update();
+          }
+
+          if (activeStages.contains(OPTIONS)) {
+            Options.update();
+          }
+
+          if (activeStages.contains(WELCOME)) {
+            Welcome.update();
+          }
+
+          if (activeStages.contains(LOGIN)) {
+            Login.update();
+          }
+
+          if (activeStages.contains(INLOBBBY)) {
+            InLobby.update();
+          }
         }
 
+        // System.out.println("-----------------------------------");
+        // System.out.println(activeStages);
         // Done with one frame
         window.swapBuffers();
       }
@@ -377,18 +424,38 @@ public class Game extends Thread {
     System.exit(1); // For now...
   }
 
-  private void loadGame(TexturedModel playerModel) throws InterruptedException {
+  private void loadGame(Loader loader) throws InterruptedException {
+    //Load Stages
+    MainMenu.init(loader);
+    LoadingScreen.progess();
+    GameMenu.init(loader);
+    LoadingScreen.progess();
+    ChooseLobby.init(loader);
+    LoadingScreen.progess();
+    Credits.init(loader);
+    LoadingScreen.progess();
+    Options.init(loader);
+    LoadingScreen.progess();
+    Welcome.init(loader);
+    LoadingScreen.progess();
+    Login.init(loader);
+    LoadingScreen.progess();
+    InLobby.init(loader);
 
     // Generate Player
+    RawModel rawPlayer = loader.loadToVao(ObjFileLoader.loadObj(myModel));
+    TexturedModel playerModel =
+        new TexturedModel(rawPlayer, new ModelTexture(loader.loadTexture(myTexture)));
     player = new Player(playerModel, new Vector3f(90, 2, 3), 0, 0, 0, myModelSize);
+
+
 
     // Connecting to Server
     LoadingScreen.updateLoadingMessage("connecting to server");
-    new Thread(() -> StartNetworkOnlyClient.main(new String[] {})).start();
+    new Thread(() -> StartNetworkOnlyClient.startWith(serverIp, serverPort)).start();
     while (!ClientLogic.isConnected()) {
       Thread.sleep(50);
     }
-    connectedToServer = true;
 
     // Logging in
     LoadingScreen.updateLoadingMessage("logging in");
@@ -407,22 +474,20 @@ public class Game extends Thread {
 
     // Generate dummy map
     map = new ClientMap(1, 1, 1);
-
     new PacketJoinLobby("lob1").sendToServer();
     while (!NetPlayerMaster.getLobbyname().equals("lob1")) {
       Thread.sleep(50);
     }
 
     LoadingScreen.updateLoadingMessage("generating map");
-
     while (map.isLocal()) {
-      Thread.sleep(50);
+      Thread.sleep(500);
     }
 
     // Camera
     camera = new Camera(player, window);
 
-    LoadingScreen.updateLoadingMessage("done!");
+    LoadingScreen.updateLoadingMessage("Ready!");
     Thread.sleep(500);
     LoadingScreen.done();
     addActiveStage(PLAYING);
@@ -436,9 +501,14 @@ public class Game extends Thread {
   // Valid Stages
   public enum Stage {
     MAINMENU,
-    LOBBIES,
+    CHOOSELOBBY,
     GAMEMENU,
     PLAYING,
-    LOADINGSCREEN
+    LOADINGSCREEN,
+    CREDITS,
+    OPTIONS,
+    WELCOME,
+    LOGIN,
+    INLOBBBY
   }
 }

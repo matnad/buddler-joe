@@ -1,6 +1,7 @@
 package game.map;
 
 import entities.blocks.BlockMaster;
+import java.util.ArrayList;
 import java.util.Random;
 import net.ServerLogic;
 import net.packets.block.PacketBlockDamage;
@@ -18,7 +19,7 @@ public class ServerMap extends Map<ServerBlock> {
     super(width, height, seed);
     blocks = new ServerBlock[width][height];
     generateMap();
-    checkFallingBlocks();
+    // checkFallingBlocks();
   }
 
   @Override
@@ -31,18 +32,17 @@ public class ServerMap extends Map<ServerBlock> {
     for (int y = 0; y < height; y++) {
       for (int x = 0; x < width; x++) {
         if (noiseMap[x][y] < thresholds[0]) {
-          blocks[x][y] = new ServerBlock(BlockMaster.BlockTypes.AIR, x, y); // Air
+          blocks[x][y] = new ServerBlock(BlockMaster.BlockTypes.STONE, x, y); // Air
         } else {
-          if ((int) (noiseMap[x][y] * 100) % 40 == 0) {
-            blocks[x][y] =
-                new ServerBlock(BlockMaster.BlockTypes.GOLD, x, y); // Gold: 1 in 40 chance
-          } else if ((int) (noiseMap[x][y] * 100) % 50 == 0) {
+          if (rng.nextFloat() < .02f) {
+            blocks[x][y] = new ServerBlock(BlockMaster.BlockTypes.GOLD, x, y); // Gold: 1 in 40 chance
+          } else if (rng.nextFloat() < .01f) {
             blocks[x][y] =
                 new ServerBlock(BlockMaster.BlockTypes.QMARK, x, y); // Item Block: 1 in 50 chance
           } else if (noiseMap[x][y] < thresholds[1]) {
             blocks[x][y] = new ServerBlock(BlockMaster.BlockTypes.DIRT, x, y); // Dirt
           } else {
-            blocks[x][y] = new ServerBlock(BlockMaster.BlockTypes.STONE, x, y); // Stone
+            blocks[x][y] = new ServerBlock(BlockMaster.BlockTypes.AIR, x, y); // Stone
           }
         }
       }
@@ -97,7 +97,7 @@ public class ServerMap extends Map<ServerBlock> {
    * @param args nothing
    */
   public static void main(String[] args) {
-    ServerMap testMap = new ServerMap(30, 20, System.currentTimeMillis());
+    ServerMap testMap = new ServerMap(100, 110, System.currentTimeMillis());
     System.out.println(testMap);
   }
 
@@ -113,8 +113,28 @@ public class ServerMap extends Map<ServerBlock> {
       for (int x = 0; x < width; x++) {
         sb.append(blocks[x][y].getType().getId());
       }
-      sb.append("║");
+      if (y < height - 1) {
+        sb.append("║");
+      }
     }
-    return sb.toString().substring(0, sb.length() - 1);
+    return sb.toString();
+  }
+
+  /**
+   * Generate a damage packet for each damaged block to update a newly generated map.
+   *
+   * @return an array list of damage packets to update the map
+   */
+  public ArrayList<PacketBlockDamage> getDamagePackets() {
+    ArrayList<PacketBlockDamage> packets = new ArrayList<>();
+    for (int y = 0; y < height; y++) {
+      for (int x = 0; x < width; x++) {
+        float damage = blocks[x][y].getBaseHardness() - blocks[x][y].getHardness();
+        if (damage > 0) {
+          packets.add(new PacketBlockDamage(x, y, damage));
+        }
+      }
+    }
+    return packets;
   }
 }

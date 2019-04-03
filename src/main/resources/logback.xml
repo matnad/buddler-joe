@@ -7,6 +7,7 @@
 <!-- For professional support please see                            -->
 <!--    http://www.qos.ch/shop/products/professionalSupport         -->
 <!--                                                                -->
+
 <configuration>
 
     <!-- Insert the current time formatted as "yyyyMMdd'T'HHmmss" under
@@ -24,10 +25,10 @@
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!-- Daily rollover -->
-            <fileNamePattern>log/MyExample.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <fileNamePattern>log/BuddlerJoesLog.%d{yyyy-MM-dd}.log</fileNamePattern>
 
             <!-- Keep 7 days' worth of history -->
-            <maxHistory>7</maxHistory>
+            <maxHistory>30</maxHistory>
         </rollingPolicy>
 
         <encoder>

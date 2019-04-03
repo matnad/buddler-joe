@@ -38,6 +38,7 @@ import net.playerhandling.PingManager;
  */
 public class ClientLogic implements Runnable {
 
+  private static volatile boolean disconnectFromServer;
   private static PrintWriter output;
   private static BufferedReader input;
   private static Socket server;
@@ -58,6 +59,7 @@ public class ClientLogic implements Runnable {
     server = new Socket(ip, port);
     output = new PrintWriter(server.getOutputStream(), false);
     input = new BufferedReader(new InputStreamReader(server.getInputStream()));
+    disconnectFromServer = false;
 
     // Run thread
     Thread thread = new Thread(this);
@@ -70,6 +72,7 @@ public class ClientLogic implements Runnable {
     // Connected
     if (input != null && output != null) {
       connected = true;
+      Game.setConnectedToServer(true);
     }
   }
 
@@ -112,6 +115,8 @@ public class ClientLogic implements Runnable {
         e1.printStackTrace();
       }
     }
+    System.out.println(
+        "Connection to the server timed out or was interrupted. Socket has been closed.");
   }
 
   /**
@@ -124,14 +129,13 @@ public class ClientLogic implements Runnable {
    * @throws RuntimeException when something unexpected happens
    */
   private void waitForServer() throws IOException, RuntimeException {
-    while (true) {
-
+    while (!disconnectFromServer) {
       String in;
       try {
         in = input.readLine();
       } catch (SocketException e) {
-        server.close();
         System.out.println("\nThe connection to the server has been closed!");
+        server.close();
         break;
       }
 
@@ -226,5 +230,23 @@ public class ClientLogic implements Runnable {
 
   public static boolean isConnected() {
     return connected;
+  }
+
+  public static boolean isDisconnectFromServer() {
+    return disconnectFromServer;
+  }
+
+  /**
+   * A method to disconnect from the server.
+   * @param disconnectFromServer The boolean if to be disconnected
+   */
+
+  public static void setDisconnectFromServer(boolean disconnectFromServer) {
+    ClientLogic.disconnectFromServer = disconnectFromServer;
+    try {
+      server.close();
+    } catch (IOException e) {
+      System.out.println("Problem closing connection to server.");
+    }
   }
 }

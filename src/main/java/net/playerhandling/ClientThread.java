@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.nio.charset.StandardCharsets;
 import net.ServerLogic;
 import net.packets.Packet;
 import net.packets.block.PacketBlockDamage;
@@ -55,8 +56,11 @@ public class ClientThread implements Runnable {
     this.socket = clientSocket;
     System.out.println("Client details: " + clientSocket.toString());
     try {
-      input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-      output = new PrintWriter(new OutputStreamWriter(socket.getOutputStream()));
+      input =
+          new BufferedReader(
+              new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
+      output =
+          new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8));
 
     } catch (IOException e) {
       System.err.println("Streams not set up for Client.");

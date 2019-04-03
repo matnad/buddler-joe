@@ -37,11 +37,11 @@ public class GrassBlock extends Block {
 
   /** Shortened constructor with just position. Dont call directly. */
   GrassBlock(Vector3f position, int gridX, int gridY) {
-    this(position, 0, 0, 0, 3, gridX, gridY);
+    this(position, 0, 180, 0, 3, gridX, gridY);
   }
 
   static void init(Loader loader) {
-    RawModel rawBlock = loader.loadToVao(ObjFileLoader.loadObj("dirt"));
+    RawModel rawBlock = loader.loadToVao(ObjFileLoader.loadObj("block"));
     ModelTexture blockAtlas = new ModelTexture(loader.loadTexture("item4x4"));
     blockAtlas.setNumberOfRows(2);
     blockModel = new TexturedModel(rawBlock, blockAtlas);
@@ -49,4 +49,8 @@ public class GrassBlock extends Block {
 
   @Override
   protected void onDestroy() {}
+
+  public static float getHardness() {
+    return hardness;
+  }
 }
