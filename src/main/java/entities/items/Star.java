@@ -36,8 +36,6 @@ public class Star extends Item {
     }
   }
 
-  private void starred() {}
-
   public static void init(Loader loader) {
     // RawModel rawStar = loader.loadToVao(ObjFileLoader.loadObj("star"));
     // setPreloadedModel(new TexturedModel(rawStar, new ModelTexture(loader.loadTexture("star"))));

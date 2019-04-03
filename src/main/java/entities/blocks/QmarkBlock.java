@@ -39,8 +39,8 @@ public class QmarkBlock extends Block {
   }
 
   static void init(Loader loader) {
-    RawModel rawBlock = loader.loadToVao(ObjFileLoader.loadObj("qmark"));
-    ModelTexture blockAtlas = new ModelTexture(loader.loadTexture("qmark4x4"));
+    RawModel rawBlock = loader.loadToVao(ObjFileLoader.loadObj("dirt"));
+    ModelTexture blockAtlas = new ModelTexture(loader.loadTexture("item4x4"));
     blockAtlas.setNumberOfRows(2);
     blockModel = new TexturedModel(rawBlock, blockAtlas);
   }

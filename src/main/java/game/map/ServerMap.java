@@ -38,7 +38,7 @@ public class ServerMap extends Map<ServerBlock> {
                 new ServerBlock(BlockMaster.BlockTypes.GOLD, x, y); // Gold: 1 in 40 chance
           } else if ((int) (noiseMap[x][y] * 100) % 50 == 0) {
             blocks[x][y] =
-                new ServerBlock(BlockMaster.BlockTypes.GRASS, x, y); // Item Block: 1 in 50 chance
+                new ServerBlock(BlockMaster.BlockTypes.QMARK, x, y); // Item Block: 1 in 50 chance
           } else if (noiseMap[x][y] < thresholds[1]) {
             blocks[x][y] = new ServerBlock(BlockMaster.BlockTypes.DIRT, x, y); // Dirt
           } else {
