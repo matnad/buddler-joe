@@ -218,6 +218,7 @@ public class ClientLogic implements Runnable {
           break;
         case PLAYERLIST:
           p = new PacketPlayerList(data);
+          break;
         default:
       }
       if (p != null) {
@@ -236,9 +237,9 @@ public class ClientLogic implements Runnable {
 
   /**
    * A method to disconnect from the server.
+   *
    * @param disconnectFromServer The boolean if to be disconnected
    */
-
   public static void setDisconnectFromServer(boolean disconnectFromServer) {
     ClientLogic.disconnectFromServer = disconnectFromServer;
     try {

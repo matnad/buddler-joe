@@ -35,6 +35,7 @@ public class PacketPlayerList extends Packet {
     super(PacketTypes.PLAYERLIST);
   }
 
+  /** Validate whether the PlayerList only consists of extended Ascii. */
   @Override
   public void validate() {
     for (int i = 0; i < dataArray.length; i++) {
@@ -44,12 +45,20 @@ public class PacketPlayerList extends Packet {
     }
   }
 
+  /**
+   * Process the data.
+   *
+   * <p>On the server side send the data to the correct client.
+   *
+   * <p>On the client side print out the playerList to the player.
+   */
   @Override
   public void processData() {
     if (getClientId() > 0) {
       // Server side
       this.sendToClient(getClientId());
     } else {
+      // Client side
       if (!hasErrors()) {
         System.out.println("-------------------------------------");
         System.out.println("Players on the Server \"" + dataArray[0] + "\":");
@@ -58,7 +67,7 @@ public class PacketPlayerList extends Packet {
         }
         System.out.println("-------------------------------------");
       } else {
-          System.out.println(getData());
+        System.out.println(getData());
       }
     }
   }
