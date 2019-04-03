@@ -33,7 +33,7 @@ public abstract class GuiString {
   }
 
   public static void loadFont(Loader loader) {
-    font = new FontType(loader, "verdana");
+    font = new FontType(loader, "verdanaAsciiEx");
   }
 
   /**

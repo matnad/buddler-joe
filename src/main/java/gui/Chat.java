@@ -56,7 +56,7 @@ public class Chat {
     chatText = "";
 
     // Load font and text properties for all messages
-    font = new FontType(loader, "verdana");
+    font = new FontType(loader, "verdanaAsciiEx");
     textColour = new Vector3f(1f, 1f, 1f);
     guiText =
         new ChatText(
