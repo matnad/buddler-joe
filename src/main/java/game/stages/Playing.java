@@ -14,6 +14,7 @@ import entities.light.LightMaster;
 import game.Game;
 import game.NetPlayerMaster;
 import gui.GuiTexture;
+import gui.text.FloatingStrings;
 import java.util.ArrayList;
 import java.util.List;
 import util.MousePlacer;
@@ -23,6 +24,9 @@ import util.MousePlacer;
  * is playing the game. All the rendering and updating is done here.
  */
 public class Playing {
+
+  private static FloatingStrings floatingGoldStrings =
+      new FloatingStrings(Game.getActivePlayer().getBbox(), 3f);
 
   /**
    * Game Loop. This runs every frame as long as the payer is playing the game. Include all
@@ -73,8 +77,14 @@ public class Playing {
     renderer.render(LightMaster.getLightsToRender(), Game.getActiveCamera());
     Game.getChat().checkInputs();
     // GUI goes over everything else and then text on top of GUI
+    Game.getGoldGuiText().update();
+    floatingGoldStrings.update();
     ParticleMaster.renderParticles(Game.getActiveCamera());
     Game.getGuiRenderer().render(guis);
     TextMaster.render();
+  }
+
+  public static void addFloatingGoldText(int goldValue) {
+    floatingGoldStrings.addString("+ " + goldValue);
   }
 }

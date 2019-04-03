@@ -3,7 +3,7 @@ package game.stages;
 import engine.render.Loader;
 import engine.render.fontrendering.TextMaster;
 import game.Game;
-import gui.ChangableGuiText;
+import gui.text.ChangableGuiText;
 import gui.GuiTexture;
 import java.util.ArrayList;
 import java.util.List;

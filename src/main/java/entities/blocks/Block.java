@@ -8,6 +8,7 @@ import engine.textures.ModelTexture;
 import entities.Entity;
 import entities.blocks.debris.DebrisMaster;
 import game.Game;
+import game.NetPlayerMaster;
 import java.util.Random;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
@@ -160,7 +161,10 @@ public abstract class Block extends Entity {
    *
    * @param damage damage done to the block
    */
-  public void increaseDamage(float damage) {
+  public void increaseDamage(int blockDestroyerClientId, float damage) {
+    if (isDestroyed()) {
+      return;
+    }
     this.damage += damage;
     float percentIntegrity = (this.hardness - this.damage) / hardness;
     if (percentIntegrity < .25) {
@@ -174,11 +178,12 @@ public abstract class Block extends Entity {
     }
 
     if (this.damage > this.hardness) {
+      setDestroyedBy(NetPlayerMaster.getNetPlayerById(blockDestroyerClientId));
       setDestroyed(true); // Destroy block
     }
   }
 
-  Entity getDestroyedBy() {
+  public Entity getDestroyedBy() {
     return destroyedBy;
   }
 
@@ -215,6 +220,8 @@ public abstract class Block extends Entity {
    * classes.
    */
   protected abstract void onDestroy();
+
+  public abstract TexturedModel getDebrisModel();
 
   public BlockMaster.BlockTypes getType() {
     return type;

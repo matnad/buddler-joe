@@ -1,9 +1,11 @@
 package util;
 
+import engine.render.MasterRenderer;
 import entities.Camera;
 import org.joml.Matrix4f;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
+import org.joml.Vector4f;
 
 /** Math functions to create Transformation Matrices and the barryCentric. */
 public class Maths {
@@ -79,5 +81,25 @@ public class Maths {
     float l2 = ((p3.z - p1.z) * (pos.x - p3.x) + (p1.x - p3.x) * (pos.y - p3.z)) / det;
     float l3 = 1.0f - l1 - l2;
     return l1 * p1.y + l2 * p2.y + l3 * p3.y;
+  }
+
+  public static Vector2f worldToScreen(Vector3f position, Camera camera) {
+    // Transforms world coodinates to normalized device coordinates.
+    Vector4f loc =
+        new Vector4f(
+            position.x,
+            position.y,
+            position.z,
+            1f)
+            .mul(Maths.createViewMatrix(camera))
+            .mul(MasterRenderer.getProjectionMatrix());
+
+    if (loc.w <= 0) {
+      return null;
+    }
+
+    float x = (loc.x / loc.w + 1) / 2f;
+    float y = 1 - (loc.y / loc.w + 1) / 2f;
+    return new Vector2f(x - 0.15f, y);
   }
 }

@@ -1,4 +1,4 @@
-package gui;
+package gui.chat;
 
 import engine.render.fontmeshcreator.FontType;
 import engine.render.fontmeshcreator.GuiText;

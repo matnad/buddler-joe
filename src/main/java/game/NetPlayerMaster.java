@@ -7,7 +7,6 @@ import engine.render.objconverter.ObjFileLoader;
 import engine.textures.ModelTexture;
 import entities.NetPlayer;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.StringJoiner;
@@ -135,6 +134,14 @@ public class NetPlayerMaster {
     if (netPlayer != null) {
       netPlayer.setPosition(new Vector3f(posX, posY, netPlayer.getPosition().z));
       netPlayer.setRotY(rotY);
+    }
+  }
+
+  public static NetPlayer getNetPlayerById(int clientId) {
+    if (clientId == Game.getActivePlayer().getClientId()) {
+      return Game.getActivePlayer();
+    } else {
+      return netPlayers.get(clientId);
     }
   }
 }

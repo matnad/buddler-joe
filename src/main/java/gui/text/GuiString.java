@@ -1,8 +1,9 @@
-package gui;
+package gui.text;
 
 import engine.render.Loader;
 import engine.render.fontmeshcreator.FontType;
 import engine.render.fontmeshcreator.GuiText;
+import engine.render.fontrendering.TextMaster;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 
@@ -54,11 +55,14 @@ public abstract class GuiString {
   }
 
   public void updateString() {
+    if (getGuiText() != null) {
+      TextMaster.removeText(getGuiText());
+    }
     createGuiText();
   }
 
   public Vector2f getPosition() {
-    return position;
+    return new Vector2f(position);
   }
 
   public void setPosition(Vector2f position) {

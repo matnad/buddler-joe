@@ -9,6 +9,8 @@ public class Player {
   private int clientId;
   private int curLobbyId;
 
+  private int currentGold;
+
   /**
    * Constructor of the player class to create a new player Creates an instance of the main Player
    * class to save the player information on the server side in the playerList. Contains vital
@@ -73,5 +75,13 @@ public class Player {
         + ", curLobbyId="
         + curLobbyId
         + '}';
+  }
+
+  public void increaseCurrentGold(int goldValue) {
+    currentGold += goldValue;
+  }
+
+  public int getCurrentGold() {
+    return currentGold;
   }
 }

@@ -50,6 +50,11 @@ public class GrassBlock extends Block {
   @Override
   protected void onDestroy() {}
 
+  @Override
+  public TexturedModel getDebrisModel() {
+    return blockModel;
+  }
+
   public static float getHardness() {
     return hardness;
   }

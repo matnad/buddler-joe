@@ -5,13 +5,19 @@ import entities.blocks.DirtBlock;
 import entities.blocks.GoldBlock;
 import entities.blocks.GrassBlock;
 import entities.blocks.StoneBlock;
+import net.ServerLogic;
 
 public class ServerBlock {
 
   private BlockMaster.BlockTypes type;
   private float hardness;
+  private int gridX;
+  private int gridY;
+  private int goldValue;
 
-  ServerBlock(BlockMaster.BlockTypes type) {
+  ServerBlock(BlockMaster.BlockTypes type, int gridX, int gridY) {
+    this.gridX = gridX;
+    this.gridY = gridY;
     this.type = type;
     switch (type) {
       case DIRT:
@@ -24,7 +30,7 @@ public class ServerBlock {
         hardness = GoldBlock.getHardness();
         break;
       case GRASS:
-        hardness = GrassBlock.getHardness();
+        hardness = GoldBlock.getHardness();
         break;
       case AIR:
         hardness = 0;
@@ -32,6 +38,11 @@ public class ServerBlock {
       default:
         hardness = 0;
     }
+
+    if (type == BlockMaster.BlockTypes.GOLD) {
+      goldValue = 50 + 5 * gridY;
+    }
+
   }
 
   public BlockMaster.BlockTypes getType() {
@@ -46,11 +57,17 @@ public class ServerBlock {
    * Damage a block.
    *
    * @param damage damage to deal to a block
+   * @param clientThatDealsDamage clientId that damaged the block
    */
-  public void damageBlock(float damage) {
+  public void damageBlock(int clientThatDealsDamage, float damage) {
+    if (type == BlockMaster.BlockTypes.AIR) {
+      return;
+    }
+
     hardness -= damage;
     if (hardness < 0) {
       this.type = BlockMaster.BlockTypes.AIR;
+      ServerLogic.getPlayerList().getPlayer(clientThatDealsDamage).increaseCurrentGold(goldValue);
     }
   }
 
