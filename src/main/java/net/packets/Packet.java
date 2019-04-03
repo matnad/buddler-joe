@@ -310,6 +310,7 @@ public abstract class Packet {
     POSITION_UPDATE("POSXY"),
     BLOCK_DAMAGE("BLDMG"),
     FULL_MAP_BROADCAST("MAPBC"),
+    PLAYERLIST("PLALS"),
     SPAWN_ITEM("ITMSP");
 
     private final String packetCode;

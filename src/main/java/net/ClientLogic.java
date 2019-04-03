@@ -25,6 +25,7 @@ import net.packets.name.PacketSendName;
 import net.packets.name.PacketSetNameStatus;
 import net.packets.pingpong.PacketPing;
 import net.packets.pingpong.PacketPong;
+import net.packets.playerlist.PacketPlayerList;
 import net.packets.playerprop.PacketPos;
 import net.playerhandling.PingManager;
 
@@ -215,6 +216,8 @@ public class ClientLogic implements Runnable {
         case GAMES_OVERVIEW:
           p = new PacketGamesOverview(data);
           break;
+        case PLAYERLIST:
+          p = new PacketPlayerList(data);
         default:
       }
       if (p != null) {

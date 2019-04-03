@@ -12,6 +12,7 @@ import net.packets.lobby.PacketLeaveLobby;
 import net.packets.loginlogout.PacketDisconnect;
 import net.packets.loginlogout.PacketLogin;
 import net.packets.name.PacketSetName;
+import net.packets.playerlist.PacketPlayerList;
 
 /**
  * The client-side interface to communicate with the server.
@@ -68,6 +69,7 @@ public class StartNetworkOnlyClient implements Runnable {
                 + "leave - Leave your current lobby\n"
                 + "connect - reconnect if the socket has been closed, "
                 + "display connection info otherwise\n"
+                + "playerlist - Receive a List of all active  players\n"
                 + "disconnect - Disconnect from the server\n"
                 + "help - Display this message");
       } else if (inputMessage.equals("ping")) {
@@ -98,6 +100,9 @@ public class StartNetworkOnlyClient implements Runnable {
         p.sendToServer();
       } else if (inputMessage.startsWith("C ") && inputMessage.length() > 2) {
         PacketChatMessageToServer p = new PacketChatMessageToServer(inputMessage.substring(2));
+        p.sendToServer();
+      } else if (inputMessage.equals("playerlist")) {
+        PacketPlayerList p = new PacketPlayerList();
         p.sendToServer();
       } else if (inputMessage.equals("disconnect")) {
         PacketDisconnect p = new PacketDisconnect();

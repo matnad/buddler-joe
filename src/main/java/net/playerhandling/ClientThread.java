@@ -24,6 +24,7 @@ import net.packets.name.PacketGetName;
 import net.packets.name.PacketSetName;
 import net.packets.pingpong.PacketPing;
 import net.packets.pingpong.PacketPong;
+import net.packets.playerlist.PacketPlayerList;
 import net.packets.playerprop.PacketPos;
 
 /**
@@ -165,6 +166,9 @@ public class ClientThread implements Runnable {
             break;
           case SPAWN_ITEM:
             p = new PacketSpawnItem(clientId, data);
+            break;
+          case PLAYERLIST:
+            p = new PacketPlayerList(clientId);
             break;
           default:
         }
