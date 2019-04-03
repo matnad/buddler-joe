@@ -1,6 +1,7 @@
 package game.map;
 
 import java.util.Random;
+import org.joml.SimplexNoise;
 
 /**
  * Generic Abstract Class. Server and Client Map will extend this and use a different object for the
@@ -17,14 +18,17 @@ public abstract class Map<T> {
   protected int height;
   protected long seed;
 
+  protected final int dim = 6;
+  protected final int size = 3;
+
   protected T[][] blocks;
 
   /* Threshold function:
-   * Values below first number will be AIR
+   * Values below first number will be STONE
    * Values between the first and second number will be DIRT BLOCKS
-   * Values above the second number will be STONE BLOCKS
+   * Values above the second number will be AIR
    */
-  protected final float[] thresholds = {0.3f, 0.75f};
+  protected final float[] thresholds = {.28f, .8f};
 
   /**
    * Generate a new map.
@@ -41,6 +45,8 @@ public abstract class Map<T> {
 
   abstract void generateMap();
 
+  abstract void damageBlock(int clientId, int posX, int posY, float damage);
+
   /**
    * Generates a noise map for map generation. TODO (Sanja): Implement map generation algorithm
    *
@@ -48,11 +54,14 @@ public abstract class Map<T> {
    * @return the noise map for the specified random generator
    */
   protected float[][] generateNoiseMap(Random rng) {
-    // Generate Noise here (now its purely random)
+    // Generate Noise here
+    int radius = 4; // "Smoothing" of noise
     float[][] noiseMap = new float[width][height];
     for (int y = 0; y < height; y++) {
       for (int x = 0; x < width; x++) {
-        noiseMap[x][y] = rng.nextFloat();
+        float dx = (x - radius) / (float) radius;
+        float dy = (y - radius) / (float) radius;
+        noiseMap[x][y] = (SimplexNoise.noise(dx, dy) + 1) / 2;
       }
     }
     return noiseMap;
@@ -68,5 +77,13 @@ public abstract class Map<T> {
       map.append("\n");
     }
     return map.toString();
+  }
+
+  public int getWidth() {
+    return width;
+  }
+
+  public int getHeight() {
+    return height;
   }
 }

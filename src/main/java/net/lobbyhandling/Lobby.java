@@ -1,7 +1,9 @@
 package net.lobbyhandling;
 
+import game.map.ServerMap;
 import java.util.ArrayList;
 import net.ServerLogic;
+import net.packets.map.PacketBroadcastMap;
 import net.playerhandling.Player;
 
 /**
@@ -13,8 +15,10 @@ public class Lobby {
 
   private static int lobbyCounter = 1;
   private int lobbyId;
+  private boolean inGame;
   private String lobbyName;
   private ArrayList<Player> lobbyPlayers;
+  private ServerMap map;
 
   /**
    * Constructor of the lobby-class uses by the Server.
@@ -25,9 +29,12 @@ public class Lobby {
    */
   public Lobby(String lobbyName) {
     this.lobbyName = lobbyName;
+    this.inGame = false;
     this.lobbyPlayers = new ArrayList<>();
     this.lobbyId = lobbyCounter;
     lobbyCounter++;
+    map = new ServerMap(60, 40, System.currentTimeMillis());
+    //System.out.println(map);
   }
 
   /**
@@ -116,5 +123,27 @@ public class Lobby {
    */
   public boolean isEmpty() {
     return lobbyPlayers.size() == 0;
+  }
+
+  /**
+   * Getter to check whether a lobby is currently in a game or not.
+   *
+   * @return a boolean value which says whether the lobby is in a game or not.
+   */
+  public boolean isInGame() {
+    return inGame;
+  }
+
+  /**
+   * Setter to change the state of the Lobby to inGame.
+   *
+   * @param inGame The boolean value to which the Lobby should be changed to.
+   */
+  public void setInGame(boolean inGame) {
+    this.inGame = inGame;
+  }
+
+  public ServerMap getMap() {
+    return map;
   }
 }

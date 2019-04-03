@@ -4,7 +4,7 @@ import net.ServerLogic;
 import net.packets.Packet;
 
 /**
- * A Packet that gets send from the Client to the Server, to get an Overview of available lobbies.
+ * A Packet that gets sent from the Client to the Server, to get an Overview of available lobbies.
  * Packet-Code: LOBGE
  *
  * @author Sebastian Schlachter

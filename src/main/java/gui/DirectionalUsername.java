@@ -34,13 +34,13 @@ public class DirectionalUsername extends GuiString {
     setTextColour(new Vector3f(1, 1, 1));
     setFontSize(.5f);
 
-    setGuiStringString(player.getUsername());
+    setText(player.getUsername());
   }
 
   @Override
   public void updateString() {
-    if (getGuiString() != null) {
-      TextMaster.removeText(getGuiString());
+    if (getGuiText() != null) {
+      TextMaster.removeText(getGuiText());
     }
     setPosition(findLocation(Game.getActiveCamera()));
 

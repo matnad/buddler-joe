@@ -23,6 +23,7 @@ import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL20;
@@ -45,6 +46,8 @@ public class Loader {
   private final List<Integer> vaos = new ArrayList<>();
   private final List<Integer> vbos = new ArrayList<>();
   private final List<Integer> textures = new ArrayList<>();
+
+  private static ConcurrentHashMap<String, Integer> textureIds = new ConcurrentHashMap<>();
 
   /**
    * Load simple geometric figures.
@@ -155,6 +158,10 @@ public class Loader {
    * @return The OpenGL texture ID
    */
   public int loadTexture(String fileName) {
+    if (textureIds.containsKey(fileName)) {
+      return textureIds.get(fileName);
+    }
+
     Texture texture = null;
     try {
       texture = TextureLoader.getTexture("/assets/textures/" + fileName + ".png");
@@ -174,6 +181,7 @@ public class Loader {
     }
     int textureId = texture.getTextureId();
     textures.add(textureId);
+    textureIds.put(fileName, textureId);
     return textureId;
   }
 

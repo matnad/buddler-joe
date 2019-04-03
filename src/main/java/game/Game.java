@@ -1,8 +1,15 @@
 package game;
 
+import static game.Game.Stage.CHOOSELOBBY;
+import static game.Game.Stage.CREDITS;
 import static game.Game.Stage.GAMEMENU;
+import static game.Game.Stage.INLOBBBY;
+import static game.Game.Stage.LOADINGSCREEN;
+import static game.Game.Stage.LOGIN;
 import static game.Game.Stage.MAINMENU;
+import static game.Game.Stage.OPTIONS;
 import static game.Game.Stage.PLAYING;
+import static game.Game.Stage.WELCOME;
 
 import engine.io.Window;
 import engine.models.RawModel;
@@ -22,16 +29,31 @@ import entities.blocks.debris.DebrisMaster;
 import entities.items.ItemMaster;
 import entities.light.LightMaster;
 import game.map.ClientMap;
+import game.stages.ChooseLobby;
+import game.stages.Credits;
 import game.stages.GameMenu;
+import game.stages.InLobby;
+import game.stages.LoadingScreen;
+import game.stages.Login;
 import game.stages.MainMenu;
+import game.stages.Options;
 import game.stages.Playing;
+import game.stages.Welcome;
 import gui.Chat;
 import gui.Fps;
 import gui.GuiString;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
+import net.ClientLogic;
+import net.StartNetworkOnlyClient;
+import net.packets.lobby.PacketCreateLobby;
+import net.packets.lobby.PacketJoinLobby;
+import net.packets.loginlogout.PacketLogin;
 import org.joml.Vector3f;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import terrains.Terrain;
 import terrains.TerrainFlat;
 import util.RandomName;
@@ -42,6 +64,8 @@ import util.RandomName;
  * but we have to be very careful which variables we want to be "global"
  */
 public class Game extends Thread {
+
+  private static final Logger logger = LoggerFactory.getLogger(Game.class);
 
   /*
    * Set your resolution here, feel free to add new entries and comment them with your name/machine
@@ -58,6 +82,11 @@ public class Game extends Thread {
   // Network related variables, still temporary/dummies
   // private static boolean doConnectToServer = false; //Multiplayer: true, Singleplayer: false
   private static boolean connectedToServer = false;
+  private static boolean loggedIn = false;
+  private static boolean lobbyCreated = false; // temporary
+
+  private static String serverIp;
+  private static int serverPort;
 
   // Playing instance and player settings
   // private static ClientLogic socketClient;
@@ -71,7 +100,6 @@ public class Game extends Thread {
   public static String username = settings.getUsername(); // TODO (Server Team): Username
   // maybe needs its own class or should at least be moved to NetPlayer
   /*
-   * TODO (Matthias): Change camera to non-static.
    * We want everything set up so we could use multiple cameras, even if we don't end up needing
    * them.
    * Everything that relies on a camera object should know which camera it is using
@@ -86,6 +114,7 @@ public class Game extends Thread {
   // This probably needs to go somewhere else when we work on the chat
   private static Chat chat;
   private static Player player;
+  private Fps fpsCounter;
 
   // map
   private static ClientMap map;
@@ -100,6 +129,19 @@ public class Game extends Thread {
   private static Terrain aboveGround;
   private static TerrainFlat belowGround;
   private static GuiRenderer guiRenderer;
+
+  /**
+   * The constructor for the game to be called from the main class.
+   * @param ipAddress The ip address to be connected to
+   * @param port The port to be connected to
+   * @param username The chosen username of the user
+   */
+
+  public Game(String ipAddress, int port, String username) {
+    serverIp = ipAddress;
+    serverPort = port;
+    Game.username = username;
+  }
 
   /**
    * Any entity added via this function will be passed to the Master Renderer and rendered in the
@@ -175,6 +217,14 @@ public class Game extends Thread {
     return map;
   }
 
+  public static void setLoggedIn(boolean loggedIn) {
+    Game.loggedIn = loggedIn;
+  }
+
+  public static void setLobbyCreated(boolean lobbyCreated) {
+    Game.lobbyCreated = lobbyCreated;
+  }
+
   /**
    * Add a stage to the game loop.
    *
@@ -230,30 +280,52 @@ public class Game extends Thread {
     window.setFullscreen(settings.isFullscreen());
     window.create();
 
+    // Initiate the master renderer class
+    MasterRenderer renderer = new MasterRenderer();
+
     // Used to load 3D models (.obj) and convert them to coordinates for the shaders, also
     // initializes the Bounding Boxes
     Loader loader = new Loader();
 
-    // Initialize World. We can do this a little better once we have a proper algorithm to
-
-    // Initialise blocks
-    BlockMaster.init(loader);
-
+    // Stuff before loading screen
     // generate the world
     GenerateWorld.generateTerrain(loader);
     // GenerateWorld.generateBlocks(loader);
     aboveGround = GenerateWorld.getAboveGround();
     belowGround = GenerateWorld.getBelowGround();
     if (aboveGround == null || belowGround == null) {
-      System.err.println("Could not generate terrain.");
+      logger.error("Could not generate terrain.");
     }
 
-    // generate map
-    map = new ClientMap(30, 40, 1);
-    System.out.println(map);
 
     // Initialize NetPlayerModels
     NetPlayerMaster.init(loader);
+
+    // Initialize TextMaster
+    TextMaster.init(loader);
+    // Initialise blocks
+    BlockMaster.init(loader);
+    guiRenderer = new GuiRenderer(loader);
+    GuiString.loadFont(loader);
+
+    // Stages
+    LoadingScreen.init(loader);
+    addActiveStage(LOADINGSCREEN);
+    LoadingScreen.updateLoadingMessage("starting game");
+
+
+    // Connect to server and load level in an extra thread
+    try {
+      loadGame(loader);
+    } catch (InterruptedException e) {
+      e.printStackTrace();
+    }
+
+    chat = new Chat(loader);
+    fpsCounter = new Fps();
+
+    // Initialize Particle Master
+    ParticleMaster.init(loader, MasterRenderer.getProjectionMatrix());
 
     // Initialize items
     ItemMaster.init(loader);
@@ -261,39 +333,16 @@ public class Game extends Thread {
     // Initialize debris
     DebrisMaster.init();
 
-    // Initiate the master renderer class
-    MasterRenderer renderer = new MasterRenderer();
-
-    // Generate the player. TODO (later): Move this in some player related class when more work on
-    // network is done
-    RawModel rawPlayer = loader.loadToVao(ObjFileLoader.loadObj(myModel));
-    TexturedModel playerModel =
-        new TexturedModel(rawPlayer, new ModelTexture(loader.loadTexture(myTexture)));
-    player = new Player(playerModel, new Vector3f(90, 2, 3), 0, 0, 0, myModelSize);
-
-    // GUI / HUD
-    // TODO (Matthias): We will need a GuiMaster class to initialize and manage the GUI elements
-    TextMaster.init(loader);
-    GuiString.loadFont(loader);
-    Fps fpsCounter = new Fps();
-    // List<GuiTexture> guis = new ArrayList<>();
-    chat = new Chat(loader);
-    guiRenderer = new GuiRenderer(loader);
-
-    // Load Particle Master
-    ParticleMaster.init(loader, MasterRenderer.getProjectionMatrix());
-
     // Lights and cameras (just one for now)
     LightMaster.generateLight(
-        LightMaster.LightTypes.SUN, new Vector3f(0, 600, 200), new Vector3f(.3f, .3f, .3f));
-    camera = new Camera(player, window);
+        LightMaster.LightTypes.SUN, new Vector3f(0, 600, 200), new Vector3f(1, 1, 1));
 
     MainMenu.init(loader);
     GameMenu.init(loader);
 
     addActiveStage(PLAYING);
 
-    // Connect after everything is loaded
+    //Connect after everything is loaded
 
     /*
     **************************************************************
@@ -301,7 +350,7 @@ public class Game extends Thread {
     **************************************************************
     */
     while (!window.isClosed()) {
-      if (window.isOneSecond()) {
+      if (window.isOneSecond() && activeStages.contains(PLAYING)) {
         // This runs once per second, we can use it for stuff that needs less frequent updates
         fpsCounter.updateString("" + window.getCurrentFps());
       }
@@ -317,18 +366,50 @@ public class Game extends Thread {
            The order of things is quite relevant here
            Optimally this should be mostly Masters here
         */
-        if (activeStages.contains(PLAYING)) {
-          Playing.update(renderer);
+
+        if (activeStages.contains(LOADINGSCREEN)) {
+          LoadingScreen.update();
+        } else {
+
+          if (activeStages.contains(PLAYING)) {
+            Playing.update(renderer);
+          }
+
+          if (activeStages.contains(MAINMENU)) {
+            MainMenu.update();
+          }
+
+          if (activeStages.contains(GAMEMENU)) {
+            GameMenu.update();
+          }
+
+          if (activeStages.contains(CHOOSELOBBY)) {
+            ChooseLobby.update();
+          }
+
+          if (activeStages.contains(CREDITS)) {
+            Credits.update();
+          }
+
+          if (activeStages.contains(OPTIONS)) {
+            Options.update();
+          }
+
+          if (activeStages.contains(WELCOME)) {
+            Welcome.update();
+          }
+
+          if (activeStages.contains(LOGIN)) {
+            Login.update();
+          }
+
+          if (activeStages.contains(INLOBBBY)) {
+            InLobby.update();
+          }
         }
 
-        if (activeStages.contains(MAINMENU)) {
-          MainMenu.update();
-        }
-
-        if (activeStages.contains(GAMEMENU)) {
-          GameMenu.update();
-        }
-
+        // System.out.println("-----------------------------------");
+        // System.out.println(activeStages);
         // Done with one frame
         window.swapBuffers();
       }
@@ -355,6 +436,76 @@ public class Game extends Thread {
     System.exit(1); // For now...
   }
 
+  private void loadGame(Loader loader) throws InterruptedException {
+    //Load Stages
+    MainMenu.init(loader);
+    LoadingScreen.progess();
+    GameMenu.init(loader);
+    LoadingScreen.progess();
+    ChooseLobby.init(loader);
+    LoadingScreen.progess();
+    Credits.init(loader);
+    LoadingScreen.progess();
+    Options.init(loader);
+    LoadingScreen.progess();
+    Welcome.init(loader);
+    LoadingScreen.progess();
+    Login.init(loader);
+    LoadingScreen.progess();
+    InLobby.init(loader);
+
+    // Generate Player
+    RawModel rawPlayer = loader.loadToVao(ObjFileLoader.loadObj(myModel));
+    TexturedModel playerModel =
+        new TexturedModel(rawPlayer, new ModelTexture(loader.loadTexture(myTexture)));
+    player = new Player(playerModel, new Vector3f(90, 2, 3), 0, 0, 0, myModelSize);
+
+
+
+    // Connecting to Server
+    LoadingScreen.updateLoadingMessage("connecting to server");
+    new Thread(() -> StartNetworkOnlyClient.startWith(serverIp, serverPort)).start();
+    while (!ClientLogic.isConnected()) {
+      Thread.sleep(50);
+    }
+
+    // Logging in
+    LoadingScreen.updateLoadingMessage("logging in");
+    new PacketLogin(Game.getUsername()).sendToServer();
+    while (!loggedIn) {
+      Thread.sleep(50);
+    }
+    System.out.println("logged in");
+
+    // Creating and joining Lobby
+    LoadingScreen.updateLoadingMessage("joining lobby");
+    new PacketCreateLobby("lob1").sendToServer();
+    while (!lobbyCreated) {
+      Thread.sleep(50);
+    }
+
+    // Generate dummy map
+    map = new ClientMap(1, 1, 1);
+    new PacketJoinLobby("lob1").sendToServer();
+    while (!NetPlayerMaster.getLobbyname().equals("lob1")) {
+      Thread.sleep(50);
+    }
+
+    LoadingScreen.updateLoadingMessage("generating map");
+    while (map.isLocal()) {
+      Thread.sleep(500);
+    }
+
+    // Camera
+    camera = new Camera(player, window);
+
+    LoadingScreen.updateLoadingMessage("Ready!");
+    Thread.sleep(500);
+    LoadingScreen.done();
+    addActiveStage(PLAYING);
+    removeActiveStage(LOADINGSCREEN);
+  }
+
   private void disconnectFromServer() {
     // Stuff to do on disconnect
   }
@@ -362,9 +513,15 @@ public class Game extends Thread {
   // Valid Stages
   public enum Stage {
     MAINMENU,
-    LOBBIES,
+    CHOOSELOBBY,
     GAMEMENU,
-    PLAYING
+    PLAYING,
+    LOADINGSCREEN,
+    CREDITS,
+    OPTIONS,
+    WELCOME,
+    LOGIN,
+    INLOBBBY
   }
 
   /** Method to load the settings out of the serialised file. */

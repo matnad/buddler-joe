@@ -2,6 +2,7 @@ package entities.light;
 
 import entities.Camera;
 import entities.Player;
+import game.Game;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -48,13 +49,16 @@ public class LightMaster {
     Light light;
     switch (type) {
       case SUN:
-        light = new Light(LightTypes.SUN, position, colour);
+        light = new Light(LightTypes.SUN, position, colour, new Vector3f(1, 0, 0), 180);
         break;
       case FLASH:
-        light = new Light(LightTypes.FLASH, position, colour);
+        light = new Light(LightTypes.FLASH, position, colour, new Vector3f(1, 0, 0), 180);
         break;
       case TORCH:
-        light = new Light(LightTypes.TORCH, position, colour);
+        light = new Light(LightTypes.TORCH, position, colour, new Vector3f(1, 0, 0), 180);
+        break;
+      case SPOT:
+        light = new Light(LightTypes.SPOT, position, colour, new Vector3f(1, 0, 0), 60);
         break;
       default:
         light = null;
@@ -78,9 +82,9 @@ public class LightMaster {
       light.update(camera);
 
       if (light.getType() == LightTypes.SUN) {
-        // Adjust sun strength according to depth Depth 200 = Darkness
-        float col = Math.max(0, 200 + player.getPositionXy().y) / 200;
-        light.setColour(new Vector3f(col, col, col));
+        // Adjust sun strength according to depth
+        float pctBrightness = Game.getMap().getLightLevel(player.getPosition().y);
+        light.setBrightness(pctBrightness * 1.5f);
       }
     }
 
@@ -105,7 +109,7 @@ public class LightMaster {
             //noinspection SuspiciousListRemoveInLoop
             list.remove(lightIndex);
           } else if (lightsToRender.size() < maxLights
-              && list.get(lightIndex).getColour().length() > 0) {
+              && list.get(lightIndex).getAdjustedColour().length() > 0) {
             // If a light has a colour of 0 (all dark), then dont add it
             lightsToRender.add(list.get(lightIndex));
           }
@@ -156,7 +160,8 @@ public class LightMaster {
   public enum LightTypes {
     SUN(0, new Vector3f(1, 0, 0)),
     FLASH(1, new Vector3f(1, .001f, .0005f)),
-    TORCH(2, new Vector3f(1, .01f, .002f));
+    TORCH(3, new Vector3f(1, .005f, .005f)),
+    SPOT(2, new Vector3f(1, .02f, .01f));
 
     private final int priority;
     private final Vector3f baseAttenuation;

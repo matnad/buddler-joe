@@ -3,6 +3,8 @@ package engine.io;
 import static org.lwjgl.glfw.GLFW.GLFW_CURSOR;
 import static org.lwjgl.glfw.GLFW.GLFW_CURSOR_HIDDEN;
 import static org.lwjgl.glfw.GLFW.GLFW_CURSOR_NORMAL;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_BACKSPACE;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_DELETE;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_LAST;
 import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_LAST;
 import static org.lwjgl.glfw.GLFW.GLFW_RELEASE;
@@ -16,6 +18,7 @@ import java.nio.DoubleBuffer;
 import org.joml.Matrix3f;
 import org.joml.Vector3f;
 import org.lwjgl.BufferUtils;
+import org.lwjgl.glfw.GLFWCharCallback;
 import org.lwjgl.glfw.GLFWCursorPosCallback;
 import org.lwjgl.glfw.GLFWKeyCallback;
 import org.lwjgl.glfw.GLFWMouseButtonCallback;
@@ -44,9 +47,11 @@ import org.lwjgl.glfw.GLFWScrollCallback;
 public class InputHandler {
   private static final int[] keyState = new int[GLFW_KEY_LAST];
   private static final boolean[] keyDown = new boolean[GLFW_KEY_LAST];
+  private static boolean readInput = false;
 
   private static final int[] mouseState = new int[GLFW_MOUSE_BUTTON_LAST];
   private static final boolean[] mouseDown = new boolean[GLFW_MOUSE_BUTTON_LAST];
+  private static StringBuilder inputString = new StringBuilder();
   private static final Vector3f mouseRay = new Vector3f();
   private static final long window = Game.window.getWindow();
   /*
@@ -70,6 +75,27 @@ public class InputHandler {
           mouseState[button] = action;
         }
       };
+
+  static GLFWCharCallback charCallback =
+      new GLFWCharCallback() {
+        @Override
+        public void invoke(long window, int codepoint) {
+          if (isReadInputOn()) {
+            if (codepoint <= 255) {
+              if (codepoint == 127) {
+                InputHandler.resetInputString();
+              } else if (codepoint == 8) {
+                inputString.deleteCharAt(inputString.length());
+              } else {
+                inputString.append((char) codepoint);
+              }
+            }
+          } else {
+            return;
+          }
+        }
+      };
+
   private static double cursorPosX;
   private static double cursorPosY;
   private static double cursorPosLastFrameX;
@@ -188,6 +214,13 @@ public class InputHandler {
    * the window polling happens or the single press functions will not work.
    */
   public static void update() {
+    if (isReadInputOn()) {
+      if (isKeyPressed(GLFW_KEY_DELETE)) {
+        resetInputString();
+      } else if (isKeyPressed(GLFW_KEY_BACKSPACE) && inputString.length() > 0) {
+        inputString.deleteCharAt(inputString.length() - 1);
+      }
+    }
     // Do this before polling to preserve the state from the last update
     for (int i = 0; i < keyDown.length; i++) {
       keyDown[i] = isKeyDown(i);
@@ -332,6 +365,48 @@ public class InputHandler {
     DoubleBuffer buffer = BufferUtils.createDoubleBuffer(1);
     glfwGetCursorPos(Game.window.getWindow(), null, buffer);
     return buffer.get(0);
+  }
+
+  /**
+   * Returns the boolean whether the readInput is on or not.
+   *
+   * @return boolean whether the readInput is on or not.
+   */
+  public static boolean isReadInputOn() {
+    return readInput;
+  }
+
+  /** Set the readInput to On to start reading input. */
+  public static void readInputOn() {
+    InputHandler.readInput = true;
+  }
+
+  /** Set the readInput to Off to stop reading input. */
+  public static void readInputOff() {
+    InputHandler.readInput = false;
+  }
+
+  /**
+   * Method to get the Input String which has been collected by the StringBuilder.
+   *
+   * @return The string in the Stringbuilder
+   */
+  public static String getInputString() {
+    return inputString.toString();
+  }
+
+  /**
+   * Method to set the inputString to a certain Stringbuilder.
+   *
+   * @param inputString The Stringbuilder to replace the current one.
+   */
+  public static void setInputString(StringBuilder inputString) {
+    InputHandler.inputString = inputString;
+  }
+
+  /** Reset the Input String to clear it for further use. */
+  public static void resetInputString() {
+    InputHandler.inputString = new StringBuilder();
   }
 
   /**

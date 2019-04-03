@@ -13,8 +13,8 @@ import org.joml.Vector3f;
 public abstract class GuiString {
 
   private static FontType font;
-  private GuiText guiString;
-  private String guiStringString;
+  private GuiText guiText;
+  private String text;
   private Vector2f position;
   private Vector3f textColour;
   private float alpha;
@@ -29,21 +29,22 @@ public abstract class GuiString {
     alpha = 0;
     centered = false;
     maxLineLength = 1f;
+    fontSize = 1;
   }
 
   public static void loadFont(Loader loader) {
-    font = new FontType(loader, "verdana");
+    font = new FontType(loader, "verdanaAsciiEx");
   }
 
   /**
-   * Re-Creates the gui text. This needs to be called whenever the text (guiStringString) is changed
+   * Re-Creates the gui text. This needs to be called whenever the text (text) is changed
    * because we need to re-arrange the glyphs.
    */
   public void createGuiText() {
-    setGuiString(
+    setGuiText(
         new GuiText(
-            guiStringString,
-            1f,
+            text,
+            getFontSize(),
             getFont(),
             getTextColour(),
             getAlpha(),
@@ -96,20 +97,20 @@ public abstract class GuiString {
     this.fontSize = fontSize;
   }
 
-  public GuiText getGuiString() {
-    return guiString;
+  public GuiText getGuiText() {
+    return guiText;
   }
 
-  public void setGuiString(GuiText guiString) {
-    this.guiString = guiString;
+  public void setGuiText(GuiText guiText) {
+    this.guiText = guiText;
   }
 
-  public String getGuiStringString() {
-    return guiStringString;
+  public String getText() {
+    return text;
   }
 
-  public void setGuiStringString(String guiStringString) {
-    this.guiStringString = guiStringString;
+  public void setText(String text) {
+    this.text = text;
     // updateString();
   }
 

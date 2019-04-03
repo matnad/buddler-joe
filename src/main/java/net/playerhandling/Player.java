@@ -1,5 +1,8 @@
 package net.playerhandling;
 
+import net.ServerLogic;
+import net.lobbyhandling.Lobby;
+
 public class Player {
 
   private String username;
@@ -44,6 +47,19 @@ public class Player {
 
   public void setCurLobbyId(int curLobbyId) {
     this.curLobbyId = curLobbyId;
+  }
+
+  /**
+   * Returns the lobby of the player or null if the player is not in a lobby.
+   *
+   * @return Lobby the player is in
+   */
+  public Lobby getLobby() {
+    if (curLobbyId == 0) {
+      return null;
+    } else {
+      return ServerLogic.getLobbyList().getLobby(curLobbyId);
+    }
   }
 
   @Override

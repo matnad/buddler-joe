@@ -296,6 +296,8 @@ public abstract class Packet {
     CREATE_LOBBY("LOBCR"),
     PING("UPING"),
     PONG("PONGU"),
+    GET_GAME_LIST("GTGML"),
+    GAMES_OVERVIEW("GMLOV"),
     CREATE_LOBBY_STATUS("LOBCS"),
     JOIN_LOBBY_STATUS("LOBJS"),
     LOBBY_OVERVIEW("LOBOV"),
@@ -305,7 +307,10 @@ public abstract class Packet {
     CHAT_MESSAGE_TO_SERVER("CHATS"),
     CHAT_MESSAGE_TO_CLIENT("CHATC"),
     CHAT_MESSAGE_STATUS("CHATN"),
-    POSITION_UPDATE("POSXY");
+    POSITION_UPDATE("POSXY"),
+    BLOCK_DAMAGE("BLDMG"),
+    FULL_MAP_BROADCAST("MAPBC"),
+    SPAWN_ITEM("ITMSP");
 
     private final String packetCode;
 

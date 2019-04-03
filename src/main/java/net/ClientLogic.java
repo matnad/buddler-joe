@@ -1,5 +1,6 @@
 package net;
 
+import game.Game;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -7,8 +8,11 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.SocketException;
 import net.packets.Packet;
+import net.packets.block.PacketBlockDamage;
 import net.packets.chat.PacketChatMessageStatus;
 import net.packets.chat.PacketChatMessageToClient;
+import net.packets.items.PacketSpawnItem;
+import net.packets.lists.PacketGamesOverview;
 import net.packets.lobby.PacketCreateLobbyStatus;
 import net.packets.lobby.PacketCurLobbyInfo;
 import net.packets.lobby.PacketJoinLobbyStatus;
@@ -16,6 +20,7 @@ import net.packets.lobby.PacketLeaveLobbyStatus;
 import net.packets.lobby.PacketLobbyOverview;
 import net.packets.loginlogout.PacketLoginStatus;
 import net.packets.loginlogout.PacketUpdateClientId;
+import net.packets.map.PacketBroadcastMap;
 import net.packets.name.PacketSendName;
 import net.packets.name.PacketSetNameStatus;
 import net.packets.pingpong.PacketPing;
@@ -32,10 +37,13 @@ import net.playerhandling.PingManager;
  */
 public class ClientLogic implements Runnable {
 
+  private static volatile boolean disconnectFromServer;
   private static PrintWriter output;
   private static BufferedReader input;
   private static Socket server;
   private static PingManager pingManager;
+
+  private static boolean connected;
 
   /**
    * ClientLogic to communicate with the server. Controls the input/output from/to the player. The
@@ -50,6 +58,7 @@ public class ClientLogic implements Runnable {
     server = new Socket(ip, port);
     output = new PrintWriter(server.getOutputStream(), false);
     input = new BufferedReader(new InputStreamReader(server.getInputStream()));
+    disconnectFromServer = false;
 
     // Run thread
     Thread thread = new Thread(this);
@@ -58,6 +67,12 @@ public class ClientLogic implements Runnable {
     // Start ping manager to survey the connection responsiveness
     pingManager = new PingManager();
     new Thread(pingManager).start();
+
+    // Connected
+    if (input != null && output != null) {
+      connected = true;
+      Game.setConnectedToServer(true);
+    }
   }
 
   /**
@@ -66,8 +81,10 @@ public class ClientLogic implements Runnable {
    * @param packet The packet to be sent to the Server.
    */
   public static void sendToServer(Packet packet) {
-    output.println(packet.toString());
-    output.flush();
+    if (Game.isConnectedToServer()) {
+      output.println(packet.toString());
+      output.flush();
+    }
   }
 
   public static PingManager getPingManager() {
@@ -97,6 +114,8 @@ public class ClientLogic implements Runnable {
         e1.printStackTrace();
       }
     }
+    System.out.println(
+        "Connection to the server timed out or was interrupted. Socket has been closed.");
   }
 
   /**
@@ -109,14 +128,13 @@ public class ClientLogic implements Runnable {
    * @throws RuntimeException when something unexpected happens
    */
   private void waitForServer() throws IOException, RuntimeException {
-    while (true) {
-
+    while (!disconnectFromServer) {
       String in;
       try {
         in = input.readLine();
       } catch (SocketException e) {
-        server.close();
         System.out.println("\nThe connection to the server has been closed!");
+        server.close();
         break;
       }
 
@@ -186,11 +204,45 @@ public class ClientLogic implements Runnable {
         case POSITION_UPDATE:
           p = new PacketPos(data);
           break;
+        case BLOCK_DAMAGE:
+          p = new PacketBlockDamage(data);
+          break;
+        case FULL_MAP_BROADCAST:
+          p = new PacketBroadcastMap(data);
+          break;
+        case SPAWN_ITEM:
+          p = new PacketSpawnItem(data);
+          break;
+        case GAMES_OVERVIEW:
+          p = new PacketGamesOverview(data);
+          break;
         default:
       }
       if (p != null) {
         p.processData();
       }
+    }
+  }
+
+  public static boolean isConnected() {
+    return connected;
+  }
+
+  public static boolean isDisconnectFromServer() {
+    return disconnectFromServer;
+  }
+
+  /**
+   * A method to disconnect from the server.
+   * @param disconnectFromServer The boolean if to be disconnected
+   */
+
+  public static void setDisconnectFromServer(boolean disconnectFromServer) {
+    ClientLogic.disconnectFromServer = disconnectFromServer;
+    try {
+      server.close();
+    } catch (IOException e) {
+      System.out.println("Problem closing connection to server.");
     }
   }
 }

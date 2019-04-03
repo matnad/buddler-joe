@@ -1,8 +1,13 @@
 package gui;
 
+import engine.render.MasterRenderer;
 import engine.render.fontrendering.TextMaster;
+import game.Game;
+import org.joml.Matrix4f;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
+import org.joml.Vector4f;
+import util.Maths;
 
 /** Shows FPS as text on screen. */
 public class Fps extends GuiString {
@@ -14,6 +19,8 @@ public class Fps extends GuiString {
     setPosition(new Vector2f(.92f, .02f));
     setTextColour(new Vector3f(1f, 1f, 0f));
     setAlpha(1);
+    setText("0");
+    createGuiText();
   }
 
   /**
@@ -22,16 +29,33 @@ public class Fps extends GuiString {
    * @param fps pass current fps from the window class
    */
   public void updateString(String fps) {
-    if (getGuiString() != null) {
-      TextMaster.removeText(getGuiString());
+    if (getGuiText() != null) {
+      TextMaster.removeText(getGuiText());
     }
     try {
       double fpsD = Double.parseDouble(fps);
       fpsD = Math.round(fpsD);
-      setGuiStringString("" + fpsD);
+      setText("" + fpsD);
       createGuiText();
     } catch (NumberFormatException ignored) {
       // Don't update if we get invalid string
     }
+
+    //Vector3f pos3 = new Vector3f(Game.getActivePlayer().getPosition());
+    //Vector4f pos4 = new Vector4f(pos3.x, pos3.y, pos3.z, 1);
+    //
+    ////Matrix4f proj = new Matrix4f(1.5f, 0, 0 ,0, 0, 1, 0, 0, 0, 0, -1.2f, -2.2f, 0, 0, -1, 0);
+    //MasterRenderer.getProjectionMatrix();
+    //Vector4f loc =
+    //    new Vector4f(pos4).mul(Maths.createViewMatrix(Game.getActiveCamera()))
+    //        .mul(MasterRenderer.getProjectionMatrix());
+    //
+    //float x = (loc.x / loc.w + 1) / 2f;
+    //float y = 1 - (loc.y / loc.w + 1) / 2f;
+    //
+    ////System.out.println(proj);
+    //System.out.println(loc);
+    //
+    //setPosition(new Vector2f(x, y));
   }
 }

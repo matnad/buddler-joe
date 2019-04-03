@@ -35,3 +35,7 @@ build/
 
 # gitlab
 .gitlab/
+
+gruppe-8\.iml
+
+log/

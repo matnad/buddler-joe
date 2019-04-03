@@ -1,0 +1,6 @@
+14:01:31.957 [Thread-1] ERROR net.packets.map.PacketBroadcastMap - Error trying to reload map: ERRORS: Wrong map format.
+14:01:56.577 [Thread-1] ERROR net.packets.map.PacketBroadcastMap - Error trying to reload map: ERRORS: Wrong map format.
+14:03:10.530 [Thread-1] ERROR net.packets.map.PacketBroadcastMap - Error trying to reload map: ERRORS: Wrong map format: 101300110100200120211010014001
+14:08:06.384 [Thread-1] ERROR net.packets.map.PacketBroadcastMap - Error trying to reload map: ERRORS: Wrong map format: 49
+14:08:35.024 [Thread-1] ERROR net.packets.map.PacketBroadcastMap - Error trying to reload map: ERRORS: Wrong map format: 49
+14:09:43.237 [Thread-1] ERROR net.packets.map.PacketBroadcastMap - Error trying to reload map: ERRORS: Wrong map format: 49 101300110100200120211010014001

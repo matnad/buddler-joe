@@ -1,11 +1,6 @@
 package gui;
 
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_A;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_B;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_BACKSPACE;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_DELETE;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_ENTER;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_LEFT_SHIFT;
 
 import engine.io.InputHandler;
 import engine.render.Loader;
@@ -61,7 +56,7 @@ public class Chat {
     chatText = "";
 
     // Load font and text properties for all messages
-    font = new FontType(loader, "verdana");
+    font = new FontType(loader, "verdanaAsciiEx");
     textColour = new Vector3f(1f, 1f, 1f);
     guiText =
         new ChatText(
@@ -80,17 +75,25 @@ public class Chat {
   }
 
   /**
-   * TEMPORARY METHOD.!!!!!
+   * Method to check user input which calls the keyboardInputHandler
    *
-   * <p>Called every frame. Reads chat input and toggles chat window TODO (anyone): Build a keyboard
-   * text input handler
+   * <p>Called every frame. Reads chat input and toggles chat window text input handler
    */
   public void checkInputs() {
     if (InputHandler.isKeyPressed(GLFW_KEY_ENTER)) {
       if (chatText.length() > 0 && enabled) {
         sendMessage();
+        chatText = "";
+        InputHandler.resetInputString();
       } else {
-        toggleChat();
+        if (enabled) {
+          setEnabled(false);
+          InputHandler.readInputOff();
+        } else {
+          setEnabled(true);
+          InputHandler.readInputOn();
+        }
+        InputHandler.resetInputString();
       }
     }
 
@@ -100,30 +103,9 @@ public class Chat {
       return;
     }
 
-    char newChar;
     String newChatText = chatText;
 
-    if (InputHandler.isKeyPressed(GLFW_KEY_A)) {
-      newChar = 'a';
-      if (InputHandler.isKeyDown(GLFW_KEY_LEFT_SHIFT)) {
-        newChar = Character.toUpperCase(newChar);
-      }
-      newChatText += newChar;
-
-    } else if (InputHandler.isKeyPressed(GLFW_KEY_B)) {
-      newChar = 'b';
-      if (InputHandler.isKeyDown(GLFW_KEY_LEFT_SHIFT)) {
-        newChar = Character.toUpperCase(newChar);
-      }
-      newChatText += newChar;
-
-    } else if (InputHandler.isKeyPressed(GLFW_KEY_BACKSPACE)) {
-      if (newChatText.length() > 0) {
-        newChatText = newChatText.substring(0, newChatText.length() - 1);
-      }
-    } else if (InputHandler.isKeyPressed(GLFW_KEY_DELETE)) {
-      newChatText = "";
-    }
+    newChatText = InputHandler.getInputString();
 
     if (!chatText.equals(newChatText)) {
       chatText = newChatText;

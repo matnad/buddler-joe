@@ -3,8 +3,12 @@ package net.packets.playerprop;
 import game.NetPlayerMaster;
 import net.ServerLogic;
 import net.packets.Packet;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class PacketPos extends Packet {
+
+  private static final Logger logger = LoggerFactory.getLogger(PacketPos.class);
 
   private int playerId;
   private float posX;
@@ -22,9 +26,6 @@ public class PacketPos extends Packet {
    */
   public PacketPos(float posX, float posY, float rotY) {
     super(PacketTypes.POSITION_UPDATE);
-    // this.posX = posX;
-    // this.posY = posY;
-    // this.rotY = rotY;
     setData(posX + "║" + posY + "║" + rotY);
     // No validation here to save performance
   }
@@ -91,6 +92,8 @@ public class PacketPos extends Packet {
         // Client
         NetPlayerMaster.updatePosition(playerId, posX, posY, rotY);
       }
+    } else {
+      logger.error("Errors while transmitting position data. " + createErrorMessage());
     }
   }
 }
