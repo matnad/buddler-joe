@@ -257,28 +257,6 @@ public abstract class Packet {
   }
 
   /**
-   * Check whether a block position data is correct or not. This method can be accessed by both the
-   * client and the server.
-   *
-   * @return true if correct Position data, false if incorrect.
-   */
-  protected boolean checkBlockPosInfo() {
-    try {
-      if (data == null) {
-        addError("No data available.");
-        return false;
-      }
-      String[] dataArray = dataArray = data.split("║");
-      int blockX = Integer.parseInt(dataArray[0]);
-      int blockY = Integer.parseInt(dataArray[1]);
-    } catch (NumberFormatException e) {
-      addError("Invalid position data.");
-      return false;
-    }
-    return true;
-  }
-
-  /**
    * This method checks if the client how send this Packet is currently in a Lobby. This method
    * should only be called on the serverside, since it will always return false on the clientside.
    *
