@@ -1,33 +1,46 @@
 package net.highscore;
 
 import java.io.Serializable;
-import java.util.HashMap;
+import java.util.ArrayList;
 
 public class ServerHighscore implements Serializable {
 
-  private HashMap<String, Float> highscore;
+  private class Standing {
+
+    float time;
+    String username;
+
+    public Standing(float time, String username) {
+      this.time = time;
+      this.username = username;
+    }
+
+    @Override
+    public String toString() {
+      return username + "║" + time;
+    }
+  }
+
+  private ArrayList<Standing> highscore;
 
   public ServerHighscore() {
-    highscore = new HashMap<String, Float>();
+    this.highscore = new ArrayList<>();
   }
 
-  /**
-   * Method to add a player to the Highscore. Is used each time after a game.
-   *
-   * @param username Name of the first finishing player.
-   * @param time time the user had for the game
-   */
-  public void addPlayer(String username, float time) {
-    // for(String s : HashMa){
-
-    // }
+  public void addPlayer(float time, String username) {
+    if (highscore.size() == 0) {
+      highscore.add(new Standing(time, username));
+    } else {
+      for (int i = 0; i < 10; i++) {
+        if (highscore.get(i).time < time) {
+          highscore.add(i, new Standing(time, username));
+        }
+      }
+    }
   }
 
-  public HashMap<String, Float> getHighscore() {
-    return highscore;
-  }
-
-  public void setHighscore(HashMap<String, Float> highscore) {
-    this.highscore = highscore;
+  @Override
+  public String toString(){
+    return String.join("║", highscore.toString());
   }
 }
