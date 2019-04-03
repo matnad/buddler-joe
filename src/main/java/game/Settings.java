@@ -13,7 +13,7 @@ public class Settings implements Serializable {
   private int width = 1280;
   private int height = 800;
   private boolean fullscreen = false;
-  private String username;
+  private String username = "Joe Buddler";
 
   // TODO: (Viktor) Ip
 

@@ -73,7 +73,7 @@ public class Game extends Thread {
    * If someone wants to work on this, edit this comment or add an issue to the tracker in gitlab
    */
 
-  private static Settings settings;
+  private Settings settings;
   private static SettingsSerialiser settingsSerialiser = new SettingsSerialiser();
 
   public static Window window = new Window(1280, 800, 60, "Buddler Joe");
@@ -97,7 +97,7 @@ public class Game extends Thread {
    * list with minimal maintenance.
    */
   private static final List<Entity> entities = new CopyOnWriteArrayList<>();
-  public static String username = RandomName.getRandomName(); // TODO (Server Team): Username
+  public String username = RandomName.getRandomName(); // TODO (Server Team): Username
   // maybe needs its own class or should at least be moved to NetPlayer
   /*
    * We want everything set up so we could use multiple cameras, even if we don't end up needing
@@ -140,7 +140,7 @@ public class Game extends Thread {
   public Game(String ipAddress, int port, String username) {
     serverIp = ipAddress;
     serverPort = port;
-    Game.username = username;
+    this.username = username;
   }
 
   /**
@@ -175,11 +175,11 @@ public class Game extends Thread {
     Game.connectedToServer = connectedToServer;
   }
 
-  public static String getUsername() {
+  public String getUsername() {
     return settings.getUsername();
   }
 
-  public static void setUsername(String username) {
+  public void setUsername(String username) {
     settings.setUsername(username);
     settingsSerialiser.serialiseSettings(settings);
   }
@@ -457,7 +457,7 @@ public class Game extends Thread {
     RawModel rawPlayer = loader.loadToVao(ObjFileLoader.loadObj(myModel));
     TexturedModel playerModel =
         new TexturedModel(rawPlayer, new ModelTexture(loader.loadTexture(myTexture)));
-    player = new Player(playerModel, new Vector3f(90, 2, 3), 0, 0, 0, myModelSize);
+    player = new Player(getUsername(), playerModel, new Vector3f(90, 2, 3), 0, 0, 0, myModelSize);
 
     // Connecting to Server
     LoadingScreen.updateLoadingMessage("connecting to server");
@@ -468,7 +468,7 @@ public class Game extends Thread {
 
     // Logging in
     LoadingScreen.updateLoadingMessage("logging in");
-    new PacketLogin(Game.getUsername()).sendToServer();
+    new PacketLogin(getUsername()).sendToServer();
     while (!loggedIn) {
       Thread.sleep(50);
     }
