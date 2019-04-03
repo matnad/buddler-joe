@@ -2,8 +2,8 @@ package game;
 
 import java.io.Serializable;
 
+import engine.io.Window;
 import util.RandomName;
-
 
 /**
  * Main class to save the user settings. Used in various classes and data can be accessed through
@@ -16,7 +16,7 @@ public class Settings implements Serializable {
 
   private int height = 800;
   private boolean fullscreen = false;
-  private String username = RandomName.getRandomName();
+  private String username;
 
   // TODO: (Viktor) Ip
 
@@ -50,5 +50,9 @@ public class Settings implements Serializable {
 
   public void setUsername(String username) {
     this.username = username;
+  }
+
+  public Window getWindow() {
+    return new Window(width, height, 60, "Buddler Joe");
   }
 }

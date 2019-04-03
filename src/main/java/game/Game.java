@@ -43,6 +43,7 @@ import gui.Chat;
 import gui.Fps;
 import gui.GuiString;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -75,8 +76,7 @@ public class Game extends Thread {
   private static Settings settings;
   private static SettingsSerialiser settingsSerialiser = new SettingsSerialiser();
 
-  public static final Window window =
-      new Window(settings.getWidth(), settings.getHeight(), 60, "Buddler Joe");
+  public static Window window = new Window(1280, 800, 60, "Buddler Joe");
   // Set up GLFW Window
   private static final List<Stage> activeStages = new ArrayList<>();
   // Network related variables, still temporary/dummies
@@ -97,7 +97,7 @@ public class Game extends Thread {
    * list with minimal maintenance.
    */
   private static final List<Entity> entities = new ArrayList<>();
-  public static String username = settings.getUsername(); // TODO (Server Team): Username
+  public static String username = RandomName.getRandomName(); // TODO (Server Team): Username
   // maybe needs its own class or should at least be moved to NetPlayer
   /*
    * We want everything set up so we could use multiple cameras, even if we don't end up needing
@@ -132,11 +132,11 @@ public class Game extends Thread {
 
   /**
    * The constructor for the game to be called from the main class.
+   *
    * @param ipAddress The ip address to be connected to
    * @param port The port to be connected to
    * @param username The chosen username of the user
    */
-
   public Game(String ipAddress, int port, String username) {
     serverIp = ipAddress;
     serverPort = port;
@@ -247,6 +247,10 @@ public class Game extends Thread {
     return guiRenderer;
   }
 
+  public static void setWindow(Window window) {
+    Game.window = window;
+  }
+
   /** Initialize the Playing Thread (Treat this like a constructor). */
   @Override
   public synchronized void start() {
@@ -274,7 +278,7 @@ public class Game extends Thread {
   /** Here we initialize all the Masters and other classes and generate the world. */
   @Override
   public void run() {
-
+    loadSettings();
     // Create GLFW Window, we run this in a thread.
     window.setSize(settings.getWidth(), settings.getHeight());
     window.setFullscreen(settings.isFullscreen());
@@ -297,7 +301,6 @@ public class Game extends Thread {
       logger.error("Could not generate terrain.");
     }
 
-
     // Initialize NetPlayerModels
     NetPlayerMaster.init(loader);
 
@@ -312,7 +315,6 @@ public class Game extends Thread {
     LoadingScreen.init(loader);
     addActiveStage(LOADINGSCREEN);
     LoadingScreen.updateLoadingMessage("starting game");
-
 
     // Connect to server and load level in an extra thread
     try {
@@ -342,7 +344,7 @@ public class Game extends Thread {
 
     addActiveStage(PLAYING);
 
-    //Connect after everything is loaded
+    // Connect after everything is loaded
 
     /*
     **************************************************************
@@ -437,7 +439,7 @@ public class Game extends Thread {
   }
 
   private void loadGame(Loader loader) throws InterruptedException {
-    //Load Stages
+    // Load Stages
     MainMenu.init(loader);
     LoadingScreen.progess();
     GameMenu.init(loader);
@@ -459,8 +461,6 @@ public class Game extends Thread {
     TexturedModel playerModel =
         new TexturedModel(rawPlayer, new ModelTexture(loader.loadTexture(myTexture)));
     player = new Player(playerModel, new Vector3f(90, 2, 3), 0, 0, 0, myModelSize);
-
-
 
     // Connecting to Server
     LoadingScreen.updateLoadingMessage("connecting to server");
@@ -528,6 +528,12 @@ public class Game extends Thread {
   public void loadSettings() {
     if (settingsSerialiser.readSettings() != null) {
       this.settings = settingsSerialiser.readSettings();
+      if (!username.equals(settings.getUsername())) {
+        this.username = settings.getUsername();
+      }
+      if (!window.equals(settings.getWindow())) {
+        this.window = settings.getWindow();
+      }
     } else {
       this.settings = new Settings();
     }

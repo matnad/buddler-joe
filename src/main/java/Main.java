@@ -8,7 +8,7 @@ public class Main {
 
   // DEFAULT VALUES
   private static boolean client = true;
-  //private static String ipAddress = "185.162.250.84";
+  // private static String ipAddress = "185.162.250.84";
   // private static String ipAddress = "192.168.1.121";
   // private static String ipAddress = "127.0.0.1";
   private static String ipAddress = "www.buddlerjoe.ch";
@@ -72,7 +72,6 @@ public class Main {
 
     if (client) {
       Game game = new Game(ipAddress, port, username);
-      game.loadSettings();
       game.start();
     } else {
       StartServer server = new StartServer(port);
