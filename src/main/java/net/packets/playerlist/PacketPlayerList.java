@@ -38,6 +38,9 @@ public class PacketPlayerList extends Packet {
   /** Validate whether the PlayerList only consists of extended Ascii. */
   @Override
   public void validate() {
+    if(dataArray[1] == null) {
+      addError("There are no names in the list.");
+    }
     for (int i = 0; i < dataArray.length; i++) {
       if (!isExtendedAscii(dataArray[i])) {
         break;
