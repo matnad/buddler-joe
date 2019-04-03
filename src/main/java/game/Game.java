@@ -96,7 +96,7 @@ public class Game extends Thread {
    * We keep all the Sub-Entities organized in Masters and keep this as a global Playing-Static
    * list with minimal maintenance.
    */
-  private static final List<Entity> entities = new ArrayList<>();
+  private static final List<Entity> entities = new CopyOnWriteArrayList<>();
   public static String username = RandomName.getRandomName(); // TODO (Server Team): Username
   // maybe needs its own class or should at least be moved to NetPlayer
   /*
@@ -338,9 +338,6 @@ public class Game extends Thread {
     // Lights and cameras (just one for now)
     LightMaster.generateLight(
         LightMaster.LightTypes.SUN, new Vector3f(0, 600, 200), new Vector3f(1, 1, 1));
-
-    MainMenu.init(loader);
-    GameMenu.init(loader);
 
     addActiveStage(PLAYING);
 

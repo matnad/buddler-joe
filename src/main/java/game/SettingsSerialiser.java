@@ -1,7 +1,6 @@
 package game;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -15,7 +14,11 @@ public class SettingsSerialiser {
 
   public SettingsSerialiser() {}
 
-  /** Method to serialise the settings and to save them at the chosen path. */
+  /**
+   * Method to serialise the settings and to save them at the chosen path.
+   *
+   * @param settings settings instance to serialize
+   */
   public void serialiseSettings(Settings settings) {
     try {
       FileOutputStream fileOut = new FileOutputStream("/src/main/java/game/Settings.ser");

@@ -134,7 +134,12 @@ public class StartNetworkOnlyClient implements Runnable {
     new Thread(() -> StartNetworkOnlyClient.startWith("127.0.0.1", 11337)).start();
   }
 
-  /** Start the Network only client with a certain IP and serverPort. */
+  /**
+   * Start the Network only client with a certain IP and serverPort.
+   *
+   * @param serverPort port to connect on
+   * @param serverIp ip or URL to connect to
+   */
   public static void startWith(String serverIp, int serverPort) {
     StartNetworkOnlyClient.serverIp = serverIp;
     StartNetworkOnlyClient.serverPort = serverPort;
