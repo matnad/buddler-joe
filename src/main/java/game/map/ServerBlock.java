@@ -26,7 +26,7 @@ public class ServerBlock {
     this.gridX = gridX;
     this.gridY = gridY;
     this.type = type;
-    getHardness();
+    this.hardness = getBaseHardness();
   }
 
   public BlockMaster.BlockTypes getType() {
