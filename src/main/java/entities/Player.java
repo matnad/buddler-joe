@@ -76,8 +76,8 @@ public class Player extends NetPlayer {
    * @param scale scale factor
    */
   public Player(
-      TexturedModel model, Vector3f position, float rotX, float rotY, float rotZ, float scale) {
-    super(0, Game.getUsername(), model, position, rotX, rotY, rotZ, scale);
+      String username, TexturedModel model, Vector3f position, float rotX, float rotY, float rotZ, float scale) {
+    super(0, username, model, position, rotX, rotY, rotZ, scale);
   }
 
   /**

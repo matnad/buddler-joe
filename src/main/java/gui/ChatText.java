@@ -44,7 +44,7 @@ class ChatText extends GuiText {
       boolean sent) {
     super(text, fontSize, font, colour, alpha, position, maxLineLength, centered);
 
-    username = Game.username;
+    username = Game.getActivePlayer().getUsername();
     this.sent = sent;
     time = "[" + username + "-" + new SimpleDateFormat("HH:mm").format(new Date()) + "] ";
   }
