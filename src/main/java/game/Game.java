@@ -456,7 +456,6 @@ public class Game extends Thread {
     while (!ClientLogic.isConnected()) {
       Thread.sleep(50);
     }
-    connectedToServer = true;
 
     // Logging in
     LoadingScreen.updateLoadingMessage("logging in");

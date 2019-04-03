@@ -131,7 +131,7 @@ public class StartNetworkOnlyClient implements Runnable {
    *     errors
    */
   public static void main(String[] args) {
-    new Thread(() -> StartNetworkOnlyClient.startWith("buddlerjoe.ch", 11337)).start();
+    new Thread(() -> StartNetworkOnlyClient.startWith("127.0.0.1", 11337)).start();
   }
 
   /** Start the Network only client with a certain IP and serverPort. */
