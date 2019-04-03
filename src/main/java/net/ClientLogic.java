@@ -72,6 +72,7 @@ public class ClientLogic implements Runnable {
     // Connected
     if (input != null && output != null) {
       connected = true;
+      Game.setConnectedToServer(true);
     }
   }
 

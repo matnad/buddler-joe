@@ -1,5 +1,6 @@
 package engine.render.fontmeshcreator;
 
+import game.Game;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.HashMap;
@@ -41,7 +42,7 @@ class MetaFile {
    * @param file - the font file.
    */
   MetaFile(BufferedReader file) {
-    this.aspectRatio = 1920f / 1024f; // (double) window.getWidth() / (double) window.getHeight();
+    this.aspectRatio = (double) Game.window.getWidth() / (double) Game.window.getHeight();
     openFile(file);
     loadPaddingData();
     loadLineSizes();
@@ -89,7 +90,7 @@ class MetaFile {
    * @param variable - the name of the variable.
    * @return The value of the variable.
    */
-  private int getValueOfVariable(String variable) {
+  private int getValueOfVariable(String variable) throws NumberFormatException {
     return Integer.parseInt(values.get(variable));
   }
 
@@ -175,7 +176,13 @@ class MetaFile {
    * @return The data about the character.
    */
   private Character loadCharacter(int imageSize) {
-    int id = getValueOfVariable("id");
+    int id;
+    try {
+      id = getValueOfVariable("id");
+    } catch (NumberFormatException e) {
+      return null;
+    }
+
     if (id == TextMeshCreator.SPACE_ASCII) {
       this.spaceWidth = (getValueOfVariable("xadvance") - paddingWidth) * horizontalPerPixelSize;
       return null;
