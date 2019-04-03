@@ -19,7 +19,7 @@ public class ServerMap extends Map<ServerBlock> {
     super(width, height, seed);
     blocks = new ServerBlock[width][height];
     generateMap();
-    // checkFallingBlocks();
+    checkFallingBlocks();
   }
 
   @Override
@@ -34,7 +34,7 @@ public class ServerMap extends Map<ServerBlock> {
         if (noiseMap[x][y] < thresholds[0]) {
           blocks[x][y] = new ServerBlock(BlockMaster.BlockTypes.STONE, x, y); // Air
         } else {
-          if (rng.nextFloat() < .5f) {
+          if (rng.nextFloat() < .1f) {
             blocks[x][y] = new ServerBlock(BlockMaster.BlockTypes.GOLD, x, y); // Gold: 1 in 40 chance
           } else if (rng.nextFloat() < .01f) {
             blocks[x][y] =
