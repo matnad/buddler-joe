@@ -131,6 +131,13 @@ public class Game extends Thread {
   private static TerrainFlat belowGround;
   private static GuiRenderer guiRenderer;
 
+  /**
+   * The constructor for the game to be called from the main class.
+   * @param ipAddress The ip address to be connected to
+   * @param port The port to be connected to
+   * @param username The chosen username of the user
+   */
+
   public Game(String ipAddress, int port, String username) {
     serverIp = ipAddress;
     serverPort = port;

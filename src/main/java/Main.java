@@ -30,7 +30,7 @@ public class Main {
 
     if (args.length >= 2) {
       if (client) {
-        String serverIP;
+        String serverIp;
         String[] ipPort = args[1].split(":");
         // Validate IP
         // try {

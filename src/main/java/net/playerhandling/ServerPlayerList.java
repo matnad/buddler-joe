@@ -111,11 +111,11 @@ public class ServerPlayerList {
   }
 
   @Override
-  public String toString(){
+  public String toString() {
     StringBuilder s = new StringBuilder();
     if (players.size() > 0) {
       for (Player l : players.values()) {
-          s.append(l.toString()).append("║");
+        s.append(l.toString()).append("║");
       }
     } else {
       s = new StringBuilder("No Players online");

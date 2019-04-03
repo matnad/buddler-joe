@@ -37,11 +37,11 @@ import net.playerhandling.PingManager;
  */
 public class ClientLogic implements Runnable {
 
+  private static volatile boolean disconnectFromServer;
   private static PrintWriter output;
   private static BufferedReader input;
   private static Socket server;
   private static PingManager pingManager;
-  private volatile static boolean disconnectFromServer;
 
   private static boolean connected;
 
@@ -113,7 +113,8 @@ public class ClientLogic implements Runnable {
         e1.printStackTrace();
       }
     }
-    System.out.println("Connection to the server timed out or was interrupted. Socket has been closed.");
+    System.out.println(
+        "Connection to the server timed out or was interrupted. Socket has been closed.");
   }
 
   /**
@@ -229,6 +230,11 @@ public class ClientLogic implements Runnable {
   public static boolean isDisconnectFromServer() {
     return disconnectFromServer;
   }
+
+  /**
+   * A method to disconnect from the server.
+   * @param disconnectFromServer The boolean if to be disconnected
+   */
 
   public static void setDisconnectFromServer(boolean disconnectFromServer) {
     ClientLogic.disconnectFromServer = disconnectFromServer;

@@ -135,7 +135,7 @@ public class PingManager implements Runnable {
     }
 
     // Check for disconnect conditions
-    if(listOfPingTs.size() > 0) {
+    if (listOfPingTs.size() > 0) {
       logger.debug("Number of unanswered pings: " + listOfPingTs.size());
     }
     if (listOfPingTs.size() >= 0.8f / freq * 10000 || ping > 1000) {
