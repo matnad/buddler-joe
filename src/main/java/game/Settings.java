@@ -2,44 +2,53 @@ package game;
 
 import java.io.Serializable;
 
-/**
- * Main class to save the user settings. Used in various classes and data can be accessed through getters/setters
- */
+import util.RandomName;
 
+
+/**
+ * Main class to save the user settings. Used in various classes and data can be accessed through
+ * getters/setters
+ */
 public class Settings implements Serializable {
 
-    /**
-     * Important user settings to be accessed by various methods.
-     */
+  /** Important user settings to be accessed by various methods. */
+  private int width = 1280;
 
-    private int WIDTH = 1280;
-    private int HEIGHT = 800;
-    private boolean fullscreen = false;
+  private int height = 800;
+  private boolean fullscreen = false;
+  private String username = RandomName.getRandomName();
 
-    //TODO: (Viktor) Spielername und Ip
+  // TODO: (Viktor) Ip
 
-    public boolean isFullscreen() {
-        return fullscreen;
-    }
+  public boolean isFullscreen() {
+    return fullscreen;
+  }
 
-    public void setFullscreen(boolean fullscreen) {
-        this.fullscreen = fullscreen;
-    }
+  public void setFullscreen(boolean fullscreen) {
+    this.fullscreen = fullscreen;
+  }
 
-    public int getWIDTH() {
-        return WIDTH;
-    }
+  public int getWidth() {
+    return width;
+  }
 
-    public void setWIDTH(int WIDTH) {
-        this.WIDTH = WIDTH;
-    }
+  public void setWidth(int width) {
+    this.width = width;
+  }
 
-    public int getHEIGHT() {
-        return HEIGHT;
-    }
+  public int getHeight() {
+    return height;
+  }
 
-    public void setHEIGHT(int HEIGHT) {
-        this.HEIGHT = HEIGHT;
-    }
+  public void setHeight(int height) {
+    this.height = height;
+  }
 
+  public String getUsername() {
+    return username;
+  }
+
+  public void setUsername(String username) {
+    this.username = username;
+  }
 }

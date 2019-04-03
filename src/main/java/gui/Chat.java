@@ -24,7 +24,6 @@ import org.joml.Vector3f;
  * typed will fade out the chat.
  *
  * <p>This class is only a mock up and not functional yet, except for the fading and positioning.
- * TODO (anyone): Build a proper message handler
  */
 public class Chat {
 
@@ -239,7 +238,7 @@ public class Chat {
   //  this.chatText = chatText;
   // }
   //
-   public GuiTexture getChatGui() {
+  public GuiTexture getChatGui() {
     return chatGui;
-   }
+  }
 }

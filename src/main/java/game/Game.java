@@ -52,7 +52,7 @@ public class Game extends Thread {
   private static SettingsSerialiser settingsSerialiser = new SettingsSerialiser();
 
   public static final Window window =
-      new Window(settings.getWIDTH(), settings.getHEIGHT(), 60, "Buddler Joe");
+      new Window(settings.getWidth(), settings.getHeight(), 60, "Buddler Joe");
   // Set up GLFW Window
   private static final List<Stage> activeStages = new ArrayList<>();
   // Network related variables, still temporary/dummies
@@ -68,7 +68,7 @@ public class Game extends Thread {
    * list with minimal maintenance.
    */
   private static final List<Entity> entities = new ArrayList<>();
-  public static String username = RandomName.getRandomName(); // TODO (Server Team): Username
+  public static String username = settings.getUsername(); // TODO (Server Team): Username
   // maybe needs its own class or should at least be moved to NetPlayer
   /*
    * TODO (Matthias): Change camera to non-static.
@@ -134,7 +134,12 @@ public class Game extends Thread {
   }
 
   public static String getUsername() {
-    return username;
+    return settings.getUsername();
+  }
+
+  public static void setUsername(String username) {
+    settings.setUsername(username);
+    settingsSerialiser.serialiseSettings(settings);
   }
 
   /**
@@ -221,7 +226,7 @@ public class Game extends Thread {
   public void run() {
 
     // Create GLFW Window, we run this in a thread.
-    window.setSize(settings.getWIDTH(), settings.getHEIGHT());
+    window.setSize(settings.getWidth(), settings.getHeight());
     window.setFullscreen(settings.isFullscreen());
     window.create();
 
@@ -362,6 +367,7 @@ public class Game extends Thread {
     PLAYING
   }
 
+  /** Method to load the settings out of the serialised file. */
   public void loadSettings() {
     if (settingsSerialiser.readSettings() != null) {
       this.settings = settingsSerialiser.readSettings();

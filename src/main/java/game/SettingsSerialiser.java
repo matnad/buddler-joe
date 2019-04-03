@@ -35,7 +35,7 @@ public class SettingsSerialiser {
    */
   public Settings readSettings() {
     try {
-      FileInputStream fileIn = new FileInputStream("/config/Settings.ser");
+      FileInputStream fileIn = new FileInputStream("src/main/java/game/Settings.ser");
       ObjectInputStream in = new ObjectInputStream(fileIn);
       Settings settings = (Settings) in.readObject();
       in.close();
