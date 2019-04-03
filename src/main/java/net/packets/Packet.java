@@ -335,6 +335,7 @@ public abstract class Packet {
     BLOCK_DAMAGE("BLDMG"),
     ITEM_INFO("ITINF"),
     FULL_MAP_BROADCAST("MAPBC"),
+    HIGHSCORE("HIGH"),
     SPAWN_ITEM("ITMSP");
 
     private final String packetCode;
