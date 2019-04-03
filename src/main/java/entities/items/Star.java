@@ -1,13 +1,8 @@
 package entities.items;
 
-import engine.models.RawModel;
 import engine.models.TexturedModel;
 import engine.render.Loader;
-import engine.render.objconverter.ObjFileLoader;
-import engine.textures.ModelTexture;
 import entities.light.Light;
-import entities.light.LightMaster;
-import game.Game;
 import org.joml.Vector3f;
 
 public class Star extends Item {
@@ -41,24 +36,11 @@ public class Star extends Item {
     }
   }
 
-  /** Damage the blocks in range of the explosion and hide the dynamite. */
-  private void explode() {
-    if (starred) {
-      return;
-    }
-    starred = true;
-    setScale(new Vector3f()); // Hide the model, but keep the object for the explosion effect
-    flash =
-        LightMaster.generateLight(
-            LightMaster.LightTypes.FLASH, getPosition(), new Vector3f(1, 1, 1));
-    if (Game.isConnectedToServer()) {
-      // Send to players that there has been a star
-    }
-  }
+  private void starred() {}
 
   public static void init(Loader loader) {
-    RawModel rawDynamite = loader.loadToVao(ObjFileLoader.loadObj("star"));
-    setPreloadedModel(new TexturedModel(rawDynamite, new ModelTexture(loader.loadTexture("star"))));
+    // RawModel rawStar = loader.loadToVao(ObjFileLoader.loadObj("star"));
+    // setPreloadedModel(new TexturedModel(rawStar, new ModelTexture(loader.loadTexture("star"))));
   }
 
   private static TexturedModel getPreloadedModel() {

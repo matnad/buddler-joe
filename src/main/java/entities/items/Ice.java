@@ -58,8 +58,8 @@ public class Ice extends Item {
   }
 
   public static void init(Loader loader) {
-    RawModel rawDynamite = loader.loadToVao(ObjFileLoader.loadObj("ice"));
-    setPreloadedModel(new TexturedModel(rawDynamite, new ModelTexture(loader.loadTexture("ice"))));
+    // RawModel rawIce = loader.loadToVao(ObjFileLoader.loadObj("ice"));
+    // setPreloadedModel(new TexturedModel(rawIce, new ModelTexture(loader.loadTexture("ice"))));
   }
 
   private static TexturedModel getPreloadedModel() {

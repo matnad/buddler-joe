@@ -11,6 +11,7 @@ import net.packets.Packet;
 import net.packets.block.PacketBlockDamage;
 import net.packets.chat.PacketChatMessageToServer;
 import net.packets.highscore.PacketHighscore;
+import net.packets.items.PacketItemGenerated;
 import net.packets.items.PacketSpawnItem;
 import net.packets.lobby.PacketCreateLobby;
 import net.packets.lobby.PacketGetLobbies;
@@ -165,6 +166,9 @@ public class ClientThread implements Runnable {
             break;
           case HIGHSCORE:
             p = new PacketHighscore(clientId);
+            break;
+          case ITEM_GENERATED:
+            p = new PacketItemGenerated(clientId, data);
             break;
           default:
         }

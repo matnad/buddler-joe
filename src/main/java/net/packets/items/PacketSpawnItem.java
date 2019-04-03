@@ -143,17 +143,26 @@ public class PacketSpawnItem extends Packet {
           return;
         }
         Item item = ItemMaster.generateItem(itemType, position);
+        PacketItemGenerated packetItemGenerated = new PacketItemGenerated(item, position);
         item.setOwned(false);
         if (item instanceof Torch) {
           ((Torch) item).checkForBlock(); // Attach to a block if placed on one.
         } else if (item instanceof Dynamite) {
           ((Dynamite) item).setActive(true); // Start ticking
+          PacketItemUsed packetItemUsed = new PacketItemUsed(item);
+          packetItemUsed.sendToServer();
         } else if (item instanceof Heart) {
-          // ((Heart) item).giveHeart(true); //give a heart to the owner
+          ((Heart) item).setActive(true); // give a heart to the owner
+          PacketItemUsed packetItemUsed = new PacketItemUsed(item);
+          packetItemUsed.sendToServer();
         } else if (item instanceof Ice) {
-          ((Ice) item).setActive(true);
+          ((Ice) item).setActive(true); // Ice the player
+          PacketItemUsed packetItemUsed = new PacketItemUsed(item);
+          packetItemUsed.sendToServer();
         } else if (item instanceof Star) {
-          ((Star) item).setActive(true);
+          ((Star) item).setActive(true); // Ice all other players
+          PacketItemUsed packetItemUsed = new PacketItemUsed(item);
+          packetItemUsed.sendToServer();
         }
       } else {
         logger.error(

@@ -8,6 +8,8 @@ import entities.items.ItemMaster;
 
 import java.util.Random;
 
+import entities.items.ItemServerState;
+import net.ServerLogic;
 import net.packets.items.PacketSpawnItem;
 import org.joml.Vector3f;
 
@@ -23,28 +25,7 @@ public class ServerBlock {
     this.gridX = gridX;
     this.gridY = gridY;
     this.type = type;
-    switch (type) {
-      case DIRT:
-        hardness = DirtBlock.getHardness();
-        break;
-      case STONE:
-        hardness = StoneBlock.getHardness();
-        break;
-      case GOLD:
-        hardness = GoldBlock.getHardness();
-        break;
-      case GRASS:
-        hardness = GoldBlock.getHardness();
-        break;
-      case AIR:
-        hardness = 0;
-        break;
-      case QMARK:
-        hardness = GoldBlock.getHardness();
-        break;
-      default:
-        hardness = 0;
-    }
+    getHardness();
   }
 
   public BlockMaster.BlockTypes getType() {
@@ -78,16 +59,27 @@ public class ServerBlock {
   private void onQmarkDestroy(int clientId) {
 
     Random random = new Random(1);
-    int r = random.nextInt(5);
+    int r = random.nextInt(4);
     if (r == 0) {
       PacketSpawnItem packetSpawnItem =
-          new PacketSpawnItem(ItemMaster.ItemTypes.DYNAMITE, new Vector3f(gridX, gridY, gridZ));
+          new PacketSpawnItem(
+              ItemMaster.ItemTypes.DYNAMITE, new Vector3f(gridX, gridY, gridZ), clientId);
+      packetSpawnItem.sendToLobby(ServerLogic.getLobbyForClient(clientId).getLobbyId());
     } else if (r == 1) {
-      new PacketSpawnItem(ItemMaster.ItemTypes.HEART, new Vector3f(gridX, gridY, gridZ));
+      PacketSpawnItem packetSpawnItem =
+          new PacketSpawnItem(
+              ItemMaster.ItemTypes.HEART, new Vector3f(gridX, gridY, gridZ), clientId);
+      packetSpawnItem.sendToLobby(ServerLogic.getLobbyForClient(clientId).getLobbyId());
     } else if (r == 2) {
-      new PacketSpawnItem(ItemMaster.ItemTypes.STAR, new Vector3f(gridX, gridY, gridZ));
+      PacketSpawnItem packetSpawnItem =
+          new PacketSpawnItem(
+              ItemMaster.ItemTypes.STAR, new Vector3f(gridX, gridY, gridZ), clientId);
+      packetSpawnItem.sendToLobby(ServerLogic.getLobbyForClient(clientId).getLobbyId());
     } else if (r == 3) {
-      new PacketSpawnItem(ItemMaster.ItemTypes.ICE, new Vector3f(gridX, gridY, gridZ));
+      PacketSpawnItem packetSpawnItem =
+          new PacketSpawnItem(
+              ItemMaster.ItemTypes.ICE, new Vector3f(gridX, gridY, gridZ), clientId);
+      packetSpawnItem.sendToLobby(ServerLogic.getLobbyForClient(clientId).getLobbyId());
     }
   }
 }
