@@ -69,6 +69,7 @@ public class Player extends NetPlayer {
    * class structure.
    *
    * @param model player model
+   * @param username username of the player
    * @param position world coordinates for player position
    * @param rotX rotation along X axis
    * @param rotY rotation along Y axis

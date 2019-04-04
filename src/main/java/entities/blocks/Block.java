@@ -159,9 +159,10 @@ public abstract class Block extends Entity {
   /**
    * Add damage to the block.
    *
+   * @param blockDamagerClientId clientId of the client that damaged the block
    * @param damage damage done to the block
    */
-  public void increaseDamage(int blockDestroyerClientId, float damage) {
+  public void increaseDamage(int blockDamagerClientId, float damage) {
     if (isDestroyed()) {
       return;
     }
@@ -178,7 +179,7 @@ public abstract class Block extends Entity {
     }
 
     if (this.damage > this.hardness) {
-      setDestroyedBy(NetPlayerMaster.getNetPlayerById(blockDestroyerClientId));
+      setDestroyedBy(NetPlayerMaster.getNetPlayerById(blockDamagerClientId));
       setDestroyed(true); // Destroy block
     }
   }

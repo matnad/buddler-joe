@@ -25,6 +25,8 @@ public class ChangableGuiText extends GuiString {
    * Create a GuiString at a position on the screen with default settings. To change any of
    * the parameters, see {@link GuiString}
    *
+   * @param text text to display
+   * @param position position of the text in normalized device constants [(0,0) .. (1,1)]
    * @see GuiString
    */
   public ChangableGuiText(String text, Vector2f position) {

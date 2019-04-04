@@ -38,8 +38,8 @@ public abstract class GuiString {
   }
 
   /**
-   * Re-Creates the gui text. This needs to be called whenever the text (text) is changed
-   * because we need to re-arrange the glyphs.
+   * Re-Creates the gui text. This needs to be called whenever the text (text) is changed because we
+   * need to re-arrange the glyphs.
    */
   public void createGuiText() {
     setGuiText(
@@ -54,6 +54,7 @@ public abstract class GuiString {
             isCentered()));
   }
 
+  /** (Re-)create the object. Needs to be called if the text or any esential properties change. */
   public void updateString() {
     if (getGuiText() != null) {
       TextMaster.removeText(getGuiText());

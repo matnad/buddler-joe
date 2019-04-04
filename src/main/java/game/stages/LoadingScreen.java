@@ -3,8 +3,8 @@ package game.stages;
 import engine.render.Loader;
 import engine.render.fontrendering.TextMaster;
 import game.Game;
-import gui.text.ChangableGuiText;
 import gui.GuiTexture;
+import gui.text.ChangableGuiText;
 import java.util.ArrayList;
 import java.util.List;
 import org.joml.Vector2f;
@@ -52,7 +52,7 @@ public class LoadingScreen {
     text = new ChangableGuiText();
     text.setPosition(new Vector2f(0, 0.5f));
     text.setFontSize(3);
-    text.setTextColour(new Vector3f(1,1,1));
+    text.setTextColour(new Vector3f(1, 1, 1));
     generateDottedText();
   }
 
