@@ -33,6 +33,12 @@ public class Playing {
   private static float damageTakenScreenRemaining = 0f;
   private static final float damageTakenScreenTotalDuration = 2f;
 
+  /**
+   * * Initialize Game Menu. Will load the texture files and other GUI elements needed for this
+   * stage. This needs to be called once before using the stage.
+   *
+   * @param loader main loader
+   */
   public static void init(Loader loader) {
     damageOverlay =
         new GuiTexture(
@@ -56,11 +62,6 @@ public class Playing {
     if (InputHandler.isKeyPressed(GLFW_KEY_ESCAPE)) {
       Game.addActiveStage(Game.Stage.GAMEMENU);
     }
-
-    /*InputHandler needs to be BEFORE polling (window.update()) so we still have access to
-    the events of last Frame. Everythine else should be after polling.*/
-    //InputHandler.update();
-    //Game.window.update();
 
     // Update positions of camera, player and 3D Mouse Pointer
     Game.getActiveCamera().move();
@@ -111,5 +112,4 @@ public class Playing {
   public static void showDamageTakenOverlay() {
     damageTakenScreenRemaining = damageTakenScreenTotalDuration;
   }
-
 }

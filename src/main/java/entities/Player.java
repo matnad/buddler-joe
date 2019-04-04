@@ -65,7 +65,6 @@ public class Player extends NetPlayer {
   private Block collideWithBlockAbove;
   private Block collideWithBlockBelow;
 
-
   private float currentSpeed = 0;
   private float currentTurnSpeed = 0;
   private float upwardsSpeed = 0;
@@ -166,13 +165,21 @@ public class Player extends NetPlayer {
     }
   }
 
+  /**
+   * Check if a player is crushed, remove a life, trigger the damage splash screen and move the
+   * player to a safe place.
+   */
   private void resolveCrush() {
     // Check if crushed
     if (collideWithBlockAbove == null || collideWithBlockBelow == null) {
       return;
     }
+    // Effects when being crushed
+    Playing.showDamageTakenOverlay();
+
+    // Find a place to move the player to
     Vector2i playerGridPos =
-        new Vector2i(collideWithBlockBelow.getGridX(), collideWithBlockBelow.getGridY()-1);
+        new Vector2i(collideWithBlockBelow.getGridX(), collideWithBlockBelow.getGridY() - 1);
     Vector2i closestGridPos = null;
     float minDistSq = Float.POSITIVE_INFINITY;
     for (AirBlock airBlock : Game.getMap().getAirBlocks(playerGridPos.y, playerGridPos.x)) {
@@ -183,12 +190,13 @@ public class Player extends NetPlayer {
         closestGridPos = blockGridPos;
       }
     }
+
     if (closestGridPos == null) {
       // No empty room to teleport to. Just reset y to above ground.
       setPositionY(5);
     } else {
+      // Move player to an empty space
       setPosition(Game.getMap().gridToWorld(closestGridPos));
-      Playing.showDamageTakenOverlay();
     }
   }
 
@@ -390,5 +398,4 @@ public class Player extends NetPlayer {
   public int getCurrentGold() {
     return currentGold;
   }
-
 }

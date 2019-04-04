@@ -10,7 +10,6 @@ import static game.Game.Stage.MAINMENU;
 import static game.Game.Stage.OPTIONS;
 import static game.Game.Stage.PLAYING;
 import static game.Game.Stage.WELCOME;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_ESCAPE;
 
 import engine.io.InputHandler;
 import engine.io.Window;
@@ -54,7 +53,6 @@ import net.packets.lobby.PacketCreateLobby;
 import net.packets.lobby.PacketJoinLobby;
 import net.packets.loginlogout.PacketLogin;
 import org.joml.Vector3f;
-import org.lwjgl.glfw.GLFW;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import terrains.Terrain;
@@ -239,7 +237,7 @@ public class Game extends Thread {
    */
   public static void addActiveStage(Stage stage) {
     if (!activeStages.contains(stage) && !stagesToBeAdded.contains(stage)) {
-      //activeStages.add(stage);
+      // activeStages.add(stage);
       stagesToBeAdded.add(stage);
     }
   }
@@ -369,12 +367,14 @@ public class Game extends Thread {
            Optimally this should be mostly Masters here
         */
 
-        //List<Stage> stagesForThisFrame = new ArrayList<>(activeStages);
+        // List<Stage> stagesForThisFrame = new ArrayList<>(activeStages);
 
         if (activeStages.contains(LOADINGSCREEN)) {
           LoadingScreen.update();
         } else {
 
+          /*InputHandler needs to be BEFORE polling (window.update()) so we still have access to
+          the events of last Frame. Everything else should be after polling.*/
           InputHandler.update();
           Game.window.update();
 
@@ -418,13 +418,11 @@ public class Game extends Thread {
         activeStages.addAll(stagesToBeAdded);
         stagesToBeAdded.clear();
 
-         //System.out.println("-----------------------------------");
-         //System.out.println(activeStages);
+        // System.out.println("-----------------------------------");
+        // System.out.println(activeStages);
         // Done with one frame
 
         window.swapBuffers();
-
-
       }
     }
 

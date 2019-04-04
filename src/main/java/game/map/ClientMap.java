@@ -171,6 +171,16 @@ public class ClientMap extends Map<Block> {
     return local;
   }
 
+  /**
+   * Returns a list with all empty blocks in the specified range.
+   *
+   * <p>Used to calculate a free position to put the player after being crushed by a stone.
+   *
+   * @param maxGridDepth Only consider blocks above or on this level
+   * @param ignoreCol ignore this column. Placing above the falling stone can cause issues and looks
+   *     bad
+   * @return A list with all potential empty blocks in the specified range
+   */
   public CopyOnWriteArrayList<AirBlock> getAirBlocks(int maxGridDepth, int ignoreCol) {
     CopyOnWriteArrayList<AirBlock> airBlocks = new CopyOnWriteArrayList<>();
     for (int y = 0; y < Math.min(maxGridDepth + 1, height); y++) {
@@ -186,8 +196,12 @@ public class ClientMap extends Map<Block> {
     return airBlocks;
   }
 
+  /**
+   * Replace a block with an empty (Air) block. Essentialy deleting it for the map grid.
+   *
+   * @param gridPos the position (grid coordinates) to delete
+   */
   public void replaceWithAirBlock(Vector2i gridPos) {
     blocks[gridPos.x][gridPos.y] = new AirBlock(gridPos.x, gridPos.y);
   }
-
 }
