@@ -11,6 +11,7 @@ import game.Game;
 import game.NetPlayerMaster;
 import java.util.Random;
 import org.joml.Vector2f;
+import org.joml.Vector2i;
 import org.joml.Vector3f;
 
 /**
@@ -26,7 +27,7 @@ public abstract class Block extends Entity {
   private final float hardness;
   private final float mass;
   private final float dim;
-  private final BlockMaster.BlockTypes type;
+  private BlockMaster.BlockTypes type;
   private float damage;
   private Entity destroyedBy;
 
@@ -42,6 +43,9 @@ public abstract class Block extends Entity {
   private Vector3f acceleration;
   private float moveDelay;
   private boolean shakeLeft;
+
+  // Variables to track collision time with a player while the block is moving
+  private float collisionTime;
 
   /**
    * Abstract Constructor.
@@ -181,6 +185,7 @@ public abstract class Block extends Entity {
     if (this.damage > this.hardness) {
       setDestroyedBy(NetPlayerMaster.getNetPlayerById(blockDamagerClientId));
       setDestroyed(true); // Destroy block
+      Game.getMap().replaceWithAirBlock(new Vector2i(getGridX(), getGridY()));
     }
   }
 

@@ -15,15 +15,20 @@ import static org.lwjgl.glfw.GLFW.GLFW_KEY_W;
 import collision.BoundingBox;
 import engine.io.InputHandler;
 import engine.models.TexturedModel;
+import entities.blocks.AirBlock;
 import entities.blocks.Block;
 import entities.blocks.BlockMaster;
 import entities.items.ItemMaster;
 import game.Game;
+import game.stages.Playing;
 import java.util.ArrayList;
 import java.util.List;
 import net.packets.block.PacketBlockDamage;
 import net.packets.playerprop.PacketPos;
+import org.joml.Vector2i;
 import org.joml.Vector3f;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import util.MousePlacer;
 
 /**
@@ -42,6 +47,8 @@ import util.MousePlacer;
  */
 public class Player extends NetPlayer {
 
+  public static final Logger logger = LoggerFactory.getLogger(Player.class);
+
   // Resources and Stats
   public int currentGold; // Current coins
   private float digDamage; // Damage per second when colliding with blocks
@@ -53,8 +60,10 @@ public class Player extends NetPlayer {
   private static final float jumpPower = 25; // Units per second
 
   private static final float collisionPushOffset = 0.1f;
+  private static final float angle45 = (float) (45 * Math.PI / 180);
 
-
+  private Block collideWithBlockAbove;
+  private Block collideWithBlockBelow;
 
   private float currentSpeed = 0;
   private float currentTurnSpeed = 0;
@@ -97,6 +106,9 @@ public class Player extends NetPlayer {
    */
   public void move() {
 
+    collideWithBlockAbove = null;
+    collideWithBlockBelow = null;
+
     updateCloseBlocks(BlockMaster.getBlocks()); // We don't want to check collision for all blocks
     // every frame
 
@@ -135,6 +147,9 @@ public class Player extends NetPlayer {
       handleCollision(closeBlock);
     }
 
+    // Check if crushed by a block and resolve it
+    resolveCrush();
+
     // Turn Headlight on/off
     float pctBrightness = Game.getMap().getLightLevel(getPosition().y);
     if (pctBrightness > .7f) {
@@ -151,68 +166,99 @@ public class Player extends NetPlayer {
   }
 
   /**
+   * Check if a player is crushed, remove a life, trigger the damage splash screen and move the
+   * player to a safe place.
+   */
+  private void resolveCrush() {
+    // Check if crushed
+    if (collideWithBlockAbove == null || collideWithBlockBelow == null) {
+      return;
+    }
+    // Effects when being crushed
+    Playing.showDamageTakenOverlay();
+
+    // Find a place to move the player to
+    Vector2i playerGridPos =
+        new Vector2i(collideWithBlockBelow.getGridX(), collideWithBlockBelow.getGridY() - 1);
+    Vector2i closestGridPos = null;
+    float minDistSq = Float.POSITIVE_INFINITY;
+    for (AirBlock airBlock : Game.getMap().getAirBlocks(playerGridPos.y, playerGridPos.x)) {
+      Vector2i blockGridPos = new Vector2i(airBlock.getGridX(), airBlock.getGridY());
+      float distSq = blockGridPos.distanceSquared(playerGridPos);
+      if (distSq < minDistSq) {
+        minDistSq = distSq;
+        closestGridPos = blockGridPos;
+      }
+    }
+
+    if (closestGridPos == null) {
+      // No empty room to teleport to. Just reset y to above ground.
+      setPositionY(5);
+    } else {
+      // Move player to an empty space
+      setPosition(Game.getMap().gridToWorld(closestGridPos));
+    }
+  }
+
+  /**
    * Check if the player overlaps with a block. Determine from which direction the overlap is and
    * handle it appropriately. This is still very basic but it works. Can be improved if we have
-   * time.
+   * time. -> Has been improved to be vector and angle based now. Works much smoother.
    *
-   * @param entity A block or other entity to check collision with. But usually a block.
+   * @param block A block to check collision with.
    */
-  private void handleCollision(Entity entity) {
-
+  private void handleCollision(Block block) {
     // Make this mess readable
     BoundingBox p = super.getBbox(); // PlayerBox
-    BoundingBox e = entity.getBbox(); // EntityBox
+    BoundingBox e = block.getBbox(); // EntityBox
 
     // Check if we collide with the block
-    if (this.collidesWith(entity, 2)) {
+    if (this.collidesWith(block, 2)) {
+      Vector3f direction = new Vector3f(p.getCenter()).sub(e.getCenter());
+      direction.z = 0;
+      float theta = direction.angle(new Vector3f(0, 1, 0));
 
-      // If we collide, we need to determine from which of the 4 cardinal directions
-      float w = (p.getMinX() + p.getMaxX()) / 2 - (e.getMinX() + e.getMaxX()) / 2;
-      float h = (p.getMinY() + p.getMaxY()) / 2 - (e.getMinY() + e.getMaxY()) / 2;
-
-      if (Math.abs(w) < Math.abs(h)) { // vertical collision
-        if (h > 0) { // from above
-          // setPositionY(e.getMaxY()); //This flickers the player on high resolution... bad!
-
-          // Undo the position change to keep the player in place
-          super.increasePosition(0, (float) -(upwardsSpeed * Game.window.getFrameTimeSeconds()), 0);
-          // Have a grace distance, if the overlap is too large, we reset to position to prevent
-          // hard clipping
-          if (getPosition().y + 0.1 < e.getMaxY()) {
-            setPositionY(e.getMaxY());
-          }
-          // Reset jumping ability and downwards momentum
-          if (upwardsSpeed < 0) {
-            upwardsSpeed = 0;
-          }
-          isInAir = false;
-          // If we hold S, dig down
-          if (InputHandler.isKeyDown(GLFW_KEY_S) && entity instanceof Block) {
-            digBlock((Block) entity);
-          }
-        } else { // from below
-          // Reset Position to below the block, this doesnt flicker since we are falling
-          setPositionY(e.getMinY() - p.getDimY());
-          // Stop jumping up if we hit something above, will start accelerating down
-          if (upwardsSpeed > 0) {
-            upwardsSpeed = 0;
-          }
+      if (theta <= angle45) {
+        // From above
+        collideWithBlockBelow = block;
+        // Undo the position change to keep the player in place
+        super.increasePosition(0, (float) -(upwardsSpeed * Game.window.getFrameTimeSeconds()), 0);
+        // Have a grace distance, if the overlap is too large, we reset to position to prevent
+        // hard clipping
+        if (getPosition().y + 0.1 < e.getMaxY()) {
+          setPositionY(e.getMaxY());
         }
-      } else { // horizontal collision
-        if (w > 0) { // from right
+        // Reset jumping ability and downwards momentum
+        if (upwardsSpeed < 0) {
+          upwardsSpeed = 0;
+        }
+        isInAir = false;
+        // If we hold S, dig down
+        if (InputHandler.isKeyDown(GLFW_KEY_S)) {
+          digBlock(block);
+        }
+      } else if (theta >= angle45 * 3) {
+        // From below
+        collideWithBlockAbove = block;
+        // Reset Position to below the block, this doesnt flicker since we are falling
+        setPositionY(e.getMinY() - p.getDimY());
+        // Stop jumping up if we hit something above, will start accelerating down
+        if (upwardsSpeed > 0) {
+          upwardsSpeed = 0;
+        }
+      } else {
+        if (direction.x > 0) {
           // Have a small offset for smoother collision
           setPositionX(e.getMaxX() + p.getDimX() / 2 + collisionPushOffset);
           currentSpeed = 0; // Stop moving
           isInAir = false; // Walljumps! Felt cute. Might delete later.
-        } else { // from left
+        } else {
           setPositionX(e.getMinX() - p.getDimX() / 2 - collisionPushOffset);
           currentSpeed = 0;
           isInAir = false;
         }
         // Dig blocks whenever we collide horizontal
-        if (entity instanceof Block) {
-          digBlock((Block) entity);
-        }
+        digBlock(block);
       }
     }
   }

@@ -4,6 +4,7 @@ import static org.lwjgl.glfw.GLFW.GLFW_KEY_ESCAPE;
 
 import engine.io.InputHandler;
 import engine.particles.ParticleMaster;
+import engine.render.Loader;
 import engine.render.MasterRenderer;
 import engine.render.fontrendering.TextMaster;
 import entities.Entity;
@@ -17,6 +18,7 @@ import gui.GuiTexture;
 import gui.text.FloatingStrings;
 import java.util.ArrayList;
 import java.util.List;
+import org.joml.Vector2f;
 import util.MousePlacer;
 
 /**
@@ -25,8 +27,25 @@ import util.MousePlacer;
  */
 public class Playing {
 
-  private static FloatingStrings floatingGoldStrings =
-      new FloatingStrings(Game.getActivePlayer().getBbox(), 3f);
+  private static FloatingStrings floatingGoldStrings;
+  private static GuiTexture damageOverlay;
+
+  private static float damageTakenScreenRemaining = 0f;
+  private static final float damageTakenScreenTotalDuration = 2f;
+
+  /**
+   * * Initialize Game Menu. Will load the texture files and other GUI elements needed for this
+   * stage. This needs to be called once before using the stage.
+   *
+   * @param loader main loader
+   */
+  public static void init(Loader loader) {
+    damageOverlay =
+        new GuiTexture(
+            loader.loadTexture("damageTaken"), new Vector2f(0, 0), new Vector2f(1, 1), 1);
+
+    floatingGoldStrings = new FloatingStrings(Game.getActivePlayer().getBbox(), 3f);
+  }
 
   /**
    * Game Loop. This runs every frame as long as the payer is playing the game. Include all
@@ -43,11 +62,6 @@ public class Playing {
     if (InputHandler.isKeyPressed(GLFW_KEY_ESCAPE)) {
       Game.addActiveStage(Game.Stage.GAMEMENU);
     }
-
-    /*InputHandler needs to be BEFORE polling (window.update()) so we still have access to
-    the events of last Frame. Everythine else should be after polling.*/
-    //InputHandler.update();
-    //Game.window.update();
 
     // Update positions of camera, player and 3D Mouse Pointer
     Game.getActiveCamera().move();
@@ -80,11 +94,22 @@ public class Playing {
     Game.getGoldGuiText().update();
     floatingGoldStrings.update();
     ParticleMaster.renderParticles(Game.getActiveCamera());
+
+    if (damageTakenScreenRemaining > 0) {
+      damageTakenScreenRemaining -= Game.window.getFrameTimeSeconds();
+      damageOverlay.setAlpha(damageTakenScreenRemaining / damageTakenScreenTotalDuration / 1.5f);
+      guis.add(damageOverlay);
+    }
+
     Game.getGuiRenderer().render(guis);
     TextMaster.render();
   }
 
   public static void addFloatingGoldText(int goldValue) {
     floatingGoldStrings.addString("+ " + goldValue);
+  }
+
+  public static void showDamageTakenOverlay() {
+    damageTakenScreenRemaining = damageTakenScreenTotalDuration;
   }
 }
