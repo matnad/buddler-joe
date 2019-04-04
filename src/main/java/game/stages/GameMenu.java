@@ -59,12 +59,8 @@ public class GameMenu {
       Game.removeActiveStage(Game.Stage.PLAYING);
       Game.removeActiveStage(Game.Stage.GAMEMENU);
     }
-
-    InputHandler.update();
-
     guis.add(exitGame.getHoverTexture(x, y));
 
-    Game.window.update();
 
     Game.getGuiRenderer().render(guis);
   }

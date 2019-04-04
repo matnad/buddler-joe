@@ -90,10 +90,6 @@ public class InLobby {
       Game.removeActiveStage(Game.Stage.INLOBBBY);
     }
 
-    InputHandler.update();
-
-    Game.window.update();
-
     Game.getGuiRenderer().render(guis);
   }
 }

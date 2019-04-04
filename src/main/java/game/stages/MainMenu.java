@@ -103,6 +103,7 @@ public class MainMenu {
    */
   @SuppressWarnings("Duplicates")
   public static void update() {
+
     List<GuiTexture> guis = new ArrayList<>();
     guis.add(background);
     guis.add(buddlerJoe);
@@ -161,15 +162,13 @@ public class MainMenu {
     } else if (InputHandler.isKeyPressed(GLFW_KEY_ESCAPE)) {
       Game.addActiveStage(Game.Stage.WELCOME);
       Game.removeActiveStage(Game.Stage.MAINMENU);
-    } else if ((InputHandler.isMouseDown(GLFW_MOUSE_BUTTON_1) && exitGame.isHover(x, y))) {
+    } else if ((InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1) && exitGame.isHover(x, y))) {
       Game.window.stop();
     } else if (InputHandler.isKeyPressed(GLFW_KEY_L)) {
       // TODO: remove this if option
       Game.addActiveStage(Game.Stage.INLOBBBY);
       Game.removeActiveStage(Game.Stage.MAINMENU);
     }
-    InputHandler.update();
-    Game.window.update();
 
     Game.getGuiRenderer().render(guis);
   }

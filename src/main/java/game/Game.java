@@ -10,7 +10,9 @@ import static game.Game.Stage.MAINMENU;
 import static game.Game.Stage.OPTIONS;
 import static game.Game.Stage.PLAYING;
 import static game.Game.Stage.WELCOME;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_ESCAPE;
 
+import engine.io.InputHandler;
 import engine.io.Window;
 import engine.models.RawModel;
 import engine.models.TexturedModel;
@@ -52,6 +54,7 @@ import net.packets.lobby.PacketCreateLobby;
 import net.packets.lobby.PacketJoinLobby;
 import net.packets.loginlogout.PacketLogin;
 import org.joml.Vector3f;
+import org.lwjgl.glfw.GLFW;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import terrains.Terrain;
@@ -78,6 +81,7 @@ public class Game extends Thread {
   public static Window window = new Window(1280, 800, 60, "Buddler Joe");
   // Set up GLFW Window
   private static final List<Stage> activeStages = new ArrayList<>();
+  private static final List<Stage> stagesToBeAdded = new ArrayList<>();
   // Network related variables, still temporary/dummies
   // private static boolean doConnectToServer = false; //Multiplayer: true, Singleplayer: false
   private static boolean connectedToServer = false;
@@ -234,8 +238,9 @@ public class Game extends Thread {
    * @param stage stage to add to the game loop
    */
   public static void addActiveStage(Stage stage) {
-    if (!activeStages.contains(stage)) {
-      activeStages.add(stage);
+    if (!activeStages.contains(stage) && !stagesToBeAdded.contains(stage)) {
+      //activeStages.add(stage);
+      stagesToBeAdded.add(stage);
     }
   }
 
@@ -313,7 +318,7 @@ public class Game extends Thread {
 
     // Stages
     LoadingScreen.init(loader);
-    addActiveStage(LOADINGSCREEN);
+    activeStages.add(LOADINGSCREEN);
     LoadingScreen.updateLoadingMessage("starting game");
 
     // Connect to server and load level in an extra thread
@@ -338,8 +343,6 @@ public class Game extends Thread {
     // Lights and cameras (just one for now)
     LightMaster.generateLight(
         LightMaster.LightTypes.SUN, new Vector3f(0, 600, 200), new Vector3f(1, 1, 1));
-
-    addActiveStage(PLAYING);
 
     // Connect after everything is loaded
 
@@ -366,9 +369,14 @@ public class Game extends Thread {
            Optimally this should be mostly Masters here
         */
 
+        //List<Stage> stagesForThisFrame = new ArrayList<>(activeStages);
+
         if (activeStages.contains(LOADINGSCREEN)) {
           LoadingScreen.update();
         } else {
+
+          InputHandler.update();
+          Game.window.update();
 
           if (activeStages.contains(PLAYING)) {
             Playing.update(renderer);
@@ -407,10 +415,16 @@ public class Game extends Thread {
           }
         }
 
-        // System.out.println("-----------------------------------");
-        // System.out.println(activeStages);
+        activeStages.addAll(stagesToBeAdded);
+        stagesToBeAdded.clear();
+
+         //System.out.println("-----------------------------------");
+         //System.out.println(activeStages);
         // Done with one frame
+
         window.swapBuffers();
+
+
       }
     }
 

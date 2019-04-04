@@ -46,8 +46,8 @@ public class Playing {
 
     /*InputHandler needs to be BEFORE polling (window.update()) so we still have access to
     the events of last Frame. Everythine else should be after polling.*/
-    InputHandler.update();
-    Game.window.update();
+    //InputHandler.update();
+    //Game.window.update();
 
     // Update positions of camera, player and 3D Mouse Pointer
     Game.getActiveCamera().move();

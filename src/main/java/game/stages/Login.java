@@ -108,11 +108,6 @@ public class Login {
       Game.addActiveStage(Game.Stage.WELCOME);
       Game.removeActiveStage(Game.Stage.LOGIN);
     }
-
-    InputHandler.update();
-
-    Game.window.update();
-
     Game.getGuiRenderer().render(guis);
   }
 }
