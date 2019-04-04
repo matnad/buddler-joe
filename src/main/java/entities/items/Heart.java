@@ -52,7 +52,7 @@ public class Heart extends Item {
   public static void init(Loader loader) {
     RawModel rawDynamite = loader.loadToVao(ObjFileLoader.loadObj("dynamite"));
     setPreloadedModel(
-            new TexturedModel(rawDynamite, new ModelTexture(loader.loadTexture("dynamite"))));
+        new TexturedModel(rawDynamite, new ModelTexture(loader.loadTexture("dynamite"))));
   }
 
   private static TexturedModel getPreloadedModel() {
@@ -63,9 +63,7 @@ public class Heart extends Item {
     Heart.preloadedModel = preloadedModel;
   }
 
-  public void setActive() {
-
-  }
+  public void setActive() {}
 
   // TODO: (Viktor) write method give heart to give the destroyer of the block a heart
 }

@@ -9,7 +9,6 @@ import engine.textures.ModelTexture;
 import game.Game;
 import org.joml.Vector3f;
 
-
 public class Star extends Item {
   private static TexturedModel preloadedModel;
   private final Explosion particleExplosion;
@@ -20,7 +19,6 @@ public class Star extends Item {
   private Star(Vector3f position, float rotX, float rotY, float rotZ, float scale) {
     super(ItemMaster.ItemTypes.STAR, getPreloadedModel(), position, rotX, rotY, rotZ, scale);
     time = 0;
-
 
     /* Generate Fancy Particle Effects for an explosion */
     // Generate Explosion Effect
@@ -43,25 +41,30 @@ public class Star extends Item {
   public void update() {
     if (!isOwned()) {
       Game.getActivePlayer().freeze();
-      //particleExplosion.generateParticles(getPosition());
+      // particleExplosion.generateParticles(getPosition());
       time += Game.window.getFrameTimeSeconds();
       if (time >= freezeTime) {
         Game.getActivePlayer().defreeze();
         setDestroyed(true);
       }
     } else {
-      //particleExplosion.generateParticles(getPosition());
+      // particleExplosion.generateParticles(getPosition());
       time += Game.window.getFrameTimeSeconds();
       if (time >= freezeTime) {
         setDestroyed(true);
       }
     }
   }
+  /**
+   * The loader to load the model of the heart in the initialisation.
+   *
+   * @param loader the loader to be passed on to this method.
+   */
 
   public static void init(Loader loader) {
     RawModel rawDynamite = loader.loadToVao(ObjFileLoader.loadObj("dynamite"));
     setPreloadedModel(
-            new TexturedModel(rawDynamite, new ModelTexture(loader.loadTexture("dynamite"))));
+        new TexturedModel(rawDynamite, new ModelTexture(loader.loadTexture("dynamite"))));
   }
 
   private static TexturedModel getPreloadedModel() {
@@ -71,5 +74,4 @@ public class Star extends Item {
   private static void setPreloadedModel(TexturedModel preloadedModel) {
     Star.preloadedModel = preloadedModel;
   }
-
 }

@@ -54,9 +54,7 @@ public class Torch extends Item {
             getBbox().getDimZ() / 2);
 
     flamePosition = new Vector3f(position).add(flameOffset);
-    light =
-        LightMaster.generateLight(
-            LightMaster.LightTypes.TORCH, flamePosition, colour);
+    light = LightMaster.generateLight(LightMaster.LightTypes.TORCH, flamePosition, colour);
     light.setBrightness(brightness);
 
     setPosition(position);
@@ -150,7 +148,7 @@ public class Torch extends Item {
     flamePosition = new Vector3f(getPosition()).add(flameOffset);
     // Better illumination if the light source is away from the wall
     if (getPosition().z > 6) {
-      light.setPosition(new Vector3f(flamePosition).add(new Vector3f(0,0,5)));
+      light.setPosition(new Vector3f(flamePosition).add(new Vector3f(0, 0, 5)));
     } else {
       light.setPosition(flamePosition);
     }

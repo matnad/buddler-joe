@@ -50,10 +50,15 @@ public class Ice extends Item {
     }
   }
 
+  /**
+   * Method to preload the textures of the item to then be loaded on the GUI later on.
+   *
+   * @param loader The current loader passed on by ItemMaster.
+   */
   public static void init(Loader loader) {
     RawModel rawDynamite = loader.loadToVao(ObjFileLoader.loadObj("dynamite"));
     setPreloadedModel(
-            new TexturedModel(rawDynamite, new ModelTexture(loader.loadTexture("dynamite"))));
+        new TexturedModel(rawDynamite, new ModelTexture(loader.loadTexture("dynamite"))));
   }
 
   private static TexturedModel getPreloadedModel() {
@@ -63,5 +68,4 @@ public class Ice extends Item {
   private static void setPreloadedModel(TexturedModel preloadedModel) {
     Ice.preloadedModel = preloadedModel;
   }
-
 }

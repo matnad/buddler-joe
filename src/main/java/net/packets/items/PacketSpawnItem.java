@@ -1,6 +1,14 @@
 package net.packets.items;
 
-import entities.items.*;
+import entities.items.Dynamite;
+import entities.items.Heart;
+import entities.items.Ice;
+import entities.items.Item;
+import entities.items.ItemMaster;
+import entities.items.ServerItem;
+import entities.items.ServerItemState;
+import entities.items.Star;
+import entities.items.Torch;
 import game.Game;
 import game.map.Map;
 import net.ServerLogic;
@@ -42,7 +50,7 @@ public class PacketSpawnItem extends Packet {
    */
   public PacketSpawnItem(ItemMaster.ItemTypes type, Vector3f position, int clientId) {
     super(Packet.PacketTypes.SPAWN_ITEM);
-    ServerItem serverItem = new ServerItem(clientId,type);
+    ServerItem serverItem = new ServerItem(clientId, type, position);
     ServerItemState.addItem(serverItem);
     setData(
         clientId + "║" + type.getItemId() + "║" + position.x + "║" + position.y + "║" + position.z);
@@ -63,7 +71,8 @@ public class PacketSpawnItem extends Packet {
     dataArray = data.split("║");
     dataArray[0] = "" + clientId;
     validate(); // Validate and assign in one step
-    ServerItem serverItem = new ServerItem(clientId, ItemMaster.ItemTypes.getItemTypeById(type));
+    ServerItem serverItem =
+        new ServerItem(clientId, ItemMaster.ItemTypes.getItemTypeById(type), position);
     ServerItemState.addItem(serverItem);
     setData(clientId + "║" + type + "║" + position.x + "║" + position.y + "║" + position.z);
   }
@@ -96,13 +105,13 @@ public class PacketSpawnItem extends Packet {
     try {
       position =
           new Vector3f(
-              Float.parseFloat(dataArray[2])* Map.getDim()+Map.getDim()/2,
-                  -(Float.parseFloat(dataArray[3]))*Map.getDim() -Map.getDim()/2,
+              Float.parseFloat(dataArray[2]) * Map.getDim() + Map.getDim() / 2,
+              -(Float.parseFloat(dataArray[3])) * Map.getDim() - Map.getDim() / 2,
               Float.parseFloat(dataArray[4]));
     } catch (NumberFormatException e) {
       addError("Invalid item position data.");
     }
-    if(!isExtendedAscii(dataArray[1])){
+    if (!isExtendedAscii(dataArray[1])) {
       return;
     }
     type = dataArray[1];
@@ -140,9 +149,9 @@ public class PacketSpawnItem extends Packet {
     } else {
       // Client side
       if (!hasErrors()) {
-        //if (owner == Game.getActivePlayer().getClientId()) {
+        // if (owner == Game.getActivePlayer().getClientId()) {
         //  return;
-        //}
+        // }
         Item item = ItemMaster.generateItem(itemType, position);
         if (item instanceof Torch) {
           ((Torch) item).checkForBlock(); // Attach to a block if placed on one.
@@ -152,7 +161,9 @@ public class PacketSpawnItem extends Packet {
         } else if (item instanceof Heart) {
           if (owner == Game.getActivePlayer().getClientId()) {
             item.setOwned(true);
-          } else {return; }
+          } else {
+            return;
+          }
         } else if (item instanceof Ice) {
           if (owner == Game.getActivePlayer().getClientId()) {
             item.setOwned(true);

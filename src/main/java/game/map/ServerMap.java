@@ -35,7 +35,8 @@ public class ServerMap extends Map<ServerBlock> {
           blocks[x][y] = new ServerBlock(BlockMaster.BlockTypes.STONE, x, y); // Air
         } else {
           if (rng.nextFloat() < .02f) {
-            blocks[x][y] = new ServerBlock(BlockMaster.BlockTypes.GOLD, x, y); // Gold: 1 in 40 chance
+            blocks[x][y] =
+                new ServerBlock(BlockMaster.BlockTypes.GOLD, x, y); // Gold: 1 in 40 chance
           } else if (rng.nextFloat() < .04f) {
             blocks[x][y] =
                 new ServerBlock(BlockMaster.BlockTypes.QMARK, x, y); // Item Block: 1 in 50 chance

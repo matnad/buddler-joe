@@ -1,11 +1,13 @@
 package game.map;
 
-import entities.blocks.*;
-import net.ServerLogic;
+import entities.blocks.BlockMaster;
+import entities.blocks.DirtBlock;
+import entities.blocks.GoldBlock;
+import entities.blocks.GrassBlock;
+import entities.blocks.QmarkBlock;
+import entities.blocks.StoneBlock;
 import entities.items.ItemMaster;
-
 import java.util.Random;
-
 import net.ServerLogic;
 import net.packets.items.PacketSpawnItem;
 import org.joml.Vector3f;
@@ -15,7 +17,6 @@ import org.slf4j.LoggerFactory;
 public class ServerBlock {
 
   private static final Logger logger = LoggerFactory.getLogger(PacketSpawnItem.class);
-
 
   private BlockMaster.BlockTypes type;
   private float hardness;

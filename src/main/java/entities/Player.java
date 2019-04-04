@@ -54,8 +54,6 @@ public class Player extends NetPlayer {
 
   private static final float collisionPushOffset = 0.1f;
 
-
-
   private float currentSpeed = 0;
   private float currentTurnSpeed = 0;
   private float upwardsSpeed = 0;
