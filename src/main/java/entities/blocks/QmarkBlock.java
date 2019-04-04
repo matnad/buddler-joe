@@ -46,6 +46,11 @@ public class QmarkBlock extends Block {
   }
 
   @Override
+  public TexturedModel getDebrisModel() {
+    return blockModel;
+  }
+
+  @Override
   protected void onDestroy() {}
 
   public static float getHardness() {

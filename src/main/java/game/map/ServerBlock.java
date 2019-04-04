@@ -1,10 +1,6 @@
 package game.map;
 
-import entities.blocks.BlockMaster;
-import entities.blocks.DirtBlock;
-import entities.blocks.GoldBlock;
-import entities.blocks.GrassBlock;
-import entities.blocks.StoneBlock;
+import entities.blocks.*;
 import net.ServerLogic;
 import entities.items.ItemMaster;
 
@@ -81,6 +77,8 @@ public class ServerBlock {
         return GrassBlock.getHardness();
       case AIR:
         return 0;
+      case QMARK:
+        return QmarkBlock.getHardness();
       default:
         return 0;
     }
@@ -93,7 +91,7 @@ public class ServerBlock {
 
   private void onQmarkDestroy(int clientId) {
 
-    Random random = new Random(1);
+    Random random = new Random();
     int r = random.nextInt(4);
     if (r == 0) {
       logger.info("Spawning dynamite.");

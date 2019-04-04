@@ -38,7 +38,7 @@ public class ServerMap extends Map<ServerBlock> {
         } else {
           if (rng.nextFloat() < .02f) {
             blocks[x][y] = new ServerBlock(BlockMaster.BlockTypes.GOLD, gridX, gridY); // Gold: 1 in 40 chance
-          } else if (rng.nextFloat() < .01f) {
+          } else if (rng.nextFloat() < .9f) {
             blocks[x][y] =
                 new ServerBlock(BlockMaster.BlockTypes.QMARK, gridX, gridY); // Item Block: 1 in 50 chance
           } else if (noiseMap[x][y] < thresholds[1]) {
@@ -84,7 +84,7 @@ public class ServerMap extends Map<ServerBlock> {
   @Override
   public void damageBlock(int clientId, int posX, int posY, float damage) {
     if (blocks[posX][posY] != null) {
-      blocks[posX][posY].damageBlock(damage);
+      blocks[posX][posY].damageBlock(clientId, damage);
       checkFallingBlocks();
       int lobId = ServerLogic.getLobbyForClient(clientId).getLobbyId();
       if (lobId > 0) {

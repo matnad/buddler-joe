@@ -1,7 +1,10 @@
 package entities.items;
 
+import engine.models.RawModel;
 import engine.models.TexturedModel;
 import engine.render.Loader;
+import engine.render.objconverter.ObjFileLoader;
+import engine.textures.ModelTexture;
 import game.Game;
 import org.joml.Vector3f;
 
@@ -41,8 +44,9 @@ public class Star extends Item {
   }
 
   public static void init(Loader loader) {
-    // RawModel rawStar = loader.loadToVao(ObjFileLoader.loadObj("star"));
-    // setPreloadedModel(new TexturedModel(rawStar, new ModelTexture(loader.loadTexture("star"))));
+    RawModel rawDynamite = loader.loadToVao(ObjFileLoader.loadObj("dynamite"));
+    setPreloadedModel(
+            new TexturedModel(rawDynamite, new ModelTexture(loader.loadTexture("dynamite"))));
   }
 
   private static TexturedModel getPreloadedModel() {
