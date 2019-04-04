@@ -103,9 +103,9 @@ public class PacketSpawnItem extends Packet {
       logger.info("z: " + dataArray[4]);
       position =
           new Vector3f(
-              Float.parseFloat(dataArray[2])* Map.getDim(),
-              Float.parseFloat(dataArray[3])*Map.getDim(),
-              Float.parseFloat(dataArray[4])*Map.getDim());
+              Float.parseFloat(dataArray[2])* Map.getDim()+Map.getDim()/2,
+                  -(Float.parseFloat(dataArray[3]))*Map.getDim() -Map.getDim()/2,
+              Float.parseFloat(dataArray[4]));
     } catch (NumberFormatException e) {
       addError("Invalid item position data.");
     }

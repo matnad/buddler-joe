@@ -26,7 +26,7 @@ public class ServerBlock {
 
   ServerBlock(BlockMaster.BlockTypes type, int gridX, int gridY) {
     this.gridX = gridX;
-    this.gridY -= gridY+3;
+    this.gridY = gridY;
     this.type = type;
     this.hardness = getBaseHardness();
   }

@@ -26,6 +26,7 @@ import net.packets.name.PacketSendName;
 import net.packets.name.PacketSetNameStatus;
 import net.packets.pingpong.PacketPing;
 import net.packets.pingpong.PacketPong;
+import net.packets.playerlist.PacketPlayerList;
 import net.packets.playerprop.PacketPos;
 import net.playerhandling.PingManager;
 
@@ -220,6 +221,9 @@ public class ClientLogic implements Runnable {
         case HIGHSCORE:
           p = new PacketHighscore(data);
           break;
+        case PLAYERLIST:
+          p = new PacketPlayerList(data);
+          break;
         default:
       }
       if (p != null) {
@@ -238,9 +242,9 @@ public class ClientLogic implements Runnable {
 
   /**
    * A method to disconnect from the server.
+   *
    * @param disconnectFromServer The boolean if to be disconnected
    */
-
   public static void setDisconnectFromServer(boolean disconnectFromServer) {
     ClientLogic.disconnectFromServer = disconnectFromServer;
     try {

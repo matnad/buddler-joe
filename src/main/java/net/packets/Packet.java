@@ -315,6 +315,7 @@ public abstract class Packet {
     HIGHSCORE("HIGH"),
     ITEM_GENERATED("ITMGN"),
     ITEM_USED("ITMUS"),
+    PLAYERLIST("PLALS"),
     SPAWN_ITEM("ITMSP");
 
     private final String packetCode;

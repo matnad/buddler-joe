@@ -20,9 +20,6 @@ public class StartServer {
   private ServerLogic serverLogic;
   private int serverPort;
 
-
-
-
   /**
    * Start the Interface for the server, listening on a default.
    *
@@ -43,7 +40,6 @@ public class StartServer {
   public StartServer(int serverPort) {
     this.serverPort = serverPort;
   }
-
 
   /**
    * Start the Interface for the server, listening on a specific port.
