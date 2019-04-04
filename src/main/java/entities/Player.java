@@ -53,8 +53,10 @@ public class Player extends NetPlayer {
   private static final float jumpPower = 25; // Units per second
 
   private static final float collisionPushOffset = 0.1f;
+  private static final float angle45 = (float) (45 * Math.PI / 180);
 
-
+  private boolean collideWithBlockAbove = false;
+  private boolean collideWithBlockBelow = false;
 
   private float currentSpeed = 0;
   private float currentTurnSpeed = 0;
@@ -97,6 +99,9 @@ public class Player extends NetPlayer {
    */
   public void move() {
 
+    collideWithBlockAbove = false;
+    collideWithBlockBelow = false;
+
     updateCloseBlocks(BlockMaster.getBlocks()); // We don't want to check collision for all blocks
     // every frame
 
@@ -135,6 +140,11 @@ public class Player extends NetPlayer {
       handleCollision(closeBlock);
     }
 
+    // SQUASHED!
+    if (collideWithBlockAbove && collideWithBlockBelow) {
+        // RIP
+    }
+
     // Turn Headlight on/off
     float pctBrightness = Game.getMap().getLightLevel(getPosition().y);
     if (pctBrightness > .7f) {
@@ -153,7 +163,7 @@ public class Player extends NetPlayer {
   /**
    * Check if the player overlaps with a block. Determine from which direction the overlap is and
    * handle it appropriately. This is still very basic but it works. Can be improved if we have
-   * time.
+   * time. -> Has been improved to be vector and angle based now. Works much smoother.
    *
    * @param entity A block or other entity to check collision with. But usually a block.
    */
@@ -165,46 +175,45 @@ public class Player extends NetPlayer {
 
     // Check if we collide with the block
     if (this.collidesWith(entity, 2)) {
+      Vector3f direction = new Vector3f(p.getCenter()).sub(e.getCenter());
+      direction.z = 0;
+      float theta = direction.angle(new Vector3f(0, 1, 0));
 
-      // If we collide, we need to determine from which of the 4 cardinal directions
-      float w = (p.getMinX() + p.getMaxX()) / 2 - (e.getMinX() + e.getMaxX()) / 2;
-      float h = (p.getMinY() + p.getMaxY()) / 2 - (e.getMinY() + e.getMaxY()) / 2;
-
-      if (Math.abs(w) < Math.abs(h)) { // vertical collision
-        if (h > 0) { // from above
-          // setPositionY(e.getMaxY()); //This flickers the player on high resolution... bad!
-
-          // Undo the position change to keep the player in place
-          super.increasePosition(0, (float) -(upwardsSpeed * Game.window.getFrameTimeSeconds()), 0);
-          // Have a grace distance, if the overlap is too large, we reset to position to prevent
-          // hard clipping
-          if (getPosition().y + 0.1 < e.getMaxY()) {
-            setPositionY(e.getMaxY());
-          }
-          // Reset jumping ability and downwards momentum
-          if (upwardsSpeed < 0) {
-            upwardsSpeed = 0;
-          }
-          isInAir = false;
-          // If we hold S, dig down
-          if (InputHandler.isKeyDown(GLFW_KEY_S) && entity instanceof Block) {
-            digBlock((Block) entity);
-          }
-        } else { // from below
-          // Reset Position to below the block, this doesnt flicker since we are falling
-          setPositionY(e.getMinY() - p.getDimY());
-          // Stop jumping up if we hit something above, will start accelerating down
-          if (upwardsSpeed > 0) {
-            upwardsSpeed = 0;
-          }
+      if (theta <= angle45) {
+        // From above
+        collideWithBlockBelow = true;
+        // Undo the position change to keep the player in place
+        super.increasePosition(0, (float) -(upwardsSpeed * Game.window.getFrameTimeSeconds()), 0);
+        // Have a grace distance, if the overlap is too large, we reset to position to prevent
+        // hard clipping
+        if (getPosition().y + 0.1 < e.getMaxY()) {
+          setPositionY(e.getMaxY());
         }
-      } else { // horizontal collision
-        if (w > 0) { // from right
+        // Reset jumping ability and downwards momentum
+        if (upwardsSpeed < 0) {
+          upwardsSpeed = 0;
+        }
+        isInAir = false;
+        // If we hold S, dig down
+        if (InputHandler.isKeyDown(GLFW_KEY_S) && entity instanceof Block) {
+          digBlock((Block) entity);
+        }
+      } else if (theta >= angle45 * 3) {
+        // From below
+        collideWithBlockAbove = true;
+        // Reset Position to below the block, this doesnt flicker since we are falling
+        setPositionY(e.getMinY() - p.getDimY());
+        // Stop jumping up if we hit something above, will start accelerating down
+        if (upwardsSpeed > 0) {
+          upwardsSpeed = 0;
+        }
+      } else {
+        if (direction.x > 0) {
           // Have a small offset for smoother collision
           setPositionX(e.getMaxX() + p.getDimX() / 2 + collisionPushOffset);
           currentSpeed = 0; // Stop moving
           isInAir = false; // Walljumps! Felt cute. Might delete later.
-        } else { // from left
+        } else {
           setPositionX(e.getMinX() - p.getDimX() / 2 - collisionPushOffset);
           currentSpeed = 0;
           isInAir = false;
@@ -215,6 +224,68 @@ public class Player extends NetPlayer {
         }
       }
     }
+
+    // If we collide, we need to determine from which of the 4 cardinal directions
+    // float w = (p.getMinX() + p.getMaxX()) / 2 - (e.getMinX() + e.getMaxX()) / 2;
+    // float h = (p.getMinY() + p.getMaxY()) / 2 - (e.getMinY() + e.getMaxY()) / 2;
+    //// Check if we collide with the block
+    // if (this.collidesWith(entity, 2)) {
+    //  Vector3f direction = new Vector3f(p.getCenter()).sub(e.getCenter());
+    //  direction.z = 0;
+    //  float theta = direction.angle(new Vector3f(0, 1, 0));
+    //
+    //
+    //  // If we collide, we need to determine from which of the 4 cardinal directions
+    //  float w = (p.getMinX() + p.getMaxX()) / 2 - (e.getMinX() + e.getMaxX()) / 2;
+    //  float h = (p.getMinY() + p.getMaxY()) / 2 - (e.getMinY() + e.getMaxY()) / 2;
+    //
+    //  if (Math.abs(w) < Math.abs(h)) { // vertical collision
+    //    if (h > 0) { // from above
+    //      // setPositionY(e.getMaxY()); //This flickers the player on high resolution... bad!
+    //
+    //      // Undo the position change to keep the player in place
+    //      super.increasePosition(0, (float) -(upwardsSpeed * Game.window.getFrameTimeSeconds()),
+    // 0);
+    //      // Have a grace distance, if the overlap is too large, we reset to position to prevent
+    //      // hard clipping
+    //      if (getPosition().y + 0.1 < e.getMaxY()) {
+    //        setPositionY(e.getMaxY());
+    //      }
+    //      // Reset jumping ability and downwards momentum
+    //      if (upwardsSpeed < 0) {
+    //        upwardsSpeed = 0;
+    //      }
+    //      isInAir = false;
+    //      // If we hold S, dig down
+    //      if (InputHandler.isKeyDown(GLFW_KEY_S) && entity instanceof Block) {
+    //        digBlock((Block) entity);
+    //      }
+    //    } else { // from below
+    //      // Reset Position to below the block, this doesnt flicker since we are falling
+    //      setPositionY(e.getMinY() - p.getDimY());
+    //      // Stop jumping up if we hit something above, will start accelerating down
+    //      if (upwardsSpeed > 0) {
+    //        upwardsSpeed = 0;
+    //      }
+    //    }
+    //  } else { // horizontal collision
+    //    //System.out.println(direction.x+ " "+Math.toDegrees(theta));
+    //    if (w > 0) { // from right
+    //      // Have a small offset for smoother collision
+    //      setPositionX(e.getMaxX() + p.getDimX() / 2 + collisionPushOffset);
+    //      currentSpeed = 0; // Stop moving
+    //      isInAir = false; // Walljumps! Felt cute. Might delete later.
+    //    } else { // from left
+    //      setPositionX(e.getMinX() - p.getDimX() / 2 - collisionPushOffset);
+    //      currentSpeed = 0;
+    //      isInAir = false;
+    //    }
+    //    // Dig blocks whenever we collide horizontal
+    //    if (entity instanceof Block) {
+    //      digBlock((Block) entity);
+    //    }
+    //  }
+    // }
   }
 
   /**

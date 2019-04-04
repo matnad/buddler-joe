@@ -43,6 +43,9 @@ public abstract class Block extends Entity {
   private float moveDelay;
   private boolean shakeLeft;
 
+  // Variables to track collision time with a player while the block is moving
+  private float collisionTime;
+
   /**
    * Abstract Constructor.
    *
