@@ -1,6 +1,8 @@
 package net;
 
 import java.io.IOException;
+
+import entities.items.ServerItemState;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,6 +21,7 @@ public class StartServer {
   private boolean created;
   private ServerLogic serverLogic;
   private int serverPort;
+  private ServerItemState serverItemState = new ServerItemState();
 
   /**
    * Start the Interface for the server, listening on a default.

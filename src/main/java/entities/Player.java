@@ -188,7 +188,7 @@ public class Player extends NetPlayer {
           }
           isInAir = false;
           // If we hold S, dig down
-          if (InputHandler.isKeyDown(GLFW_KEY_S) && entity instanceof Block) {
+          if (InputHandler.isKeyDown(GLFW_KEY_S) && entity instanceof Block && !frozen) {
             digBlock((Block) entity);
           }
         } else { // from below

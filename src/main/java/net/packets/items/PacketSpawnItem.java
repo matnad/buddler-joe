@@ -1,12 +1,6 @@
 package net.packets.items;
 
-import entities.items.Dynamite;
-import entities.items.Heart;
-import entities.items.Ice;
-import entities.items.Item;
-import entities.items.ItemMaster;
-import entities.items.Star;
-import entities.items.Torch;
+import entities.items.*;
 import game.Game;
 import game.map.Map;
 import net.ServerLogic;
@@ -38,8 +32,6 @@ public class PacketSpawnItem extends Packet {
     // No need to validate. No user input
   }
 
-  // TODO clientId handling and then process the data correctly!
-
   /**
    * Constructor to be used when a questionmark block gets destroyed to spawn an item and have
    * certain effects on certain players.
@@ -50,6 +42,8 @@ public class PacketSpawnItem extends Packet {
    */
   public PacketSpawnItem(ItemMaster.ItemTypes type, Vector3f position, int clientId) {
     super(Packet.PacketTypes.SPAWN_ITEM);
+    ServerItem serverItem = new ServerItem(clientId,type);
+    ServerItemState.addItem(serverItem);
     setData(
         clientId + "║" + type.getItemId() + "║" + position.x + "║" + position.y + "║" + position.z);
     // No need to validate. No user input
@@ -69,6 +63,8 @@ public class PacketSpawnItem extends Packet {
     dataArray = data.split("║");
     dataArray[0] = "" + clientId;
     validate(); // Validate and assign in one step
+    ServerItem serverItem = new ServerItem(clientId, ItemMaster.ItemTypes.getItemTypeById(type));
+    ServerItemState.addItem(serverItem);
     setData(clientId + "║" + type + "║" + position.x + "║" + position.y + "║" + position.z);
   }
 
@@ -98,9 +94,6 @@ public class PacketSpawnItem extends Packet {
       logger.error("Invalid item owner.");
     }
     try {
-      logger.info("x: " + dataArray[2]);
-      logger.info("y: " + dataArray[3]);
-      logger.info("z: " + dataArray[4]);
       position =
           new Vector3f(
               Float.parseFloat(dataArray[2])* Map.getDim()+Map.getDim()/2,

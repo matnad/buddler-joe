@@ -5,12 +5,14 @@ import engine.models.TexturedModel;
 import engine.render.Loader;
 import engine.render.objconverter.ObjFileLoader;
 import engine.textures.ModelTexture;
+import game.Game;
 import org.joml.Vector3f;
 
 public class Heart extends Item {
 
   private static TexturedModel preloadedModel;
   private final float gravity = 20;
+  private final float showTime = 5f;
   private float time;
 
   /** Extended Constructor for Dynamite. Don't use directly. Use the Item Master to create items. */
@@ -29,6 +31,17 @@ public class Heart extends Item {
 
   @Override
   public void update() {
+    if (isOwned()) {
+      time += Game.window.getFrameTimeSeconds();
+      if (time >= showTime) {
+        setDestroyed(true);
+      }
+    } else {
+      time += Game.window.getFrameTimeSeconds();
+      if (time >= showTime) {
+        setDestroyed(true);
+      }
+    }
   }
 
   /**

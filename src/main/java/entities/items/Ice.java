@@ -40,9 +40,13 @@ public class Ice extends Item {
       time += Game.window.getFrameTimeSeconds();
       if (time >= freezeTime) {
         Game.getActivePlayer().defreeze();
+        setDestroyed(true);
       }
     } else {
-      return;
+      if (time >= freezeTime) {
+        time += Game.window.getFrameTimeSeconds();
+        setDestroyed(true);
+      }
     }
   }
 
