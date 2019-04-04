@@ -8,6 +8,7 @@ import entities.items.ItemMaster;
 import entities.items.Star;
 import entities.items.Torch;
 import game.Game;
+import game.map.Map;
 import net.ServerLogic;
 import net.lobbyhandling.Lobby;
 import net.packets.Packet;
@@ -102,9 +103,9 @@ public class PacketSpawnItem extends Packet {
       logger.info("z: " + dataArray[4]);
       position =
           new Vector3f(
-              Float.parseFloat(dataArray[2]),
-              Float.parseFloat(dataArray[3]),
-              Float.parseFloat(dataArray[4]));
+              Float.parseFloat(dataArray[2])* Map.getDim(),
+              Float.parseFloat(dataArray[3])*Map.getDim(),
+              Float.parseFloat(dataArray[4])*Map.getDim());
     } catch (NumberFormatException e) {
       addError("Invalid item position data.");
     }
@@ -153,7 +154,6 @@ public class PacketSpawnItem extends Packet {
         if (item instanceof Torch) {
           ((Torch) item).checkForBlock(); // Attach to a block if placed on one.
         } else if (item instanceof Dynamite) {
-          logger.info("Spawning dynamite.");
           item.setOwned(true);
           ((Dynamite) item).setActive(true); // Start ticking
         } else if (item instanceof Heart) {

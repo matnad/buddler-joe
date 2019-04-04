@@ -26,7 +26,7 @@ public class ServerBlock {
 
   ServerBlock(BlockMaster.BlockTypes type, int gridX, int gridY) {
     this.gridX = gridX;
-    this.gridY = gridY;
+    this.gridY -= gridY+3;
     this.type = type;
     this.hardness = getBaseHardness();
   }
@@ -95,9 +95,6 @@ public class ServerBlock {
     int r = random.nextInt(4);
     if (r == 0) {
       logger.info("Spawning dynamite.");
-      logger.info("x: " + gridX);
-      logger.info("y: " + gridY);
-      logger.info("z: " + gridZ);
       PacketSpawnItem packetSpawnItem =
           new PacketSpawnItem(
               ItemMaster.ItemTypes.DYNAMITE, new Vector3f(gridX, gridY, gridZ), clientId);

@@ -31,20 +31,18 @@ public class ServerMap extends Map<ServerBlock> {
      */
     for (int y = 0; y < height; y++) {
       for (int x = 0; x < width; x++) {
-        int gridX = x * Map.getDim();
-        int gridY = y * Map.getDim();
         if (noiseMap[x][y] < thresholds[0]) {
-          blocks[x][y] = new ServerBlock(BlockMaster.BlockTypes.STONE, gridX, gridY); // Air
+          blocks[x][y] = new ServerBlock(BlockMaster.BlockTypes.STONE, x, y); // Air
         } else {
           if (rng.nextFloat() < .02f) {
-            blocks[x][y] = new ServerBlock(BlockMaster.BlockTypes.GOLD, gridX, gridY); // Gold: 1 in 40 chance
+            blocks[x][y] = new ServerBlock(BlockMaster.BlockTypes.GOLD, x, y); // Gold: 1 in 40 chance
           } else if (rng.nextFloat() < .9f) {
             blocks[x][y] =
-                new ServerBlock(BlockMaster.BlockTypes.QMARK, gridX, gridY); // Item Block: 1 in 50 chance
+                new ServerBlock(BlockMaster.BlockTypes.QMARK, x, y); // Item Block: 1 in 50 chance
           } else if (noiseMap[x][y] < thresholds[1]) {
-            blocks[x][y] = new ServerBlock(BlockMaster.BlockTypes.DIRT, gridX, gridY); // Dirt
+            blocks[x][y] = new ServerBlock(BlockMaster.BlockTypes.DIRT, x, y); // Dirt
           } else {
-            blocks[x][y] = new ServerBlock(BlockMaster.BlockTypes.AIR, gridX, gridY); // Stone
+            blocks[x][y] = new ServerBlock(BlockMaster.BlockTypes.AIR, x, y); // Stone
           }
         }
       }
