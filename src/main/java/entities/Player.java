@@ -59,6 +59,7 @@ public class Player extends NetPlayer {
   private float currentSpeed = 0;
   private float currentTurnSpeed = 0;
   private float upwardsSpeed = 0;
+  private boolean frozen = false;
 
   private List<Block> closeBlocks;
 
@@ -276,6 +277,11 @@ public class Player extends NetPlayer {
       return;
     }
 
+    if (frozen) {
+      currentSpeed = 0;
+      return;
+    }
+
     if (InputHandler.isKeyPressed(GLFW_KEY_Q)) {
       if (InputHandler.isPlacerMode()) {
         MousePlacer.cancelPlacing();
@@ -334,5 +340,13 @@ public class Player extends NetPlayer {
         acceptable compromise.
         */
         ItemMaster.generateItem(itemType, getPosition()));
+  }
+
+  public void freeze() {
+    this.frozen = true;
+  }
+
+  public void defreeze() {
+    this.frozen = false;
   }
 }

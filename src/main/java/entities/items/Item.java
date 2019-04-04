@@ -36,7 +36,7 @@ public abstract class Item extends Entity {
     }
     this.type = type;
     this.key++;
-    this.owned = true;
+    this.owned = false;
   }
 
   public abstract void update();

@@ -12,7 +12,6 @@ public class Heart extends Item {
   private static TexturedModel preloadedModel;
   private final float gravity = 20;
   private float time;
-  private boolean active;
 
   /** Extended Constructor for Dynamite. Don't use directly. Use the Item Master to create items. */
   private Heart(Vector3f position, float rotX, float rotY, float rotZ, float scale) {
@@ -30,11 +29,6 @@ public class Heart extends Item {
 
   @Override
   public void update() {
-
-    // Skip if heart is being placed or otherwise inactive
-    if (!active) {
-      return;
-    }
   }
 
   /**
@@ -56,12 +50,8 @@ public class Heart extends Item {
     Heart.preloadedModel = preloadedModel;
   }
 
-  public boolean isActive() {
-    return active;
-  }
+  public void setActive() {
 
-  public void setActive(boolean active) {
-    this.active = active;
   }
 
   // TODO: (Viktor) write method give heart to give the destroyer of the block a heart

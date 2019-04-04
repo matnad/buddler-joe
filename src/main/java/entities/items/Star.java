@@ -2,20 +2,19 @@ package entities.items;
 
 import engine.models.TexturedModel;
 import engine.render.Loader;
-import entities.light.Light;
+import game.Game;
 import org.joml.Vector3f;
+
 
 public class Star extends Item {
   private static TexturedModel preloadedModel;
-  private final float gravity = 20;
+  private final float freezeTime = 10f;
   private float time;
-  private boolean active;
-  private boolean starred;
-  private Light flash;
 
   /** Extended Constructor for Ice. Don't use directly. Use the Item Master to create items. */
   private Star(Vector3f position, float rotX, float rotY, float rotZ, float scale) {
     super(ItemMaster.ItemTypes.STAR, getPreloadedModel(), position, rotX, rotY, rotZ, scale);
+    time = 0;
   }
 
   /**
@@ -29,11 +28,16 @@ public class Star extends Item {
 
   @Override
   public void update() {
-
-    // Skip if ice is being placed or otherwise inactive
-    if (!active) {
+    if (!isOwned()) {
+      Game.getActivePlayer().freeze();
+      time += Game.window.getFrameTimeSeconds();
+      if (time >= freezeTime) {
+        Game.getActivePlayer().defreeze();
+      }
+    } else {
       return;
     }
+
   }
 
   public static void init(Loader loader) {
@@ -49,11 +53,4 @@ public class Star extends Item {
     Star.preloadedModel = preloadedModel;
   }
 
-  public boolean isActive() {
-    return active;
-  }
-
-  public void setActive(boolean active) {
-    this.active = active;
-  }
 }

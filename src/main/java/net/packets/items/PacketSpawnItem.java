@@ -87,14 +87,19 @@ public class PacketSpawnItem extends Packet {
   public void validate() {
     if (dataArray.length != 5) {
       addError("Invalid item data.");
+      logger.error("Invalid item data");
       return;
     }
     try {
       owner = Integer.parseInt(dataArray[0]);
     } catch (NumberFormatException e) {
       addError("Invalid item owner.");
+      logger.error("Invalid item owner.");
     }
     try {
+      logger.info("x: " + dataArray[2]);
+      logger.info("y: " + dataArray[3]);
+      logger.info("z: " + dataArray[4]);
       position =
           new Vector3f(
               Float.parseFloat(dataArray[2]),
@@ -103,7 +108,10 @@ public class PacketSpawnItem extends Packet {
     } catch (NumberFormatException e) {
       addError("Invalid item position data.");
     }
-    isExtendedAscii(dataArray[1]);
+    if(!isExtendedAscii(dataArray[1])){
+      return;
+    }
+    type = dataArray[1];
   }
 
   /**
@@ -122,7 +130,6 @@ public class PacketSpawnItem extends Packet {
     if (itemType == null) {
       addError("Invalid item id.");
     }
-
     if (getClientId() > 0) {
       // Server side
       Lobby lobby = ServerLogic.getLobbyForClient(getClientId());
@@ -139,21 +146,28 @@ public class PacketSpawnItem extends Packet {
     } else {
       // Client side
       if (!hasErrors()) {
-        if (owner == Game.getActivePlayer().getClientId()) {
-          return;
-        }
+        //if (owner == Game.getActivePlayer().getClientId()) {
+        //  return;
+        //}
         Item item = ItemMaster.generateItem(itemType, position);
-        item.setOwned(false);
         if (item instanceof Torch) {
           ((Torch) item).checkForBlock(); // Attach to a block if placed on one.
         } else if (item instanceof Dynamite) {
+          logger.info("Spawning dynamite.");
+          item.setOwned(true);
           ((Dynamite) item).setActive(true); // Start ticking
         } else if (item instanceof Heart) {
-          ((Heart) item).setActive(true); // give a heart to the owner
+          if (owner == Game.getActivePlayer().getClientId()) {
+            item.setOwned(true);
+          } else {return; }
         } else if (item instanceof Ice) {
-          ((Ice) item).setActive(true); // Ice the player
+          if (owner == Game.getActivePlayer().getClientId()) {
+            item.setOwned(true);
+          }
         } else if (item instanceof Star) {
-          ((Star) item).setActive(true); // Ice all other players
+          if (owner == Game.getActivePlayer().getClientId()) {
+            item.setOwned(true);
+          }
         }
       } else {
         logger.error(

@@ -9,12 +9,16 @@ import entities.items.ItemMaster;
 
 import java.util.Random;
 
-import entities.items.ItemServerState;
 import net.ServerLogic;
 import net.packets.items.PacketSpawnItem;
 import org.joml.Vector3f;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ServerBlock {
+
+  private static final Logger logger = LoggerFactory.getLogger(PacketSpawnItem.class);
+
 
   private BlockMaster.BlockTypes type;
   private float hardness;
@@ -84,21 +88,28 @@ public class ServerBlock {
     Random random = new Random(1);
     int r = random.nextInt(4);
     if (r == 0) {
+      logger.info("Spawning dynamite.");
+      logger.info("x: " + gridX);
+      logger.info("y: " + gridY);
+      logger.info("z: " + gridZ);
       PacketSpawnItem packetSpawnItem =
           new PacketSpawnItem(
               ItemMaster.ItemTypes.DYNAMITE, new Vector3f(gridX, gridY, gridZ), clientId);
       packetSpawnItem.sendToLobby(ServerLogic.getLobbyForClient(clientId).getLobbyId());
     } else if (r == 1) {
+      logger.info("Spawning heart.");
       PacketSpawnItem packetSpawnItem =
           new PacketSpawnItem(
               ItemMaster.ItemTypes.HEART, new Vector3f(gridX, gridY, gridZ), clientId);
       packetSpawnItem.sendToLobby(ServerLogic.getLobbyForClient(clientId).getLobbyId());
     } else if (r == 2) {
+      logger.info("Spawning star.");
       PacketSpawnItem packetSpawnItem =
           new PacketSpawnItem(
               ItemMaster.ItemTypes.STAR, new Vector3f(gridX, gridY, gridZ), clientId);
       packetSpawnItem.sendToLobby(ServerLogic.getLobbyForClient(clientId).getLobbyId());
     } else if (r == 3) {
+      logger.info("Spawning ice.");
       PacketSpawnItem packetSpawnItem =
           new PacketSpawnItem(
               ItemMaster.ItemTypes.ICE, new Vector3f(gridX, gridY, gridZ), clientId);

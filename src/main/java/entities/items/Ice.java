@@ -1,10 +1,12 @@
 package entities.items;
 
+import engine.io.InputHandler;
 import engine.models.RawModel;
 import engine.models.TexturedModel;
 import engine.render.Loader;
 import engine.render.objconverter.ObjFileLoader;
 import engine.textures.ModelTexture;
+import entities.Player;
 import entities.light.Light;
 import entities.light.LightMaster;
 import game.Game;
@@ -13,11 +15,9 @@ import org.joml.Vector3f;
 public class Ice extends Item {
 
   private static TexturedModel preloadedModel;
-  private final float gravity = 20;
   private float time;
-  private boolean active;
   private boolean iced;
-  private Light flash;
+  private final float freezeTime = 10f;
 
   /** Extended Constructor for Ice. Don't use directly. Use the Item Master to create items. */
   private Ice(Vector3f position, float rotX, float rotY, float rotZ, float scale) {
@@ -35,25 +35,14 @@ public class Ice extends Item {
 
   @Override
   public void update() {
-
-    // Skip if ice is being placed or otherwise inactive
-    if (!active) {
+    if (isOwned()) {
+      Game.getActivePlayer().freeze();
+      time += Game.window.getFrameTimeSeconds();
+      if (time >= freezeTime) {
+        Game.getActivePlayer().defreeze();
+      }
+    } else {
       return;
-    }
-  }
-
-  /** Damage the blocks in range of the explosion and hide the dynamite. */
-  private void explode() {
-    if (iced) {
-      return;
-    }
-    iced = true;
-    setScale(new Vector3f()); // Hide the model, but keep the object for the explosion effect
-    flash =
-        LightMaster.generateLight(
-            LightMaster.LightTypes.FLASH, getPosition(), new Vector3f(1, 1, 1));
-    if (Game.isConnectedToServer()) {
-      // Send to players that there has been a star
     }
   }
 
@@ -70,11 +59,4 @@ public class Ice extends Item {
     Ice.preloadedModel = preloadedModel;
   }
 
-  public boolean isActive() {
-    return active;
-  }
-
-  public void setActive(boolean active) {
-    this.active = active;
-  }
 }

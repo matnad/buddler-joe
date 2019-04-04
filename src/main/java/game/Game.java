@@ -426,7 +426,7 @@ public class Game extends Thread {
 
   private void loadGame(Loader loader) throws InterruptedException {
     //Load Stages
-    MainMenu.init(loader);
+    //MainMenu.init(loader);
     LoadingScreen.progess();
     GameMenu.init(loader);
     LoadingScreen.progess();
