@@ -39,11 +39,10 @@ import game.stages.MainMenu;
 import game.stages.Options;
 import game.stages.Playing;
 import game.stages.Welcome;
-import gui.Chat;
-import gui.Fps;
-import gui.GuiString;
-
-import java.io.FileNotFoundException;
+import gui.chat.Chat;
+import gui.text.CurrentGold;
+import gui.text.Fps;
+import gui.text.GuiString;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -115,6 +114,7 @@ public class Game extends Thread {
   private static Chat chat;
   private static Player player;
   private Fps fpsCounter;
+  private static CurrentGold goldGuiText;
 
   // map
   private static ClientMap map;
@@ -496,11 +496,18 @@ public class Game extends Thread {
     // Camera
     camera = new Camera(player, window);
 
+    // GUI / Other
+    goldGuiText = new CurrentGold();
+
     LoadingScreen.updateLoadingMessage("Ready!");
     Thread.sleep(500);
     LoadingScreen.done();
     addActiveStage(PLAYING);
     removeActiveStage(LOADINGSCREEN);
+  }
+
+  public static CurrentGold getGoldGuiText() {
+    return goldGuiText;
   }
 
   private void disconnectFromServer() {

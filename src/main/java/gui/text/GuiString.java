@@ -1,8 +1,9 @@
-package gui;
+package gui.text;
 
 import engine.render.Loader;
 import engine.render.fontmeshcreator.FontType;
 import engine.render.fontmeshcreator.GuiText;
+import engine.render.fontrendering.TextMaster;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 
@@ -37,8 +38,8 @@ public abstract class GuiString {
   }
 
   /**
-   * Re-Creates the gui text. This needs to be called whenever the text (text) is changed
-   * because we need to re-arrange the glyphs.
+   * Re-Creates the gui text. This needs to be called whenever the text (text) is changed because we
+   * need to re-arrange the glyphs.
    */
   public void createGuiText() {
     setGuiText(
@@ -53,12 +54,16 @@ public abstract class GuiString {
             isCentered()));
   }
 
+  /** (Re-)create the object. Needs to be called if the text or any esential properties change. */
   public void updateString() {
+    if (getGuiText() != null) {
+      TextMaster.removeText(getGuiText());
+    }
     createGuiText();
   }
 
   public Vector2f getPosition() {
-    return position;
+    return new Vector2f(position);
   }
 
   public void setPosition(Vector2f position) {

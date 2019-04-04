@@ -9,12 +9,16 @@ import org.joml.Vector3f;
 /** IN DEVELOPMENT Try to create debris that adheres to physics. */
 public class Debris extends Entity {
 
+  private Block baseBlock;
+
   private final float weight;
   private Vector3f direction;
   private float lifeLength;
   private Vector3f spin;
 
-  // private BlockMaster.BlockTypes type;
+  private Entity spawnedBy;
+  private float trackAcceleration = 5;
+
   private float elapsedTime = 0;
 
   /**
@@ -25,10 +29,12 @@ public class Debris extends Entity {
    * @param size size for the debris
    */
   Debris(Block block, float size) {
-    super(
-        block.getModel(), 0, block.getPosition(), 0, 0, 0, size);
+    super(block.getDebrisModel(), 0, block.getPosition(), 0, 0, 0, size);
+
+    baseBlock = block;
+    spawnedBy = block.getDestroyedBy();
     float volume = (float) Math.pow(size, 2);
-    float mass = block.getMass();
+    float mass = 1f; // block.getMass();
     float gravity = 80; // TODO: Gravity constant in settings?
     this.weight = mass * volume * gravity;
     this.randomize();
@@ -64,13 +70,40 @@ public class Debris extends Entity {
    * gravity) = weight Then translate along direction vector and rotate around spin vector
    */
   public void update() {
-    elapsedTime += Game.window.getFrameTimeSeconds();
-    direction.y -= weight * Game.window.getFrameTimeSeconds();
-    handleCollision();
-    float speed = 2;
-    increasePosition(
-        new Vector3f(direction).mul(speed).mul((float) Game.window.getFrameTimeSeconds()));
-    increaseRotation(new Vector3f(spin).mul((float) Game.window.getFrameTimeSeconds()));
+
+    float delta = (float) Game.window.getFrameTimeSeconds();
+
+    elapsedTime += delta;
+    if (baseBlock.getType() == BlockMaster.BlockTypes.GOLD
+        && elapsedTime > .8f
+        && spawnedBy != null) {
+      // After 1 second, start flying to the player
+      trackAcceleration += 8 * delta;
+      // Vector3f posNew = spawnedBy.getBbox().getCenter();
+      // direction
+      //    .mul((1 - (4 + trackAcceleration) * delta))
+      //    .add(new Vector3f(posNew).sub(getPosition()).mul((4 + trackAcceleration) * delta));
+      // if (direction.length() < 60 * delta) {
+      //  System.out.println(direction.length());
+      //  direction.mul(direction.length() / (60 * delta));
+      // }
+      // if (getPosition().distance(posNew) <= 1f) {
+      //  elapsedTime = lifeLength;
+      // }
+      Vector3f posNew = spawnedBy.getBbox().getCenter();
+      direction.mul(1 / elapsedTime / lifeLength);
+      direction.add(new Vector3f(posNew).sub(getPosition())).normalize().mul(trackAcceleration);
+
+      if (getPosition().distance(posNew) <= 1f) {
+        elapsedTime = lifeLength;
+      }
+
+    } else {
+      direction.y -= weight * delta;
+      handleCollision();
+    }
+    increaseRotation(new Vector3f(spin).mul(delta));
+    increasePosition(new Vector3f(direction).mul(2).mul(delta));
   }
 
   /**

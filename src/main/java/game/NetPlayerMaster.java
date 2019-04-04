@@ -7,7 +7,6 @@ import engine.render.objconverter.ObjFileLoader;
 import engine.textures.ModelTexture;
 import entities.NetPlayer;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.StringJoiner;
@@ -135,6 +134,21 @@ public class NetPlayerMaster {
     if (netPlayer != null) {
       netPlayer.setPosition(new Vector3f(posX, posY, netPlayer.getPosition().z));
       netPlayer.setRotY(rotY);
+    }
+  }
+
+  /**
+   * Returns the NetPlayer related to a clientId in this lobby. Will return a Player object if the
+   * clientId refers to the active player and will return null if the clientId is not found.
+   *
+   * @param clientId clientId for a player in this lobby.
+   * @return The NetPlayer object related to the clientId
+   */
+  public static NetPlayer getNetPlayerById(int clientId) {
+    if (clientId == Game.getActivePlayer().getClientId()) {
+      return Game.getActivePlayer();
+    } else {
+      return netPlayers.get(clientId);
     }
   }
 }

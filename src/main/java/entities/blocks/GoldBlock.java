@@ -5,6 +5,9 @@ import engine.models.TexturedModel;
 import engine.render.Loader;
 import engine.render.objconverter.ObjFileLoader;
 import engine.textures.ModelTexture;
+import entities.Player;
+import game.Game;
+import game.stages.Playing;
 import org.joml.Vector3f;
 
 /**
@@ -14,8 +17,10 @@ import org.joml.Vector3f;
  */
 public class GoldBlock extends Block {
 
-  private static float hardness = 2f;
+  private static float hardness = 1f;
   private static TexturedModel blockModel;
+  private static TexturedModel debrisModel;
+  private int value;
 
   /** Extended Constructor, dont call directly. */
   GoldBlock(
@@ -24,6 +29,7 @@ public class GoldBlock extends Block {
         BlockMaster.BlockTypes.GOLD, hardness, 3f, position, rotX, rotY, rotZ, scale, gridX, gridY);
     setModel(blockModel);
     setTextureIndex(0);
+    value = 50 + gridY * 5;
   }
 
   /** Shortened constructor with just position. Dont call directly. */
@@ -36,13 +42,35 @@ public class GoldBlock extends Block {
     ModelTexture blockAtlas = new ModelTexture(loader.loadTexture("gold4x4"));
     blockAtlas.setNumberOfRows(2);
     blockModel = new TexturedModel(rawBlock, blockAtlas);
+
+    // Replace Gold Nuggets with their own texture?
+    // ModelTexture goldTexture = new ModelTexture(loader.loadTexture("pureGold"));
+    // goldTexture.setShineDamper(0.5f);
+    // debrisModel = new TexturedModel(rawBlock, goldTexture);
+
   }
 
   @Override
   protected void onDestroy() {
-    // Drop some dynamite!
-    // Item dynamite = ItemMaster.generateItem(ItemMaster.ItemTypes.DYNAMITE, getPosition());
-    // ((Dynamite) dynamite).setActive(true);
+    if (getDestroyedBy() == Game.getActivePlayer()) {
+      //  new Timer()
+      //      .schedule(
+      //          new TimerTask() {
+      //            @Override
+      //            public void run() {
+      //              ((Player) getDestroyedBy()).increaseCurrentGold(value);
+      //              Playing.addFloatingGoldText(value);
+      //            }
+      //          },
+      //          1100);
+      ((Player) getDestroyedBy()).increaseCurrentGold(value);
+      Playing.addFloatingGoldText(value);
+    }
+  }
+
+  @Override
+  public TexturedModel getDebrisModel() {
+    return blockModel;
   }
 
   public static float getHardness() {
