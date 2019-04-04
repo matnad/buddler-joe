@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import net.packets.chat.PacketChatMessageToServer;
+import net.packets.highscore.PacketHighscore;
 import net.packets.lobby.PacketCreateLobby;
 import net.packets.lobby.PacketGetLobbies;
 import net.packets.lobby.PacketGetLobbyInfo;
@@ -71,6 +72,7 @@ public class StartNetworkOnlyClient implements Runnable {
                 + "display connection info otherwise\n"
                 + "playerlist - Receive a List of all active  players\n"
                 + "disconnect - Disconnect from the server\n"
+                + "highscore - get the current highscore on the server\n"
                 + "help - Display this message");
       } else if (inputMessage.equals("ping")) {
         System.out.println(
@@ -100,6 +102,9 @@ public class StartNetworkOnlyClient implements Runnable {
         p.sendToServer();
       } else if (inputMessage.startsWith("C ") && inputMessage.length() > 2) {
         PacketChatMessageToServer p = new PacketChatMessageToServer(inputMessage.substring(2));
+        p.sendToServer();
+      } else if (inputMessage.equals("highscore")) {
+        PacketHighscore p = new PacketHighscore();
         p.sendToServer();
       } else if (inputMessage.equals("playerlist")) {
         PacketPlayerList p = new PacketPlayerList();
@@ -139,7 +144,12 @@ public class StartNetworkOnlyClient implements Runnable {
     new Thread(() -> StartNetworkOnlyClient.startWith("127.0.0.1", 11337)).start();
   }
 
-  /** Start the Network only client with a certain IP and serverPort. */
+  /**
+   * Start the Network only client with a certain IP and serverPort.
+   *
+   * @param serverPort port to connect on
+   * @param serverIp ip or URL to connect to
+   */
   public static void startWith(String serverIp, int serverPort) {
     StartNetworkOnlyClient.serverIp = serverIp;
     StartNetworkOnlyClient.serverPort = serverPort;

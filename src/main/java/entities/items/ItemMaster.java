@@ -27,6 +27,9 @@ public class ItemMaster {
   public static void init(Loader loader) {
     Dynamite.init(loader);
     Torch.init(loader);
+    Heart.init(loader);
+    Ice.init(loader);
+    Star.init(loader);
   }
 
   /**
@@ -47,6 +50,15 @@ public class ItemMaster {
         break;
       case TORCH:
         item = new Torch(position);
+        break;
+      case HEART:
+        item = new Heart(position);
+        break;
+      case STAR:
+        item = new Star(position);
+        break;
+      case ICE:
+        item = new Ice(position);
         break;
       default:
         item = null;
@@ -113,16 +125,19 @@ public class ItemMaster {
   }
 
   public enum ItemTypes {
-    DYNAMITE(1),
-    TORCH(2);
+    DYNAMITE("DYNM"),
+    TORCH("TRCH"),
+    HEART("HART"),
+    ICE("ICEE"),
+    STAR("STAR");
 
-    private final int itemId;
+    private final String itemId;
 
-    ItemTypes(int itemId) {
+    ItemTypes(String itemId) {
       this.itemId = itemId;
     }
 
-    public int getItemId() {
+    public String getItemId() {
       return itemId;
     }
 
@@ -132,9 +147,9 @@ public class ItemMaster {
      * @param id id of the item type
      * @return item type associated with the id
      */
-    public static ItemTypes getItemTypeById(int id) {
+    public static ItemTypes getItemTypeById(String id) {
       for (ItemTypes itemType : ItemTypes.values()) {
-        if (itemType.itemId == id) {
+        if (itemType.itemId.equals(id)) {
           return itemType;
         }
       }

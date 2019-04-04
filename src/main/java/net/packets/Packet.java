@@ -222,17 +222,19 @@ public abstract class Packet {
    *
    * @param username The username to be checked by this method
    */
-  protected void checkUsername(String username) {
+  protected boolean checkUsername(String username) {
     if (username == null) {
       addError("No username found.");
-      return;
+      return false;
     }
     if (username.length() > 30) {
       addError("Username to long. Maximum is 30 Characters.");
+      return false;
     } else if (username.length() < 4) {
       addError("Username to short. Minimum is 4 Characters.");
+      return false;
     }
-    isExtendedAscii(username);
+    return isExtendedAscii(username);
   }
 
   /**
@@ -310,6 +312,9 @@ public abstract class Packet {
     POSITION_UPDATE("POSXY"),
     BLOCK_DAMAGE("BLDMG"),
     FULL_MAP_BROADCAST("MAPBC"),
+    HIGHSCORE("HIGH"),
+    ITEM_GENERATED("ITMGN"),
+    ITEM_USED("ITMUS"),
     PLAYERLIST("PLALS"),
     SPAWN_ITEM("ITMSP");
 

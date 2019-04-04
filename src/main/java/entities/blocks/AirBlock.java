@@ -1,5 +1,6 @@
 package entities.blocks;
 
+import engine.models.TexturedModel;
 import org.joml.Vector3f;
 
 public class AirBlock extends Block {
@@ -19,5 +20,10 @@ public class AirBlock extends Block {
   @Override
   protected void onDestroy() {
 
+  }
+
+  @Override
+  public TexturedModel getDebrisModel() {
+    return null;
   }
 }

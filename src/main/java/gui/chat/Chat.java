@@ -1,4 +1,4 @@
-package gui;
+package gui.chat;
 
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_ENTER;
 
@@ -6,6 +6,7 @@ import engine.io.InputHandler;
 import engine.render.Loader;
 import engine.render.fontmeshcreator.FontType;
 import engine.render.fontrendering.TextMaster;
+import gui.GuiTexture;
 import java.util.ArrayList;
 import java.util.List;
 import org.joml.Vector2f;

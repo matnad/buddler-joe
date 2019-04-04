@@ -1,10 +1,14 @@
 package net.packets.items;
 
 import entities.items.Dynamite;
+import entities.items.Heart;
+import entities.items.Ice;
 import entities.items.Item;
 import entities.items.ItemMaster;
+import entities.items.Star;
 import entities.items.Torch;
 import game.Game;
+import game.map.Map;
 import net.ServerLogic;
 import net.lobbyhandling.Lobby;
 import net.packets.Packet;
@@ -17,7 +21,7 @@ public class PacketSpawnItem extends Packet {
   private static final Logger logger = LoggerFactory.getLogger(PacketSpawnItem.class);
   private int owner;
   private Vector3f position;
-  private int type;
+  private String type;
 
   private String[] dataArray;
 
@@ -31,6 +35,23 @@ public class PacketSpawnItem extends Packet {
   public PacketSpawnItem(ItemMaster.ItemTypes type, Vector3f position) {
     super(Packet.PacketTypes.SPAWN_ITEM);
     setData("0║" + type.getItemId() + "║" + position.x + "║" + position.y + "║" + position.z);
+    // No need to validate. No user input
+  }
+
+  // TODO clientId handling and then process the data correctly!
+
+  /**
+   * Constructor to be used when a questionmark block gets destroyed to spawn an item and have
+   * certain effects on certain players.
+   *
+   * @param type type of the item to be spawned
+   * @param position position of the item to be spawned
+   * @param clientId The client who destroyed the questionmark block
+   */
+  public PacketSpawnItem(ItemMaster.ItemTypes type, Vector3f position, int clientId) {
+    super(Packet.PacketTypes.SPAWN_ITEM);
+    setData(
+        clientId + "║" + type.getItemId() + "║" + position.x + "║" + position.y + "║" + position.z);
     // No need to validate. No user input
   }
 
@@ -67,30 +88,31 @@ public class PacketSpawnItem extends Packet {
   public void validate() {
     if (dataArray.length != 5) {
       addError("Invalid item data.");
+      logger.error("Invalid item data");
       return;
     }
     try {
       owner = Integer.parseInt(dataArray[0]);
     } catch (NumberFormatException e) {
       addError("Invalid item owner.");
+      logger.error("Invalid item owner.");
     }
     try {
+      logger.info("x: " + dataArray[2]);
+      logger.info("y: " + dataArray[3]);
+      logger.info("z: " + dataArray[4]);
       position =
           new Vector3f(
-              Float.parseFloat(dataArray[2]),
-              Float.parseFloat(dataArray[3]),
-              Float.parseFloat(dataArray[4]));
+              Float.parseFloat(dataArray[2])* Map.getDim(),
+              Float.parseFloat(dataArray[3])*Map.getDim(),
+              Float.parseFloat(dataArray[4])*Map.getDim());
     } catch (NumberFormatException e) {
       addError("Invalid item position data.");
     }
-    try {
-      type = Integer.parseInt(dataArray[1]);
-    } catch (NumberFormatException e) {
-      addError("Invalid item type variable.");
+    if(!isExtendedAscii(dataArray[1])){
+      return;
     }
-    if (type < 1) {
-      addError("Invalid item type.");
-    }
+    type = dataArray[1];
   }
 
   /**
@@ -109,7 +131,6 @@ public class PacketSpawnItem extends Packet {
     if (itemType == null) {
       addError("Invalid item id.");
     }
-
     if (getClientId() > 0) {
       // Server side
       Lobby lobby = ServerLogic.getLobbyForClient(getClientId());
@@ -126,15 +147,27 @@ public class PacketSpawnItem extends Packet {
     } else {
       // Client side
       if (!hasErrors()) {
-        if (owner == Game.getActivePlayer().getClientId()) {
-          return;
-        }
+        //if (owner == Game.getActivePlayer().getClientId()) {
+        //  return;
+        //}
         Item item = ItemMaster.generateItem(itemType, position);
-        item.setOwned(false);
         if (item instanceof Torch) {
           ((Torch) item).checkForBlock(); // Attach to a block if placed on one.
         } else if (item instanceof Dynamite) {
+          item.setOwned(true);
           ((Dynamite) item).setActive(true); // Start ticking
+        } else if (item instanceof Heart) {
+          if (owner == Game.getActivePlayer().getClientId()) {
+            item.setOwned(true);
+          } else {return; }
+        } else if (item instanceof Ice) {
+          if (owner == Game.getActivePlayer().getClientId()) {
+            item.setOwned(true);
+          }
+        } else if (item instanceof Star) {
+          if (owner == Game.getActivePlayer().getClientId()) {
+            item.setOwned(true);
+          }
         }
       } else {
         logger.error(

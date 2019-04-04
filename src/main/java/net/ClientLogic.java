@@ -11,6 +11,7 @@ import net.packets.Packet;
 import net.packets.block.PacketBlockDamage;
 import net.packets.chat.PacketChatMessageStatus;
 import net.packets.chat.PacketChatMessageToClient;
+import net.packets.highscore.PacketHighscore;
 import net.packets.items.PacketSpawnItem;
 import net.packets.lists.PacketGamesOverview;
 import net.packets.lobby.PacketCreateLobbyStatus;
@@ -216,6 +217,9 @@ public class ClientLogic implements Runnable {
           break;
         case GAMES_OVERVIEW:
           p = new PacketGamesOverview(data);
+          break;
+        case HIGHSCORE:
+          p = new PacketHighscore(data);
           break;
         case PLAYERLIST:
           p = new PacketPlayerList(data);

@@ -46,7 +46,7 @@ public class DebrisMaster {
   public static void update() {
     for (Debris d : debrises) {
       d.update();
-      if (d.getElapsedTime() > d.getLifeLength()) {
+      if (d.getElapsedTime() >= d.getLifeLength()) {
         Game.removeEntity(d);
         debrises.remove(d);
       }

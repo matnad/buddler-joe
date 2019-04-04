@@ -1,5 +1,6 @@
 package net.packets.name;
 
+import game.Game;
 import net.packets.Packet;
 
 public class PacketSetNameStatus extends Packet {

@@ -19,7 +19,7 @@ public class ServerMap extends Map<ServerBlock> {
     super(width, height, seed);
     blocks = new ServerBlock[width][height];
     generateMap();
-    // checkFallingBlocks();
+    checkFallingBlocks();
   }
 
   @Override
@@ -32,17 +32,17 @@ public class ServerMap extends Map<ServerBlock> {
     for (int y = 0; y < height; y++) {
       for (int x = 0; x < width; x++) {
         if (noiseMap[x][y] < thresholds[0]) {
-          blocks[x][y] = new ServerBlock(BlockMaster.BlockTypes.STONE); // Air
+          blocks[x][y] = new ServerBlock(BlockMaster.BlockTypes.STONE, x, y); // Air
         } else {
           if (rng.nextFloat() < .02f) {
-            blocks[x][y] = new ServerBlock(BlockMaster.BlockTypes.GOLD); // Gold: 1 in 40 chance
-          } else if (rng.nextFloat() < .01f) {
+            blocks[x][y] = new ServerBlock(BlockMaster.BlockTypes.GOLD, x, y); // Gold: 1 in 40 chance
+          } else if (rng.nextFloat() < .9f) {
             blocks[x][y] =
-                new ServerBlock(BlockMaster.BlockTypes.GRASS); // Item Block: 1 in 50 chance
+                new ServerBlock(BlockMaster.BlockTypes.QMARK, x, y); // Item Block: 1 in 50 chance
           } else if (noiseMap[x][y] < thresholds[1]) {
-            blocks[x][y] = new ServerBlock(BlockMaster.BlockTypes.DIRT); // Dirt
+            blocks[x][y] = new ServerBlock(BlockMaster.BlockTypes.DIRT, x, y); // Dirt
           } else {
-            blocks[x][y] = new ServerBlock(BlockMaster.BlockTypes.AIR); // Stone
+            blocks[x][y] = new ServerBlock(BlockMaster.BlockTypes.AIR, x, y); // Stone
           }
         }
       }
@@ -63,7 +63,7 @@ public class ServerMap extends Map<ServerBlock> {
               && y + 1 < height
               && blocks[x][y + 1].getType() == BlockMaster.BlockTypes.AIR) {
             blocks[x][y + 1] = blocks[x][y];
-            blocks[x][y] = new ServerBlock(BlockMaster.BlockTypes.AIR);
+            blocks[x][y] = new ServerBlock(BlockMaster.BlockTypes.AIR, x, y);
             done = false;
           }
         }
@@ -82,11 +82,11 @@ public class ServerMap extends Map<ServerBlock> {
   @Override
   public void damageBlock(int clientId, int posX, int posY, float damage) {
     if (blocks[posX][posY] != null) {
-      blocks[posX][posY].damageBlock(damage);
+      blocks[posX][posY].damageBlock(clientId, damage);
       checkFallingBlocks();
       int lobId = ServerLogic.getLobbyForClient(clientId).getLobbyId();
       if (lobId > 0) {
-        new PacketBlockDamage(posX, posY, damage).sendToLobby(lobId);
+        new PacketBlockDamage(clientId, posX, posY, damage).sendToLobby(lobId);
       }
     }
   }
@@ -131,7 +131,7 @@ public class ServerMap extends Map<ServerBlock> {
       for (int x = 0; x < width; x++) {
         float damage = blocks[x][y].getBaseHardness() - blocks[x][y].getHardness();
         if (damage > 0) {
-          packets.add(new PacketBlockDamage(x, y, damage));
+          packets.add(new PacketBlockDamage(0, x, y, damage));
         }
       }
     }

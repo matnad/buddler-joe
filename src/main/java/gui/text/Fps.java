@@ -1,13 +1,8 @@
-package gui;
+package gui.text;
 
-import engine.render.MasterRenderer;
 import engine.render.fontrendering.TextMaster;
-import game.Game;
-import org.joml.Matrix4f;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
-import org.joml.Vector4f;
-import util.Maths;
 
 /** Shows FPS as text on screen. */
 public class Fps extends GuiString {
@@ -17,7 +12,7 @@ public class Fps extends GuiString {
     super();
 
     setPosition(new Vector2f(.92f, .02f));
-    setTextColour(new Vector3f(1f, 1f, 0f));
+    setTextColour(new Vector3f(0f, 1f, 0f));
     setAlpha(1);
     setText("0");
     createGuiText();
