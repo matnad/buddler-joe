@@ -5,6 +5,7 @@ import entities.blocks.DirtBlock;
 import entities.blocks.GoldBlock;
 import entities.blocks.GrassBlock;
 import entities.blocks.StoneBlock;
+import net.ServerLogic;
 import entities.items.ItemMaster;
 
 import java.util.Random;
@@ -24,6 +25,7 @@ public class ServerBlock {
   private float hardness;
   private int gridX;
   private int gridY;
+  private int goldValue;
   private final int gridZ = Map.getSize();
 
   ServerBlock(BlockMaster.BlockTypes type, int gridX, int gridY) {
@@ -45,14 +47,20 @@ public class ServerBlock {
    * Damage a block.
    *
    * @param damage damage to deal to a block
+   * @param clientThatDealsDamage clientId that damaged the block
    */
-  public void damageBlock(float damage, int clientId) {
+  public void damageBlock(int clientThatDealsDamage, float damage) {
+    if (type == BlockMaster.BlockTypes.AIR) {
+      return;
+    }
+
     hardness -= damage;
     if (hardness < 0) {
       if (this.type == BlockMaster.BlockTypes.QMARK) {
-        onQmarkDestroy(clientId);
+        onQmarkDestroy(clientThatDealsDamage);
       }
       this.type = BlockMaster.BlockTypes.AIR;
+      ServerLogic.getPlayerList().getPlayer(clientThatDealsDamage).increaseCurrentGold(goldValue);
     }
   }
 

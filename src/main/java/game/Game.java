@@ -39,9 +39,10 @@ import game.stages.MainMenu;
 import game.stages.Options;
 import game.stages.Playing;
 import game.stages.Welcome;
-import gui.Chat;
-import gui.Fps;
-import gui.GuiString;
+import gui.chat.Chat;
+import gui.text.CurrentGold;
+import gui.text.Fps;
+import gui.text.GuiString;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -68,16 +69,14 @@ public class Game extends Thread {
 
   /*
    * Set your resolution here, feel free to add new entries and comment them with your name/machine
-   * TODO (anyone): We need a JSON file to store user settings.
    * If someone wants to work on this, edit this comment or add an issue to the tracker in gitlab
    */
 
-  private static final int WIDTH = 1280;
-  private static final int HEIGHT = 720;
-  private static final int FPS = 60;
-  public static final Window window = new Window(WIDTH, HEIGHT, FPS, "Buddler Joe");
+  private Settings settings;
+  private static SettingsSerialiser settingsSerialiser = new SettingsSerialiser();
+
+  public static Window window = new Window(1280, 800, 60, "Buddler Joe");
   // Set up GLFW Window
-  private static final boolean fullscreen = false;
   private static final List<Stage> activeStages = new ArrayList<>();
   // Network related variables, still temporary/dummies
   // private static boolean doConnectToServer = false; //Multiplayer: true, Singleplayer: false
@@ -87,7 +86,6 @@ public class Game extends Thread {
 
   private static String serverIp;
   private static int serverPort;
-  public static String username = RandomName.getRandomName();
 
   // Playing instance and player settings
   // private static ClientLogic socketClient;
@@ -98,7 +96,7 @@ public class Game extends Thread {
    * list with minimal maintenance.
    */
   private static final List<Entity> entities = new CopyOnWriteArrayList<>();
-
+  public String username = RandomName.getRandomName(); // TODO (Server Team): Username
   // maybe needs its own class or should at least be moved to NetPlayer
   /*
    * We want everything set up so we could use multiple cameras, even if we don't end up needing
@@ -116,6 +114,7 @@ public class Game extends Thread {
   private static Chat chat;
   private static Player player;
   private Fps fpsCounter;
+  private static CurrentGold goldGuiText;
 
   // map
   private static ClientMap map;
@@ -133,15 +132,15 @@ public class Game extends Thread {
 
   /**
    * The constructor for the game to be called from the main class.
+   *
    * @param ipAddress The ip address to be connected to
    * @param port The port to be connected to
    * @param username The chosen username of the user
    */
-
   public Game(String ipAddress, int port, String username) {
     serverIp = ipAddress;
     serverPort = port;
-    Game.username = username;
+    this.username = username;
   }
 
   /**
@@ -176,8 +175,13 @@ public class Game extends Thread {
     Game.connectedToServer = connectedToServer;
   }
 
-  public static String getUsername() {
-    return username;
+  public String getUsername() {
+    return settings.getUsername();
+  }
+
+  public void setUsername(String username) {
+    settings.setUsername(username);
+    settingsSerialiser.serialiseSettings(settings);
   }
 
   /**
@@ -243,6 +247,10 @@ public class Game extends Thread {
     return guiRenderer;
   }
 
+  public static void setWindow(Window window) {
+    Game.window = window;
+  }
+
   /** Initialize the Playing Thread (Treat this like a constructor). */
   @Override
   public synchronized void start() {
@@ -270,9 +278,10 @@ public class Game extends Thread {
   /** Here we initialize all the Masters and other classes and generate the world. */
   @Override
   public void run() {
+    loadSettings();
     // Create GLFW Window, we run this in a thread.
-    window.setSize(WIDTH, HEIGHT);
-    window.setFullscreen(fullscreen);
+    window.setSize(settings.getWidth(), settings.getHeight());
+    window.setFullscreen(settings.isFullscreen());
     window.create();
 
     // Initiate the master renderer class
@@ -292,7 +301,6 @@ public class Game extends Thread {
       logger.error("Could not generate terrain.");
     }
 
-
     // Initialize NetPlayerModels
     NetPlayerMaster.init(loader);
 
@@ -307,7 +315,6 @@ public class Game extends Thread {
     LoadingScreen.init(loader);
     addActiveStage(LOADINGSCREEN);
     LoadingScreen.updateLoadingMessage("starting game");
-
 
     // Connect to server and load level in an extra thread
     try {
@@ -331,6 +338,10 @@ public class Game extends Thread {
     // Lights and cameras (just one for now)
     LightMaster.generateLight(
         LightMaster.LightTypes.SUN, new Vector3f(0, 600, 200), new Vector3f(1, 1, 1));
+
+    addActiveStage(PLAYING);
+
+    // Connect after everything is loaded
 
     /*
     **************************************************************
@@ -425,8 +436,8 @@ public class Game extends Thread {
   }
 
   private void loadGame(Loader loader) throws InterruptedException {
-    //Load Stages
-    //MainMenu.init(loader);
+    // Load Stages
+    MainMenu.init(loader);
     LoadingScreen.progess();
     GameMenu.init(loader);
     LoadingScreen.progess();
@@ -446,9 +457,7 @@ public class Game extends Thread {
     RawModel rawPlayer = loader.loadToVao(ObjFileLoader.loadObj(myModel));
     TexturedModel playerModel =
         new TexturedModel(rawPlayer, new ModelTexture(loader.loadTexture(myTexture)));
-    player = new Player(playerModel, new Vector3f(90, 2, 3), 0, 0, 0, myModelSize);
-
-
+    player = new Player(getUsername(), playerModel, new Vector3f(90, 2, 3), 0, 0, 0, myModelSize);
 
     // Connecting to Server
     LoadingScreen.updateLoadingMessage("connecting to server");
@@ -459,7 +468,7 @@ public class Game extends Thread {
 
     // Logging in
     LoadingScreen.updateLoadingMessage("logging in");
-    new PacketLogin(Game.getUsername()).sendToServer();
+    new PacketLogin(getUsername()).sendToServer();
     while (!loggedIn) {
       Thread.sleep(50);
     }
@@ -487,11 +496,18 @@ public class Game extends Thread {
     // Camera
     camera = new Camera(player, window);
 
+    // GUI / Other
+    goldGuiText = new CurrentGold();
+
     LoadingScreen.updateLoadingMessage("Ready!");
     Thread.sleep(500);
     LoadingScreen.done();
     addActiveStage(PLAYING);
     removeActiveStage(LOADINGSCREEN);
+  }
+
+  public static CurrentGold getGoldGuiText() {
+    return goldGuiText;
   }
 
   private void disconnectFromServer() {
@@ -510,5 +526,20 @@ public class Game extends Thread {
     WELCOME,
     LOGIN,
     INLOBBBY
+  }
+
+  /** Method to load the settings out of the serialised file. */
+  public void loadSettings() {
+    if (settingsSerialiser.readSettings() != null) {
+      this.settings = settingsSerialiser.readSettings();
+      if (!username.equals(settings.getUsername())) {
+        this.username = settings.getUsername();
+      }
+      if (!window.equals(settings.getWindow())) {
+        this.window = settings.getWindow();
+      }
+    } else {
+      this.settings = new Settings();
+    }
   }
 }

@@ -3,8 +3,7 @@ package entities;
 import engine.models.TexturedModel;
 import entities.light.Light;
 import entities.light.LightMaster;
-import gui.Nameplate;
-import javax.naming.Name;
+import gui.text.Nameplate;
 import org.joml.Vector3f;
 
 /**

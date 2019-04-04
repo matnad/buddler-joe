@@ -15,20 +15,15 @@ import static org.lwjgl.glfw.GLFW.GLFW_KEY_W;
 import collision.BoundingBox;
 import engine.io.InputHandler;
 import engine.models.TexturedModel;
-import engine.render.MasterRenderer;
 import entities.blocks.Block;
 import entities.blocks.BlockMaster;
 import entities.items.ItemMaster;
 import game.Game;
-import gui.Fps;
 import java.util.ArrayList;
 import java.util.List;
 import net.packets.block.PacketBlockDamage;
 import net.packets.playerprop.PacketPos;
-import org.joml.Vector2f;
 import org.joml.Vector3f;
-import org.joml.Vector4f;
-import util.Maths;
 import util.MousePlacer;
 
 /**
@@ -47,6 +42,11 @@ import util.MousePlacer;
  */
 public class Player extends NetPlayer {
 
+  // Resources and Stats
+  public int currentGold; // Current coins
+  private float digDamage; // Damage per second when colliding with blocks
+
+  // Movement Related
   public static final float gravity = -45; // Units per second
   private static final float runSpeed = 20; // Units per second
   private static final float turnSpeed = 720; // Degrees per second
@@ -54,7 +54,7 @@ public class Player extends NetPlayer {
 
   private static final float collisionPushOffset = 0.1f;
 
-  private static float digDamage = 1; // Damage per second when colliding with blocks
+
 
   private float currentSpeed = 0;
   private float currentTurnSpeed = 0;
@@ -70,6 +70,7 @@ public class Player extends NetPlayer {
    * class structure.
    *
    * @param model player model
+   * @param username username of the player
    * @param position world coordinates for player position
    * @param rotX rotation along X axis
    * @param rotY rotation along Y axis
@@ -77,8 +78,16 @@ public class Player extends NetPlayer {
    * @param scale scale factor
    */
   public Player(
-      TexturedModel model, Vector3f position, float rotX, float rotY, float rotZ, float scale) {
-    super(0, Game.getUsername(), model, position, rotX, rotY, rotZ, scale);
+      String username,
+      TexturedModel model,
+      Vector3f position,
+      float rotX,
+      float rotY,
+      float rotZ,
+      float scale) {
+    super(0, username, model, position, rotX, rotY, rotZ, scale);
+    digDamage = 1;
+    currentGold = 0;
   }
 
   /**
@@ -340,6 +349,14 @@ public class Player extends NetPlayer {
         acceptable compromise.
         */
         ItemMaster.generateItem(itemType, getPosition()));
+  }
+
+  public void increaseCurrentGold(int gold) {
+    currentGold += gold;
+  }
+
+  public int getCurrentGold() {
+    return currentGold;
   }
 
   public void freeze() {

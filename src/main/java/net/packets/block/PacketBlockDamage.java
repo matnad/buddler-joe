@@ -3,6 +3,7 @@ package net.packets.block;
 import game.Game;
 import game.map.ClientMap;
 import game.map.ServerMap;
+import java.util.Arrays;
 import net.ServerLogic;
 import net.lobbyhandling.Lobby;
 import net.packets.Packet;
@@ -12,6 +13,7 @@ import org.slf4j.LoggerFactory;
 public class PacketBlockDamage extends Packet {
 
   private static final Logger logger = LoggerFactory.getLogger(PacketBlockDamage.class);
+  private int blockDestoryerClient;
   private int blockX;
   private int blockY;
   private float damage;
@@ -27,10 +29,22 @@ public class PacketBlockDamage extends Packet {
    */
   public PacketBlockDamage(int blockX, int blockY, float damage) {
     super(PacketTypes.BLOCK_DAMAGE);
-    this.blockX = blockX;
-    this.blockY = blockY;
-    this.damage = damage;
     setData(blockX + "║" + blockY + "║" + damage);
+    // No need to validate. No user input
+  }
+
+  /**
+   * Created by the server to send the damage done to a block to the client. Coordinates are in map
+   * grid format, not world coordinates.
+   *
+   * @param clientId damager of the block
+   * @param blockX X position of the damaged block
+   * @param blockY Y position of the damaged block
+   * @param damage damage done to the block
+   */
+  public PacketBlockDamage(int clientId, int blockX, int blockY, float damage) {
+    super(PacketTypes.BLOCK_DAMAGE);
+    setData(clientId + "║" + blockX + "║" + blockY + "║" + damage);
     // No need to validate. No user input
   }
 
@@ -43,8 +57,8 @@ public class PacketBlockDamage extends Packet {
   public PacketBlockDamage(int clientId, String data) {
     super(PacketTypes.BLOCK_DAMAGE);
     setClientId(clientId);
-    setData(data);
-    dataArray = data.split("║");
+    setData(clientId + "║" + data);
+    dataArray = getData().split("║");
     validate(); // Validate and assign in one step
   }
 
@@ -56,28 +70,26 @@ public class PacketBlockDamage extends Packet {
   public PacketBlockDamage(String data) {
     super(PacketTypes.BLOCK_DAMAGE);
     setData(data);
-    dataArray = data.split("║");
+    dataArray = getData().split("║");
     validate(); // Validate and assign in one step
   }
 
   /** Validate if the packet contains properly formatted numbers and is of the right size. */
   @Override
   public void validate() {
-    if (dataArray.length != 3) {
+    if (dataArray.length != 4) {
       addError("Invalid data.");
       return;
     }
     try {
-      if (getData() == null) {
-        addError("No data available.");
-      }
-      blockX = Integer.parseInt(dataArray[0]);
-      blockY = Integer.parseInt(dataArray[1]);
+      blockDestoryerClient = Integer.parseInt(dataArray[0]);
+      blockX = Integer.parseInt(dataArray[1]);
+      blockY = Integer.parseInt(dataArray[2]);
     } catch (NumberFormatException e) {
-      addError("Invalid position data.");
+      addError("Invalid client or position data.");
     }
     try {
-      damage = Float.parseFloat(dataArray[2]);
+      damage = Float.parseFloat(dataArray[3]);
     } catch (NumberFormatException e) {
       addError("Invalid damage data.");
     }
@@ -119,7 +131,7 @@ public class PacketBlockDamage extends Packet {
         addError("Block lies outside of client map range.");
       }
       if (!hasErrors()) {
-        Game.getMap().damageBlock(0, blockX, blockY, damage);
+        Game.getMap().damageBlock(blockDestoryerClient, blockX, blockY, damage);
       } else {
         logger.error("Errors while sending Block Damage Packet to Client. " + createErrorMessage());
       }

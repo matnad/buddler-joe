@@ -116,7 +116,7 @@ public class ClientMap extends Map<Block> {
 
   @Override
   public void damageBlock(int clientId, int blockX, int blockY, float damage) {
-    blocks[blockX][blockY].increaseDamage(damage);
+    blocks[blockX][blockY].increaseDamage(clientId, damage);
   }
 
   /**

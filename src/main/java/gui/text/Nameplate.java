@@ -1,4 +1,4 @@
-package gui;
+package gui.text;
 
 import engine.render.MasterRenderer;
 import engine.render.fontrendering.TextMaster;
@@ -39,7 +39,11 @@ public class Nameplate extends GuiString {
     setText(player.getUsername());
   }
 
-  @Override
+  /**
+   * Recreate Nameplates every frame to update positions.
+   *
+   * <p>Note: This is quite expensive. Optimization efforts are welcome.
+   */
   public void updateString() {
     if (getGuiText() != null) {
       TextMaster.removeText(getGuiText());

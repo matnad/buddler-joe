@@ -19,7 +19,7 @@ public class ServerMap extends Map<ServerBlock> {
     super(width, height, seed);
     blocks = new ServerBlock[width][height];
     generateMap();
-    // checkFallingBlocks();
+    checkFallingBlocks();
   }
 
   @Override
@@ -84,11 +84,11 @@ public class ServerMap extends Map<ServerBlock> {
   @Override
   public void damageBlock(int clientId, int posX, int posY, float damage) {
     if (blocks[posX][posY] != null) {
-      blocks[posX][posY].damageBlock(damage, clientId);
+      blocks[posX][posY].damageBlock(damage);
       checkFallingBlocks();
       int lobId = ServerLogic.getLobbyForClient(clientId).getLobbyId();
       if (lobId > 0) {
-        new PacketBlockDamage(posX, posY, damage).sendToLobby(lobId);
+        new PacketBlockDamage(clientId, posX, posY, damage).sendToLobby(lobId);
       }
     }
   }
@@ -133,7 +133,7 @@ public class ServerMap extends Map<ServerBlock> {
       for (int x = 0; x < width; x++) {
         float damage = blocks[x][y].getBaseHardness() - blocks[x][y].getHardness();
         if (damage > 0) {
-          packets.add(new PacketBlockDamage(x, y, damage));
+          packets.add(new PacketBlockDamage(0, x, y, damage));
         }
       }
     }
