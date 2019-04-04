@@ -110,10 +110,6 @@ public class Welcome {
       Game.window.stop();
     }
 
-    InputHandler.update();
-
-    Game.window.update();
-
     Game.getGuiRenderer().render(guis);
   }
 }

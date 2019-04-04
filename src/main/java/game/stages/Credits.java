@@ -85,10 +85,6 @@ public class Credits {
       Game.removeActiveStage(Game.Stage.CREDITS);
     }
 
-    InputHandler.update();
-
-    Game.window.update();
-
     Game.getGuiRenderer().render(guis);
   }
 }

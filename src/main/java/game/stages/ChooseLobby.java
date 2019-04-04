@@ -94,6 +94,7 @@ public class ChooseLobby {
    */
   @SuppressWarnings("Duplicates")
   public static void update() {
+
     List<GuiTexture> guis = new ArrayList<>();
     // add textures here
     guis.add(background);
@@ -128,9 +129,9 @@ public class ChooseLobby {
       }
     }
 
-    InputHandler.update();
 
-    Game.window.update();
+
+
 
     Game.getGuiRenderer().render(guis);
   }

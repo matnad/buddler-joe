@@ -161,10 +161,6 @@ public class Options {
       // TODO toggle Fullscreen
     }
 
-    InputHandler.update();
-
-    Game.window.update();
-
     Game.getGuiRenderer().render(guis);
   }
 }
