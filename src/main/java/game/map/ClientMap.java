@@ -4,6 +4,8 @@ import entities.blocks.AirBlock;
 import entities.blocks.Block;
 import entities.blocks.BlockMaster;
 import java.util.Random;
+import java.util.concurrent.CopyOnWriteArrayList;
+import org.joml.Vector2i;
 import org.joml.Vector3f;
 
 public class ClientMap extends Map<Block> {
@@ -168,4 +170,24 @@ public class ClientMap extends Map<Block> {
   public boolean isLocal() {
     return local;
   }
+
+  public CopyOnWriteArrayList<AirBlock> getAirBlocks(int maxGridDepth, int ignoreCol) {
+    CopyOnWriteArrayList<AirBlock> airBlocks = new CopyOnWriteArrayList<>();
+    for (int y = 0; y < Math.min(maxGridDepth + 1, height); y++) {
+      for (int x = 0; x < width; x++) {
+        if (x == ignoreCol) {
+          continue;
+        }
+        if (blocks[x][y].getType() == BlockMaster.BlockTypes.AIR) {
+          airBlocks.add((AirBlock) blocks[x][y]);
+        }
+      }
+    }
+    return airBlocks;
+  }
+
+  public void replaceWithAirBlock(Vector2i gridPos) {
+    blocks[gridPos.x][gridPos.y] = new AirBlock(gridPos.x, gridPos.y);
+  }
+
 }

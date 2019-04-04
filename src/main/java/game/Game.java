@@ -498,6 +498,7 @@ public class Game extends Thread {
 
     // GUI / Other
     goldGuiText = new CurrentGold();
+    Playing.init(loader);
 
     LoadingScreen.updateLoadingMessage("Ready!");
     Thread.sleep(500);

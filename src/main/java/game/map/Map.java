@@ -2,6 +2,8 @@ package game.map;
 
 import java.util.Random;
 import org.joml.SimplexNoise;
+import org.joml.Vector2i;
+import org.joml.Vector3f;
 
 /**
  * Generic Abstract Class. Server and Client Map will extend this and use a different object for the
@@ -85,5 +87,9 @@ public abstract class Map<T> {
 
   public int getHeight() {
     return height;
+  }
+
+  public Vector3f gridToWorld(Vector2i gridCoords) {
+    return new Vector3f(gridCoords.x * dim + size, -gridCoords.y * dim - size, size);
   }
 }
