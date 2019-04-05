@@ -151,4 +151,13 @@ public class NetPlayerMaster {
       return netPlayers.get(clientId);
     }
   }
+
+  public static int getClientIdForWhisper(String message){
+    for (NetPlayer netPlayer : netPlayers.values()) {
+      if (message.startsWith("@" + netPlayer.getUsername())){
+        return netPlayer.getClientId();
+      }
+    }
+    return -1;
+  }
 }

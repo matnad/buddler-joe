@@ -1,6 +1,9 @@
 package net.packets.chat;
 
+
+import game.Game;
 import net.packets.Packet;
+
 
 /**
  * * Packet that gets send a chat message from the Server to the Client. * Packet-Code: CHATC
@@ -64,7 +67,8 @@ public class PacketChatMessageToClient extends Packet {
       status = createErrorMessage();
       System.out.println(status);
     } else {
-      System.out.println(chatmsg);
+      Game.getChat().addText(chatmsg);
     }
   }
+
 }

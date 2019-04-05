@@ -9,8 +9,10 @@ import engine.render.fontrendering.TextMaster;
 import gui.GuiTexture;
 import java.util.ArrayList;
 import java.util.List;
+import net.packets.chat.PacketChatMessageToServer;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
+
 
 /**
  * The Chat Window Overlay in the Game
@@ -37,6 +39,9 @@ public class Chat {
 
   private List<ChatText> messages;
   private int msgSize;
+  private List<String> text;
+  private int textSize;
+
 
   /**
    * Initialize Chat, only needs to be called once on game init.
@@ -72,6 +77,7 @@ public class Chat {
             false);
 
     messages = new ArrayList<>();
+    text = new ArrayList<>();
     msgSize = 0;
   }
 
@@ -83,7 +89,20 @@ public class Chat {
   public void checkInputs() {
     if (InputHandler.isKeyPressed(GLFW_KEY_ENTER)) {
       if (chatText.length() > 0 && enabled) {
-        sendMessage();
+        if(chatText.startsWith("@")){
+          if(0 > game.NetPlayerMaster.getClientIdForWhisper(chatText)){
+            text.add("Username ist ungültig");
+          } else {
+            PacketChatMessageToServer sendMessage = new PacketChatMessageToServer(chatText + "║" + game.NetPlayerMaster.getClientIdForWhisper(chatText));
+            sendMessage.sendToServer();
+            }
+        } else {
+
+          PacketChatMessageToServer sendMessage = new PacketChatMessageToServer(chatText);
+          sendMessage.sendToServer();
+        }
+
+//        sendMessage();
         chatText = "";
         InputHandler.resetInputString();
       } else {
@@ -97,6 +116,14 @@ public class Chat {
         InputHandler.resetInputString();
       }
     }
+
+    if(messages.size() != text.size()){
+        addChatText();
+    }
+
+
+
+
 
     updateAlpha();
 
@@ -164,7 +191,7 @@ public class Chat {
    *
    * <p>Check if messages changed so we don't have to create them every frame
    */
-  private void arrangeMessages() {
+  public void arrangeMessages() {
     if (messages.size() != msgSize) { // Something changed
       float posY = .64f;
       float posX = .045f;
@@ -224,4 +251,28 @@ public class Chat {
   public GuiTexture getChatGui() {
     return chatGui;
   }
+
+public void addText(String stringText){
+    text.add(stringText);
+    textSize++;
 }
+
+  public void addChatText(){
+
+      ChatText messageText =
+              new ChatText(
+                      text.get(text.size()-1),
+                      .7f,
+                      textColour,
+                      alpha,
+                      font,
+                      new Vector2f(.06f, .91f),
+                      1f,
+                      false,
+                      false);
+      guiText = clearChatText(guiText);
+      messages.add(messageText);
+  }
+}
+
+
