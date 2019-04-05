@@ -46,7 +46,7 @@ public class ChooseLobby {
   private static ChangableGuiText[] count = new ChangableGuiText[6];
   private static int startInd = 0;
   private static ChangableGuiText text;
-
+  private static boolean initialized = false;
   public static final Logger logger = LoggerFactory.getLogger(ChooseLobby.class);
 
   /**
@@ -113,7 +113,10 @@ public class ChooseLobby {
    */
   @SuppressWarnings("Duplicates")
   public static void update() {
-    initText();
+    if(!initialized) {
+      initText();
+      initialized = true;
+    }
     catalog =  Game.getLobbyCatalog();
     //System.out.println(catalog.toString());
 
@@ -214,6 +217,7 @@ public class ChooseLobby {
       names[i].delete();
       count[i].delete();
     }
+    initialized = false;
   }
 
   /**
