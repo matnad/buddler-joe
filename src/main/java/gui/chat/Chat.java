@@ -13,7 +13,6 @@ import net.packets.chat.PacketChatMessageToServer;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 
-
 /**
  * The Chat Window Overlay in the Game
  *
@@ -41,7 +40,6 @@ public class Chat {
   private int msgSize;
   private List<String> text;
   private int textSize;
-
 
   /**
    * Initialize Chat, only needs to be called once on game init.
@@ -89,20 +87,38 @@ public class Chat {
   public void checkInputs() {
     if (InputHandler.isKeyPressed(GLFW_KEY_ENTER)) {
       if (chatText.length() > 0 && enabled) {
-        if(chatText.startsWith("@")){
-          if(0 > game.NetPlayerMaster.getClientIdForWhisper(chatText)){
+        if (chatText.startsWith("@")) {
+          int wisperId = game.NetPlayerMaster.getClientIdForWhisper(chatText);
+          if (0 > wisperId) {
             text.add("Username ist ungültig");
           } else {
-            PacketChatMessageToServer sendMessage = new PacketChatMessageToServer(chatText + "║" + game.NetPlayerMaster.getClientIdForWhisper(chatText));
+            String userName = game.NetPlayerMaster.getNetPlayerById(wisperId).getUsername();
+            chatText = chatText.substring(userName.length() + 1);
+            //            System.out.println("chatText");
+            //            System.out.println(chatText);
+            //            System.out.println("wisperId");
+            //            System.out.println(wisperId);
+            PacketChatMessageToServer sendMessage =
+                new PacketChatMessageToServer("(wispered)" + chatText + "║" + wisperId);
             sendMessage.sendToServer();
-            }
+
+            PacketChatMessageToServer sendMessage2 =
+                new PacketChatMessageToServer(
+                    "(wispered to "
+                        + userName
+                        + ")"
+                        + chatText
+                        + "║"
+                        + game.Game.getActivePlayer().getClientId());
+            sendMessage2.sendToServer();
+          }
         } else {
 
-          PacketChatMessageToServer sendMessage = new PacketChatMessageToServer(chatText);
+          PacketChatMessageToServer sendMessage = new PacketChatMessageToServer(chatText + "║0");
           sendMessage.sendToServer();
         }
 
-//        sendMessage();
+        //        sendMessage();
         chatText = "";
         InputHandler.resetInputString();
       } else {
@@ -117,13 +133,9 @@ public class Chat {
       }
     }
 
-    if(messages.size() != text.size()){
-        addChatText();
+    if (messages.size() != text.size()) {
+      addChatText();
     }
-
-
-
-
 
     updateAlpha();
 
@@ -252,27 +264,25 @@ public class Chat {
     return chatGui;
   }
 
-public void addText(String stringText){
+  public void addText(String stringText) {
     text.add(stringText);
     textSize++;
-}
+  }
 
-  public void addChatText(){
+  public void addChatText() {
 
-      ChatText messageText =
-              new ChatText(
-                      text.get(text.size()-1),
-                      .7f,
-                      textColour,
-                      alpha,
-                      font,
-                      new Vector2f(.06f, .91f),
-                      1f,
-                      false,
-                      false);
-      guiText = clearChatText(guiText);
-      messages.add(messageText);
+    ChatText messageText =
+        new ChatText(
+            text.get(text.size() - 1),
+            .7f,
+            textColour,
+            alpha,
+            font,
+            new Vector2f(.06f, .91f),
+            1f,
+            false,
+            false);
+    guiText = clearChatText(guiText);
+    messages.add(messageText);
   }
 }
-
-

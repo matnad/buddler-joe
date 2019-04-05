@@ -106,14 +106,15 @@ public class PacketChatMessageToServer extends Packet {
         } else {
           String fullmessage = "[" + client.getUsername() + "-" + timestamp + "]  " + chatmsg;
 
-          if(wisperId > 0){
+          if(wisperId != 0){
             PacketChatMessageToClient sendMessage =
                     new PacketChatMessageToClient(getClientId(), fullmessage);
             sendMessage.sendToClient(wisperId);
+          } else {
+            PacketChatMessageToClient sendMessage =
+                new PacketChatMessageToClient(getClientId(), fullmessage);
+            sendMessage.sendToLobby(client.getCurLobbyId());
           }
-          PacketChatMessageToClient sendMessage =
-              new PacketChatMessageToClient(getClientId(), fullmessage);
-          sendMessage.sendToLobby(client.getCurLobbyId());
         }
       }
     }

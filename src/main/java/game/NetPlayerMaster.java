@@ -7,10 +7,13 @@ import engine.render.objconverter.ObjFileLoader;
 import engine.textures.ModelTexture;
 import entities.NetPlayer;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.StringJoiner;
 import java.util.concurrent.ConcurrentHashMap;
+import net.ServerLogic;
+import net.playerhandling.Player;
 import org.joml.Vector3f;
 
 /**
@@ -152,12 +155,43 @@ public class NetPlayerMaster {
     }
   }
 
-  public static int getClientIdForWhisper(String message){
+  public static int getClientIdForWhisper(String message) {
+    int x = 0;
+    int j = 0;
+    message = message.substring(1);
+    HashMap<Integer,Integer> player = new HashMap<>();
     for (NetPlayer netPlayer : netPlayers.values()) {
-      if (message.startsWith("@" + netPlayer.getUsername())){
-        return netPlayer.getClientId();
+//      System.out.println(netPlayer.getUsername());
+//      System.out.println(message);
+      if (message.startsWith(netPlayer.getUsername())) {
+
+          x++;
+        for (int i = 0; i < netPlayer.getUsername().length(); i++) {
+          if (message.charAt(i) == netPlayer.getUsername().charAt(i)) {
+            j++;
+          }
+          player.put(j,netPlayer.getClientId());
+//          System.out.println("j");
+//          System.out.println(j);
+        }
       }
     }
-    return -1;
+//    System.out.println(x);
+    if(x == 1){
+      return player.get(j);
+    }
+    if (x == 0){
+      return -1;
+    } else {
+      int max = 0;
+      for (int i : player.keySet()) {
+        if (max < i) {
+          max = i;
+        }
+//        System.out.println("max");
+//        System.out.println(max);
+      }
+      return player.get(max);
+    }
   }
 }
