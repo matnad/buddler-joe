@@ -21,7 +21,8 @@ public class NetPlayer extends Entity {
     new Vector3f(1, 1, 1).normalize(),
     new Vector3f(3f, 1, 1).normalize(),
     new Vector3f(1, 3f, 1).normalize(),
-    new Vector3f(1, 1, 3f).normalize()
+    new Vector3f(1, 1, 3f).normalize(),
+    new Vector3f(3f, 1, 3f).normalize()
   };
   private static int counter;
   // private DirectionalUsername directionalUsername;
@@ -96,7 +97,7 @@ public class NetPlayer extends Entity {
   }
 
   private Vector3f getHeadlightPosition() {
-    return new Vector3f(getPosition()).add(.3f, 4, 0);
+    return new Vector3f(getPosition()).add(.4f, 4.2f, 0);
   }
 
   private void updateHeadlightPosition() {
@@ -108,8 +109,6 @@ public class NetPlayer extends Entity {
     Vector3f direction = new Vector3f(0, 0, 1).rotateY((float) Math.toRadians(getRotY()));
     headLight.setDirection(direction);
   }
-
-
 
   @Override
   public void setRotY(float rotY) {

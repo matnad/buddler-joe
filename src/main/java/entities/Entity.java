@@ -74,7 +74,13 @@ public class Entity {
 
     // Set bounding box which is stored in the raw model
     if (model != null && model.getRawModel().getBoundingCoords().length == 6) {
-      bbox = new BoundingBox(model.getRawModel().getBoundingCoords());
+      float[] boundingCoords = model.getRawModel().getBoundingCoords();
+      if (this instanceof NetPlayer) {
+        // Adjust box for player model (shovel can clip into the wall)
+        boundingCoords[0] *= 1.15;
+        boundingCoords[1] *= 1.35;
+      }
+      bbox = new BoundingBox(boundingCoords);
       bbox.scale(getScale());
       updateBoundingBox();
     }

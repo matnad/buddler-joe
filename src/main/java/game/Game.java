@@ -270,9 +270,9 @@ public class Game extends Thread {
     myModelSize = .15f;*/
 
     // Person
-    myModel = "person";
-    myTexture = "person";
-    myModelSize = .4f;
+    myModel = "joe";
+    myTexture = "uvjoe";
+    myModelSize = .2f;
 
     // Start the thread
     super.start();
@@ -340,7 +340,15 @@ public class Game extends Thread {
 
     // Lights and cameras (just one for now)
     LightMaster.generateLight(
-        LightMaster.LightTypes.SUN, new Vector3f(0, 600, 200), new Vector3f(1, 1, 1));
+            LightMaster.LightTypes.SUN,
+            new Vector3f(0, 400, 200),
+            new Vector3f(1, 1, 1).normalize())
+        .setBrightness(2f);
+    LightMaster.generateLight(
+            LightMaster.LightTypes.SUN,
+            new Vector3f(300, 400, 200),
+            new Vector3f(1, 1, 1).normalize())
+        .setBrightness(2f);
 
     // Connect after everything is loaded
 
@@ -449,26 +457,30 @@ public class Game extends Thread {
 
   private void loadGame(Loader loader) throws InterruptedException {
     // Load Stages
-    MainMenu.init(loader);
-    LoadingScreen.progess();
-    GameMenu.init(loader);
-    LoadingScreen.progess();
-    ChooseLobby.init(loader);
-    LoadingScreen.progess();
-    Credits.init(loader);
-    LoadingScreen.progess();
-    Options.init(loader);
-    LoadingScreen.progess();
-    Welcome.init(loader);
-    LoadingScreen.progess();
-    Login.init(loader);
-    LoadingScreen.progess();
-    InLobby.init(loader);
+    // MainMenu.init(loader);
+    // LoadingScreen.progess();
+    // GameMenu.init(loader);
+    // LoadingScreen.progess();
+    // ChooseLobby.init(loader);
+    // LoadingScreen.progess();
+    // Credits.init(loader);
+    // LoadingScreen.progess();
+    // Options.init(loader);
+    // LoadingScreen.progess();
+    // Welcome.init(loader);
+    // LoadingScreen.progess();
+    // Login.init(loader);
+    // LoadingScreen.progess();
+    // InLobby.init(loader);
 
     // Generate Player
     RawModel rawPlayer = loader.loadToVao(ObjFileLoader.loadObj(myModel));
     TexturedModel playerModel =
         new TexturedModel(rawPlayer, new ModelTexture(loader.loadTexture(myTexture)));
+
+     playerModel.getTexture().setUseFakeLighting(true);
+    playerModel.getTexture().setShineDamper(0.1f);
+
     player = new Player(getUsername(), playerModel, new Vector3f(90, 2, 3), 0, 0, 0, myModelSize);
 
     // Connecting to Server

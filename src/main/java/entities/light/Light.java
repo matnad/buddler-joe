@@ -79,9 +79,9 @@ public class Light {
     return new Vector3f(colour).mul(brightness);
   }
 
-  public Vector3f getColour() {
-    return colour;
-  }
+  //public Vector3f getColour() {
+  //  return colour;
+  //}
 
   public float getBrightness() {
     return brightness;

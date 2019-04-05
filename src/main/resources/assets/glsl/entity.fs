@@ -25,7 +25,7 @@ void main(void) {
     vec3 totalDiffuse = vec3(0.0);
     vec3 totalSpecular = vec3(0.0);
 
-    float lightMul = 100;
+    float lightMul = 20;
 
     for(int i=0; i<8; i++) {
       float theta = dot(normalize(toLightVector[i]), normalize(-lightDirection[i]));
