@@ -15,7 +15,7 @@ public class Main {
   private static boolean client = true;
   // private static String ipAddress = "185.162.250.84";
   // private static String ipAddress = "192.168.1.121";
-  private static String ipAddress = settings.getIp();
+  private static String ipAddress = "127.0.0.1";
   // private static String ipAddress = "www.buddlerjoe.ch";
   private static int port = 11337;
   private static String username = util.RandomName.getRandomName();
@@ -78,7 +78,7 @@ public class Main {
     }
 
     if (client) {
-      Game game = new Game(settings.getIp(), port, username);
+      Game game = new Game("127.0.0.1", port, username);
       game.start();
     } else {
       StartServer server = new StartServer(port);
