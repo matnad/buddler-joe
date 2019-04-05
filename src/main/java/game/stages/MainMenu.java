@@ -64,8 +64,8 @@ public class MainMenu {
     chooseLobby =
         new MenuButton(
             loader,
-            "lobbyOverviewWood_norm",
-            "lobbyOverviewWood_hover",
+            "lobby_norm4",
+            "lobby_hover",
             new Vector2f(0, 0.0740f),
             new Vector2f(.305521f, .128333f));
 
