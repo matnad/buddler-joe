@@ -1,6 +1,10 @@
 package net.packets.lobby;
 
+import game.Game;
+import game.LobbyEntry;
 import net.packets.Packet;
+
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * A packed that is send from the server to the client, which contains a List of at max 10 Lobbies
@@ -60,6 +64,19 @@ public class PacketLobbyOverview extends Packet {
       for (String s : in) {
         isExtendedAscii(s);
       }
+      if(in.length > 1 && isInt(in[1])){
+        for (int i = 2 ; i < in.length; i = i + 2) {
+          try{
+            if(!isInt(in[i+1])){
+              addError("Data Format error");
+              break;
+            }
+          }catch(ArrayIndexOutOfBoundsException e){
+            addError("Data Format error");
+            break;
+          }
+        }
+      }
     } else {
       addError("No data has been found");
     }
@@ -77,12 +94,19 @@ public class PacketLobbyOverview extends Packet {
     } else if (in[0].equals("OK")) { // the "OK" gets added in PacketCreatLobby.processData and
       System.out.println("-------------------------------------");
       System.out.println("Available Lobbies:");
-      for (int i = 1; i < in.length; i++) {
-        System.out.println(in[i]);
+      for (int i = 2; i < in.length-1; i = i+2) {
+        System.out.println("Name: " + in[i] + " Players: " + in[i+1]);
       }
       System.out.println("-------------------------------------");
       System.out.println("To join a lobby, type: join <lobby name>");
       System.out.println("To create a new lobby, type: create <lobby name>");
+
+      CopyOnWriteArrayList<LobbyEntry> catalog = new CopyOnWriteArrayList<LobbyEntry>();
+
+      for(int i = 2; i < in.length; i = i+2){
+        catalog.add(new LobbyEntry(in[i], in[i+1]));
+      }
+      Game.setLobbyCatalog(catalog);
     } else {
       System.out.println(in[0]);
     }

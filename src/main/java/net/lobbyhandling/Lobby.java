@@ -113,7 +113,7 @@ public class Lobby {
 
   @Override
   public String toString() {
-    return "Name: " + lobbyName + ", LobbyId: " + lobbyId + ", Spieler: " + getPlayerAmount();
+    return "║"+ lobbyName + "║" + getPlayerAmount();
   }
 
   /**

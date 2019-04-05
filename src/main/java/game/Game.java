@@ -132,6 +132,8 @@ public class Game extends Thread {
   private static TerrainFlat belowGround;
   private static GuiRenderer guiRenderer;
 
+  private static CopyOnWriteArrayList<LobbyEntry> lobbyCatalog = new CopyOnWriteArrayList<>();
+
   /**
    * The constructor for the game to be called from the main class.
    *
@@ -143,6 +145,14 @@ public class Game extends Thread {
     serverIp = ipAddress;
     serverPort = port;
     this.username = username;
+  }
+
+  public static CopyOnWriteArrayList<LobbyEntry> getLobbyCatalog() {
+    return lobbyCatalog;
+  }
+
+  public static void setLobbyCatalog(CopyOnWriteArrayList<LobbyEntry> lobbyCatalog) {
+    Game.lobbyCatalog = lobbyCatalog;
   }
 
   /**

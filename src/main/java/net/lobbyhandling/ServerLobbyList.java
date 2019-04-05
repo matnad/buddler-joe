@@ -114,14 +114,15 @@ public class ServerLobbyList {
         if (counter == 10) {
           break;
         }
-        if (l.getPlayerAmount() == 1000) { // TODO:1000 durch maximale Spielerzahl ersetzen
+        if (l.getPlayerAmount() == 7) { // TODO:1000 durch maximale Spielerzahl ersetzen
           continue;
         } else {
-          s.append(l.toString()).append("║");
+          s.append(l.toString());
           counter++;
         }
       }
-      if (s.toString().equals("")) {
+      s.insert(0,counter);
+      if (s.toString().equals("0")) {
         s = new StringBuilder("All Lobbies are full");
       }
     } else {

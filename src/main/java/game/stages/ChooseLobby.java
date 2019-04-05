@@ -5,12 +5,21 @@ import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_1;
 
 import engine.io.InputHandler;
 import engine.render.Loader;
+import engine.render.fontrendering.TextMaster;
 import game.Game;
+import game.LobbyEntry;
 import gui.GuiTexture;
 import gui.MenuButton;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
+
+import gui.text.ChangableGuiText;
+
 import org.joml.Vector2f;
+import org.joml.Vector3f;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ChooseLobby {
 
@@ -29,6 +38,15 @@ public class ChooseLobby {
   private static int n = 6; // varibale that defines how many join buttons are displayed. Max is 6.
 
   private static float[] joinY = {0.312963f, 0.175926f, 0.037037f, -0.1f, -0.238889f, -0.375926f};
+  private static float[] namesY = {0.312963f, 0.175926f, 0.037037f, -0.1f, -0.238889f, -0.375926f};
+  private static float[] countY = {0.312963f, 0.175926f, 0.037037f, -0.1f, -0.238889f, -0.375926f};
+  private static CopyOnWriteArrayList<LobbyEntry> catalog;
+  private static ChangableGuiText[] names = new ChangableGuiText[6];
+  private static ChangableGuiText[] count = new ChangableGuiText[6];
+  private static int startInd = 0;
+  private static ChangableGuiText text;
+
+  public static final Logger logger = LoggerFactory.getLogger(ChooseLobby.class);
 
   /**
    * * Initialize ChooseLobby Menu. Will load the texture files and generate the basic menu parts.
@@ -77,7 +95,7 @@ public class ChooseLobby {
             new Vector2f(.097094f, .082347f));
 
     // initialize all join Buttens
-    for (int i = 0; i < joinY.length; i++) {
+    for (int i = 0; i < join.length; i++) {
       join[i] =
           new MenuButton(
               loader,
@@ -94,6 +112,9 @@ public class ChooseLobby {
    */
   @SuppressWarnings("Duplicates")
   public static void update() {
+    initText();
+    catalog =  Game.getLobbyCatalog();
+    System.out.println(catalog.toString());
 
     List<GuiTexture> guis = new ArrayList<>();
     // add textures here
@@ -109,6 +130,25 @@ public class ChooseLobby {
     // add buttons here
     guis.add(back.getHoverTexture(x, y));
 
+    int page = 0;
+    startInd = page*7;
+    for (int i = 0; i < names.length; i++) {
+      try{
+      if(i+startInd < catalog.size()){
+        System.out.println(catalog.get(i+startInd).getName());
+        names[i].changeText(catalog.get(i+startInd).getName());
+        count[i].changeText(String.valueOf(catalog.get(i+startInd).getPlayers()));
+        System.out.println(i);
+      }else{
+        names[i].changeText("");
+        count[i].changeText("");
+      }
+      }catch(IndexOutOfBoundsException e){
+        System.out.println("error in choose lobby");
+        logger.error(e.getMessage());
+      }
+    }
+
     for (int i = 0; i < n; i++) {
       guis.add(join[i].getHoverTexture(x, y));
     }
@@ -116,8 +156,11 @@ public class ChooseLobby {
       guis.remove(join[i].getHoverTexture(x, y));
     }
 
+
+
     if (InputHandler.isKeyPressed(GLFW_KEY_ESCAPE)
         || InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1) && back.isHover(x, y)) {
+      done();
       Game.addActiveStage(Game.Stage.MAINMENU);
       Game.removeActiveStage(Game.Stage.CHOOSELOBBY);
     } else {
@@ -132,8 +175,35 @@ public class ChooseLobby {
 
 
 
-
+    TextMaster.render();
     Game.getGuiRenderer().render(guis);
+  }
+
+  public static void initText(){
+
+    text = new ChangableGuiText();
+    text.changeText("Schiff Ahoi");
+    text.setTextColour(new Vector3f(1, 1, 1));
+    text.setFontSize(3);
+    for (int i = 0; i< names.length; i++) {
+      names[i] = new ChangableGuiText();
+      names[i].setPosition(new Vector2f(-0.5f, namesY[i]));
+      names[i].setFontSize(3);
+      names[i].setTextColour(new Vector3f(0,0,1));
+      count[i] = new ChangableGuiText();
+      count[i].setPosition(new Vector2f(0, countY[i]));
+      count[i].setFontSize(3);
+      count[i].setTextColour(new Vector3f(0,0,1));
+    }
+  }
+
+  public static void done(){
+
+    text.delete();
+    for (int i = 0; i< names.length; i++) {
+      names[i].delete();
+      count[i].delete();
+    }
   }
 
   /**
