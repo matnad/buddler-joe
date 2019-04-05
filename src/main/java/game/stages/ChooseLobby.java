@@ -16,6 +16,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 import gui.text.ChangableGuiText;
 
+import net.lobbyhandling.Lobby;
 import net.packets.lobby.PacketJoinLobby;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
@@ -135,14 +136,14 @@ public class ChooseLobby {
     guis.add(back.getHoverTexture(x, y));
 
     int page = 0;
-    startInd = page*7;
+    startInd = page*6;
     for (int i = 0; i < names.length; i++) {
       try{
       if(i+startInd < catalog.size()){
         //System.out.print(catalog.get(i+startInd).getPlayers()+" ");
         //System.out.println(i);
         names[i].changeText("Name: " + catalog.get(i+startInd).getName());
-        count[i].changeText("Players: " + catalog.get(i+startInd).getPlayers()+ "/7");
+        count[i].changeText("Players: " + catalog.get(i+startInd).getPlayers()+ "/" + Lobby.getMaxPlayers());
         //System.out.println(i);
       }else{
         names[i].changeText("");

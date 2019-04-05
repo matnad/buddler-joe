@@ -114,7 +114,7 @@ public class ServerLobbyList {
         if (counter == 10) {
           break;
         }
-        if (l.getPlayerAmount() == 7) { // TODO:1000 durch maximale Spielerzahl ersetzen
+        if (l.getPlayerAmount() == Lobby.getMaxPlayers()) {
           continue;
         } else {
           s.append(l.toString());

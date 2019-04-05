@@ -19,6 +19,7 @@ public class Lobby {
   private String lobbyName;
   private ArrayList<Player> lobbyPlayers;
   private ServerMap map;
+  private static final int maxPlayers = 7;
 
   /**
    * Constructor of the lobby-class uses by the Server.
@@ -145,5 +146,11 @@ public class Lobby {
 
   public ServerMap getMap() {
     return map;
+  }
+/**
+ * Getter that return the max amount of players per Lobby
+ * */
+  public static int getMaxPlayers() {
+    return maxPlayers;
   }
 }
