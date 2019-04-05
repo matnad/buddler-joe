@@ -36,6 +36,8 @@ public class ChooseLobby {
 
   private static MenuButton back;
   private static MenuButton[] join = new MenuButton[6];
+  private static MenuButton up;
+  private static MenuButton down;
 
   private static int n = 6; // varibale that defines how many join buttons are displayed. Max is 6.
 
@@ -46,9 +48,12 @@ public class ChooseLobby {
   private static ChangableGuiText[] names = new ChangableGuiText[6];
   private static ChangableGuiText[] count = new ChangableGuiText[6];
   private static int startInd = 0;
-  private static ChangableGuiText text;
-  private static boolean initialized = false;
+  private static int page = 0;
+  private static ChangableGuiText pageIndex;
+  private static boolean initializedText = false;
+  private static boolean initializedPageIndex = false;
   public static final Logger logger = LoggerFactory.getLogger(ChooseLobby.class);
+
 
   /**
    * * Initialize ChooseLobby Menu. Will load the texture files and generate the basic menu parts.
@@ -106,6 +111,22 @@ public class ChooseLobby {
               new Vector2f(0.391667f, joinY[i]),
               new Vector2f(0.082365f, .069444f));
     }
+
+    up =
+            new MenuButton(
+                    loader,
+                    "up_placeholder",
+                    "up_placeholder",
+                    new Vector2f(0.349219f, -0.512963f),
+                    new Vector2f(0.041406f, 0.0694444f));
+
+    down =
+            new MenuButton(
+                    loader,
+                    "down_placeholder",
+                    "down_placeholder",
+                    new Vector2f(0.432032f, -0.512963f),
+                    new Vector2f(0.041406f, 0.0694444f));
   }
 
   /**
@@ -114,10 +135,11 @@ public class ChooseLobby {
    */
   @SuppressWarnings("Duplicates")
   public static void update() {
-    if(!initialized) {
+    if(!initializedText) {
       initText();
-      initialized = true;
+      initializedText = true;
     }
+
     catalog =  Game.getLobbyCatalog();
     //System.out.println(catalog.toString());
 
@@ -135,8 +157,9 @@ public class ChooseLobby {
     // add buttons here
     guis.add(back.getHoverTexture(x, y));
 
-    int page = 0;
+
     startInd = page*6;
+    setN(catalog.size()-startInd);
     for (int i = 0; i < names.length; i++) {
       try{
       if(i+startInd < catalog.size()){
@@ -163,18 +186,41 @@ public class ChooseLobby {
       guis.remove(join[i].getHoverTexture(x, y));
     }
 
+    if(n == 6 || page != 0){//TODO change to ==6 later
+      guis.add(up.getHoverTexture(x, y));
+      guis.add(down.getHoverTexture(x, y));
+      if(!initializedPageIndex) {
+        initPageIndex();
+        initializedPageIndex = true;
+      }
+      pageIndex.changeText("Page: " + (page + 1));
+    }else{
+      if(initializedPageIndex) {
+        pageIndex.delete();
+        initializedPageIndex = false;
+      }
+      guis.remove(up.getHoverTexture(x, y));
+      guis.remove(down.getHoverTexture(x, y));
+    }
 
-
+    //Input-Handling-------------------------------------------------------------------------------------------------
     if (InputHandler.isKeyPressed(GLFW_KEY_ESCAPE)
         || InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1) && back.isHover(x, y)) {
       done();
       Game.addActiveStage(Game.Stage.MAINMENU);
       Game.removeActiveStage(Game.Stage.CHOOSELOBBY);
+    }else if(InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1) && up.isHover(x, y)){
+      if (page != 0){
+        page = page-1;
+      }
+    }else if(InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1) && down.isHover(x, y)){
+        page = page+1;
     } else {
       for (int i = 0; i < n; i++) {
         if (i+startInd < catalog.size() && InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1) && join[i].isHover(x, y)) {
-          System.out.println(catalog.get(i+startInd).getName());
           new PacketJoinLobby(catalog.get(i+startInd).getName()).sendToServer();
+          Game.addActiveStage(Game.Stage.INLOBBBY);
+          Game.removeActiveStage(Game.Stage.CHOOSELOBBY);
           break;
         }
       }
@@ -191,12 +237,16 @@ public class ChooseLobby {
     TextMaster.render();
   }
 
-  public static void initText(){
+  public static void initPageIndex(){
+    pageIndex = new ChangableGuiText();
+    pageIndex.setPosition(new Vector2f(0.665104f, 0.791667f));
+    pageIndex.setFontSize(1);
+    pageIndex.setTextColour(new Vector3f(0,0,1));
+    pageIndex.setCentered(false);
+  }
 
-    text = new ChangableGuiText();
-    text.changeText("Schiff Ahoi");
-    text.setTextColour(new Vector3f(1, 1, 1));
-    text.setFontSize(3);
+
+  public static void initText(){
     for (int i = 0; i< names.length; i++) {
       names[i] = new ChangableGuiText();
       names[i].setPosition(new Vector2f(0.286719f, namesY[i]));
@@ -212,13 +262,11 @@ public class ChooseLobby {
   }
 
   public static void done(){
-
-    text.delete();
     for (int i = 0; i< names.length; i++) {
       names[i].delete();
       count[i].delete();
     }
-    initialized = false;
+    initializedText = false;
   }
 
   /**

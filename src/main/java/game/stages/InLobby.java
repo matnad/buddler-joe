@@ -10,6 +10,8 @@ import gui.GuiTexture;
 import gui.MenuButton;
 import java.util.ArrayList;
 import java.util.List;
+
+import net.packets.lobby.PacketLeaveLobby;
 import org.joml.Vector2f;
 
 public class InLobby {
@@ -81,13 +83,11 @@ public class InLobby {
     guis.add(ready.getHoverTexture(x, y));
 
     if (InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1) && leave.isHover(x, y)) {
-      // TODO trigger Lobbyleave
+      new PacketLeaveLobby().sendToServer();
+      Game.addActiveStage(Game.Stage.CHOOSELOBBY);
+      Game.removeActiveStage(Game.Stage.INLOBBBY);
     } else if (InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1) && ready.isHover(x, y)) {
       // TODO trigger Playerready
-    } else if (InputHandler.isKeyPressed(GLFW_KEY_ESCAPE)) {
-      // TODO: Removce this part
-      Game.addActiveStage(Game.Stage.MAINMENU);
-      Game.removeActiveStage(Game.Stage.INLOBBBY);
     }
 
     Game.getGuiRenderer().render(guis);
