@@ -16,6 +16,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 import gui.text.ChangableGuiText;
 
+import net.packets.lobby.PacketJoinLobby;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 import org.slf4j.Logger;
@@ -38,8 +39,8 @@ public class ChooseLobby {
   private static int n = 6; // varibale that defines how many join buttons are displayed. Max is 6.
 
   private static float[] joinY = {0.312963f, 0.175926f, 0.037037f, -0.1f, -0.238889f, -0.375926f};
-  private static float[] namesY = {0.312963f, 0.175926f, 0.037037f, -0.1f, -0.238889f, -0.375926f};
-  private static float[] countY = {0.312963f, 0.175926f, 0.037037f, -0.1f, -0.238889f, -0.375926f};
+  private static float[] namesY = {0.330864f,0.4f,0.469136f,0.538272f,0.607407f,0.676534f};
+  private static float[] countY = {0.330864f,0.4f,0.469136f,0.538272f,0.607407f,0.676534f};
   private static CopyOnWriteArrayList<LobbyEntry> catalog;
   private static ChangableGuiText[] names = new ChangableGuiText[6];
   private static ChangableGuiText[] count = new ChangableGuiText[6];
@@ -114,7 +115,7 @@ public class ChooseLobby {
   public static void update() {
     initText();
     catalog =  Game.getLobbyCatalog();
-    System.out.println(catalog.toString());
+    //System.out.println(catalog.toString());
 
     List<GuiTexture> guis = new ArrayList<>();
     // add textures here
@@ -135,10 +136,11 @@ public class ChooseLobby {
     for (int i = 0; i < names.length; i++) {
       try{
       if(i+startInd < catalog.size()){
-        System.out.println(catalog.get(i+startInd).getName());
-        names[i].changeText(catalog.get(i+startInd).getName());
-        count[i].changeText(String.valueOf(catalog.get(i+startInd).getPlayers()));
-        System.out.println(i);
+        //System.out.print(catalog.get(i+startInd).getPlayers()+" ");
+        //System.out.println(i);
+        names[i].changeText("Name: " + catalog.get(i+startInd).getName());
+        count[i].changeText("Players: " + catalog.get(i+startInd).getPlayers()+ "/7");
+        //System.out.println(i);
       }else{
         names[i].changeText("");
         count[i].changeText("");
@@ -148,6 +150,7 @@ public class ChooseLobby {
         logger.error(e.getMessage());
       }
     }
+    //System.out.println("");
 
     for (int i = 0; i < n; i++) {
       guis.add(join[i].getHoverTexture(x, y));
@@ -165,18 +168,23 @@ public class ChooseLobby {
       Game.removeActiveStage(Game.Stage.CHOOSELOBBY);
     } else {
       for (int i = 0; i < n; i++) {
-        if (InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1) && join[i].isHover(x, y)) {
-          // TODO trigger join lobby at position i
+        if (i+startInd < catalog.size() && InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1) && join[i].isHover(x, y)) {
+          System.out.println(catalog.get(i+startInd).getName());
+          new PacketJoinLobby(catalog.get(i+startInd).getName()).sendToServer();
           break;
         }
       }
     }
 
+    ChangableGuiText haha = new ChangableGuiText();
+    haha.changeText("Schiff Ahoi");
+    haha.setTextColour(new Vector3f(1, 1, 1));
+    haha.setFontSize(3);
 
 
 
-    TextMaster.render();
     Game.getGuiRenderer().render(guis);
+    TextMaster.render();
   }
 
   public static void initText(){
@@ -187,13 +195,15 @@ public class ChooseLobby {
     text.setFontSize(3);
     for (int i = 0; i< names.length; i++) {
       names[i] = new ChangableGuiText();
-      names[i].setPosition(new Vector2f(-0.5f, namesY[i]));
-      names[i].setFontSize(3);
+      names[i].setPosition(new Vector2f(0.286719f, namesY[i]));
+      names[i].setFontSize(1);
       names[i].setTextColour(new Vector3f(0,0,1));
+      names[i].setCentered(false);
       count[i] = new ChangableGuiText();
       count[i].setPosition(new Vector2f(0, countY[i]));
-      count[i].setFontSize(3);
+      count[i].setFontSize(1);
       count[i].setTextColour(new Vector3f(0,0,1));
+      names[i].setCentered(false);
     }
   }
 

@@ -76,7 +76,7 @@ public class Game extends Thread {
   private Settings settings;
   private static SettingsSerialiser settingsSerialiser = new SettingsSerialiser();
 
-  public static Window window = new Window(1280, 800, 60, "Buddler Joe");
+  public static Window window = new Window(1920, 1080, 60, "Buddler Joe");
   // Set up GLFW Window
   private static final List<Stage> activeStages = new ArrayList<>();
   private static final List<Stage> stagesToBeAdded = new ArrayList<>();
@@ -525,7 +525,7 @@ public class Game extends Thread {
     LoadingScreen.updateLoadingMessage("Ready!");
     Thread.sleep(500);
     LoadingScreen.done();
-    addActiveStage(PLAYING);
+    addActiveStage(MAINMENU);
     removeActiveStage(LOADINGSCREEN);
   }
 

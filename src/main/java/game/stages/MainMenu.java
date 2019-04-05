@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import gui.text.ChangableGuiText;
+import net.packets.lobby.PacketGetLobbies;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 
@@ -157,6 +158,7 @@ public class MainMenu {
     }
     */
     if (InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1) && chooseLobby.isHover(x, y)) {
+      new PacketGetLobbies().sendToServer();
       Game.addActiveStage(Game.Stage.CHOOSELOBBY);
       Game.removeActiveStage(Game.Stage.MAINMENU);
       //trigger here
