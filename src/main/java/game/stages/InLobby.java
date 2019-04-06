@@ -42,6 +42,7 @@ public class InLobby {
   private static CopyOnWriteArrayList<LobbyPlayerEntry> playerCatalog;
   public static final Logger logger = LoggerFactory.getLogger(ChooseLobby.class);
   private static ChangableGuiText lobbyname;
+  private static Vector3f black = new Vector3f(0,0,0);
 
   /**
    * Initialisation of the textures for this GUI-menu.
@@ -144,18 +145,18 @@ public class InLobby {
     lobbyname = new ChangableGuiText();
     lobbyname.setPosition(new Vector2f(0.286719f, 0.248766f));
     lobbyname.setFontSize(2);
-    lobbyname.setTextColour(new Vector3f(0,0,0));
+    lobbyname.setTextColour(black);
     lobbyname.setCentered(false);
     for (int i = 0; i< names.length; i++) {
       names[i] = new ChangableGuiText();
       names[i].setPosition(new Vector2f(0.286719f, namesY[i]));
       names[i].setFontSize(1);
-      names[i].setTextColour(new Vector3f(0,0,1));
+      names[i].setTextColour(black);
       names[i].setCentered(false);
       status[i] = new ChangableGuiText();
       status[i].setPosition(new Vector2f(-0.059896f, statusY[i]));
       status[i].setFontSize(1);
-      status[i].setTextColour(new Vector3f(0,0,1));
+      status[i].setTextColour(black);
       names[i].setCentered(false);
     }
   }

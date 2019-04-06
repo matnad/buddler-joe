@@ -53,6 +53,7 @@ public class ChooseLobby {
   private static boolean initializedText = false;
   private static boolean initializedPageIndex = false;
   public static final Logger logger = LoggerFactory.getLogger(ChooseLobby.class);
+  private static Vector3f black = new Vector3f(0,0,0);
 
 
   /**
@@ -235,7 +236,7 @@ public class ChooseLobby {
     pageIndex = new ChangableGuiText();
     pageIndex.setPosition(new Vector2f(0.665104f, 0.791667f));
     pageIndex.setFontSize(1);
-    pageIndex.setTextColour(new Vector3f(0,0,1));
+    pageIndex.setTextColour(black);
     pageIndex.setCentered(false);
   }
 
@@ -245,12 +246,12 @@ public class ChooseLobby {
       names[i] = new ChangableGuiText();
       names[i].setPosition(new Vector2f(0.286719f, namesY[i]));
       names[i].setFontSize(1);
-      names[i].setTextColour(new Vector3f(0,0,1));
+      names[i].setTextColour(black);
       names[i].setCentered(false);
       count[i] = new ChangableGuiText();
       count[i].setPosition(new Vector2f(0, countY[i]));
       count[i].setFontSize(1);
-      count[i].setTextColour(new Vector3f(0,0,1));
+      count[i].setTextColour(black);
       names[i].setCentered(false);
     }
   }
@@ -259,6 +260,11 @@ public class ChooseLobby {
  * Deletes all the texts from this Page from the rendering list.
  */
   public static void done(){
+    page = 0;
+    if(initializedPageIndex) {
+      pageIndex.delete();
+    }
+    initializedPageIndex = false;
     for (int i = 0; i< names.length; i++) {
       names[i].delete();
       count[i].delete();

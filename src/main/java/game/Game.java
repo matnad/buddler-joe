@@ -72,7 +72,7 @@ public class Game extends Thread {
    * Set your resolution here, feel free to add new entries and comment them with your name/machine
    * If someone wants to work on this, edit this comment or add an issue to the tracker in gitlab
    */
-
+  private boolean autoJoin = false;
   private Settings settings;
   private static SettingsSerialiser settingsSerialiser = new SettingsSerialiser();
 
@@ -506,24 +506,25 @@ public class Game extends Thread {
     System.out.println("logged in");
 
     // Creating and joining Lobby
-    LoadingScreen.updateLoadingMessage("joining lobby");
-    new PacketCreateLobby("lob1").sendToServer();
-    while (!lobbyCreated) {
-      Thread.sleep(50);
+    if(autoJoin) {
+      LoadingScreen.updateLoadingMessage("joining lobby");
+      new PacketCreateLobby("lob1").sendToServer();
+      while (!lobbyCreated) {
+        Thread.sleep(50);
+      }
     }
-
     // Generate dummy map
     map = new ClientMap(1, 1, 1);
-    new PacketJoinLobby("lob1").sendToServer();
-    while (!NetPlayerMaster.getLobbyname().equals("lob1")) {
-      Thread.sleep(50);
+    if(autoJoin) {
+      new PacketJoinLobby("lob1").sendToServer();
+      while (!NetPlayerMaster.getLobbyname().equals("lob1")) {
+        Thread.sleep(50);
+      }
+      LoadingScreen.updateLoadingMessage("generating map");
+      while (map.isLocal()) {
+        Thread.sleep(500);
+      }
     }
-
-    LoadingScreen.updateLoadingMessage("generating map");
-    while (map.isLocal()) {
-      Thread.sleep(500);
-    }
-
     // Camera
     camera = new Camera(player, window);
 
@@ -534,7 +535,11 @@ public class Game extends Thread {
     LoadingScreen.updateLoadingMessage("Ready!");
     Thread.sleep(500);
     LoadingScreen.done();
-    addActiveStage(MAINMENU);
+    if(autoJoin){
+      addActiveStage(PLAYING);
+    }else {
+      addActiveStage(MAINMENU);
+    }
     removeActiveStage(LOADINGSCREEN);
   }
 
