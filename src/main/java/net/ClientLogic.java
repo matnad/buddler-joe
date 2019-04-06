@@ -8,6 +8,7 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.SocketException;
 import net.packets.Packet;
+import net.packets.PacketStartRound;
 import net.packets.block.PacketBlockDamage;
 import net.packets.chat.PacketChatMessageStatus;
 import net.packets.chat.PacketChatMessageToClient;
@@ -215,6 +216,9 @@ public class ClientLogic implements Runnable {
           break;
         case GAMES_OVERVIEW:
           p = new PacketGamesOverview(data);
+          break;
+        case START:
+          p = new PacketStartRound();
           break;
         default:
       }

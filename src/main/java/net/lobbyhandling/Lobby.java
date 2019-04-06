@@ -20,6 +20,7 @@ public class Lobby {
   private ArrayList<Player> lobbyPlayers;
   private ServerMap map;
   private static final int maxPlayers = 7;
+  private static int createrPlayerId;
 
   /**
    * Constructor of the lobby-class uses by the Server.
@@ -28,8 +29,9 @@ public class Lobby {
    *     Lobby#lobbyCounter}. {@link Lobby#lobbyCounter} gets raised by one after every lobby
    *     construction.
    */
-  public Lobby(String lobbyName) {
+  public Lobby(String lobbyName, int createrPlayerId) {
     this.lobbyName = lobbyName;
+    this.createrPlayerId = createrPlayerId;
     this.inGame = false;
     this.lobbyPlayers = new ArrayList<>();
     this.lobbyId = lobbyCounter;
@@ -153,4 +155,8 @@ public class Lobby {
   public static int getMaxPlayers() {
     return maxPlayers;
   }
+  /**
+   * Getter that returns the PlayerId of the player that created this lobby.
+   * */
+  public static int getCreaterPlayerId() { return createrPlayerId; }
 }

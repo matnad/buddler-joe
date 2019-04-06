@@ -18,6 +18,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 import gui.text.ChangableGuiText;
 import net.lobbyhandling.Lobby;
+import net.packets.PacketReady;
 import net.packets.lobby.PacketLeaveLobby;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
@@ -40,7 +41,7 @@ public class InLobby {
   private static float[] namesY = {0.330864f,0.4f,0.469136f,0.538272f,0.607407f,0.676534f,0.745669f};
   private static float[] statusY = {0.330864f,0.4f,0.469136f,0.538272f,0.607407f,0.676534f,0.745669f};
   private static CopyOnWriteArrayList<LobbyPlayerEntry> playerCatalog;
-  public static final Logger logger = LoggerFactory.getLogger(ChooseLobby.class);
+  public static final Logger logger = LoggerFactory.getLogger(InLobby.class);
   private static ChangableGuiText lobbyname;
   private static Vector3f black = new Vector3f(0,0,0);
 
@@ -134,7 +135,7 @@ public class InLobby {
       Game.addActiveStage(Game.Stage.CHOOSELOBBY);
       Game.removeActiveStage(Game.Stage.INLOBBBY);
     } else if (InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1) && ready.isHover(x, y)) {
-      // TODO trigger Playerready
+      new PacketReady().sendToServer();
     }
 
     Game.getGuiRenderer().render(guis);

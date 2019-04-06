@@ -9,6 +9,7 @@ import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 import net.ServerLogic;
 import net.packets.Packet;
+import net.packets.PacketReady;
 import net.packets.block.PacketBlockDamage;
 import net.packets.chat.PacketChatMessageToServer;
 import net.packets.items.PacketSpawnItem;
@@ -165,6 +166,9 @@ public class ClientThread implements Runnable {
             break;
           case SPAWN_ITEM:
             p = new PacketSpawnItem(clientId, data);
+            break;
+          case READY:
+            p = new PacketReady(clientId);
             break;
           default:
         }
