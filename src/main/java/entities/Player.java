@@ -179,7 +179,7 @@ public class Player extends NetPlayer {
     }
     // Effects when being crushed
     Playing.showDamageTakenOverlay();
-
+    decreaseCurrentLives();
     // Find a place to move the player to
     Vector2i playerGridPos =
         new Vector2i(collideWithBlockBelow.getGridX(), collideWithBlockBelow.getGridY() - 1);
