@@ -62,7 +62,7 @@ public class Star extends Item {
    */
 
   public static void init(Loader loader) {
-    RawModel rawDynamite = loader.loadToVao(ObjFileLoader.loadObj("dynamite"));
+    RawModel rawDynamite = loader.loadToVao(ObjFileLoader.loadObj("star"));
     setPreloadedModel(
         new TexturedModel(rawDynamite, new ModelTexture(loader.loadTexture("dynamite"))));
   }

@@ -50,9 +50,9 @@ public class Heart extends Item {
    * @param loader the loader to be passed on to this method.
    */
   public static void init(Loader loader) {
-    RawModel rawDynamite = loader.loadToVao(ObjFileLoader.loadObj("dynamite"));
+    RawModel rawHeart = loader.loadToVao(ObjFileLoader.loadObj("heart"));
     setPreloadedModel(
-        new TexturedModel(rawDynamite, new ModelTexture(loader.loadTexture("dynamite"))));
+        new TexturedModel(rawHeart, new ModelTexture(loader.loadTexture("dynamite"))));
   }
 
   private static TexturedModel getPreloadedModel() {
