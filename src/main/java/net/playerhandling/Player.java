@@ -86,8 +86,8 @@ public class Player {
     return currentGold;
   }
 
-  public void increaseCurrentLives() {
-    currentLives++;
+  public void setCurrentLives(int currentLives) {
+    this.currentLives = currentLives;
   }
 
   public int getCurrentLives() {

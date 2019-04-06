@@ -24,6 +24,7 @@ import game.stages.Playing;
 import java.util.ArrayList;
 import java.util.List;
 import net.packets.block.PacketBlockDamage;
+import net.packets.life.PacketLifeStatus;
 import net.packets.playerprop.PacketPos;
 import org.joml.Vector2i;
 import org.joml.Vector3f;
@@ -405,6 +406,15 @@ public class Player extends NetPlayer {
       if (currentLives < 2) {
           currentLives++;
       }
+      PacketLifeStatus lives = new PacketLifeStatus(String.valueOf(currentLives));
+    lives.processData();
+  }
+
+  public void decreaseCurrentLives() {
+    currentLives--;
+    //hier send paket
+    PacketLifeStatus lives = new PacketLifeStatus(String.valueOf(currentLives));
+    lives.processData();
   }
 
   public int getCurrentLives() {

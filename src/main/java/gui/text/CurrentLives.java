@@ -7,7 +7,7 @@ import org.joml.Vector3f;
 /** Gui Object to display and update "Gold: (amount)". */
 public class CurrentLives {
 
-    private static final Vector2f position = new Vector2f(0.01f, 0.1f);
+    private static final Vector2f position = new Vector2f(0.01f, 0.05f);
     private final String prefix = "Lives: ";
 
     private ChangableGuiText guiText;

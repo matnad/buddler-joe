@@ -92,6 +92,7 @@ public class Playing {
     Game.getChat().checkInputs();
     // GUI goes over everything else and then text on top of GUI
     Game.getGoldGuiText().update();
+    Game.getLivesGuiText().update();
     floatingGoldStrings.update();
     ParticleMaster.renderParticles(Game.getActiveCamera());
 
