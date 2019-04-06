@@ -14,6 +14,8 @@ import net.packets.loginlogout.PacketDisconnect;
 import net.packets.loginlogout.PacketLogin;
 import net.packets.name.PacketSetName;
 import net.packets.playerlist.PacketPlayerList;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * The client-side interface to communicate with the server.
@@ -28,6 +30,7 @@ public class StartNetworkOnlyClient implements Runnable {
   private static final BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
   private static String serverIp;
   private static int serverPort;
+  public static final Logger logger = LoggerFactory.getLogger(StartNetworkOnlyClient.class);
 
   /**
    * Start the client logic and pass ip + port.
@@ -106,7 +109,8 @@ public class StartNetworkOnlyClient implements Runnable {
       } else if (inputMessage.equals("highscore")) {
         PacketHighscore p = new PacketHighscore();
         p.sendToServer();
-      } else if (inputMessage.equals("playerlist")) {
+        logger.info("Highscore requested.");
+;      } else if (inputMessage.equals("playerlist")) {
         PacketPlayerList p = new PacketPlayerList();
         p.sendToServer();
       } else if (inputMessage.equals("disconnect")) {

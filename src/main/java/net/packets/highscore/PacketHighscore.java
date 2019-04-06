@@ -2,14 +2,19 @@ package net.packets.highscore;
 
 import net.highscore.ServerHighscore;
 import net.packets.Packet;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Packet that gets send from the Server to the Client, to inform the him over the result of the
  * send message attempt. Packet-Code: CHATN
  *
- * @author Moritz Würth
+ * @author Joe's Buddler corp.
  */
 public class PacketHighscore extends Packet {
+
+  public static final Logger logger = LoggerFactory.getLogger(PacketHighscore.class);
+
 
   private String[] highscore;
 
@@ -72,17 +77,22 @@ public class PacketHighscore extends Packet {
         setData("OK║" + ServerHighscore.getHighscoreAsString());
       }
       this.sendToClient(getClientId());
+      logger.info(getData());
     } else {
+      // Client side:
       if (hasErrors()) {
         System.out.println(createErrorMessage());
       } else if (highscore[0].equals(
-          "OK")) { // the "OK" gets added in PacketCreatLobby.processData and
+          "OK")) {
+        logger.info(highscore[0]);
         System.out.println("-------------------------------------");
         System.out.println("Current Highscore:");
         for (int i = 1; i < highscore.length; i++) {
           System.out.println(highscore[i]);
         }
         System.out.println("-------------------------------------");
+      } else if (highscore[0].equals("ERROR")) {
+        System.out.println("The Highscore is currently still empty.");
       } else {
         System.out.println(highscore[1]);
       }

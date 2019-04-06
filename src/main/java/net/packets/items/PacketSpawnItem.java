@@ -158,12 +158,8 @@ public class PacketSpawnItem extends Packet {
         if (item instanceof Torch) {
           ((Torch) item).checkForBlock(); // Attach to a block if placed on one.
         } else if (item instanceof Dynamite) {
-          if (owner == Game.getActivePlayer().getClientId()) {
-            return;
-          } else {
-            item.setOwned(true);
-            ((Dynamite) item).setActive(true); // Start ticking
-          }
+          item.setOwned(true);
+          ((Dynamite) item).setActive(true); // Start ticking
         } else if (item instanceof Heart) {
           if (owner == Game.getActivePlayer().getClientId()) {
             item.setOwned(true);
