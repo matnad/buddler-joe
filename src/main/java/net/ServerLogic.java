@@ -11,6 +11,7 @@ import net.lobbyhandling.ServerLobbyList;
 import net.packets.Packet;
 import net.packets.chat.PacketChatMessageToClient;
 import net.packets.lobby.PacketCurLobbyInfo;
+import net.packets.lobby.PacketLobbyOverview;
 import net.packets.loginlogout.PacketDisconnect;
 import net.playerhandling.ClientThread;
 import net.playerhandling.PingManager;
@@ -210,10 +211,11 @@ public class ServerLogic {
       sendMessage.sendToLobby(lobbyId);
 
       // send lobbyinfo to the other player in the lobby
-      String info;
-      info = "OK║" + lobby.getPlayerNames();
       PacketCurLobbyInfo packetCurLobbyInfo = new PacketCurLobbyInfo(clientId, lobbyId);
       packetCurLobbyInfo.sendToLobby(lobbyId);
+      // send LobbyOverview to clients not in a lobby
+      String info = "OK║" + ServerLogic.getLobbyList().getTopTen();
+      new PacketLobbyOverview(clientId, info).sendToClientsNotInALobby();
 
       // close the client's thread
       ClientThread ct = ServerLogic.getThreadByClientId(clientId);

@@ -134,6 +134,11 @@ public class Game extends Thread {
 
   private static CopyOnWriteArrayList<LobbyEntry> lobbyCatalog = new CopyOnWriteArrayList<>();
 
+
+
+
+  private static CopyOnWriteArrayList<LobbyPlayerEntry> lobbyPlayerCatalog = new CopyOnWriteArrayList<>();
+
   /**
    * The constructor for the game to be called from the main class.
    *
@@ -154,7 +159,11 @@ public class Game extends Thread {
   public static void setLobbyCatalog(CopyOnWriteArrayList<LobbyEntry> lobbyCatalog) {
     Game.lobbyCatalog = lobbyCatalog;
   }
+  public static CopyOnWriteArrayList<LobbyPlayerEntry> getLobbyPlayerCatalog() { return lobbyPlayerCatalog; }
 
+  public static void setLobbyPlayerCatalog(CopyOnWriteArrayList<LobbyPlayerEntry> lobbyPlayerCatalog) {
+    Game.lobbyPlayerCatalog = lobbyPlayerCatalog;
+  }
   /**
    * Any entity added via this function will be passed to the Master Renderer and rendered in the
    * Playing World.

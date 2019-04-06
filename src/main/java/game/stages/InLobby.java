@@ -5,14 +5,24 @@ import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_1;
 
 import engine.io.InputHandler;
 import engine.render.Loader;
+import engine.render.fontrendering.TextMaster;
 import game.Game;
+import game.LobbyEntry;
+import game.LobbyPlayerEntry;
+import game.NetPlayerMaster;
 import gui.GuiTexture;
 import gui.MenuButton;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
+import gui.text.ChangableGuiText;
+import net.lobbyhandling.Lobby;
 import net.packets.lobby.PacketLeaveLobby;
 import org.joml.Vector2f;
+import org.joml.Vector3f;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class InLobby {
   private static final float FADE_TIME = .5f;
@@ -23,8 +33,15 @@ public class InLobby {
   private static GuiTexture inLobby;
 
   private static MenuButton leave;
-
   private static MenuButton ready;
+  private static ChangableGuiText[] names = new ChangableGuiText[7];
+  private static ChangableGuiText[] status = new ChangableGuiText[7];
+  private static boolean initializedText = false;
+  private static float[] namesY = {0.330864f,0.4f,0.469136f,0.538272f,0.607407f,0.676534f,0.745669f};
+  private static float[] statusY = {0.330864f,0.4f,0.469136f,0.538272f,0.607407f,0.676534f,0.745669f};
+  private static CopyOnWriteArrayList<LobbyPlayerEntry> playerCatalog;
+  public static final Logger logger = LoggerFactory.getLogger(ChooseLobby.class);
+  private static ChangableGuiText lobbyname;
 
   /**
    * Initialisation of the textures for this GUI-menu.
@@ -68,6 +85,14 @@ public class InLobby {
   /** Updates the GUI every cycle. */
   @SuppressWarnings("Duplicates")
   public static void update() {
+    if(!initializedText) {
+      initText();
+      initializedText = true;
+    }
+
+    playerCatalog = Game.getLobbyPlayerCatalog();
+    lobbyname.changeText(NetPlayerMaster.getLobbyname());
+
     List<GuiTexture> guis = new ArrayList<>();
     // add textures here
     guis.add(background);
@@ -79,11 +104,32 @@ public class InLobby {
 
     // add buttons here
     guis.add(leave.getHoverTexture(x, y));
-
     guis.add(ready.getHoverTexture(x, y));
+
+    for(int i = 0; i < names.length; i++){
+      try{
+        if(i < playerCatalog.size()){
+          //System.out.print(catalog.get(i+startInd).getPlayers()+" ");
+          //System.out.println(i);
+          names[i].changeText(playerCatalog.get(i).getName());
+          if(playerCatalog.get(i).isReady()){
+            status[i].changeText("ready");
+          }else{
+            status[i].changeText("unready");
+          }
+        }else{
+          names[i].changeText("");
+          status[i].changeText("");
+        }
+      }catch(IndexOutOfBoundsException e){
+        System.out.println("error in choose lobby");
+        logger.error(e.getMessage());
+      }
+    }
 
     if (InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1) && leave.isHover(x, y)) {
       new PacketLeaveLobby().sendToServer();
+      done();
       Game.addActiveStage(Game.Stage.CHOOSELOBBY);
       Game.removeActiveStage(Game.Stage.INLOBBBY);
     } else if (InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1) && ready.isHover(x, y)) {
@@ -91,5 +137,39 @@ public class InLobby {
     }
 
     Game.getGuiRenderer().render(guis);
+    TextMaster.render();
+  }
+  @SuppressWarnings("Duplicates")
+  public static void initText(){
+    lobbyname = new ChangableGuiText();
+    lobbyname.setPosition(new Vector2f(0.286719f, 0.248766f));
+    lobbyname.setFontSize(2);
+    lobbyname.setTextColour(new Vector3f(0,0,0));
+    lobbyname.setCentered(false);
+    for (int i = 0; i< names.length; i++) {
+      names[i] = new ChangableGuiText();
+      names[i].setPosition(new Vector2f(0.286719f, namesY[i]));
+      names[i].setFontSize(1);
+      names[i].setTextColour(new Vector3f(0,0,1));
+      names[i].setCentered(false);
+      status[i] = new ChangableGuiText();
+      status[i].setPosition(new Vector2f(-0.059896f, statusY[i]));
+      status[i].setFontSize(1);
+      status[i].setTextColour(new Vector3f(0,0,1));
+      names[i].setCentered(false);
+    }
+  }
+
+  /**
+   * Deletes all the texts from this Page from the rendering list.
+   */
+  @SuppressWarnings("Duplicates")
+  public static void done(){
+    lobbyname.delete();
+    for (int i = 0; i< names.length; i++) {
+      names[i].delete();
+      status[i].delete();
+    }
+    initializedText = false;
   }
 }

@@ -219,19 +219,13 @@ public class ChooseLobby {
       for (int i = 0; i < n; i++) {
         if (i+startInd < catalog.size() && InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1) && join[i].isHover(x, y)) {
           new PacketJoinLobby(catalog.get(i+startInd).getName()).sendToServer();
+          done();
           Game.addActiveStage(Game.Stage.INLOBBBY);
           Game.removeActiveStage(Game.Stage.CHOOSELOBBY);
           break;
         }
       }
     }
-
-    ChangableGuiText haha = new ChangableGuiText();
-    haha.changeText("Schiff Ahoi");
-    haha.setTextColour(new Vector3f(1, 1, 1));
-    haha.setFontSize(3);
-
-
 
     Game.getGuiRenderer().render(guis);
     TextMaster.render();
@@ -261,6 +255,9 @@ public class ChooseLobby {
     }
   }
 
+/**
+ * Deletes all the texts from this Page from the rendering list.
+ */
   public static void done(){
     for (int i = 0; i< names.length; i++) {
       names[i].delete();
