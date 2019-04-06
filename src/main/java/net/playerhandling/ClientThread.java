@@ -9,6 +9,7 @@ import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 import net.ServerLogic;
 import net.packets.Packet;
+import net.packets.PacketGetHistory;
 import net.packets.PacketReady;
 import net.packets.block.PacketBlockDamage;
 import net.packets.chat.PacketChatMessageToServer;
@@ -169,6 +170,9 @@ public class ClientThread implements Runnable {
             break;
           case READY:
             p = new PacketReady(clientId);
+            break;
+          case GET_HISTORY:
+            p = new PacketGetHistory(clientId);
             break;
           default:
         }

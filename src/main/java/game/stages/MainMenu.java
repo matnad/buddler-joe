@@ -1,9 +1,5 @@
 package game.stages;
 
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_ESCAPE;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_L;
-import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_1;
-
 import engine.io.InputHandler;
 import engine.render.Loader;
 import engine.render.fontrendering.TextMaster;
@@ -14,9 +10,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import gui.text.ChangableGuiText;
+import net.packets.PacketGetHistory;
 import net.packets.lobby.PacketGetLobbies;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
+
+import static org.lwjgl.glfw.GLFW.*;
 
 /**
  * Main Menu specification and rendering. Must be initialized. Specifies all the elements in the
@@ -177,6 +176,9 @@ public class MainMenu {
       // TODO: remove this if option
       Game.addActiveStage(Game.Stage.INLOBBBY);
       Game.removeActiveStage(Game.Stage.MAINMENU);
+    }else if (InputHandler.isKeyPressed(GLFW_KEY_H)) {
+      // TODO: remove this if option
+      new PacketGetHistory().sendToServer();
     }
 
     Game.getGuiRenderer().render(guis);

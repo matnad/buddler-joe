@@ -1,5 +1,6 @@
 package net.lobbyhandling;
 
+import game.History;
 import game.map.ServerMap;
 import java.util.ArrayList;
 
@@ -46,6 +47,7 @@ public class Lobby {
     this.lobbyId = lobbyCounter;
     lobbyCounter++;
     map = new ServerMap(60, 40, System.currentTimeMillis());
+    History.openAdd(this.lobbyId,this.lobbyName);
     //System.out.println(map);
   }
 
@@ -129,6 +131,10 @@ public class Lobby {
   public void gameOver(int clientId){
 
     setStatus("open");
+    History.runningRemove(lobbyId);
+    History.openAdd(lobbyId,lobbyName);
+    String userName = ServerLogic.getPlayerList().getUsername(clientId);
+    History.archive("Lobbyname: " + lobbyName + "       Winner: " + userName);
     //TODO update highscore here.
     //TODO send EndGamepacket here i created a skeleton already.
     //Inform all clients

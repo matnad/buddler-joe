@@ -313,7 +313,9 @@ public abstract class Packet {
     SPAWN_ITEM("ITMSP"),
     READY("READY"),
     START("START"),
-    GAME_OVER("STOPG");
+    GAME_OVER("STOPG"),
+    GET_HISTORY("HISGE"),
+    HISTORY("HISTO");
 
     private final String packetCode;
 

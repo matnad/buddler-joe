@@ -1,5 +1,6 @@
 package net.packets;
 
+import game.History;
 import net.ServerLogic;
 import net.lobbyhandling.Lobby;
 import net.playerhandling.Player;
@@ -36,8 +37,10 @@ public class PacketReady extends Packet {
             //check ob sender der ersteller ist.
             if(getClientId() == lobby.getCreaterPlayerId()){
                 lobby.setStatus("running");
+                History.openRemove(lobby.getLobbyId());
+                History.runningAdd(lobby.getLobbyId(),lobby.getLobbyName());
                 new PacketStartRound().sendToLobby(lobby.getLobbyId());
-                //TODO:Try to Trigger start packet
+                //TODO: only start if all players are ready
             }else{
                 //TODO: set ready for the sender
             }
