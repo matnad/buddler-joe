@@ -2,6 +2,7 @@ package net.playerhandling;
 
 import net.ServerLogic;
 import net.lobbyhandling.Lobby;
+import net.lobbyhandling.ServerLobbyList;
 
 public class Player {
 
@@ -79,6 +80,14 @@ public class Player {
 
   public void increaseCurrentGold(int goldValue) {
     currentGold += goldValue;
+    if(currentGold >= 80){//TODO: set to 3000
+      Lobby lobby = ServerLogic.getLobbyList().getLobby(curLobbyId);
+      lobby.gameOver(clientId);
+    }
+  }
+
+  public void setCurrentGold(int currentGold) {
+    this.currentGold = currentGold;
   }
 
   public int getCurrentGold() {

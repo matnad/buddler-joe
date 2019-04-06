@@ -114,7 +114,7 @@ public class ServerLobbyList {
         if (counter == 10) {
           break;
         }
-        if (l.getPlayerAmount() == Lobby.getMaxPlayers()) {
+        if (l.getPlayerAmount() == Lobby.getMaxPlayers() || !l.getStatus().equals("open")) {
           continue;
         } else {
           s.append(l.toString());

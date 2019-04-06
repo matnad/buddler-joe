@@ -35,6 +35,7 @@ public class PacketReady extends Packet {
             Lobby lobby = ServerLogic.getLobbyList().getLobby(lobbyId);
             //check ob sender der ersteller ist.
             if(getClientId() == lobby.getCreaterPlayerId()){
+                lobby.setStatus("running");
                 new PacketStartRound().sendToLobby(lobby.getLobbyId());
                 //TODO:Try to Trigger start packet
             }else{

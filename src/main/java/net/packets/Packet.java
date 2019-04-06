@@ -312,7 +312,8 @@ public abstract class Packet {
     FULL_MAP_BROADCAST("MAPBC"),
     SPAWN_ITEM("ITMSP"),
     READY("READY"),
-    START("START");
+    START("START"),
+    GAME_OVER("STOPG");
 
     private final String packetCode;
 
