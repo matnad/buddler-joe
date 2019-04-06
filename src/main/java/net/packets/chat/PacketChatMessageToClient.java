@@ -22,6 +22,7 @@ public class PacketChatMessageToClient extends Packet {
   public PacketChatMessageToClient(String chatmsg) {
     super(PacketTypes.CHAT_MESSAGE_TO_CLIENT);
     this.chatmsg = chatmsg.trim();
+    setData(chatmsg);
     validate();
   }
 

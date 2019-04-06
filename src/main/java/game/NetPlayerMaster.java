@@ -159,28 +159,28 @@ public class NetPlayerMaster {
     int x = 0;
     int j = 0;
     message = message.substring(1);
-    HashMap<Integer,Integer> player = new HashMap<>();
+
+    if (message.startsWith("all")) {
+      return -2;
+    }
+
+    HashMap<Integer, Integer> player = new HashMap<>();
     for (NetPlayer netPlayer : netPlayers.values()) {
-//      System.out.println(netPlayer.getUsername());
-//      System.out.println(message);
       if (message.startsWith(netPlayer.getUsername())) {
 
-          x++;
+        x++;
         for (int i = 0; i < netPlayer.getUsername().length(); i++) {
           if (message.charAt(i) == netPlayer.getUsername().charAt(i)) {
             j++;
           }
-          player.put(j,netPlayer.getClientId());
-//          System.out.println("j");
-//          System.out.println(j);
+          player.put(j, netPlayer.getClientId());
         }
       }
     }
-//    System.out.println(x);
-    if(x == 1){
+    if (x == 1) {
       return player.get(j);
     }
-    if (x == 0){
+    if (x == 0) {
       return -1;
     } else {
       int max = 0;
@@ -188,8 +188,6 @@ public class NetPlayerMaster {
         if (max < i) {
           max = i;
         }
-//        System.out.println("max");
-//        System.out.println(max);
       }
       return player.get(max);
     }

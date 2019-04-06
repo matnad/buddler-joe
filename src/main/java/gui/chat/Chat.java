@@ -9,6 +9,7 @@ import engine.render.fontrendering.TextMaster;
 import gui.GuiTexture;
 import java.util.ArrayList;
 import java.util.List;
+import net.ServerLogic;
 import net.packets.chat.PacketChatMessageToServer;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
@@ -87,15 +88,23 @@ public class Chat {
   public void checkInputs() {
     if (InputHandler.isKeyPressed(GLFW_KEY_ENTER)) {
       if (chatText.length() > 0 && enabled) {
+
         if (chatText.startsWith("@")) {
           int wisperId = game.NetPlayerMaster.getClientIdForWhisper(chatText);
-          if (0 > wisperId) {
+          if (-1 == wisperId) {
             text.add("Username ist ungültig");
+          } else if (-2 == wisperId) {
+            chatText = chatText.substring(4);
+            System.out.println(chatText);
+            PacketChatMessageToServer broadcostmessage =
+                new PacketChatMessageToServer("(to all from " + game.Game.getActivePlayer().getUsername()+ ") " + chatText + "║-1");
+            broadcostmessage.sendToServer();
+
           } else {
             String userName = game.NetPlayerMaster.getNetPlayerById(wisperId).getUsername();
             chatText = chatText.substring(userName.length() + 1);
             //            System.out.println("chatText");
-            //            System.out.println(chatText);
+            //
             //            System.out.println("wisperId");
             //            System.out.println(wisperId);
             PacketChatMessageToServer sendMessage =

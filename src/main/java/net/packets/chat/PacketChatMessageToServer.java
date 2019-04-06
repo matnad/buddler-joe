@@ -105,15 +105,18 @@ public class PacketChatMessageToServer extends Packet {
           addError("Must been in a Lobby to use the chat.");
         } else {
           String fullmessage = "[" + client.getUsername() + "-" + timestamp + "]  " + chatmsg;
-
-          if(wisperId != 0){
+          System.out.println(fullmessage);
+          if(wisperId > 0){
             PacketChatMessageToClient sendMessage =
                     new PacketChatMessageToClient(getClientId(), fullmessage);
             sendMessage.sendToClient(wisperId);
-          } else {
+          } else if (wisperId == 0) {
             PacketChatMessageToClient sendMessage =
                 new PacketChatMessageToClient(getClientId(), fullmessage);
             sendMessage.sendToLobby(client.getCurLobbyId());
+          }else{
+            PacketChatMessageToClient sendMessage = new PacketChatMessageToClient(fullmessage);
+            ServerLogic.sendBroadcastPacket(sendMessage);
           }
         }
       }
