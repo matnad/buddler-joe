@@ -10,6 +10,7 @@ public class Player {
   private int curLobbyId;
 
   private int currentGold;
+  private int currentLives;
 
   /**
    * Constructor of the player class to create a new player Creates an instance of the main Player
@@ -83,5 +84,13 @@ public class Player {
 
   public int getCurrentGold() {
     return currentGold;
+  }
+
+  public void increaseCurrentLives() {
+    currentLives++;
+  }
+
+  public int getCurrentLives() {
+    return currentLives;
   }
 }

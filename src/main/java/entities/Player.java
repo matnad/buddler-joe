@@ -51,6 +51,7 @@ public class Player extends NetPlayer {
 
   // Resources and Stats
   public int currentGold; // Current coins
+    private int currentLives;
   private float digDamage; // Damage per second when colliding with blocks
 
   // Movement Related
@@ -96,6 +97,7 @@ public class Player extends NetPlayer {
     super(0, username, model, position, rotX, rotY, rotZ, scale);
     digDamage = 1;
     currentGold = 0;
+    currentLives = 2;
   }
 
   /**
@@ -398,4 +400,15 @@ public class Player extends NetPlayer {
   public int getCurrentGold() {
     return currentGold;
   }
+
+  public void increaseCurrentLives() {
+      if (currentLives < 2) {
+          currentLives++;
+      }
+  }
+
+  public int getCurrentLives() {
+      return currentLives;
+  }
+
 }
