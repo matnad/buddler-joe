@@ -439,7 +439,7 @@ public class Game extends Thread {
     // Load Stages
     // MainMenu.init(loader);
     LoadingScreen.progess();
-    GameMenu.init(loader);
+//    GameMenu.init(loader);
     LoadingScreen.progess();
     ChooseLobby.init(loader);
     LoadingScreen.progess();
