@@ -4,6 +4,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 public class ServerItemState {
   private static CopyOnWriteArrayList<ServerItem> serverItemsList;
+  private static int itemId = 0;
 
   /** Method to keep a state of all items on the server and to keep track of their existence. */
   public ServerItemState() {
@@ -17,6 +18,7 @@ public class ServerItemState {
    */
   public static void addItem(ServerItem item) {
     if (!serverItemsList.contains(item)) {
+      item.setItemId(++itemId);
       serverItemsList.add(item);
     }
   }
@@ -29,6 +31,14 @@ public class ServerItemState {
   public static void removeItem(ServerItem item) {
     if (serverItemsList.contains(item)) {
       serverItemsList.remove(item);
+    }
+  }
+
+  public static void removeItemByItemId(int itemId) {
+    for (int i = 0; i < serverItemsList.size(); i++) {
+      if (serverItemsList.get(i).getItemId() == itemId) {
+        removeItem(serverItemsList.get(i));
+      }
     }
   }
 }

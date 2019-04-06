@@ -9,6 +9,7 @@ public class ServerItem {
   private Long creationtime;
   private boolean exists;
   private Vector3f position;
+  private int itemId;
 
   /**
    * Class to save important information of an Item on the server side to keep track of all items
@@ -24,5 +25,13 @@ public class ServerItem {
     this.type = type;
     this.creationtime = System.currentTimeMillis();
     this.exists = true;
+  }
+
+  public int getItemId() {
+    return itemId;
+  }
+
+  public void setItemId(int itemId) {
+    this.itemId = itemId;
   }
 }

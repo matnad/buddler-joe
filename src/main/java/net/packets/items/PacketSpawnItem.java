@@ -24,6 +24,7 @@ public class PacketSpawnItem extends Packet {
   private int owner;
   private Vector3f position;
   private String type;
+  private int itemId;
 
   private String[] dataArray;
 
@@ -53,7 +54,7 @@ public class PacketSpawnItem extends Packet {
     ServerItem serverItem = new ServerItem(clientId, type, position);
     ServerItemState.addItem(serverItem);
     setData(
-        clientId + "║" + type.getItemId() + "║" + position.x + "║" + position.y + "║" + position.z);
+        clientId + "║" + type.getItemId() + "║" + position.x + "║" + position.y + "║" + position.z + "║" + serverItem.getItemId());
     // No need to validate. No user input
   }
 
@@ -74,7 +75,7 @@ public class PacketSpawnItem extends Packet {
     ServerItem serverItem =
         new ServerItem(clientId, ItemMaster.ItemTypes.getItemTypeById(type), position);
     ServerItemState.addItem(serverItem);
-    setData(clientId + "║" + type + "║" + position.x + "║" + position.y + "║" + position.z);
+    setData(clientId + "║" + type + "║" + position.x + "║" + position.y + "║" + position.z + "║" + serverItem.getItemId());
   }
 
   /**
@@ -91,13 +92,14 @@ public class PacketSpawnItem extends Packet {
 
   @Override
   public void validate() {
-    if (dataArray.length != 5) {
+    if (dataArray.length < 5) {
       addError("Invalid item data.");
       logger.error("Invalid item data");
       return;
     }
     try {
       owner = Integer.parseInt(dataArray[0]);
+      itemId = Integer.parseInt(dataArray[5]);
     } catch (NumberFormatException e) {
       addError("Invalid item owner.");
       logger.error("Invalid item owner.");
@@ -156,8 +158,12 @@ public class PacketSpawnItem extends Packet {
         if (item instanceof Torch) {
           ((Torch) item).checkForBlock(); // Attach to a block if placed on one.
         } else if (item instanceof Dynamite) {
-          item.setOwned(true);
-          ((Dynamite) item).setActive(true); // Start ticking
+          if (owner == Game.getActivePlayer().getClientId()) {
+            return;
+          } else {
+            item.setOwned(true);
+            ((Dynamite) item).setActive(true); // Start ticking
+          }
         } else if (item instanceof Heart) {
           if (owner == Game.getActivePlayer().getClientId()) {
             item.setOwned(true);
