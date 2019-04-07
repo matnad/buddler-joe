@@ -47,7 +47,6 @@ public class Lobby {
     this.lobbyId = lobbyCounter;
     lobbyCounter++;
     map = new ServerMap(60, 40, System.currentTimeMillis());
-    History.openAdd(this.lobbyId, this.lobbyName);
     // System.out.println(map);
   }
 

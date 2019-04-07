@@ -28,7 +28,7 @@ public class Main {
    */
   public static void main(String[] args) {
 
-    // Take ip and port from commandline and validate them
+    // Client or server
     if (args.length >= 1 && args[0].equals("server")) {
       client = false;
     }
@@ -61,6 +61,7 @@ public class Main {
         // ipAddress = serverIP;
         settings.setIp(ipPort[0]);
         settingsSerialiser.serialiseSettings(settings);
+        ipAddress = ipPort[0];
 
         // Validate Port
         if (ipPort.length >= 2) {
@@ -73,11 +74,13 @@ public class Main {
 
     if (args.length >= 3 && client && args[2].length() <= 30 && args[2].length() >= 4) {
       username = args[2];
-      PacketSetName packetSetName = new PacketSetName(username);
+      settings.setUsername(username);
+      settingsSerialiser.serialiseSettings(settings);
+      //PacketSetName packetSetName = new PacketSetName(username);
     }
 
     if (client) {
-      Game game = new Game("127.0.0.1", port, username);
+      Game game = new Game(ipAddress, port, username);
       game.start();
     } else {
       StartServer server = new StartServer(port);
