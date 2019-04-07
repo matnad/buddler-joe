@@ -42,6 +42,7 @@ import game.stages.Playing;
 import game.stages.Welcome;
 import gui.chat.Chat;
 import gui.text.CurrentGold;
+import gui.text.CurrentLives;
 import gui.text.Fps;
 import gui.text.GuiString;
 import java.util.ArrayList;
@@ -117,6 +118,7 @@ public class Game extends Thread {
   private static Player player;
   private Fps fpsCounter;
   private static CurrentGold goldGuiText;
+  private static CurrentLives livesGuiText;
 
   // map
   private static ClientMap map;
@@ -533,6 +535,7 @@ public class Game extends Thread {
 
     // GUI / Other
     goldGuiText = new CurrentGold();
+    livesGuiText = new CurrentLives();
     Playing.init(loader);
 
     LoadingScreen.updateLoadingMessage("Ready!");
@@ -548,6 +551,10 @@ public class Game extends Thread {
 
   public static CurrentGold getGoldGuiText() {
     return goldGuiText;
+  }
+
+  public static CurrentLives getLivesGuiText() {
+    return livesGuiText;
   }
 
   private void disconnectFromServer() {

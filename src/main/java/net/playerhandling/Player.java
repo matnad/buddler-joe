@@ -11,6 +11,7 @@ public class Player {
   private int curLobbyId;
 
   private int currentGold;
+  private int currentLives;
 
   /**
    * Constructor of the player class to create a new player Creates an instance of the main Player
@@ -26,6 +27,7 @@ public class Player {
     this.username = username;
     this.clientId = clientId;
     curLobbyId = 0;
+    currentLives = 2;
   }
 
   public String getUsername() {
@@ -96,5 +98,17 @@ public class Player {
 
   public int getCurrentGold() {
     return currentGold;
+  }
+
+  /**
+   * updates currentLives when getting informations from client.
+   * @param currentLives is the actual life status.
+   */
+  public void setCurrentLives(int currentLives) {
+    this.currentLives = currentLives;
+  }
+
+  public int getCurrentLives() {
+    return currentLives;
   }
 }
