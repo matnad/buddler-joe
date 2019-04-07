@@ -5,15 +5,17 @@ import static org.lwjgl.glfw.GLFW.GLFW_KEY_ENTER;
 import engine.io.InputHandler;
 import engine.render.Loader;
 import engine.render.fontmeshcreator.FontType;
+import engine.render.fontmeshcreator.GuiText;
 import engine.render.fontrendering.TextMaster;
 import gui.GuiTexture;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import net.ServerLogic;
 import net.packets.chat.PacketChatMessageToServer;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
-
+import java.awt.FontMetrics;
 /**
  * The Chat Window Overlay in the Game
  *
@@ -41,6 +43,8 @@ public class Chat {
   private int msgSize;
   private List<String> text;
   private int textSize;
+  private int counter;
+
 
   /**
    * Initialize Chat, only needs to be called once on game init.
@@ -66,7 +70,7 @@ public class Chat {
     guiText =
         new ChatText(
             chatText,
-            1,
+            0.25f,
             new Vector3f(textColour.x, textColour.y, textColour.z),
             alpha,
             font,
@@ -78,6 +82,7 @@ public class Chat {
     messages = new ArrayList<>();
     text = new ArrayList<>();
     msgSize = 0;
+    counter = 0;
   }
 
   /**
@@ -97,16 +102,17 @@ public class Chat {
             chatText = chatText.substring(4);
             System.out.println(chatText);
             PacketChatMessageToServer broadcostmessage =
-                new PacketChatMessageToServer("(to all from " + game.Game.getActivePlayer().getUsername()+ ") " + chatText + "║-1");
+                new PacketChatMessageToServer(
+                    "(to all from "
+                        + game.Game.getActivePlayer().getUsername()
+                        + ") "
+                        + chatText
+                        + "║-1");
             broadcostmessage.sendToServer();
 
           } else {
             String userName = game.NetPlayerMaster.getNetPlayerById(wisperId).getUsername();
             chatText = chatText.substring(userName.length() + 1);
-            //            System.out.println("chatText");
-            //
-            //            System.out.println("wisperId");
-            //            System.out.println(wisperId);
             PacketChatMessageToServer sendMessage =
                 new PacketChatMessageToServer("(wispered)" + chatText + "║" + wisperId);
             sendMessage.sendToServer();
@@ -213,13 +219,29 @@ public class Chat {
    * <p>Check if messages changed so we don't have to create them every frame
    */
   public void arrangeMessages() {
+
     if (messages.size() != msgSize) { // Something changed
+
+      if (messages.size() > 12) {
+        TextMaster.removeText(messages.get(counter));
+        counter++;
+      }
+
       float posY = .64f;
       float posX = .045f;
-      for (ChatText message : messages) {
-        message.setPosition(new Vector2f(posX, posY));
+//    float posX = 0.35f;
+      for (int i = counter; i < messages.size(); i++) {
+        messages.get(i).setPosition(new Vector2f(posX, posY));
         posY += .02f;
+
+
+
       }
+
+      //      for (ChatText message : messages) {
+      //        message.setPosition(new Vector2f(posX, posY));
+      //        posY += .02f;
+      //      }
       msgSize = messages.size(); // Update size so we can detect further changes
     }
   }
@@ -229,9 +251,17 @@ public class Chat {
     // guiText.setTextString(chatText); // doesn't work, we need to reload the texture and
     // create a new text
     TextMaster.removeText(guiText);
-    guiText =
-        new ChatText(
-            chatText, 1, textColour, alpha, font, new Vector2f(.06f, .91f), 1f, false, false);
+    //    int weigth = stringWidth(chatText);
+
+    if (chatText.length()> 30) {
+      guiText =
+      new ChatText(
+              chatText.substring(chatText.length()-30), 1, textColour, alpha, font, new Vector2f(.06f, .91f), 1f, false, false);
+    } else {
+      guiText =
+          new ChatText(
+              chatText, 1, textColour, alpha, font, new Vector2f(.06f, .91f), 1f, false, false);
+    }
   }
 
   /** Chat fading. */
@@ -294,4 +324,5 @@ public class Chat {
     guiText = clearChatText(guiText);
     messages.add(messageText);
   }
+
 }
