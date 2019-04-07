@@ -4,45 +4,32 @@ import entities.blocks.BlockMaster;
 import entities.blocks.DirtBlock;
 import entities.blocks.GoldBlock;
 import entities.blocks.GrassBlock;
+import entities.blocks.QmarkBlock;
 import entities.blocks.StoneBlock;
+import entities.items.ItemMaster;
+import java.util.Random;
 import net.ServerLogic;
+import net.packets.items.PacketSpawnItem;
+import org.joml.Vector3f;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ServerBlock {
+
+  private static final Logger logger = LoggerFactory.getLogger(PacketSpawnItem.class);
 
   private BlockMaster.BlockTypes type;
   private float hardness;
   private int gridX;
   private int gridY;
   private int goldValue;
+  private final int gridZ = Map.getSize();
 
   ServerBlock(BlockMaster.BlockTypes type, int gridX, int gridY) {
     this.gridX = gridX;
     this.gridY = gridY;
     this.type = type;
-    switch (type) {
-      case DIRT:
-        hardness = DirtBlock.getHardness();
-        break;
-      case STONE:
-        hardness = StoneBlock.getHardness();
-        break;
-      case GOLD:
-        hardness = GoldBlock.getHardness();
-        break;
-      case GRASS:
-        hardness = GrassBlock.getHardness();
-        break;
-      case AIR:
-        hardness = 0;
-        break;
-      default:
-        hardness = 0;
-    }
-
-    if (type == BlockMaster.BlockTypes.GOLD) {
-      goldValue = 50 + 5 * gridY;
-    }
-
+    this.hardness = getBaseHardness();
   }
 
   public BlockMaster.BlockTypes getType() {
@@ -66,6 +53,9 @@ public class ServerBlock {
 
     hardness -= damage;
     if (hardness < 0) {
+      if (this.type == BlockMaster.BlockTypes.QMARK) {
+        onQmarkDestroy(clientThatDealsDamage);
+      }
       this.type = BlockMaster.BlockTypes.AIR;
       ServerLogic.getPlayerList().getPlayer(clientThatDealsDamage).increaseCurrentGold(goldValue);
     }
@@ -88,6 +78,8 @@ public class ServerBlock {
         return GrassBlock.getHardness();
       case AIR:
         return 0;
+      case QMARK:
+        return QmarkBlock.getHardness();
       default:
         return 0;
     }
@@ -96,5 +88,36 @@ public class ServerBlock {
   @Override
   public String toString() {
     return getType().toString();
+  }
+
+  private void onQmarkDestroy(int clientId) {
+
+    Random random = new Random();
+    int r = random.nextInt(4);
+    if (r == 0) {
+      logger.info("Spawning dynamite.");
+      PacketSpawnItem packetSpawnItem =
+          new PacketSpawnItem(
+              ItemMaster.ItemTypes.DYNAMITE, new Vector3f(gridX, gridY, gridZ), clientId);
+      packetSpawnItem.sendToLobby(ServerLogic.getLobbyForClient(clientId).getLobbyId());
+    } else if (r == 1) {
+      logger.info("Spawning heart.");
+      PacketSpawnItem packetSpawnItem =
+          new PacketSpawnItem(
+              ItemMaster.ItemTypes.HEART, new Vector3f(gridX, gridY, gridZ), clientId);
+      packetSpawnItem.sendToLobby(ServerLogic.getLobbyForClient(clientId).getLobbyId());
+    } else if (r == 2) {
+      logger.info("Spawning star.");
+      PacketSpawnItem packetSpawnItem =
+          new PacketSpawnItem(
+              ItemMaster.ItemTypes.STAR, new Vector3f(gridX, gridY, gridZ), clientId);
+      packetSpawnItem.sendToLobby(ServerLogic.getLobbyForClient(clientId).getLobbyId());
+    } else if (r == 3) {
+      logger.info("Spawning ice.");
+      PacketSpawnItem packetSpawnItem =
+          new PacketSpawnItem(
+              ItemMaster.ItemTypes.ICE, new Vector3f(gridX, gridY, gridZ), clientId);
+      packetSpawnItem.sendToLobby(ServerLogic.getLobbyForClient(clientId).getLobbyId());
+    }
   }
 }

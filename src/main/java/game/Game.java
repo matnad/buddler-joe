@@ -54,8 +54,8 @@ import net.packets.lobby.PacketCreateLobby;
 import net.packets.lobby.PacketJoinLobby;
 import net.packets.loginlogout.PacketLogin;
 import org.joml.Vector3f;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+// import org.slf4j.Logger;
+// import org.slf4j.LoggerFactory;
 import terrains.Terrain;
 import terrains.TerrainFlat;
 import util.RandomName;
@@ -67,7 +67,7 @@ import util.RandomName;
  */
 public class Game extends Thread {
 
-  private static final Logger logger = LoggerFactory.getLogger(Game.class);
+  // private static final Logger logger = LoggerFactory.getLogger(Game.class);
 
   /*
    * Set your resolution here, feel free to add new entries and comment them with your name/machine
@@ -77,7 +77,7 @@ public class Game extends Thread {
   private Settings settings;
   private static SettingsSerialiser settingsSerialiser = new SettingsSerialiser();
 
-  public static Window window = new Window(1920, 1080, 60, "Buddler Joe");
+  public static Window window = new Window(1080, 600, 60, "Buddler Joe");
   // Set up GLFW Window
   private static final List<Stage> activeStages = new ArrayList<>();
   private static final List<Stage> stagesToBeAdded = new ArrayList<>();
@@ -325,7 +325,7 @@ public class Game extends Thread {
     aboveGround = GenerateWorld.getAboveGround();
     belowGround = GenerateWorld.getBelowGround();
     if (aboveGround == null || belowGround == null) {
-      logger.error("Could not generate terrain.");
+      // logger.error("Could not generate terrain.");
     }
 
     // Initialize NetPlayerModels

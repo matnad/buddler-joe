@@ -1,11 +1,16 @@
 import game.Game;
+import game.Settings;
+import game.SettingsSerialiser;
 import net.StartServer;
+import net.packets.name.PacketSetName;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /** Start the Main Game Thread. */
 public class Main {
 
+  private static SettingsSerialiser settingsSerialiser = new SettingsSerialiser();
+  private static Settings settings = settingsSerialiser.readSettings();
   // DEFAULT VALUES
   private static boolean client = true;
   // private static String ipAddress = "185.162.250.84";
@@ -55,7 +60,8 @@ public class Main {
         //  logger.error("Invalid IPv4 Address received. Using default.");
         // }
         // ipAddress = serverIP;
-        ipAddress = ipPort[0];
+        settings.setIp(ipPort[0]);
+        settingsSerialiser.serialiseSettings(settings);
 
         // Validate Port
         if (ipPort.length >= 2) {
@@ -68,10 +74,11 @@ public class Main {
 
     if (args.length >= 3 && client && args[2].length() <= 30 && args[2].length() >= 4) {
       username = args[2];
+      PacketSetName packetSetName = new PacketSetName(username);
     }
 
     if (client) {
-      Game game = new Game(ipAddress, port, username);
+      Game game = new Game("127.0.0.1", port, username);
       game.start();
     } else {
       StartServer server = new StartServer(port);
