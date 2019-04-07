@@ -31,8 +31,6 @@ import net.packets.pingpong.PacketPing;
 import net.packets.pingpong.PacketPong;
 import net.packets.playerlist.PacketPlayerList;
 import net.packets.playerprop.PacketPos;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * One thread for each client. This thread contains and manages the input and output streams to
@@ -49,8 +47,6 @@ public class ClientThread implements Runnable {
   private final PingManager pingManager;
   private BufferedReader input;
   private PrintWriter output;
-  //public static final Logger logger = LoggerFactory.getLogger(ClientThread.class);
-
 
   /**
    * Create input and output streams to communicate with the client over the specified socket. Also

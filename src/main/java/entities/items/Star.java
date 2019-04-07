@@ -50,14 +50,12 @@ public class Star extends Item {
   public void update() {
     if (!isOwned()) {
       Game.getActivePlayer().freeze();
-      // particleExplosion.generateParticles(getPosition());
       time += Game.window.getFrameTimeSeconds();
       if (time >= freezeTime) {
         Game.getActivePlayer().defreeze();
         setDestroyed(true);
       }
     } else {
-      // particleExplosion.generateParticles(getPosition());
       time += Game.window.getFrameTimeSeconds();
       if (time >= freezeTime) {
         setDestroyed(true);

@@ -10,8 +10,8 @@ import java.io.Serializable;
 public class Settings implements Serializable {
 
   /** Important user settings to be accessed by various methods. */
-  private int width = 1920;
-  private int height = 1080;
+  private int width = 1080;
+  private int height = 600;
   private boolean fullscreen = false;
   private String username = "Joe Buddler";
   private String ip = "127.0.0.1";

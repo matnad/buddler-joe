@@ -54,8 +54,8 @@ import net.packets.lobby.PacketCreateLobby;
 import net.packets.lobby.PacketJoinLobby;
 import net.packets.loginlogout.PacketLogin;
 import org.joml.Vector3f;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+// import org.slf4j.Logger;
+// import org.slf4j.LoggerFactory;
 import terrains.Terrain;
 import terrains.TerrainFlat;
 import util.RandomName;
@@ -77,7 +77,7 @@ public class Game extends Thread {
   private Settings settings;
   private static SettingsSerialiser settingsSerialiser = new SettingsSerialiser();
 
-  public static Window window = new Window(1920, 1080, 60, "Buddler Joe");
+  public static Window window = new Window(1080, 600, 60, "Buddler Joe");
   // Set up GLFW Window
   private static final List<Stage> activeStages = new ArrayList<>();
   private static final List<Stage> stagesToBeAdded = new ArrayList<>();
@@ -473,9 +473,9 @@ public class Game extends Thread {
 
   private void loadGame(Loader loader) throws InterruptedException {
     // Load Stages
-    // MainMenu.init(loader);
+    MainMenu.init(loader);
     LoadingScreen.progess();
-    //    GameMenu.init(loader);
+    GameMenu.init(loader);
     LoadingScreen.progess();
     ChooseLobby.init(loader);
     LoadingScreen.progess();

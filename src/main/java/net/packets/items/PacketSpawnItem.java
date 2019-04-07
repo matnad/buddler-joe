@@ -127,7 +127,6 @@ public class PacketSpawnItem extends Packet {
   public void validate() {
     if (dataArray.length < 5) {
       addError("Invalid item data.");
-      logger.error("Invalid item data");
       return;
     }
     try {
@@ -135,7 +134,6 @@ public class PacketSpawnItem extends Packet {
       itemId = Integer.parseInt(dataArray[5]);
     } catch (NumberFormatException e) {
       addError("Invalid item owner.");
-      logger.error("Invalid item owner.");
     }
     try {
       position =
