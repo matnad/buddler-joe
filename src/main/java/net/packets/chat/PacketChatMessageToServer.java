@@ -1,5 +1,6 @@
 package net.packets.chat;
 
+import game.NetPlayerMaster;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import net.ServerLogic;
@@ -17,6 +18,7 @@ public class PacketChatMessageToServer extends Packet {
   private String chatmsg;
   private String timestamp;
   private String receiver;
+  private int wisperId;
 
   /**
    * Constructor that will be used by the Client to build the Packet. Which can then be send to the
@@ -34,7 +36,7 @@ public class PacketChatMessageToServer extends Packet {
     Date date = new Date();
     timestamp = simpleFormat.format(date);
     receiver = "0";
-    setData(chatmsg + "║" + timestamp + "║" + receiver);
+    setData(chatmsg + "║" + timestamp);
     validate();
   }
 
@@ -58,8 +60,9 @@ public class PacketChatMessageToServer extends Packet {
       return;
     }
     chatmsg = input[0].trim();
-    timestamp = input[1];
-    receiver = input[2];
+    receiver = input[1];
+    timestamp = input[2];
+    wisperId = Integer.parseInt(receiver);
     setData(data);
     validate();
   }
@@ -102,9 +105,19 @@ public class PacketChatMessageToServer extends Packet {
           addError("Must been in a Lobby to use the chat.");
         } else {
           String fullmessage = "[" + client.getUsername() + "-" + timestamp + "]  " + chatmsg;
-          PacketChatMessageToClient sendMessage =
-              new PacketChatMessageToClient(getClientId(), fullmessage);
-          sendMessage.sendToLobby(client.getCurLobbyId());
+//          System.out.println(fullmessage);
+          if(wisperId > 0){
+            PacketChatMessageToClient sendMessage =
+                    new PacketChatMessageToClient(getClientId(), fullmessage);
+            sendMessage.sendToClient(wisperId);
+          } else if (wisperId == 0) {
+            PacketChatMessageToClient sendMessage =
+                new PacketChatMessageToClient(getClientId(), fullmessage);
+            sendMessage.sendToLobby(client.getCurLobbyId());
+          }else{
+            PacketChatMessageToClient sendMessage = new PacketChatMessageToClient(fullmessage);
+            ServerLogic.sendBroadcastPacket(sendMessage);
+          }
         }
       }
     }

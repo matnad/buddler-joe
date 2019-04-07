@@ -7,10 +7,14 @@ import engine.render.objconverter.ObjFileLoader;
 import engine.textures.ModelTexture;
 import entities.NetPlayer;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.StringJoiner;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
+import net.ServerLogic;
+import net.playerhandling.Player;
 import org.joml.Vector3f;
 
 /**
@@ -147,6 +151,44 @@ public class NetPlayerMaster {
       return Game.getActivePlayer();
     } else {
       return netPlayers.get(clientId);
+    }
+  }
+
+  public static int getClientIdForWhisper(String message) {
+    int x = 0;
+    int j = 0;
+    message = message.substring(1);
+
+    if (message.startsWith("all")) {
+      return -2;
+    }
+
+    HashMap<Integer, Integer> player = new HashMap<>();
+    for (NetPlayer netPlayer : netPlayers.values()) {
+      if (message.startsWith(netPlayer.getUsername())) {
+
+        x++;
+        for (int i = 0; i < netPlayer.getUsername().length(); i++) {
+          if (message.charAt(i) == netPlayer.getUsername().charAt(i)) {
+            j++;
+          }
+          player.put(j, netPlayer.getClientId());
+        }
+      }
+    }
+    if (x == 1) {
+      return player.get(j);
+    }
+    if (x == 0) {
+      return -1;
+    } else {
+      int max = 0;
+      for (int i : player.keySet()) {
+        if (max < i) {
+          max = i;
+        }
+      }
+      return player.get(max);
     }
   }
 }

@@ -1,6 +1,7 @@
 package engine.render.fontmeshcreator;
 
 import engine.render.fontrendering.TextMaster;
+import java.util.ArrayList;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 
@@ -22,6 +23,7 @@ public class GuiText {
   private Vector3f colour = new Vector3f(0f, 0f, 0f);
   private Vector2f position;
   private int numberOfLines;
+  private ArrayList<Float> lengthOfLines;
 
   private FontType font;
 
@@ -235,5 +237,13 @@ public class GuiText {
 
   public void setAlpha(float alpha) {
     this.alpha = alpha;
+  }
+
+  public ArrayList<Float> getLengthOfLines() {
+    return lengthOfLines;
+  }
+
+  void setLengthOfLines(ArrayList<Float> lengthOfLines) {
+    this.lengthOfLines = lengthOfLines;
   }
 }

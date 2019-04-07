@@ -328,7 +328,7 @@ public class Game extends Thread {
       e.printStackTrace();
     }
 
-    chat = new Chat(loader);
+    chat = new Chat(loader, 12, 0.34f);
     Fps fpsCounter = new Fps();
 
     // Initialize Particle Master

@@ -5,10 +5,13 @@ import static org.lwjgl.glfw.GLFW.GLFW_KEY_ENTER;
 import engine.io.InputHandler;
 import engine.render.Loader;
 import engine.render.fontmeshcreator.FontType;
+import engine.render.fontmeshcreator.GuiText;
 import engine.render.fontrendering.TextMaster;
 import gui.GuiTexture;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
+import net.packets.chat.PacketChatMessageToServer;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 
@@ -35,15 +38,25 @@ public class Chat {
   private ChatText guiText;
   private Vector3f textColour;
 
+  private float maxLineLength;
+  private int maxLines;
+
   private List<ChatText> messages;
   private int msgSize;
+  private List<String> text;
+  private int textSize;
+  private String output;
+  private int counter;
+
 
   /**
    * Initialize Chat, only needs to be called once on game init.
    *
    * @param loader main loader
    */
-  public Chat(Loader loader) {
+  public Chat(Loader loader, int maxLines, float maxLineLength) {
+    this.maxLines = maxLines;
+    this.maxLineLength = maxLineLength;
     enabled = false;
     alpha = ALPHA_OFF;
 
@@ -62,17 +75,19 @@ public class Chat {
     guiText =
         new ChatText(
             chatText,
-            1,
+            0.25f,
             new Vector3f(textColour.x, textColour.y, textColour.z),
             alpha,
             font,
             new Vector2f(.06f, .91f),
-            1f,
+            maxLineLength,
             false,
             false);
 
     messages = new ArrayList<>();
+    text = new ArrayList<>();
     msgSize = 0;
+
   }
 
   /**
@@ -83,7 +98,47 @@ public class Chat {
   public void checkInputs() {
     if (InputHandler.isKeyPressed(GLFW_KEY_ENTER)) {
       if (chatText.length() > 0 && enabled) {
-        sendMessage();
+
+        if (chatText.startsWith("@")) {
+          int wisperId = game.NetPlayerMaster.getClientIdForWhisper(chatText);
+          if (-1 == wisperId) {
+            text.add("Username ist ungültig");
+          } else if (-2 == wisperId) {
+            chatText = chatText.substring(4);
+            System.out.println(chatText);
+            PacketChatMessageToServer broadcostmessage =
+                new PacketChatMessageToServer(
+                    "(to all from "
+                        + game.Game.getActivePlayer().getUsername()
+                        + ") "
+                        + chatText
+                        + "║-1");
+            broadcostmessage.sendToServer();
+
+          } else {
+            String userName = game.NetPlayerMaster.getNetPlayerById(wisperId).getUsername();
+            chatText = chatText.substring(userName.length() + 1);
+            PacketChatMessageToServer sendMessage =
+                new PacketChatMessageToServer("(wispered)" + chatText + "║" + wisperId);
+            sendMessage.sendToServer();
+
+            PacketChatMessageToServer sendMessage2 =
+                new PacketChatMessageToServer(
+                    "(wispered to "
+                        + userName
+                        + ")"
+                        + chatText
+                        + "║"
+                        + game.Game.getActivePlayer().getClientId());
+            sendMessage2.sendToServer();
+          }
+        } else {
+
+          PacketChatMessageToServer sendMessage = new PacketChatMessageToServer(chatText + "║0");
+          sendMessage.sendToServer();
+        }
+
+        //        sendMessage();
         chatText = "";
         InputHandler.resetInputString();
       } else {
@@ -96,6 +151,10 @@ public class Chat {
         }
         InputHandler.resetInputString();
       }
+    }
+
+    if (messages.size() != text.size()) {
+      addChatText();
     }
 
     updateAlpha();
@@ -148,7 +207,7 @@ public class Chat {
             alpha,
             font,
             new Vector2f(.06f, .91f),
-            1f,
+            maxLineLength,
             false,
             false);
     guiText = clearChatText(guiText);
@@ -164,14 +223,29 @@ public class Chat {
    *
    * <p>Check if messages changed so we don't have to create them every frame
    */
-  private void arrangeMessages() {
+  public void arrangeMessages() {
+
     if (messages.size() != msgSize) { // Something changed
-      float posY = .64f;
-      float posX = .045f;
-      for (ChatText message : messages) {
-        message.setPosition(new Vector2f(posX, posY));
-        posY += .02f;
+      float posY = .88f;
+      float posX = .03f;
+      int currentLines = 0;
+
+      for (int i = messages.size() - 1; i >= 0; i--) {
+        int lines = messages.get(i).getNumberOfLines();
+        currentLines += lines;
+        posY -= .02f * lines;
+        messages.get(i).setPosition(new Vector2f(posX, posY));
+        if (currentLines >= maxLines + 1) {
+          messages.get(i).remove();
+        }
+        if (currentLines > maxLines + 1) {
+          break;
+        }
       }
+      // for (ChatText message : messages) {
+      //  message.setPosition(new Vector2f(posX, posY));
+      //  posY += .02f * message.getNumberOfLines();
+      // }
       msgSize = messages.size(); // Update size so we can detect further changes
     }
   }
@@ -180,10 +254,20 @@ public class Chat {
   private void updateGuiText() {
     // guiText.setTextString(chatText); // doesn't work, we need to reload the texture and
     // create a new text
-    TextMaster.removeText(guiText);
+    output = chatText;
+    do{
+      TextMaster.removeText(guiText);
+      
     guiText =
         new ChatText(
-            chatText, 1, textColour, alpha, font, new Vector2f(.06f, .91f), 1f, false, false);
+            output, 1, textColour, alpha, font, new Vector2f(.06f, .91f), 1f, false, false);
+
+      if (output.length() > 0) {
+        output = output.substring(1);
+      }
+
+    }while(guiText.getLengthOfLines().get(guiText.getLengthOfLines().size()-1)>0.3f);
+//    System.out.println(guiText.getLengthOfLines().get(guiText.getLengthOfLines().size()-1));
   }
 
   /** Chat fading. */
@@ -224,4 +308,27 @@ public class Chat {
   public GuiTexture getChatGui() {
     return chatGui;
   }
+
+  public void addText(String stringText) {
+    text.add(stringText);
+    textSize++;
+  }
+
+  public void addChatText() {
+
+    ChatText messageText =
+        new ChatText(
+            text.get(text.size() - 1),
+            .7f,
+            textColour,
+            alpha,
+            font,
+            new Vector2f(.06f, .91f),
+            maxLineLength,
+            false,
+            false);
+    guiText = clearChatText(guiText);
+    messages.add(messageText);
+  }
+
 }
