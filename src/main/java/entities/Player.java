@@ -24,6 +24,7 @@ import game.stages.Playing;
 import java.util.ArrayList;
 import java.util.List;
 import net.packets.block.PacketBlockDamage;
+import net.packets.life.PacketLifeStatus;
 import net.packets.playerprop.PacketPos;
 import org.joml.Vector2i;
 import org.joml.Vector3f;
@@ -51,6 +52,7 @@ public class Player extends NetPlayer {
 
   // Resources and Stats
   public int currentGold; // Current coins
+  private int currentLives;
   private float digDamage; // Damage per second when colliding with blocks
 
   // Movement Related
@@ -96,6 +98,7 @@ public class Player extends NetPlayer {
     super(0, username, model, position, rotX, rotY, rotZ, scale);
     digDamage = 1;
     currentGold = 0;
+    currentLives = 2;
   }
 
   /**
@@ -176,7 +179,7 @@ public class Player extends NetPlayer {
     }
     // Effects when being crushed
     Playing.showDamageTakenOverlay();
-
+    decreaseCurrentLives();
     // Find a place to move the player to
     Vector2i playerGridPos =
         new Vector2i(collideWithBlockBelow.getGridX(), collideWithBlockBelow.getGridY() - 1);
@@ -397,5 +400,30 @@ public class Player extends NetPlayer {
 
   public int getCurrentGold() {
     return currentGold;
+  }
+
+  /**
+   * updates the player's life status and sends the life status to server.
+   */
+  public void increaseCurrentLives() {
+    if (currentLives < 2) {
+      currentLives++;
+    }
+    PacketLifeStatus lives = new PacketLifeStatus(String.valueOf(currentLives));
+    lives.processData();
+  }
+
+  /**
+   * updates the player's life status and sends the life status to server.
+   */
+  public void decreaseCurrentLives() {
+    currentLives--;
+    // hier send paket
+    PacketLifeStatus lives = new PacketLifeStatus(String.valueOf(currentLives));
+    lives.processData();
+  }
+
+  public int getCurrentLives() {
+    return currentLives;
   }
 }

@@ -14,6 +14,7 @@ import net.packets.PacketReady;
 import net.packets.block.PacketBlockDamage;
 import net.packets.chat.PacketChatMessageToServer;
 import net.packets.items.PacketSpawnItem;
+import net.packets.life.PacketLifeStatus;
 import net.packets.lobby.PacketCreateLobby;
 import net.packets.lobby.PacketGetLobbies;
 import net.packets.lobby.PacketGetLobbyInfo;
@@ -173,6 +174,9 @@ public class ClientThread implements Runnable {
             break;
           case GET_HISTORY:
             p = new PacketGetHistory(clientId);
+            break;
+          case LIFE_STATUS:
+            p = new PacketLifeStatus(clientId, data);
             break;
           default:
         }
