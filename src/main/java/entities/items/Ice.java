@@ -56,7 +56,7 @@ public class Ice extends Item {
    * @param loader The current loader passed on by ItemMaster.
    */
   public static void init(Loader loader) {
-    RawModel rawDynamite = loader.loadToVao(ObjFileLoader.loadObj("iceCream"));
+    RawModel rawDynamite = loader.loadToVao(ObjFileLoader.loadObj("dynamite"));
     setPreloadedModel(
         new TexturedModel(rawDynamite, new ModelTexture(loader.loadTexture("dynamite"))));
   }
