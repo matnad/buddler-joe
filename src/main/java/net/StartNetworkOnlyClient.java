@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import net.packets.chat.PacketChatMessageToServer;
+import net.packets.highscore.PacketHighscore;
 import net.packets.lobby.PacketCreateLobby;
 import net.packets.lobby.PacketGetLobbies;
 import net.packets.lobby.PacketGetLobbyInfo;
@@ -12,6 +13,9 @@ import net.packets.lobby.PacketLeaveLobby;
 import net.packets.loginlogout.PacketDisconnect;
 import net.packets.loginlogout.PacketLogin;
 import net.packets.name.PacketSetName;
+import net.packets.playerlist.PacketPlayerList;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * The client-side interface to communicate with the server.
@@ -26,6 +30,7 @@ public class StartNetworkOnlyClient implements Runnable {
   private static final BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
   private static String serverIp;
   private static int serverPort;
+  public static final Logger logger = LoggerFactory.getLogger(StartNetworkOnlyClient.class);
 
   /**
    * Start the client logic and pass ip + port.
@@ -68,7 +73,9 @@ public class StartNetworkOnlyClient implements Runnable {
                 + "leave - Leave your current lobby\n"
                 + "connect - reconnect if the socket has been closed, "
                 + "display connection info otherwise\n"
+                + "playerlist - Receive a List of all active  players\n"
                 + "disconnect - Disconnect from the server\n"
+                + "highscore - get the current highscore on the server\n"
                 + "help - Display this message");
       } else if (inputMessage.equals("ping")) {
         System.out.println(
@@ -98,6 +105,12 @@ public class StartNetworkOnlyClient implements Runnable {
         p.sendToServer();
       } else if (inputMessage.startsWith("C ") && inputMessage.length() > 2) {
         PacketChatMessageToServer p = new PacketChatMessageToServer(inputMessage.substring(2));
+        p.sendToServer();
+      } else if (inputMessage.equals("highscore")) {
+        PacketHighscore p = new PacketHighscore();
+        p.sendToServer();
+      } else if (inputMessage.equals("playerlist")) {
+        PacketPlayerList p = new PacketPlayerList();
         p.sendToServer();
       } else if (inputMessage.equals("disconnect")) {
         PacketDisconnect p = new PacketDisconnect();

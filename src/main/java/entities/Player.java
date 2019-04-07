@@ -70,6 +70,7 @@ public class Player extends NetPlayer {
   private float currentSpeed = 0;
   private float currentTurnSpeed = 0;
   private float upwardsSpeed = 0;
+  private boolean frozen = false;
 
   private List<Block> closeBlocks;
 
@@ -237,7 +238,7 @@ public class Player extends NetPlayer {
         }
         isInAir = false;
         // If we hold S, dig down
-        if (InputHandler.isKeyDown(GLFW_KEY_S)) {
+        if (InputHandler.isKeyDown(GLFW_KEY_S) && !frozen) {
           digBlock(block);
         }
       } else if (theta >= angle45 * 3) {
@@ -334,6 +335,11 @@ public class Player extends NetPlayer {
       return;
     }
 
+    if (frozen) {
+      currentSpeed = 0;
+      return;
+    }
+
     if (InputHandler.isKeyPressed(GLFW_KEY_Q)) {
       if (InputHandler.isPlacerMode()) {
         MousePlacer.cancelPlacing();
@@ -402,9 +408,7 @@ public class Player extends NetPlayer {
     return currentGold;
   }
 
-  /**
-   * updates the player's life status and sends the life status to server.
-   */
+  /** updates the player's life status and sends the life status to server. */
   public void increaseCurrentLives() {
     if (currentLives < 2) {
       currentLives++;
@@ -413,9 +417,7 @@ public class Player extends NetPlayer {
     lives.processData();
   }
 
-  /**
-   * updates the player's life status and sends the life status to server.
-   */
+  /** updates the player's life status and sends the life status to server. */
   public void decreaseCurrentLives() {
     currentLives--;
     // hier send paket
@@ -425,5 +427,13 @@ public class Player extends NetPlayer {
 
   public int getCurrentLives() {
     return currentLives;
+  }
+
+  public void freeze() {
+    this.frozen = true;
+  }
+
+  public void defreeze() {
+    this.frozen = false;
   }
 }

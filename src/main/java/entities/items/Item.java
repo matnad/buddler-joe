@@ -9,6 +9,7 @@ public abstract class Item extends Entity {
 
   private final ItemMaster.ItemTypes type;
   private boolean owned;
+  private int key;
 
   /**
    * Abstract Constructor.
@@ -34,7 +35,8 @@ public abstract class Item extends Entity {
       System.out.println("WARNING! No model preloaded!");
     }
     this.type = type;
-    this.owned = true;
+    this.key++;
+    this.owned = false;
   }
 
   public abstract void update();
@@ -51,4 +53,11 @@ public abstract class Item extends Entity {
     return type;
   }
 
+  public int getKey() {
+    return key;
+  }
+
+  public void setKey(int key) {
+    this.key = key;
+  }
 }

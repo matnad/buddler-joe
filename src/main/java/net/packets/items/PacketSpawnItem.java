@@ -1,10 +1,16 @@
 package net.packets.items;
 
 import entities.items.Dynamite;
+import entities.items.Heart;
+import entities.items.Ice;
 import entities.items.Item;
 import entities.items.ItemMaster;
+import entities.items.ServerItem;
+import entities.items.ServerItemState;
+import entities.items.Star;
 import entities.items.Torch;
 import game.Game;
+import game.map.Map;
 import net.ServerLogic;
 import net.lobbyhandling.Lobby;
 import net.packets.Packet;
@@ -17,7 +23,8 @@ public class PacketSpawnItem extends Packet {
   private static final Logger logger = LoggerFactory.getLogger(PacketSpawnItem.class);
   private int owner;
   private Vector3f position;
-  private int type;
+  private String type;
+  private int itemId;
 
   private String[] dataArray;
 
@@ -35,6 +42,33 @@ public class PacketSpawnItem extends Packet {
   }
 
   /**
+   * Constructor to be used when a questionmark block gets destroyed to spawn an item and have
+   * certain effects on certain players.
+   *
+   * @param type type of the item to be spawned
+   * @param position position of the item to be spawned
+   * @param clientId The client who destroyed the questionmark block
+   */
+  public PacketSpawnItem(ItemMaster.ItemTypes type, Vector3f position, int clientId) {
+    super(Packet.PacketTypes.SPAWN_ITEM);
+    ServerItem serverItem = new ServerItem(clientId, type, position);
+    ServerItemState.addItem(serverItem);
+    setData(
+        clientId
+            + "║"
+            + type.getItemId()
+            + "║"
+            + position.x
+            + "║"
+            + position.y
+            + "║"
+            + position.z
+            + "║"
+            + serverItem.getItemId());
+    // No need to validate. No user input
+  }
+
+  /**
    * Server receives packet, validates it and is then ready to broadcast it to the lobby. Will pass
    * on the same data but set the owner of the id equal to the owner of the packet.
    *
@@ -48,7 +82,21 @@ public class PacketSpawnItem extends Packet {
     dataArray = data.split("║");
     dataArray[0] = "" + clientId;
     validate(); // Validate and assign in one step
-    setData(clientId + "║" + type + "║" + position.x + "║" + position.y + "║" + position.z);
+    ServerItem serverItem =
+        new ServerItem(clientId, ItemMaster.ItemTypes.getItemTypeById(type), position);
+    ServerItemState.addItem(serverItem);
+    setData(
+        clientId
+            + "║"
+            + type
+            + "║"
+            + position.x
+            + "║"
+            + position.y
+            + "║"
+            + position.z
+            + "║"
+            + serverItem.getItemId());
   }
 
   /**
@@ -63,34 +111,43 @@ public class PacketSpawnItem extends Packet {
     validate(); // Validate and assign in one step
   }
 
+  /**
+   * Validation of the data on the package. Which checks:
+   *
+   * <p>Whether the data array has the right length
+   *
+   * <p>Whether the owner and itemId are Integers
+   *
+   * <p>Whether the coordinates aer floats while also changing the grid coordinates in real map
+   * coordinates
+   *
+   * <p>Whether the item Type is ascended ascii.
+   */
   @Override
   public void validate() {
-    if (dataArray.length != 5) {
+    if (dataArray.length < 5) {
       addError("Invalid item data.");
       return;
     }
     try {
       owner = Integer.parseInt(dataArray[0]);
+      itemId = Integer.parseInt(dataArray[5]);
     } catch (NumberFormatException e) {
       addError("Invalid item owner.");
     }
     try {
       position =
           new Vector3f(
-              Float.parseFloat(dataArray[2]),
-              Float.parseFloat(dataArray[3]),
+              Float.parseFloat(dataArray[2]) * Map.getDim() + Map.getDim() / 2,
+              -(Float.parseFloat(dataArray[3])) * Map.getDim() - Map.getDim() / 2,
               Float.parseFloat(dataArray[4]));
     } catch (NumberFormatException e) {
       addError("Invalid item position data.");
     }
-    try {
-      type = Integer.parseInt(dataArray[1]);
-    } catch (NumberFormatException e) {
-      addError("Invalid item type variable.");
+    if (!isExtendedAscii(dataArray[1])) {
+      return;
     }
-    if (type < 1) {
-      addError("Invalid item type.");
-    }
+    type = dataArray[1];
   }
 
   /**
@@ -109,7 +166,6 @@ public class PacketSpawnItem extends Packet {
     if (itemType == null) {
       addError("Invalid item id.");
     }
-
     if (getClientId() > 0) {
       // Server side
       Lobby lobby = ServerLogic.getLobbyForClient(getClientId());
@@ -126,15 +182,29 @@ public class PacketSpawnItem extends Packet {
     } else {
       // Client side
       if (!hasErrors()) {
-        if (owner == Game.getActivePlayer().getClientId()) {
-          return;
-        }
+        // if (owner == Game.getActivePlayer().getClientId()) {
+        //  return;
+        // }
         Item item = ItemMaster.generateItem(itemType, position);
-        item.setOwned(false);
         if (item instanceof Torch) {
           ((Torch) item).checkForBlock(); // Attach to a block if placed on one.
         } else if (item instanceof Dynamite) {
+          item.setOwned(true);
           ((Dynamite) item).setActive(true); // Start ticking
+        } else if (item instanceof Heart) {
+          if (owner == Game.getActivePlayer().getClientId()) {
+            item.setOwned(true);
+          } else {
+            return;
+          }
+        } else if (item instanceof Ice) {
+          if (owner == Game.getActivePlayer().getClientId()) {
+            item.setOwned(true);
+          }
+        } else if (item instanceof Star) {
+          if (owner == Game.getActivePlayer().getClientId()) {
+            item.setOwned(true);
+          }
         }
       } else {
         logger.error(
