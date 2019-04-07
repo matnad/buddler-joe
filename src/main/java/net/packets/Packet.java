@@ -315,7 +315,7 @@ public abstract class Packet {
     START("START"),
     GAME_OVER("STOPG"),
     GET_HISTORY("HISGE"),
-    HISTORY("HISTO");
+    HISTORY("HISTO"),
     LIFE_STATUS("LSTAT");
 
     private final String packetCode;
