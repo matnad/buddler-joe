@@ -21,6 +21,7 @@ public class StoneBlock extends Block {
   StoneBlock(
       Vector3f position, float rotX, float rotY, float rotZ, float scale, int gridX, int gridY) {
     super(
+        blockModel,
         BlockMaster.BlockTypes.STONE,
         hardness,
         2f,
@@ -41,10 +42,14 @@ public class StoneBlock extends Block {
   }
 
   static void init(Loader loader) {
-    RawModel rawBlock = loader.loadToVao(ObjFileLoader.loadObj("dirt"));
+    RawModel rawBlock = loader.loadToVao(ObjFileLoader.loadObj("block"));
     ModelTexture blockAtlas = new ModelTexture(loader.loadTexture("stone4x4"));
     blockAtlas.setNumberOfRows(2);
     blockModel = new TexturedModel(rawBlock, blockAtlas);
+  }
+
+  public static float getHardness() {
+    return hardness;
   }
 
   @Override
@@ -53,9 +58,5 @@ public class StoneBlock extends Block {
   @Override
   public TexturedModel getDebrisModel() {
     return blockModel;
-  }
-
-  public static float getHardness() {
-    return hardness;
   }
 }

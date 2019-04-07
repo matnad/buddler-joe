@@ -8,12 +8,12 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.SocketException;
 import net.packets.Packet;
-import net.packets.gamestatus.PacketGameEnd;
-import net.packets.gamestatus.PacketHistory;
-import net.packets.gamestatus.PacketStartRound;
 import net.packets.block.PacketBlockDamage;
 import net.packets.chat.PacketChatMessageStatus;
 import net.packets.chat.PacketChatMessageToClient;
+import net.packets.gamestatus.PacketGameEnd;
+import net.packets.gamestatus.PacketHistory;
+import net.packets.gamestatus.PacketStartRound;
 import net.packets.highscore.PacketHighscore;
 import net.packets.items.PacketSpawnItem;
 import net.packets.lists.PacketGamesOverview;
@@ -103,6 +103,28 @@ public class ClientLogic implements Runnable {
    */
   public static Socket getServer() {
     return server;
+  }
+
+  public static boolean isConnected() {
+    return connected;
+  }
+
+  public static boolean isDisconnectFromServer() {
+    return disconnectFromServer;
+  }
+
+  /**
+   * A method to disconnect from the server.
+   *
+   * @param disconnectFromServer The boolean if to be disconnected
+   */
+  public static void setDisconnectFromServer(boolean disconnectFromServer) {
+    ClientLogic.disconnectFromServer = disconnectFromServer;
+    try {
+      server.close();
+    } catch (IOException e) {
+      System.out.println("Problem closing connection to server.");
+    }
   }
 
   /** Thread to run the ClientLogic on, calls the method waitforserver to start up. */
@@ -231,7 +253,7 @@ public class ClientLogic implements Runnable {
           p = new PacketStartRound();
           break;
         case GAME_OVER:
-          p = new PacketGameEnd();
+          p = new PacketGameEnd(data);
           break;
         case HISTORY:
           p = new PacketHistory(data);
@@ -241,28 +263,6 @@ public class ClientLogic implements Runnable {
       if (p != null) {
         p.processData();
       }
-    }
-  }
-
-  public static boolean isConnected() {
-    return connected;
-  }
-
-  public static boolean isDisconnectFromServer() {
-    return disconnectFromServer;
-  }
-
-  /**
-   * A method to disconnect from the server.
-   *
-   * @param disconnectFromServer The boolean if to be disconnected
-   */
-  public static void setDisconnectFromServer(boolean disconnectFromServer) {
-    ClientLogic.disconnectFromServer = disconnectFromServer;
-    try {
-      server.close();
-    } catch (IOException e) {
-      System.out.println("Problem closing connection to server.");
     }
   }
 }

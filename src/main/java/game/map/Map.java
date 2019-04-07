@@ -16,21 +16,18 @@ import org.joml.Vector3f;
  */
 public abstract class Map<T> {
 
-  protected int width;
-  protected int height;
-  protected long seed;
-
   protected static final int dim = 6;
   protected static final int size = 3;
-
-  protected T[][] blocks;
-
   /* Threshold function:
    * Values below first number will be STONE
    * Values between the first and second number will be DIRT BLOCKS
    * Values above the second number will be AIR
    */
   protected final float[] thresholds = {.28f, .8f};
+  protected int width;
+  protected int height;
+  protected long seed;
+  protected T[][] blocks;
 
   /**
    * Generate a new map.
@@ -43,6 +40,14 @@ public abstract class Map<T> {
     this.width = width;
     this.height = height;
     this.seed = seed;
+  }
+
+  public static int getSize() {
+    return size;
+  }
+
+  public static int getDim() {
+    return dim;
   }
 
   abstract void generateMap();
@@ -87,14 +92,6 @@ public abstract class Map<T> {
 
   public int getHeight() {
     return height;
-  }
-
-  public static int getSize() {
-    return size;
-  }
-
-  public static int getDim() {
-    return dim;
   }
 
   public Vector3f gridToWorld(Vector2i gridCoords) {

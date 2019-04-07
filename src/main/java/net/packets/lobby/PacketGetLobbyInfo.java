@@ -63,7 +63,7 @@ public class PacketGetLobbyInfo extends Packet {
       pcli = new PacketCurLobbyInfo(getClientId(), info);
     } else {
       int lobbyId = ServerLogic.getPlayerList().getPlayers().get(getClientId()).getCurLobbyId();
-      //info = "OK║" + ServerLogic.getLobbyList().getLobby(lobbyId).getPlayerNames();
+      // info = "OK║" + ServerLogic.getLobbyList().getLobby(lobbyId).getPlayerNames();
       pcli = new PacketCurLobbyInfo(getClientId(), lobbyId);
     }
 

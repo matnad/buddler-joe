@@ -1,10 +1,7 @@
 package game;
 
-import engine.models.TexturedModel;
 import engine.render.Loader;
 import engine.render.MasterRenderer;
-import engine.render.objconverter.ObjFileLoader;
-import engine.textures.ModelTexture;
 import entities.NetPlayer;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -12,9 +9,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.StringJoiner;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.CopyOnWriteArrayList;
-import net.ServerLogic;
-import net.playerhandling.Player;
 import org.joml.Vector3f;
 
 /**
@@ -25,13 +19,9 @@ public class NetPlayerMaster {
   private static String lobbyname;
   private static Map<Integer, NetPlayer> netPlayers;
 
-  private static TexturedModel defaultSkin;
-  private static float defaultSize;
-
   static {
     lobbyname = "";
     netPlayers = new ConcurrentHashMap<>();
-    defaultSize = 0.4f;
   }
 
   /**
@@ -39,12 +29,7 @@ public class NetPlayerMaster {
    *
    * @param loader main loader
    */
-  public static void init(Loader loader) {
-    defaultSkin =
-        new TexturedModel(
-            loader.loadToVao(ObjFileLoader.loadObj("person")),
-            new ModelTexture(loader.loadTexture("person")));
-  }
+  public static void init(Loader loader) {}
 
   /**
    * Adds net players to render list. Call before rendering
@@ -154,6 +139,14 @@ public class NetPlayerMaster {
     }
   }
 
+  /**
+   * Get the client id for the user after the "@" in a String.
+   *
+   * <p>Checks for subsets of names too.
+   *
+   * @param message the message to be sent
+   * @return the client id for the target player
+   */
   public static int getClientIdForWhisper(String message) {
     int x = 0;
     int j = 0;

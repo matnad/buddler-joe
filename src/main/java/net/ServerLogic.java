@@ -6,7 +6,8 @@ import java.net.Socket;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
-
+import net.highscore.ServerHighscore;
+import net.highscore.ServerHighscoreSerialiser;
 import net.lobbyhandling.Lobby;
 import net.lobbyhandling.ServerLobbyList;
 import net.packets.Packet;
@@ -38,7 +39,7 @@ public class ServerLogic {
   private static ServerLobbyList lobbyList;
   private static HashMap<Integer, ClientThread> clientThreadMap;
   private static ServerSocket serverSocket;
-
+  private static ServerHighscore serverHighscore;
 
   /**
    * Initialize a new Server Logic. Creates the Socket to listen on. You have to call {@link
@@ -52,9 +53,10 @@ public class ServerLogic {
     clientThreadMap = new HashMap<>();
     lobbyList = new ServerLobbyList();
 
-
     serverSocket = new ServerSocket(portValue);
     System.out.println("Started Server on port " + portValue);
+
+    serverHighscore = ServerHighscoreSerialiser.readServerHighscore();
   }
 
   /**
@@ -228,6 +230,24 @@ public class ServerLogic {
   }
 
   /**
+   * Return the Lobby for a client or null if the player doesn't exist or is not in a Lobby.
+   *
+   * @param clientId client to get the lobby for
+   * @return Lobby of the client
+   */
+  public static Lobby getLobbyForClient(int clientId) {
+    Player player = playerList.getPlayer(clientId);
+    if (player != null) {
+      return player.getLobby();
+    }
+    return null;
+  }
+
+  public static ServerHighscore getServerHighscore() {
+    return serverHighscore;
+  }
+
+  /**
    * Method to wait for incoming players and then create and start a new thread for them.
    *
    * @throws IOException when the server socket fails
@@ -252,19 +272,5 @@ public class ServerLogic {
     } catch (IOException e) {
       System.out.println("Could not close ServerSocket");
     }
-  }
-
-  /**
-   * Return the Lobby for a client or null if the player doesn't exist or is not in a Lobby.
-   *
-   * @param clientId client to get the lobby for
-   * @return Lobby of the client
-   */
-  public static Lobby getLobbyForClient(int clientId) {
-    Player player = playerList.getPlayer(clientId);
-    if (player != null) {
-      return player.getLobby();
-    }
-    return null;
   }
 }

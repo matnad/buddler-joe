@@ -79,9 +79,9 @@ public class Light {
     return new Vector3f(colour).mul(brightness);
   }
 
-  //public Vector3f getColour() {
+  // public Vector3f getColour() {
   //  return colour;
-  //}
+  // }
 
   public float getBrightness() {
     return brightness;
@@ -123,12 +123,12 @@ public class Light {
     return direction;
   }
 
-  public float getCutoff() {
-    return cutoff;
-  }
-
   public void setDirection(Vector3f direction) {
     this.direction = direction;
+  }
+
+  public float getCutoff() {
+    return cutoff;
   }
 
   public void setCutoff(float cutoff) {

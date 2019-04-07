@@ -92,7 +92,7 @@ public class MasterRenderer {
     float scaleX = scaleY / aspectRatio;
     final float frustumLength = FAR_PLANE - NEAR_PLANE;
 
-    projectionMatrix = new Matrix4f(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);
+    projectionMatrix = new Matrix4f(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
     projectionMatrix._m00(scaleX);
     projectionMatrix._m11(scaleY);
     projectionMatrix._m22(-((FAR_PLANE + NEAR_PLANE) / frustumLength));

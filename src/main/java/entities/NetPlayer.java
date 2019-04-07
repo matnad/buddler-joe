@@ -16,14 +16,7 @@ import org.joml.Vector3f;
  */
 public class NetPlayer extends Entity {
 
-  private int clientId;
-  private String username;
-  private Light headLight;
-  private Light headLightGlow;
-
-  private static TexturedModel joeModel;
   private static final float joeModelSize = .2f;
-
   private static final Vector3f[] lampColors = {
     new Vector3f(1, 1, 1).normalize(),
     new Vector3f(3f, 1, 1).normalize(),
@@ -31,7 +24,12 @@ public class NetPlayer extends Entity {
     new Vector3f(1, 1, 3f).normalize(),
     new Vector3f(3f, 1, 3f).normalize()
   };
+  private static TexturedModel joeModel;
   private static int counter;
+  private int clientId;
+  private String username;
+  private Light headLight;
+  private Light headLightGlow;
   // private DirectionalUsername directionalUsername;
   private Nameplate nameplate;
 
@@ -48,12 +46,7 @@ public class NetPlayer extends Entity {
    * @param username username of net player
    */
   public NetPlayer(
-      int clientId,
-      String username,
-      Vector3f position,
-      float rotX,
-      float rotY,
-      float rotZ) {
+      int clientId, String username, Vector3f position, float rotX, float rotY, float rotZ) {
     super(getJoeModel(), position, rotX, rotY, rotZ, getJoeModelSize());
 
     this.clientId = clientId;
@@ -71,12 +64,25 @@ public class NetPlayer extends Entity {
     nameplate = new Nameplate(this);
   }
 
+  /**
+   * Load the player model before creating player models.
+   *
+   * @param loader main loader
+   */
   public static void init(Loader loader) {
     RawModel rawPlayer = loader.loadToVao(ObjFileLoader.loadObj("joe"));
     joeModel = new TexturedModel(rawPlayer, new ModelTexture(loader.loadTexture("uvjoe")));
 
     joeModel.getTexture().setUseFakeLighting(true);
     joeModel.getTexture().setShineDamper(.3f);
+  }
+
+  public static TexturedModel getJoeModel() {
+    return joeModel;
+  }
+
+  public static float getJoeModelSize() {
+    return joeModelSize;
   }
 
   public String getUsername() {
@@ -151,13 +157,5 @@ public class NetPlayer extends Entity {
   public void increasePosition(Vector3f velocity) {
     super.increasePosition(velocity);
     updateHeadlightPosition();
-  }
-
-  public static TexturedModel getJoeModel() {
-    return joeModel;
-  }
-
-  public static float getJoeModelSize() {
-    return joeModelSize;
   }
 }

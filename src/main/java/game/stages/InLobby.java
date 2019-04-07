@@ -6,7 +6,6 @@ import engine.io.InputHandler;
 import engine.render.Loader;
 import engine.render.fontrendering.TextMaster;
 import game.Game;
-
 import game.LobbyPlayerEntry;
 import game.NetPlayerMaster;
 import gui.GuiTexture;
@@ -15,7 +14,6 @@ import gui.text.ChangableGuiText;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
-
 import net.packets.gamestatus.PacketReady;
 import net.packets.lobby.PacketLeaveLobby;
 import org.joml.Vector2f;
@@ -30,13 +28,12 @@ import org.slf4j.LoggerFactory;
  * @author Sebastian Schlachter
  */
 public class InLobby {
+  public static final Logger logger = LoggerFactory.getLogger(InLobby.class);
   private static final float FADE_TIME = .5f;
   private static float fadeTimer;
   private static float currentAlpha;
-
   private static GuiTexture background;
   private static GuiTexture inLobby;
-
   private static MenuButton leave;
   private static MenuButton ready;
   private static ChangableGuiText[] names = new ChangableGuiText[7];
@@ -49,7 +46,6 @@ public class InLobby {
     0.330864f, 0.4f, 0.469136f, 0.538272f, 0.607407f, 0.676534f, 0.745669f
   };
   private static CopyOnWriteArrayList<LobbyPlayerEntry> playerCatalog;
-  public static final Logger logger = LoggerFactory.getLogger(InLobby.class);
   private static ChangableGuiText lobbyname;
   private static Vector3f black = new Vector3f(0, 0, 0);
 

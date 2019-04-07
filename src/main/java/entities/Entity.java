@@ -1,7 +1,7 @@
 package entities;
 
-import collision.BoundingBox;
 import engine.models.TexturedModel;
+import entities.collision.BoundingBox;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 import util.MousePlacer;
@@ -86,7 +86,7 @@ public class Entity {
     }
   }
 
-  // Entity collision
+  // Entity entities.collision
 
   /**
    * Call this after you reposition the entity. If you use proper setters, you probably never have
@@ -102,7 +102,7 @@ public class Entity {
   /**
    * Check if this entity collides with another entity in X, XY or XYZ dimension.
    *
-   * @param entity The entity to check for collision with
+   * @param entity The entity to check for entities.collision with
    * @param dim number of dimensions 1=x, 2=xy, 3=xyz
    * @return true if the two entities' Bounding Boxes overlap in dim
    */
@@ -116,7 +116,7 @@ public class Entity {
   /**
    * Check if this entity collides with another entity in the XY dimension.
    *
-   * @param entity The entity to check for collision with
+   * @param entity The entity to check for entities.collision with
    * @return true if the two entities' Bounding Boxes overlap in XY
    */
   public boolean collidesWith(Entity entity) {
@@ -189,6 +189,10 @@ public class Entity {
 
   public TexturedModel getModel() {
     return model;
+  }
+
+  public void setModel(TexturedModel model) {
+    this.model = model;
   }
 
   public Vector3f getPosition() {
@@ -311,10 +315,6 @@ public class Entity {
 
   public void setPlacerMode(int placerMode) {
     this.placerMode = placerMode;
-  }
-
-  public void setModel(TexturedModel model) {
-    this.model = model;
   }
 
   public void setTextureIndex(int textureIndex) {

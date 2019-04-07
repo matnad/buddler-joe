@@ -21,6 +21,7 @@ public class GrassBlock extends Block {
   GrassBlock(
       Vector3f position, float rotX, float rotY, float rotZ, float scale, int gridX, int gridY) {
     super(
+        blockModel,
         BlockMaster.BlockTypes.GRASS,
         hardness,
         1f,
@@ -47,15 +48,15 @@ public class GrassBlock extends Block {
     blockModel = new TexturedModel(rawBlock, blockAtlas);
   }
 
+  public static float getHardness() {
+    return hardness;
+  }
+
   @Override
   protected void onDestroy() {}
 
   @Override
   public TexturedModel getDebrisModel() {
     return blockModel;
-  }
-
-  public static float getHardness() {
-    return hardness;
   }
 }

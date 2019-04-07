@@ -12,8 +12,8 @@ import org.joml.Vector3f;
 public class Ice extends Item {
 
   private static TexturedModel preloadedModel;
-  private float time;
   private final float freezeTime = 10f;
+  private float time;
   private int itemId;
 
   /** Extended Constructor for Ice. Don't use directly. Use the Item Master to create items. */
@@ -27,45 +27,7 @@ public class Ice extends Item {
    * @param position position to spawn the dynamite
    */
   Ice(Vector3f position) {
-    this(position, 0, 0, 0, 1);
-  }
-  /**
-   * Method to update the ice and show the item for ten seconds.
-   *
-   * <p>The time is calculated by the number of frames per second. The ice instantly has an effect
-   * on the owner and freezes the owner for then seconds and the ice object is shown for ten
-   * seconds.
-   */
-
-  @Override
-  public void update() {
-    if (isOwned()) {
-      Game.getActivePlayer().freeze();
-      time += Game.window.getFrameTimeSeconds();
-      if (time >= freezeTime) {
-        Game.getActivePlayer().defreeze();
-        setDestroyed(true);
-      }
-    } else {
-      if (time >= freezeTime) {
-        time += Game.window.getFrameTimeSeconds();
-        setDestroyed(true);
-      }
-    }
-  }
-  /**
-   * Method to set the ice as destroyed and to delete it from the ServerItemState.
-   *
-   * @param destroyed Boolean whether the item is destroyed or not.
-   */
-
-  @Override
-  public void setDestroyed(boolean destroyed) {
-    super.setDestroyed(destroyed);
-    if (isOwned()) {
-      PacketItemUsed packetItemUsed = new PacketItemUsed(itemId);
-      packetItemUsed.sendToServer();
-    }
+    this(position, 0, 0, 0, .5f);
   }
 
   /**
@@ -74,9 +36,9 @@ public class Ice extends Item {
    * @param loader The current loader passed on by ItemMaster.
    */
   public static void init(Loader loader) {
-    RawModel rawDynamite = loader.loadToVao(ObjFileLoader.loadObj("dynamite"));
+    RawModel rawDynamite = loader.loadToVao(ObjFileLoader.loadObj("block"));
     setPreloadedModel(
-        new TexturedModel(rawDynamite, new ModelTexture(loader.loadTexture("dynamite"))));
+        new TexturedModel(rawDynamite, new ModelTexture(loader.loadTexture("lightblue"))));
   }
 
   private static TexturedModel getPreloadedModel() {
@@ -85,6 +47,44 @@ public class Ice extends Item {
 
   private static void setPreloadedModel(TexturedModel preloadedModel) {
     Ice.preloadedModel = preloadedModel;
+  }
+
+  /**
+   * Method to update the ice and show the item for ten seconds.
+   *
+   * <p>The time is calculated by the number of frames per second. The ice instantly has an effect
+   * on the owner and freezes the owner for then seconds and the ice object is shown for ten
+   * seconds.
+   */
+  @Override
+  public void update() {
+    time += Game.window.getFrameTimeSeconds();
+    if (isOwned()) {
+      if (time >= freezeTime) {
+        Game.getActivePlayer().defreeze();
+        setDestroyed(true);
+      } else if (time >= 0.2f) {
+        Game.getActivePlayer().freeze();
+      }
+    } else {
+      if (time >= freezeTime) {
+        setDestroyed(true);
+      }
+    }
+  }
+
+  /**
+   * Method to set the ice as destroyed and to delete it from the ServerItemState.
+   *
+   * @param destroyed Boolean whether the item is destroyed or not.
+   */
+  @Override
+  public void setDestroyed(boolean destroyed) {
+    super.setDestroyed(destroyed);
+    if (isOwned()) {
+      PacketItemUsed packetItemUsed = new PacketItemUsed(itemId);
+      packetItemUsed.sendToServer();
+    }
   }
 
   public int getItemId() {

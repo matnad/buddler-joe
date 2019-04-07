@@ -221,6 +221,7 @@ public abstract class Packet {
    * be validated.
    *
    * @param username The username to be checked by this method
+   * @return true if no errors
    */
   protected boolean checkUsername(String username) {
     if (username == null) {

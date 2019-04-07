@@ -1,9 +1,5 @@
 package net.packets.gamestatus;
 
-import game.Game;
-import game.LobbyEntry;
-
-import java.util.concurrent.CopyOnWriteArrayList;
 import net.packets.Packet;
 
 /**

@@ -5,8 +5,6 @@ import game.LobbyEntry;
 import java.util.concurrent.CopyOnWriteArrayList;
 import net.packets.Packet;
 
-
-
 /**
  * A packed that is send from the server to the client, which contains a List of at max 10 Lobbies
  * that are currently available on the server and not full. Packet-Code: LOBOV

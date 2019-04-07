@@ -23,6 +23,16 @@ public class StartServer {
   private ServerItemState serverItemState = new ServerItemState();
 
   /**
+   * Start the Interface for the server, listening on a specific port.
+   *
+   * @param serverPort Port to listen to
+   * @see ServerLogic
+   */
+  public StartServer(int serverPort) {
+    this.serverPort = serverPort;
+  }
+
+  /**
    * Start the Interface for the server, listening on a default.
    *
    * @param args none. Use Main to start via commandline.
@@ -31,16 +41,6 @@ public class StartServer {
   public static void main(String[] args) {
     StartServer startServer = new StartServer(11337);
     startServer.startServer();
-  }
-
-  /**
-   * Start the Interface for the server, listening on a specific port.
-   *
-   * @param serverPort Port to listen to
-   * @see ServerLogic
-   */
-  public StartServer(int serverPort) {
-    this.serverPort = serverPort;
   }
 
   /**

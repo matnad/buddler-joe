@@ -8,7 +8,7 @@ public class ServerItemState {
 
   /** Method to keep a state of all items on the server and to keep track of their existence. */
   public ServerItemState() {
-    this.serverItemsList = new CopyOnWriteArrayList<>();
+    serverItemsList = new CopyOnWriteArrayList<>();
   }
 
   /**
@@ -29,9 +29,7 @@ public class ServerItemState {
    * @param item The Item to be removed from the list.
    */
   public static void removeItem(ServerItem item) {
-    if (serverItemsList.contains(item)) {
-      serverItemsList.remove(item);
-    }
+    serverItemsList.remove(item);
   }
 
   /**

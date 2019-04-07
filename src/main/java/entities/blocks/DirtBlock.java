@@ -22,7 +22,17 @@ public class DirtBlock extends Block {
       Vector3f position, float rotX, float rotY, float rotZ, float scale, int gridX, int gridY) {
     // Must pass block type and hardness here as they are required
     super(
-        BlockMaster.BlockTypes.DIRT, hardness, 1f, position, rotX, rotY, rotZ, scale, gridX, gridY);
+        blockModel,
+        BlockMaster.BlockTypes.DIRT,
+        hardness,
+        1f,
+        position,
+        rotX,
+        rotY,
+        rotZ,
+        scale,
+        gridX,
+        gridY);
     setModel(blockModel);
     setTextureIndex(0);
   }
@@ -33,10 +43,18 @@ public class DirtBlock extends Block {
   }
 
   static void init(Loader loader) {
-    RawModel rawBlock = loader.loadToVao(ObjFileLoader.loadObj("dirt"));
+    RawModel rawBlock = loader.loadToVao(ObjFileLoader.loadObj("block"));
     ModelTexture blockAtlas = new ModelTexture(loader.loadTexture("dirt4x4"));
     blockAtlas.setNumberOfRows(2);
     blockModel = new TexturedModel(rawBlock, blockAtlas);
+  }
+
+  public static TexturedModel getStaticDebrisModel() {
+    return blockModel;
+  }
+
+  public static float getHardness() {
+    return hardness;
   }
 
   @Override
@@ -45,9 +63,5 @@ public class DirtBlock extends Block {
   @Override
   public TexturedModel getDebrisModel() {
     return blockModel;
-  }
-
-  public static float getHardness() {
-    return hardness;
   }
 }

@@ -12,12 +12,11 @@ import static org.lwjgl.glfw.GLFW.GLFW_KEY_SPACE;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_T;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_W;
 
-import collision.BoundingBox;
 import engine.io.InputHandler;
-import engine.models.TexturedModel;
 import entities.blocks.AirBlock;
 import entities.blocks.Block;
 import entities.blocks.BlockMaster;
+import entities.collision.BoundingBox;
 import entities.items.ItemMaster;
 import game.Game;
 import game.stages.Playing;
@@ -42,28 +41,24 @@ import util.MousePlacer;
  * <p>Here all the player controls are set. The player can: - Move left, right, down (A, D, S) -
  * Jump (UP/SPACE) - Place Dynamite (Q) (Temporary) - Reset Position (T) (Temporary)
  *
- * <p>Handles player collision with blocks (might move partly to a different class)
+ * <p>Handles player entities.collision with blocks (might move partly to a different class)
  *
  * <p>Defines global gravity (this will move to a different class)
  */
 public class Player extends NetPlayer {
 
   public static final Logger logger = LoggerFactory.getLogger(Player.class);
-
-  // Resources and Stats
-  public int currentGold; // Current coins
-  private int currentLives;
-  private float digDamage; // Damage per second when colliding with blocks
-
   // Movement Related
   public static final float gravity = -45; // Units per second
   private static final float runSpeed = 20; // Units per second
   private static final float turnSpeed = 720; // Degrees per second
   private static final float jumpPower = 25; // Units per second
-
   private static final float collisionPushOffset = 0.1f;
   private static final float angle45 = (float) (45 * Math.PI / 180);
-
+  // Resources and Stats
+  public int currentGold; // Current coins
+  private int currentLives;
+  private float digDamage; // Damage per second when colliding with blocks
   private Block collideWithBlockAbove;
   private Block collideWithBlockBelow;
 
@@ -80,20 +75,13 @@ public class Player extends NetPlayer {
    * Spawn the Player. This will be handled differently in the future when we rework the Player
    * class structure.
    *
-   * @param model player model
    * @param username username of the player
    * @param position world coordinates for player position
    * @param rotX rotation along X axis
    * @param rotY rotation along Y axis
    * @param rotZ rotation along Z axis
-   * @param scale scale factor
    */
-  public Player(
-      String username,
-      Vector3f position,
-      float rotX,
-      float rotY,
-      float rotZ) {
+  public Player(String username, Vector3f position, float rotX, float rotY, float rotZ) {
     super(0, username, position, rotX, rotY, rotZ);
     digDamage = 1;
     currentGold = 0;
@@ -103,15 +91,16 @@ public class Player extends NetPlayer {
   /**
    * Updates player position every frame.
    *
-   * <p>Called every frame and does all the input reading, position updating, collision handling and
-   * potentially server communication
+   * <p>Called every frame and does all the input reading, position updating, entities.collision
+   * handling and potentially server communication
    */
   public void move() {
 
     collideWithBlockAbove = null;
     collideWithBlockBelow = null;
 
-    updateCloseBlocks(BlockMaster.getBlocks()); // We don't want to check collision for all blocks
+    updateCloseBlocks(
+        BlockMaster.getBlocks()); // We don't want to check entities.collision for all blocks
     // every frame
 
     if (Game.getActiveStages().size() == 1 && Game.getActiveStages().get(0) == PLAYING) {
@@ -207,7 +196,7 @@ public class Player extends NetPlayer {
    * handle it appropriately. This is still very basic but it works. Can be improved if we have
    * time. -> Has been improved to be vector and angle based now. Works much smoother.
    *
-   * @param block A block to check collision with.
+   * @param block A block to check entities.collision with.
    */
   private void handleCollision(Block block) {
     // Make this mess readable
@@ -250,7 +239,7 @@ public class Player extends NetPlayer {
         }
       } else {
         if (direction.x > 0) {
-          // Have a small offset for smoother collision
+          // Have a small offset for smoother entities.collision
           setPositionX(e.getMaxX() + p.getDimX() / 2 + collisionPushOffset);
           currentSpeed = 0; // Stop moving
           isInAir = false; // Walljumps! Felt cute. Might delete later.
@@ -292,7 +281,7 @@ public class Player extends NetPlayer {
 
   /**
    * Maintain a list with blocks that are closer than the specified distance. This is used to only
-   * check close block for collision or other interaction
+   * check close block for entities.collision or other interaction
    *
    * @param blocks Usually all blocks {@link BlockMaster#getBlocks()}
    * @param maxDistance Maximum distance for the block to be considered close
@@ -310,8 +299,8 @@ public class Player extends NetPlayer {
 
   /**
    * Maintain a list with blocks that are closer than 5 units. A block is 6 units across, this will
-   * get all surrounding blocks This is used to only check close block for collision or other
-   * interaction
+   * get all surrounding blocks This is used to only check close block for entities.collision or
+   * other interaction
    *
    * @param blocks Usually all blocks {@link BlockMaster#getBlocks()}
    */

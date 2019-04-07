@@ -1,4 +1,4 @@
-package collision;
+package entities.collision;
 
 import org.joml.AABBf;
 import org.joml.Vector3f;

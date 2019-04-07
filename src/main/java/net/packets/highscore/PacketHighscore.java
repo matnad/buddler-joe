@@ -1,6 +1,6 @@
 package net.packets.highscore;
 
-import net.highscore.ServerHighscore;
+import net.ServerLogic;
 import net.packets.Packet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,10 +15,13 @@ public class PacketHighscore extends Packet {
 
   public static final Logger logger = LoggerFactory.getLogger(PacketHighscore.class);
 
-
   private String[] highscore;
 
-  /** Constructor that is used by the Client to verify the data and process the data. */
+  /**
+   * Constructor that is used by the Client to verify the data and process the data.
+   *
+   * @param data highscores, split by the protocol splitter
+   */
   public PacketHighscore(String data) {
     super(PacketTypes.HIGHSCORE);
     setData(data);
@@ -71,19 +74,18 @@ public class PacketHighscore extends Packet {
   public void processData() {
     if (getClientId() > 0) {
       // Server side:
-      if (ServerHighscore.getHighscoreAsString().startsWith("There")) {
-        setData("ERROR║" + ServerHighscore.getHighscoreAsString());
+      if (ServerLogic.getServerHighscore().getHighscoreAsString().startsWith("There")) {
+        setData("ERROR║" + ServerLogic.getServerHighscore().getHighscoreAsString());
       } else {
-        setData("OK║" + ServerHighscore.getHighscoreAsString());
+        setData("OK║" + ServerLogic.getServerHighscore().getHighscoreAsString());
       }
       this.sendToClient(getClientId());
-      logger.info(getData());
+      // logger.info(getData());
     } else {
       // Client side:
       if (hasErrors()) {
         System.out.println(createErrorMessage());
-      } else if (highscore[0].equals(
-          "OK")) {
+      } else if (highscore[0].equals("OK")) {
         logger.info(highscore[0]);
         System.out.println("-------------------------------------");
         System.out.println("Current Highscore:");

@@ -13,7 +13,6 @@ import gui.MenuButton;
 import gui.text.ChangableGuiText;
 import java.util.ArrayList;
 import java.util.List;
-
 import net.packets.gamestatus.PacketGetHistory;
 import net.packets.lobby.PacketGetLobbies;
 import org.joml.Vector2f;

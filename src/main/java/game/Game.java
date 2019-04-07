@@ -3,6 +3,7 @@ package game;
 import static game.Game.Stage.CHOOSELOBBY;
 import static game.Game.Stage.CREDITS;
 import static game.Game.Stage.GAMEMENU;
+import static game.Game.Stage.GAMEOVER;
 import static game.Game.Stage.INLOBBBY;
 import static game.Game.Stage.LOADINGSCREEN;
 import static game.Game.Stage.LOGIN;
@@ -13,15 +14,11 @@ import static game.Game.Stage.WELCOME;
 
 import engine.io.InputHandler;
 import engine.io.Window;
-import engine.models.RawModel;
-import engine.models.TexturedModel;
 import engine.particles.ParticleMaster;
 import engine.render.GuiRenderer;
 import engine.render.Loader;
 import engine.render.MasterRenderer;
 import engine.render.fontrendering.TextMaster;
-import engine.render.objconverter.ObjFileLoader;
-import engine.textures.ModelTexture;
 import entities.Camera;
 import entities.Entity;
 import entities.NetPlayer;
@@ -34,6 +31,7 @@ import game.map.ClientMap;
 import game.stages.ChooseLobby;
 import game.stages.Credits;
 import game.stages.GameMenu;
+import game.stages.GameOver;
 import game.stages.InLobby;
 import game.stages.LoadingScreen;
 import game.stages.Login;
@@ -55,11 +53,12 @@ import net.packets.lobby.PacketCreateLobby;
 import net.packets.lobby.PacketJoinLobby;
 import net.packets.loginlogout.PacketLogin;
 import org.joml.Vector3f;
-// import org.slf4j.Logger;
-// import org.slf4j.LoggerFactory;
 import terrains.Terrain;
 import terrains.TerrainFlat;
 import util.RandomName;
+
+//  import org.slf4j.Logger;
+// import org.slf4j.LoggerFactory;
 
 /**
  * Playing is static for all intents and purposes. There will never be multiple instances of Playing
@@ -70,27 +69,9 @@ public class Game extends Thread {
 
   // private static final Logger logger = LoggerFactory.getLogger(Game.class);
 
-  /*
-   * Set your resolution here, feel free to add new entries and comment them with your name/machine
-   * If someone wants to work on this, edit this comment or add an issue to the tracker in gitlab
-   */
-  private boolean autoJoin = false;
-  private Settings settings;
-  private static SettingsSerialiser settingsSerialiser = new SettingsSerialiser();
-
-  public static Window window = new Window(1080, 600, 60, "Buddler Joe");
   // Set up GLFW Window
   private static final List<Stage> activeStages = new ArrayList<>();
   private static final List<Stage> stagesToBeAdded = new ArrayList<>();
-  // Network related variables, still temporary/dummies
-  // private static boolean doConnectToServer = false; //Multiplayer: true, Singleplayer: false
-  private static boolean connectedToServer = false;
-  private static boolean loggedIn = false;
-  private static boolean lobbyCreated = false; // temporary
-
-  private static String serverIp;
-  private static int serverPort;
-
   // Playing instance and player settings
   // private static ClientLogic socketClient;
   /*
@@ -100,7 +81,7 @@ public class Game extends Thread {
    * list with minimal maintenance.
    */
   private static final List<Entity> entities = new CopyOnWriteArrayList<>();
-  public String username = RandomName.getRandomName(); // TODO (Server Team): Username
+  public static Window window = new Window(1080, 600, 60, "Buddler Joe");
   // maybe needs its own class or should at least be moved to NetPlayer
   /*
    * We want everything set up so we could use multiple cameras, even if we don't end up needing
@@ -108,16 +89,22 @@ public class Game extends Thread {
    * Everything that relies on a camera object should know which camera it is using
    */
   public static Camera camera;
+  private static SettingsSerialiser settingsSerialiser = new SettingsSerialiser();
+  // Network related variables, still temporary/dummies
+  // private static boolean doConnectToServer = false; //Multiplayer: true, Singleplayer: false
+  private static boolean connectedToServer = false;
+  private static boolean loggedIn = false;
+  private static boolean lobbyCreated = false; // temporary
 
+  private static String serverIp;
+  private static int serverPort;
   // This probably needs to go somewhere else when we work on the chat
   private static Chat chat;
   private static Player player;
   private static CurrentGold goldGuiText;
   private static CurrentLives livesGuiText;
-
   // map
   private static ClientMap map;
-
   /*
    * Keep track of connected players.
    * TODO (Client Network Team): This needs to be moved to a different class that handles
@@ -128,11 +115,16 @@ public class Game extends Thread {
   private static Terrain aboveGround;
   private static TerrainFlat belowGround;
   private static GuiRenderer guiRenderer;
-
   private static CopyOnWriteArrayList<LobbyEntry> lobbyCatalog = new CopyOnWriteArrayList<>();
-
   private static CopyOnWriteArrayList<LobbyPlayerEntry> lobbyPlayerCatalog =
       new CopyOnWriteArrayList<>();
+  public String username = RandomName.getRandomName(); // TODO (Server Team): Username
+  /*
+   * Set your resolution here, feel free to add new entries and comment them with your name/machine
+   * If someone wants to work on this, edit this comment or add an issue to the tracker in gitlab
+   */
+  private boolean autoJoin = false;
+  private Settings settings;
 
   /**
    * The constructor for the game to be called from the main class.
@@ -194,15 +186,6 @@ public class Game extends Thread {
 
   public static void setConnectedToServer(boolean connectedToServer) {
     Game.connectedToServer = connectedToServer;
-  }
-
-  public String getUsername() {
-    return settings.getUsername();
-  }
-
-  public void setUsername(String username) {
-    settings.setUsername(username);
-    settingsSerialiser.serialiseSettings(settings);
   }
 
   /**
@@ -271,6 +254,23 @@ public class Game extends Thread {
 
   public static void setWindow(Window window) {
     Game.window = window;
+  }
+
+  public static CurrentGold getGoldGuiText() {
+    return goldGuiText;
+  }
+
+  public static CurrentLives getLivesGuiText() {
+    return livesGuiText;
+  }
+
+  public String getUsername() {
+    return settings.getUsername();
+  }
+
+  public void setUsername(String username) {
+    settings.setUsername(username);
+    settingsSerialiser.serialiseSettings(settings);
   }
 
   /** Initialize the Playing Thread (Treat this like a constructor). */
@@ -381,8 +381,9 @@ public class Game extends Thread {
 
         if (activeStages.contains(LOADINGSCREEN)) {
           LoadingScreen.update();
+        } else if (activeStages.contains(GAMEOVER)) {
+          GameOver.update();
         } else {
-
           /*InputHandler needs to be BEFORE polling (window.update()) so we still have access to
           the events of last Frame. Everything else should be after polling.*/
           InputHandler.update();
@@ -474,6 +475,8 @@ public class Game extends Thread {
     Login.init(loader);
     LoadingScreen.progess();
     InLobby.init(loader);
+    LoadingScreen.progess();
+    GameOver.init(loader);
 
     // Generate Player
     NetPlayer.init(loader);
@@ -533,16 +536,23 @@ public class Game extends Thread {
     removeActiveStage(LOADINGSCREEN);
   }
 
-  public static CurrentGold getGoldGuiText() {
-    return goldGuiText;
-  }
-
-  public static CurrentLives getLivesGuiText() {
-    return livesGuiText;
-  }
-
   private void disconnectFromServer() {
     // Stuff to do on disconnect
+  }
+
+  /** Method to load the settings out of the serialised file. */
+  public void loadSettings() {
+    if (settingsSerialiser.readSettings() != null) {
+      this.settings = settingsSerialiser.readSettings();
+      if (!username.equals(settings.getUsername())) {
+        this.username = settings.getUsername();
+      }
+      if (!window.equals(settings.getWindow())) {
+        window = settings.getWindow();
+      }
+    } else {
+      this.settings = new Settings();
+    }
   }
 
   // Valid Stages
@@ -556,21 +566,7 @@ public class Game extends Thread {
     OPTIONS,
     WELCOME,
     LOGIN,
-    INLOBBBY
-  }
-
-  /** Method to load the settings out of the serialised file. */
-  public void loadSettings() {
-    if (settingsSerialiser.readSettings() != null) {
-      this.settings = settingsSerialiser.readSettings();
-      if (!username.equals(settings.getUsername())) {
-        this.username = settings.getUsername();
-      }
-      if (!window.equals(settings.getWindow())) {
-        this.window = settings.getWindow();
-      }
-    } else {
-      this.settings = new Settings();
-    }
+    INLOBBBY,
+    GAMEOVER
   }
 }

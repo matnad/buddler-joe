@@ -5,7 +5,6 @@ import engine.models.TexturedModel;
 import engine.render.Loader;
 import engine.render.objconverter.ObjFileLoader;
 import engine.textures.ModelTexture;
-import entities.Player;
 import game.Game;
 import net.packets.items.PacketItemUsed;
 import org.joml.Vector3f;
@@ -13,7 +12,7 @@ import org.joml.Vector3f;
 public class Heart extends Item {
 
   private static TexturedModel preloadedModel;
-  private final float showTime = 5f;
+  private final float showTime = 3f;
   private float time;
   private int itemId;
 
@@ -28,7 +27,25 @@ public class Heart extends Item {
    * @param position position to spawn the dynamite
    */
   Heart(Vector3f position) {
-    this(position, 0, 0, 0, 1);
+    this(position, 0, 0, 0, .5f);
+  }
+
+  /**
+   * The loader to load the model of the heart in the initialisation.
+   *
+   * @param loader the loader to be passed on to this method.
+   */
+  public static void init(Loader loader) {
+    RawModel rawHeart = loader.loadToVao(ObjFileLoader.loadObj("block"));
+    setPreloadedModel(new TexturedModel(rawHeart, new ModelTexture(loader.loadTexture("red"))));
+  }
+
+  private static TexturedModel getPreloadedModel() {
+    return preloadedModel;
+  }
+
+  private static void setPreloadedModel(TexturedModel preloadedModel) {
+    Heart.preloadedModel = preloadedModel;
   }
 
   /**
@@ -55,6 +72,7 @@ public class Heart extends Item {
 
   /**
    * Method to set the heart as destroyed and to delete it from the ServerItemState.
+   *
    * @param destroyed Boolean whether the item is destroyed or not.
    */
   @Override
@@ -64,25 +82,6 @@ public class Heart extends Item {
       PacketItemUsed packetItemUsed = new PacketItemUsed(itemId);
       packetItemUsed.sendToServer();
     }
-  }
-
-  /**
-   * The loader to load the model of the heart in the initialisation.
-   *
-   * @param loader the loader to be passed on to this method.
-   */
-  public static void init(Loader loader) {
-    RawModel rawHeart = loader.loadToVao(ObjFileLoader.loadObj("dynamite"));
-    setPreloadedModel(
-        new TexturedModel(rawHeart, new ModelTexture(loader.loadTexture("dynamite"))));
-  }
-
-  private static TexturedModel getPreloadedModel() {
-    return preloadedModel;
-  }
-
-  private static void setPreloadedModel(TexturedModel preloadedModel) {
-    Heart.preloadedModel = preloadedModel;
   }
 
   public void setActive() {}

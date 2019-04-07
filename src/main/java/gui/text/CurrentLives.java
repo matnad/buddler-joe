@@ -42,4 +42,8 @@ public class CurrentLives {
       guiText.changeText(getLivesText());
     }
   }
+
+  public void done() {
+    guiText.delete();
+  }
 }

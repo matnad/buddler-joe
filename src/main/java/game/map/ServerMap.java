@@ -22,6 +22,16 @@ public class ServerMap extends Map<ServerBlock> {
     checkFallingBlocks();
   }
 
+  /**
+   * Create a random test map. Use this to develop a good mapping algorithm.
+   *
+   * @param args nothing
+   */
+  public static void main(String[] args) {
+    ServerMap testMap = new ServerMap(100, 110, System.currentTimeMillis());
+    System.out.println(testMap);
+  }
+
   @Override
   void generateMap() {
     Random rng = new Random(seed);
@@ -34,9 +44,10 @@ public class ServerMap extends Map<ServerBlock> {
         if (noiseMap[x][y] < thresholds[0]) {
           blocks[x][y] = new ServerBlock(BlockMaster.BlockTypes.STONE, x, y); // Air
         } else {
-          if (rng.nextFloat() < .02f) {
+          if (rng.nextFloat() < .7f) {
             blocks[x][y] =
                 new ServerBlock(BlockMaster.BlockTypes.GOLD, x, y); // Gold: 1 in 40 chance
+            blocks[x][y].setGoldValue(50 + y * 5);
           } else if (rng.nextFloat() < .04f) {
             blocks[x][y] =
                 new ServerBlock(BlockMaster.BlockTypes.QMARK, x, y); // Item Block: 1 in 50 chance
@@ -90,16 +101,6 @@ public class ServerMap extends Map<ServerBlock> {
         new PacketBlockDamage(clientId, posX, posY, damage).sendToLobby(lobId);
       }
     }
-  }
-
-  /**
-   * Create a random test map. Use this to develop a good mapping algorithm.
-   *
-   * @param args nothing
-   */
-  public static void main(String[] args) {
-    ServerMap testMap = new ServerMap(100, 110, System.currentTimeMillis());
-    System.out.println(testMap);
   }
 
   /**

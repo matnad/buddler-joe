@@ -5,6 +5,7 @@ import org.joml.Vector3f;
 
 public class AirBlock extends Block {
 
+  private static TexturedModel blockModel;
 
   /**
    * Dummy Block for empty space.
@@ -14,13 +15,15 @@ public class AirBlock extends Block {
    */
   public AirBlock(int gridX, int gridY) {
     // Must pass block type and hardness here as they are required
-    super(BlockMaster.BlockTypes.AIR, 0f, 1f, new Vector3f(), 0, 0, 0, 0, gridX, gridY);
+    super(blockModel, BlockMaster.BlockTypes.AIR, 0f, 1f, new Vector3f(), 0, 0, 0, 0, gridX, gridY);
+  }
+
+  static void init() {
+    blockModel = DirtBlock.getStaticDebrisModel();
   }
 
   @Override
-  protected void onDestroy() {
-
-  }
+  protected void onDestroy() {}
 
   @Override
   public TexturedModel getDebrisModel() {

@@ -1,6 +1,5 @@
 package net.packets.chat;
 
-import game.NetPlayerMaster;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import net.ServerLogic;
@@ -105,16 +104,16 @@ public class PacketChatMessageToServer extends Packet {
           addError("Must been in a Lobby to use the chat.");
         } else {
           String fullmessage = "[" + client.getUsername() + "-" + timestamp + "]  " + chatmsg;
-//          System.out.println(fullmessage);
-          if(wisperId > 0){
+          //          System.out.println(fullmessage);
+          if (wisperId > 0) {
             PacketChatMessageToClient sendMessage =
-                    new PacketChatMessageToClient(getClientId(), fullmessage);
+                new PacketChatMessageToClient(getClientId(), fullmessage);
             sendMessage.sendToClient(wisperId);
           } else if (wisperId == 0) {
             PacketChatMessageToClient sendMessage =
                 new PacketChatMessageToClient(getClientId(), fullmessage);
             sendMessage.sendToLobby(client.getCurLobbyId());
-          }else{
+          } else {
             PacketChatMessageToClient sendMessage = new PacketChatMessageToClient(fullmessage);
             ServerLogic.sendBroadcastPacket(sendMessage);
           }

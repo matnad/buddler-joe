@@ -118,7 +118,8 @@ public class Dynamite extends Item {
 
   /**
    * Called every frame. Updates all the animations for the Dynamite and decides which particle
-   * systems will fire. Takes care of collision and removes itself when done with everything.
+   * systems will fire. Takes care of entities.collision and removes itself when done with
+   * everything.
    */
   @Override
   public void update() {
@@ -132,9 +133,9 @@ public class Dynamite extends Item {
     time += Game.window.getFrameTimeSeconds();
 
     /*
-    Case 1: Dynamite is about to blow -> play fuse animation, check for collision and update
-    position if falling
-      Dynamite can only move if it is in this phase, the explosion will be stationary.
+    Case 1: Dynamite is about to blow -> play fuse animation, check for entities,
+    collision and update position if falling.
+    Dynamite can only move if it is in this phase, the explosion will be stationary.
     */
     if (time < fuseTimer) {
       boolean collision = false;

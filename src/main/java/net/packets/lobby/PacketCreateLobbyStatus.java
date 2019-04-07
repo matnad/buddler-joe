@@ -67,7 +67,7 @@ public class PacketCreateLobbyStatus extends Packet {
    */
   @Override
   public synchronized void processData() {
-    Game.setLobbyCreated(true); //Duplicate Lobby is okay
+    Game.setLobbyCreated(true); // Duplicate Lobby is okay
     if (hasErrors()) {
       System.out.println(createErrorMessage());
     } else if (status.startsWith("OK")) {

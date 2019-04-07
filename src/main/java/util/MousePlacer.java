@@ -132,9 +132,6 @@ public class MousePlacer {
         MousePlacer.entity = null;
       }
     }
-
-
-
   }
 
   private static void onPlace() {

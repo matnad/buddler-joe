@@ -19,7 +19,6 @@ import static org.lwjgl.opengl.GL30.glBindVertexArray;
 
 import engine.render.fontmeshcreator.FontType;
 import engine.render.fontmeshcreator.GuiText;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 

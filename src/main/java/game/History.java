@@ -20,6 +20,8 @@ public class History {
    * that are finished. The character "║" is set at the positions were a new Line should start. It
    * can later be Split at the positions of "║", after that every part can be directly printed as a
    * new Line.
+   *
+   * @return all lobbies, sorted by categories
    */
   public static String getStory() {
     String res = "Open Lobbies:║";
