@@ -9,7 +9,6 @@ import engine.render.fontrendering.TextMaster;
 import gui.GuiTexture;
 import java.util.ArrayList;
 import java.util.List;
-import net.ServerLogic;
 import net.packets.chat.PacketChatMessageToServer;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
@@ -37,6 +36,9 @@ public class Chat {
   private ChatText guiText;
   private Vector3f textColour;
 
+  private float maxLineLength;
+  private int maxLines;
+
   private List<ChatText> messages;
   private int msgSize;
   private List<String> text;
@@ -47,7 +49,9 @@ public class Chat {
    *
    * @param loader main loader
    */
-  public Chat(Loader loader) {
+  public Chat(Loader loader, int maxLines, float maxLineLength) {
+    this.maxLines = maxLines;
+    this.maxLineLength = maxLineLength;
     enabled = false;
     alpha = ALPHA_OFF;
 
@@ -71,7 +75,7 @@ public class Chat {
             alpha,
             font,
             new Vector2f(.06f, .91f),
-            1f,
+            maxLineLength,
             false,
             false);
 
@@ -97,7 +101,12 @@ public class Chat {
             chatText = chatText.substring(4);
             System.out.println(chatText);
             PacketChatMessageToServer broadcostmessage =
-                new PacketChatMessageToServer("(to all from " + game.Game.getActivePlayer().getUsername()+ ") " + chatText + "║-1");
+                new PacketChatMessageToServer(
+                    "(to all from "
+                        + game.Game.getActivePlayer().getUsername()
+                        + ") "
+                        + chatText
+                        + "║-1");
             broadcostmessage.sendToServer();
 
           } else {
@@ -196,7 +205,7 @@ public class Chat {
             alpha,
             font,
             new Vector2f(.06f, .91f),
-            1f,
+            maxLineLength,
             false,
             false);
     guiText = clearChatText(guiText);
@@ -214,12 +223,26 @@ public class Chat {
    */
   public void arrangeMessages() {
     if (messages.size() != msgSize) { // Something changed
-      float posY = .64f;
-      float posX = .045f;
-      for (ChatText message : messages) {
-        message.setPosition(new Vector2f(posX, posY));
-        posY += .02f;
+      float posY = .88f;
+      float posX = .03f;
+      int currentLines = 0;
+
+      for (int i = messages.size() - 1; i >= 0; i--) {
+        int lines = messages.get(i).getNumberOfLines();
+        currentLines += lines;
+        posY -= .02f * lines;
+        messages.get(i).setPosition(new Vector2f(posX, posY));
+        if (currentLines >= maxLines + 1) {
+          messages.get(i).remove();
+        }
+        if (currentLines > maxLines + 1) {
+          break;
+        }
       }
+      // for (ChatText message : messages) {
+      //  message.setPosition(new Vector2f(posX, posY));
+      //  posY += .02f * message.getNumberOfLines();
+      // }
       msgSize = messages.size(); // Update size so we can detect further changes
     }
   }
@@ -288,7 +311,7 @@ public class Chat {
             alpha,
             font,
             new Vector2f(.06f, .91f),
-            1f,
+            maxLineLength,
             false,
             false);
     guiText = clearChatText(guiText);
