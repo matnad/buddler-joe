@@ -1,17 +1,24 @@
 package game.stages;
 
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_ESCAPE;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_H;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_L;
 import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_1;
 
 import engine.io.InputHandler;
 import engine.render.Loader;
+import engine.render.fontrendering.TextMaster;
 import game.Game;
 import gui.GuiTexture;
 import gui.MenuButton;
+import gui.text.ChangableGuiText;
 import java.util.ArrayList;
 import java.util.List;
+
+import net.packets.PacketGetHistory;
+import net.packets.lobby.PacketGetLobbies;
 import org.joml.Vector2f;
+import org.joml.Vector3f;
 
 /**
  * Main Menu specification and rendering. Must be initialized. Specifies all the elements in the
@@ -30,6 +37,7 @@ public class MainMenu {
   private static MenuButton exitGame;
   private static MenuButton credits;
   private static MenuButton options;
+  private static ChangableGuiText text;
 
   /**
    * * Initialize Game Menu. Will load the texture files and generate the basic menu parts. This
@@ -151,8 +159,10 @@ public class MainMenu {
     }
     */
     if (InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1) && chooseLobby.isHover(x, y)) {
+      new PacketGetLobbies().sendToServer();
       Game.addActiveStage(Game.Stage.CHOOSELOBBY);
       Game.removeActiveStage(Game.Stage.MAINMENU);
+      // trigger here
     } else if (InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1) && credits.isHover(x, y)) {
       Game.addActiveStage(Game.Stage.CREDITS);
       Game.removeActiveStage(Game.Stage.MAINMENU);
@@ -168,6 +178,9 @@ public class MainMenu {
       // TODO: remove this if option
       Game.addActiveStage(Game.Stage.INLOBBBY);
       Game.removeActiveStage(Game.Stage.MAINMENU);
+    } else if (InputHandler.isKeyPressed(GLFW_KEY_H)) {
+      // TODO: remove this if option
+      new PacketGetHistory().sendToServer();
     }
 
     Game.getGuiRenderer().render(guis);

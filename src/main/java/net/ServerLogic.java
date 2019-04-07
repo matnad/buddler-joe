@@ -6,11 +6,13 @@ import java.net.Socket;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+
 import net.lobbyhandling.Lobby;
 import net.lobbyhandling.ServerLobbyList;
 import net.packets.Packet;
 import net.packets.chat.PacketChatMessageToClient;
 import net.packets.lobby.PacketCurLobbyInfo;
+import net.packets.lobby.PacketLobbyOverview;
 import net.packets.loginlogout.PacketDisconnect;
 import net.playerhandling.ClientThread;
 import net.playerhandling.PingManager;
@@ -38,6 +40,7 @@ public class ServerLogic {
   private static HashMap<Integer, ClientThread> clientThreadMap;
   private static ServerSocket serverSocket;
 
+
   /**
    * Initialize a new Server Logic. Creates the Socket to listen on. You have to call {@link
    * #waitForPlayers()} to start listening.
@@ -49,6 +52,7 @@ public class ServerLogic {
     playerList = new ServerPlayerList();
     clientThreadMap = new HashMap<>();
     lobbyList = new ServerLobbyList();
+
 
     serverSocket = new ServerSocket(portValue);
     System.out.println("Started Server on port " + portValue);
@@ -210,10 +214,11 @@ public class ServerLogic {
       sendMessage.sendToLobby(lobbyId);
 
       // send lobbyinfo to the other player in the lobby
-      String info;
-      info = "OK║" + lobby.getPlayerNames();
       PacketCurLobbyInfo packetCurLobbyInfo = new PacketCurLobbyInfo(clientId, lobbyId);
       packetCurLobbyInfo.sendToLobby(lobbyId);
+      // send LobbyOverview to clients not in a lobby
+      String info = "OK║" + ServerLogic.getLobbyList().getTopTen();
+      new PacketLobbyOverview(clientId, info).sendToClientsNotInALobby();
 
       // close the client's thread
       ClientThread ct = ServerLogic.getThreadByClientId(clientId);
