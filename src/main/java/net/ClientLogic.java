@@ -8,6 +8,9 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.SocketException;
 import net.packets.Packet;
+import net.packets.PacketGameEnd;
+import net.packets.PacketHistory;
+import net.packets.PacketStartRound;
 import net.packets.block.PacketBlockDamage;
 import net.packets.chat.PacketChatMessageStatus;
 import net.packets.chat.PacketChatMessageToClient;
@@ -223,6 +226,15 @@ public class ClientLogic implements Runnable {
           break;
         case PLAYERLIST:
           p = new PacketPlayerList(data);
+          break;
+        case START:
+          p = new PacketStartRound();
+          break;
+        case GAME_OVER:
+          p = new PacketGameEnd();
+          break;
+        case HISTORY:
+          p = new PacketHistory(data);
           break;
         default:
       }

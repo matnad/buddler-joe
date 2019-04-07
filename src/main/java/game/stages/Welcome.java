@@ -11,6 +11,12 @@ import java.util.ArrayList;
 import java.util.List;
 import org.joml.Vector2f;
 
+/**
+ * Welcome Menu specification and rendering. Must be initialized. Specifies all the elements in the
+ * Welcome Menu . Contains and manages the Game Loop while the Welcome Menu is active.
+ *
+ * @author Sebastian Schlachter
+ */
 public class Welcome {
   private static final float FADE_TIME = .5f;
   private static float fadeTimer;
@@ -109,10 +115,6 @@ public class Welcome {
     } else if (InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1) && back.isHover(x, y)) {
       Game.window.stop();
     }
-
-    InputHandler.update();
-
-    Game.window.update();
 
     Game.getGuiRenderer().render(guis);
   }

@@ -315,7 +315,14 @@ public abstract class Packet {
     HIGHSCORE("HIGHS"),
     ITEM_USED("ITMUS"),
     PLAYERLIST("PLALS"),
-    SPAWN_ITEM("ITMSP");
+    SPAWN_ITEM("ITMSP"),
+    SPAWN_ITEM("ITMSP"),
+    READY("READY"),
+    START("START"),
+    GAME_OVER("STOPG"),
+    GET_HISTORY("HISGE"),
+    HISTORY("HISTO"),
+    LIFE_STATUS("LSTAT");
 
     private final String packetCode;
 

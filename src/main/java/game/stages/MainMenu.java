@@ -1,17 +1,24 @@
 package game.stages;
 
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_ESCAPE;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_H;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_L;
 import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_1;
 
 import engine.io.InputHandler;
 import engine.render.Loader;
+import engine.render.fontrendering.TextMaster;
 import game.Game;
 import gui.GuiTexture;
 import gui.MenuButton;
+import gui.text.ChangableGuiText;
 import java.util.ArrayList;
 import java.util.List;
+
+import net.packets.PacketGetHistory;
+import net.packets.lobby.PacketGetLobbies;
 import org.joml.Vector2f;
+import org.joml.Vector3f;
 
 /**
  * Main Menu specification and rendering. Must be initialized. Specifies all the elements in the
@@ -30,6 +37,7 @@ public class MainMenu {
   private static MenuButton exitGame;
   private static MenuButton credits;
   private static MenuButton options;
+  private static ChangableGuiText text;
 
   /**
    * * Initialize Game Menu. Will load the texture files and generate the basic menu parts. This
@@ -64,8 +72,8 @@ public class MainMenu {
     chooseLobby =
         new MenuButton(
             loader,
-            "lobbyOverviewWood_norm",
-            "lobbyOverviewWood_hover",
+            "lobby_norm4",
+            "lobby_hover",
             new Vector2f(0, 0.0740f),
             new Vector2f(.305521f, .128333f));
 
@@ -103,6 +111,7 @@ public class MainMenu {
    */
   @SuppressWarnings("Duplicates")
   public static void update() {
+
     List<GuiTexture> guis = new ArrayList<>();
     guis.add(background);
     guis.add(buddlerJoe);
@@ -150,8 +159,10 @@ public class MainMenu {
     }
     */
     if (InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1) && chooseLobby.isHover(x, y)) {
+      new PacketGetLobbies().sendToServer();
       Game.addActiveStage(Game.Stage.CHOOSELOBBY);
       Game.removeActiveStage(Game.Stage.MAINMENU);
+      // trigger here
     } else if (InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1) && credits.isHover(x, y)) {
       Game.addActiveStage(Game.Stage.CREDITS);
       Game.removeActiveStage(Game.Stage.MAINMENU);
@@ -161,15 +172,16 @@ public class MainMenu {
     } else if (InputHandler.isKeyPressed(GLFW_KEY_ESCAPE)) {
       Game.addActiveStage(Game.Stage.WELCOME);
       Game.removeActiveStage(Game.Stage.MAINMENU);
-    } else if ((InputHandler.isMouseDown(GLFW_MOUSE_BUTTON_1) && exitGame.isHover(x, y))) {
+    } else if ((InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1) && exitGame.isHover(x, y))) {
       Game.window.stop();
     } else if (InputHandler.isKeyPressed(GLFW_KEY_L)) {
       // TODO: remove this if option
       Game.addActiveStage(Game.Stage.INLOBBBY);
       Game.removeActiveStage(Game.Stage.MAINMENU);
+    } else if (InputHandler.isKeyPressed(GLFW_KEY_H)) {
+      // TODO: remove this if option
+      new PacketGetHistory().sendToServer();
     }
-    InputHandler.update();
-    Game.window.update();
 
     Game.getGuiRenderer().render(guis);
   }

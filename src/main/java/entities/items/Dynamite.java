@@ -13,6 +13,7 @@ import entities.blocks.BlockMaster;
 import entities.light.Light;
 import entities.light.LightMaster;
 import game.Game;
+import game.stages.Playing;
 import java.util.Random;
 import net.packets.block.PacketBlockDamage;
 import net.packets.items.PacketItemUsed;
@@ -185,6 +186,12 @@ public class Dynamite extends Item {
     flash =
         LightMaster.generateLight(
             LightMaster.LightTypes.FLASH, getPosition(), new Vector3f(1, 1, 1));
+
+    // Deal damage to the active player if too close (4 blocks (6 units) distance squared is 576)
+    if (getPosition().distanceSquared(Game.getActivePlayer().getPosition()) <= 576) {
+      Playing.showDamageTakenOverlay();
+      //Damage player
+    }
 
     // Deal Damage if dynamite is owned
     if (!isOwned()) {

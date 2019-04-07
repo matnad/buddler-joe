@@ -12,6 +12,12 @@ import java.util.ArrayList;
 import java.util.List;
 import org.joml.Vector2f;
 
+/**
+ * Credits Menu specification and rendering. Must be initialized. Specifies all the elements in
+ * the CreditsMenu . Contains and manages the Game Loop while the Credits Menu is active.
+ *
+ * @author Sebastian Schlachter
+ */
 public class Credits {
 
   private static final float FADE_TIME = .5f;
@@ -84,10 +90,6 @@ public class Credits {
       Game.addActiveStage(Game.Stage.MAINMENU);
       Game.removeActiveStage(Game.Stage.CREDITS);
     }
-
-    InputHandler.update();
-
-    Game.window.update();
 
     Game.getGuiRenderer().render(guis);
   }
