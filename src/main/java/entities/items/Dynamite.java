@@ -16,7 +16,6 @@ import game.Game;
 import game.stages.Playing;
 import java.util.Random;
 import net.packets.block.PacketBlockDamage;
-import net.packets.items.PacketSpawnItem;
 import org.joml.Vector3f;
 
 /** A bundle of dynamite that can damage blocks or the player. */
@@ -168,10 +167,10 @@ public class Dynamite extends Item {
       flash.setDestroyed(true);
     } else if (time >= fuseTimer + .3f) {
       float scaleBrightness = (float) (1 - Game.window.getFrameTimeSeconds() * 5);
-      flash.getAdjustedColour().mul(scaleBrightness);
+      flash.setBrightness(flash.getBrightness() * scaleBrightness);
     } else if (time > fuseTimer) {
       float scaleBrightness = (float) (1 + Game.window.getFrameTimeSeconds() * 10);
-      flash.getAdjustedColour().mul(scaleBrightness);
+      flash.setBrightness(flash.getBrightness() * scaleBrightness);
     }
   }
 
@@ -185,11 +184,11 @@ public class Dynamite extends Item {
     flash =
         LightMaster.generateLight(
             LightMaster.LightTypes.FLASH, getPosition(), new Vector3f(1, 1, 1));
-
+    flash.setBrightness(10);
     // Deal damage to the active player if too close (4 blocks (6 units) distance squared is 576)
     if (getPosition().distanceSquared(Game.getActivePlayer().getPosition()) <= 576) {
       Playing.showDamageTakenOverlay();
-      //Damage player
+      // Damage player
     }
 
     // Deal Damage if dynamite is owned
@@ -216,6 +215,5 @@ public class Dynamite extends Item {
 
   public void setActive(boolean active) {
     this.active = active;
-
   }
 }
