@@ -11,13 +11,10 @@ public class Settings implements Serializable {
 
   /** Important user settings to be accessed by various methods. */
   private int width = 1920 / 4 * 3;
-
   private int height = 1080 / 4 * 3;
   private boolean fullscreen = false;
   private String username = "Joe Buddler";
-  private String ip = "127.0.0.1";
-
-  // TODO: (Viktor) Ip
+  private String ip = "buddlerjoe.ch";
 
   public boolean isFullscreen() {
     return fullscreen;

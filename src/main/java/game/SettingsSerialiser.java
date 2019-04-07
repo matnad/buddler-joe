@@ -1,11 +1,11 @@
 package game;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import net.StartServer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,6 +16,9 @@ import org.slf4j.LoggerFactory;
 public class SettingsSerialiser {
 
   public static final Logger logger = LoggerFactory.getLogger(SettingsSerialiser.class);
+  private static final String path =
+      System.getProperty("user.home") + File.separator + ".buddlerjoe";
+  private static final String filename = "settings.ser";
 
   public SettingsSerialiser() {}
 
@@ -26,7 +29,17 @@ public class SettingsSerialiser {
    */
   public void serialiseSettings(Settings settings) {
     try {
-      FileOutputStream fileOut = new FileOutputStream("src/main/resources/config/Settings.ser");
+      File buddlerSettingsDir = new File(path);
+      if (buddlerSettingsDir.exists()) {
+        //logger.info("Settings directory found.");
+      } else if (buddlerSettingsDir.mkdirs()) {
+        logger.info(buddlerSettingsDir + " was created");
+      } else {
+        logger.warn(buddlerSettingsDir + " was not created");
+        return;
+      }
+      File buddlerSettingsFile = new File(path + File.separator + filename);
+      FileOutputStream fileOut = new FileOutputStream(buddlerSettingsFile);
       ObjectOutputStream out = new ObjectOutputStream(fileOut);
       out.writeObject(settings);
       out.close();
@@ -44,7 +57,8 @@ public class SettingsSerialiser {
    */
   public Settings readSettings() {
     try {
-      FileInputStream fileIn = new FileInputStream("src/main/resources/config/Settings.ser");
+      File buddlerSettingsFile = new File(path + File.separator + filename);
+      FileInputStream fileIn = new FileInputStream(buddlerSettingsFile);
       ObjectInputStream in = new ObjectInputStream(fileIn);
       Settings settings = (Settings) in.readObject();
       in.close();

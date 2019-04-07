@@ -14,12 +14,8 @@ public class Main {
   private static Settings settings = settingsSerialiser.readSettings();
   // DEFAULT VALUES
   private static boolean client = true;
-  // private static String ipAddress = "185.162.250.84";
-  // private static String ipAddress = "192.168.1.121";
-  private static String ipAddress = "127.0.0.1";
-  // private static String ipAddress = "www.buddlerjoe.ch";
   private static int port = 11337;
-  private static String username = util.RandomName.getRandomName();
+
 
   /**
    * Start the GUI and the Network client of the game.
@@ -35,33 +31,9 @@ public class Main {
 
     if (args.length >= 2) {
       if (client) {
-        String serverIp;
         String[] ipPort = args[1].split(":");
-        // Validate IP
-        // try {
-        //  serverIP = ipPort[0];
-        //  String[] parts = serverIP.split("\\.");
-        //  if (parts.length != 4) {
-        //    serverIP = ipAddress;
-        //    logger.error("Invalid IPv4 Address received (not enough groups). Using default.");
-        //  } else {
-        //    for (String part : parts) {
-        //      // This throws NumberFormatException, which is subclass of IllegalArgumentException
-        //      int i = Integer.parseInt(part);
-        //      if (i < 0 || i > 255) {
-        //        serverIP = ipAddress;
-        //        logger.error("Invalid IPv4 Address received (invalid range). Using default.");
-        //      }
-        //    }
-        //  }
-        // } catch (IllegalArgumentException e) {
-        //  serverIP = ipAddress;
-        //  logger.error("Invalid IPv4 Address received. Using default.");
-        // }
-        // ipAddress = serverIP;
         settings.setIp(ipPort[0]);
         settingsSerialiser.serialiseSettings(settings);
-        ipAddress = ipPort[0];
 
         // Validate Port
         if (ipPort.length >= 2) {
@@ -73,14 +45,13 @@ public class Main {
     }
 
     if (args.length >= 3 && client && args[2].length() <= 30 && args[2].length() >= 4) {
-      username = args[2];
+      String username = args[2];
       settings.setUsername(username);
       settingsSerialiser.serialiseSettings(settings);
-      //PacketSetName packetSetName = new PacketSetName(username);
     }
 
     if (client) {
-      Game game = new Game(ipAddress, port, username);
+      Game game = new Game(settings.getIp(), port, settings.getUsername());
       game.start();
     } else {
       StartServer server = new StartServer(port);
