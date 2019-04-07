@@ -134,10 +134,8 @@ public class Game extends Thread {
 
   private static CopyOnWriteArrayList<LobbyEntry> lobbyCatalog = new CopyOnWriteArrayList<>();
 
-
-
-
-  private static CopyOnWriteArrayList<LobbyPlayerEntry> lobbyPlayerCatalog = new CopyOnWriteArrayList<>();
+  private static CopyOnWriteArrayList<LobbyPlayerEntry> lobbyPlayerCatalog =
+      new CopyOnWriteArrayList<>();
 
   /**
    * The constructor for the game to be called from the main class.
@@ -159,11 +157,16 @@ public class Game extends Thread {
   public static void setLobbyCatalog(CopyOnWriteArrayList<LobbyEntry> lobbyCatalog) {
     Game.lobbyCatalog = lobbyCatalog;
   }
-  public static CopyOnWriteArrayList<LobbyPlayerEntry> getLobbyPlayerCatalog() { return lobbyPlayerCatalog; }
 
-  public static void setLobbyPlayerCatalog(CopyOnWriteArrayList<LobbyPlayerEntry> lobbyPlayerCatalog) {
+  public static CopyOnWriteArrayList<LobbyPlayerEntry> getLobbyPlayerCatalog() {
+    return lobbyPlayerCatalog;
+  }
+
+  public static void setLobbyPlayerCatalog(
+      CopyOnWriteArrayList<LobbyPlayerEntry> lobbyPlayerCatalog) {
     Game.lobbyPlayerCatalog = lobbyPlayerCatalog;
   }
+
   /**
    * Any entity added via this function will be passed to the Master Renderer and rendered in the
    * Playing World.
@@ -506,7 +509,7 @@ public class Game extends Thread {
     System.out.println("logged in");
 
     // Creating and joining Lobby
-    if(autoJoin) {
+    if (autoJoin) {
       LoadingScreen.updateLoadingMessage("joining lobby");
       new PacketCreateLobby("lob1").sendToServer();
       while (!lobbyCreated) {
@@ -515,7 +518,7 @@ public class Game extends Thread {
     }
     // Generate dummy map
     map = new ClientMap(1, 1, 1);
-    if(autoJoin) {
+    if (autoJoin) {
       new PacketJoinLobby("lob1").sendToServer();
       while (!NetPlayerMaster.getLobbyname().equals("lob1")) {
         Thread.sleep(50);
@@ -535,9 +538,9 @@ public class Game extends Thread {
     LoadingScreen.updateLoadingMessage("Ready!");
     Thread.sleep(500);
     LoadingScreen.done();
-    if(autoJoin){
+    if (autoJoin) {
       addActiveStage(PLAYING);
-    }else {
+    } else {
       addActiveStage(MAINMENU);
     }
     removeActiveStage(LOADINGSCREEN);

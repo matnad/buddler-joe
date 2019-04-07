@@ -246,9 +246,9 @@ public class ClientLogic implements Runnable {
 
   /**
    * A method to disconnect from the server.
+   *
    * @param disconnectFromServer The boolean if to be disconnected
    */
-
   public static void setDisconnectFromServer(boolean disconnectFromServer) {
     ClientLogic.disconnectFromServer = disconnectFromServer;
     try {

@@ -6,9 +6,7 @@ import java.net.Socket;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.concurrent.CopyOnWriteArrayList;
 
-import game.History;
 import net.lobbyhandling.Lobby;
 import net.lobbyhandling.ServerLobbyList;
 import net.packets.Packet;

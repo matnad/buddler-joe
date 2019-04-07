@@ -78,9 +78,13 @@ public class Player {
         + '}';
   }
 
+  /**
+   * Increases the Gold counter.
+   * @param goldValue number by which the currentGold should be increased.
+   * */
   public void increaseCurrentGold(int goldValue) {
     currentGold += goldValue;
-    if(currentGold >= 80){//TODO: set to 3000
+    if (currentGold >= 80) { // TODO: set to 3000
       Lobby lobby = ServerLogic.getLobbyList().getLobby(curLobbyId);
       lobby.gameOver(clientId);
     }

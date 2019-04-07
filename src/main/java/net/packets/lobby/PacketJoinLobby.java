@@ -86,7 +86,7 @@ public class PacketJoinLobby extends Packet {
       Player player = ServerLogic.getPlayerList().getPlayer(getClientId());
       int lobbyId = ServerLogic.getLobbyList().getLobbyId(lobbyname);
       status = ServerLogic.getLobbyList().getLobby(lobbyId).addPlayer(player);
-      if(status.equals("OK")) {
+      if (status.equals("OK")) {
         player.setCurLobbyId(lobbyId);
       }
     }

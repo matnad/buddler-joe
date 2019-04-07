@@ -81,7 +81,7 @@ public class PacketCurLobbyInfo extends Packet {
     super(PacketTypes.CUR_LOBBY_INFO);
     setData(data);
     info = getData();
-    //System.out.println(info);
+    // System.out.println(info);
     infoArray = data.split("║");
     validate();
   }
@@ -120,13 +120,12 @@ public class PacketCurLobbyInfo extends Packet {
       CopyOnWriteArrayList<LobbyPlayerEntry> catalog = new CopyOnWriteArrayList<>();
       for (int i = 2; i < infoArray.length; i += 2) {
         System.out.println(infoArray[i] + " - " + infoArray[i + 1]);
-        catalog.add(new LobbyPlayerEntry(infoArray[i+1],true));
+        catalog.add(new LobbyPlayerEntry(infoArray[i + 1], true));
       }
       Game.setLobbyPlayerCatalog(catalog);
       System.out.println("-------------------------------------");
       System.out.println("To chat with players in this lobby, type: C <message>");
       System.out.println("To leave this lobby, type: leave");
-
 
       // Game Logic updates
 
