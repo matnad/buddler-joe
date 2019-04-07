@@ -52,7 +52,7 @@ public class Player extends NetPlayer {
 
   // Resources and Stats
   public int currentGold; // Current coins
-    private int currentLives;
+  private int currentLives;
   private float digDamage; // Damage per second when colliding with blocks
 
   // Movement Related
@@ -402,23 +402,28 @@ public class Player extends NetPlayer {
     return currentGold;
   }
 
+  /**
+   * updates the player's life status and sends the life status to server.
+   */
   public void increaseCurrentLives() {
-      if (currentLives < 2) {
-          currentLives++;
-      }
-      PacketLifeStatus lives = new PacketLifeStatus(String.valueOf(currentLives));
+    if (currentLives < 2) {
+      currentLives++;
+    }
+    PacketLifeStatus lives = new PacketLifeStatus(String.valueOf(currentLives));
     lives.processData();
   }
 
+  /**
+   * updates the player's life status and sends the life status to server.
+   */
   public void decreaseCurrentLives() {
     currentLives--;
-    //hier send paket
+    // hier send paket
     PacketLifeStatus lives = new PacketLifeStatus(String.valueOf(currentLives));
     lives.processData();
   }
 
   public int getCurrentLives() {
-      return currentLives;
+    return currentLives;
   }
-
 }

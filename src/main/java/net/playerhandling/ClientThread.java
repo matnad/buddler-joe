@@ -166,6 +166,7 @@ public class ClientThread implements Runnable {
             break;
           case SPAWN_ITEM:
             p = new PacketSpawnItem(clientId, data);
+            break;
           case LIFE_STATUS:
             p = new PacketLifeStatus(clientId, data);
             break;

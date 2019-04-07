@@ -26,6 +26,7 @@ public class Player {
     this.username = username;
     this.clientId = clientId;
     curLobbyId = 0;
+    currentLives = 2;
   }
 
   public String getUsername() {
@@ -86,6 +87,10 @@ public class Player {
     return currentGold;
   }
 
+  /**
+   * updates currentLives when getting informations from client.
+   * @param currentLives is the actual life status.
+   */
   public void setCurrentLives(int currentLives) {
     this.currentLives = currentLives;
   }
