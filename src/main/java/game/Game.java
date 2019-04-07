@@ -479,28 +479,28 @@ public class Game extends Thread {
 
   private void loadGame(Loader loader) throws InterruptedException {
     // Load Stages
-    // MainMenu.init(loader);
-    // LoadingScreen.progess();
-    // GameMenu.init(loader);
-    // LoadingScreen.progess();
-    // ChooseLobby.init(loader);
-    // LoadingScreen.progess();
-    // Credits.init(loader);
-    // LoadingScreen.progess();
-    // Options.init(loader);
-    // LoadingScreen.progess();
-    // Welcome.init(loader);
-    // LoadingScreen.progess();
-    // Login.init(loader);
-    // LoadingScreen.progess();
-    // InLobby.init(loader);
+    MainMenu.init(loader);
+    LoadingScreen.progess();
+    GameMenu.init(loader);
+    LoadingScreen.progess();
+    ChooseLobby.init(loader);
+    LoadingScreen.progess();
+    Credits.init(loader);
+    LoadingScreen.progess();
+    Options.init(loader);
+    LoadingScreen.progess();
+    Welcome.init(loader);
+    LoadingScreen.progess();
+    Login.init(loader);
+    LoadingScreen.progess();
+    InLobby.init(loader);
 
     // Generate Player
     RawModel rawPlayer = loader.loadToVao(ObjFileLoader.loadObj(myModel));
     TexturedModel playerModel =
         new TexturedModel(rawPlayer, new ModelTexture(loader.loadTexture(myTexture)));
 
-     playerModel.getTexture().setUseFakeLighting(true);
+    playerModel.getTexture().setUseFakeLighting(true);
     playerModel.getTexture().setShineDamper(.3f);
 
     player = new Player(getUsername(), playerModel, new Vector3f(90, 2, 3), 0, 0, 0, myModelSize);
@@ -521,13 +521,13 @@ public class Game extends Thread {
     System.out.println("logged in");
 
     // Creating and joining Lobby
-    if (autoJoin) {
-      LoadingScreen.updateLoadingMessage("joining lobby");
-      new PacketCreateLobby("lob1").sendToServer();
-      while (!lobbyCreated) {
-        Thread.sleep(50);
-      }
+    // if (autoJoin) {
+    LoadingScreen.updateLoadingMessage("joining lobby");
+    new PacketCreateLobby("lob1").sendToServer();
+    while (!lobbyCreated) {
+      Thread.sleep(50);
     }
+    // }
     // Generate dummy map
     map = new ClientMap(1, 1, 1);
     if (autoJoin) {

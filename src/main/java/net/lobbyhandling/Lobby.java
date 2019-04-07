@@ -46,7 +46,6 @@ public class Lobby {
     this.lobbyId = lobbyCounter;
     lobbyCounter++;
     map = new ServerMap(60, 40, System.currentTimeMillis());
-    History.openAdd(this.lobbyId, this.lobbyName);
     // System.out.println(map);
   }
 
@@ -132,7 +131,6 @@ public class Lobby {
    * states, informs all clients about the end of the round. Archives the round in the History.
    */
   public void gameOver(int clientId) {
-
     setStatus("open");
     History.runningRemove(lobbyId);
     History.openAdd(lobbyId, lobbyName);
