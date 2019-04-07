@@ -12,6 +12,12 @@ import java.util.ArrayList;
 import java.util.List;
 import org.joml.Vector2f;
 
+/**
+ * Options Menu specification and rendering. Must be initialized. Specifies all the elements in the
+ * Options Menu . Contains and manages the Game Loop while the Options Menu is active.
+ *
+ * @author Sebastian Schlachter
+ */
 public class Options {
   private static final float FADE_TIME = .5f;
   private static float fadeTimer;
@@ -160,10 +166,6 @@ public class Options {
     } else if (InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1) && fullscreen.isHover(x, y)) {
       // TODO toggle Fullscreen
     }
-
-    InputHandler.update();
-
-    Game.window.update();
 
     Game.getGuiRenderer().render(guis);
   }

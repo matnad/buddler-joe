@@ -11,6 +11,7 @@ import static game.Game.Stage.OPTIONS;
 import static game.Game.Stage.PLAYING;
 import static game.Game.Stage.WELCOME;
 
+import engine.io.InputHandler;
 import engine.io.Window;
 import engine.models.RawModel;
 import engine.models.TexturedModel;
@@ -41,6 +42,7 @@ import game.stages.Playing;
 import game.stages.Welcome;
 import gui.chat.Chat;
 import gui.text.CurrentGold;
+import gui.text.CurrentLives;
 import gui.text.Fps;
 import gui.text.GuiString;
 import java.util.ArrayList;
@@ -71,13 +73,14 @@ public class Game extends Thread {
    * Set your resolution here, feel free to add new entries and comment them with your name/machine
    * If someone wants to work on this, edit this comment or add an issue to the tracker in gitlab
    */
-
+  private boolean autoJoin = false;
   private Settings settings;
   private static SettingsSerialiser settingsSerialiser = new SettingsSerialiser();
 
-  public static Window window = new Window(1280, 800, 60, "Buddler Joe");
+  public static Window window = new Window(1920, 1080, 60, "Buddler Joe");
   // Set up GLFW Window
   private static final List<Stage> activeStages = new ArrayList<>();
+  private static final List<Stage> stagesToBeAdded = new ArrayList<>();
   // Network related variables, still temporary/dummies
   // private static boolean doConnectToServer = false; //Multiplayer: true, Singleplayer: false
   private static boolean connectedToServer = false;
@@ -115,6 +118,7 @@ public class Game extends Thread {
   private static Player player;
   private Fps fpsCounter;
   private static CurrentGold goldGuiText;
+  private static CurrentLives livesGuiText;
 
   // map
   private static ClientMap map;
@@ -130,6 +134,11 @@ public class Game extends Thread {
   private static TerrainFlat belowGround;
   private static GuiRenderer guiRenderer;
 
+  private static CopyOnWriteArrayList<LobbyEntry> lobbyCatalog = new CopyOnWriteArrayList<>();
+
+  private static CopyOnWriteArrayList<LobbyPlayerEntry> lobbyPlayerCatalog =
+      new CopyOnWriteArrayList<>();
+
   /**
    * The constructor for the game to be called from the main class.
    *
@@ -141,6 +150,23 @@ public class Game extends Thread {
     serverIp = ipAddress;
     serverPort = port;
     this.username = username;
+  }
+
+  public static CopyOnWriteArrayList<LobbyEntry> getLobbyCatalog() {
+    return lobbyCatalog;
+  }
+
+  public static void setLobbyCatalog(CopyOnWriteArrayList<LobbyEntry> lobbyCatalog) {
+    Game.lobbyCatalog = lobbyCatalog;
+  }
+
+  public static CopyOnWriteArrayList<LobbyPlayerEntry> getLobbyPlayerCatalog() {
+    return lobbyPlayerCatalog;
+  }
+
+  public static void setLobbyPlayerCatalog(
+      CopyOnWriteArrayList<LobbyPlayerEntry> lobbyPlayerCatalog) {
+    Game.lobbyPlayerCatalog = lobbyPlayerCatalog;
   }
 
   /**
@@ -234,8 +260,9 @@ public class Game extends Thread {
    * @param stage stage to add to the game loop
    */
   public static void addActiveStage(Stage stage) {
-    if (!activeStages.contains(stage)) {
-      activeStages.add(stage);
+    if (!activeStages.contains(stage) && !stagesToBeAdded.contains(stage)) {
+      // activeStages.add(stage);
+      stagesToBeAdded.add(stage);
     }
   }
 
@@ -313,7 +340,7 @@ public class Game extends Thread {
 
     // Stages
     LoadingScreen.init(loader);
-    addActiveStage(LOADINGSCREEN);
+    activeStages.add(LOADINGSCREEN);
     LoadingScreen.updateLoadingMessage("starting game");
 
     // Connect to server and load level in an extra thread
@@ -338,8 +365,6 @@ public class Game extends Thread {
     // Lights and cameras (just one for now)
     LightMaster.generateLight(
         LightMaster.LightTypes.SUN, new Vector3f(0, 600, 200), new Vector3f(1, 1, 1));
-
-    addActiveStage(PLAYING);
 
     // Connect after everything is loaded
 
@@ -366,9 +391,16 @@ public class Game extends Thread {
            Optimally this should be mostly Masters here
         */
 
+        // List<Stage> stagesForThisFrame = new ArrayList<>(activeStages);
+
         if (activeStages.contains(LOADINGSCREEN)) {
           LoadingScreen.update();
         } else {
+
+          /*InputHandler needs to be BEFORE polling (window.update()) so we still have access to
+          the events of last Frame. Everything else should be after polling.*/
+          InputHandler.update();
+          Game.window.update();
 
           if (activeStages.contains(PLAYING)) {
             Playing.update(renderer);
@@ -407,9 +439,13 @@ public class Game extends Thread {
           }
         }
 
+        activeStages.addAll(stagesToBeAdded);
+        stagesToBeAdded.clear();
+
         // System.out.println("-----------------------------------");
         // System.out.println(activeStages);
         // Done with one frame
+
         window.swapBuffers();
       }
     }
@@ -475,39 +511,50 @@ public class Game extends Thread {
     System.out.println("logged in");
 
     // Creating and joining Lobby
-    LoadingScreen.updateLoadingMessage("joining lobby");
-    new PacketCreateLobby("lob1").sendToServer();
-    while (!lobbyCreated) {
-      Thread.sleep(50);
+    if (autoJoin) {
+      LoadingScreen.updateLoadingMessage("joining lobby");
+      new PacketCreateLobby("lob1").sendToServer();
+      while (!lobbyCreated) {
+        Thread.sleep(50);
+      }
     }
-
     // Generate dummy map
     map = new ClientMap(1, 1, 1);
-    new PacketJoinLobby("lob1").sendToServer();
-    while (!NetPlayerMaster.getLobbyname().equals("lob1")) {
-      Thread.sleep(50);
+    if (autoJoin) {
+      new PacketJoinLobby("lob1").sendToServer();
+      while (!NetPlayerMaster.getLobbyname().equals("lob1")) {
+        Thread.sleep(50);
+      }
+      LoadingScreen.updateLoadingMessage("generating map");
+      while (map.isLocal()) {
+        Thread.sleep(500);
+      }
     }
-
-    LoadingScreen.updateLoadingMessage("generating map");
-    while (map.isLocal()) {
-      Thread.sleep(500);
-    }
-
     // Camera
     camera = new Camera(player, window);
 
     // GUI / Other
     goldGuiText = new CurrentGold();
+    livesGuiText = new CurrentLives();
+    Playing.init(loader);
 
     LoadingScreen.updateLoadingMessage("Ready!");
     Thread.sleep(500);
     LoadingScreen.done();
-    addActiveStage(PLAYING);
+    if (autoJoin) {
+      addActiveStage(PLAYING);
+    } else {
+      addActiveStage(MAINMENU);
+    }
     removeActiveStage(LOADINGSCREEN);
   }
 
   public static CurrentGold getGoldGuiText() {
     return goldGuiText;
+  }
+
+  public static CurrentLives getLivesGuiText() {
+    return livesGuiText;
   }
 
   private void disconnectFromServer() {

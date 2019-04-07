@@ -254,17 +254,17 @@ public class Chat {
   private void updateGuiText() {
     // guiText.setTextString(chatText); // doesn't work, we need to reload the texture and
     // create a new text
-    TextMaster.removeText(guiText);
-    System.out.println(guiText.getLengthOfLines());
-    System.out.println(guiText.getLengthOfLines().get(guiText.getLengthOfLines().size()-1));
     output = chatText;
     do{
       TextMaster.removeText(guiText);
-      output = output.substring(1);
-
+      
     guiText =
         new ChatText(
             output, 1, textColour, alpha, font, new Vector2f(.06f, .91f), 1f, false, false);
+
+      if (output.length() > 0) {
+        output = output.substring(1);
+      }
 
     }while(guiText.getLengthOfLines().get(guiText.getLengthOfLines().size()-1)>0.3f);
 //    System.out.println(guiText.getLengthOfLines().get(guiText.getLengthOfLines().size()-1));

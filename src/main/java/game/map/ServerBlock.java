@@ -30,7 +30,7 @@ public class ServerBlock {
         hardness = GoldBlock.getHardness();
         break;
       case GRASS:
-        hardness = GoldBlock.getHardness();
+        hardness = GrassBlock.getHardness();
         break;
       case AIR:
         hardness = 0;

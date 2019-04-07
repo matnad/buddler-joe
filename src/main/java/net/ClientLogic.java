@@ -8,6 +8,9 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.SocketException;
 import net.packets.Packet;
+import net.packets.PacketGameEnd;
+import net.packets.PacketHistory;
+import net.packets.PacketStartRound;
 import net.packets.block.PacketBlockDamage;
 import net.packets.chat.PacketChatMessageStatus;
 import net.packets.chat.PacketChatMessageToClient;
@@ -216,6 +219,15 @@ public class ClientLogic implements Runnable {
         case GAMES_OVERVIEW:
           p = new PacketGamesOverview(data);
           break;
+        case START:
+          p = new PacketStartRound();
+          break;
+        case GAME_OVER:
+          p = new PacketGameEnd();
+          break;
+        case HISTORY:
+          p = new PacketHistory(data);
+          break;
         default:
       }
       if (p != null) {
@@ -234,9 +246,9 @@ public class ClientLogic implements Runnable {
 
   /**
    * A method to disconnect from the server.
+   *
    * @param disconnectFromServer The boolean if to be disconnected
    */
-
   public static void setDisconnectFromServer(boolean disconnectFromServer) {
     ClientLogic.disconnectFromServer = disconnectFromServer;
     try {
