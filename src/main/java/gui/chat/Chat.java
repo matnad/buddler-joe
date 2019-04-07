@@ -255,6 +255,7 @@ public class Chat {
     guiText =
         new ChatText(
             chatText, 1, textColour, alpha, font, new Vector2f(.06f, .91f), 1f, false, false);
+    System.out.println(guiText.getLengthOfLines());
   }
 
   /** Chat fading. */

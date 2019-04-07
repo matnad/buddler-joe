@@ -62,6 +62,12 @@ class TextMeshCreator {
 
   TextMeshData createTextMesh(GuiText text) {
     List<Line> lines = createStructure(text);
+    // Store info about line length in GuiText Object
+    ArrayList<Float> lengthOfLines = new ArrayList<>();
+    for (Line line : lines) {
+      lengthOfLines.add((float) line.getLineLength());
+    }
+    text.setLengthOfLines(lengthOfLines);
     return createQuadVertices(text, lines);
   }
 
