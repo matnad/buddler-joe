@@ -14,7 +14,7 @@ import java.util.List;
 import net.packets.chat.PacketChatMessageToServer;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
-import java.awt.FontMetrics;
+
 /**
  * The Chat Window Overlay in the Game
  *
@@ -45,6 +45,7 @@ public class Chat {
   private int msgSize;
   private List<String> text;
   private int textSize;
+  private String output;
   private int counter;
 
 
@@ -86,7 +87,7 @@ public class Chat {
     messages = new ArrayList<>();
     text = new ArrayList<>();
     msgSize = 0;
-    counter = 0;
+
   }
 
   /**
@@ -254,10 +255,19 @@ public class Chat {
     // guiText.setTextString(chatText); // doesn't work, we need to reload the texture and
     // create a new text
     TextMaster.removeText(guiText);
+    System.out.println(guiText.getLengthOfLines());
+    System.out.println(guiText.getLengthOfLines().get(guiText.getLengthOfLines().size()-1));
+    output = chatText;
+    do{
+      TextMaster.removeText(guiText);
+      output = output.substring(1);
+
     guiText =
         new ChatText(
-            chatText, 1, textColour, alpha, font, new Vector2f(.06f, .91f), 1f, false, false);
-    System.out.println(guiText.getLengthOfLines());
+            output, 1, textColour, alpha, font, new Vector2f(.06f, .91f), 1f, false, false);
+
+    }while(guiText.getLengthOfLines().get(guiText.getLengthOfLines().size()-1)>0.3f);
+//    System.out.println(guiText.getLengthOfLines().get(guiText.getLengthOfLines().size()-1));
   }
 
   /** Chat fading. */
