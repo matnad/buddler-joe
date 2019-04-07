@@ -44,7 +44,7 @@ public class ServerMap extends Map<ServerBlock> {
         if (noiseMap[x][y] < thresholds[0]) {
           blocks[x][y] = new ServerBlock(BlockMaster.BlockTypes.STONE, x, y); // Air
         } else {
-          if (rng.nextFloat() < .7f) {
+          if (rng.nextFloat() < .07f) {
             blocks[x][y] =
                 new ServerBlock(BlockMaster.BlockTypes.GOLD, x, y); // Gold: 1 in 40 chance
             blocks[x][y].setGoldValue(50 + y * 5);
