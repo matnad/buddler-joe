@@ -7,6 +7,7 @@ public class PacketLifeStatus extends Packet {
 
   /**
    * After receiving, creates a packet by server side and extracts data.
+   *
    * @param clientId who sent the packet
    * @param data amount of lives of the specific player
    */
@@ -20,6 +21,7 @@ public class PacketLifeStatus extends Packet {
   /**
    * Creates a <code>LifeStatus</code> object by client side and validates its <code>data</code> and
    * sends to server.
+   *
    * @param data is the actual life status.
    */
   public PacketLifeStatus(String data) {
@@ -28,7 +30,7 @@ public class PacketLifeStatus extends Packet {
     validate();
   }
 
-  //hier muss man dann checken ob die zahl im bereich [0,2] liegt, sonst invalid.
+  // hier muss man dann checken ob die zahl im bereich [0,2] liegt, sonst invalid.
   @Override
   public void validate() {
     if (getData() == null) {
@@ -43,8 +45,8 @@ public class PacketLifeStatus extends Packet {
   }
 
   /**
-   * If the clientId is 0, then the packet will be sent to server,
-   * else the server updates the life status of the respective client.
+   * If the clientId is 0, then the packet will be sent to server, else the server updates the life
+   * status of the respective client.
    */
   @Override
   public void processData() {
@@ -57,7 +59,7 @@ public class PacketLifeStatus extends Packet {
               .getPlayer(getClientId())
               .setCurrentLives(Integer.parseInt(getData()));
         } catch (NumberFormatException e) {
-
+          System.out.println("Failed to assign the data.");
         }
       }
     }

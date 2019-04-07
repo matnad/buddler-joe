@@ -15,7 +15,6 @@ import net.packets.lobby.PacketCurLobbyInfo;
 import net.packets.lobby.PacketLobbyOverview;
 import net.packets.loginlogout.PacketDisconnect;
 import net.playerhandling.ClientThread;
-import net.playerhandling.PingManager;
 import net.playerhandling.Player;
 import net.playerhandling.ServerPlayerList;
 import org.slf4j.Logger;

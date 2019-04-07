@@ -16,6 +16,7 @@ import game.Game;
 import game.stages.Playing;
 import java.util.Random;
 import net.packets.block.PacketBlockDamage;
+import net.packets.items.PacketItemUsed;
 import org.joml.Vector3f;
 
 /** A bundle of dynamite that can damage blocks or the player. */
@@ -37,6 +38,7 @@ public class Dynamite extends Item {
   private boolean active;
   private boolean exploded;
   private Light flash;
+  private int itemId;
 
   /** Extended Constructor for Dynamite. Don't use directly. Use the Item Master to create items. */
   private Dynamite(Vector3f position, float rotX, float rotY, float rotZ, float scale) {
@@ -195,6 +197,9 @@ public class Dynamite extends Item {
     // Deal Damage if dynamite is owned
     if (!isOwned()) {
       return;
+    } else {
+      PacketItemUsed packetItemUsed = new PacketItemUsed(itemId);
+      packetItemUsed.sendToServer();
     }
 
     for (Block block : BlockMaster.getBlocks()) {
@@ -216,5 +221,13 @@ public class Dynamite extends Item {
 
   public void setActive(boolean active) {
     this.active = active;
+  }
+
+  public int getItemId() {
+    return itemId;
+  }
+
+  public void setItemId(int itemId) {
+    this.itemId = itemId;
   }
 }

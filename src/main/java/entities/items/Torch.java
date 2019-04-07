@@ -12,6 +12,8 @@ import entities.blocks.BlockMaster;
 import entities.light.Light;
 import entities.light.LightMaster;
 import java.util.Random;
+
+import net.packets.items.PacketItemUsed;
 import org.joml.Vector3f;
 import util.MousePlacer;
 
@@ -28,6 +30,7 @@ public class Torch extends Item {
   private Vector3f colour;
   private Vector3f flamePosition;
   private float flickerFactor;
+  private int itemId;
 
   /** Extended Constructor for Torch. Don't use directly. Use the Item Master to create items. */
   Torch(
@@ -54,9 +57,7 @@ public class Torch extends Item {
             getBbox().getDimZ() / 2);
 
     flamePosition = new Vector3f(position).add(flameOffset);
-    light =
-        LightMaster.generateLight(
-            LightMaster.LightTypes.TORCH, flamePosition, colour);
+    light = LightMaster.generateLight(LightMaster.LightTypes.TORCH, flamePosition, colour);
     light.setBrightness(brightness);
 
     setPosition(position);
@@ -132,6 +133,10 @@ public class Torch extends Item {
   public void setDestroyed(boolean destroyed) {
     super.setDestroyed(destroyed);
     light.setDestroyed(destroyed);
+    if (isOwned()) {
+      PacketItemUsed packetItemUsed = new PacketItemUsed(itemId);
+      packetItemUsed.sendToServer();
+    }
   }
 
   /** Creates a subtle flicker effect for the torch. */
@@ -150,7 +155,7 @@ public class Torch extends Item {
     flamePosition = new Vector3f(getPosition()).add(flameOffset);
     // Better illumination if the light source is away from the wall
     if (getPosition().z > 6) {
-      light.setPosition(new Vector3f(flamePosition).add(new Vector3f(0,0,5)));
+      light.setPosition(new Vector3f(flamePosition).add(new Vector3f(0, 0, 5)));
     } else {
       light.setPosition(flamePosition);
     }
@@ -187,5 +192,13 @@ public class Torch extends Item {
     if (closestBlock != null) {
       setBlock(closestBlock);
     }
+  }
+
+  public int getItemId() {
+    return itemId;
+  }
+
+  public void setItemId(int itemId) {
+    this.itemId = itemId;
   }
 }

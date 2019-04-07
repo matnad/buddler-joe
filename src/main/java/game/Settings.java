@@ -14,6 +14,7 @@ public class Settings implements Serializable {
   private int height = 1080 / 4 * 3;
   private boolean fullscreen = false;
   private String username = "Joe Buddler";
+  private String ip = "127.0.0.1";
 
   // TODO: (Viktor) Ip
 
@@ -51,5 +52,13 @@ public class Settings implements Serializable {
 
   public Window getWindow() {
     return new Window(width, height, 60, "Buddler Joe");
+  }
+
+  public String getIp() {
+    return ip;
+  }
+
+  public void setIp(String ip) {
+    this.ip = ip;
   }
 }

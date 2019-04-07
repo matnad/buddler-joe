@@ -115,7 +115,7 @@ public class ServerPlayerList {
     StringBuilder s = new StringBuilder();
     if (players.size() > 0) {
       for (Player l : players.values()) {
-        s.append(l.toString()).append("║");
+        s.append(l.getUsername()).append("║");
       }
     } else {
       s = new StringBuilder("No Players online");

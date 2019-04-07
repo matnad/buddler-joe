@@ -14,6 +14,7 @@ import net.packets.gamestatus.PacketStartRound;
 import net.packets.block.PacketBlockDamage;
 import net.packets.chat.PacketChatMessageStatus;
 import net.packets.chat.PacketChatMessageToClient;
+import net.packets.highscore.PacketHighscore;
 import net.packets.items.PacketSpawnItem;
 import net.packets.lists.PacketGamesOverview;
 import net.packets.lobby.PacketCreateLobbyStatus;
@@ -28,6 +29,7 @@ import net.packets.name.PacketSendName;
 import net.packets.name.PacketSetNameStatus;
 import net.packets.pingpong.PacketPing;
 import net.packets.pingpong.PacketPong;
+import net.packets.playerlist.PacketPlayerList;
 import net.packets.playerprop.PacketPos;
 import net.playerhandling.PingManager;
 
@@ -218,6 +220,12 @@ public class ClientLogic implements Runnable {
           break;
         case GAMES_OVERVIEW:
           p = new PacketGamesOverview(data);
+          break;
+        case HIGHSCORE:
+          p = new PacketHighscore(data);
+          break;
+        case PLAYERLIST:
+          p = new PacketPlayerList(data);
           break;
         case START:
           p = new PacketStartRound();
