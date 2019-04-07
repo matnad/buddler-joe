@@ -5,10 +5,9 @@ import static org.lwjgl.glfw.GLFW.GLFW_KEY_ENTER;
 import engine.io.InputHandler;
 import engine.render.Loader;
 import engine.render.fontmeshcreator.FontType;
-import engine.render.fontmeshcreator.GuiText;
 import engine.render.fontrendering.TextMaster;
+import game.Game;
 import gui.GuiTexture;
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import net.packets.chat.PacketChatMessageToServer;
@@ -28,8 +27,11 @@ public class Chat {
 
   private static final float ALPHA_OFF = .1f;
   private static final float ALPHA_ON = .8f;
-
+  private final float temporaryShowDuration = 3f;
   private boolean enabled;
+  private boolean showTemporary;
+  private float temporaryShowElapsed;
+
   private String chatText;
   private GuiTexture chatGui;
   private float alpha;
@@ -48,7 +50,6 @@ public class Chat {
   private String output;
   private int counter;
 
-
   /**
    * Initialize Chat, only needs to be called once on game init.
    *
@@ -57,6 +58,7 @@ public class Chat {
   public Chat(Loader loader, int maxLines, float maxLineLength) {
     this.maxLines = maxLines;
     this.maxLineLength = maxLineLength;
+    this.temporaryShowElapsed = 0;
     enabled = false;
     alpha = ALPHA_OFF;
 
@@ -87,7 +89,6 @@ public class Chat {
     messages = new ArrayList<>();
     text = new ArrayList<>();
     msgSize = 0;
-
   }
 
   /**
@@ -119,12 +120,12 @@ public class Chat {
             String userName = game.NetPlayerMaster.getNetPlayerById(wisperId).getUsername();
             chatText = chatText.substring(userName.length() + 1);
             PacketChatMessageToServer sendMessage =
-                new PacketChatMessageToServer("(wispered)" + chatText + "║" + wisperId);
+                new PacketChatMessageToServer("(whispered)" + chatText + "║" + wisperId);
             sendMessage.sendToServer();
 
             PacketChatMessageToServer sendMessage2 =
                 new PacketChatMessageToServer(
-                    "(wispered to "
+                    "(whispered to "
                         + userName
                         + ")"
                         + chatText
@@ -159,7 +160,18 @@ public class Chat {
 
     updateAlpha();
 
+    if (showTemporary) {
+      temporaryShowElapsed += Game.window.getFrameTimeSeconds();
+      if (temporaryShowElapsed >= temporaryShowDuration) {
+        temporaryShowElapsed = 0;
+        showTemporary = false;
+      }
+    }
+
     if (!enabled) {
+      if (showTemporary) {
+        arrangeMessages();
+      }
       return;
     }
 
@@ -255,27 +267,28 @@ public class Chat {
     // guiText.setTextString(chatText); // doesn't work, we need to reload the texture and
     // create a new text
     output = chatText;
-    do{
+    do {
       TextMaster.removeText(guiText);
-      
-    guiText =
-        new ChatText(
-            output, 1, textColour, alpha, font, new Vector2f(.06f, .91f), 1f, false, false);
+
+      guiText =
+          new ChatText(
+              output, 1, textColour, alpha, font, new Vector2f(.06f, .91f), 1f, false, false);
 
       if (output.length() > 0) {
         output = output.substring(1);
       }
 
-    }while(guiText.getLengthOfLines().get(guiText.getLengthOfLines().size()-1)>0.3f);
-//    System.out.println(guiText.getLengthOfLines().get(guiText.getLengthOfLines().size()-1));
+    } while (guiText.getLengthOfLines().get(guiText.getLengthOfLines().size() - 1)
+        > maxLineLength - 0.04);
+    //    System.out.println(guiText.getLengthOfLines().get(guiText.getLengthOfLines().size()-1));
   }
 
   /** Chat fading. */
   private void updateAlpha() {
-    if (enabled && alpha < ALPHA_ON) {
+    if ((enabled || showTemporary) && alpha < ALPHA_ON) {
       alpha += .02f;
 
-    } else if (!enabled && alpha > ALPHA_OFF) {
+    } else if (!enabled && !showTemporary && alpha > ALPHA_OFF) {
       alpha -= .025f;
     }
     chatGui.setAlpha(alpha);
@@ -311,7 +324,10 @@ public class Chat {
 
   public void addText(String stringText) {
     text.add(stringText);
-    textSize++;
+    if (!enabled) {
+      showTemporary = true;
+      temporaryShowElapsed = 0;
+    }
   }
 
   public void addChatText() {
@@ -330,5 +346,4 @@ public class Chat {
     guiText = clearChatText(guiText);
     messages.add(messageText);
   }
-
 }

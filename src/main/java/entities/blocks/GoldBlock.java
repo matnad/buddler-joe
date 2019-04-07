@@ -26,7 +26,17 @@ public class GoldBlock extends Block {
   GoldBlock(
       Vector3f position, float rotX, float rotY, float rotZ, float scale, int gridX, int gridY) {
     super(
-        BlockMaster.BlockTypes.GOLD, hardness, 3f, position, rotX, rotY, rotZ, scale, gridX, gridY);
+        blockModel,
+        BlockMaster.BlockTypes.GOLD,
+        hardness,
+        3f,
+        position,
+        rotX,
+        rotY,
+        rotZ,
+        scale,
+        gridX,
+        gridY);
     setModel(blockModel);
     setTextureIndex(0);
     value = 50 + gridY * 5;
@@ -38,7 +48,7 @@ public class GoldBlock extends Block {
   }
 
   static void init(Loader loader) {
-    RawModel rawBlock = loader.loadToVao(ObjFileLoader.loadObj("dirt"));
+    RawModel rawBlock = loader.loadToVao(ObjFileLoader.loadObj("block"));
     ModelTexture blockAtlas = new ModelTexture(loader.loadTexture("gold4x4"));
     blockAtlas.setNumberOfRows(2);
     blockModel = new TexturedModel(rawBlock, blockAtlas);
@@ -48,6 +58,10 @@ public class GoldBlock extends Block {
     // goldTexture.setShineDamper(0.5f);
     // debrisModel = new TexturedModel(rawBlock, goldTexture);
 
+  }
+
+  public static float getHardness() {
+    return hardness;
   }
 
   @Override
@@ -71,9 +85,5 @@ public class GoldBlock extends Block {
   @Override
   public TexturedModel getDebrisModel() {
     return blockModel;
-  }
-
-  public static float getHardness() {
-    return hardness;
   }
 }

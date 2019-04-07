@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 /** Start the Main Game Thread. */
 public class Main {
 
+  public static final Logger logger = LoggerFactory.getLogger(Main.class);
   private static SettingsSerialiser settingsSerialiser = new SettingsSerialiser();
   private static Settings settings = settingsSerialiser.readSettings();
   // DEFAULT VALUES
@@ -19,8 +20,6 @@ public class Main {
   // private static String ipAddress = "www.buddlerjoe.ch";
   private static int port = 11337;
   private static String username = util.RandomName.getRandomName();
-
-  public static final Logger logger = LoggerFactory.getLogger(Main.class);
 
   /**
    * Start the GUI and the Network client of the game.

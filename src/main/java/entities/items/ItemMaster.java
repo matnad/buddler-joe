@@ -137,10 +137,6 @@ public class ItemMaster {
       this.itemId = itemId;
     }
 
-    public String getItemId() {
-      return itemId;
-    }
-
     /**
      * Get an ItemType by its id. Id is used to transmit item type via network protocol.
      *
@@ -154,6 +150,10 @@ public class ItemMaster {
         }
       }
       return null;
+    }
+
+    public String getItemId() {
+      return itemId;
     }
   }
 }

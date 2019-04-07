@@ -17,13 +17,12 @@ import org.slf4j.LoggerFactory;
 public class ServerBlock {
 
   private static final Logger logger = LoggerFactory.getLogger(PacketSpawnItem.class);
-
+  private final int gridZ = Map.getSize();
   private BlockMaster.BlockTypes type;
   private float hardness;
   private int gridX;
   private int gridY;
   private int goldValue;
-  private final int gridZ = Map.getSize();
 
   ServerBlock(BlockMaster.BlockTypes type, int gridX, int gridY) {
     this.gridX = gridX;
@@ -119,5 +118,9 @@ public class ServerBlock {
               ItemMaster.ItemTypes.ICE, new Vector3f(gridX, gridY, gridZ), clientId);
       packetSpawnItem.sendToLobby(ServerLogic.getLobbyForClient(clientId).getLobbyId());
     }
+  }
+
+  public void setGoldValue(int goldValue) {
+    this.goldValue = goldValue;
   }
 }

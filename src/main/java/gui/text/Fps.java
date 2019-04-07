@@ -36,21 +36,21 @@ public class Fps extends GuiString {
       // Don't update if we get invalid string
     }
 
-    //Vector3f pos3 = new Vector3f(Game.getActivePlayer().getPosition());
-    //Vector4f pos4 = new Vector4f(pos3.x, pos3.y, pos3.z, 1);
+    // Vector3f pos3 = new Vector3f(Game.getActivePlayer().getPosition());
+    // Vector4f pos4 = new Vector4f(pos3.x, pos3.y, pos3.z, 1);
     //
-    ////Matrix4f proj = new Matrix4f(1.5f, 0, 0 ,0, 0, 1, 0, 0, 0, 0, -1.2f, -2.2f, 0, 0, -1, 0);
-    //MasterRenderer.getProjectionMatrix();
-    //Vector4f loc =
+    //// Matrix4f proj = new Matrix4f(1.5f, 0, 0 ,0, 0, 1, 0, 0, 0, 0, -1.2f, -2.2f, 0, 0, -1, 0);
+    // MasterRenderer.getProjectionMatrix();
+    // Vector4f loc =
     //    new Vector4f(pos4).mul(Maths.createViewMatrix(Game.getActiveCamera()))
     //        .mul(MasterRenderer.getProjectionMatrix());
     //
-    //float x = (loc.x / loc.w + 1) / 2f;
-    //float y = 1 - (loc.y / loc.w + 1) / 2f;
+    // float x = (loc.x / loc.w + 1) / 2f;
+    // float y = 1 - (loc.y / loc.w + 1) / 2f;
     //
-    ////System.out.println(proj);
-    //System.out.println(loc);
+    //// System.out.println(proj);
+    // System.out.println(loc);
     //
-    //setPosition(new Vector2f(x, y));
+    // setPosition(new Vector2f(x, y));
   }
 }

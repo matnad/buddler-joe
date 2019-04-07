@@ -42,7 +42,7 @@ void main(void) {
         float specularFactor = dot(reflectedLightDirection, unitVectorToCamera);
         specularFactor = max(specularFactor, 0.0);
         float dampedFactor = pow(specularFactor, shineDamper);
-        totalDiffuse = totalDiffuse + (brightness * lightColour[i] * lightMul * intensity) / attFactor ;
+        totalDiffuse = totalDiffuse + (brightness * lightColour[i] * lightMul * intensity * shineDamper) / attFactor ;
         totalSpecular = totalSpecular + (dampedFactor * reflectivity * lightColour[i] * lightMul * intensity) / attFactor;
       //}
     }

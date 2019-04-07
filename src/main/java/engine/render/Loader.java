@@ -43,11 +43,10 @@ import org.lwjgl.opengl.GL20;
  */
 public class Loader {
 
+  private static ConcurrentHashMap<String, Integer> textureIds = new ConcurrentHashMap<>();
   private final List<Integer> vaos = new ArrayList<>();
   private final List<Integer> vbos = new ArrayList<>();
   private final List<Integer> textures = new ArrayList<>();
-
-  private static ConcurrentHashMap<String, Integer> textureIds = new ConcurrentHashMap<>();
 
   /**
    * Load simple geometric figures.
@@ -84,7 +83,8 @@ public class Loader {
   /**
    * Load a normal model without Bounding Box.
    *
-   * <p>Used for all models that dont need collision. Can just use the ModelData constructor too.
+   * <p>Used for all models that dont need entities.collision. Can just use the ModelData
+   * constructor too.
    *
    * @param positions Vertices
    * @param textureCoords TextureCoords

@@ -14,7 +14,6 @@ import gui.text.ChangableGuiText;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
-
 import net.lobbyhandling.Lobby;
 import net.packets.lobby.PacketJoinLobby;
 import org.joml.Vector2f;
@@ -30,22 +29,19 @@ import org.slf4j.LoggerFactory;
  */
 public class ChooseLobby {
 
+  public static final Logger logger = LoggerFactory.getLogger(ChooseLobby.class);
   private static final float FADE_TIME = .5f;
   private static float fadeTimer;
   private static float currentAlpha;
-
   private static GuiTexture background;
   private static GuiTexture lobbyOverview;
   private static GuiTexture buddlerJoe;
   private static GuiTexture titel;
-
   private static MenuButton back;
   private static MenuButton[] join = new MenuButton[6];
   private static MenuButton up;
   private static MenuButton down;
-
   private static int n = 6; // varibale that defines how many join buttons are displayed. Max is 6.
-
   private static float[] joinY = {0.312963f, 0.175926f, 0.037037f, -0.1f, -0.238889f, -0.375926f};
   private static float[] namesY = {0.330864f, 0.4f, 0.469136f, 0.538272f, 0.607407f, 0.676534f};
   private static float[] countY = {0.330864f, 0.4f, 0.469136f, 0.538272f, 0.607407f, 0.676534f};
@@ -57,7 +53,6 @@ public class ChooseLobby {
   private static ChangableGuiText pageIndex;
   private static boolean initializedText = false;
   private static boolean initializedPageIndex = false;
-  public static final Logger logger = LoggerFactory.getLogger(ChooseLobby.class);
   private static Vector3f black = new Vector3f(0, 0, 0);
 
   /**

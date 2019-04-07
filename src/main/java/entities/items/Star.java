@@ -36,7 +36,26 @@ public class Star extends Item {
    * @param position position to spawn the dynamite
    */
   Star(Vector3f position) {
-    this(position, 0, 0, 0, 1);
+    this(position, 0, 0, 0, .5f);
+  }
+
+  /**
+   * The loader to load the model of the heart in the initialisation.
+   *
+   * @param loader the loader to be passed on to this method.
+   */
+  public static void init(Loader loader) {
+    RawModel rawDynamite = loader.loadToVao(ObjFileLoader.loadObj("block"));
+    setPreloadedModel(
+        new TexturedModel(rawDynamite, new ModelTexture(loader.loadTexture("yellow"))));
+  }
+
+  private static TexturedModel getPreloadedModel() {
+    return preloadedModel;
+  }
+
+  private static void setPreloadedModel(TexturedModel preloadedModel) {
+    Star.preloadedModel = preloadedModel;
   }
 
   /**
@@ -62,12 +81,12 @@ public class Star extends Item {
       }
     }
   }
+
   /**
    * Method to set the star as destroyed and to delete it from the ServerItemState.
    *
    * @param destroyed Boolean whether the item is destroyed or not.
    */
-
   @Override
   public void setDestroyed(boolean destroyed) {
     super.setDestroyed(destroyed);
@@ -75,25 +94,6 @@ public class Star extends Item {
       PacketItemUsed packetItemUsed = new PacketItemUsed(itemId);
       packetItemUsed.sendToServer();
     }
-  }
-
-  /**
-   * The loader to load the model of the heart in the initialisation.
-   *
-   * @param loader the loader to be passed on to this method.
-   */
-  public static void init(Loader loader) {
-    RawModel rawDynamite = loader.loadToVao(ObjFileLoader.loadObj("dynamite"));
-    setPreloadedModel(
-        new TexturedModel(rawDynamite, new ModelTexture(loader.loadTexture("dynamite"))));
-  }
-
-  private static TexturedModel getPreloadedModel() {
-    return preloadedModel;
-  }
-
-  private static void setPreloadedModel(TexturedModel preloadedModel) {
-    Star.preloadedModel = preloadedModel;
   }
 
   public int getItemId() {

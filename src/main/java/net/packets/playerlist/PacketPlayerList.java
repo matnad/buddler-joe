@@ -1,6 +1,5 @@
 package net.packets.playerlist;
 
-import entities.items.ItemMaster;
 import net.ServerLogic;
 import net.packets.Packet;
 

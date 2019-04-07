@@ -12,7 +12,9 @@ public class ServerLobbyList {
 
   /**
    * Constructs a {@link ServerLobbyList}.
-   * */
+   *
+   * <p>Lobby list is initially empty.
+   */
   public ServerLobbyList() {
     lobbies = new HashMap<>();
   }
@@ -121,7 +123,7 @@ public class ServerLobbyList {
           counter++;
         }
       }
-      s.insert(0,counter);
+      s.insert(0, counter);
       if (s.toString().equals("0")) {
         s = new StringBuilder("All Lobbies are full");
       }

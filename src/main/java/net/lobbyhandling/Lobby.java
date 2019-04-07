@@ -3,11 +3,10 @@ package net.lobbyhandling;
 import game.History;
 import game.map.ServerMap;
 import java.util.ArrayList;
-
 import net.ServerLogic;
-
+import net.highscore.ServerHighscoreSerialiser;
+import net.packets.gamestatus.PacketGameEnd;
 import net.packets.lobby.PacketLobbyOverview;
-
 import net.playerhandling.Player;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,16 +18,17 @@ import org.slf4j.LoggerFactory;
  */
 public class Lobby {
 
+  public static final Logger logger = LoggerFactory.getLogger(Lobby.class);
+  private static final int maxPlayers = 7;
   private static int lobbyCounter = 1;
   private int lobbyId;
   private boolean inGame;
   private String lobbyName;
   private ArrayList<Player> lobbyPlayers;
   private ServerMap map;
-  private static final int maxPlayers = 7;
   private int createrPlayerId;
   private String status;
-  public static final Logger logger = LoggerFactory.getLogger(Lobby.class);
+  private long createdAt;
 
   /**
    * Constructor of the lobby-class uses by the Server.
@@ -36,6 +36,7 @@ public class Lobby {
    * @param lobbyName The name of the new lobby. {@link Lobby#lobbyId} gets set to equal the {@link
    *     Lobby#lobbyCounter}. {@link Lobby#lobbyCounter} gets raised by one after every lobby
    *     construction.
+   * @param createrPlayerId id of the player who is creating the lobby
    */
   public Lobby(String lobbyName, int createrPlayerId) {
     this.lobbyName = lobbyName;
@@ -48,6 +49,15 @@ public class Lobby {
     map = new ServerMap(60, 40, System.currentTimeMillis());
     History.openAdd(this.lobbyId, this.lobbyName);
     // System.out.println(map);
+  }
+
+  /**
+   * Getter that return the max amount of players per Lobby.
+   *
+   * @return the maximum number of players for all lobbies
+   */
+  public static int getMaxPlayers() {
+    return maxPlayers;
   }
 
   /**
@@ -130,18 +140,26 @@ public class Lobby {
   /**
    * Gets called if the Round should end. Updates Lobbystatus, updates Highscore, resets Player
    * states, informs all clients about the end of the round. Archives the round in the History.
+   *
+   * @param clientId id of the winning player
    */
   public void gameOver(int clientId) {
 
-    setStatus("open");
+    // setStatus("open");
     History.runningRemove(lobbyId);
-    History.openAdd(lobbyId, lobbyName);
+    // History.openAdd(lobbyId, lobbyName);
     String userName = ServerLogic.getPlayerList().getUsername(clientId);
     History.archive("Lobbyname: " + lobbyName + "       Winner: " + userName);
-    // TODO update highscore here.
+    long time = System.currentTimeMillis() - getCreatedAt();
+
+    // Update highscore
+    ServerLogic.getServerHighscore().addPlayer(time, userName);
+    ServerHighscoreSerialiser.serialiseServerHighscore(ServerLogic.getServerHighscore());
+    System.out.println(ServerLogic.getServerHighscore());
+
     // TODO send EndGamepacket here i created a skeleton already.
     // Inform all clients
-    // new PacketGameEnd(clientId).sendToLobby(lobbyId);
+    new PacketGameEnd(userName, time).sendToLobby(lobbyId);
     // create new Map and broadcast
     // map = new ServerMap(60, 40, System.currentTimeMillis());
     // new PacketBroadcastMap(map).sendToLobby(lobbyId);
@@ -186,22 +204,29 @@ public class Lobby {
     return map;
   }
 
-  /** Getter that return the max amount of players per Lobby. */
-  public static int getMaxPlayers() {
-    return maxPlayers;
-  }
-
-  /** Getter that returns the PlayerId of the player that created this lobby. */
+  /**
+   * Getter that returns the PlayerId of the player that created this lobby.
+   *
+   * @return the client id of the player that created this lobby
+   */
   public int getCreaterPlayerId() {
     return createrPlayerId;
   }
 
-  /** Getter that returns the status of the lobby as String. */
+  /**
+   * Getter that returns the status of the lobby as String.
+   *
+   * @return status of the lobby ["open", "running", "finished"]
+   */
   public String getStatus() {
     return status;
   }
 
-  /** Setter for status, only "open", "running" and "finished" gets accepted. */
+  /**
+   * Setter for status, only "open", "running" and "finished" gets accepted.
+   *
+   * @param status the new status. Should be in ["open", "running", "finished"]
+   */
   public void setStatus(String status) {
     String old = this.status;
     if (!status.equals("open") && !status.equals("running") && !status.equals("finished")) {
@@ -220,9 +245,14 @@ public class Lobby {
       }
       if (status.equals("running")) {
         inGame = true;
+        createdAt = System.currentTimeMillis();
       } else {
         inGame = false;
       }
     }
+  }
+
+  public long getCreatedAt() {
+    return createdAt;
   }
 }

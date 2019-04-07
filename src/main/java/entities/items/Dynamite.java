@@ -118,7 +118,8 @@ public class Dynamite extends Item {
 
   /**
    * Called every frame. Updates all the animations for the Dynamite and decides which particle
-   * systems will fire. Takes care of collision and removes itself when done with everything.
+   * systems will fire. Takes care of entities.collision and removes itself when done with
+   * everything.
    */
   @Override
   public void update() {
@@ -132,9 +133,9 @@ public class Dynamite extends Item {
     time += Game.window.getFrameTimeSeconds();
 
     /*
-    Case 1: Dynamite is about to blow -> play fuse animation, check for collision and update
-    position if falling
-      Dynamite can only move if it is in this phase, the explosion will be stationary.
+    Case 1: Dynamite is about to blow -> play fuse animation, check for entities,
+    collision and update position if falling.
+    Dynamite can only move if it is in this phase, the explosion will be stationary.
     */
     if (time < fuseTimer) {
       boolean collision = false;
@@ -169,10 +170,10 @@ public class Dynamite extends Item {
       flash.setDestroyed(true);
     } else if (time >= fuseTimer + .3f) {
       float scaleBrightness = (float) (1 - Game.window.getFrameTimeSeconds() * 5);
-      flash.getAdjustedColour().mul(scaleBrightness);
+      flash.setBrightness(flash.getBrightness() * scaleBrightness);
     } else if (time > fuseTimer) {
       float scaleBrightness = (float) (1 + Game.window.getFrameTimeSeconds() * 10);
-      flash.getAdjustedColour().mul(scaleBrightness);
+      flash.setBrightness(flash.getBrightness() * scaleBrightness);
     }
   }
 
@@ -186,11 +187,12 @@ public class Dynamite extends Item {
     flash =
         LightMaster.generateLight(
             LightMaster.LightTypes.FLASH, getPosition(), new Vector3f(1, 1, 1));
-
+    flash.setBrightness(10);
     // Deal damage to the active player if too close (4 blocks (6 units) distance squared is 576)
     if (getPosition().distanceSquared(Game.getActivePlayer().getPosition()) <= 576) {
       Playing.showDamageTakenOverlay();
-      //Damage player
+      // Damage player
+      Game.getActivePlayer().decreaseCurrentLives();
     }
 
     // Deal Damage if dynamite is owned

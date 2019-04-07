@@ -12,10 +12,9 @@ import org.slf4j.LoggerFactory;
 /** Packet to send the full map from server to client. */
 public class PacketBroadcastMap extends Packet {
 
+  private static final Logger logger = LoggerFactory.getLogger(PacketBroadcastMap.class);
   private String mapString;
   private String[] mapArray;
-
-  private static final Logger logger = LoggerFactory.getLogger(PacketBroadcastMap.class);
 
   /**
    * The server prepares to send a serverMap to the client.

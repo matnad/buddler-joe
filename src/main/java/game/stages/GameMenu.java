@@ -5,16 +5,11 @@ import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_1;
 
 import engine.io.InputHandler;
 import engine.render.Loader;
-import engine.render.fontrendering.TextMaster;
-import entities.NetPlayer;
 import game.Game;
-import game.NetPlayerMaster;
 import gui.GuiTexture;
 import gui.MenuButton;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-
 import net.packets.lobby.PacketLeaveLobby;
 import org.joml.Vector2f;
 
@@ -67,7 +62,6 @@ public class GameMenu {
       new PacketLeaveLobby().sendToServer();
     }
     guis.add(exitGame.getHoverTexture(x, y));
-
 
     Game.getGuiRenderer().render(guis);
   }

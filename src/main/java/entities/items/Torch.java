@@ -12,7 +12,6 @@ import entities.blocks.BlockMaster;
 import entities.light.Light;
 import entities.light.LightMaster;
 import java.util.Random;
-
 import net.packets.items.PacketItemUsed;
 import org.joml.Vector3f;
 import util.MousePlacer;
@@ -46,7 +45,7 @@ public class Torch extends Item {
     setPlacerMode(MousePlacer.Modes.BLOCK.getMode()); // Torches can be placed on blocks
 
     this.colour = colour;
-    this.brightness = 4;
+    this.brightness = 3f;
     this.block = block;
 
     random = new Random();

@@ -47,11 +47,8 @@ import org.lwjgl.glfw.GLFWScrollCallback;
 public class InputHandler {
   private static final int[] keyState = new int[GLFW_KEY_LAST];
   private static final boolean[] keyDown = new boolean[GLFW_KEY_LAST];
-  private static boolean readInput = false;
-
   private static final int[] mouseState = new int[GLFW_MOUSE_BUTTON_LAST];
   private static final boolean[] mouseDown = new boolean[GLFW_MOUSE_BUTTON_LAST];
-  private static StringBuilder inputString = new StringBuilder();
   private static final Vector3f mouseRay = new Vector3f();
   private static final long window = Game.window.getWindow();
   /*
@@ -75,7 +72,8 @@ public class InputHandler {
           mouseState[button] = action;
         }
       };
-
+  private static boolean readInput = false;
+  private static StringBuilder inputString = new StringBuilder();
   static GLFWCharCallback charCallback =
       new GLFWCharCallback() {
         @Override

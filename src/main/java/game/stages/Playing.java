@@ -27,11 +27,10 @@ import util.MousePlacer;
  */
 public class Playing {
 
+  private static final float damageTakenScreenTotalDuration = 2f;
   private static FloatingStrings floatingGoldStrings;
   private static GuiTexture damageOverlay;
-
   private static float damageTakenScreenRemaining = 0f;
-  private static final float damageTakenScreenTotalDuration = 2f;
 
   /**
    * * Initialize Game Menu. Will load the texture files and other GUI elements needed for this
@@ -112,5 +111,12 @@ public class Playing {
 
   public static void showDamageTakenOverlay() {
     damageTakenScreenRemaining = damageTakenScreenTotalDuration;
+  }
+
+  /** Delete all text objects from this stage. */
+  public static void done() {
+    floatingGoldStrings.done();
+    Game.getGoldGuiText().done();
+    Game.getLivesGuiText().done();
   }
 }

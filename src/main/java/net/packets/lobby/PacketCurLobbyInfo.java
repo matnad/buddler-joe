@@ -4,9 +4,7 @@ import game.Game;
 import game.LobbyPlayerEntry;
 import game.NetPlayerMaster;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.concurrent.CopyOnWriteArrayList;
-
 import net.ServerLogic;
 import net.lobbyhandling.Lobby;
 import net.packets.Packet;
@@ -21,10 +19,9 @@ import org.slf4j.LoggerFactory;
  */
 public class PacketCurLobbyInfo extends Packet {
 
+  private static final Logger logger = LoggerFactory.getLogger(PacketCurLobbyInfo.class);
   private String info;
   private String[] infoArray;
-
-  private static final Logger logger = LoggerFactory.getLogger(PacketCurLobbyInfo.class);
 
   /**
    * Constructor that is used by the Server to build the Packet with a lobby id.

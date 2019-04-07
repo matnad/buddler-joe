@@ -27,10 +27,10 @@ import org.slf4j.LoggerFactory;
  * @see ClientLogic
  */
 public class StartNetworkOnlyClient implements Runnable {
+  public static final Logger logger = LoggerFactory.getLogger(StartNetworkOnlyClient.class);
   private static final BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
   private static String serverIp;
   private static int serverPort;
-  public static final Logger logger = LoggerFactory.getLogger(StartNetworkOnlyClient.class);
 
   /**
    * Start the client logic and pass ip + port.

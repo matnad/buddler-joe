@@ -1,10 +1,7 @@
 package entities.blocks;
 
-import engine.models.RawModel;
 import engine.models.TexturedModel;
 import engine.render.Loader;
-import engine.render.objconverter.ObjFileLoader;
-import engine.textures.ModelTexture;
 import entities.Entity;
 import entities.blocks.debris.DebrisMaster;
 import game.Game;
@@ -23,7 +20,6 @@ import org.joml.Vector3f;
 @SuppressWarnings("unused") // TODO: Still have some unused methods
 public abstract class Block extends Entity {
 
-  private static TexturedModel blockModel;
   private final float hardness;
   private final float mass;
   private final float dim;
@@ -44,12 +40,13 @@ public abstract class Block extends Entity {
   private float moveDelay;
   private boolean shakeLeft;
 
-  // Variables to track collision time with a player while the block is moving
+  // Variables to track entities.collision time with a player while the block is moving
   private float collisionTime;
 
   /**
    * Abstract Constructor.
    *
+   * @param blockModel textured model for the block
    * @param type type of block, described by Block Master enum
    * @param hardness damage before block is destroyed
    * @param mass mass or weight of object for physics calculation
@@ -62,6 +59,7 @@ public abstract class Block extends Entity {
    * @param gridY Y coordinate for the block (map grid)
    */
   public Block(
+      TexturedModel blockModel,
       BlockMaster.BlockTypes type,
       float hardness,
       float mass,
@@ -109,14 +107,10 @@ public abstract class Block extends Entity {
    * @param loader main loader
    */
   static void loadBlockModels(Loader loader) {
-    RawModel rawBlock = loader.loadToVao(ObjFileLoader.loadObj("dirt"));
-    ModelTexture blockAtlas = new ModelTexture(loader.loadTexture("blockAtlas"));
-    blockAtlas.setNumberOfRows(6);
-    blockModel = new TexturedModel(rawBlock, blockAtlas);
-  }
-
-  public static TexturedModel getBlockModel() {
-    return blockModel;
+    // RawModel rawBlock = loader.loadToVao(ObjFileLoader.loadObj("dirt"));
+    // ModelTexture blockAtlas = new ModelTexture(loader.loadTexture("blockAtlas"));
+    // blockAtlas.setNumberOfRows(6);
+    // blockModel = new TexturedModel(rawBlock, blockAtlas);
   }
 
   /**
@@ -333,12 +327,12 @@ public abstract class Block extends Entity {
     return gridX;
   }
 
-  public int getGridY() {
-    return gridY;
-  }
-
   public void setGridX(int gridX) {
     this.gridX = gridX;
+  }
+
+  public int getGridY() {
+    return gridY;
   }
 
   public void setGridY(int gridY) {

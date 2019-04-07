@@ -1,5 +1,6 @@
 package net.packets.lobby;
 
+import game.History;
 import net.ServerLogic;
 import net.lobbyhandling.Lobby;
 import net.packets.Packet;
@@ -89,8 +90,11 @@ public class PacketCreateLobby extends Packet {
     if (hasErrors()) {
       status = createErrorMessage();
     } else {
-      Lobby lobby = new Lobby(lobbyname,getClientId());
+      Lobby lobby = new Lobby(lobbyname, getClientId());
       status = ServerLogic.getLobbyList().addLobby(lobby);
+      if (status.startsWith("OK")) {
+        History.openAdd(lobby.getLobbyId(), lobby.getLobbyName());
+      }
     }
     PacketCreateLobbyStatus pcls = new PacketCreateLobbyStatus(getClientId(), status);
     pcls.sendToClient(getClientId());

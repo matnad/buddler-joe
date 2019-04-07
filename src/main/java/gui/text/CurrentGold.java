@@ -42,4 +42,8 @@ public class CurrentGold {
       guiText.changeText(getGoldText());
     }
   }
+
+  public void done() {
+    guiText.delete();
+  }
 }

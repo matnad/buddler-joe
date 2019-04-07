@@ -9,9 +9,8 @@ import org.joml.Vector3f;
 /** IN DEVELOPMENT Try to create debris that adheres to physics. */
 public class Debris extends Entity {
 
-  private Block baseBlock;
-
   private final float weight;
+  private Block baseBlock;
   private Vector3f direction;
   private float lifeLength;
   private Vector3f spin;
@@ -108,7 +107,8 @@ public class Debris extends Entity {
 
   /**
    * Stop all movement when it collides with a surface. Will get us some clipping. The next step, to
-   * do constraint based collision with multiple contact points, is probably a bit too much.
+   * do constraint based entities.collision with multiple contact points, is probably a bit too
+   * much.
    */
   private void handleCollision() {
     if (getPosition().z <= getScale().z) {
@@ -119,7 +119,7 @@ public class Debris extends Entity {
     for (Block block : BlockMaster.getBlocks()) {
       if (block.getDistanceSquaredFrom(getPosition()) < 16) {
         /*
-        Block is close -> check collision
+        Block is close -> check entities.collision
         We use squared distance because its faster
          */
         if (block.collidesWith(this)) {

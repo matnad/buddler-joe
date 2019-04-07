@@ -1,6 +1,6 @@
 package gui.text;
 
-import collision.BoundingBox;
+import entities.collision.BoundingBox;
 import game.Game;
 import java.util.List;
 import java.util.Random;
@@ -92,6 +92,13 @@ public class FloatingStrings {
         floatingString.setOffsetY(
             (float) (floatingString.getOffsetY() + speed * Game.window.getFrameTimeSeconds()));
       }
+    }
+  }
+
+  /** Delete all texts immediately. */
+  public void done() {
+    for (ChangableGuiText floatingString : floatingStrings) {
+      floatingString.delete();
     }
   }
 }

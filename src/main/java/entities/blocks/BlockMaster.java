@@ -30,6 +30,7 @@ public class BlockMaster {
     StoneBlock.init(loader);
     GrassBlock.init(loader);
     QmarkBlock.init(loader);
+    AirBlock.init();
   }
 
   /**
@@ -167,7 +168,7 @@ public class BlockMaster {
     GOLD(30, 3, "\u001B[33m█\u001B[0m"),
     STONE(11, 2, "\u001B[37m█\u001B[0m"),
     AIR(0, 0, "\u001B[35;1m█\u001B[0m"),
-    QMARK(5,5,"\u001B[34m█\u001B[0m");
+    QMARK(5, 5, "\u001B[34m█\u001B[0m");
 
     private final int textureId;
     private final String repr;
@@ -177,14 +178,6 @@ public class BlockMaster {
       this.textureId = textureId;
       this.repr = repr;
       this.id = id;
-    }
-
-    public int getTextureId() {
-      return textureId;
-    }
-
-    public int getId() {
-      return id;
     }
 
     /**
@@ -200,6 +193,14 @@ public class BlockMaster {
         }
       }
       return AIR;
+    }
+
+    public int getTextureId() {
+      return textureId;
+    }
+
+    public int getId() {
+      return id;
     }
 
     @Override

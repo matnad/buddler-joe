@@ -20,9 +20,8 @@ import org.slf4j.LoggerFactory;
 public class PingManager implements Runnable {
 
   public static final Logger logger = LoggerFactory.getLogger(PingManager.class);
-
-  private volatile boolean exit = false;
   private final int freq = 1000;
+  private volatile boolean exit = false;
   /**
    * Class Variables listOfPingTs this list contains the creation time of all sent pings. ping the
    * average ping clientId the identity of the client freq frequency

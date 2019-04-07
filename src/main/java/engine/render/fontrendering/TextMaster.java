@@ -4,7 +4,6 @@ import engine.render.Loader;
 import engine.render.fontmeshcreator.FontType;
 import engine.render.fontmeshcreator.GuiText;
 import engine.render.fontmeshcreator.TextMeshData;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;

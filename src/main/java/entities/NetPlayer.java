@@ -1,6 +1,10 @@
 package entities;
 
+import engine.models.RawModel;
 import engine.models.TexturedModel;
+import engine.render.Loader;
+import engine.render.objconverter.ObjFileLoader;
+import engine.textures.ModelTexture;
 import entities.light.Light;
 import entities.light.LightMaster;
 import gui.text.Nameplate;
@@ -12,18 +16,20 @@ import org.joml.Vector3f;
  */
 public class NetPlayer extends Entity {
 
-  private int clientId;
-  private String username;
-  private Light headLight;
-  private Light headLightGlow;
-
+  private static final float joeModelSize = .2f;
   private static final Vector3f[] lampColors = {
     new Vector3f(1, 1, 1).normalize(),
     new Vector3f(3f, 1, 1).normalize(),
     new Vector3f(1, 3f, 1).normalize(),
-    new Vector3f(1, 1, 3f).normalize()
+    new Vector3f(1, 1, 3f).normalize(),
+    new Vector3f(3f, 1, 3f).normalize()
   };
+  private static TexturedModel joeModel;
   private static int counter;
+  private int clientId;
+  private String username;
+  private Light headLight;
+  private Light headLightGlow;
   // private DirectionalUsername directionalUsername;
   private Nameplate nameplate;
 
@@ -33,24 +39,15 @@ public class NetPlayer extends Entity {
    * <p>REWORK IN PROGRESS
    *
    * @param clientId client id is given out by server
-   * @param playerModel model
    * @param position 3D world coords
    * @param rotX rotation x axis
    * @param rotY rotation y axis
    * @param rotZ rotation z axis
-   * @param scale scale factor
    * @param username username of net player
    */
   public NetPlayer(
-      int clientId,
-      String username,
-      TexturedModel playerModel,
-      Vector3f position,
-      float rotX,
-      float rotY,
-      float rotZ,
-      float scale) {
-    super(playerModel, position, rotX, rotY, rotZ, scale);
+      int clientId, String username, Vector3f position, float rotX, float rotY, float rotZ) {
+    super(getJoeModel(), position, rotX, rotY, rotZ, getJoeModelSize());
 
     this.clientId = clientId;
     this.username = username;
@@ -61,8 +58,31 @@ public class NetPlayer extends Entity {
     headLightGlow =
         LightMaster.generateLight(
             LightMaster.LightTypes.TORCH, getHeadlightPosition(), new Vector3f(1f, 1, 1));
+    // headLightGlow.setDirection(new Vector3f(0,1,0));
+    // headLightGlow.setCutoff(110);
 
     nameplate = new Nameplate(this);
+  }
+
+  /**
+   * Load the player model before creating player models.
+   *
+   * @param loader main loader
+   */
+  public static void init(Loader loader) {
+    RawModel rawPlayer = loader.loadToVao(ObjFileLoader.loadObj("joe"));
+    joeModel = new TexturedModel(rawPlayer, new ModelTexture(loader.loadTexture("uvjoe")));
+
+    joeModel.getTexture().setUseFakeLighting(true);
+    joeModel.getTexture().setShineDamper(.3f);
+  }
+
+  public static TexturedModel getJoeModel() {
+    return joeModel;
+  }
+
+  public static float getJoeModelSize() {
+    return joeModelSize;
   }
 
   public String getUsername() {
@@ -92,16 +112,17 @@ public class NetPlayer extends Entity {
 
   public void turnHeadlightOn() {
     headLight.setBrightness(8);
-    headLightGlow.setBrightness(2);
+    headLightGlow.setBrightness(1.5f);
   }
 
   private Vector3f getHeadlightPosition() {
-    return new Vector3f(getPosition()).add(.3f, 4, 0);
+    float rotCompX = ((getRotY()) / 90) * getBbox().getDimX() / 2 * .8f;
+    return new Vector3f(getPosition()).add(rotCompX, 4.2f, 0);
   }
 
   private void updateHeadlightPosition() {
     headLight.setPosition(getHeadlightPosition());
-    headLightGlow.setPosition(getHeadlightPosition());
+    headLightGlow.setPosition(getHeadlightPosition().add(0, 0.5f, 0));
   }
 
   private void updateHeadlightDirection() {

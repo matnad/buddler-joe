@@ -54,7 +54,7 @@ public class PacketUpdateClientId extends Packet {
         try {
           Game.getActivePlayer().setClientId(id);
         } catch (NullPointerException ignored) {
-          //This is a network only client and no game is running, or the game has not loaded yet
+          // This is a network only client and no game is running, or the game has not loaded yet
         }
       } catch (NumberFormatException e) {
         logger.error(

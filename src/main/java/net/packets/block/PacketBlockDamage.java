@@ -3,7 +3,6 @@ package net.packets.block;
 import game.Game;
 import game.map.ClientMap;
 import game.map.ServerMap;
-import java.util.Arrays;
 import net.ServerLogic;
 import net.lobbyhandling.Lobby;
 import net.packets.Packet;
