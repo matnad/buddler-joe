@@ -131,9 +131,9 @@ public class Lobby {
    * states, informs all clients about the end of the round. Archives the round in the History.
    */
   public void gameOver(int clientId) {
-    setStatus("open");
+    //setStatus("open");
     History.runningRemove(lobbyId);
-    History.openAdd(lobbyId, lobbyName);
+    //History.openAdd(lobbyId, lobbyName);
     String userName = ServerLogic.getPlayerList().getUsername(clientId);
     History.archive("Lobbyname: " + lobbyName + "       Winner: " + userName);
     // TODO update highscore here.

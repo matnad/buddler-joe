@@ -1,10 +1,11 @@
-package net.packets;
+package net.packets.gamestatus;
 
 import static game.Game.Stage.INLOBBBY;
 import static game.Game.Stage.PLAYING;
 
 import game.Game;
 import game.stages.InLobby;
+import net.packets.Packet;
 
 /**
  * A packed that is send from the server to the client, to inform the client that the GameRound of

@@ -1,8 +1,7 @@
-package net.packets;
+package net.packets.gamestatus;
 
 import game.History;
-import net.ServerLogic;
-import net.packets.lobby.PacketLobbyOverview;
+import net.packets.Packet;
 
 /**
  * A Packet that gets sent from the Client to the Server, to get the History(a conclusion of current

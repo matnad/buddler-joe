@@ -24,6 +24,7 @@ import engine.render.objconverter.ObjFileLoader;
 import engine.textures.ModelTexture;
 import entities.Camera;
 import entities.Entity;
+import entities.NetPlayer;
 import entities.Player;
 import entities.blocks.BlockMaster;
 import entities.blocks.debris.DebrisMaster;
@@ -107,16 +108,10 @@ public class Game extends Thread {
    * Everything that relies on a camera object should know which camera it is using
    */
   public static Camera camera;
-  /*
-   * A Temporary, crude "skin-selector". We will work on this when we do GUI Stuff.
-   */
-  public static String myModel;
-  public static String myTexture;
-  public static float myModelSize;
+
   // This probably needs to go somewhere else when we work on the chat
   private static Chat chat;
   private static Player player;
-  private Fps fpsCounter;
   private static CurrentGold goldGuiText;
   private static CurrentLives livesGuiText;
 
@@ -281,23 +276,6 @@ public class Game extends Thread {
   /** Initialize the Playing Thread (Treat this like a constructor). */
   @Override
   public synchronized void start() {
-
-    // select model
-    /*//Penguin
-    myModel = "penguin";
-    myTexture = "penguin";
-    myModelSize = 2.5f;
-
-    //Rabbit
-    myModel = "bunny";
-    myTexture = "bunny";
-    myModelSize = .15f;*/
-
-    // Person
-    myModel = "joe";
-    myTexture = "uvjoe";
-    myModelSize = .2f;
-
     // Start the thread
     super.start();
   }
@@ -351,7 +329,7 @@ public class Game extends Thread {
     }
 
     chat = new Chat(loader);
-    fpsCounter = new Fps();
+    Fps fpsCounter = new Fps();
 
     // Initialize Particle Master
     ParticleMaster.init(loader, MasterRenderer.getProjectionMatrix());
@@ -498,14 +476,8 @@ public class Game extends Thread {
     InLobby.init(loader);
 
     // Generate Player
-    RawModel rawPlayer = loader.loadToVao(ObjFileLoader.loadObj(myModel));
-    TexturedModel playerModel =
-        new TexturedModel(rawPlayer, new ModelTexture(loader.loadTexture(myTexture)));
-
-    playerModel.getTexture().setUseFakeLighting(true);
-    playerModel.getTexture().setShineDamper(.3f);
-
-    player = new Player(getUsername(), playerModel, new Vector3f(90, 2, 3), 0, 0, 0, myModelSize);
+    NetPlayer.init(loader);
+    player = new Player(getUsername(), new Vector3f(90, 2, 3), 0, 0, 0);
 
     // Connecting to Server
     LoadingScreen.updateLoadingMessage("connecting to server");

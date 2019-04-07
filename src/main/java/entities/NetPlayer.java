@@ -1,6 +1,10 @@
 package entities;
 
+import engine.models.RawModel;
 import engine.models.TexturedModel;
+import engine.render.Loader;
+import engine.render.objconverter.ObjFileLoader;
+import engine.textures.ModelTexture;
 import entities.light.Light;
 import entities.light.LightMaster;
 import gui.text.Nameplate;
@@ -16,6 +20,9 @@ public class NetPlayer extends Entity {
   private String username;
   private Light headLight;
   private Light headLightGlow;
+
+  private static TexturedModel joeModel;
+  private static final float joeModelSize = .2f;
 
   private static final Vector3f[] lampColors = {
     new Vector3f(1, 1, 1).normalize(),
@@ -34,24 +41,20 @@ public class NetPlayer extends Entity {
    * <p>REWORK IN PROGRESS
    *
    * @param clientId client id is given out by server
-   * @param playerModel model
    * @param position 3D world coords
    * @param rotX rotation x axis
    * @param rotY rotation y axis
    * @param rotZ rotation z axis
-   * @param scale scale factor
    * @param username username of net player
    */
   public NetPlayer(
       int clientId,
       String username,
-      TexturedModel playerModel,
       Vector3f position,
       float rotX,
       float rotY,
-      float rotZ,
-      float scale) {
-    super(playerModel, position, rotX, rotY, rotZ, scale);
+      float rotZ) {
+    super(getJoeModel(), position, rotX, rotY, rotZ, getJoeModelSize());
 
     this.clientId = clientId;
     this.username = username;
@@ -66,6 +69,14 @@ public class NetPlayer extends Entity {
     // headLightGlow.setCutoff(110);
 
     nameplate = new Nameplate(this);
+  }
+
+  public static void init(Loader loader) {
+    RawModel rawPlayer = loader.loadToVao(ObjFileLoader.loadObj("joe"));
+    joeModel = new TexturedModel(rawPlayer, new ModelTexture(loader.loadTexture("uvjoe")));
+
+    joeModel.getTexture().setUseFakeLighting(true);
+    joeModel.getTexture().setShineDamper(.3f);
   }
 
   public String getUsername() {
@@ -140,5 +151,13 @@ public class NetPlayer extends Entity {
   public void increasePosition(Vector3f velocity) {
     super.increasePosition(velocity);
     updateHeadlightPosition();
+  }
+
+  public static TexturedModel getJoeModel() {
+    return joeModel;
+  }
+
+  public static float getJoeModelSize() {
+    return joeModelSize;
   }
 }

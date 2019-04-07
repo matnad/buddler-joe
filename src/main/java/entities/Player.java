@@ -89,13 +89,11 @@ public class Player extends NetPlayer {
    */
   public Player(
       String username,
-      TexturedModel model,
       Vector3f position,
       float rotX,
       float rotY,
-      float rotZ,
-      float scale) {
-    super(0, username, model, position, rotX, rotY, rotZ, scale);
+      float rotZ) {
+    super(0, username, position, rotX, rotY, rotZ);
     digDamage = 1;
     currentGold = 0;
     currentLives = 2;

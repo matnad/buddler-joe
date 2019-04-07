@@ -7,7 +7,6 @@ import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_1;
 
 import engine.io.InputHandler;
 import engine.render.Loader;
-import engine.render.fontrendering.TextMaster;
 import game.Game;
 import gui.GuiTexture;
 import gui.MenuButton;
@@ -15,10 +14,9 @@ import gui.text.ChangableGuiText;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.packets.PacketGetHistory;
+import net.packets.gamestatus.PacketGetHistory;
 import net.packets.lobby.PacketGetLobbies;
 import org.joml.Vector2f;
-import org.joml.Vector3f;
 
 /**
  * Main Menu specification and rendering. Must be initialized. Specifies all the elements in the

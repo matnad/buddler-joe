@@ -1,4 +1,6 @@
-package net.packets;
+package net.packets.gamestatus;
+
+import net.packets.Packet;
 
 /**
  * A Packet that gets send from the Client to the Server, to inform him about the end of a Round.

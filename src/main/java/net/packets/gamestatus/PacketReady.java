@@ -1,8 +1,9 @@
-package net.packets;
+package net.packets.gamestatus;
 
 import game.History;
 import net.ServerLogic;
 import net.lobbyhandling.Lobby;
+import net.packets.Packet;
 import net.playerhandling.Player;
 
 /**

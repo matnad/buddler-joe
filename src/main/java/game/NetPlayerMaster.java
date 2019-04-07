@@ -11,8 +11,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.StringJoiner;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.CopyOnWriteArrayList;
-
 import org.joml.Vector3f;
 
 /**
@@ -73,9 +71,7 @@ public class NetPlayerMaster {
   public static void addPlayer(int clientId, String username) {
     System.out.println("adding " + username);
     if (!netPlayers.containsKey(clientId)) {
-      NetPlayer newPlayer =
-          new NetPlayer(
-              clientId, username, defaultSkin, new Vector3f(1000, 1000, 3), 0, 0, 0, defaultSize);
+      NetPlayer newPlayer = new NetPlayer(clientId, username, new Vector3f(1000, 1000, 3), 0, 0, 0);
       netPlayers.put(clientId, newPlayer);
       System.out.println(NetPlayerMaster.staticToString());
     }
