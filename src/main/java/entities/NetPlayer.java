@@ -62,8 +62,8 @@ public class NetPlayer extends Entity {
     headLightGlow =
         LightMaster.generateLight(
             LightMaster.LightTypes.TORCH, getHeadlightPosition(), new Vector3f(1f, 1, 1));
-    //headLightGlow.setDirection(new Vector3f(0,1,0));
-    //headLightGlow.setCutoff(110);
+    // headLightGlow.setDirection(new Vector3f(0,1,0));
+    // headLightGlow.setCutoff(110);
 
     nameplate = new Nameplate(this);
   }
@@ -95,16 +95,17 @@ public class NetPlayer extends Entity {
 
   public void turnHeadlightOn() {
     headLight.setBrightness(8);
-    headLightGlow.setBrightness(0);
+    headLightGlow.setBrightness(4);
   }
 
   private Vector3f getHeadlightPosition() {
-    return new Vector3f(getPosition()).add(.4f, 4.2f, 0);
+    float rotCompX = ((getRotY()) / 90) * getBbox().getDimX() / 2 * .8f;
+    return new Vector3f(getPosition()).add(rotCompX, 4.2f, 0);
   }
 
   private void updateHeadlightPosition() {
     headLight.setPosition(getHeadlightPosition());
-    headLightGlow.setPosition(getHeadlightPosition().add(0,0.2f, 0));
+    headLightGlow.setPosition(getHeadlightPosition().add(0, 0.5f, 0));
   }
 
   private void updateHeadlightDirection() {

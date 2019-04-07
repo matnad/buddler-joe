@@ -479,7 +479,7 @@ public class Game extends Thread {
         new TexturedModel(rawPlayer, new ModelTexture(loader.loadTexture(myTexture)));
 
      playerModel.getTexture().setUseFakeLighting(true);
-    playerModel.getTexture().setShineDamper(0.6f);
+    playerModel.getTexture().setShineDamper(.3f);
 
     player = new Player(getUsername(), playerModel, new Vector3f(90, 2, 3), 0, 0, 0, myModelSize);
 

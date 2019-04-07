@@ -43,7 +43,7 @@ public class Torch extends Item {
     setPlacerMode(MousePlacer.Modes.BLOCK.getMode()); // Torches can be placed on blocks
 
     this.colour = colour;
-    this.brightness = 2f;
+    this.brightness = 4f;
     this.block = block;
 
     random = new Random();
