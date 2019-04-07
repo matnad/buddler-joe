@@ -313,7 +313,6 @@ public abstract class Packet {
     BLOCK_DAMAGE("BLDMG"),
     FULL_MAP_BROADCAST("MAPBC"),
     HIGHSCORE("HIGHS"),
-    ITEM_GENERATED("ITMGN"),
     ITEM_USED("ITMUS"),
     PLAYERLIST("PLALS"),
     SPAWN_ITEM("ITMSP");

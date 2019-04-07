@@ -6,22 +6,23 @@ import engine.render.Loader;
 import engine.render.objconverter.ObjFileLoader;
 import engine.textures.ModelTexture;
 import game.Game;
+import net.packets.items.PacketItemUsed;
 import org.joml.Vector3f;
 
 public class Heart extends Item {
 
   private static TexturedModel preloadedModel;
-  private final float gravity = 20;
   private final float showTime = 5f;
   private float time;
+  private int itemId;
 
-  /** Extended Constructor for Dynamite. Don't use directly. Use the Item Master to create items. */
+  /** Extended Constructor for Heart. Don't use directly. Use the Item Master to create items. */
   private Heart(Vector3f position, float rotX, float rotY, float rotZ, float scale) {
     super(ItemMaster.ItemTypes.HEART, getPreloadedModel(), position, rotX, rotY, rotZ, scale);
   }
 
   /**
-   * Constructor for the dynamite. Don't use directly. Use the Item Master to create items.
+   * Constructor for the Heart. Don't use directly. Use the Item Master to create items.
    *
    * @param position position to spawn the dynamite
    */
@@ -29,11 +30,18 @@ public class Heart extends Item {
     this(position, 0, 0, 0, 1);
   }
 
+  /**
+   * Method to update the heart and show the item for five seconds.
+   *
+   * <p>The time is calculated by the number of frames per second. The heart instantly has an effect
+   * and the heart object is shown for five seconds.
+   */
   @Override
   public void update() {
     if (isOwned()) {
       time += Game.window.getFrameTimeSeconds();
       if (time >= showTime) {
+        // TODO: (Viktor) write method give heart to give the destroyer of the block a heart
         setDestroyed(true);
       }
     } else {
@@ -41,6 +49,19 @@ public class Heart extends Item {
       if (time >= showTime) {
         setDestroyed(true);
       }
+    }
+  }
+
+  /**
+   * Method to set the heart as destroyed and to delete it from the ServerItemState.
+   * @param destroyed Boolean whether the item is destroyed or not.
+   */
+  @Override
+  public void setDestroyed(boolean destroyed) {
+    super.setDestroyed(destroyed);
+    if (isOwned()) {
+      PacketItemUsed packetItemUsed = new PacketItemUsed(itemId);
+      packetItemUsed.sendToServer();
     }
   }
 
@@ -65,5 +86,11 @@ public class Heart extends Item {
 
   public void setActive() {}
 
-  // TODO: (Viktor) write method give heart to give the destroyer of the block a heart
+  public int getItemId() {
+    return itemId;
+  }
+
+  public void setItemId(int itemId) {
+    this.itemId = itemId;
+  }
 }

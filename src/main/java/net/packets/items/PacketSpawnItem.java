@@ -54,7 +54,17 @@ public class PacketSpawnItem extends Packet {
     ServerItem serverItem = new ServerItem(clientId, type, position);
     ServerItemState.addItem(serverItem);
     setData(
-        clientId + "║" + type.getItemId() + "║" + position.x + "║" + position.y + "║" + position.z + "║" + serverItem.getItemId());
+        clientId
+            + "║"
+            + type.getItemId()
+            + "║"
+            + position.x
+            + "║"
+            + position.y
+            + "║"
+            + position.z
+            + "║"
+            + serverItem.getItemId());
     // No need to validate. No user input
   }
 
@@ -75,7 +85,18 @@ public class PacketSpawnItem extends Packet {
     ServerItem serverItem =
         new ServerItem(clientId, ItemMaster.ItemTypes.getItemTypeById(type), position);
     ServerItemState.addItem(serverItem);
-    setData(clientId + "║" + type + "║" + position.x + "║" + position.y + "║" + position.z + "║" + serverItem.getItemId());
+    setData(
+        clientId
+            + "║"
+            + type
+            + "║"
+            + position.x
+            + "║"
+            + position.y
+            + "║"
+            + position.z
+            + "║"
+            + serverItem.getItemId());
   }
 
   /**
@@ -90,6 +111,18 @@ public class PacketSpawnItem extends Packet {
     validate(); // Validate and assign in one step
   }
 
+  /**
+   * Validation of the data on the package. Which checks:
+   *
+   * <p>Whether the data array has the right length
+   *
+   * <p>Whether the owner and itemId are Integers
+   *
+   * <p>Whether the coordinates aer floats while also changing the grid coordinates in real map
+   * coordinates
+   *
+   * <p>Whether the item Type is ascended ascii.
+   */
   @Override
   public void validate() {
     if (dataArray.length < 5) {

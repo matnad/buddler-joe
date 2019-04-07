@@ -34,10 +34,17 @@ public class ServerItemState {
     }
   }
 
+  /**
+   * Method to remove an item form the server state with the itemId as identifier. Is the case when
+   * an item is set as destroyed by the owner.
+   *
+   * @param itemId The item Id of the item which has been destroyed.
+   */
   public static void removeItemByItemId(int itemId) {
     for (int i = 0; i < serverItemsList.size(); i++) {
       if (serverItemsList.get(i).getItemId() == itemId) {
         removeItem(serverItemsList.get(i));
+        return;
       }
     }
   }

@@ -12,6 +12,8 @@ import entities.blocks.BlockMaster;
 import entities.light.Light;
 import entities.light.LightMaster;
 import java.util.Random;
+
+import net.packets.items.PacketItemUsed;
 import org.joml.Vector3f;
 import util.MousePlacer;
 
@@ -28,6 +30,7 @@ public class Torch extends Item {
   private Vector3f colour;
   private Vector3f flamePosition;
   private float flickerFactor;
+  private int itemId;
 
   /** Extended Constructor for Torch. Don't use directly. Use the Item Master to create items. */
   Torch(
@@ -130,6 +133,10 @@ public class Torch extends Item {
   public void setDestroyed(boolean destroyed) {
     super.setDestroyed(destroyed);
     light.setDestroyed(destroyed);
+    if (isOwned()) {
+      PacketItemUsed packetItemUsed = new PacketItemUsed(itemId);
+      packetItemUsed.sendToServer();
+    }
   }
 
   /** Creates a subtle flicker effect for the torch. */
@@ -185,5 +192,13 @@ public class Torch extends Item {
     if (closestBlock != null) {
       setBlock(closestBlock);
     }
+  }
+
+  public int getItemId() {
+    return itemId;
+  }
+
+  public void setItemId(int itemId) {
+    this.itemId = itemId;
   }
 }

@@ -12,6 +12,7 @@ import net.packets.Packet;
 import net.packets.block.PacketBlockDamage;
 import net.packets.chat.PacketChatMessageToServer;
 import net.packets.highscore.PacketHighscore;
+import net.packets.items.PacketItemUsed;
 import net.packets.items.PacketSpawnItem;
 import net.packets.lobby.PacketCreateLobby;
 import net.packets.lobby.PacketGetLobbies;
@@ -45,7 +46,7 @@ public class ClientThread implements Runnable {
   private final PingManager pingManager;
   private BufferedReader input;
   private PrintWriter output;
-  public static final Logger logger = LoggerFactory.getLogger(ClientThread.class);
+  //public static final Logger logger = LoggerFactory.getLogger(ClientThread.class);
 
 
   /**
@@ -177,7 +178,9 @@ public class ClientThread implements Runnable {
             break;
           case HIGHSCORE:
             p = new PacketHighscore(clientId);
-            logger.info("Highscore arrived at server");
+            break;
+          case ITEM_USED:
+            p = new PacketItemUsed(data);
             break;
           default:
         }
