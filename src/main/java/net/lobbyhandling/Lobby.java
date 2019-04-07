@@ -1,10 +1,16 @@
 package net.lobbyhandling;
 
+import game.History;
 import game.map.ServerMap;
 import java.util.ArrayList;
+
 import net.ServerLogic;
-import net.packets.map.PacketBroadcastMap;
+
+import net.packets.lobby.PacketLobbyOverview;
+
 import net.playerhandling.Player;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Main lobby class to save the vital information which the server has to access at all times.
@@ -19,6 +25,10 @@ public class Lobby {
   private String lobbyName;
   private ArrayList<Player> lobbyPlayers;
   private ServerMap map;
+  private static final int maxPlayers = 7;
+  private int createrPlayerId;
+  private String status;
+  public static final Logger logger = LoggerFactory.getLogger(Lobby.class);
 
   /**
    * Constructor of the lobby-class uses by the Server.
@@ -27,14 +37,17 @@ public class Lobby {
    *     Lobby#lobbyCounter}. {@link Lobby#lobbyCounter} gets raised by one after every lobby
    *     construction.
    */
-  public Lobby(String lobbyName) {
+  public Lobby(String lobbyName, int createrPlayerId) {
     this.lobbyName = lobbyName;
+    this.createrPlayerId = createrPlayerId;
+    this.status = "open";
     this.inGame = false;
     this.lobbyPlayers = new ArrayList<>();
     this.lobbyId = lobbyCounter;
     lobbyCounter++;
     map = new ServerMap(60, 40, System.currentTimeMillis());
-    //System.out.println(map);
+    History.openAdd(this.lobbyId, this.lobbyName);
+    // System.out.println(map);
   }
 
   /**
@@ -45,6 +58,9 @@ public class Lobby {
    *     ("OK" or "Already joined this lobby.")
    */
   public String addPlayer(Player player) {
+    if (!status.equals("open")) {
+      return "Lobby not open.";
+    }
     if (lobbyPlayers.contains(player)) {
       return "Already joined this lobby.";
     }
@@ -111,9 +127,32 @@ public class Lobby {
     return s.toString();
   }
 
+  /**
+   * Gets called if the Round should end. Updates Lobbystatus, updates Highscore, resets Player
+   * states, informs all clients about the end of the round. Archives the round in the History.
+   */
+  public void gameOver(int clientId) {
+
+    setStatus("open");
+    History.runningRemove(lobbyId);
+    History.openAdd(lobbyId, lobbyName);
+    String userName = ServerLogic.getPlayerList().getUsername(clientId);
+    History.archive("Lobbyname: " + lobbyName + "       Winner: " + userName);
+    // TODO update highscore here.
+    // TODO send EndGamepacket here i created a skeleton already.
+    // Inform all clients
+    // new PacketGameEnd(clientId).sendToLobby(lobbyId);
+    // create new Map and broadcast
+    // map = new ServerMap(60, 40, System.currentTimeMillis());
+    // new PacketBroadcastMap(map).sendToLobby(lobbyId);
+    // for (Player player : lobbyPlayers) {
+    // player.setCurrentGold(0);
+    // }
+  }
+
   @Override
   public String toString() {
-    return "Name: " + lobbyName + ", LobbyId: " + lobbyId + ", Spieler: " + getPlayerAmount();
+    return "║" + lobbyName + "║" + getPlayerAmount();
   }
 
   /**
@@ -145,5 +184,45 @@ public class Lobby {
 
   public ServerMap getMap() {
     return map;
+  }
+
+  /** Getter that return the max amount of players per Lobby. */
+  public static int getMaxPlayers() {
+    return maxPlayers;
+  }
+
+  /** Getter that returns the PlayerId of the player that created this lobby. */
+  public int getCreaterPlayerId() {
+    return createrPlayerId;
+  }
+
+  /** Getter that returns the status of the lobby as String. */
+  public String getStatus() {
+    return status;
+  }
+
+  /** Setter for status, only "open", "running" and "finished" gets accepted. */
+  public void setStatus(String status) {
+    String old = this.status;
+    if (!status.equals("open") && !status.equals("running") && !status.equals("finished")) {
+      logger.error("tried to set unknown lobbystatus.");
+      return;
+    }
+    this.status = status;
+    if (!old.equals(this.status)) {
+      String info = "OK║" + ServerLogic.getLobbyList().getTopTen();
+      if (getPlayerAmount() != 0) {
+        new PacketLobbyOverview(lobbyPlayers.get(0).getClientId(), info).sendToClientsNotInALobby();
+      } else {
+        new PacketLobbyOverview(1, info).sendToClientsNotInALobby();
+        // TODO: check if this works with the "1", do we really need the clientId in the
+        // constructor?
+      }
+      if (status.equals("running")) {
+        inGame = true;
+      } else {
+        inGame = false;
+      }
+    }
   }
 }

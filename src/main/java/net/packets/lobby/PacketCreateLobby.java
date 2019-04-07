@@ -89,7 +89,7 @@ public class PacketCreateLobby extends Packet {
     if (hasErrors()) {
       status = createErrorMessage();
     } else {
-      Lobby lobby = new Lobby(lobbyname);
+      Lobby lobby = new Lobby(lobbyname,getClientId());
       status = ServerLogic.getLobbyList().addLobby(lobby);
     }
     PacketCreateLobbyStatus pcls = new PacketCreateLobbyStatus(getClientId(), status);

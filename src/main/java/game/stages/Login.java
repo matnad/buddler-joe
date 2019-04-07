@@ -11,6 +11,12 @@ import java.util.ArrayList;
 import java.util.List;
 import org.joml.Vector2f;
 
+/**
+ * Login Menu specification and rendering. Must be initialized. Specifies all the elements in the
+ * Login Menu . Contains and manages the Game Loop while the Login Menu is active.
+ *
+ * @author Sebastian Schlachter
+ */
 public class Login {
   private static final float FADE_TIME = .5f;
   private static float fadeTimer;

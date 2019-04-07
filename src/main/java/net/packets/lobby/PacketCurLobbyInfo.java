@@ -1,9 +1,12 @@
 package net.packets.lobby;
 
 import game.Game;
+import game.LobbyPlayerEntry;
 import game.NetPlayerMaster;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.concurrent.CopyOnWriteArrayList;
+
 import net.ServerLogic;
 import net.lobbyhandling.Lobby;
 import net.packets.Packet;
@@ -78,6 +81,7 @@ public class PacketCurLobbyInfo extends Packet {
     super(PacketTypes.CUR_LOBBY_INFO);
     setData(data);
     info = getData();
+    // System.out.println(info);
     infoArray = data.split("║");
     validate();
   }
@@ -113,9 +117,12 @@ public class PacketCurLobbyInfo extends Packet {
     } else if (infoArray[0].equals("OK")) { // No Errors ServerSide
       System.out.println("-------------------------------------");
       System.out.println("Players in Lobby \"" + infoArray[1] + "\":");
+      CopyOnWriteArrayList<LobbyPlayerEntry> catalog = new CopyOnWriteArrayList<>();
       for (int i = 2; i < infoArray.length; i += 2) {
         System.out.println(infoArray[i] + " - " + infoArray[i + 1]);
+        catalog.add(new LobbyPlayerEntry(infoArray[i + 1], true));
       }
+      Game.setLobbyPlayerCatalog(catalog);
       System.out.println("-------------------------------------");
       System.out.println("To chat with players in this lobby, type: C <message>");
       System.out.println("To leave this lobby, type: leave");

@@ -72,11 +72,11 @@ public class Game extends Thread {
    * Set your resolution here, feel free to add new entries and comment them with your name/machine
    * If someone wants to work on this, edit this comment or add an issue to the tracker in gitlab
    */
-
+  private boolean autoJoin = false;
   private Settings settings;
   private static SettingsSerialiser settingsSerialiser = new SettingsSerialiser();
 
-  public static Window window = new Window(1280, 800, 60, "Buddler Joe");
+  public static Window window = new Window(1920, 1080, 60, "Buddler Joe");
   // Set up GLFW Window
   private static final List<Stage> activeStages = new ArrayList<>();
   private static final List<Stage> stagesToBeAdded = new ArrayList<>();
@@ -132,6 +132,11 @@ public class Game extends Thread {
   private static TerrainFlat belowGround;
   private static GuiRenderer guiRenderer;
 
+  private static CopyOnWriteArrayList<LobbyEntry> lobbyCatalog = new CopyOnWriteArrayList<>();
+
+  private static CopyOnWriteArrayList<LobbyPlayerEntry> lobbyPlayerCatalog =
+      new CopyOnWriteArrayList<>();
+
   /**
    * The constructor for the game to be called from the main class.
    *
@@ -143,6 +148,23 @@ public class Game extends Thread {
     serverIp = ipAddress;
     serverPort = port;
     this.username = username;
+  }
+
+  public static CopyOnWriteArrayList<LobbyEntry> getLobbyCatalog() {
+    return lobbyCatalog;
+  }
+
+  public static void setLobbyCatalog(CopyOnWriteArrayList<LobbyEntry> lobbyCatalog) {
+    Game.lobbyCatalog = lobbyCatalog;
+  }
+
+  public static CopyOnWriteArrayList<LobbyPlayerEntry> getLobbyPlayerCatalog() {
+    return lobbyPlayerCatalog;
+  }
+
+  public static void setLobbyPlayerCatalog(
+      CopyOnWriteArrayList<LobbyPlayerEntry> lobbyPlayerCatalog) {
+    Game.lobbyPlayerCatalog = lobbyPlayerCatalog;
   }
 
   /**
@@ -487,24 +509,25 @@ public class Game extends Thread {
     System.out.println("logged in");
 
     // Creating and joining Lobby
-    LoadingScreen.updateLoadingMessage("joining lobby");
-    new PacketCreateLobby("lob1").sendToServer();
-    while (!lobbyCreated) {
-      Thread.sleep(50);
+    if (autoJoin) {
+      LoadingScreen.updateLoadingMessage("joining lobby");
+      new PacketCreateLobby("lob1").sendToServer();
+      while (!lobbyCreated) {
+        Thread.sleep(50);
+      }
     }
-
     // Generate dummy map
     map = new ClientMap(1, 1, 1);
-    new PacketJoinLobby("lob1").sendToServer();
-    while (!NetPlayerMaster.getLobbyname().equals("lob1")) {
-      Thread.sleep(50);
+    if (autoJoin) {
+      new PacketJoinLobby("lob1").sendToServer();
+      while (!NetPlayerMaster.getLobbyname().equals("lob1")) {
+        Thread.sleep(50);
+      }
+      LoadingScreen.updateLoadingMessage("generating map");
+      while (map.isLocal()) {
+        Thread.sleep(500);
+      }
     }
-
-    LoadingScreen.updateLoadingMessage("generating map");
-    while (map.isLocal()) {
-      Thread.sleep(500);
-    }
-
     // Camera
     camera = new Camera(player, window);
 
@@ -515,7 +538,11 @@ public class Game extends Thread {
     LoadingScreen.updateLoadingMessage("Ready!");
     Thread.sleep(500);
     LoadingScreen.done();
-    addActiveStage(PLAYING);
+    if (autoJoin) {
+      addActiveStage(PLAYING);
+    } else {
+      addActiveStage(MAINMENU);
+    }
     removeActiveStage(LOADINGSCREEN);
   }
 
