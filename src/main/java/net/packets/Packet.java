@@ -316,7 +316,6 @@ public abstract class Packet {
     ITEM_USED("ITMUS"),
     PLAYERLIST("PLALS"),
     SPAWN_ITEM("ITMSP"),
-    SPAWN_ITEM("ITMSP"),
     READY("READY"),
     START("START"),
     GAME_OVER("STOPG"),

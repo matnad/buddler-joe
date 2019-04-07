@@ -238,8 +238,8 @@ public class Player extends NetPlayer {
         }
         isInAir = false;
         // If we hold S, dig down
-        if (InputHandler.isKeyDown(GLFW_KEY_S) && entity instanceof Block && !frozen) {          
-            digBlock(block);
+        if (InputHandler.isKeyDown(GLFW_KEY_S) && !frozen) {
+          digBlock(block);
         }
       } else if (theta >= angle45 * 3) {
         // From below
@@ -408,9 +408,7 @@ public class Player extends NetPlayer {
     return currentGold;
   }
 
-  /**
-   * updates the player's life status and sends the life status to server.
-   */
+  /** updates the player's life status and sends the life status to server. */
   public void increaseCurrentLives() {
     if (currentLives < 2) {
       currentLives++;
@@ -419,9 +417,7 @@ public class Player extends NetPlayer {
     lives.processData();
   }
 
-  /**
-   * updates the player's life status and sends the life status to server.
-   */
+  /** updates the player's life status and sends the life status to server. */
   public void decreaseCurrentLives() {
     currentLives--;
     // hier send paket

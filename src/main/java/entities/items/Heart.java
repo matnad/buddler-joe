@@ -5,6 +5,7 @@ import engine.models.TexturedModel;
 import engine.render.Loader;
 import engine.render.objconverter.ObjFileLoader;
 import engine.textures.ModelTexture;
+import entities.Player;
 import game.Game;
 import net.packets.items.PacketItemUsed;
 import org.joml.Vector3f;
@@ -41,7 +42,7 @@ public class Heart extends Item {
     if (isOwned()) {
       time += Game.window.getFrameTimeSeconds();
       if (time >= showTime) {
-        // TODO: (Viktor) write method give heart to give the destroyer of the block a heart
+        Game.getActivePlayer().increaseCurrentLives();
         setDestroyed(true);
       }
     } else {

@@ -110,7 +110,8 @@ public class StartNetworkOnlyClient implements Runnable {
         PacketHighscore p = new PacketHighscore();
         p.sendToServer();
         logger.info("Highscore requested.");
-;      } else if (inputMessage.equals("playerlist")) {
+        ;
+      } else if (inputMessage.equals("playerlist")) {
         PacketPlayerList p = new PacketPlayerList();
         p.sendToServer();
       } else if (inputMessage.equals("disconnect")) {
