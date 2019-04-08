@@ -46,9 +46,7 @@ public class Chat {
   private List<ChatText> messages;
   private int msgSize;
   private List<String> text;
-  private int textSize;
   private String output;
-  private int counter;
 
   /**
    * Initialize Chat, only needs to be called once on game init.
@@ -321,6 +319,7 @@ public class Chat {
   public GuiTexture getChatGui() {
     return chatGui;
   }
+
   /**
    * Add a new chat message to the List text.
    *

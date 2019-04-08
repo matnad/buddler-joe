@@ -8,7 +8,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import org.joml.Vector2i;
 import org.joml.Vector3f;
 
-public class ClientMap extends Map<Block> {
+public class ClientMap extends GameMap<Block> {
 
   private boolean local;
 

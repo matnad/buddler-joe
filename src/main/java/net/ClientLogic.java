@@ -30,6 +30,7 @@ import net.packets.name.PacketSendName;
 import net.packets.name.PacketSetNameStatus;
 import net.packets.pingpong.PacketPing;
 import net.packets.pingpong.PacketPong;
+import net.packets.playerprop.PacketDefeated;
 import net.packets.playerprop.PacketPos;
 import net.playerhandling.PingManager;
 
@@ -257,6 +258,9 @@ public class ClientLogic implements Runnable {
           break;
         case HISTORY:
           p = new PacketHistory(data);
+          break;
+        case PLAYER_DEFEATED:
+          p = new PacketDefeated(data);
           break;
         default:
       }

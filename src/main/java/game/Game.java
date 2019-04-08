@@ -197,6 +197,10 @@ public class Game extends Thread {
     return camera;
   }
 
+  public static void setActiveCamera(Camera camera) {
+    Game.camera = camera;
+  }
+
   public static Player getActivePlayer() {
     return player;
   }

@@ -322,7 +322,8 @@ public abstract class Packet {
     GAME_OVER("STOPG"),
     GET_HISTORY("HISGE"),
     HISTORY("HISTO"),
-    LIFE_STATUS("LSTAT");
+    LIFE_STATUS("LSTAT"),
+    PLAYER_DEFEATED("PDEAD");
 
     private final String packetCode;
 

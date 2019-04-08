@@ -17,7 +17,7 @@ import org.slf4j.LoggerFactory;
 public class ServerBlock {
 
   private static final Logger logger = LoggerFactory.getLogger(PacketSpawnItem.class);
-  private final int gridZ = Map.getSize();
+  private final int gridZ = GameMap.getSize();
   private BlockMaster.BlockTypes type;
   private float hardness;
   private int gridX;

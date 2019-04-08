@@ -9,7 +9,7 @@ import entities.items.ServerItem;
 import entities.items.Star;
 import entities.items.Torch;
 import game.Game;
-import game.map.Map;
+import game.map.GameMap;
 import net.ServerLogic;
 import net.lobbyhandling.Lobby;
 import net.packets.Packet;
@@ -138,8 +138,8 @@ public class PacketSpawnItem extends Packet {
     try {
       position =
           new Vector3f(
-              Float.parseFloat(dataArray[2]) * Map.getDim() + Map.getDim() / 2,
-              -(Float.parseFloat(dataArray[3])) * Map.getDim() - Map.getDim() / 2,
+              Float.parseFloat(dataArray[2]) * GameMap.getDim() + GameMap.getDim() / 2,
+              -(Float.parseFloat(dataArray[3])) * GameMap.getDim() - GameMap.getDim() / 2,
               Float.parseFloat(dataArray[4]));
     } catch (NumberFormatException e) {
       addError("Invalid item position data.");

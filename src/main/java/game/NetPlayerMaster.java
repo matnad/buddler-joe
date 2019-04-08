@@ -39,12 +39,15 @@ public class NetPlayerMaster {
   public static void update(MasterRenderer renderer) {
 
     for (NetPlayer netPlayer : netPlayers.values()) {
-      float pctBrightness = Game.getMap().getLightLevel(netPlayer.getPosition().y);
-      if (pctBrightness > .7f) {
-        netPlayer.turnHeadlightOff();
-      } else {
-        netPlayer.turnHeadlightOn();
-      }
+
+      if (!netPlayer.isDefeated()) {
+        float pctBrightness = Game.getMap().getLightLevel(netPlayer.getPosition().y);
+        if (pctBrightness > .7f) {
+          netPlayer.turnHeadlightOff();
+        } else {
+          netPlayer.turnHeadlightOn();
+        }
+      } // Else apply gravity?
       netPlayer.updateNameplate(); // Kinda expensive?
       renderer.processEntity(netPlayer);
     }

@@ -7,6 +7,7 @@ import engine.render.objconverter.ObjFileLoader;
 import engine.textures.ModelTexture;
 import entities.light.Light;
 import entities.light.LightMaster;
+import game.Game;
 import gui.text.Nameplate;
 import org.joml.Vector3f;
 
@@ -17,6 +18,7 @@ import org.joml.Vector3f;
 public class NetPlayer extends Entity {
 
   private static final float joeModelSize = .2f;
+  private static final float ripModelSize = .5f;
   private static final Vector3f[] lampColors = {
     new Vector3f(1, 1, 1).normalize(),
     new Vector3f(3f, 1, 1).normalize(),
@@ -25,6 +27,7 @@ public class NetPlayer extends Entity {
     new Vector3f(3f, 1, 3f).normalize()
   };
   private static TexturedModel joeModel;
+  private static TexturedModel ripModel;
   private static int counter;
   private int clientId;
   private String username;
@@ -32,6 +35,8 @@ public class NetPlayer extends Entity {
   private Light headLightGlow;
   // private DirectionalUsername directionalUsername;
   private Nameplate nameplate;
+
+  private boolean defeated;
 
   /**
    * Create a net player.
@@ -51,6 +56,7 @@ public class NetPlayer extends Entity {
 
     this.clientId = clientId;
     this.username = username;
+    this.defeated = false;
     headLight =
         LightMaster.generateLight(
             LightMaster.LightTypes.SPOT, getHeadlightPosition(), lampColors[counter++]);
@@ -75,6 +81,9 @@ public class NetPlayer extends Entity {
 
     joeModel.getTexture().setUseFakeLighting(true);
     joeModel.getTexture().setShineDamper(.3f);
+
+    RawModel rawTomb = loader.loadToVao(ObjFileLoader.loadObj("tomb"));
+    ripModel = new TexturedModel(rawTomb, new ModelTexture(loader.loadTexture("tomb")));
   }
 
   public static TexturedModel getJoeModel() {
@@ -83,6 +92,18 @@ public class NetPlayer extends Entity {
 
   public static float getJoeModelSize() {
     return joeModelSize;
+  }
+
+  public boolean isDefeated() {
+    return defeated;
+  }
+
+  public static float getRipModelSize() {
+    return ripModelSize;
+  }
+
+  public static TexturedModel getRipModel() {
+    return ripModel;
   }
 
   public String getUsername() {
@@ -128,6 +149,24 @@ public class NetPlayer extends Entity {
   private void updateHeadlightDirection() {
     Vector3f direction = new Vector3f(0, 0, 1).rotateY((float) Math.toRadians(getRotY()));
     headLight.setDirection(direction);
+  }
+
+  /**
+   * Turn the player into a gravestone and disable all controls if it is the active player.
+   * Will set the defeated flag for other classes to use.
+   *
+   * @param defeated can only be true for now. No way to revive a player
+   */
+  public void setDefeated(boolean defeated) {
+    if (defeated) {
+      this.defeated = defeated;
+      setModel(ripModel);
+      setScale(new Vector3f(ripModelSize, ripModelSize, ripModelSize));
+      setRotY(0);
+      if (getClientId() == Game.getActivePlayer().getClientId()) {
+        Game.setActiveCamera(new SpectatorCamera(Game.window, getPosition()));
+      }
+    }
   }
 
   @Override
