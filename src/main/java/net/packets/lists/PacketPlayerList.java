@@ -1,4 +1,4 @@
-package net.packets.playerlist;
+package net.packets.lists;
 
 import net.ServerLogic;
 import net.packets.Packet;

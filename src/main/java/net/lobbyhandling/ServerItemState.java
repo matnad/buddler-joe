@@ -1,10 +1,12 @@
-package entities.items;
+package net.lobbyhandling;
+
+import entities.items.ServerItem;
 
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class ServerItemState {
-  private static CopyOnWriteArrayList<ServerItem> serverItemsList;
-  private static int itemId = 0;
+  private CopyOnWriteArrayList<ServerItem> serverItemsList;
+  private int itemId = 0;
 
   /** Method to keep a state of all items on the server and to keep track of their existence. */
   public ServerItemState() {
@@ -16,7 +18,7 @@ public class ServerItemState {
    *
    * @param item The item to be added to the state list.
    */
-  public static void addItem(ServerItem item) {
+  public void addItem(ServerItem item) {
     if (!serverItemsList.contains(item)) {
       item.setItemId(++itemId);
       serverItemsList.add(item);
@@ -28,7 +30,7 @@ public class ServerItemState {
    *
    * @param item The Item to be removed from the list.
    */
-  public static void removeItem(ServerItem item) {
+  public void removeItem(ServerItem item) {
     serverItemsList.remove(item);
   }
 
@@ -38,7 +40,7 @@ public class ServerItemState {
    *
    * @param itemId The item Id of the item which has been destroyed.
    */
-  public static void removeItemByItemId(int itemId) {
+  public void removeItemByItemId(int itemId) {
     for (int i = 0; i < serverItemsList.size(); i++) {
       if (serverItemsList.get(i).getItemId() == itemId) {
         removeItem(serverItemsList.get(i));

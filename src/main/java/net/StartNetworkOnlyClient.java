@@ -3,8 +3,10 @@ package net;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+
 import net.packets.chat.PacketChatMessageToServer;
 import net.packets.highscore.PacketHighscore;
+import net.packets.lists.PacketPlayerList;
 import net.packets.lobby.PacketCreateLobby;
 import net.packets.lobby.PacketGetLobbies;
 import net.packets.lobby.PacketGetLobbyInfo;
@@ -13,7 +15,6 @@ import net.packets.lobby.PacketLeaveLobby;
 import net.packets.loginlogout.PacketDisconnect;
 import net.packets.loginlogout.PacketLogin;
 import net.packets.name.PacketSetName;
-import net.packets.playerlist.PacketPlayerList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

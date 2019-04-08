@@ -17,6 +17,7 @@ import net.packets.gamestatus.PacketStartRound;
 import net.packets.highscore.PacketHighscore;
 import net.packets.items.PacketSpawnItem;
 import net.packets.lists.PacketGamesOverview;
+import net.packets.lists.PacketPlayerList;
 import net.packets.lobby.PacketCreateLobbyStatus;
 import net.packets.lobby.PacketCurLobbyInfo;
 import net.packets.lobby.PacketJoinLobbyStatus;
@@ -29,7 +30,6 @@ import net.packets.name.PacketSendName;
 import net.packets.name.PacketSetNameStatus;
 import net.packets.pingpong.PacketPing;
 import net.packets.pingpong.PacketPong;
-import net.packets.playerlist.PacketPlayerList;
 import net.packets.playerprop.PacketPos;
 import net.playerhandling.PingManager;
 

@@ -30,6 +30,10 @@ public class PacketLifeStatus extends Packet {
     validate();
   }
 
+  /**
+   * Checks whether the data is in the correct format and everything is in order with the validation
+   * requirements.
+   */
   // hier muss man dann checken ob die zahl im bereich [0,2] liegt, sonst invalid.
   @Override
   public void validate() {

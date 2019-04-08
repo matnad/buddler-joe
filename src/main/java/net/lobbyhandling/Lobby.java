@@ -29,6 +29,7 @@ public class Lobby {
   private int createrPlayerId;
   private String status;
   private long createdAt;
+  private ServerItemState serverItemState;
 
   /**
    * Constructor of the lobby-class uses by the Server.
@@ -45,6 +46,7 @@ public class Lobby {
     this.inGame = false;
     this.lobbyPlayers = new ArrayList<>();
     this.lobbyId = lobbyCounter;
+    this.serverItemState = new ServerItemState();
     lobbyCounter++;
     map = new ServerMap(60, 40, System.currentTimeMillis());
     // System.out.println(map);
@@ -253,5 +255,9 @@ public class Lobby {
 
   public long getCreatedAt() {
     return createdAt;
+  }
+
+  public ServerItemState getServerItemState() {
+    return serverItemState;
   }
 }

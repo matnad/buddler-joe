@@ -6,9 +6,11 @@ import java.net.Socket;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+
 import net.highscore.ServerHighscore;
 import net.highscore.ServerHighscoreSerialiser;
 import net.lobbyhandling.Lobby;
+import net.lobbyhandling.ServerItemState;
 import net.lobbyhandling.ServerLobbyList;
 import net.packets.Packet;
 import net.packets.chat.PacketChatMessageToClient;
@@ -40,6 +42,7 @@ public class ServerLogic {
   private static HashMap<Integer, ClientThread> clientThreadMap;
   private static ServerSocket serverSocket;
   private static ServerHighscore serverHighscore;
+  private static ServerItemState serverItemState;
 
   /**
    * Initialize a new Server Logic. Creates the Socket to listen on. You have to call {@link
@@ -52,6 +55,7 @@ public class ServerLogic {
     playerList = new ServerPlayerList();
     clientThreadMap = new HashMap<>();
     lobbyList = new ServerLobbyList();
+    serverItemState = new ServerItemState();
 
     serverSocket = new ServerSocket(portValue);
     System.out.println("Started Server on port " + portValue);

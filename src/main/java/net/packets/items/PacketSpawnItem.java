@@ -6,7 +6,6 @@ import entities.items.Ice;
 import entities.items.Item;
 import entities.items.ItemMaster;
 import entities.items.ServerItem;
-import entities.items.ServerItemState;
 import entities.items.Star;
 import entities.items.Torch;
 import game.Game;
@@ -52,7 +51,8 @@ public class PacketSpawnItem extends Packet {
   public PacketSpawnItem(ItemMaster.ItemTypes type, Vector3f position, int clientId) {
     super(Packet.PacketTypes.SPAWN_ITEM);
     ServerItem serverItem = new ServerItem(clientId, type, position);
-    ServerItemState.addItem(serverItem);
+    setClientId(clientId);
+    ServerLogic.getLobbyForClient(getClientId()).getServerItemState().addItem(serverItem);
     setData(
         clientId
             + "║"
@@ -84,7 +84,7 @@ public class PacketSpawnItem extends Packet {
     validate(); // Validate and assign in one step
     ServerItem serverItem =
         new ServerItem(clientId, ItemMaster.ItemTypes.getItemTypeById(type), position);
-    ServerItemState.addItem(serverItem);
+    ServerLogic.getLobbyForClient(getClientId()).getServerItemState().addItem(serverItem);
     setData(
         clientId
             + "║"
