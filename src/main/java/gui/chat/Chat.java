@@ -326,6 +326,7 @@ public class Chat {
    *
    * @param stringText is the new message which comes in
    */
+
   public void addText(String stringText) {
     text.add(stringText);
     if (!enabled) {
