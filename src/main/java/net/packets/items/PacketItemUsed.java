@@ -26,6 +26,7 @@ public class PacketItemUsed extends Packet {
   /**
    * Constructor used by the Server to construct a PacketItemUsed and to validate the information.
    *
+   * @param clientId client id of the client that sent the packet
    * @param data The data received from the Client.
    */
   public PacketItemUsed(int clientId, String data) {

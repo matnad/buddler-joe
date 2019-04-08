@@ -51,6 +51,8 @@ public class Chat {
   /**
    * Initialize Chat, only needs to be called once on game init.
    *
+   * @param maxLines Maximum Number of lines to display (screen coords)
+   * @param maxLineLength maximum length of lines before linebreak (screen coords)
    * @param loader main loader
    */
   public Chat(Loader loader, int maxLines, float maxLineLength) {

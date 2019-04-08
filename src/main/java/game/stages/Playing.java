@@ -30,6 +30,7 @@ public class Playing {
   private static final float damageTakenScreenTotalDuration = 2f;
   private static FloatingStrings floatingGoldStrings;
   private static GuiTexture damageOverlay;
+  private static GuiTexture frozenOverlay;
   private static float damageTakenScreenRemaining = 0f;
 
   /**
@@ -42,6 +43,10 @@ public class Playing {
     damageOverlay =
         new GuiTexture(
             loader.loadTexture("damageTaken"), new Vector2f(0, 0), new Vector2f(1, 1), 1);
+
+    frozenOverlay =
+        new GuiTexture(
+            loader.loadTexture("frozen"), new Vector2f(0, 0), new Vector2f(1, 1), 1);
 
     floatingGoldStrings = new FloatingStrings(Game.getActivePlayer().getBbox(), 3f);
   }
@@ -100,6 +105,11 @@ public class Playing {
       damageOverlay.setAlpha(damageTakenScreenRemaining / damageTakenScreenTotalDuration / 1.5f);
       guis.add(damageOverlay);
     }
+
+    if (Game.getActivePlayer().isFrozen()) {
+      guis.add(frozenOverlay);
+    }
+
 
     Game.getGuiRenderer().render(guis);
     TextMaster.render();

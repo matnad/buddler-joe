@@ -424,4 +424,8 @@ public class Player extends NetPlayer {
   public void defreeze() {
     this.frozen = false;
   }
+
+  public boolean isFrozen() {
+    return frozen;
+  }
 }
