@@ -2,6 +2,8 @@ package net.playerhandling;
 
 import net.ServerLogic;
 import net.lobbyhandling.Lobby;
+import net.packets.chat.PacketChatMessageToClient;
+import net.packets.playerprop.PacketDefeated;
 import org.joml.Vector2f;
 
 public class Player {
@@ -12,6 +14,8 @@ public class Player {
 
   private int currentGold;
   private int currentLives;
+
+  private boolean defeated;
 
   private Vector2f pos2d;
   private float rotY;
@@ -101,10 +105,6 @@ public class Player {
     return currentGold;
   }
 
-  public void setCurrentGold(int currentGold) {
-    this.currentGold = currentGold;
-  }
-
   public int getCurrentLives() {
     return currentLives;
   }
@@ -116,6 +116,9 @@ public class Player {
    */
   public void setCurrentLives(int currentLives) {
     this.currentLives = currentLives;
+    if (currentLives <= 0) {
+      setDefeated(true);
+    }
   }
 
   public void setPos2d(Vector2f pos2d) {
@@ -124,5 +127,22 @@ public class Player {
 
   public void setRotY(float rotY) {
     this.rotY = rotY;
+  }
+
+  /**
+   * Set a player as defeated and inform the clients.
+   * Sends a PacketDefeated with the client ID and a Message to all players in the lobby.
+   *
+   * @param defeated can only be true for now. No way to revive
+   */
+  public void setDefeated(boolean defeated) {
+    if (defeated) {
+      this.defeated = defeated;
+      if (getCurLobbyId() > 0) {
+        new PacketDefeated(getClientId()).sendToLobby(getCurLobbyId());
+        new PacketChatMessageToClient(getUsername() + " has been defeated.")
+            .sendToLobby(getCurLobbyId());
+      }
+    }
   }
 }

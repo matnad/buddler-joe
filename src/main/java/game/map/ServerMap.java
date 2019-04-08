@@ -6,7 +6,7 @@ import java.util.Random;
 import net.ServerLogic;
 import net.packets.block.PacketBlockDamage;
 
-public class ServerMap extends Map<ServerBlock> {
+public class ServerMap extends GameMap<ServerBlock> {
 
   /**
    * Generate a new map for the Server.

@@ -33,16 +33,23 @@ import util.Maths;
  */
 public class Camera {
 
-  private static final Vector3f position = new Vector3f(0, 0, 0);
+  protected static final Vector3f position = new Vector3f(0, 0, 0);
   private static float pitch;
   private static float yaw;
   private final Window window;
-  private final float panSpeed = 20;
+  protected float panSpeed = 20;
   private final Player player;
   private float roll; // Not used right now, but we might
-  private float offsetX;
-  private float offsetY;
-  private float offsetZ;
+  protected float offsetX;
+  protected float offsetY;
+  protected float offsetZ;
+
+  protected float minZoom = 5;
+  protected float maxZoom = 100;
+  protected float maxOffsetX = 30;
+  protected float maxOffsetY = 50;
+  protected float maxPitch = 60;
+  protected float minPitch = -10;
 
   /**
    * Create a new Camera.
@@ -68,6 +75,10 @@ public class Camera {
       isReset();
     }
 
+    correctCameraPos(); // Follow player for example
+  }
+
+  protected void correctCameraPos() {
     position.z = offsetZ;
     position.x = player.getPosition().x + offsetX;
     position.y = player.getPosition().y + offsetY;
@@ -113,14 +124,14 @@ public class Camera {
       offsetY -= (float) (InputHandler.getCursorPosDy() * 0.1f);
     }
 
-    if (offsetX > 30) {
-      offsetX = 30;
-    } else if (offsetX < -30) {
-      offsetX = -30;
-    } else if (offsetY > 50) {
-      offsetY = 50;
-    } else if (offsetY < -30) {
-      offsetY = -30;
+    if (offsetX > maxOffsetX) {
+      offsetX = maxOffsetX;
+    } else if (offsetX < -maxOffsetX) {
+      offsetX = -maxOffsetX;
+    } else if (offsetY > maxOffsetY) {
+      offsetY = maxOffsetY;
+    } else if (offsetY < -maxOffsetY) {
+      offsetY = -maxOffsetY;
     }
   }
 
@@ -131,11 +142,11 @@ public class Camera {
   private void calculateZoom() {
     float zoomLevel = (float) (InputHandler.getMouseScrollY() * 2f);
     offsetZ -= zoomLevel;
-    if (offsetZ < 5) {
-      offsetZ = 5;
+    if (offsetZ < minZoom) {
+      offsetZ = minZoom;
     }
-    if (offsetZ > 100) {
-      offsetZ = 100;
+    if (offsetZ > maxZoom) {
+      offsetZ = maxZoom;
     }
   }
 
@@ -150,10 +161,10 @@ public class Camera {
     if (InputHandler.isMouseDown(GLFW_MOUSE_BUTTON_1)) {
       float pitchChange = (float) (InputHandler.getCursorPosDy() * 0.2f);
       pitch += pitchChange;
-      if (pitch > 60) {
-        pitch = 60;
-      } else if (pitch < -10) {
-        pitch = -10;
+      if (pitch > maxPitch) {
+        pitch = maxPitch;
+      } else if (pitch < minPitch) {
+        pitch = minPitch;
       }
     }
   }

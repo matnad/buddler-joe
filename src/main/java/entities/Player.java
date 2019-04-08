@@ -71,6 +71,8 @@ public class Player extends NetPlayer {
 
   private boolean isInAir = false; // Can't Jump while in the air
 
+  private boolean controlsDisabled;
+
   /**
    * Spawn the Player. This will be handled differently in the future when we rework the Player
    * class structure.
@@ -86,6 +88,7 @@ public class Player extends NetPlayer {
     digDamage = 1;
     currentGold = 0;
     currentLives = 2;
+    controlsDisabled = false;
   }
 
   /**
@@ -95,6 +98,9 @@ public class Player extends NetPlayer {
    * handling and potentially server communication
    */
   public void move() {
+
+    // Check if player can move
+    controlsDisabled = isDefeated() || frozen || Game.getChat().isEnabled();
 
     collideWithBlockAbove = null;
     collideWithBlockBelow = null;
@@ -225,7 +231,7 @@ public class Player extends NetPlayer {
         }
         isInAir = false;
         // If we hold S, dig down
-        if (InputHandler.isKeyDown(GLFW_KEY_S) && !frozen && !Game.getChat().isEnabled()) {
+        if (InputHandler.isKeyDown(GLFW_KEY_S) && !controlsDisabled) {
           digBlock(block);
         }
       } else if (theta >= angle45 * 3) {
@@ -317,12 +323,7 @@ public class Player extends NetPlayer {
    */
   private void checkInputs() {
 
-    if (Game.getChat().isEnabled()) {
-      currentSpeed = 0;
-      return;
-    }
-
-    if (frozen) {
+    if (controlsDisabled) {
       currentSpeed = 0;
       return;
     }
