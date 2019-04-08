@@ -225,7 +225,7 @@ public class Player extends NetPlayer {
         }
         isInAir = false;
         // If we hold S, dig down
-        if (InputHandler.isKeyDown(GLFW_KEY_S) && !frozen) {
+        if (InputHandler.isKeyDown(GLFW_KEY_S) && !frozen && !Game.getChat().isEnabled()) {
           digBlock(block);
         }
       } else if (theta >= angle45 * 3) {

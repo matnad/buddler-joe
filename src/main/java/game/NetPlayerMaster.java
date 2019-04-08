@@ -145,7 +145,8 @@ public class NetPlayerMaster {
    * <p>Checks for subsets of names too.
    *
    * @param message the message to be sent
-   * @return the client id for the target player
+   * @return the client id for the target player, 0 for lobby chat message or -2 for a broadcast
+   *     message.
    */
   public static int getClientIdForWhisper(String message) {
     int x = 0;

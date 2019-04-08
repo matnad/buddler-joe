@@ -321,7 +321,11 @@ public class Chat {
   public GuiTexture getChatGui() {
     return chatGui;
   }
-
+  /**
+   * Add a new chat message to the List text.
+   *
+   * @param stringText is the new message which comes in
+   */
   public void addText(String stringText) {
     text.add(stringText);
     if (!enabled) {
@@ -330,6 +334,7 @@ public class Chat {
     }
   }
 
+  /** creates a new chat message which can be displayed in the chat window. */
   public void addChatText() {
 
     ChatText messageText =
