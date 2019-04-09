@@ -36,7 +36,8 @@ public class PacketSpawnItem extends Packet {
    */
   public PacketSpawnItem(ItemMaster.ItemTypes type, Vector3f position) {
     super(Packet.PacketTypes.SPAWN_ITEM);
-    setData("0║" + type.getItemId() + "║" + position.x + "║" + position.y + "║" + position.z);
+    setData(
+        "0║" + type.getItemId() + "║" + position.x + "║" + position.y + "║" + position.z + "║0");
     // No need to validate. No user input
   }
 
@@ -82,6 +83,9 @@ public class PacketSpawnItem extends Packet {
     dataArray = data.split("║");
     dataArray[0] = "" + clientId;
     validate(); // Validate and assign in one step
+    if (hasErrors()) {
+      return;
+    }
     ServerItem serverItem =
         new ServerItem(clientId, ItemMaster.ItemTypes.getItemTypeById(type), position);
     ServerLogic.getLobbyForClient(getClientId()).getServerItemState().addItem(serverItem);
@@ -129,6 +133,11 @@ public class PacketSpawnItem extends Packet {
       addError("Invalid item data.");
       return;
     }
+    type = dataArray[1];
+    if (!isExtendedAscii(type)) {
+      addError("Invalid item type");
+      return;
+    }
     try {
       owner = Integer.parseInt(dataArray[0]);
       itemId = Integer.parseInt(dataArray[5]);
@@ -136,18 +145,22 @@ public class PacketSpawnItem extends Packet {
       addError("Invalid item owner.");
     }
     try {
-      position =
-          new Vector3f(
-              Float.parseFloat(dataArray[2]) * GameMap.getDim() + GameMap.getDim() / 2,
-              -(Float.parseFloat(dataArray[3])) * GameMap.getDim() - GameMap.getDim() / 2,
-              Float.parseFloat(dataArray[4]));
+      if (ItemMaster.ItemTypes.getItemTypeById(type) == ItemMaster.ItemTypes.TORCH) {
+        position =
+            new Vector3f(
+                Float.parseFloat(dataArray[2]),
+                -(Float.parseFloat(dataArray[3])),
+                Float.parseFloat(dataArray[4]));
+      } else {
+        position =
+            new Vector3f(
+                Float.parseFloat(dataArray[2]) * GameMap.getDim() + GameMap.getDim() / 2,
+                -(Float.parseFloat(dataArray[3])) * GameMap.getDim() - GameMap.getDim() / 2,
+                Float.parseFloat(dataArray[4]));
+      }
     } catch (NumberFormatException e) {
       addError("Invalid item position data.");
     }
-    if (!isExtendedAscii(dataArray[1])) {
-      return;
-    }
-    type = dataArray[1];
   }
 
   /**
@@ -182,9 +195,10 @@ public class PacketSpawnItem extends Packet {
     } else {
       // Client side
       if (!hasErrors()) {
-        // if (owner == Game.getActivePlayer().getClientId()) {
-        //  return;
-        // }
+        if (itemType == ItemMaster.ItemTypes.TORCH
+            && owner == Game.getActivePlayer().getClientId()) {
+          return;
+        }
         Item item = ItemMaster.generateItem(itemType, position);
         if (item instanceof Torch) {
           ((Torch) item).checkForBlock(); // Attach to a block if placed on one.

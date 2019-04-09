@@ -142,6 +142,7 @@ public class MousePlacer {
     }
 
     if (entity instanceof Item) {
+      ((Item) entity).setOwned(true);
       ItemMaster.ItemTypes itemType = ((Item) entity).getType();
       if (itemType != null) {
         // Send packet

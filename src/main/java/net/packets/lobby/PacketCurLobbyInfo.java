@@ -121,8 +121,8 @@ public class PacketCurLobbyInfo extends Packet {
       }
       Game.setLobbyPlayerCatalog(catalog);
       System.out.println("-------------------------------------");
-      System.out.println("To chat with players in this lobby, type: C <message>");
-      System.out.println("To leave this lobby, type: leave");
+      //System.out.println("To chat with players in this lobby, type: C <message>");
+      //System.out.println("To leave this lobby, type: leave");
 
       // Game Logic updates
 

@@ -57,9 +57,10 @@ public class NetPlayer extends Entity {
     this.clientId = clientId;
     this.username = username;
     this.defeated = false;
+    int colorIdx = counter++ % lampColors.length;
     headLight =
         LightMaster.generateLight(
-            LightMaster.LightTypes.SPOT, getHeadlightPosition(), lampColors[counter++]);
+            LightMaster.LightTypes.SPOT, getHeadlightPosition(), lampColors[colorIdx]);
     headLight.setCutoff(25f);
     headLightGlow =
         LightMaster.generateLight(
@@ -79,6 +80,7 @@ public class NetPlayer extends Entity {
     RawModel rawPlayer = loader.loadToVao(ObjFileLoader.loadObj("joe"));
     joeModel = new TexturedModel(rawPlayer, new ModelTexture(loader.loadTexture("uvjoe")));
 
+    // To prevent some problems with normals and for a more comic style look
     joeModel.getTexture().setUseFakeLighting(true);
     joeModel.getTexture().setShineDamper(.3f);
 

@@ -1,12 +1,10 @@
 package entities;
 
-import static entities.items.ItemMaster.ItemTypes.DYNAMITE;
 import static entities.items.ItemMaster.ItemTypes.TORCH;
 import static game.Game.Stage.PLAYING;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_A;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_D;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_E;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_Q;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_S;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_SPACE;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_T;
@@ -66,6 +64,8 @@ public class Player extends NetPlayer {
   private float currentTurnSpeed = 0;
   private float upwardsSpeed = 0;
   private boolean frozen = false;
+  private float torchTimeout = 15f;
+  private final float torchPlaceDelay = 15f;
 
   private List<Block> closeBlocks;
 
@@ -328,18 +328,19 @@ public class Player extends NetPlayer {
       return;
     }
 
-    if (InputHandler.isKeyPressed(GLFW_KEY_Q)) {
-      if (InputHandler.isPlacerMode()) {
-        MousePlacer.cancelPlacing();
-      } else {
-        placeItem(DYNAMITE);
-      }
-    }
-
+    // if (InputHandler.isKeyPressed(GLFW_KEY_Q)) {
+    //  if (InputHandler.isPlacerMode()) {
+    //    MousePlacer.cancelPlacing();
+    //  } else {
+    //    placeItem(DYNAMITE);
+    //  }
+    // }
+    torchTimeout += Game.window.getFrameTimeSeconds();
     if (InputHandler.isKeyPressed(GLFW_KEY_E)) {
       if (InputHandler.isPlacerMode()) {
         MousePlacer.cancelPlacing();
-      } else {
+      } else if (torchTimeout >= torchPlaceDelay) {
+        torchTimeout = 0;
         placeItem(TORCH);
       }
     }

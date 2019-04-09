@@ -74,11 +74,12 @@ public class PacketBroadcastMap extends Packet {
   public void processData() {
     ClientMap map = Game.getMap();
     if (map == null) {
-      // Do we need to handle this case? TODO: Decide if we need this and how we want to handle it.
       map = new ClientMap(1, 1, 1); // Dummy map
+      Game.setMap(map);
     }
     if (!hasErrors()) {
-      map.reloadMap(mapArray);
+      //map.reloadMap(mapArray);
+      map.setLobbyMap(mapArray);
     } else {
       logger.error(
           "Error trying to reload map: " + createErrorMessage() + "\n" + Arrays.toString(mapArray));

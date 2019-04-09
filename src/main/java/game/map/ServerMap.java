@@ -28,7 +28,7 @@ public class ServerMap extends GameMap<ServerBlock> {
    * @param args nothing
    */
   public static void main(String[] args) {
-    ServerMap testMap = new ServerMap(100, 110, System.currentTimeMillis());
+    ServerMap testMap = new ServerMap(64, 100, System.currentTimeMillis());
     System.out.println(testMap);
   }
 
@@ -44,7 +44,7 @@ public class ServerMap extends GameMap<ServerBlock> {
         if (noiseMap[x][y] < thresholds[0]) {
           blocks[x][y] = new ServerBlock(BlockMaster.BlockTypes.STONE, x, y); // Air
         } else {
-          if (rng.nextFloat() < .07f) {
+          if (rng.nextFloat() < .06f) {
             blocks[x][y] =
                 new ServerBlock(BlockMaster.BlockTypes.GOLD, x, y); // Gold: 1 in 40 chance
             blocks[x][y].setGoldValue(50 + y * 5);

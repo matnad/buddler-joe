@@ -1,5 +1,7 @@
 package net.packets.lobby;
 
+import entities.blocks.Block;
+import entities.blocks.BlockMaster;
 import net.packets.Packet;
 
 /**

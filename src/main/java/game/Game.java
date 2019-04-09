@@ -53,6 +53,8 @@ import net.packets.lobby.PacketCreateLobby;
 import net.packets.lobby.PacketJoinLobby;
 import net.packets.loginlogout.PacketLogin;
 import org.joml.Vector3f;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import terrains.Terrain;
 import terrains.TerrainFlat;
 import util.RandomName;
@@ -67,7 +69,7 @@ import util.RandomName;
  */
 public class Game extends Thread {
 
-  // private static final Logger logger = LoggerFactory.getLogger(Game.class);
+  private static final Logger logger = LoggerFactory.getLogger(Game.class);
 
   // Set up GLFW Window
   private static final List<Stage> activeStages = new ArrayList<>();
@@ -225,6 +227,10 @@ public class Game extends Thread {
     return map;
   }
 
+  public static void setMap(ClientMap map) {
+    Game.map = map;
+  }
+
   public static void setLoggedIn(boolean loggedIn) {
     Game.loggedIn = loggedIn;
   }
@@ -307,7 +313,7 @@ public class Game extends Thread {
     aboveGround = GenerateWorld.getAboveGround();
     belowGround = GenerateWorld.getBelowGround();
     if (aboveGround == null || belowGround == null) {
-      // logger.error("Could not generate terrain.");
+      logger.error("Could not generate terrain.");
     }
 
     // Initialize NetPlayerModels

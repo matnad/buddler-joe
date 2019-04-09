@@ -11,6 +11,7 @@ import org.joml.Vector3f;
 public class ClientMap extends GameMap<Block> {
 
   private boolean local;
+  private String[] lobbyMap;
 
   /**
    * Generate a map for the client and generate the blocks in the world.
@@ -38,7 +39,9 @@ public class ClientMap extends GameMap<Block> {
         float posX = x * dim + 3;
         float posY = -y * dim - size;
         if (noiseMap[x][y] < thresholds[0]) {
-          blocks[x][y] = new AirBlock(x, y);
+          blocks[x][y] =
+              BlockMaster.generateBlock(
+                  BlockMaster.BlockTypes.AIR, new Vector3f(posX, posY, (float) size), x, y);
         } else {
           if ((int) (noiseMap[x][y] * 100) % 40 == 0) {
             // Gold Block: 1 in 40 chance
@@ -122,12 +125,12 @@ public class ClientMap extends GameMap<Block> {
   }
 
   /**
-   * Replace map with a new map. Only use from Packet {@link net.packets.map.PacketBroadcastMap}.
-   * Map must be validated by packet. This will guarantee Integers only and correct lengths.
+   * REWORK IN PROGRESS!
    *
-   * @param mapArray mapArray from {@link net.packets.map.PacketBroadcastMap}.
+   * <p>Replace map with a new map. Only use from Packet {@link net.packets.map.PacketBroadcastMap}.
+   * Map must be validated by packet. This will guarantee Integers only and correct lengths.
    */
-  public void reloadMap(String[] mapArray) {
+  public void reloadMap() {
     // Kill old map
     for (int y = 0; y < height; y++) {
       for (int x = 0; x < width; x++) {
@@ -136,11 +139,11 @@ public class ClientMap extends GameMap<Block> {
     }
 
     // Create new map
-    width = mapArray[0].length();
-    height = mapArray.length;
+    width = lobbyMap[0].length();
+    height = lobbyMap.length;
     blocks = new Block[width][height];
-    for (int y = 0; y < mapArray.length; y++) {
-      char[] line = mapArray[y].toCharArray();
+    for (int y = 0; y < lobbyMap.length; y++) {
+      char[] line = lobbyMap[y].toCharArray();
       for (int x = 0; x < line.length; x++) {
         int type = Character.getNumericValue(line[x]);
         float posX = x * dim + 3;
@@ -153,7 +156,6 @@ public class ClientMap extends GameMap<Block> {
                 y);
       }
     }
-    local = false;
   }
 
   /**
@@ -203,5 +205,10 @@ public class ClientMap extends GameMap<Block> {
    */
   public void replaceWithAirBlock(Vector2i gridPos) {
     blocks[gridPos.x][gridPos.y] = new AirBlock(gridPos.x, gridPos.y);
+  }
+
+  public void setLobbyMap(String[] lobbyMap) {
+    this.lobbyMap = lobbyMap;
+    this.local = false;
   }
 }
