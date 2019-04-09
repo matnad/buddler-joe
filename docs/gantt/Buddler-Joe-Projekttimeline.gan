@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><project name="Untitled Gantt Project" company="" webLink="http://" view-date="2019-03-27" view-index="0" gantt-divider-location="376" resource-divider-location="300" version="2.8.10" locale="en_CH">
+<?xml version="1.0" encoding="UTF-8"?><project name="Untitled Gantt Project" company="" webLink="http://" view-date="2019-04-08" view-index="0" gantt-divider-location="376" resource-divider-location="300" version="2.8.10" locale="en_CH">
     <description/>
     <view zooming-state="default:2" id="gantt-chart">
         <field id="tpd3" name="Name" width="182" order="0"/>
@@ -28,76 +28,78 @@
             <taskproperty id="tpd3" name="name" type="default" valuetype="text"/>
             <taskproperty id="tpd4" name="begindate" type="default" valuetype="date"/>
             <taskproperty id="tpd5" name="enddate" type="default" valuetype="date"/>
-            <taskproperty id="tpd6" name="lifeTime" type="default" valuetype="int"/>
+            <taskproperty id="tpd6" name="duration" type="default" valuetype="int"/>
             <taskproperty id="tpd7" name="completion" type="default" valuetype="int"/>
             <taskproperty id="tpd8" name="coordinator" type="default" valuetype="text"/>
             <taskproperty id="tpd9" name="predecessorsr" type="default" valuetype="text"/>
         </taskproperties>
-        <task id="73" name="Namensfindung" color="#8cb6ce" meeting="false" start="2019-02-25" lifeTime="1" complete="0" thirdDate="2019-02-22" thirdDate-constraint="0" expand="true"/>
-        <task id="78" name="Präsentation: Timeline" color="#8cb6ce" meeting="false" start="2019-02-25" lifeTime="2" complete="0" thirdDate="2019-02-22" thirdDate-constraint="0" expand="true" cost-manual-value="25.0" cost-calculated="true">
+        <task id="73" name="Namensfindung" color="#8cb6ce" meeting="false" start="2019-02-25" duration="1" complete="0" thirdDate="2019-02-22" thirdDate-constraint="0" expand="true"/>
+        <task id="78" name="Präsentation: Timeline" color="#8cb6ce" meeting="false" start="2019-02-25" duration="1" complete="0" thirdDate="2019-02-22" thirdDate-constraint="0" expand="true" cost-manual-value="25.0" cost-calculated="true">
             <depend id="80" type="2" difference="0" hardness="Strong"/>
         </task>
-        <task id="80" name="Präsentation: Zuständigkeit" color="#8cb6ce" meeting="false" start="2019-02-27" lifeTime="1" complete="0" thirdDate="2019-02-22" thirdDate-constraint="0" expand="true"/>
-        <task id="55" name="Präsentation: Regeln" color="#8cb6ce" meeting="false" start="2019-02-25" lifeTime="3" complete="0" thirdDate="2019-03-01" thirdDate-constraint="0" expand="true">
+        <task id="80" name="Präsentation: Zuständigkeit" color="#8cb6ce" meeting="false" start="2019-02-26" duration="1" complete="0" thirdDate="2019-02-22" thirdDate-constraint="0" expand="true"/>
+        <task id="55" name="Präsentation: Regeln" color="#8cb6ce" meeting="false" start="2019-02-25" duration="1" complete="0" thirdDate="2019-03-01" thirdDate-constraint="0" expand="true">
             <depend id="67" type="2" difference="0" hardness="Strong"/>
             <depend id="69" type="2" difference="0" hardness="Strong"/>
             <depend id="75" type="2" difference="0" hardness="Strong"/>
         </task>
-        <task id="57" name="Präsentation: Mechaniken" color="#8cb6ce" meeting="false" start="2019-02-26" lifeTime="3" complete="0" thirdDate="2019-02-22" thirdDate-constraint="0" expand="true">
+        <task id="57" name="Präsentation: Mechaniken" color="#8cb6ce" meeting="false" start="2019-02-26" duration="1" complete="0" thirdDate="2019-02-22" thirdDate-constraint="0" expand="true">
             <depend id="67" type="2" difference="0" hardness="Strong"/>
             <depend id="69" type="2" difference="0" hardness="Strong"/>
             <depend id="75" type="2" difference="0" hardness="Strong"/>
         </task>
-        <task id="67" name="Präsentation: Mockup" color="#8cb6ce" meeting="false" start="2019-03-01" lifeTime="1" complete="0" thirdDate="2019-02-28" thirdDate-constraint="0" expand="true"/>
-        <task id="69" name="Client/Server: Übersicht der Funktionalität" color="#8cb6ce" meeting="false" start="2019-03-01" lifeTime="1" complete="0" thirdDate="2019-02-22" thirdDate-constraint="0" expand="true">
+        <task id="67" name="Präsentation: Mockup" color="#8cb6ce" meeting="false" start="2019-02-27" duration="1" complete="0" thirdDate="2019-02-28" thirdDate-constraint="0" expand="true"/>
+        <task id="69" name="Client/Server: Übersicht der Funktionalität" color="#8cb6ce" meeting="false" start="2019-02-27" duration="1" complete="0" thirdDate="2019-02-22" thirdDate-constraint="0" expand="true">
             <depend id="278" type="2" difference="0" hardness="Strong"/>
         </task>
-        <task id="75" name="Software Requirements" color="#8cb6ce" meeting="false" start="2019-03-01" lifeTime="2" complete="0" thirdDate="2019-02-22" thirdDate-constraint="0" expand="true"/>
-        <task id="61" name="Diary: Aufsetzen" color="#8cb6ce" meeting="false" start="2019-02-26" lifeTime="3" complete="0" thirdDate="2019-02-22" thirdDate-constraint="0" expand="true">
+        <task id="75" name="Software Requirements" color="#8cb6ce" meeting="false" start="2019-02-27" duration="1" complete="0" thirdDate="2019-02-22" thirdDate-constraint="0" expand="true"/>
+        <task id="61" name="Diary: Aufsetzen" color="#8cb6ce" meeting="false" start="2019-02-26" duration="1" complete="0" thirdDate="2019-02-22" thirdDate-constraint="0" expand="true">
             <depend id="64" type="2" difference="0" hardness="Strong"/>
         </task>
-        <task id="64" name="Diary: Erster Eintrag" color="#8cb6ce" meeting="false" start="2019-03-01" lifeTime="1" complete="0" thirdDate="2019-02-28" thirdDate-constraint="0" expand="true"/>
-        <task id="278" name="Präsentation: Folien" color="#8cb6ce" meeting="false" start="2019-03-04" lifeTime="1" complete="0" thirdDate="2019-03-04" thirdDate-constraint="0" expand="true"/>
-        <task id="59" name="Commit: Alles ist im Repo" color="#8cb6ce" meeting="false" start="2019-03-04" lifeTime="2" complete="0" thirdDate="2019-02-22" thirdDate-constraint="0" expand="true"/>
-        <task id="53" name="Milestone 1" color="#8cb6ce" meeting="true" start="2019-03-06" lifeTime="0" complete="0" thirdDate="2019-03-01" thirdDate-constraint="0" expand="true"/>
-        <task id="294" name="Server: Chat" color="#8cb6ce" meeting="false" start="2019-03-08" lifeTime="3" complete="0" thirdDate="2019-02-18" thirdDate-constraint="0" expand="true"/>
-        <task id="14" name="Netzwerkprotokoll: aufsetzen" color="#8cb6ce" meeting="false" start="2019-03-04" lifeTime="8" complete="0" thirdDate="2019-02-25" thirdDate-constraint="0" priority="4" expand="true">
+        <task id="64" name="Diary: Erster Eintrag" color="#8cb6ce" meeting="false" start="2019-02-27" duration="1" complete="0" thirdDate="2019-02-28" thirdDate-constraint="0" expand="true"/>
+        <task id="278" name="Präsentation: Folien" color="#8cb6ce" meeting="false" start="2019-02-28" duration="1" complete="0" thirdDate="2019-03-04" thirdDate-constraint="0" expand="true"/>
+        <task id="59" name="Commit: Alles ist im Repo" color="#8cb6ce" meeting="false" start="2019-03-04" duration="1" complete="0" thirdDate="2019-02-22" thirdDate-constraint="0" expand="true"/>
+        <task id="53" name="Milestone 1" color="#8cb6ce" meeting="true" start="2019-03-06" duration="0" complete="0" thirdDate="2019-03-01" thirdDate-constraint="0" expand="true"/>
+        <task id="294" name="Server: Chat" color="#8cb6ce" meeting="false" start="2019-03-08" duration="1" complete="0" thirdDate="2019-02-18" thirdDate-constraint="0" expand="true"/>
+        <task id="14" name="Netzwerkprotokoll: aufsetzen" color="#8cb6ce" meeting="false" start="2019-03-04" duration="1" complete="0" thirdDate="2019-02-25" thirdDate-constraint="0" priority="4" expand="true">
             <depend id="19" type="2" difference="0" hardness="Strong"/>
             <depend id="22" type="2" difference="0" hardness="Strong"/>
         </task>
-        <task id="298" name="Client: Chat" color="#8cb6ce" meeting="false" start="2019-03-11" lifeTime="4" complete="0" thirdDate="2019-02-18" thirdDate-constraint="0" expand="true"/>
-        <task id="16" name="Feature: Server-Chat" color="#8cb6ce" meeting="false" start="2019-03-08" lifeTime="6" complete="0" thirdDate="2019-02-25" thirdDate-constraint="0" expand="true"/>
-        <task id="19" name="Netzwerkprotokoll: dokumentieren" color="#8cb6ce" meeting="false" start="2019-03-14" lifeTime="2" complete="0" thirdDate="2019-03-04" thirdDate-constraint="0" expand="true"/>
-        <task id="22" name="Netwerkprotokoll: validierung" color="#8cb6ce" meeting="false" start="2019-03-14" lifeTime="3" complete="0" thirdDate="2019-03-04" thirdDate-constraint="0" expand="true"/>
-        <task id="27" name="Feature: Spielername ist frei wählbar" color="#8cb6ce" meeting="false" start="2019-03-12" lifeTime="3" complete="0" thirdDate="2019-03-04" thirdDate-constraint="0" expand="true">
+        <task id="298" name="Client: Chat" color="#8cb6ce" meeting="false" start="2019-03-11" duration="1" complete="0" thirdDate="2019-02-18" thirdDate-constraint="0" expand="true"/>
+        <task id="16" name="Feature: Server-Chat" color="#8cb6ce" meeting="false" start="2019-03-08" duration="1" complete="0" thirdDate="2019-02-25" thirdDate-constraint="0" expand="true"/>
+        <task id="19" name="Netzwerkprotokoll: dokumentieren" color="#8cb6ce" meeting="false" start="2019-03-05" duration="1" complete="0" thirdDate="2019-03-04" thirdDate-constraint="0" expand="true"/>
+        <task id="22" name="Netwerkprotokoll: validierung" color="#8cb6ce" meeting="false" start="2019-03-05" duration="1" complete="0" thirdDate="2019-03-04" thirdDate-constraint="0" expand="true"/>
+        <task id="27" name="Feature: Spielername ist frei wählbar" color="#8cb6ce" meeting="false" start="2019-03-12" duration="1" complete="0" thirdDate="2019-03-04" thirdDate-constraint="0" expand="true">
             <depend id="33" type="2" difference="0" hardness="Strong"/>
         </task>
-        <task id="33" name="Feature: Spielername ist einmalig" color="#8cb6ce" meeting="false" start="2019-03-15" lifeTime="1" complete="0" thirdDate="2019-03-15" thirdDate-constraint="0" expand="true">
+        <task id="33" name="Feature: Spielername ist einmalig" color="#8cb6ce" meeting="false" start="2019-03-13" duration="1" complete="0" thirdDate="2019-03-15" thirdDate-constraint="0" expand="true">
             <depend id="93" type="2" difference="0" hardness="Strong"/>
         </task>
-        <task id="93" name="Feature: Spielername vom System vorgeschlagen" color="#8cb6ce" meeting="false" start="2019-03-18" lifeTime="1" complete="0" thirdDate="2019-03-18" thirdDate-constraint="0" expand="true"/>
-        <task id="35" name="Server: Anmeldung" color="#8cb6ce" meeting="false" start="2019-03-08" lifeTime="2" complete="0" thirdDate="2019-03-04" thirdDate-constraint="0" expand="true">
+        <task id="93" name="Feature: Spielername vom System vorgeschlagen" color="#8cb6ce" meeting="false" start="2019-03-14" duration="1" complete="0" thirdDate="2019-03-18" thirdDate-constraint="0" expand="true"/>
+        <task id="35" name="Server: Anmeldung" color="#8cb6ce" meeting="false" start="2019-03-08" duration="1" complete="0" thirdDate="2019-03-04" thirdDate-constraint="0" expand="true">
             <depend id="37" type="2" difference="0" hardness="Strong"/>
         </task>
-        <task id="37" name="Server: Logout" color="#8cb6ce" meeting="false" start="2019-03-12" lifeTime="1" complete="0" thirdDate="2019-03-12" thirdDate-constraint="0" expand="true">
+        <task id="37" name="Server: Logout" color="#8cb6ce" meeting="false" start="2019-03-11" duration="1" complete="0" thirdDate="2019-03-12" thirdDate-constraint="0" expand="true">
             <depend id="42" type="2" difference="0" hardness="Strong"/>
         </task>
-        <task id="42" name="Client: Ping" color="#8cb6ce" meeting="false" start="2019-03-13" lifeTime="1" complete="0" thirdDate="2019-03-13" thirdDate-constraint="0" expand="true">
+        <task id="42" name="Client: Ping" color="#8cb6ce" meeting="false" start="2019-03-12" duration="1" complete="0" thirdDate="2019-03-13" thirdDate-constraint="0" expand="true">
             <depend id="44" type="2" difference="0" hardness="Strong"/>
         </task>
-        <task id="44" name="Server: Ping" color="#8cb6ce" meeting="false" start="2019-03-14" lifeTime="1" complete="0" thirdDate="2019-03-14" thirdDate-constraint="0" expand="true"/>
-        <task id="86" name="Commited: Alles ist im Repo" color="#8cb6ce" meeting="false" start="2019-03-20" lifeTime="2" complete="0" thirdDate="2019-03-05" thirdDate-constraint="0" expand="true"/>
-        <task id="132" name="Server: Have several lounges" color="#8cb6ce" meeting="false" start="2019-03-19" lifeTime="3" complete="0" thirdDate="2019-04-02" thirdDate-constraint="0" expand="true"/>
-        <task id="89" name="Diary: Update" color="#8cb6ce" meeting="false" start="2019-03-20" lifeTime="3" complete="0" thirdDate="2019-03-14" thirdDate-constraint="0" expand="true"/>
-        <task id="91" name="Prozess: QA Konzept" color="#8cb6ce" meeting="false" start="2019-03-18" lifeTime="5" complete="0" thirdDate="2019-03-14" thirdDate-constraint="0" expand="true"/>
-        <task id="46" name="Milestone 2" color="#8cb6ce" meeting="true" start="2019-03-25" lifeTime="0" complete="0" thirdDate="2019-03-20" thirdDate-constraint="0" expand="true"/>
-        <task id="99" name="Feature: Broadcast" color="#8cb6ce" meeting="false" start="2019-03-25" lifeTime="1" complete="0" thirdDate="2019-03-15" thirdDate-constraint="0" expand="true"/>
-        <task id="151" name="Rules to Code: Gamestate und Logik im code" color="#8cb6ce" meeting="false" start="2019-03-25" lifeTime="1" complete="0" thirdDate="2019-04-05" thirdDate-constraint="0" expand="true"/>
-        <task id="365" name="Logger einrichten" color="#8cb6ce" meeting="false" start="2019-03-26" lifeTime="1" complete="0" thirdDate="2019-03-21" thirdDate-constraint="0" expand="true"/>
-        <task id="119" name="Feature: Game list" color="#8cb6ce" meeting="false" start="2019-03-27" lifeTime="1" complete="0" thirdDate="2019-03-20" thirdDate-constraint="0" expand="true"/>
-        <task id="142" name="Feature: Player List" color="#8cb6ce" meeting="false" start="2019-03-27" lifeTime="1" complete="0" thirdDate="2019-03-28" thirdDate-constraint="0" expand="true"/>
-        <task id="159" name="Feature: Whisper-Chat" color="#8cb6ce" meeting="false" start="2019-03-26" lifeTime="2" complete="0" thirdDate="2019-03-28" thirdDate-constraint="0" expand="true"/>
-        <task id="367" name="Terrain generation algorithmus schreiben" color="#8cb6ce" meeting="false" start="2019-03-26" lifeTime="4" complete="0" thirdDate="2019-03-22" thirdDate-constraint="0" expand="true">
+        <task id="44" name="Server: Ping" color="#8cb6ce" meeting="false" start="2019-03-13" duration="1" complete="0" thirdDate="2019-03-14" thirdDate-constraint="0" expand="true"/>
+        <task id="86" name="Commited: Alles ist im Repo" color="#8cb6ce" meeting="false" start="2019-03-20" duration="1" complete="0" thirdDate="2019-03-05" thirdDate-constraint="0" expand="true"/>
+        <task id="132" name="Server: Have several lounges" color="#8cb6ce" meeting="false" start="2019-03-19" duration="1" complete="0" thirdDate="2019-04-02" thirdDate-constraint="0" expand="true"/>
+        <task id="89" name="Diary: Update" color="#8cb6ce" meeting="false" start="2019-03-20" duration="1" complete="0" thirdDate="2019-03-14" thirdDate-constraint="0" expand="true"/>
+        <task id="91" name="Prozess: QA Konzept" color="#8cb6ce" meeting="false" start="2019-03-18" duration="1" complete="0" thirdDate="2019-03-14" thirdDate-constraint="0" expand="true"/>
+        <task id="46" name="Milestone 2" color="#8cb6ce" meeting="true" start="2019-03-25" duration="0" complete="0" thirdDate="2019-03-20" thirdDate-constraint="0" expand="true"/>
+        <task id="99" name="Feature: Broadcast" color="#8cb6ce" meeting="false" start="2019-03-25" duration="1" complete="0" thirdDate="2019-03-15" thirdDate-constraint="0" expand="true"/>
+        <task id="151" name="Rules to Code: Gamestate und Logik im code" color="#8cb6ce" meeting="false" start="2019-03-25" duration="1" complete="0" thirdDate="2019-04-05" thirdDate-constraint="0" expand="true"/>
+        <task id="365" name="Logger einrichten" color="#8cb6ce" meeting="false" start="2019-03-26" duration="1" complete="0" thirdDate="2019-03-21" thirdDate-constraint="0" expand="true">
+            <depend id="630" type="2" difference="0" hardness="Strong"/>
+        </task>
+        <task id="119" name="Feature: Game list" color="#8cb6ce" meeting="false" start="2019-03-27" duration="1" complete="0" thirdDate="2019-03-20" thirdDate-constraint="0" expand="true"/>
+        <task id="142" name="Feature: Player List" color="#8cb6ce" meeting="false" start="2019-03-27" duration="1" complete="0" thirdDate="2019-03-28" thirdDate-constraint="0" expand="true"/>
+        <task id="159" name="Feature: Whisper-Chat" color="#8cb6ce" meeting="false" start="2019-03-26" duration="1" complete="0" thirdDate="2019-03-28" thirdDate-constraint="0" expand="true"/>
+        <task id="367" name="Terrain generation algorithmus schreiben" color="#8cb6ce" meeting="false" start="2019-03-26" duration="1" complete="0" thirdDate="2019-03-22" thirdDate-constraint="0" expand="true">
             <notes>
                 <![CDATA[2D Procedural Terrain Generation Ideeen
 Vorteil: Unsere Karte is exakt ein Gitter aus Vierecken und jedes Viereck hat genau einen Typ.
@@ -119,26 +121,26 @@ https://www.redblobgames.com/articles/noise/2d/ (Visuelle Darstellung f¸r 2D!)]
             </notes>
             <depend id="371" type="2" difference="0" hardness="Strong"/>
         </task>
-        <task id="371" name="Terrain generation Visualisierung" color="#8cb6ce" meeting="false" start="2019-04-01" lifeTime="2" complete="0" thirdDate="2019-03-22" thirdDate-constraint="0" expand="true">
+        <task id="371" name="Terrain generation Visualisierung" color="#8cb6ce" meeting="false" start="2019-03-27" duration="1" complete="0" thirdDate="2019-03-22" thirdDate-constraint="0" expand="true">
             <depend id="370" type="2" difference="0" hardness="Strong"/>
             <depend id="404" type="2" difference="0" hardness="Strong"/>
         </task>
-        <task id="404" name="Blocktexturen erstellen" color="#8cb6ce" meeting="false" start="2019-04-03" lifeTime="3" complete="0" thirdDate="2019-04-03" thirdDate-constraint="0" expand="true">
+        <task id="404" name="Blocktexturen erstellen" color="#8cb6ce" meeting="false" start="2019-03-28" duration="1" complete="0" thirdDate="2019-04-03" thirdDate-constraint="0" expand="true">
             <notes>
                 <![CDATA[Map Atlas:
 	Jeder Stein mind. ein Atlas mit 4 Bilder]]>
             </notes>
         </task>
-        <task id="370" name="Terrain generation validierung" color="#8cb6ce" meeting="false" start="2019-04-03" lifeTime="4" complete="0" thirdDate="2019-04-01" thirdDate-constraint="0" expand="true"/>
-        <task id="435" name="GUI: GUI handler" color="#8cb6ce" meeting="false" start="2019-03-26" lifeTime="6" complete="0" thirdDate="2019-03-20" thirdDate-constraint="0" expand="true"/>
-        <task id="117" name="GUI: Chat" color="#8cb6ce" meeting="false" start="2019-03-26" lifeTime="3" complete="0" thirdDate="2019-03-22" thirdDate-constraint="0" expand="true">
+        <task id="370" name="Terrain generation validierung" color="#8cb6ce" meeting="false" start="2019-03-28" duration="1" complete="0" thirdDate="2019-04-01" thirdDate-constraint="0" expand="true"/>
+        <task id="435" name="GUI: GUI handler" color="#8cb6ce" meeting="false" start="2019-03-26" duration="1" complete="0" thirdDate="2019-03-20" thirdDate-constraint="0" expand="true"/>
+        <task id="117" name="GUI: Chat" color="#8cb6ce" meeting="false" start="2019-03-26" duration="1" complete="0" thirdDate="2019-03-22" thirdDate-constraint="0" expand="true">
             <depend id="415" type="2" difference="0" hardness="Strong"/>
         </task>
-        <task id="437" name="InputHandler" color="#8cb6ce" meeting="false" start="2019-03-26" lifeTime="4" complete="0" thirdDate="2019-03-21" thirdDate-constraint="0" expand="true"/>
-        <task id="415" name="Settings: Spielsettings" color="#8cb6ce" meeting="false" start="2019-03-29" lifeTime="1" complete="0" thirdDate="2019-04-01" thirdDate-constraint="0" expand="true">
+        <task id="437" name="InputHandler" color="#8cb6ce" meeting="false" start="2019-03-26" duration="1" complete="0" thirdDate="2019-03-21" thirdDate-constraint="0" expand="true"/>
+        <task id="415" name="Settings: Spielsettings" color="#8cb6ce" meeting="false" start="2019-03-27" duration="1" complete="0" thirdDate="2019-04-01" thirdDate-constraint="0" expand="true">
             <depend id="409" type="2" difference="0" hardness="Strong"/>
         </task>
-        <task id="409" name="GUI: LobbyScreen" color="#8cb6ce" meeting="false" start="2019-04-01" lifeTime="1" complete="0" thirdDate="2019-03-22" thirdDate-constraint="0" expand="true">
+        <task id="409" name="GUI: LobbyScreen" color="#8cb6ce" meeting="false" start="2019-03-28" duration="1" complete="0" thirdDate="2019-03-22" thirdDate-constraint="0" expand="true">
             <notes>
                 <![CDATA[Spiel starten
 Spieler
@@ -146,66 +148,93 @@ Chatverlauf]]>
             </notes>
             <depend id="410" type="2" difference="0" hardness="Strong"/>
         </task>
-        <task id="410" name="Funktion: StartGame" color="#8cb6ce" meeting="false" start="2019-04-02" lifeTime="1" complete="0" thirdDate="2019-04-02" thirdDate-constraint="0" expand="true">
+        <task id="410" name="Funktion: StartGame" color="#8cb6ce" meeting="false" start="2019-03-29" duration="1" complete="0" thirdDate="2019-04-02" thirdDate-constraint="0" expand="true">
             <depend id="411" type="2" difference="0" hardness="Strong"/>
         </task>
-        <task id="411" name="GUI: ChatOverlay Game" color="#8cb6ce" meeting="false" start="2019-04-03" lifeTime="1" complete="0" thirdDate="2019-04-03" thirdDate-constraint="0" expand="true">
+        <task id="411" name="GUI: ChatOverlay Game" color="#8cb6ce" meeting="false" start="2019-04-01" duration="1" complete="0" thirdDate="2019-04-03" thirdDate-constraint="0" expand="true">
             <depend id="412" type="2" difference="0" hardness="Strong"/>
+            <depend id="638" type="2" difference="0" hardness="Strong"/>
         </task>
-        <task id="412" name="GUI: MainMenu" color="#8cb6ce" meeting="false" start="2019-04-04" lifeTime="1" complete="0" thirdDate="2019-04-04" thirdDate-constraint="0" expand="true">
+        <task id="638" name="Chat Schriftgrösse anpassen" color="#8cb6ce" meeting="false" start="2019-04-02" duration="1" complete="0" thirdDate="2019-03-27" thirdDate-constraint="0" expand="true">
+            <depend id="641" type="2" difference="0" hardness="Strong"/>
+        </task>
+        <task id="641" name="Chat: Grösse anpassen an geschriebenes" color="#8cb6ce" meeting="false" start="2019-04-03" duration="1" complete="0" thirdDate="2019-03-25" thirdDate-constraint="0" expand="true"/>
+        <task id="412" name="GUI: MainMenu" color="#8cb6ce" meeting="false" start="2019-04-02" duration="1" complete="0" thirdDate="2019-04-04" thirdDate-constraint="0" expand="true">
             <depend id="413" type="2" difference="0" hardness="Strong"/>
         </task>
-        <task id="413" name="GUI: LobbyBrowser" color="#8cb6ce" meeting="false" start="2019-04-05" lifeTime="1" complete="0" thirdDate="2019-04-05" thirdDate-constraint="0" expand="true">
+        <task id="413" name="GUI: LobbyBrowser" color="#8cb6ce" meeting="false" start="2019-04-03" duration="1" complete="0" thirdDate="2019-04-05" thirdDate-constraint="0" expand="true">
             <depend id="424" type="2" difference="0" hardness="Strong"/>
         </task>
-        <task id="424" name="GUI: GameMenu esc" color="#8cb6ce" meeting="false" start="2019-04-08" lifeTime="1" complete="0" thirdDate="2019-03-22" thirdDate-constraint="0" expand="true"/>
-        <task id="464" name="Gradle" color="#8cb6ce" meeting="false" start="2019-03-28" lifeTime="3" complete="0" thirdDate="2019-03-19" thirdDate-constraint="0" expand="true"/>
-        <task id="466" name="Multiplayer Move" color="#8cb6ce" meeting="false" start="2019-03-29" lifeTime="4" complete="0" thirdDate="2019-04-04" thirdDate-constraint="0" expand="true"/>
-        <task id="507" name="Preferences serialising" color="#8cb6ce" meeting="false" start="2019-03-28" lifeTime="3" complete="0" thirdDate="2019-03-25" thirdDate-constraint="0" expand="true"/>
-        <task id="448" name="Items erstellen" color="#8cb6ce" meeting="false" start="2019-03-27" lifeTime="5" complete="0" thirdDate="2019-03-22" thirdDate-constraint="0" expand="true"/>
-        <task id="125" name="Server: Keeps game state" color="#8cb6ce" meeting="false" start="2019-04-02" lifeTime="3" complete="0" thirdDate="2019-04-01" thirdDate-constraint="0" expand="true">
+        <task id="424" name="GUI: GameMenu esc" color="#8cb6ce" meeting="false" start="2019-04-04" duration="1" complete="0" thirdDate="2019-03-22" thirdDate-constraint="0" expand="true">
+            <depend id="633" type="2" difference="0" hardness="Strong"/>
+        </task>
+        <task id="633" name="Lobby Overview" color="#8cb6ce" meeting="false" start="2019-04-05" duration="1" complete="0" thirdDate="2019-04-05" thirdDate-constraint="0" expand="true"/>
+        <task id="644" name="Neues Playermodell" color="#8cb6ce" meeting="false" start="2019-03-27" duration="4" complete="0" thirdDate="2019-03-22" thirdDate-constraint="0" expand="true"/>
+        <task id="464" name="Gradle" color="#8cb6ce" meeting="false" start="2019-03-28" duration="1" complete="0" thirdDate="2019-03-19" thirdDate-constraint="0" expand="true">
+            <depend id="646" type="2" difference="0" hardness="Strong"/>
+        </task>
+        <task id="646" name="Command Line input" color="#8cb6ce" meeting="false" start="2019-03-29" duration="2" complete="0" thirdDate="2019-03-26" thirdDate-constraint="0" expand="true"/>
+        <task id="466" name="Multiplayer Move" color="#8cb6ce" meeting="false" start="2019-03-29" duration="1" complete="0" thirdDate="2019-04-04" thirdDate-constraint="0" expand="true"/>
+        <task id="507" name="Preferences serialising" color="#8cb6ce" meeting="false" start="2019-03-28" duration="1" complete="0" thirdDate="2019-03-25" thirdDate-constraint="0" expand="true"/>
+        <task id="448" name="Items erstellen" color="#8cb6ce" meeting="false" start="2019-03-27" duration="1" complete="0" thirdDate="2019-03-22" thirdDate-constraint="0" expand="true"/>
+        <task id="125" name="Server: Keeps game state" color="#8cb6ce" meeting="false" start="2019-04-02" duration="1" complete="0" thirdDate="2019-04-01" thirdDate-constraint="0" expand="true">
             <depend id="128" type="2" difference="0" hardness="Strong"/>
         </task>
-        <task id="97" name="Outline: Mechanics und Regeln" color="#8cb6ce" meeting="false" start="2019-04-02" lifeTime="3" complete="0" thirdDate="2019-03-15" thirdDate-constraint="0" expand="true"/>
-        <task id="122" name="Game logic: Existiert, man kann Spiel spielen" color="#8cb6ce" meeting="false" start="2019-04-02" lifeTime="5" complete="0" thirdDate="2019-03-20" thirdDate-constraint="0" expand="true"/>
-        <task id="128" name="Client/Server: High score" color="#8cb6ce" meeting="false" start="2019-04-05" lifeTime="3" complete="0" thirdDate="2019-04-02" thirdDate-constraint="0" expand="true"/>
-        <task id="101" name="Build: Script creates jar &amp; javadoc" color="#8cb6ce" meeting="false" start="2019-04-03" lifeTime="3" complete="0" thirdDate="2019-03-15" thirdDate-constraint="0" expand="true">
+        <task id="97" name="Outline: Mechanics und Regeln" color="#8cb6ce" meeting="false" start="2019-04-02" duration="1" complete="0" thirdDate="2019-03-15" thirdDate-constraint="0" expand="true"/>
+        <task id="122" name="Game logic: Existiert, man kann Spiel spielen" color="#8cb6ce" meeting="false" start="2019-04-02" duration="1" complete="0" thirdDate="2019-03-20" thirdDate-constraint="0" expand="true"/>
+        <task id="128" name="Client/Server: High score" color="#8cb6ce" meeting="false" start="2019-04-03" duration="1" complete="0" thirdDate="2019-04-02" thirdDate-constraint="0" expand="true"/>
+        <task id="101" name="Build: Script creates jar &amp; javadoc" color="#8cb6ce" meeting="false" start="2019-04-03" duration="1" complete="0" thirdDate="2019-03-15" thirdDate-constraint="0" expand="true">
             <depend id="104" type="2" difference="0" hardness="Strong"/>
         </task>
-        <task id="115" name="Product: Create a working prototype" color="#8cb6ce" meeting="false" start="2019-03-29" lifeTime="6" complete="0" thirdDate="2019-03-21" thirdDate-constraint="0" expand="true">
+        <task id="115" name="Product: Create a working prototype" color="#8cb6ce" meeting="false" start="2019-03-29" duration="1" complete="0" thirdDate="2019-03-21" thirdDate-constraint="0" expand="true">
             <depend id="139" type="2" difference="0" hardness="Strong"/>
         </task>
-        <task id="104" name="Client/Server: Command Line Arguments" color="#8cb6ce" meeting="false" start="2019-04-08" duration="2" complete="0" thirdDate="2019-04-10" thirdDate-constraint="0" expand="true"/>
+        <task id="104" name="Client/Server: Command Line Arguments" color="#8cb6ce" meeting="false" start="2019-04-04" duration="2" complete="0" thirdDate="2019-04-10" thirdDate-constraint="0" expand="true"/>
         <task id="149" name="QA: Konzept dokumentieren und Konzept aufsetzen" color="#8cb6ce" meeting="false" start="2019-04-08" duration="2" complete="0" thirdDate="2019-04-01" thirdDate-constraint="0" expand="true"/>
         <task id="154" name="Präsentation: Technologie vorstellen" color="#8cb6ce" meeting="false" start="2019-04-08" duration="2" complete="0" thirdDate="2019-04-01" thirdDate-constraint="0" expand="true"/>
-        <task id="139" name="Präsentation: Netzwerk Übersicht erstellen" color="#8cb6ce" meeting="false" start="2019-04-08" duration="2" complete="0" thirdDate="2019-04-09" thirdDate-constraint="0" expand="true"/>
+        <task id="139" name="Präsentation: Netzwerk Übersicht erstellen" color="#8cb6ce" meeting="false" start="2019-04-01" duration="2" complete="0" thirdDate="2019-04-09" thirdDate-constraint="0" expand="true"/>
         <task id="162" name="Präsentation: Projekttimeline und schwierigkeiten" color="#8cb6ce" meeting="false" start="2019-04-08" duration="2" complete="0" thirdDate="2019-04-03" thirdDate-constraint="0" expand="true"/>
         <task id="153" name="Präsentation: Prototyp" color="#8cb6ce" meeting="false" start="2019-04-05" duration="2" complete="0" thirdDate="2019-04-09" thirdDate-constraint="0" expand="true"/>
+        <task id="650" name="Teaser" color="#8cb6ce" meeting="false" start="2019-04-01" duration="2" complete="0" thirdDate="2019-03-25" thirdDate-constraint="0" expand="true"/>
         <task id="135" name="Manual: Aufsetzen" color="#8cb6ce" meeting="false" start="2019-04-05" duration="2" complete="0" thirdDate="2019-04-09" thirdDate-constraint="0" expand="true"/>
         <task id="147" name="Netzwerkprotokoll: Komplett definiert und dokumentiert" color="#8cb6ce" meeting="false" start="2019-04-05" duration="3" complete="0" thirdDate="2019-03-26" thirdDate-constraint="0" expand="true"/>
         <task id="107" name="Commited: Alles ist im repo" color="#8cb6ce" meeting="false" start="2019-04-08" duration="2" complete="0" thirdDate="2019-04-08" thirdDate-constraint="0" expand="true"/>
         <task id="112" name="Diary: Update" color="#8cb6ce" meeting="false" start="2019-04-08" duration="2" complete="0" thirdDate="2019-04-02" thirdDate-constraint="0" expand="true"/>
+        <task id="630" name="Logger für die Fehlerbehebung verwenden" color="#8cb6ce" meeting="false" start="2019-03-27" duration="10" complete="0" thirdDate="2019-03-27" thirdDate-constraint="0" expand="true"/>
         <task id="95" name="Milestone 3" color="#8cb6ce" meeting="true" start="2019-04-10" duration="0" complete="0" thirdDate="2019-03-18" thirdDate-constraint="0" expand="true"/>
         <task id="554" name="Winning Condition: Gold" color="#8cb6ce" meeting="false" start="2019-04-10" duration="3" complete="0" thirdDate="2019-04-08" thirdDate-constraint="0" expand="true">
             <depend id="176" type="2" difference="0" hardness="Strong"/>
+            <depend id="653" type="2" difference="0" hardness="Strong"/>
         </task>
         <task id="556" name="Winning condition: Time" color="#8cb6ce" meeting="false" start="2019-04-10" duration="2" complete="0" thirdDate="2019-04-05" thirdDate-constraint="0" expand="true"/>
+        <task id="653" name="Charaktermodell animieren" color="#8cb6ce" meeting="false" start="2019-04-15" duration="4" complete="0" thirdDate="2019-04-08" thirdDate-constraint="0" expand="true"/>
         <task id="176" name="Game logic: Regeln werden angewandt" color="#8cb6ce" meeting="false" start="2019-04-15" duration="4" complete="0" thirdDate="2019-04-09" thirdDate-constraint="0" expand="true">
             <depend id="185" type="2" difference="0" hardness="Strong"/>
         </task>
-        <task id="185" name="Game logic: Gewinner wird korrekt ermittelt" color="#8cb6ce" meeting="false" start="2019-04-19" lifeTime="2" complete="0" thirdDate="2019-04-19" thirdDate-constraint="0" expand="true">
+        <task id="185" name="Game logic: Gewinner wird korrekt ermittelt" color="#8cb6ce" meeting="false" start="2019-04-19" duration="1" complete="0" thirdDate="2019-04-19" thirdDate-constraint="0" expand="true">
             <depend id="217" type="2" difference="0" hardness="Strong"/>
         </task>
-        <task id="172" name="GUI: Spiel ist grafisch räpresentiert" color="#8cb6ce" meeting="false" start="2019-04-11" lifeTime="10" complete="0" thirdDate="2019-04-04" thirdDate-constraint="0" expand="true">
+        <task id="658" name="Neues Item: Diamant" color="#8cb6ce" meeting="false" start="2019-04-19" duration="3" complete="0" thirdDate="2019-04-05" thirdDate-constraint="0" expand="true">
+            <depend id="659" type="2" difference="0" hardness="Strong"/>
+        </task>
+        <task id="659" name="Neues Item: Grosse Lampe" color="#8cb6ce" meeting="false" start="2019-04-24" duration="3" complete="0" thirdDate="2019-04-24" thirdDate-constraint="0" expand="true"/>
+        <task id="172" name="GUI: Spiel ist grafisch räpresentiert" color="#8cb6ce" meeting="false" start="2019-04-11" duration="2" complete="0" thirdDate="2019-04-04" thirdDate-constraint="0" expand="true">
             <depend id="178" type="2" difference="0" hardness="Strong"/>
             <depend id="214" type="2" difference="0" hardness="Strong"/>
+            <depend id="663" type="2" difference="0" hardness="Strong"/>
         </task>
+        <task id="663" name="Item grafisch darstellen" color="#8cb6ce" meeting="false" start="2019-04-15" duration="3" complete="0" thirdDate="2019-04-15" thirdDate-constraint="0" expand="true">
+            <depend id="687" type="2" difference="0" hardness="Strong"/>
+        </task>
+        <task id="687" name="Weitere Grafiken Menüs herstellen" color="#8cb6ce" meeting="false" start="2019-04-18" duration="5" complete="0" thirdDate="2019-04-08" thirdDate-constraint="0" expand="true"/>
         <task id="559" name="Items Grafik" color="#8cb6ce" meeting="false" start="2019-04-11" duration="2" complete="0" thirdDate="2019-04-04" thirdDate-constraint="0" expand="true">
             <depend id="560" type="2" difference="0" hardness="Strong"/>
         </task>
         <task id="560" name="Block Grafik" color="#8cb6ce" meeting="false" start="2019-04-15" duration="2" complete="0" thirdDate="2019-04-15" thirdDate-constraint="0" expand="true">
             <depend id="561" type="2" difference="0" hardness="Strong"/>
+            <depend id="691" type="2" difference="0" hardness="Strong"/>
         </task>
+        <task id="691" name="Neuer Fragezeichenblock" color="#8cb6ce" meeting="false" start="2019-04-17" duration="2" complete="0" thirdDate="2019-04-04" thirdDate-constraint="0" expand="true"/>
         <task id="561" name="Item Effekte" color="#8cb6ce" meeting="false" start="2019-04-17" duration="2" complete="0" thirdDate="2019-04-17" thirdDate-constraint="0" expand="true">
             <depend id="562" type="2" difference="0" hardness="Strong"/>
         </task>
@@ -219,46 +248,46 @@ Chatverlauf]]>
         <task id="591" name="Unit Test: Engine" color="#8cb6ce" meeting="false" start="2019-04-19" duration="3" complete="0" thirdDate="2019-04-09" thirdDate-constraint="0" expand="true"/>
         <task id="592" name="Unit Test: Grafik" color="#8cb6ce" meeting="false" start="2019-04-22" duration="3" complete="0" thirdDate="2019-04-09" thirdDate-constraint="0" expand="true"/>
         <task id="593" name="Unit Test: Game Logic" color="#8cb6ce" meeting="false" start="2019-04-22" duration="3" complete="0" thirdDate="2019-04-09" thirdDate-constraint="0" expand="true"/>
-        <task id="178" name="Präsentation: Spiel funktioniert" color="#8cb6ce" meeting="false" start="2019-04-25" duration="2" complete="0" thirdDate="2019-04-24" thirdDate-constraint="0" expand="true">
+        <task id="217" name="Game logic: Anwesend und funktioniert" color="#8cb6ce" meeting="false" start="2019-04-22" duration="1" complete="0" thirdDate="2019-04-26" thirdDate-constraint="0" expand="true"/>
+        <task id="178" name="Präsentation: Spiel funktioniert" color="#8cb6ce" meeting="false" start="2019-04-15" duration="2" complete="0" thirdDate="2019-04-24" thirdDate-constraint="0" expand="true">
             <depend id="191" type="2" difference="0" hardness="Strong"/>
         </task>
-        <task id="166" name="Commited: Alles auf git" color="#8cb6ce" meeting="false" start="2019-05-02" lifeTime="2" complete="0" thirdDate="2019-04-09" thirdDate-constraint="0" expand="true"/>
-        <task id="169" name="Diary: Update" color="#8cb6ce" meeting="false" start="2019-05-02" lifeTime="2" complete="0" thirdDate="2019-04-23" thirdDate-constraint="0" expand="true"/>
-        <task id="364" name="Diary Webseite" color="#8cb6ce" meeting="false" start="2019-05-02" lifeTime="2" complete="0" thirdDate="2019-04-23" thirdDate-constraint="0" expand="true"/>
-        <task id="164" name="Milestone 4" color="#8cb6ce" meeting="true" start="2019-05-06" lifeTime="0" complete="0" thirdDate="2019-04-10" thirdDate-constraint="0" expand="true"/>
-        <task id="191" name="Präsentation: Outline des Spiels" color="#8cb6ce" meeting="false" start="2019-04-29" lifeTime="4" complete="0" thirdDate="2019-04-26" thirdDate-constraint="0" expand="true">
+        <task id="191" name="Präsentation: Outline des Spiels" color="#8cb6ce" meeting="false" start="2019-04-17" duration="1" complete="0" thirdDate="2019-04-26" thirdDate-constraint="0" expand="true">
             <depend id="211" type="2" difference="0" hardness="Strong"/>
         </task>
-        <task id="217" name="Game logic: Anwesend und funktioniert" color="#8cb6ce" meeting="false" start="2019-04-23" lifeTime="12" complete="0" thirdDate="2019-04-26" thirdDate-constraint="0" expand="true"/>
-        <task id="222" name="Feature: High Score" color="#8cb6ce" meeting="false" start="2019-05-06" lifeTime="3" complete="0" thirdDate="2019-04-30" thirdDate-constraint="0" expand="true"/>
-        <task id="194" name="Archidektur: Dokumentiert" color="#8cb6ce" meeting="false" start="2019-05-07" lifeTime="3" complete="0" thirdDate="2019-04-25" thirdDate-constraint="0" expand="true"/>
-        <task id="211" name="Präsentation: Demo" color="#8cb6ce" meeting="false" start="2019-05-03" lifeTime="5" complete="0" thirdDate="2019-04-25" thirdDate-constraint="0" expand="true">
+        <task id="211" name="Präsentation: Demo" color="#8cb6ce" meeting="false" start="2019-04-18" duration="1" complete="0" thirdDate="2019-04-25" thirdDate-constraint="0" expand="true">
             <depend id="226" type="2" difference="0" hardness="Strong"/>
             <depend id="229" type="2" difference="0" hardness="Strong"/>
             <depend id="251" type="2" difference="0" hardness="Strong"/>
         </task>
-        <task id="224" name="Präsentation: Logo" color="#8cb6ce" meeting="false" start="2019-05-13" lifeTime="1" complete="0" thirdDate="2019-05-06" thirdDate-constraint="0" expand="true"/>
-        <task id="251" name="Präsentation: Video" color="#8cb6ce" meeting="false" start="2019-05-10" lifeTime="1" complete="0" thirdDate="2019-05-13" thirdDate-constraint="0" expand="true"/>
-        <task id="235" name="Screenshot!" color="#8cb6ce" meeting="false" start="2019-05-13" lifeTime="1" complete="0" thirdDate="2019-05-06" thirdDate-constraint="0" expand="true"/>
-        <task id="214" name="GUI: Funktioniert ohne Fehler" color="#8cb6ce" meeting="false" start="2019-04-25" lifeTime="12" complete="0" thirdDate="2019-04-26" thirdDate-constraint="0" expand="true">
+        <task id="251" name="Präsentation: Video" color="#8cb6ce" meeting="false" start="2019-04-19" duration="1" complete="0" thirdDate="2019-05-13" thirdDate-constraint="0" expand="true"/>
+        <task id="226" name="Präsentation: Geschichte" color="#8cb6ce" meeting="false" start="2019-04-19" duration="1" complete="0" thirdDate="2019-05-13" thirdDate-constraint="0" expand="true"/>
+        <task id="229" name="Manual: Schönes Manual vorhanden" color="#8cb6ce" meeting="false" start="2019-04-19" duration="1" complete="0" thirdDate="2019-05-06" thirdDate-constraint="0" expand="true"/>
+        <task id="214" name="GUI: Funktioniert ohne Fehler" color="#8cb6ce" meeting="false" start="2019-04-15" duration="1" complete="0" thirdDate="2019-04-26" thirdDate-constraint="0" expand="true">
             <depend id="246" type="2" difference="0" hardness="Strong"/>
         </task>
-        <task id="241" name="Netzwerkprotokoll: Fertig dokumentiert" color="#8cb6ce" meeting="false" start="2019-05-10" lifeTime="3" complete="0" thirdDate="2019-05-01" thirdDate-constraint="0" expand="true"/>
-        <task id="249" name="Präsentation: Technologie beschreiben" color="#8cb6ce" meeting="false" start="2019-05-10" lifeTime="3" complete="0" thirdDate="2019-05-06" thirdDate-constraint="0" expand="true"/>
-        <task id="243" name="QA: Detaillierte QA analyse und lessos learned" color="#8cb6ce" meeting="false" start="2019-05-10" lifeTime="3" complete="0" thirdDate="2019-05-02" thirdDate-constraint="0" expand="true"/>
-        <task id="199" name="Build: Script funktioniert" color="#8cb6ce" meeting="false" start="2019-05-10" lifeTime="3" complete="0" thirdDate="2019-05-02" thirdDate-constraint="0" expand="true">
+        <task id="166" name="Commited: Alles auf git" color="#8cb6ce" meeting="false" start="2019-05-02" duration="1" complete="0" thirdDate="2019-04-09" thirdDate-constraint="0" expand="true"/>
+        <task id="246" name="Präsentation: Funktionierendes Produkt" color="#8cb6ce" meeting="false" start="2019-04-16" duration="1" complete="0" thirdDate="2019-05-14" thirdDate-constraint="0" expand="true"/>
+        <task id="169" name="Diary: Update" color="#8cb6ce" meeting="false" start="2019-05-02" duration="1" complete="0" thirdDate="2019-04-23" thirdDate-constraint="0" expand="true"/>
+        <task id="364" name="Diary Webseite" color="#8cb6ce" meeting="false" start="2019-05-02" duration="1" complete="0" thirdDate="2019-04-23" thirdDate-constraint="0" expand="true"/>
+        <task id="164" name="Milestone 4" color="#8cb6ce" meeting="true" start="2019-05-06" duration="0" complete="0" thirdDate="2019-04-10" thirdDate-constraint="0" expand="true"/>
+        <task id="222" name="Feature: High Score" color="#8cb6ce" meeting="false" start="2019-05-06" duration="1" complete="0" thirdDate="2019-04-30" thirdDate-constraint="0" expand="true"/>
+        <task id="194" name="Archidektur: Dokumentiert" color="#8cb6ce" meeting="false" start="2019-05-07" duration="1" complete="0" thirdDate="2019-04-25" thirdDate-constraint="0" expand="true"/>
+        <task id="224" name="Präsentation: Logo" color="#8cb6ce" meeting="false" start="2019-05-13" duration="1" complete="0" thirdDate="2019-05-06" thirdDate-constraint="0" expand="true"/>
+        <task id="235" name="Screenshot!" color="#8cb6ce" meeting="false" start="2019-05-13" duration="1" complete="0" thirdDate="2019-05-06" thirdDate-constraint="0" expand="true"/>
+        <task id="241" name="Netzwerkprotokoll: Fertig dokumentiert" color="#8cb6ce" meeting="false" start="2019-05-10" duration="1" complete="0" thirdDate="2019-05-01" thirdDate-constraint="0" expand="true"/>
+        <task id="249" name="Präsentation: Technologie beschreiben" color="#8cb6ce" meeting="false" start="2019-05-10" duration="1" complete="0" thirdDate="2019-05-06" thirdDate-constraint="0" expand="true"/>
+        <task id="243" name="QA: Detaillierte QA analyse und lessos learned" color="#8cb6ce" meeting="false" start="2019-05-10" duration="1" complete="0" thirdDate="2019-05-02" thirdDate-constraint="0" expand="true"/>
+        <task id="199" name="Build: Script funktioniert" color="#8cb6ce" meeting="false" start="2019-05-10" duration="1" complete="0" thirdDate="2019-05-02" thirdDate-constraint="0" expand="true">
             <depend id="202" type="2" difference="0" hardness="Strong"/>
         </task>
-        <task id="232" name="Gradle: Alle externen Libraries werden verwaltet" color="#8cb6ce" meeting="false" start="2019-05-10" lifeTime="3" complete="0" thirdDate="2019-05-02" thirdDate-constraint="0" expand="true"/>
-        <task id="226" name="Präsentation: Geschichte" color="#8cb6ce" meeting="false" start="2019-05-10" lifeTime="3" complete="0" thirdDate="2019-05-13" thirdDate-constraint="0" expand="true"/>
-        <task id="256" name="Präsentation: Lessons learned" color="#8cb6ce" meeting="false" start="2019-05-13" lifeTime="3" complete="0" thirdDate="2019-05-07" thirdDate-constraint="0" expand="true"/>
-        <task id="202" name="Command Line: Funktioniert" color="#8cb6ce" meeting="false" start="2019-05-15" lifeTime="1" complete="0" thirdDate="2019-05-15" thirdDate-constraint="0" expand="true"/>
-        <task id="229" name="Manual: Schönes Manual vorhanden" color="#8cb6ce" meeting="false" start="2019-05-10" lifeTime="4" complete="0" thirdDate="2019-05-06" thirdDate-constraint="0" expand="true"/>
-        <task id="253" name="Unit Tests: Alle auf grün" color="#8cb6ce" meeting="false" start="2019-05-13" lifeTime="5" complete="0" thirdDate="2019-05-03" thirdDate-constraint="0" expand="true"/>
-        <task id="246" name="Präsentation: Funktionierendes Produkt" color="#8cb6ce" meeting="false" start="2019-05-13" lifeTime="4" complete="0" thirdDate="2019-05-14" thirdDate-constraint="0" expand="true"/>
-        <task id="204" name="Commited: Alles auf git" color="#8cb6ce" meeting="false" start="2019-05-15" lifeTime="3" complete="0" thirdDate="2019-05-07" thirdDate-constraint="0" expand="true"/>
-        <task id="208" name="Diary: Update" color="#8cb6ce" meeting="false" start="2019-05-15" lifeTime="3" complete="0" thirdDate="2019-05-07" thirdDate-constraint="0" expand="true"/>
-        <task id="189" name="Milestone 5" color="#8cb6ce" meeting="true" start="2019-05-20" lifeTime="0" complete="0" thirdDate="2019-04-24" thirdDate-constraint="0" expand="true"/>
+        <task id="232" name="Gradle: Alle externen Libraries werden verwaltet" color="#8cb6ce" meeting="false" start="2019-05-10" duration="1" complete="0" thirdDate="2019-05-02" thirdDate-constraint="0" expand="true"/>
+        <task id="256" name="Präsentation: Lessons learned" color="#8cb6ce" meeting="false" start="2019-05-13" duration="1" complete="0" thirdDate="2019-05-07" thirdDate-constraint="0" expand="true"/>
+        <task id="202" name="Command Line: Funktioniert" color="#8cb6ce" meeting="false" start="2019-05-13" duration="1" complete="0" thirdDate="2019-05-15" thirdDate-constraint="0" expand="true"/>
+        <task id="253" name="Unit Tests: Alle auf grün" color="#8cb6ce" meeting="false" start="2019-05-13" duration="1" complete="0" thirdDate="2019-05-03" thirdDate-constraint="0" expand="true"/>
+        <task id="204" name="Commited: Alles auf git" color="#8cb6ce" meeting="false" start="2019-05-15" duration="1" complete="0" thirdDate="2019-05-07" thirdDate-constraint="0" expand="true"/>
+        <task id="208" name="Diary: Update" color="#8cb6ce" meeting="false" start="2019-05-15" duration="1" complete="0" thirdDate="2019-05-07" thirdDate-constraint="0" expand="true"/>
+        <task id="189" name="Milestone 5" color="#8cb6ce" meeting="true" start="2019-05-20" duration="0" complete="0" thirdDate="2019-04-24" thirdDate-constraint="0" expand="true"/>
     </tasks>
     <resources>
         <resource id="0" name="Moritz" function="Default:0" contacts="" phone=""/>
@@ -440,6 +469,7 @@ Chatverlauf]]>
         <allocation task-id="563" resource-id="4" function="Default:0" responsible="true" load="20.0"/>
         <allocation task-id="561" resource-id="4" function="Default:0" responsible="true" load="20.0"/>
         <allocation task-id="591" resource-id="4" function="Default:0" responsible="true" load="20.0"/>
+        <allocation task-id="650" resource-id="4" function="Default:0" responsible="true" load="20.0"/>
     </allocations>
     <vacations>
         <vacation start="2019-03-11" end="2019-03-15" resourceid="0"/>
