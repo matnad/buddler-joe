@@ -16,9 +16,11 @@ Bei Abwesenheit werden localhost und port 11337 verwendet.
 
 Dokumente für Milestone 2:
 - Tagebuch (Diary): https://sites.google.com/view/buddler-joe/
-- Netzwerkprotokolldokumentation: Dokumente\Milestone 2\Netzwerkprotokoll\NetzwerkProtokollDokumentation.pdf
-- QA Konzept: Dokumente\Milestone 2\Quality Assurance\QualityAssuranceKonzept.pdf
+- Netzwerkprotokolldokumentation: docs\milestone2\Netzwerkprotokoll\NetzwerkProtokollDokumentation.pdf
+- QA Konzept: docs\milestone2\QualityAssurance\QualityAssuranceKonzept.pdf
 
+Dokumente für Milestone 3:
+- QA Konzept: docs\milestone3\QualityAssurance\QualityAssuranceKonzept.pdf
 
 ## DEPENDENCIES
 - **LWJGL**: LightWeight Java Game Library
