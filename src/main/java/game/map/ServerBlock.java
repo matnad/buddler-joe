@@ -56,6 +56,7 @@ public class ServerBlock {
         onQmarkDestroy(clientThatDealsDamage);
       }
       this.type = BlockMaster.BlockTypes.AIR;
+      // Add gold value if the block is worth anything
       ServerLogic.getPlayerList().getPlayer(clientThatDealsDamage).increaseCurrentGold(goldValue);
     }
   }
@@ -94,25 +95,25 @@ public class ServerBlock {
     Random random = new Random();
     int r = random.nextInt(4);
     if (r == 0) {
-      logger.info("Spawning dynamite.");
+      logger.debug("Spawning dynamite.");
       PacketSpawnItem packetSpawnItem =
           new PacketSpawnItem(
               ItemMaster.ItemTypes.DYNAMITE, new Vector3f(gridX, gridY, gridZ), clientId);
       packetSpawnItem.sendToLobby(ServerLogic.getLobbyForClient(clientId).getLobbyId());
     } else if (r == 1) {
-      logger.info("Spawning heart.");
+      logger.debug("Spawning heart.");
       PacketSpawnItem packetSpawnItem =
           new PacketSpawnItem(
               ItemMaster.ItemTypes.HEART, new Vector3f(gridX, gridY, gridZ), clientId);
       packetSpawnItem.sendToLobby(ServerLogic.getLobbyForClient(clientId).getLobbyId());
     } else if (r == 2) {
-      logger.info("Spawning star.");
+      logger.debug("Spawning star.");
       PacketSpawnItem packetSpawnItem =
           new PacketSpawnItem(
               ItemMaster.ItemTypes.STAR, new Vector3f(gridX, gridY, gridZ), clientId);
       packetSpawnItem.sendToLobby(ServerLogic.getLobbyForClient(clientId).getLobbyId());
     } else if (r == 3) {
-      logger.info("Spawning ice.");
+      logger.debug("Spawning ice.");
       PacketSpawnItem packetSpawnItem =
           new PacketSpawnItem(
               ItemMaster.ItemTypes.ICE, new Vector3f(gridX, gridY, gridZ), clientId);

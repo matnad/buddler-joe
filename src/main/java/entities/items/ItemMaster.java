@@ -2,11 +2,11 @@ package entities.items;
 
 import engine.render.Loader;
 import game.Game;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 import org.joml.Vector3f;
 
 /** Create and manage items. Only ever create items using this class */
@@ -14,9 +14,10 @@ import org.joml.Vector3f;
 public class ItemMaster {
 
   // Organize Items in lists that can be accessed by their type
-  private static final Map<ItemTypes, List<Item>> itemLists = new HashMap<>();
+  private static final ConcurrentHashMap<ItemTypes, CopyOnWriteArrayList<Item>> itemLists =
+      new ConcurrentHashMap<>();
   // Keep a list with all items
-  private static final List<Item> items = new ArrayList<>();
+  private static final CopyOnWriteArrayList<Item> items = new CopyOnWriteArrayList<>();
 
   /**
    * Init is called once while loading the game. Calls the init method of all the items to load
@@ -74,7 +75,8 @@ public class ItemMaster {
    */
   public static void update() {
     // Remove destroyed items from the list and update entities
-    Iterator<Map.Entry<ItemTypes, List<Item>>> mapIterator = itemLists.entrySet().iterator();
+    Iterator<Map.Entry<ItemTypes, CopyOnWriteArrayList<Item>>> mapIterator =
+        itemLists.entrySet().iterator();
     while (mapIterator.hasNext()) {
       List<Item> list = mapIterator.next().getValue();
       /*
@@ -111,7 +113,7 @@ public class ItemMaster {
    */
   private static void addToItemList(Item item) {
     // Get the list with the type of the block, if the list is absent, create it
-    List<Item> list = itemLists.computeIfAbsent(item.getType(), k -> new ArrayList<>());
+    List<Item> list = itemLists.computeIfAbsent(item.getType(), k -> new CopyOnWriteArrayList<>());
 
     // If the item is not destroyed, add it to the Game to be rendered
     if (!item.isDestroyed()) {

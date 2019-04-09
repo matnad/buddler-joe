@@ -64,8 +64,9 @@ public class Player extends NetPlayer {
   private float currentTurnSpeed = 0;
   private float upwardsSpeed = 0;
   private boolean frozen = false;
-  private float torchTimeout = 15f;
-  private final float torchPlaceDelay = 15f;
+  private final float torchPlaceDelay = 10f;
+  private float torchTimeout = torchPlaceDelay;
+
 
   private List<Block> closeBlocks;
 

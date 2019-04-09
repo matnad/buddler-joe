@@ -48,7 +48,7 @@ public class Lobby {
     this.lobbyId = lobbyCounter;
     this.serverItemState = new ServerItemState();
     lobbyCounter++;
-    map = new ServerMap(33, 33, System.currentTimeMillis());
+    map = new ServerMap(33, 40, System.currentTimeMillis());
     // System.out.println(map);
   }
 
