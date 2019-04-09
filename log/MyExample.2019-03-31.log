@@ -1,2 +1,0 @@
-13:18:58.881 [Thread-3] ERROR net.packets.block.PacketBlockDamage - Validation errors while sending Spawn Item Packet to client. ERRORS: Invalid item data. Invalid item id.
-13:20:02.741 [Thread-3] ERROR net.packets.block.PacketBlockDamage - Validation errors while sending Spawn Item Packet to client. ERRORS: Invalid item data. Invalid item id.
