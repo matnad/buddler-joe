@@ -135,7 +135,7 @@ public class NetPlayer extends Entity {
 
   public void turnHeadlightOn() {
     headLight.setBrightness(8);
-    headLightGlow.setBrightness(1.5f);
+    headLightGlow.setBrightness(2f);
   }
 
   private Vector3f getHeadlightPosition() {
@@ -145,7 +145,7 @@ public class NetPlayer extends Entity {
 
   private void updateHeadlightPosition() {
     headLight.setPosition(getHeadlightPosition());
-    headLightGlow.setPosition(getHeadlightPosition().add(0, 0.5f, 0));
+    headLightGlow.setPosition(getHeadlightPosition().add(0, 0.5f, 6f));
   }
 
   private void updateHeadlightDirection() {

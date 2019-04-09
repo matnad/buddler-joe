@@ -1,5 +1,6 @@
 package net.packets.name;
 
+import game.Game;
 import net.packets.Packet;
 
 public class PacketSetNameStatus extends Packet {
@@ -57,8 +58,18 @@ public class PacketSetNameStatus extends Packet {
   @Override
   public void processData() {
     if (status.startsWith("Successfully")) {
+      // TODO: Include username as separate variable
+      String[] username = getData().split("Successfully changed the name to: ");
+      if (username.length == 2) {
+        Game.getActivePlayer().setUsername(username[1]);
+      }
       System.out.println(status);
     } else if (status.startsWith("Changed")) {
+      // TODO: Include username as separate variable
+      String[] usernameA = getData().split(". Because your chosen name is already in use.");
+      if (usernameA.length >= 1) {
+        Game.getActivePlayer().setUsername(usernameA[0].substring(12));
+      }
       System.out.println(status);
     } else {
       if (hasErrors()) {

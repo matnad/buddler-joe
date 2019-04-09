@@ -203,13 +203,13 @@ public class PacketSpawnItem extends Packet {
         if (item instanceof Torch) {
           ((Torch) item).checkForBlock(); // Attach to a block if placed on one.
         } else if (item instanceof Dynamite) {
-          item.setOwned(true);
+          if (owner == Game.getActivePlayer().getClientId()) {
+            item.setOwned(true);
+          }
           ((Dynamite) item).setActive(true); // Start ticking
         } else if (item instanceof Heart) {
           if (owner == Game.getActivePlayer().getClientId()) {
             item.setOwned(true);
-          } else {
-            return;
           }
         } else if (item instanceof Ice) {
           if (owner == Game.getActivePlayer().getClientId()) {

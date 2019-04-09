@@ -166,7 +166,7 @@ public class ClientMap extends GameMap<Block> {
    */
   public float getLightLevel(float playerPosY) {
     float pctLevel = 1 - (-playerPosY / (height * dim));
-    return (float) Math.max(0.1, (float) Math.pow(pctLevel, 4));
+    return (float) Math.max(0.15, (float) Math.pow(pctLevel, 4));
   }
 
   public boolean isLocal() {

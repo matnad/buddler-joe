@@ -44,11 +44,11 @@ public class ServerMap extends GameMap<ServerBlock> {
         if (noiseMap[x][y] < thresholds[0]) {
           blocks[x][y] = new ServerBlock(BlockMaster.BlockTypes.STONE, x, y); // Air
         } else {
-          if (rng.nextFloat() < .06f) {
+          if (rng.nextFloat() < .07f) {
             blocks[x][y] =
                 new ServerBlock(BlockMaster.BlockTypes.GOLD, x, y); // Gold: 1 in 40 chance
             blocks[x][y].setGoldValue(50 + y * 5);
-          } else if (rng.nextFloat() < .04f) {
+          } else if (rng.nextFloat() < .05f) {
             blocks[x][y] =
                 new ServerBlock(BlockMaster.BlockTypes.QMARK, x, y); // Item Block: 1 in 50 chance
           } else if (noiseMap[x][y] < thresholds[1]) {
