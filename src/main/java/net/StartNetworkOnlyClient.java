@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 import net.packets.chat.PacketChatMessageToServer;
+import net.packets.gamestatus.PacketGetHistory;
 import net.packets.highscore.PacketHighscore;
 import net.packets.lists.PacketPlayerList;
 import net.packets.lobby.PacketCreateLobby;
@@ -77,6 +78,7 @@ public class StartNetworkOnlyClient implements Runnable {
                 + "playerlist - Receive a List of all active  players\n"
                 + "disconnect - Disconnect from the server\n"
                 + "highscore - get the current highscore on the server\n"
+                + "history - show all past and present games\n"
                 + "help - Display this message");
       } else if (inputMessage.equals("ping")) {
         System.out.println(
@@ -112,6 +114,9 @@ public class StartNetworkOnlyClient implements Runnable {
         p.sendToServer();
       } else if (inputMessage.equals("playerlist")) {
         PacketPlayerList p = new PacketPlayerList();
+        p.sendToServer();
+      } else if (inputMessage.equals("history")) {
+        PacketGetHistory p = new PacketGetHistory();
         p.sendToServer();
       } else if (inputMessage.equals("disconnect")) {
         PacketDisconnect p = new PacketDisconnect();
