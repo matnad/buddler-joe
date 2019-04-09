@@ -101,6 +101,7 @@ public class Chat {
       if (chatText.length() > 0 && enabled) {
 
         if (chatText.startsWith("@")) {
+          System.out.println(game.Game.getActivePlayer().getUsername());
           int wisperId = game.NetPlayerMaster.getClientIdForWhisper(chatText);
           if (-1 == wisperId) {
             text.add("Username ist ungültig");
