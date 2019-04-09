@@ -33,11 +33,17 @@ public class PacketGetHistory extends Packet {
     super(PacketTypes.GET_HISTORY);
   }
 
+  /** Dummy method since there is no data to validate. */
   @Override
   public void validate() {
     // Nothing to validate.
   }
 
+  /**
+   * Method that lets the Server react to the receiving of this packet. Check for errors in validate
+   * and if the sender is a logged in Client. If there are no Errors a History-Packet will be
+   * created and send back to the sender of this packet.
+   */
   @Override
   public void processData() {
     String info;
