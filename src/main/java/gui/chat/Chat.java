@@ -103,26 +103,26 @@ public class Chat {
         if (chatText.startsWith("@")) {
           int wisperId = game.NetPlayerMaster.getClientIdForWhisper(chatText);
           int usernameLength = Game.getActivePlayer().getUsername().length();
-//          System.out.println("aktiver Spieler");
-//          System.out.println(Game.getActivePlayer().getUsername());
-//          System.out.println("Adressant");
-//          System.out.println(chatText.substring(1, usernameLength + 1));
-//          System.out.println("Zeichen Nach Adressant");
-//          System.out.println(chatText.substring(usernameLength + 1, usernameLength + 2));
-//          System.out.println("Zeichen usernameLength + 2");
-//          System.out.println(chatText.charAt(usernameLength + 2));
-//
-          if (chatText.substring(1, usernameLength + 1).equals(Game.getActivePlayer().getUsername())
-              && !chatText.substring(usernameLength + 1, usernameLength + 2).equals("_")
-           && !Character.isDigit(chatText.charAt(usernameLength + 1)) ) {
-            wisperId = -1;
-          }
+
+
+//        temporary
+          chatText = chatText + "   ";
+
+          if (chatText.length() > usernameLength+1) {
+            if (chatText
+                    .substring(1, usernameLength + 1)
+                    .equals(Game.getActivePlayer().getUsername())
+                && !chatText.substring(usernameLength + 1, usernameLength + 2).equals("_")
+                && !Character.isDigit(chatText.charAt(usernameLength + 1))) {
+              wisperId = -1;
+            }
+}
 
           if (-1 == wisperId) {
             text.add("Username ist ungültig");
           } else if (-2 == wisperId) {
             chatText = chatText.substring(4);
-            System.out.println(chatText);
+//            System.out.println(chatText);
             PacketChatMessageToServer broadcostmessage =
                 new PacketChatMessageToServer(
                     "(to all from "
