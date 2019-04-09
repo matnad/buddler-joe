@@ -46,6 +46,11 @@ public class PacketGameEnd extends Packet {
     validate();
   }
 
+  /**
+   * Validation method to check the data that has, or will be send in this packet. Checks if the
+   * data consists of two parts and if the second part is a Long. In the case of an error it gets
+   * added with {@link Packet#addError(String)}.
+   */
   @Override
   public void validate() {
     String[] dataArray = getData().split("║");
@@ -60,6 +65,10 @@ public class PacketGameEnd extends Packet {
     }
   }
 
+  /**
+   * Method that lets the Client react to the receiving of this packet. Check for errors in
+   * validate. If there are no Errors change to GAMEOVER-Menu.
+   */
   @Override
   public void processData() {
     if (!hasErrors()) {

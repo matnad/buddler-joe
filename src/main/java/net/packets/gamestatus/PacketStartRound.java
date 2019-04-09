@@ -36,11 +36,16 @@ public class PacketStartRound extends Packet {
     validate();
   }
 
+  /** Dummy method since there is no data to validate. */
   @Override
   public void validate() {
     // No data to validate since it is a Empty Packet
   }
 
+  /**
+   * Method that lets the client react to the receiving of this packet. Changes the display from the
+   * InLobby-Menu to the actual Game. The game begins.
+   */
   @Override
   public void processData() {
     InLobby.done();

@@ -48,6 +48,10 @@ public class PacketHistory extends Packet {
     validate();
   }
 
+  /**
+   * Validation method to check the data that has, or will be send in this packet. Checks if {@code
+   * data} is not null and the entries are Strings in extended ASCII.
+   */
   @Override
   public void validate() {
     if (getData() != null) {
@@ -59,6 +63,11 @@ public class PacketHistory extends Packet {
     }
   }
 
+  /**
+   * Method that lets the Client react to the receiving of this packet. Check for errors in
+   * validate. If there are no errors and the first entry of {@code in} equals "OK", all the other
+   * entries of {@code in} get printed to the console (one per line).
+   */
   @Override
   public void processData() {
     if (hasErrors()) {

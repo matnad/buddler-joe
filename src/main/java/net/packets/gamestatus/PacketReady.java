@@ -37,11 +37,17 @@ public class PacketReady extends Packet {
     validate();
   }
 
+  /** Dummy method since there is no data to validate. */
   @Override
   public void validate() {
     // No data to validate since it is a Empty Packet
   }
 
+  /**
+   * Method that lets the Server react to the receiving of this packet. Checks if the sender is
+   * logged in and in a lobby. If so and the sender is the creator of the lobby, the round gets
+   * started. All lobbymembers are informed via a StartRound-Packet.
+   */
   @Override
   public void processData() {
     if (isLoggedIn() && isInALobby()) {
