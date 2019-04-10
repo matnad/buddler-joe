@@ -156,7 +156,6 @@ public class Lobby {
     // Update highscore
     ServerLogic.getServerHighscore().addPlayer(time, userName);
     ServerHighscoreSerialiser.serialiseServerHighscore(ServerLogic.getServerHighscore());
-    System.out.println(ServerLogic.getServerHighscore());
 
     // TODO send EndGamepacket here i created a skeleton already.
     // Inform all clients
