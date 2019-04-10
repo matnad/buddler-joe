@@ -92,21 +92,24 @@ public class Chat {
   }
 
   /**
-   * Method to check user input which calls the keyboardInputHandler
+   * Method to check user input which calls the keyboardInputHandler Method check the wisper
+   * function. If the username is correct, the player only sends the message to this person.
+   * With @all the player send a message to all player. Without @ the player send the message to the
+   * lobby.
    *
    * <p>Called every frame. Reads chat input and toggles chat window text input handler
    */
   public void checkInputs() {
     if (InputHandler.isKeyPressed(GLFW_KEY_ENTER)) {
       if (chatText.length() > 0 && enabled) {
-
+        //  check if the player wants to whisper
         if (chatText.startsWith("@")) {
           int wisperId = game.NetPlayerMaster.getClientIdForWhisper(chatText);
           int usernameLength = Game.getActivePlayer().getUsername().length();
 
-          //        temporary
+          //  temporary solution
           chatText = chatText + "   ";
-
+          //  check if the player wants whisper to himself
           if (chatText.length() > usernameLength + 1) {
             if (chatText
                     .substring(1, usernameLength + 1)
@@ -116,11 +119,12 @@ public class Chat {
               wisperId = -1;
             }
           }
-
+          //  wisperId = -1 player don't exist in the lobby
+          //  wisperId = -2 player sends message to all players
           if (-1 == wisperId) {
             text.add("Username ist ungültig");
           } else if (-2 == wisperId) {
-            chatText = chatText.substring(4);
+            chatText = chatText.substring(4).trim();
             //            System.out.println(chatText);
             PacketChatMessageToServer broadcostmessage =
                 new PacketChatMessageToServer(
@@ -143,7 +147,7 @@ public class Chat {
                     "(whispered to "
                         + userName
                         + ")"
-                        + chatText
+                        + chatText.trim()
                         + "║"
                         + game.Game.getActivePlayer().getClientId());
             sendMessage2.sendToServer();
@@ -155,7 +159,6 @@ public class Chat {
           sendMessage.sendToServer();
         }
 
-        //        sendMessage();
         chatText = "";
         InputHandler.resetInputString();
       } else {
