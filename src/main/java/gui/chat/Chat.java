@@ -104,11 +104,10 @@ public class Chat {
           int wisperId = game.NetPlayerMaster.getClientIdForWhisper(chatText);
           int usernameLength = Game.getActivePlayer().getUsername().length();
 
-
-//        temporary
+          //        temporary
           chatText = chatText + "   ";
 
-          if (chatText.length() > usernameLength+1) {
+          if (chatText.length() > usernameLength + 1) {
             if (chatText
                     .substring(1, usernameLength + 1)
                     .equals(Game.getActivePlayer().getUsername())
@@ -116,13 +115,13 @@ public class Chat {
                 && !Character.isDigit(chatText.charAt(usernameLength + 1))) {
               wisperId = -1;
             }
-}
+          }
 
           if (-1 == wisperId) {
             text.add("Username ist ungültig");
           } else if (-2 == wisperId) {
             chatText = chatText.substring(4);
-//            System.out.println(chatText);
+            //            System.out.println(chatText);
             PacketChatMessageToServer broadcostmessage =
                 new PacketChatMessageToServer(
                     "(to all from "
