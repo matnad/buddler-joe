@@ -5,7 +5,7 @@
 Programm wird über /src/main/java/Main.java gestartet und unterstützt folgende Kommandozeilen Parameter:
 
 Client starten:
-[client] [<hostadress>:[<port>]] [<username>]
+[client] [<hostadress>[:<port>]] [<username>]
 
 Alle Parameter sind optional. Für fehlende Parameter werden die zuletzt verwendeten Werte genommen (ist in den Settings lokal gespeichert) oder, falls keine Settings gefunden wurden, die Default Werte (client buddlerjoe.ch:11337 "Joe Buddler"). Falls Parameter übergeben werden, so werden diese in den Settings gespeichert.
 
@@ -16,7 +16,7 @@ Um den Server zu starten muss das erste Argument "server" lauten. Der Port ist o
 
 Es läuft ein Server mit der aktuellen master Version unter der hostaddresse "budlerjoe.ch" auf welchen man ohne Einschränkung verbinden kann.
 
-Sobald man zu server verbunden ist (sollte beim Spielstart automatisch passieren) kann in der Konsole "help" eingegeben werden für eine Liste mit allen Befehlen.
+Sobald man zu server verbunden ist (sollte beim Spielstart automatisch passieren) kann in der Konsole "help" eingegeben werden für eine Liste mit allen Befehlen. Lobbies erstellen funktioniert im Moment zum Beispiel nur per Konsole.
 
 Dokumente für Milestone 2:
 - Tagebuch (Diary): https://sites.google.com/view/buddler-joe/
