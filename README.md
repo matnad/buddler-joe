@@ -1,27 +1,37 @@
 # Buddler Joe ReadMe
 
-## INFOS FÜR MILESTONE 2
+## INFOS FÜR MILESTONE 3
 
-Der relevante code für Milestone 2 ist im package **net** (Buddler-Joe\src\main\java\net). 
-**Code ausserhalb dieses Package ist nicht relevant für die Achievements im Milestone 2 und muss nicht berücksichtigt werden.**
+Programm wird über /src/main/java/Main.java gestartet und unterstützt folgende Kommandozeilen Parameter:
 
-Server starten: net.StartServer
+Client starten:
+`[client] [<hostadress>:[<port>]] [<username>]`
 
-Client starten: net.StartNetworkOnlyClient
+Alle Parameter sind optional. Für fehlende Parameter werden die zuletzt verwendeten Werte genommen (ist in den Settings lokal gespeichert) oder, falls keine Settings gefunden wurden, die Default Werte (client buddlerjoe.ch:11337 "Joe Buddler"). Falls Parameter übergeben werden, so werden diese in den Settings gespeichert.
 
-In der Konsole kann "help" eingegeben werden für eine Liste mit Befehlen.
+Server starten:
+`server [<port>]`
 
-Es können mehrere Clients lokal gestartet werden. Commandline parameter werden in dieser Form unterstützt:
+Um den Server zu starten muss das erste Argument "server" lauten. Der Port ist optional und wird auf 11337 gesetzt falls nicht angegeben.
 
-`client <hostadress>:<port> | server <port>`
+Es läuft ein Server mit der aktuellen master Version unter der hostaddresse "budlerjoe.ch" auf welchen man ohne Einschränkung verbinden kann.
 
-Bei Abwesenheit werden localhost und port 11337 verwendet.
+Sobald man zu server verbunden ist (sollte beim Spielstart automatisch passieren) kann in der Konsole "help" eingegeben werden für eine Liste mit allen Befehlen.
 
 Dokumente für Milestone 2:
 - Tagebuch (Diary): https://sites.google.com/view/buddler-joe/
-- Netzwerkprotokolldokumentation: Dokumente\Milestone 2\Netzwerkprotokoll\NetzwerkProtokollDokumentation.pdf
-- QA Konzept: Dokumente\Milestone 2\Quality Assurance\QualityAssuranceKonzept.pdf
+- Netzwerkprotokolldokumentation: docs\milestone2\Netzwerkprotokoll\NetzwerkProtokollDokumentation.pdf
+- QA Konzept: docs\milestone2\QualityAssurance\QualityAssuranceKonzept.pdf
 
+Dokumente für Milestone 3:
+- Tagebuch (Diary): https://sites.google.com/view/buddler-joe/
+- Netzwerkprotokolldokumentation: docs\milestone3\Netzwerkprotokoll\NetzwerkProtokollDokumentation_Buddler_Joe
+- QA Konzept: docs\milestone3\QualityAssurance\QualityAssuranceKonzept.pdf
+- Manual: docs\milestone3\Manual\BuddlerJoeManual.pdf
+- Präsentation Milestone 3: docs\milestone3\Milestone3Praesentation.pdf
+- Demo videos: docs\milestone3\demos\2019-04-07 20-23-46.mkv
+	       docs\milestone3\demos\2019-04-07 20-36-44.mkv
+- Teaser:      docs\milestone3\teaser\teaser.avi
 
 ## DEPENDENCIES
 - **LWJGL**: LightWeight Java Game Library
@@ -29,6 +39,6 @@ Dokumente für Milestone 2:
 - **OPENGL**: Muss auf dem System installiert sein. Mindestens version 4.00 core
 
 ## ANDERE WICHTIGE DOKUMENTE
-- ProjektTimeline: gantt/Buddler-Joe-Projekttimeline.gan
-- Präsentation Milestone 1: Presentations\Milestone 1\Präsentation_Buddler_Joe.pptx
-- Sitzungsprotokolle: Protokolle\Protokolle
+- ProjektTimeline: docs\gantt\Buddler-Joe-Projekttimeline.gan
+- Präsentation Milestone 1: docs\milestone1\Präsentation_Buddler_Joe_MS1.pdf
+- Sitzungsprotokolle: docs\protokolle

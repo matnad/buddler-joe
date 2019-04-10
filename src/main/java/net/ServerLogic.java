@@ -186,14 +186,19 @@ public class ServerLogic {
     // check if the client exists
     Player player = ServerLogic.getPlayerList().getPlayer(clientId);
     if (player == null) {
+      logger.debug("Player already removed.");
       return;
     }
 
     // Check if client is in lobby and remove him
     int lobbyId = player.getCurLobbyId();
     if (lobbyId == 0) {
+      // delete the player from the playerlist and threadmap then we are done
+      clientThreadMap.remove(clientId);
+      getPlayerList().removePlayer(clientId);
       return;
     }
+
     Lobby lobby = ServerLogic.getLobbyList().getLobby(lobbyId);
     if (lobby != null) {
       lobby.removePlayer(clientId);

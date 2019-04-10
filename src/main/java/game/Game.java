@@ -83,17 +83,19 @@ public class Game extends Thread {
    * list with minimal maintenance.
    */
   private static final List<Entity> entities = new CopyOnWriteArrayList<>();
+  // TODO: window to private and create getter
   public static Window window = new Window(1080, 600, 60, "Buddler Joe");
   // maybe needs its own class or should at least be moved to NetPlayer
   /*
    * We want everything set up so we could use multiple cameras, even if we don't end up needing
    * them.
-   * Everything that relies on a camera object should know which camera it is using
+   * Everything that relies on a camera object should know which camera it is using.
+   * Update: We now have 2 camera objects, a spectator camera is generated when the player is
+   * defeated.
    */
   public static Camera camera;
   private static SettingsSerialiser settingsSerialiser = new SettingsSerialiser();
   // Network related variables, still temporary/dummies
-  // private static boolean doConnectToServer = false; //Multiplayer: true, Singleplayer: false
   private static boolean connectedToServer = false;
   private static boolean loggedIn = false;
   private static boolean lobbyCreated = false; // temporary
@@ -112,8 +114,6 @@ public class Game extends Thread {
    * TODO (Client Network Team): This needs to be moved to a different class that handles
    * connected players.
    */
-  // private List<NetPlayer> netPlayers = new ArrayList<>();
-  // private List<NetPlayer> loadedNetPlayers = new ArrayList<>();
   private static Terrain aboveGround;
   private static TerrainFlat belowGround;
   private static GuiRenderer guiRenderer;
