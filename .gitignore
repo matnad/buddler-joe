@@ -40,3 +40,6 @@ gruppe-8\.iml
 
 # logs
 log/
+
+# deploy script for buddlerjoe.ch
+deploy_server.sh
