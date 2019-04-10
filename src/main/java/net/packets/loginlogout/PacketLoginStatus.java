@@ -68,6 +68,7 @@ public class PacketLoginStatus extends Packet {
           "Login Successful, however your username has already been taken. "
               + "We assigned you this username: "
               + getData().substring(6));
+      Game.getActivePlayer().setUsername(getData().substring(6));
       PacketGetLobbies p = new PacketGetLobbies();
       p.sendToServer();
       Game.setLoggedIn(true);
