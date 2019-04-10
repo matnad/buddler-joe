@@ -23,8 +23,11 @@ Dokumente für Milestone 3:
 - Tagebuch (Diary): https://sites.google.com/view/buddler-joe/
 - Netzwerkprotokolldokumentation: docs\milestone3\Netzwerkprotokoll\NetzwerkProtokollDokumentation_Buddler_Joe
 - QA Konzept: docs\milestone3\QualityAssurance\QualityAssuranceKonzept.pdf
-- Manual: docs\milestone3
-- Präsentation Milestone 3: docs\milestone3
+- Manual: docs\milestone3\Manual\BuddlerJoeManual.pdf
+- Präsentation Milestone 3: docs\milestone3\Milestone3Praesentation.pdf
+- Demo videos: docs\milestone3\demos\2019-04-07 20-23-46.mkv
+	       docs\milestone3\demos\2019-04-07 20-36-44.mkv
+- Teaser:      docs\milestone3\teaser\teaser.avi
 
 ## DEPENDENCIES
 - **LWJGL**: LightWeight Java Game Library
@@ -32,6 +35,6 @@ Dokumente für Milestone 3:
 - **OPENGL**: Muss auf dem System installiert sein. Mindestens version 4.00 core
 
 ## ANDERE WICHTIGE DOKUMENTE
-- ProjektTimeline: gantt/Buddler-Joe-Projekttimeline.gan
-- Präsentation Milestone 1: docs\milestone1\Präsentation_Buddler_Joe.pptx
+- ProjektTimeline: docs\gantt\Buddler-Joe-Projekttimeline.gan
+- Präsentation Milestone 1: docs\milestone1\Präsentation_Buddler_Joe_MS1.pdf
 - Sitzungsprotokolle: docs\protokolle
