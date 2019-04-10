@@ -63,8 +63,8 @@ public class PacketPlayerList extends Packet {
       // Client side
       if (!hasErrors()) {
         System.out.println("-------------------------------------");
-        System.out.println("Players on the Server \"" + dataArray[0] + "\":");
-        for (int i = 1; i < dataArray.length; i++) {
+        System.out.println("Players on the Server: \"");
+        for (int i = 0; i < dataArray.length; i++) {
           System.out.println(dataArray[i]);
         }
         System.out.println("-------------------------------------");
