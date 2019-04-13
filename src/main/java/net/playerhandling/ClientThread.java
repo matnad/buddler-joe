@@ -85,11 +85,6 @@ public class ClientThread implements Runnable {
 
         String in = input.readLine();
 
-        // Something went wrong on the client side
-        if (in == null) {
-          continue;
-        }
-
         // Message too short
         if (in.length() < 5) {
           System.out.println(in + " is not a valid message from the client.");
