@@ -1,6 +1,5 @@
 package game;
 
-import engine.io.Window;
 import java.io.Serializable;
 
 /**
@@ -11,52 +10,54 @@ public class Settings implements Serializable {
 
   /** Important user settings to be accessed by various methods. */
   private int width = 1920 / 4 * 3;
+
   private int height = 1080 / 4 * 3;
   private boolean fullscreen = false;
   private String username = "Joe Buddler";
   private String ip = "buddlerjoe.ch";
 
-  public boolean isFullscreen() {
+  public synchronized boolean isFullscreen() {
     return fullscreen;
   }
 
-  public void setFullscreen(boolean fullscreen) {
+  public synchronized void setFullscreen(boolean fullscreen) {
     this.fullscreen = fullscreen;
+    Game.getSettingsSerialiser().serialiseSettings(Game.getSettings());
   }
 
-  public int getWidth() {
+  public synchronized int getWidth() {
     return width;
   }
 
-  public void setWidth(int width) {
+  public synchronized void setWidth(int width) {
     this.width = width;
+    Game.getSettingsSerialiser().serialiseSettings(Game.getSettings());
   }
 
-  public int getHeight() {
+  public synchronized int getHeight() {
     return height;
   }
 
-  public void setHeight(int height) {
+  public synchronized void setHeight(int height) {
     this.height = height;
+    Game.getSettingsSerialiser().serialiseSettings(Game.getSettings());
   }
 
-  public String getUsername() {
+  public synchronized String getUsername() {
     return username;
   }
 
-  public void setUsername(String username) {
+  public synchronized void setUsername(String username) {
     this.username = username;
+    Game.getSettingsSerialiser().serialiseSettings(Game.getSettings());
   }
 
-  public Window getWindow() {
-    return new Window(width, height, 60, "Buddler Joe");
-  }
-
-  public String getIp() {
+  public synchronized String getIp() {
     return ip;
   }
 
-  public void setIp(String ip) {
+  public synchronized void setIp(String ip) {
     this.ip = ip;
+    Game.getSettingsSerialiser().serialiseSettings(Game.getSettings());
   }
 }

@@ -130,7 +130,7 @@ public class Game extends Thread {
    * If someone wants to work on this, edit this comment or add an issue to the tracker in gitlab
    */
   private boolean autoJoin = false;
-  private Settings settings;
+  private static Settings settings;
 
   /**
    * The constructor for the game to be called from the main class.
@@ -211,6 +211,8 @@ public class Game extends Thread {
     return camera;
   }
 
+  public static SettingsSerialiser getSettingsSerialiser() {return settingsSerialiser;}
+
   public static void setActiveCamera(Camera camera) {
     Game.camera = camera;
   }
@@ -249,6 +251,10 @@ public class Game extends Thread {
 
   public static void setLobbyCreated(boolean lobbyCreated) {
     Game.lobbyCreated = lobbyCreated;
+  }
+
+  public static Settings getSettings() {
+    return settings;
   }
 
   /**
@@ -574,9 +580,6 @@ public class Game extends Thread {
       this.settings = settingsSerialiser.readSettings();
       if (!username.equals(settings.getUsername())) {
         this.username = settings.getUsername();
-      }
-      if (!window.equals(settings.getWindow())) {
-        window = settings.getWindow();
       }
     } else {
       this.settings = new Settings();
