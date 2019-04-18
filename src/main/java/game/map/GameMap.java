@@ -62,13 +62,14 @@ public abstract class GameMap<T> {
    */
   protected float[][] generateNoiseMap(long seed) {
     // Generate Noise here
+    seed %= 1e6;
     int radius = 4; // "Smoothing" of noise
     float[][] noiseMap = new float[width][height];
     for (int y = 0; y < height; y++) {
       for (int x = 0; x < width; x++) {
-        float dx = (x - radius) / (float) radius;
-        float dy = (y - radius) / (float) radius;
-        noiseMap[x][y] = (SimplexNoise.noise(dx + width*seed, dy + height*seed) + 1) / 2;
+        float dx = (x + seed  - radius) / (float) radius;
+        float dy = (y + seed - radius) / (float) radius;
+        noiseMap[x][y] = (SimplexNoise.noise(dx, dy) + 1) / 2;
       }
     }
     return noiseMap;
