@@ -52,31 +52,32 @@ public class Player extends NetPlayer {
   private static final float interpolationFactor = 0.15f; // Rate of acceleration via LERP
   private static final float turnSpeed = 720; // Degrees per second
   private static final float jumpPower = 28; // Units per second
-  private static final float collisionPushOffset = 0.01f;
   private static final float angle45 = (float) (45 * Math.PI / 180);
 
   // Resources and Stats
   public int currentGold; // Current coins
   private int currentLives;
   private float digDamage; // Damage per second when colliding with blocks
+  private static final float digIntervall = 0.2f; // Number of dig updates per second
+  private Block lastDiggedBlock = null;
+  private float lastDiggedBlockDamage = 0;
+  private float digIntervallTimer = 0;
   private Block collideWithBlockAbove;
   private Block collideWithBlockBelow;
 
-  private float currentSpeed = 0;
+  // Vector & Velocity based speed
   private Vector3f currentVelocity = new Vector3f();
   private Vector3f goalVelocity = new Vector3f();
-  private float currentTurnSpeed = 0;
-  private float upwardsSpeed = 0;
+  private boolean isJumping = false; // Can't Jump while in the air
+  private boolean isInAir = false;
+
+  // Other
+  private boolean controlsDisabled;
   private boolean frozen = false;
   private final float torchPlaceDelay = 10f;
   private float torchTimeout = torchPlaceDelay;
 
   private List<Block> closeBlocks;
-
-  private boolean isJumping = false; // Can't Jump while in the air
-  private boolean isInAir = false;
-
-  private boolean controlsDisabled;
 
   /**
    * Spawn the Player. This will be handled differently in the future when we rework the Player
@@ -118,17 +119,9 @@ public class Player extends NetPlayer {
       checkInputs(); // See which relevant keys are pressed
       digDamage = 1;
     } else {
-      currentVelocity = new Vector3f();
+      stopVelocityX();
+      stopVelocityY();
       digDamage = 0;
-    }
-
-    // Stop turning when facing directly left or right
-    if (getRotY() <= -90 && currentTurnSpeed < 0) {
-      currentTurnSpeed = 0;
-      setRotY(-90);
-    } else if (getRotY() >= 90 && currentTurnSpeed > 0) {
-      currentTurnSpeed = 0;
-      setRotY(90);
     }
 
     // Update position by distance travelled
@@ -137,28 +130,22 @@ public class Player extends NetPlayer {
     // Turn character by the turnSpeed (which is set to make a nice turning animation when
     // changing direction)
 
-    // Apply gravity to upwardspeed and change vertical position
+    // Apply gravity and "slow horizontal correction"
     float ipfX = interpolationFactor;
     if (isInAir) {
       goalVelocity.y += gravity * Game.window.getFrameTimeSeconds();
       ipfX /= 5;
     }
 
-    // Interpolate velocity
-
-    // currentVelocity.lerp(goalVelocity, ipfX);
+    // Linear Interpolation of current velocity and goal velocity
     currentVelocity.x += (goalVelocity.x - currentVelocity.x) * ipfX;
     currentVelocity.y += (goalVelocity.y - currentVelocity.y) * interpolationFactor;
 
-    if (Math.abs(currentVelocity.x) < 0.01) {
-      currentVelocity.x = 0;
-    }
-
-    // Apply gravity to upwardspeed and change vertical position
-    // upwardsSpeed += gravity * Game.window.getFrameTimeSeconds();
-    // super.increasePosition(0, (float) (upwardsSpeed * Game.window.getFrameTimeSeconds()), 0);
+    // Move player
     increasePosition(new Vector3f(currentVelocity).mul((float) Game.window.getFrameTimeSeconds()));
-    this.increaseRotation(0, (float) (currentTurnSpeed * Game.window.getFrameTimeSeconds()), 0);
+
+    // Handle character rotation (check run direction see if we need to rotate more)
+    this.increaseRotation(0, (float) (getCurrentTurnSpeed() * Game.window.getFrameTimeSeconds()), 0);
 
     // Handle collisions, we only check close blocks to optimize performance
     // Distance is much cheaper to check than overlap
@@ -179,13 +166,11 @@ public class Player extends NetPlayer {
       turnHeadlightOn();
     }
 
-    // Send server update with update
-    if (Game.isConnectedToServer()
-        && (!currentVelocity.equals(new Vector3f())
-            || upwardsSpeed != 0
-            || currentTurnSpeed != 0)) {
-      new PacketPos(getPositionXy().x, getPositionXy().y, getRotY()).sendToServer();
-    }
+    //// Send server update with update
+    //if (Game.isConnectedToServer()
+    //    && (!currentVelocity.equals(new Vector3f()) || currentTurnSpeed != 0)) {
+    //  new PacketPos(getPositionXy().x, getPositionXy().y, getRotY()).sendToServer();
+    //}
   }
 
   /**
@@ -244,9 +229,6 @@ public class Player extends NetPlayer {
       if (theta <= angle45) {
         // From above
         collideWithBlockBelow = block;
-        // Undo the position change to keep the player in place
-        // super.increasePosition(0, (float) -(upwardsSpeed * Game.window.getFrameTimeSeconds()),
-        // 0);
         // Have a grace distance, if the overlap is too large, we reset to position to prevent
         // hard clipping
         if (getPosition().y + 0.1 < e.getMaxY()) {
@@ -254,8 +236,8 @@ public class Player extends NetPlayer {
         }
         // Reset jumping ability and downwards momentum
         if (goalVelocity.y < 0) {
-          goalVelocity.y = 0;
-          currentVelocity.y = 0;
+          setGoalVelocityY(0);
+          stopVelocityY();
         }
         isJumping = false;
         // If we hold S, dig down
@@ -269,14 +251,14 @@ public class Player extends NetPlayer {
         setPositionY(e.getMinY() - p.getDimY());
         // Stop jumping up if we hit something above, will start accelerating down
         if (goalVelocity.y > 0) {
-          goalVelocity.y = 0;
-          currentVelocity.y = 0;
+          setGoalVelocityY(0);
+          stopVelocityY();
         }
       } else {
         isJumping = false; // Walljumps! Felt cute. Might delete later.
         setPositionX(
             (float) (getPosition().x - currentVelocity.x * Game.window.getFrameTimeSeconds()));
-        currentVelocity.x = 0;
+        stopVelocityX();
         // Dig blocks whenever we collide horizontal
         digBlock(block);
       }
@@ -284,19 +266,29 @@ public class Player extends NetPlayer {
   }
 
   /**
-   * What happens PER FRAME when we dig a block.
+   * What happens PER FRAME when we dig a block. Sends updates to the server every few frames,
+   * specified in digIntervall
    *
    * @param block block to dig
    */
   private void digBlock(Block block) {
-    // Scale with frame time
-    //    block.increaseDamage((float) (digDamage * Game.window.getFrameTimeSeconds()), this);
-    if (Game.isConnectedToServer()) {
-      new PacketBlockDamage(
-              block.getGridX(),
-              block.getGridY(),
-              (float) (digDamage * Game.window.getFrameTimeSeconds()))
+    // Check if we dig the same block as last time, otherwise throw progress away
+    if (lastDiggedBlock != block) {
+      lastDiggedBlock = block;
+      lastDiggedBlockDamage = 0;
+      digIntervallTimer = 0;
+    }
+    // Update damage and time, save locally
+    digIntervallTimer += Game.window.getFrameTimeSeconds();
+    lastDiggedBlockDamage += (float) (digDamage * Game.window.getFrameTimeSeconds());
+
+    // Check if we hit time threshold to send update to the server
+    if (digIntervallTimer >= digIntervall) {
+      new PacketBlockDamage(block.getGridX(), block.getGridY(), lastDiggedBlockDamage)
           .sendToServer();
+      // Reset timer without losing overflow
+      digIntervallTimer -= digIntervallTimer;
+      lastDiggedBlockDamage = 0;
     }
   }
 
@@ -307,7 +299,7 @@ public class Player extends NetPlayer {
     //  isJumping = true;
     // }
     if (!isJumping) {
-      goalVelocity.y = jumpPower;
+      setGoalVelocityY(jumpPower);
       isJumping = true;
     }
   }
@@ -351,17 +343,10 @@ public class Player extends NetPlayer {
   private void checkInputs() {
 
     if (controlsDisabled) {
-      goalVelocity.x = 0;
+      setGoalVelocityX(0);
       return;
     }
 
-    // if (InputHandler.isKeyPressed(GLFW_KEY_Q)) {
-    //  if (InputHandler.isPlacerMode()) {
-    //    MousePlacer.cancelPlacing();
-    //  } else {
-    //    placeItem(DYNAMITE);
-    //  }
-    // }
     torchTimeout += Game.window.getFrameTimeSeconds();
     if (InputHandler.isKeyPressed(GLFW_KEY_E)) {
       if (InputHandler.isPlacerMode()) {
@@ -372,36 +357,25 @@ public class Player extends NetPlayer {
       }
     }
 
-    // SIMPLE Movement
-    // if (InputHandler.isKeyDown(GLFW_KEY_A)) {
-    //  this.currentSpeed = -runSpeed;
-    //  this.currentTurnSpeed = -turnSpeed;
-    // } else if (InputHandler.isKeyDown(GLFW_KEY_D)) {
-    //  this.currentSpeed = runSpeed;
-    //  this.currentTurnSpeed = turnSpeed;
-    // } else {
-    //  this.currentSpeed = 0;
-    //  currentTurnSpeed = 0;
-    // }
-
-    if (InputHandler.isKeyPressed(GLFW_KEY_A) && goalVelocity.x != -runSpeed) {
-      // Set goal velocity
-      goalVelocity.x = -runSpeed;
-      currentTurnSpeed = -turnSpeed;
-    } else if (InputHandler.isKeyReleased(GLFW_KEY_A) && goalVelocity.x != 0) {
-      goalVelocity.x = 0;
-    }
-
-    if (InputHandler.isKeyPressed(GLFW_KEY_D) && goalVelocity.x != runSpeed) {
-      // Set goal velocity
-      goalVelocity.x = runSpeed;
-      currentTurnSpeed = turnSpeed;
-    } else if (InputHandler.isKeyReleased(GLFW_KEY_D) && goalVelocity.x != 0) {
-      goalVelocity.x = 0;
-    }
-
     if (InputHandler.isKeyPressed(GLFW_KEY_W) || InputHandler.isKeyPressed(GLFW_KEY_SPACE)) {
       jump();
+    }
+
+    if (InputHandler.isKeyDown(GLFW_KEY_A) && InputHandler.isKeyDown(GLFW_KEY_D)) {
+      return;
+    }
+
+    if (InputHandler.isKeyDown(GLFW_KEY_A) && goalVelocity.x != -runSpeed) {
+      // Set goal velocity
+      setGoalVelocityX(-runSpeed);
+    } else if (InputHandler.isKeyReleased(GLFW_KEY_A) && goalVelocity.x != 0) {
+      setGoalVelocityX(0);
+    }
+    if (InputHandler.isKeyDown(GLFW_KEY_D) && goalVelocity.x != runSpeed) {
+      // Set goal velocity
+      setGoalVelocityX(runSpeed);
+    } else if (InputHandler.isKeyReleased(GLFW_KEY_D) && goalVelocity.x != 0) {
+      setGoalVelocityX(0);
     }
 
     if (InputHandler.isKeyPressed(GLFW_KEY_T)) {
@@ -430,6 +404,26 @@ public class Player extends NetPlayer {
         acceptable compromise.
         */
         ItemMaster.generateItem(itemType, getPosition()));
+  }
+
+  private float getCurrentTurnSpeed() {
+    float currentTurnSpeed;
+    if (goalVelocity.x == -runSpeed) {
+      currentTurnSpeed = -turnSpeed;
+      if (getRotY() <= -90) {
+        currentTurnSpeed = 0;
+        setRotY(-90);
+      }
+    } else if (goalVelocity.x == runSpeed) {
+      currentTurnSpeed = turnSpeed;
+      if (getRotY() >= 90) {
+        currentTurnSpeed = 0;
+        setRotY(90);
+      }
+    } else {
+      currentTurnSpeed = 0;
+    }
+    return currentTurnSpeed;
   }
 
   public void increaseCurrentGold(int gold) {
@@ -471,5 +465,33 @@ public class Player extends NetPlayer {
 
   public boolean isFrozen() {
     return frozen;
+  }
+
+  private void setGoalVelocityX(float x) {
+    if (goalVelocity.x != x) {
+      goalVelocity.x = x;
+      // Send update to server
+    }
+  }
+
+  private void setGoalVelocityY(float y) {
+    if (goalVelocity.y != y) {
+      goalVelocity.y = y;
+      // Send update to server
+    }
+  }
+
+  private void stopVelocityX() {
+    if (currentVelocity.x != 0) {
+      currentVelocity.x = 0;
+      // Send update to server
+    }
+  }
+
+  private void stopVelocityY() {
+    if (currentVelocity.y != 0) {
+      currentVelocity.y = 0;
+      // Send update to server
+    }
   }
 }

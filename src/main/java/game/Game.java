@@ -544,8 +544,8 @@ public class Game extends Thread {
     Thread.sleep(500);
     LoadingScreen.done();
     if (autoJoin) {
-      new PacketReady().sendToServer();
-      //addActiveStage(PLAYING);
+      //new PacketReady().sendToServer();
+      addActiveStage(INLOBBBY);
     } else {
       addActiveStage(MAINMENU);
     }
