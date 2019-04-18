@@ -135,9 +135,6 @@ public class InLobby {
 
     if (InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1) && leave.isHover(x, y)) {
       new PacketLeaveLobby().sendToServer();
-      done();
-      Game.addActiveStage(Game.Stage.CHOOSELOBBY);
-      Game.removeActiveStage(Game.Stage.INLOBBBY);
     } else if (InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1) && ready.isHover(x, y)) {
       new PacketReady().sendToServer();
     }
