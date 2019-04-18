@@ -213,7 +213,9 @@ public class Game extends Thread {
     return camera;
   }
 
-  public static SettingsSerialiser getSettingsSerialiser() {return settingsSerialiser;}
+  public static SettingsSerialiser getSettingsSerialiser() {
+    return settingsSerialiser;
+  }
 
   public static void setActiveCamera(Camera camera) {
     Game.camera = camera;

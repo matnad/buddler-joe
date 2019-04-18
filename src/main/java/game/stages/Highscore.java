@@ -1,7 +1,6 @@
 package game.stages;
 
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_ESCAPE;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_H;
 import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_1;
 
 import engine.io.InputHandler;
@@ -12,15 +11,13 @@ import game.HighscoreEntry;
 import gui.GuiTexture;
 import gui.MenuButton;
 import gui.text.ChangableGuiText;
-import org.joml.Vector2f;
-import org.joml.Vector3f;
-import org.lwjgl.glfw.GLFW;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
+import org.joml.Vector2f;
+import org.joml.Vector3f;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Highscore Screen specification and rendering. Must be initialized. Specifies all the elements in
@@ -37,7 +34,7 @@ public class Highscore {
   private static GuiTexture background;
   private static GuiTexture highscore;
   private static GuiTexture buddlerJoe;
-  //private static GuiTexture title;
+  // private static GuiTexture title;
   private static MenuButton back;
   private static float[] namesY = {0.330864f, 0.4f, 0.469136f, 0.538272f, 0.607407f, 0.676534f};
   private static float[] countY = {0.330864f, 0.4f, 0.469136f, 0.538272f, 0.607407f, 0.676534f};
@@ -78,12 +75,12 @@ public class Highscore {
             new Vector2f(0.554167f, 0.757804f),
             1);
 
-    //title =
-     //   new GuiTexture(
-      //      loader.loadTexture("highscoreTitle"),
-       //     new Vector2f(-0.053125f, 0.446296f),
-         //   new Vector2f(0.379167f, 0.052778f),
-           // 1);
+    // title =
+    //   new GuiTexture(
+    //      loader.loadTexture("highscoreTitle"),
+    //     new Vector2f(-0.053125f, 0.446296f),
+    //   new Vector2f(0.379167f, 0.052778f),
+    // 1);
 
     // Back
     back =
@@ -114,7 +111,7 @@ public class Highscore {
     guis.add(background);
     guis.add(highscore);
     guis.add(buddlerJoe);
-    //guis.add(title);
+    // guis.add(title);
 
     // OpenGL Coordinates (0/0 = center of screen, -1/1 = corners)
     double x = 2 * (InputHandler.getMouseX() / Game.window.getWidth()) - 1;
@@ -127,7 +124,7 @@ public class Highscore {
     for (int i = 0; i < usernames.length; i++) {
       try {
         if (i + startInd < catalog.size()) {
-          usernames[i].changeText(i+1 + ") " + "Name: " + catalog.get(i).getUsername());
+          usernames[i].changeText(i + 1 + ") " + "Name: " + catalog.get(i).getUsername());
           times[i].changeText("Time: " + catalog.get(i).getTime());
           // System.out.println(i);
         } else {

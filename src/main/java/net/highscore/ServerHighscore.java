@@ -1,12 +1,11 @@
 package net.highscore;
 
-import net.packets.highscore.PacketHighscore;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.StringJoiner;
+import net.packets.highscore.PacketHighscore;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ServerHighscore implements Serializable {
 

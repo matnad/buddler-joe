@@ -2,13 +2,12 @@ package net.packets.highscore;
 
 import game.Game;
 import game.HighscoreEntry;
-import game.LobbyEntry;
+import java.util.concurrent.CopyOnWriteArrayList;
 import net.ServerLogic;
 import net.packets.Packet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * Packet that gets send from the Server to the Client, to inform the him over the result of the
@@ -59,17 +58,17 @@ public class PacketHighscore extends Packet {
   public void validate() {
     if (highscore != null) {
       if (highscore.length < 3) {
-        if(!isExtendedAscii(highscore[1])) {
+        if (!isExtendedAscii(highscore[1])) {
           return;
         }
       } else {
         for (int i = 1; i < highscore.length; i += 2) {
-          if (!isExtendedAscii(highscore[i]) || !isExtendedAscii(highscore[i+1])) {
+          if (!isExtendedAscii(highscore[i]) || !isExtendedAscii(highscore[i + 1])) {
             break;
           }
-          //logger.info(highscore[i+1]);
+          // logger.info(highscore[i+1]);
         }
-        }
+      }
     } else {
       addError("No Highscore found.");
     }
@@ -102,8 +101,8 @@ public class PacketHighscore extends Packet {
       } else if (highscore[0].equals("OK")) {
         logger.info(highscore[0]);
         CopyOnWriteArrayList<HighscoreEntry> catalog = new CopyOnWriteArrayList<>();
-        for (int i = 1; i < highscore.length; i+=2) {
-          catalog.add(new HighscoreEntry(highscore[i],highscore[i+1]));
+        for (int i = 1; i < highscore.length; i += 2) {
+          catalog.add(new HighscoreEntry(highscore[i], highscore[i + 1]));
         }
         Game.setHighscoreCatalog(catalog);
       } else {
