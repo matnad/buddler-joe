@@ -57,10 +57,10 @@ public abstract class GameMap<T> {
   /**
    * Generates a noise map for map generation. TODO (Sanja): Implement map generation algorithm
    *
-   * @param rng a random generator
+   * @param seed the seed
    * @return the noise map for the specified random generator
    */
-  protected float[][] generateNoiseMap(Random rng) {
+  protected float[][] generateNoiseMap(long seed) {
     // Generate Noise here
     int radius = 4; // "Smoothing" of noise
     float[][] noiseMap = new float[width][height];
@@ -68,7 +68,7 @@ public abstract class GameMap<T> {
       for (int x = 0; x < width; x++) {
         float dx = (x - radius) / (float) radius;
         float dy = (y - radius) / (float) radius;
-        noiseMap[x][y] = (SimplexNoise.noise(dx, dy) + 1) / 2;
+        noiseMap[x][y] = (SimplexNoise.noise(dx + width*seed, dy + height*seed) + 1) / 2;
       }
     }
     return noiseMap;
