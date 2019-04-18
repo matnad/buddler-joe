@@ -1,6 +1,5 @@
 package game;
 
-import engine.io.Window;
 import java.io.Serializable;
 
 /**
@@ -8,8 +7,6 @@ import java.io.Serializable;
  * getters/setters
  */
 public class Settings implements Serializable {
-
-  private SettingsSerialiser settingsSerialiser = new SettingsSerialiser();
 
   /** Important user settings to be accessed by various methods. */
   private int width = 1920 / 4 * 3;
@@ -25,7 +22,7 @@ public class Settings implements Serializable {
 
   public synchronized void setFullscreen(boolean fullscreen) {
     this.fullscreen = fullscreen;
-    settingsSerialiser.serialiseSettings(this);
+    Game.getSettingsSerialiser().serialiseSettings(Game.getSettings());
   }
 
   public synchronized int getWidth() {
@@ -34,7 +31,7 @@ public class Settings implements Serializable {
 
   public synchronized void setWidth(int width) {
     this.width = width;
-    settingsSerialiser.serialiseSettings(this);
+    Game.getSettingsSerialiser().serialiseSettings(Game.getSettings());
   }
 
   public synchronized int getHeight() {
@@ -43,7 +40,7 @@ public class Settings implements Serializable {
 
   public synchronized void setHeight(int height) {
     this.height = height;
-    settingsSerialiser.serialiseSettings(this);
+    Game.getSettingsSerialiser().serialiseSettings(Game.getSettings());
   }
 
   public synchronized String getUsername() {
@@ -52,7 +49,7 @@ public class Settings implements Serializable {
 
   public synchronized void setUsername(String username) {
     this.username = username;
-    settingsSerialiser.serialiseSettings(this);
+    Game.getSettingsSerialiser().serialiseSettings(Game.getSettings());
   }
 
   public synchronized String getIp() {
@@ -61,6 +58,6 @@ public class Settings implements Serializable {
 
   public synchronized void setIp(String ip) {
     this.ip = ip;
-    settingsSerialiser.serialiseSettings(this);
+    Game.getSettingsSerialiser().serialiseSettings(Game.getSettings());
   }
 }
