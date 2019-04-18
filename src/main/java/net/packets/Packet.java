@@ -323,7 +323,8 @@ public abstract class Packet {
     GET_HISTORY("HISGE"),
     HISTORY("HISTO"),
     LIFE_STATUS("LSTAT"),
-    PLAYER_DEFEATED("PDEAD");
+    PLAYER_DEFEATED("PDEAD"),
+    PLAYER_VELOCITY("VELXY");
 
     private final String packetCode;
 

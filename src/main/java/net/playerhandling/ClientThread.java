@@ -31,6 +31,7 @@ import net.packets.name.PacketSetName;
 import net.packets.pingpong.PacketPing;
 import net.packets.pingpong.PacketPong;
 import net.packets.playerprop.PacketPos;
+import net.packets.playerprop.PacketVelocity;
 
 /**
  * One thread for each client. This thread contains and manages the input and output streams to
@@ -160,6 +161,9 @@ public class ClientThread implements Runnable {
             break;
           case POSITION_UPDATE:
             p = new PacketPos(clientId, data);
+            break;
+          case PLAYER_VELOCITY:
+            p = new PacketVelocity(clientId, data);
             break;
           case BLOCK_DAMAGE:
             p = new PacketBlockDamage(clientId, data);

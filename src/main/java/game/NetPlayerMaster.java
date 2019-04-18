@@ -47,8 +47,9 @@ public class NetPlayerMaster {
         } else {
           netPlayer.turnHeadlightOn();
         }
-      } // Else apply gravity?
-      netPlayer.updateNameplate(); // Kinda expensive?
+      }
+
+      netPlayer.update();
       renderer.processEntity(netPlayer);
     }
   }
@@ -124,6 +125,13 @@ public class NetPlayerMaster {
     if (netPlayer != null) {
       netPlayer.setPosition(new Vector3f(posX, posY, netPlayer.getPosition().z));
       netPlayer.setRotY(rotY);
+    }
+  }
+
+  public static void updateVelocities(int clientId, float curvX, float curvY, float tarvX, float tarvY) {
+    NetPlayer netPlayer = netPlayers.get(clientId);
+    if (netPlayer != null) {
+      netPlayer.updateVelocities(new Vector3f(curvX, curvY, 0), new Vector3f(tarvX, tarvY, 0));
     }
   }
 

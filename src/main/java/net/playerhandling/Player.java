@@ -18,6 +18,8 @@ public class Player {
   private boolean defeated;
 
   private Vector2f pos2d;
+  private Vector2f currentVelocity2d;
+  private Vector2f goalVelocity2d;
   private float rotY;
 
   /**
@@ -123,6 +125,14 @@ public class Player {
 
   public void setPos2d(Vector2f pos2d) {
     this.pos2d = pos2d;
+  }
+
+  public void setCurrentVelocity2d(Vector2f currentVelocity2d) {
+    this.currentVelocity2d = currentVelocity2d;
+  }
+
+  public void setGoalVelocity2d(Vector2f goalVelocity2d) {
+    this.goalVelocity2d = goalVelocity2d;
   }
 
   public void setRotY(float rotY) {

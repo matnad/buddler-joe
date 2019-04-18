@@ -23,6 +23,7 @@ import java.util.List;
 import net.packets.block.PacketBlockDamage;
 import net.packets.life.PacketLifeStatus;
 import net.packets.playerprop.PacketPos;
+import net.packets.playerprop.PacketVelocity;
 import org.joml.Vector2i;
 import org.joml.Vector3f;
 import org.slf4j.Logger;
@@ -47,12 +48,8 @@ public class Player extends NetPlayer {
 
   public static final Logger logger = LoggerFactory.getLogger(Player.class);
   // Movement Related
-  public static final float gravity = -45; // Units per second
-  private static final float runSpeed = 20; // Units per second
-  private static final float interpolationFactor = 0.15f; // Rate of acceleration via LERP
-  private static final float turnSpeed = 720; // Degrees per second
   private static final float jumpPower = 28; // Units per second
-  private static final float angle45 = (float) (45 * Math.PI / 180);
+
 
   // Resources and Stats
   public int currentGold; // Current coins
@@ -62,14 +59,9 @@ public class Player extends NetPlayer {
   private Block lastDiggedBlock = null;
   private float lastDiggedBlockDamage = 0;
   private float digIntervallTimer = 0;
-  private Block collideWithBlockAbove;
-  private Block collideWithBlockBelow;
 
   // Vector & Velocity based speed
-  private Vector3f currentVelocity = new Vector3f();
-  private Vector3f goalVelocity = new Vector3f();
   private boolean isJumping = false; // Can't Jump while in the air
-  private boolean isInAir = false;
 
   // Other
   private boolean controlsDisabled;
@@ -77,7 +69,6 @@ public class Player extends NetPlayer {
   private final float torchPlaceDelay = 10f;
   private float torchTimeout = torchPlaceDelay;
 
-  private List<Block> closeBlocks;
 
   /**
    * Spawn the Player. This will be handled differently in the future when we rework the Player
@@ -304,34 +295,6 @@ public class Player extends NetPlayer {
     }
   }
 
-  /**
-   * Maintain a list with blocks that are closer than the specified distance. This is used to only
-   * check close block for entities.collision or other interaction
-   *
-   * @param blocks Usually all blocks {@link BlockMaster#getBlocks()}
-   * @param maxDistance Maximum distance for the block to be considered close
-   */
-  private void updateCloseBlocks(List<Block> blocks, float maxDistance) {
-    List<Block> closeBlocks = new ArrayList<>();
-    // Only 2D (XY) for performance
-    for (Block block : blocks) {
-      if (block.get2dDistanceFrom(super.getPositionXy()) <= block.getDim() + maxDistance) {
-        closeBlocks.add(block);
-      }
-    }
-    this.closeBlocks = closeBlocks;
-  }
-
-  /**
-   * Maintain a list with blocks that are closer than 5 units. A block is 6 units across, this will
-   * get all surrounding blocks This is used to only check close block for entities.collision or
-   * other interaction
-   *
-   * @param blocks Usually all blocks {@link BlockMaster#getBlocks()}
-   */
-  private void updateCloseBlocks(List<Block> blocks) {
-    updateCloseBlocks(blocks, 5);
-  }
 
   /**
    * Check for Keyboard and Mouse inputs and process them
@@ -406,26 +369,6 @@ public class Player extends NetPlayer {
         ItemMaster.generateItem(itemType, getPosition()));
   }
 
-  private float getCurrentTurnSpeed() {
-    float currentTurnSpeed;
-    if (goalVelocity.x == -runSpeed) {
-      currentTurnSpeed = -turnSpeed;
-      if (getRotY() <= -90) {
-        currentTurnSpeed = 0;
-        setRotY(-90);
-      }
-    } else if (goalVelocity.x == runSpeed) {
-      currentTurnSpeed = turnSpeed;
-      if (getRotY() >= 90) {
-        currentTurnSpeed = 0;
-        setRotY(90);
-      }
-    } else {
-      currentTurnSpeed = 0;
-    }
-    return currentTurnSpeed;
-  }
-
   public void increaseCurrentGold(int gold) {
     currentGold += gold;
   }
@@ -470,14 +413,14 @@ public class Player extends NetPlayer {
   private void setGoalVelocityX(float x) {
     if (goalVelocity.x != x) {
       goalVelocity.x = x;
-      // Send update to server
+      new PacketVelocity(currentVelocity.x, currentVelocity.y, goalVelocity.x, goalVelocity.y).sendToServer();
     }
   }
 
   private void setGoalVelocityY(float y) {
     if (goalVelocity.y != y) {
       goalVelocity.y = y;
-      // Send update to server
+      new PacketVelocity(currentVelocity.x, currentVelocity.y, goalVelocity.x, goalVelocity.y).sendToServer();
     }
   }
 

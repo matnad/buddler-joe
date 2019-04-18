@@ -3,9 +3,11 @@ package net.packets.gamestatus;
 import static game.Game.Stage.INLOBBBY;
 import static game.Game.Stage.PLAYING;
 
+import entities.Player;
 import game.Game;
 import game.stages.InLobby;
 import net.packets.Packet;
+import net.packets.playerprop.PacketPos;
 
 /**
  * A packed that is send from the server to the client, to inform the client that the GameRound of
@@ -52,6 +54,9 @@ public class PacketStartRound extends Packet {
     Game.removeActiveStage(INLOBBBY);
     Game.getMap().reloadMap();
     Game.addActiveStage(PLAYING);
+    Player player = Game.getActivePlayer();
+    new PacketPos(player.getPositionXy().x, player.getPositionXy().y, player.getRotY())
+        .sendToServer();
     InLobby.done();
   }
 }
