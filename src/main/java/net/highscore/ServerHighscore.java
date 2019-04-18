@@ -53,7 +53,7 @@ public class ServerHighscore implements Serializable {
 
     StringJoiner sj = new StringJoiner("║");
     for (int i = 0; i < Math.min(10, highscore.size()); i++) {
-      sj.add(i + 1 + ") " + highscore.get(i).toString());
+      sj.add(highscore.get(i).toString());
     }
     return sj.toString();
   }
@@ -86,7 +86,7 @@ public class ServerHighscore implements Serializable {
 
     @Override
     public String toString() {
-      return username + ": " + util.Util.milisToString(time);
+      return username + "║" + util.Util.milisToString(time);
     }
   }
 }

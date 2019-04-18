@@ -4,6 +4,7 @@ import static game.Game.Stage.CHOOSELOBBY;
 import static game.Game.Stage.CREDITS;
 import static game.Game.Stage.GAMEMENU;
 import static game.Game.Stage.GAMEOVER;
+import static game.Game.Stage.HIGHSCORE;
 import static game.Game.Stage.INLOBBBY;
 import static game.Game.Stage.LOADINGSCREEN;
 import static game.Game.Stage.LOGIN;
@@ -32,6 +33,7 @@ import game.stages.ChooseLobby;
 import game.stages.Credits;
 import game.stages.GameMenu;
 import game.stages.GameOver;
+import game.stages.Highscore;
 import game.stages.InLobby;
 import game.stages.LoadingScreen;
 import game.stages.Login;
@@ -118,6 +120,8 @@ public class Game extends Thread {
   private static TerrainFlat belowGround;
   private static GuiRenderer guiRenderer;
   private static CopyOnWriteArrayList<LobbyEntry> lobbyCatalog = new CopyOnWriteArrayList<>();
+  private static CopyOnWriteArrayList<HighscoreEntry> highscoreCatalog =
+      new CopyOnWriteArrayList<>();
   private static CopyOnWriteArrayList<LobbyPlayerEntry> lobbyPlayerCatalog =
       new CopyOnWriteArrayList<>();
   public String username = RandomName.getRandomName(); // TODO (Server Team): Username
@@ -147,6 +151,14 @@ public class Game extends Thread {
 
   public static void setLobbyCatalog(CopyOnWriteArrayList<LobbyEntry> lobbyCatalog) {
     Game.lobbyCatalog = lobbyCatalog;
+  }
+
+  public static CopyOnWriteArrayList<HighscoreEntry> getHighscoreCatalog() {
+    return highscoreCatalog;
+  }
+
+  public static void setHighscoreCatalog(CopyOnWriteArrayList<HighscoreEntry> highscoreCatalog) {
+    Game.highscoreCatalog = highscoreCatalog;
   }
 
   public static CopyOnWriteArrayList<LobbyPlayerEntry> getLobbyPlayerCatalog() {
@@ -415,6 +427,10 @@ public class Game extends Thread {
             ChooseLobby.update();
           }
 
+          if (activeStages.contains(HIGHSCORE)) {
+            Highscore.update();
+          }
+
           if (activeStages.contains(CREDITS)) {
             Credits.update();
           }
@@ -483,6 +499,8 @@ public class Game extends Thread {
     Welcome.init(loader);
     LoadingScreen.progess();
     Login.init(loader);
+    LoadingScreen.progess();
+    Highscore.init(loader);
     LoadingScreen.progess();
     InLobby.init(loader);
     LoadingScreen.progess();
@@ -577,6 +595,7 @@ public class Game extends Thread {
     WELCOME,
     LOGIN,
     INLOBBBY,
+    HIGHSCORE,
     GAMEOVER
   }
 }

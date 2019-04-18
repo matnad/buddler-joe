@@ -1,9 +1,14 @@
 package net.packets.highscore;
 
+import game.Game;
+import game.HighscoreEntry;
+import game.LobbyEntry;
 import net.ServerLogic;
 import net.packets.Packet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * Packet that gets send from the Server to the Client, to inform the him over the result of the
@@ -16,6 +21,7 @@ public class PacketHighscore extends Packet {
   public static final Logger logger = LoggerFactory.getLogger(PacketHighscore.class);
 
   private String[] highscore;
+  private Long[] times;
 
   /**
    * Constructor that is used by the Client to verify the data and process the data.
@@ -52,8 +58,14 @@ public class PacketHighscore extends Packet {
   @Override
   public void validate() {
     if (highscore != null) {
-      for (int i = 1; i < highscore.length; i++) {
+      for (int i = 1; i < highscore.length; i += 2) {
         if (!isExtendedAscii(highscore[i])) {
+          break;
+        }
+        try {
+          times[i] = Long.parseLong(highscore[i+1]);
+        } catch (NumberFormatException e) {
+          addError("Not a Long.");
           break;
         }
       }
@@ -87,14 +99,11 @@ public class PacketHighscore extends Packet {
         System.out.println(createErrorMessage());
       } else if (highscore[0].equals("OK")) {
         logger.info(highscore[0]);
-        System.out.println("-------------------------------------");
-        System.out.println("Current Highscore:");
-        for (int i = 1; i < highscore.length; i++) {
-          System.out.println(highscore[i]);
+        CopyOnWriteArrayList<HighscoreEntry> catalog = new CopyOnWriteArrayList<>();
+        for (int i = 1; i < highscore.length; i += 2) {
+          catalog.add(new HighscoreEntry(highscore[i],times[i]));
         }
-        System.out.println("-------------------------------------");
-      } else if (highscore[0].equals("ERROR")) {
-        System.out.println("The Highscore is currently still empty.");
+        Game.setHighscoreCatalog(catalog);
       } else {
         System.out.println(highscore[1]);
       }
