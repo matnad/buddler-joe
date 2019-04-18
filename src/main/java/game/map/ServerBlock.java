@@ -46,6 +46,10 @@ public class ServerBlock {
    * @param clientThatDealsDamage clientId that damaged the block
    */
   public void damageBlock(int clientThatDealsDamage, float damage) {
+    if (hardness == 100f) {
+      return;
+    }
+
     if (type == BlockMaster.BlockTypes.AIR) {
       return;
     }

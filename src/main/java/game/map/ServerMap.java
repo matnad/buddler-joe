@@ -57,6 +57,9 @@ public class ServerMap extends GameMap<ServerBlock> {
             blocks[x][y] = new ServerBlock(BlockMaster.BlockTypes.AIR, x, y); // Stone
           }
         }
+        if ((x == 0 || x == width - 1) || y == height - 1) {
+          blocks[x][y] = new ServerBlock(BlockMaster.BlockTypes.OBSIDIAN, x, y);
+        }
       }
     }
   }

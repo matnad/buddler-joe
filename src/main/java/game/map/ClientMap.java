@@ -63,6 +63,11 @@ public class ClientMap extends GameMap<Block> {
                     BlockMaster.BlockTypes.STONE, new Vector3f(posX, posY, (float) size), x, y);
           }
         }
+        if ((x == 0 || x == width - 1) || y == height - 1) {
+          blocks[x][y] =
+                  BlockMaster.generateBlock(
+                          BlockMaster.BlockTypes.OBSIDIAN, new Vector3f(posX, posY, (float) size), x, y);
+        }
       }
     }
   }
