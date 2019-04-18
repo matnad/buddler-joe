@@ -39,17 +39,13 @@ public class Highscore {
   private static GuiTexture buddlerJoe;
   //private static GuiTexture title;
   private static MenuButton back;
-  private static float[] joinY = {0.312963f, 0.175926f, 0.037037f, -0.1f, -0.238889f, -0.375926f};
   private static float[] namesY = {0.330864f, 0.4f, 0.469136f, 0.538272f, 0.607407f, 0.676534f};
   private static float[] countY = {0.330864f, 0.4f, 0.469136f, 0.538272f, 0.607407f, 0.676534f};
   private static CopyOnWriteArrayList<HighscoreEntry> catalog;
   private static ChangableGuiText[] usernames = new ChangableGuiText[6];
   private static ChangableGuiText[] times = new ChangableGuiText[6];
   private static int startInd = 0;
-  private static int page = 0;
-  private static ChangableGuiText pageIndex;
   private static boolean initializedText = false;
-  private static boolean initializedPageIndex = false;
   private static Vector3f black = new Vector3f(0, 0, 0);
 
   /**
@@ -128,12 +124,11 @@ public class Highscore {
     guis.add(back.getHoverTexture(x, y));
 
     // Update the current highscore:
-    startInd = page * 6;
     for (int i = 0; i < usernames.length; i++) {
       try {
         if (i + startInd < catalog.size()) {
-          usernames[i].changeText("Name: " + catalog.get(i + startInd).getUsername());
-          times[i].changeText("Time: " + catalog.get(i + startInd).getTime());
+          usernames[i].changeText(i+1 + ") " + "Name: " + catalog.get(i).getUsername());
+          times[i].changeText("Time: " + catalog.get(i).getTime());
           // System.out.println(i);
         } else {
           usernames[i].changeText("");
@@ -169,7 +164,7 @@ public class Highscore {
       usernames[i].setTextColour(black);
       usernames[i].setCentered(false);
       times[i] = new ChangableGuiText();
-      times[i].setPosition(new Vector2f(0, countY[i]));
+      times[i].setPosition(new Vector2f(0.586719f, countY[i]));
       times[i].setFontSize(1);
       times[i].setTextColour(black);
       times[i].setCentered(false);

@@ -2,14 +2,14 @@ package game;
 
 public class HighscoreEntry {
     private String username;
-    private long time;
+    private String time;
 
-    public HighscoreEntry(String username, long time) {
+    public HighscoreEntry(String username, String time) {
         this.username = username;
         this.time = time;
     }
 
-    public long getTime() {
+    public String getTime() {
         return time;
     }
 

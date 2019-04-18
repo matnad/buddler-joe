@@ -178,6 +178,8 @@ public class MainMenu {
       Game.removeActiveStage(Game.Stage.MAINMENU);
     } else if (InputHandler.isKeyPressed(GLFW_KEY_H)) {
       new PacketHighscore().sendToServer();
+      PacketHighscore p = new PacketHighscore();
+      p.sendToServer();
       Game.addActiveStage(Game.Stage.HIGHSCORE);
       Game.removeActiveStage(Game.Stage.MAINMENU);
     }

@@ -1,11 +1,16 @@
 package net.highscore;
 
+import net.packets.highscore.PacketHighscore;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.StringJoiner;
 
 public class ServerHighscore implements Serializable {
 
+  public static final Logger logger = LoggerFactory.getLogger(PacketHighscore.class);
   private ArrayList<Standing> highscore;
 
   /** Contructor to be called to create a new Highscore if none has been created before. */
@@ -49,7 +54,6 @@ public class ServerHighscore implements Serializable {
     if (highscore.size() == 0) {
       return "There is no Highscore yet.";
     }
-    // return String.join("║", highscore.toString());
 
     StringJoiner sj = new StringJoiner("║");
     for (int i = 0; i < Math.min(10, highscore.size()); i++) {

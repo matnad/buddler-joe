@@ -21,7 +21,6 @@ public class PacketHighscore extends Packet {
   public static final Logger logger = LoggerFactory.getLogger(PacketHighscore.class);
 
   private String[] highscore;
-  private Long[] times;
 
   /**
    * Constructor that is used by the Client to verify the data and process the data.
@@ -31,6 +30,7 @@ public class PacketHighscore extends Packet {
   public PacketHighscore(String data) {
     super(PacketTypes.HIGHSCORE);
     setData(data);
+    logger.info(getData());
     highscore = getData().split("║");
     validate();
   }
@@ -58,17 +58,18 @@ public class PacketHighscore extends Packet {
   @Override
   public void validate() {
     if (highscore != null) {
-      for (int i = 1; i < highscore.length; i += 2) {
-        if (!isExtendedAscii(highscore[i])) {
-          break;
+      if (highscore.length < 3) {
+        if(!isExtendedAscii(highscore[1])) {
+          return;
         }
-        try {
-          times[i] = Long.parseLong(highscore[i+1]);
-        } catch (NumberFormatException e) {
-          addError("Not a Long.");
-          break;
+      } else {
+        for (int i = 1; i < highscore.length; i += 2) {
+          if (!isExtendedAscii(highscore[i]) || !isExtendedAscii(highscore[i+1])) {
+            break;
+          }
+          //logger.info(highscore[i+1]);
         }
-      }
+        }
     } else {
       addError("No Highscore found.");
     }
@@ -91,6 +92,7 @@ public class PacketHighscore extends Packet {
       } else {
         setData("OK║" + ServerLogic.getServerHighscore().getHighscoreAsString());
       }
+      logger.info(getData());
       this.sendToClient(getClientId());
       // logger.info(getData());
     } else {
@@ -100,8 +102,8 @@ public class PacketHighscore extends Packet {
       } else if (highscore[0].equals("OK")) {
         logger.info(highscore[0]);
         CopyOnWriteArrayList<HighscoreEntry> catalog = new CopyOnWriteArrayList<>();
-        for (int i = 1; i < highscore.length; i += 2) {
-          catalog.add(new HighscoreEntry(highscore[i],times[i]));
+        for (int i = 1; i < highscore.length; i+=2) {
+          catalog.add(new HighscoreEntry(highscore[i],highscore[i+1]));
         }
         Game.setHighscoreCatalog(catalog);
       } else {
