@@ -1,8 +1,5 @@
 package game.stages;
 
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_ESCAPE;
-import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_1;
-
 import engine.io.InputHandler;
 import engine.render.Loader;
 import engine.render.fontrendering.TextMaster;
@@ -20,6 +17,8 @@ import org.joml.Vector2f;
 import org.joml.Vector3f;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import static org.lwjgl.glfw.GLFW.*;
 
 /**
  * ChooseLobby Menu specification and rendering. Must be initialized. Specifies all the elements in
@@ -41,6 +40,7 @@ public class ChooseLobby {
   private static MenuButton[] join = new MenuButton[6];
   private static MenuButton up;
   private static MenuButton down;
+  private static MenuButton[] create = new MenuButton[6];
   private static int n = 6; // varibale that defines how many join buttons are displayed. Max is 6.
   private static float[] joinY = {0.312963f, 0.175926f, 0.037037f, -0.1f, -0.238889f, -0.375926f};
   private static float[] namesY = {0.330864f, 0.4f, 0.469136f, 0.538272f, 0.607407f, 0.676534f};
@@ -101,6 +101,17 @@ public class ChooseLobby {
             new Vector2f(0.75f, -0.851852f),
             new Vector2f(.097094f, .082347f));
 
+    // initialize all create Buttens
+    for (int i = 0; i < create.length; i++) {
+      create[i] =
+          new MenuButton(
+              loader,
+              "create_norm",
+              "create_hover",
+              new Vector2f(0.391667f, joinY[i]),
+              new Vector2f(0.082365f, .069444f));
+    }
+
     // initialize all join Buttens
     for (int i = 0; i < join.length; i++) {
       join[i] =
@@ -115,16 +126,16 @@ public class ChooseLobby {
     up =
         new MenuButton(
             loader,
-            "up_placeholder",
-            "up_placeholder",
-            new Vector2f(0.349219f, -0.512963f),
-            new Vector2f(0.041406f, 0.0694444f));
+            "up_norm",
+            "up_hover",
+            new Vector2f(0.350608f, -0.512963f),
+            new Vector2f(0.040712f, 0.0694444f));
 
     down =
         new MenuButton(
             loader,
-            "down_placeholder",
-            "down_placeholder",
+            "down_norm",
+            "down_hover",
             new Vector2f(0.432032f, -0.512963f),
             new Vector2f(0.041406f, 0.0694444f));
   }
@@ -177,15 +188,24 @@ public class ChooseLobby {
         logger.error(e.getMessage());
       }
     }
-    // System.out.println("");
 
+    // Place Create----------------------------------------------------------------------
+    if (n < create.length) {
+      guis.add(create[n].getHoverTexture(x, y));
+    }
+    for (int i = 0; i < 6; i++) {
+      if (i != n) {
+        guis.remove(create[i].getHoverTexture(x, y));
+      }
+    }
+    // Place Join------------------------------------------------------------------------
     for (int i = 0; i < n; i++) {
       guis.add(join[i].getHoverTexture(x, y));
     }
     for (int i = 5; i > -1 + n; i--) {
       guis.remove(join[i].getHoverTexture(x, y));
     }
-
+    // Place PageIndex-------------------------------------------------------------------
     if (n == 6 || page != 0) {
       guis.add(up.getHoverTexture(x, y));
       guis.add(down.getHoverTexture(x, y));
@@ -203,7 +223,7 @@ public class ChooseLobby {
       guis.remove(down.getHoverTexture(x, y));
     }
 
-    // Input-Handling--------------------------------------------
+    // Input-Handling-------------------------------------------------------------------
     if (InputHandler.isKeyPressed(GLFW_KEY_ESCAPE)
         || InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1) && back.isHover(x, y)) {
       done();
@@ -215,6 +235,13 @@ public class ChooseLobby {
       }
     } else if (InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1) && down.isHover(x, y)) {
       page = page + 1;
+    } else if (n < create.length
+        && InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1)
+        && create[n].isHover(x, y)) {
+      done();
+      Game.addActiveStage(Game.Stage.LOBBYCREATION);
+      Game.removeActiveStage(Game.Stage.CHOOSELOBBY);
+      //done();
     } else {
       for (int i = 0; i < n; i++) {
         if (i + startInd < catalog.size()
@@ -273,6 +300,7 @@ public class ChooseLobby {
       count[i].delete();
     }
     initializedText = false;
+    System.out.println("choose-done");
   }
 
   /**

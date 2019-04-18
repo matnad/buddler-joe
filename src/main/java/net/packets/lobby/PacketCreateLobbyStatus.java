@@ -1,6 +1,8 @@
 package net.packets.lobby;
 
 import game.Game;
+import game.stages.InLobby;
+import game.stages.LobbyCreation;
 import net.packets.Packet;
 
 /**
@@ -69,11 +71,20 @@ public class PacketCreateLobbyStatus extends Packet {
   public synchronized void processData() {
     Game.setLobbyCreated(true); // Duplicate Lobby is okay
     if (hasErrors()) {
-      System.out.println(createErrorMessage());
+      String ErrMsg = createErrorMessage();
+      System.out.println(ErrMsg);
+      LobbyCreation.setMsg(ErrMsg);
     } else if (status.startsWith("OK")) {
       System.out.println("Lobby-Creation Successful");
+      if (Game.getActiveStages().contains(Game.Stage.LOBBYCREATION)) {
+        LobbyCreation.done();
+        Game.addActiveStage(Game.Stage.CHOOSELOBBY);
+        Game.removeActiveStage(Game.Stage.LOBBYCREATION);
+      }
+      LobbyCreation.done();
     } else {
       System.out.println(status);
+      LobbyCreation.setMsg(status);
     }
   }
 }

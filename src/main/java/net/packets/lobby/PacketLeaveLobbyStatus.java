@@ -75,9 +75,10 @@ public class PacketLeaveLobbyStatus extends Packet {
       System.out.println(createErrorMessage());
     } else if (status.startsWith("OK")) {
       System.out.println("Successfully left lobby");
+      InLobby.done();
       Game.addActiveStage(Game.Stage.CHOOSELOBBY);
       Game.removeActiveStage(Game.Stage.INLOBBBY);
-      InLobby.done();
+      //InLobby.done();
     } else { // Errors on Server
       System.out.println(status);
     }

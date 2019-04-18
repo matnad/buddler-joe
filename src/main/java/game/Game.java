@@ -11,6 +11,7 @@ import static game.Game.Stage.MAINMENU;
 import static game.Game.Stage.OPTIONS;
 import static game.Game.Stage.PLAYING;
 import static game.Game.Stage.WELCOME;
+import static game.Game.Stage.LOBBYCREATION;
 
 import engine.io.InputHandler;
 import engine.io.Window;
@@ -39,6 +40,7 @@ import game.stages.MainMenu;
 import game.stages.Options;
 import game.stages.Playing;
 import game.stages.Welcome;
+import game.stages.LobbyCreation;
 import gui.chat.Chat;
 import gui.text.CurrentGold;
 import gui.text.CurrentLives;
@@ -434,6 +436,10 @@ public class Game extends Thread {
           if (activeStages.contains(INLOBBBY)) {
             InLobby.update();
           }
+
+          if (activeStages.contains(LOBBYCREATION)) {
+            LobbyCreation.update();
+          }
         }
 
         activeStages.addAll(stagesToBeAdded);
@@ -487,6 +493,8 @@ public class Game extends Thread {
     InLobby.init(loader);
     LoadingScreen.progess();
     GameOver.init(loader);
+    LoadingScreen.progess();
+    LobbyCreation.init(loader);
 
     // Generate Player
     NetPlayer.init(loader);
@@ -510,7 +518,7 @@ public class Game extends Thread {
     // Creating and joining Lobby
     // if (autoJoin) {
     LoadingScreen.updateLoadingMessage("joining lobby");
-    new PacketCreateLobby("lob1").sendToServer();
+    new PacketCreateLobby("lob1║m").sendToServer();
     while (!lobbyCreated) {
       Thread.sleep(50);
     }
@@ -577,6 +585,7 @@ public class Game extends Thread {
     WELCOME,
     LOGIN,
     INLOBBBY,
-    GAMEOVER
+    GAMEOVER,
+    LOBBYCREATION
   }
 }

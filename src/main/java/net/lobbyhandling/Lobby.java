@@ -27,6 +27,7 @@ public class Lobby {
   private ArrayList<Player> lobbyPlayers;
   private ServerMap map;
   private int createrPlayerId;
+  private String mapSize;
   private String status;
   private long createdAt;
   private ServerItemState serverItemState;
@@ -39,9 +40,10 @@ public class Lobby {
    *     construction.
    * @param createrPlayerId id of the player who is creating the lobby
    */
-  public Lobby(String lobbyName, int createrPlayerId) {
+  public Lobby(String lobbyName, int createrPlayerId, String mapSize) {
     this.lobbyName = lobbyName;
     this.createrPlayerId = createrPlayerId;
+    this.mapSize  = mapSize;
     this.status = "open";
     this.inGame = false;
     this.lobbyPlayers = new ArrayList<>();
@@ -49,7 +51,6 @@ public class Lobby {
     this.serverItemState = new ServerItemState();
     lobbyCounter++;
     map = new ServerMap(33, 40, System.currentTimeMillis());
-    // System.out.println(map);
   }
 
   /**
