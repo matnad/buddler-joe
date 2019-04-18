@@ -1,5 +1,7 @@
 package net.packets.lobby;
 
+import game.Game;
+import game.stages.ChooseLobby;
 import net.packets.Packet;
 
 /**
@@ -68,6 +70,9 @@ public class PacketJoinLobbyStatus extends Packet {
       System.out.println(createErrorMessage());
     } else if (status.startsWith("OK")) {
       System.out.println("Successfully joined lobby");
+      Game.addActiveStage(Game.Stage.INLOBBBY);
+      Game.removeActiveStage(Game.Stage.CHOOSELOBBY);
+      ChooseLobby.done();
       // ClientLogic.getCurrentLobby().setLobbyName();
     } else { // Errors on Server
       System.out.println(status);

@@ -2,6 +2,8 @@ package net.packets.lobby;
 
 import entities.blocks.Block;
 import entities.blocks.BlockMaster;
+import game.Game;
+import game.stages.InLobby;
 import net.packets.Packet;
 
 /**
@@ -73,6 +75,9 @@ public class PacketLeaveLobbyStatus extends Packet {
       System.out.println(createErrorMessage());
     } else if (status.startsWith("OK")) {
       System.out.println("Successfully left lobby");
+      Game.addActiveStage(Game.Stage.CHOOSELOBBY);
+      Game.removeActiveStage(Game.Stage.INLOBBBY);
+      InLobby.done();
     } else { // Errors on Server
       System.out.println(status);
     }

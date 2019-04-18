@@ -48,8 +48,8 @@ public class PacketStartRound extends Packet {
    */
   @Override
   public void processData() {
-    InLobby.done();
     Game.removeActiveStage(INLOBBBY);
+    InLobby.done();
     Game.getMap().reloadMap();
     Game.addActiveStage(PLAYING);
     InLobby.done();

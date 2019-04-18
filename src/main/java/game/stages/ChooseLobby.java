@@ -186,7 +186,7 @@ public class ChooseLobby {
       guis.remove(join[i].getHoverTexture(x, y));
     }
 
-    if (n == 6 || page != 0) { // TODO change to ==6 later
+    if (n == 6 || page != 0) {
       guis.add(up.getHoverTexture(x, y));
       guis.add(down.getHoverTexture(x, y));
       if (!initializedPageIndex) {
@@ -221,9 +221,6 @@ public class ChooseLobby {
             && InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1)
             && join[i].isHover(x, y)) {
           new PacketJoinLobby(catalog.get(i + startInd).getName()).sendToServer();
-          done();
-          Game.addActiveStage(Game.Stage.INLOBBBY);
-          Game.removeActiveStage(Game.Stage.CHOOSELOBBY);
           break;
         }
       }
