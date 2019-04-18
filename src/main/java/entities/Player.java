@@ -49,10 +49,12 @@ public class Player extends NetPlayer {
   // Movement Related
   public static final float gravity = -45; // Units per second
   private static final float runSpeed = 20; // Units per second
+  private static final float interpolationFactor = 0.15f; // Rate of acceleration via LERP
   private static final float turnSpeed = 720; // Degrees per second
-  private static final float jumpPower = 25; // Units per second
-  private static final float collisionPushOffset = 0.1f;
+  private static final float jumpPower = 28; // Units per second
+  private static final float collisionPushOffset = 0.01f;
   private static final float angle45 = (float) (45 * Math.PI / 180);
+
   // Resources and Stats
   public int currentGold; // Current coins
   private int currentLives;
@@ -61,16 +63,18 @@ public class Player extends NetPlayer {
   private Block collideWithBlockBelow;
 
   private float currentSpeed = 0;
+  private Vector3f currentVelocity = new Vector3f();
+  private Vector3f goalVelocity = new Vector3f();
   private float currentTurnSpeed = 0;
   private float upwardsSpeed = 0;
   private boolean frozen = false;
   private final float torchPlaceDelay = 10f;
   private float torchTimeout = torchPlaceDelay;
 
-
   private List<Block> closeBlocks;
 
-  private boolean isInAir = false; // Can't Jump while in the air
+  private boolean isJumping = false; // Can't Jump while in the air
+  private boolean isInAir = false;
 
   private boolean controlsDisabled;
 
@@ -106,16 +110,15 @@ public class Player extends NetPlayer {
     collideWithBlockAbove = null;
     collideWithBlockBelow = null;
 
-    updateCloseBlocks(
-        BlockMaster.getBlocks()); // We don't want to check entities.collision for all blocks
-    // every frame
+    updateCloseBlocks(BlockMaster.getBlocks());
+    // We don't want to check entities.collision for all block every frame
 
     if (Game.getActiveStages().size() == 1 && Game.getActiveStages().get(0) == PLAYING) {
       // Only check inputs if no other stage is active (stages are menu screens)
       checkInputs(); // See which relevant keys are pressed
       digDamage = 1;
     } else {
-      currentSpeed = 0;
+      currentVelocity = new Vector3f();
       digDamage = 0;
     }
 
@@ -129,21 +132,41 @@ public class Player extends NetPlayer {
     }
 
     // Update position by distance travelled
-    float distance = (float) (currentSpeed * Game.window.getFrameTimeSeconds());
-    super.increasePosition(distance, 0, 0);
+    // float distance = (float) (currentSpeed * Game.window.getFrameTimeSeconds());
+    // super.increasePosition(distance, 0, 0);
     // Turn character by the turnSpeed (which is set to make a nice turning animation when
     // changing direction)
-    this.increaseRotation(0, (float) (currentTurnSpeed * Game.window.getFrameTimeSeconds()), 0);
 
     // Apply gravity to upwardspeed and change vertical position
-    upwardsSpeed += gravity * Game.window.getFrameTimeSeconds();
-    super.increasePosition(0, (float) (upwardsSpeed * Game.window.getFrameTimeSeconds()), 0);
+    float ipfX = interpolationFactor;
+    if (isInAir) {
+      goalVelocity.y += gravity * Game.window.getFrameTimeSeconds();
+      ipfX /= 5;
+    }
+
+    // Interpolate velocity
+
+    // currentVelocity.lerp(goalVelocity, ipfX);
+    currentVelocity.x += (goalVelocity.x - currentVelocity.x) * ipfX;
+    currentVelocity.y += (goalVelocity.y - currentVelocity.y) * interpolationFactor;
+
+    if (Math.abs(currentVelocity.x) < 0.01) {
+      currentVelocity.x = 0;
+    }
+
+    // Apply gravity to upwardspeed and change vertical position
+    // upwardsSpeed += gravity * Game.window.getFrameTimeSeconds();
+    // super.increasePosition(0, (float) (upwardsSpeed * Game.window.getFrameTimeSeconds()), 0);
+    increasePosition(new Vector3f(currentVelocity).mul((float) Game.window.getFrameTimeSeconds()));
+    this.increaseRotation(0, (float) (currentTurnSpeed * Game.window.getFrameTimeSeconds()), 0);
 
     // Handle collisions, we only check close blocks to optimize performance
     // Distance is much cheaper to check than overlap
     for (Block closeBlock : closeBlocks) {
       handleCollision(closeBlock);
     }
+
+    isInAir = collideWithBlockBelow == null;
 
     // Check if crushed by a block and resolve it
     resolveCrush();
@@ -158,7 +181,9 @@ public class Player extends NetPlayer {
 
     // Send server update with update
     if (Game.isConnectedToServer()
-        && (currentSpeed != 0 || upwardsSpeed != 0 || currentTurnSpeed != 0)) {
+        && (!currentVelocity.equals(new Vector3f())
+            || upwardsSpeed != 0
+            || currentTurnSpeed != 0)) {
       new PacketPos(getPositionXy().x, getPositionXy().y, getRotY()).sendToServer();
     }
   }
@@ -220,17 +245,19 @@ public class Player extends NetPlayer {
         // From above
         collideWithBlockBelow = block;
         // Undo the position change to keep the player in place
-        super.increasePosition(0, (float) -(upwardsSpeed * Game.window.getFrameTimeSeconds()), 0);
+        // super.increasePosition(0, (float) -(upwardsSpeed * Game.window.getFrameTimeSeconds()),
+        // 0);
         // Have a grace distance, if the overlap is too large, we reset to position to prevent
         // hard clipping
         if (getPosition().y + 0.1 < e.getMaxY()) {
           setPositionY(e.getMaxY());
         }
         // Reset jumping ability and downwards momentum
-        if (upwardsSpeed < 0) {
-          upwardsSpeed = 0;
+        if (goalVelocity.y < 0) {
+          goalVelocity.y = 0;
+          currentVelocity.y = 0;
         }
-        isInAir = false;
+        isJumping = false;
         // If we hold S, dig down
         if (InputHandler.isKeyDown(GLFW_KEY_S) && !controlsDisabled) {
           digBlock(block);
@@ -241,20 +268,15 @@ public class Player extends NetPlayer {
         // Reset Position to below the block, this doesnt flicker since we are falling
         setPositionY(e.getMinY() - p.getDimY());
         // Stop jumping up if we hit something above, will start accelerating down
-        if (upwardsSpeed > 0) {
-          upwardsSpeed = 0;
+        if (goalVelocity.y > 0) {
+          goalVelocity.y = 0;
+          currentVelocity.y = 0;
         }
       } else {
-        if (direction.x > 0) {
-          // Have a small offset for smoother entities.collision
-          setPositionX(e.getMaxX() + p.getDimX() / 2 + collisionPushOffset);
-          currentSpeed = 0; // Stop moving
-          isInAir = false; // Walljumps! Felt cute. Might delete later.
-        } else {
-          setPositionX(e.getMinX() - p.getDimX() / 2 - collisionPushOffset);
-          currentSpeed = 0;
-          isInAir = false;
-        }
+        isJumping = false; // Walljumps! Felt cute. Might delete later.
+        setPositionX(
+            (float) (getPosition().x - currentVelocity.x * Game.window.getFrameTimeSeconds()));
+        currentVelocity.x = 0;
         // Dig blocks whenever we collide horizontal
         digBlock(block);
       }
@@ -280,9 +302,13 @@ public class Player extends NetPlayer {
 
   /** VERY simple jump. */
   private void jump() {
-    if (!isInAir) {
-      this.upwardsSpeed = jumpPower;
-      isInAir = true;
+    // if (!isJumping) {
+    //  this.upwardsSpeed = jumpPower;
+    //  isJumping = true;
+    // }
+    if (!isJumping) {
+      goalVelocity.y = jumpPower;
+      isJumping = true;
     }
   }
 
@@ -325,7 +351,7 @@ public class Player extends NetPlayer {
   private void checkInputs() {
 
     if (controlsDisabled) {
-      currentSpeed = 0;
+      goalVelocity.x = 0;
       return;
     }
 
@@ -347,15 +373,31 @@ public class Player extends NetPlayer {
     }
 
     // SIMPLE Movement
-    if (InputHandler.isKeyDown(GLFW_KEY_A)) {
-      this.currentSpeed = -runSpeed;
-      this.currentTurnSpeed = -turnSpeed;
-    } else if (InputHandler.isKeyDown(GLFW_KEY_D)) {
-      this.currentSpeed = runSpeed;
-      this.currentTurnSpeed = turnSpeed;
-    } else {
-      this.currentSpeed = 0;
-      currentTurnSpeed = 0;
+    // if (InputHandler.isKeyDown(GLFW_KEY_A)) {
+    //  this.currentSpeed = -runSpeed;
+    //  this.currentTurnSpeed = -turnSpeed;
+    // } else if (InputHandler.isKeyDown(GLFW_KEY_D)) {
+    //  this.currentSpeed = runSpeed;
+    //  this.currentTurnSpeed = turnSpeed;
+    // } else {
+    //  this.currentSpeed = 0;
+    //  currentTurnSpeed = 0;
+    // }
+
+    if (InputHandler.isKeyPressed(GLFW_KEY_A) && goalVelocity.x != -runSpeed) {
+      // Set goal velocity
+      goalVelocity.x = -runSpeed;
+      currentTurnSpeed = -turnSpeed;
+    } else if (InputHandler.isKeyReleased(GLFW_KEY_A) && goalVelocity.x != 0) {
+      goalVelocity.x = 0;
+    }
+
+    if (InputHandler.isKeyPressed(GLFW_KEY_D) && goalVelocity.x != runSpeed) {
+      // Set goal velocity
+      goalVelocity.x = runSpeed;
+      currentTurnSpeed = turnSpeed;
+    } else if (InputHandler.isKeyReleased(GLFW_KEY_D) && goalVelocity.x != 0) {
+      goalVelocity.x = 0;
     }
 
     if (InputHandler.isKeyPressed(GLFW_KEY_W) || InputHandler.isKeyPressed(GLFW_KEY_SPACE)) {

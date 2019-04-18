@@ -46,9 +46,11 @@ import gui.text.Fps;
 import gui.text.GuiString;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.concurrent.CopyOnWriteArrayList;
 import net.ClientLogic;
 import net.StartNetworkOnlyClient;
+import net.packets.gamestatus.PacketReady;
 import net.packets.lobby.PacketCreateLobby;
 import net.packets.lobby.PacketJoinLobby;
 import net.packets.loginlogout.PacketLogin;
@@ -125,7 +127,7 @@ public class Game extends Thread {
    * Set your resolution here, feel free to add new entries and comment them with your name/machine
    * If someone wants to work on this, edit this comment or add an issue to the tracker in gitlab
    */
-  private boolean autoJoin = false;
+  private boolean autoJoin = true;
   private Settings settings;
 
   /**
@@ -509,8 +511,9 @@ public class Game extends Thread {
 
     // Creating and joining Lobby
     // if (autoJoin) {
+    String lobname = String.valueOf(new Random().nextInt((int) 10e15));
     LoadingScreen.updateLoadingMessage("joining lobby");
-    new PacketCreateLobby("lob1").sendToServer();
+    new PacketCreateLobby(lobname).sendToServer();
     while (!lobbyCreated) {
       Thread.sleep(50);
     }
@@ -518,8 +521,9 @@ public class Game extends Thread {
     // Generate dummy map
     map = new ClientMap(1, 1, 1);
     if (autoJoin) {
-      new PacketJoinLobby("lob1").sendToServer();
-      while (!NetPlayerMaster.getLobbyname().equals("lob1")) {
+
+      new PacketJoinLobby(lobname).sendToServer();
+      while (!NetPlayerMaster.getLobbyname().equals(lobname)) {
         Thread.sleep(50);
       }
       LoadingScreen.updateLoadingMessage("generating map");
@@ -527,6 +531,7 @@ public class Game extends Thread {
         Thread.sleep(500);
       }
     }
+
     // Camera
     camera = new Camera(player, window);
 
@@ -539,7 +544,8 @@ public class Game extends Thread {
     Thread.sleep(500);
     LoadingScreen.done();
     if (autoJoin) {
-      addActiveStage(PLAYING);
+      new PacketReady().sendToServer();
+      //addActiveStage(PLAYING);
     } else {
       addActiveStage(MAINMENU);
     }
