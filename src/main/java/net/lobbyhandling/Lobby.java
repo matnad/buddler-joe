@@ -39,11 +39,12 @@ public class Lobby {
    *     Lobby#lobbyCounter}. {@link Lobby#lobbyCounter} gets raised by one after every lobby
    *     construction.
    * @param createrPlayerId id of the player who is creating the lobby
+   * @param mapSize a String that should equal "s", "m" or "l" that describes the mapsize.
    */
   public Lobby(String lobbyName, int createrPlayerId, String mapSize) {
     this.lobbyName = lobbyName;
     this.createrPlayerId = createrPlayerId;
-    this.mapSize  = mapSize;
+    this.mapSize = mapSize;
     this.status = "open";
     this.inGame = false;
     this.lobbyPlayers = new ArrayList<>();

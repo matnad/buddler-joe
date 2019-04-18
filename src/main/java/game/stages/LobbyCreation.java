@@ -1,5 +1,8 @@
 package game.stages;
 
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_ESCAPE;
+import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_1;
+
 import engine.io.InputHandler;
 import engine.render.Loader;
 import engine.render.fontrendering.TextMaster;
@@ -7,16 +10,19 @@ import game.Game;
 import gui.GuiTexture;
 import gui.MenuButton;
 import gui.text.ChangableGuiText;
+import java.util.ArrayList;
+import java.util.List;
 import net.packets.lobby.PacketCreateLobby;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_ESCAPE;
-import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_1;
-
+/**
+ * LobbyCreation Menu specification and rendering. Must be initialized. Specifies all the elements
+ * in the LobbyCreation Menu . Contains and manages the Game Loop while the LobbyCreation Menu is
+ * active.
+ *
+ * @author Sebastian Schlachter
+ */
 public class LobbyCreation {
   private static final float FADE_TIME = .5f;
   private static float fadeTimer;
@@ -24,7 +30,6 @@ public class LobbyCreation {
   private static GuiTexture buddlerJoe;
 
   private static GuiTexture background;
-  private static GuiTexture Credits;
 
   private static MenuButton back;
   private static GuiTexture table;
@@ -126,12 +131,12 @@ public class LobbyCreation {
             1);
 
     create =
-            new MenuButton(
-                    loader,
-                    "create_norm",
-                    "create_hover",
-                    new Vector2f(0, -0.57f),
-                    new Vector2f(0.14018f, .082347f));
+        new MenuButton(
+            loader,
+            "create_norm",
+            "create_hover",
+            new Vector2f(0, -0.57f),
+            new Vector2f(0.14018f, .082347f));
   }
 
   /** Updates the GUI every cycle. */
@@ -141,7 +146,7 @@ public class LobbyCreation {
       initText();
       initializedText = true;
     }
-    if(firstLoop){
+    if (firstLoop) {
       done();
       firstLoop = false;
     }
@@ -161,31 +166,27 @@ public class LobbyCreation {
     guis.add(small.getHoverTexture(x, y));
     guis.add(medium.getHoverTexture(x, y));
     guis.add(big.getHoverTexture(x, y));
-    guis.add(create.getHoverTexture(x,y));
+    guis.add(create.getHoverTexture(x, y));
 
-    if(mapSize.equals("s")){
+    if (mapSize.equals("s")) {
       guis.add(smallSta);
-      guis.remove(small.getHoverTexture(x,y));
+      guis.remove(small.getHoverTexture(x, y));
     }
-    if(mapSize.equals("m")){
+    if (mapSize.equals("m")) {
       guis.add(mediumSta);
-      guis.remove(medium.getHoverTexture(x,y));
+      guis.remove(medium.getHoverTexture(x, y));
     }
-    if(mapSize.equals("l")){
+    if (mapSize.equals("l")) {
       guis.add(bigSta);
-      guis.remove(big.getHoverTexture(x,y));
+      guis.remove(big.getHoverTexture(x, y));
     }
 
-
-    if(cooldown != 0){
+    if (cooldown != 0) {
       cooldown--;
-    }else{
+    } else {
       msg = "";
     }
     msgDisplay.changeText(msg);
-
-
-
 
     if (InputHandler.isKeyPressed(GLFW_KEY_ESCAPE)
         || InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1) && back.isHover(x, y)) {
@@ -198,20 +199,19 @@ public class LobbyCreation {
       mapSize = "m";
     } else if (InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1) && big.isHover(x, y)) {
       mapSize = "l";
-    }else if (InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1) && create.isHover(x, y)) {
-      new PacketCreateLobby(Long.toString(System.currentTimeMillis()).substring(4) + "║" + mapSize).sendToServer();
-      //TODO: replace currentTime with entered Lobbyname.
+    } else if (InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1) && create.isHover(x, y)) {
+      new PacketCreateLobby(Long.toString(System.currentTimeMillis()).substring(4) + "║" + mapSize)
+          .sendToServer();
+      // TODO: replace currentTime with entered Lobbyname.
     }
 
     Game.getGuiRenderer().render(guis);
     TextMaster.render();
   }
 
-
-
   /**
-   * Instantiates the ChangeableGuiText for the msgDisplay.
-   * Also sets Position, Colour, and Fontsize.
+   * Instantiates the ChangeableGuiText for the msgDisplay. Also sets Position, Colour, and
+   * Fontsize.
    */
   @SuppressWarnings("Duplicates")
   public static void initText() {
@@ -222,17 +222,21 @@ public class LobbyCreation {
     msgDisplay.setCentered(false);
   }
 
-  public static void done(){
+  /** Deletes all the texts from this Page from the rendering list. */
+  public static void done() {
     mapSize = "";
     msg = "";
     msgDisplay.delete();
     initializedText = false;
-    System.out.println("lobbycreation-done");
   }
 
+  /**
+   * Sets the Variable msg.
+   *
+   * @param msg value that msg should have.
+   */
   public static void setMsg(String msg) {
     LobbyCreation.msg = msg;
     cooldown = 300;
   }
-
 }

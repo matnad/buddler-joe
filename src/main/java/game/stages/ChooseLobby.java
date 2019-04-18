@@ -1,5 +1,8 @@
 package game.stages;
 
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_ESCAPE;
+import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_1;
+
 import engine.io.InputHandler;
 import engine.render.Loader;
 import engine.render.fontrendering.TextMaster;
@@ -18,7 +21,7 @@ import org.joml.Vector3f;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static org.lwjgl.glfw.GLFW.*;
+
 
 /**
  * ChooseLobby Menu specification and rendering. Must be initialized. Specifies all the elements in
@@ -241,7 +244,7 @@ public class ChooseLobby {
       done();
       Game.addActiveStage(Game.Stage.LOBBYCREATION);
       Game.removeActiveStage(Game.Stage.CHOOSELOBBY);
-      //done();
+      // done();
     } else {
       for (int i = 0; i < n; i++) {
         if (i + startInd < catalog.size()
@@ -300,7 +303,6 @@ public class ChooseLobby {
       count[i].delete();
     }
     initializedText = false;
-    System.out.println("choose-done");
   }
 
   /**

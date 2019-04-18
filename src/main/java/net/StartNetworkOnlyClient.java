@@ -98,7 +98,8 @@ public class StartNetworkOnlyClient implements Runnable {
         PacketLeaveLobby p = new PacketLeaveLobby();
         p.sendToServer();
       } else if (inputMessage.startsWith("create ") && inputMessage.length() > 7) {
-        PacketCreateLobby p = new PacketCreateLobby(inputMessage.substring(7)+"║m"); //The standard map size is m
+        PacketCreateLobby p =
+            new PacketCreateLobby(inputMessage.substring(7) + "║m"); // The standard map size is m
         p.sendToServer();
       } else if (inputMessage.startsWith("login ") && inputMessage.length() > 6) {
         PacketLogin p = new PacketLogin(inputMessage.substring(6));

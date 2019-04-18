@@ -65,15 +65,15 @@ public class PacketCreateLobbyStatus extends Packet {
    * Method that lets the Client react to the receiving of this packet. Check for errors in
    * validate.(prints errormessages if there are some) If {@link PacketCreateLobbyStatus#status}
    * starts with "OK", the message "Lobby-Creation Successful" gets printed. Else in the case of an
-   * error on the serverside the error message gets printed.
+   * error on the serverside the error message gets printed (on console and GUI).
    */
   @Override
   public synchronized void processData() {
     Game.setLobbyCreated(true); // Duplicate Lobby is okay
     if (hasErrors()) {
-      String ErrMsg = createErrorMessage();
-      System.out.println(ErrMsg);
-      LobbyCreation.setMsg(ErrMsg);
+      String errMsg = createErrorMessage();
+      System.out.println(errMsg);
+      LobbyCreation.setMsg(errMsg);
     } else if (status.startsWith("OK")) {
       System.out.println("Lobby-Creation Successful");
       if (Game.getActiveStages().contains(Game.Stage.LOBBYCREATION)) {

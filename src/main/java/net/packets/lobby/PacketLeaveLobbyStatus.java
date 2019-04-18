@@ -66,8 +66,8 @@ public class PacketLeaveLobbyStatus extends Packet {
   /**
    * Method that lets the Client react to the receiving of this packet. Check for errors in
    * validate.(prints errormessages if there are some) If {@link PacketLeaveLobbyStatus#status}
-   * starts with "OK", the message "Successfully left lobby" gets printed. Else in the case of an
-   * error on the serverside the error message gets printed.
+   * starts with "OK", the message "Successfully left lobby" gets printed and the Menu switches to
+   * ChooseLobby. Else in the case of an error on the serverside the error message gets printed.
    */
   @Override
   public void processData() {
@@ -78,7 +78,7 @@ public class PacketLeaveLobbyStatus extends Packet {
       InLobby.done();
       Game.addActiveStage(Game.Stage.CHOOSELOBBY);
       Game.removeActiveStage(Game.Stage.INLOBBBY);
-      //InLobby.done();
+      // InLobby.done();
     } else { // Errors on Server
       System.out.println(status);
     }

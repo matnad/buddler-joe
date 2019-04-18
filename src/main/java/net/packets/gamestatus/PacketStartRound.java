@@ -52,6 +52,6 @@ public class PacketStartRound extends Packet {
     Game.removeActiveStage(INLOBBBY);
     Game.getMap().reloadMap();
     Game.addActiveStage(PLAYING);
-    //InLobby.done();
+    // InLobby.done();
   }
 }
