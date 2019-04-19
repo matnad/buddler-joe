@@ -19,7 +19,7 @@ public class PacketLifeStatus extends Packet {
   }
 
   /**
-   * Creates a <code>LifeStatus</code> object by client side and validates its <code>data</code> and
+   * Creates a <code>lifeStatus</code> object by client side and validates its <code>data</code> and
    * sends to server.
    *
    * @param data is the actual life status.

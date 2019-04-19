@@ -61,6 +61,7 @@ public class Playing {
 
     List<GuiTexture> guis = new ArrayList<>();
     guis.add(Game.getChat().getChatGui());
+    guis.add(Game.getLifeStatus().getLifeStatusGui());
 
     // ESC = Game Menu
     if (InputHandler.isKeyPressed(GLFW_KEY_ESCAPE)) {
@@ -96,7 +97,8 @@ public class Playing {
     Game.getChat().checkInputs();
     // GUI goes over everything else and then text on top of GUI
     Game.getGoldGuiText().update();
-    Game.getLivesGuiText().update();
+    //Game.getLivesGuiText().update();
+    Game.getLifeStatus().checkInputs();
     floatingGoldStrings.update();
     ParticleMaster.renderParticles(Game.getActiveCamera());
 
