@@ -1,7 +1,6 @@
 package gui.lifeStatus;
 
 import engine.render.Loader;
-import engine.render.fontmeshcreator.GuiText;
 import game.Game;
 import gui.GuiTexture;
 import org.joml.Vector2f;
@@ -15,9 +14,13 @@ public class LifeStatus {
   private final float xheart2 = -.87f;
   private final float yheart2 = .88f;
 
-  /**Initializes life status(displayed hearts), only needs to be called once on game init.
-   * An instance of this class contains two GuiTexture objects which are used to visualize the life status.
-   * @param loader main loader */
+  /**
+   * Initializes life status(displayed hearts), only needs to be called once on game init. An
+   * instance of this class contains two GuiTexture objects which are used to visualize the life
+   * status.
+   *
+   * @param loader main loader
+   */
   public LifeStatus(Loader loader) {
 
     // Loads the heart to screen and set rendering parameters
@@ -35,21 +38,19 @@ public class LifeStatus {
             1);
   }
 
-  /** Called every frame.
-   * Returns the player's actual life status.
-   * */
+  /** Called every frame. Returns the player's actual life status. */
   public int checkInputs() {
-      if ( Game.getActivePlayer().getCurrentLives() == 1) {
-          return 1;
-      } else if (Game.getActivePlayer().getCurrentLives() == 0) {
-          return 0;
-      } else {
-          return 2;
-      }
+    if (Game.getActivePlayer().getCurrentLives() == 1) {
+      return 1;
+    } else if (Game.getActivePlayer().getCurrentLives() == 0) {
+      return 0;
+    } else {
+      return 2;
+    }
   }
 
   public GuiTexture[] getLifeStatusGui() {
-      GuiTexture[] guiTextures = {heart1, heart2};
-      return guiTextures;
+    GuiTexture[] guiTextures = {heart1, heart2};
+    return guiTextures;
   }
 }
