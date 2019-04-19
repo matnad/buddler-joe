@@ -31,8 +31,8 @@ public class LifeStatus {
         // Load the background image of the chat and set rendering parameters
         hearts = new GuiTexture(
                         loader.loadTexture("heart"),
-                        new Vector2f(-.95f, 0.05f),
-                        new Vector2f(.05f, .07f), 1);
+                        new Vector2f(-.95f, .87f),
+                        new Vector2f(.04f, .07f), 1);
 
     }
 
