@@ -15,7 +15,9 @@ public class LifeStatus {
   private final float xheart2 = -.87f;
   private final float yheart2 = .88f;
 
-  /** @param loader main loader */
+  /**Initializes life status(displayed hearts), only needs to be called once on game init.
+   * An instance of this class contains two GuiTexture objects which are used to visualize the life status.
+   * @param loader main loader */
   public LifeStatus(Loader loader) {
 
     // Loads the heart to screen and set rendering parameters
