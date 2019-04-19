@@ -33,7 +33,9 @@ public class LifeStatus {
             1);
   }
 
-  /** Called every frame. Reads chat input and toggles chat window text input handler */
+  /** Called every frame.
+   * Returns the player's actual life status.
+   * */
   public int checkInputs() {
       if ( Game.getActivePlayer().getCurrentLives() == 1) {
           return 1;
