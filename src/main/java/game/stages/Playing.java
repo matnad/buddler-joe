@@ -45,8 +45,7 @@ public class Playing {
             loader.loadTexture("damageTaken"), new Vector2f(0, 0), new Vector2f(1, 1), 1);
 
     frozenOverlay =
-        new GuiTexture(
-            loader.loadTexture("frozen"), new Vector2f(0, 0), new Vector2f(1, 1), 1);
+        new GuiTexture(loader.loadTexture("frozen"), new Vector2f(0, 0), new Vector2f(1, 1), 1);
 
     floatingGoldStrings = new FloatingStrings(Game.getActivePlayer().getBbox(), 3f);
   }
@@ -61,7 +60,8 @@ public class Playing {
 
     List<GuiTexture> guis = new ArrayList<>();
     guis.add(Game.getChat().getChatGui());
-    guis.add(Game.getLifeStatus().getLifeStatusGui());
+    guis.add(Game.getLifeStatus().getLifeStatusGui()[0]);
+    guis.add(Game.getLifeStatus().getLifeStatusGui()[1]);
 
     // ESC = Game Menu
     if (InputHandler.isKeyPressed(GLFW_KEY_ESCAPE)) {
@@ -97,8 +97,18 @@ public class Playing {
     Game.getChat().checkInputs();
     // GUI goes over everything else and then text on top of GUI
     Game.getGoldGuiText().update();
-    //Game.getLivesGuiText().update();
-    Game.getLifeStatus().checkInputs();
+    // Game.getLivesGuiText().update();
+    if (Game.getLifeStatus().checkInputs() == 2) {
+      if (!guis.contains(Game.getLifeStatus().getLifeStatusGui()[1])) {
+        guis.add(Game.getLifeStatus().getLifeStatusGui()[1]);
+      }
+    } else if (Game.getLifeStatus().checkInputs() == 1) {
+      if (guis.contains(Game.getLifeStatus().getLifeStatusGui()[1])) {
+        guis.remove(Game.getLifeStatus().getLifeStatusGui()[1]);
+      }
+    } else if (Game.getLifeStatus().checkInputs() == 0) {
+      guis.remove(Game.getLifeStatus().getLifeStatusGui()[0]);
+    }
     floatingGoldStrings.update();
     ParticleMaster.renderParticles(Game.getActiveCamera());
 
@@ -111,7 +121,6 @@ public class Playing {
     if (Game.getActivePlayer().isFrozen()) {
       guis.add(frozenOverlay);
     }
-
 
     Game.getGuiRenderer().render(guis);
     TextMaster.render();
