@@ -12,8 +12,8 @@ public class LifeStatus {
   private GuiTexture heart2;
   private final float xheart1 = -.95f;
   private final float yheart1 = .88f;
-  private final float xheart2 = -.5f;
-  private final float yheart2 = .5f;
+  private final float xheart2 = -.87f;
+  private final float yheart2 = .88f;
 
   /** @param loader main loader */
   public LifeStatus(Loader loader) {
