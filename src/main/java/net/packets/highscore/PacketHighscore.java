@@ -1,9 +1,13 @@
 package net.packets.highscore;
 
+import game.Game;
+import game.HighscoreEntry;
+import java.util.concurrent.CopyOnWriteArrayList;
 import net.ServerLogic;
 import net.packets.Packet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 
 /**
  * Packet that gets send from the Server to the Client, to inform the him over the result of the
@@ -25,6 +29,7 @@ public class PacketHighscore extends Packet {
   public PacketHighscore(String data) {
     super(PacketTypes.HIGHSCORE);
     setData(data);
+    logger.info(getData());
     highscore = getData().split("║");
     validate();
   }
@@ -52,9 +57,16 @@ public class PacketHighscore extends Packet {
   @Override
   public void validate() {
     if (highscore != null) {
-      for (int i = 1; i < highscore.length; i++) {
-        if (!isExtendedAscii(highscore[i])) {
-          break;
+      if (highscore.length < 3) {
+        if (!isExtendedAscii(highscore[1])) {
+          return;
+        }
+      } else {
+        for (int i = 1; i < highscore.length; i += 2) {
+          if (!isExtendedAscii(highscore[i]) || !isExtendedAscii(highscore[i + 1])) {
+            break;
+          }
+          // logger.info(highscore[i+1]);
         }
       }
     } else {
@@ -79,6 +91,7 @@ public class PacketHighscore extends Packet {
       } else {
         setData("OK║" + ServerLogic.getServerHighscore().getHighscoreAsString());
       }
+      logger.info(getData());
       this.sendToClient(getClientId());
       // logger.info(getData());
     } else {
@@ -87,14 +100,11 @@ public class PacketHighscore extends Packet {
         System.out.println(createErrorMessage());
       } else if (highscore[0].equals("OK")) {
         logger.info(highscore[0]);
-        System.out.println("-------------------------------------");
-        System.out.println("Current Highscore:");
-        for (int i = 1; i < highscore.length; i++) {
-          System.out.println(highscore[i]);
+        CopyOnWriteArrayList<HighscoreEntry> catalog = new CopyOnWriteArrayList<>();
+        for (int i = 1; i < highscore.length; i += 2) {
+          catalog.add(new HighscoreEntry(highscore[i], highscore[i + 1]));
         }
-        System.out.println("-------------------------------------");
-      } else if (highscore[0].equals("ERROR")) {
-        System.out.println("The Highscore is currently still empty.");
+        Game.setHighscoreCatalog(catalog);
       } else {
         System.out.println(highscore[1]);
       }
