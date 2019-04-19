@@ -12,7 +12,7 @@ public class LifeStatus {
 
 
     /**
-     * 
+     *
      *
      * @param loader main loader
      */
@@ -21,7 +21,7 @@ public class LifeStatus {
         // Loads the heart to screen and set rendering parameters
         hearts = new GuiTexture(
                         loader.loadTexture("heart"),
-                        new Vector2f(-.95f, .87f),
+                        new Vector2f(-.95f, .88f),
                         new Vector2f(.04f, .07f), 1);
 
     }
