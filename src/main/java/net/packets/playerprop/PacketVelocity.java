@@ -3,7 +3,7 @@ package net.packets.playerprop;
 import game.NetPlayerMaster;
 import net.ServerLogic;
 import net.packets.Packet;
-import net.playerhandling.Player;
+import net.playerhandling.ServerPlayer;
 import org.joml.Vector2f;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,7 +18,13 @@ public class PacketVelocity extends Packet {
   private float tarvY;
 
   /**
-   * Client constructs Velocity.
+   * Client constructs Velocity packet if their velocity changed to inform other clients and the
+   * server. This will be validated Server-Side.
+   *
+   * @param curvX current X velocity
+   * @param curvY current Y velocity
+   * @param tarvX goal X velocity for interpolation
+   * @param tarvY goal Y velocity for interpolation
    */
   public PacketVelocity(float curvX, float curvY, float tarvX, float tarvY) {
     super(PacketTypes.PLAYER_VELOCITY);
@@ -31,7 +37,7 @@ public class PacketVelocity extends Packet {
    * lobby.
    *
    * @param clientId client ID of the packet sender
-   * @param data position data received from the client
+   * @param data velocity data received from the client
    */
   public PacketVelocity(int clientId, String data) {
     super(PacketTypes.PLAYER_VELOCITY);
@@ -41,10 +47,10 @@ public class PacketVelocity extends Packet {
   }
 
   /**
-   * Client receives a packet from the server that includes a player that moved and his position
-   * data.
+   * Client receives a packet from the server that includes a player that changed his velocity and
+   * both velocity vectors.
    *
-   * @param data client id with position data
+   * @param data client id with velocity data
    */
   public PacketVelocity(String data) {
     super(PacketTypes.PLAYER_VELOCITY);
@@ -77,14 +83,14 @@ public class PacketVelocity extends Packet {
 
   /**
    * The server will just propagate the packet to the lobby while the client will update the
-   * position of the respective net player.
+   * velocity of the respective net player.
    */
   @Override
   public void processData() {
     if (!hasErrors()) {
       if (getClientId() > 0) {
         // Server
-        Player player = ServerLogic.getPlayerList().getPlayer(getClientId());
+        ServerPlayer player = ServerLogic.getPlayerList().getPlayer(getClientId());
         player.setCurrentVelocity2d(new Vector2f(curvX, curvY));
         player.setGoalVelocity2d(new Vector2f(tarvX, tarvY));
         sendToLobby(player.getCurLobbyId());

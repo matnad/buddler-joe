@@ -1,8 +1,5 @@
 package entities;
 
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_S;
-
-import engine.io.InputHandler;
 import engine.models.RawModel;
 import engine.models.TexturedModel;
 import engine.render.Loader;
@@ -51,6 +48,7 @@ public class NetPlayer extends Entity {
   Block collideWithBlockAbove;
   Block collideWithBlockBelow;
 
+  static final float jumpPower = 28; // Units per second
   public static final float gravity = -45; // Units per second
   static final float runSpeed = 20; // Units per second
   static final float turnSpeed = 720; // Degrees per second
@@ -113,13 +111,18 @@ public class NetPlayer extends Entity {
     ripModel = new TexturedModel(rawTomb, new ModelTexture(loader.loadTexture("tomb")));
   }
 
+  /**
+   * Called every frame to update the position of the NetPlayer.
+   * Collision for every player is calculated locally.
+   * Once per second the positions are synced.
+   *
+   * */
   public void update() {
 
     collideWithBlockAbove = null;
     collideWithBlockBelow = null;
 
     updateCloseBlocks(BlockMaster.getBlocks());
-
 
     float ipfX = interpolationFactor;
     if (isInAir) {
@@ -135,7 +138,8 @@ public class NetPlayer extends Entity {
     increasePosition(new Vector3f(currentVelocity).mul((float) Game.window.getFrameTimeSeconds()));
 
     // Handle character rotation (check run direction see if we need to rotate more)
-    this.increaseRotation(0, (float) (getCurrentTurnSpeed() * Game.window.getFrameTimeSeconds()), 0);
+    this.increaseRotation(
+        0, (float) (getCurrentTurnSpeed() * Game.window.getFrameTimeSeconds()), 0);
 
     for (Block closeBlock : closeBlocks) {
       handleNetPlayerCollision(closeBlock);
@@ -283,8 +287,8 @@ public class NetPlayer extends Entity {
   }
 
   /**
-   * Turn the player into a gravestone and disable all controls if it is the active player.
-   * Will set the defeated flag for other classes to use.
+   * Turn the player into a gravestone and disable all controls if it is the active player. Will set
+   * the defeated flag for other classes to use.
    *
    * @param defeated can only be true for now. No way to revive a player
    */
@@ -332,5 +336,13 @@ public class NetPlayer extends Entity {
   public void increasePosition(Vector3f velocity) {
     super.increasePosition(velocity);
     updateHeadlightPosition();
+  }
+
+  public static float getJumpPower() {
+    return jumpPower;
+  }
+
+  public static float getRunSpeed() {
+    return runSpeed;
   }
 }

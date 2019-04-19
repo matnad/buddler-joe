@@ -18,8 +18,6 @@ import entities.collision.BoundingBox;
 import entities.items.ItemMaster;
 import game.Game;
 import game.stages.Playing;
-import java.util.ArrayList;
-import java.util.List;
 import net.packets.block.PacketBlockDamage;
 import net.packets.life.PacketLifeStatus;
 import net.packets.playerprop.PacketPos;
@@ -47,9 +45,6 @@ import util.MousePlacer;
 public class Player extends NetPlayer {
 
   public static final Logger logger = LoggerFactory.getLogger(Player.class);
-  // Movement Related
-  private static final float jumpPower = 28; // Units per second
-
 
   // Resources and Stats
   public int currentGold; // Current coins
@@ -62,6 +57,7 @@ public class Player extends NetPlayer {
 
   // Vector & Velocity based speed
   private boolean isJumping = false; // Can't Jump while in the air
+  private boolean sendVelocityToServer = false; // If we need to update velocity this frame
 
   // Other
   private boolean controlsDisabled;
@@ -69,10 +65,9 @@ public class Player extends NetPlayer {
   private final float torchPlaceDelay = 10f;
   private float torchTimeout = torchPlaceDelay;
 
-
   /**
-   * Spawn the Player. This will be handled differently in the future when we rework the Player
-   * class structure.
+   * Spawn the ServerPlayer. This will be handled differently in the future when we rework the
+   * ServerPlayer class structure.
    *
    * @param username username of the player
    * @param position world coordinates for player position
@@ -99,6 +94,7 @@ public class Player extends NetPlayer {
     // Check if player can move
     controlsDisabled = isDefeated() || frozen || Game.getChat().isEnabled();
 
+    sendVelocityToServer = false;
     collideWithBlockAbove = null;
     collideWithBlockBelow = null;
 
@@ -136,7 +132,8 @@ public class Player extends NetPlayer {
     increasePosition(new Vector3f(currentVelocity).mul((float) Game.window.getFrameTimeSeconds()));
 
     // Handle character rotation (check run direction see if we need to rotate more)
-    this.increaseRotation(0, (float) (getCurrentTurnSpeed() * Game.window.getFrameTimeSeconds()), 0);
+    this.increaseRotation(
+        0, (float) (getCurrentTurnSpeed() * Game.window.getFrameTimeSeconds()), 0);
 
     // Handle collisions, we only check close blocks to optimize performance
     // Distance is much cheaper to check than overlap
@@ -158,10 +155,20 @@ public class Player extends NetPlayer {
     }
 
     //// Send server update with update
-    //if (Game.isConnectedToServer()
+    // if (Game.isConnectedToServer()
     //    && (!currentVelocity.equals(new Vector3f()) || currentTurnSpeed != 0)) {
     //  new PacketPos(getPositionXy().x, getPositionXy().y, getRotY()).sendToServer();
-    //}
+    // }
+
+    if (sendVelocityToServer) {
+      new PacketVelocity(currentVelocity.x, currentVelocity.y, goalVelocity.x, goalVelocity.y)
+          .sendToServer();
+    }
+
+    // Update server once per second
+    if (Game.isOncePerSecond()) {
+      new PacketPos(getPositionXy().x, getPositionXy().y, getRotY()).sendToServer();
+    }
   }
 
   /**
@@ -295,7 +302,6 @@ public class Player extends NetPlayer {
     }
   }
 
-
   /**
    * Check for Keyboard and Mouse inputs and process them
    *
@@ -413,28 +419,32 @@ public class Player extends NetPlayer {
   private void setGoalVelocityX(float x) {
     if (goalVelocity.x != x) {
       goalVelocity.x = x;
-      new PacketVelocity(currentVelocity.x, currentVelocity.y, goalVelocity.x, goalVelocity.y).sendToServer();
+      sendVelocityToServer = true;
     }
   }
 
   private void setGoalVelocityY(float y) {
     if (goalVelocity.y != y) {
       goalVelocity.y = y;
-      new PacketVelocity(currentVelocity.x, currentVelocity.y, goalVelocity.x, goalVelocity.y).sendToServer();
+      sendVelocityToServer = true;
     }
   }
 
   private void stopVelocityX() {
     if (currentVelocity.x != 0) {
       currentVelocity.x = 0;
-      // Send update to server
+      sendVelocityToServer = true;
     }
   }
 
   private void stopVelocityY() {
     if (currentVelocity.y != 0) {
       currentVelocity.y = 0;
-      // Send update to server
+      sendVelocityToServer = true;
     }
+  }
+
+  public static float getDigIntervall() {
+    return digIntervall;
   }
 }

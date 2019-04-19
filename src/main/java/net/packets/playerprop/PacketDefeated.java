@@ -48,7 +48,7 @@ public class PacketDefeated extends Packet {
   public void processData() {
     NetPlayer defeatedNetPlayer = NetPlayerMaster.getNetPlayerById(defeatedClientId);
     if (defeatedNetPlayer == null) {
-      addError("Player not found.");
+      addError("ServerPlayer not found.");
     }
     if (!hasErrors()) {
       defeatedNetPlayer.setDefeated(true); // If null, then packet has errors.

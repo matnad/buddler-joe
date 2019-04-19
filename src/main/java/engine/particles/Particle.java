@@ -65,7 +65,7 @@ public class Particle {
    * Moves the particle along its direction and applies gravity to update the position for one
    * frame. Keeps track of the lifetime.
    *
-   * <p>Currently uses Player Gravity as constant. TODO: Move gravity to a settings class
+   * <p>Currently uses ServerPlayer Gravity as constant. TODO: Move gravity to a settings class
    *
    * @param camera The camera the particles should be facing
    * @return true if the particle is still alive after the update

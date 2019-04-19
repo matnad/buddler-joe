@@ -1,7 +1,7 @@
 package net.lobbyhandling;
 
+import entities.items.ItemMaster;
 import entities.items.ServerItem;
-
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class ServerItemState {
@@ -47,5 +47,22 @@ public class ServerItemState {
         return;
       }
     }
+  }
+
+  /**
+   * Check if a player has an active dynamite that he spawned.
+   *
+   * @param clientId player to check for
+   * @return true if there is an active dynamite owned by the player
+   */
+  public boolean hasDynamiteOwnedBy(int clientId) {
+    for (ServerItem serverItem : serverItemsList) {
+      if (serverItem.isExists()
+          && serverItem.getType() == ItemMaster.ItemTypes.DYNAMITE
+          && serverItem.getOwner() == clientId) {
+        return true;
+      }
+    }
+    return false;
   }
 }

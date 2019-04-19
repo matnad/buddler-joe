@@ -4,7 +4,7 @@ import game.History;
 import net.ServerLogic;
 import net.lobbyhandling.Lobby;
 import net.packets.Packet;
-import net.playerhandling.Player;
+import net.playerhandling.ServerPlayer;
 
 /**
  * A packed that is send from the client to the server, to inform him that the client is ready to
@@ -51,7 +51,7 @@ public class PacketReady extends Packet {
   @Override
   public void processData() {
     if (isLoggedIn() && isInALobby()) {
-      Player player = ServerLogic.getPlayerList().getPlayer(getClientId());
+      ServerPlayer player = ServerLogic.getPlayerList().getPlayer(getClientId());
       int lobbyId = player.getCurLobbyId();
       Lobby lobby = ServerLogic.getLobbyList().getLobby(lobbyId);
       // check ob sender der ersteller ist.

@@ -115,7 +115,7 @@ public class ClientThread implements Runnable {
             login.processData();
             if (!login.hasErrors()) {
               System.out.println(
-                  "Player "
+                  "ServerPlayer "
                       + ServerLogic.getPlayerList().getUsername(clientId)
                       + " has connected.");
             }

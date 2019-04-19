@@ -93,6 +93,14 @@ public class ServerMap extends GameMap<ServerBlock> {
    */
   @Override
   public void damageBlock(int clientId, int posX, int posY, float damage) {
+
+    // Validate if the block damage packet is not violating any rules
+    if (!ServerLogic.getPlayerList()
+        .getPlayer(clientId)
+        .validateBlockDamage(posX, posY, damage)) {
+      return;
+    }
+
     if (blocks[posX][posY] != null) {
       blocks[posX][posY].damageBlock(clientId, damage);
       checkFallingBlocks();

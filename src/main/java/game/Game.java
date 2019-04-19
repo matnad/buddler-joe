@@ -102,6 +102,8 @@ public class Game extends Thread {
   private static boolean loggedIn = false;
   private static boolean lobbyCreated = false; // temporary
 
+  private static boolean oncePerSecond = false;
+
   private static String serverIp;
   private static int serverPort;
   // This probably needs to go somewhere else when we work on the chat
@@ -372,8 +374,10 @@ public class Game extends Thread {
     **************************************************************
     */
     while (!window.isClosed()) {
+
       if (window.isOneSecond() && activeStages.contains(PLAYING)) {
         // This runs once per second, we can use it for stuff that needs less frequent updates
+        oncePerSecond = true;
         fpsCounter.updateString("" + window.getCurrentFps());
       }
 
@@ -446,6 +450,7 @@ public class Game extends Thread {
         // Done with one frame
 
         window.swapBuffers();
+        oncePerSecond = false;
       }
     }
 
@@ -490,7 +495,7 @@ public class Game extends Thread {
     LoadingScreen.progess();
     GameOver.init(loader);
 
-    // Generate Player
+    // Generate ServerPlayer
     NetPlayer.init(loader);
     player = new Player(getUsername(), new Vector3f(90, 2, 3), 0, 0, 0);
 
@@ -569,6 +574,10 @@ public class Game extends Thread {
     } else {
       this.settings = new Settings();
     }
+  }
+
+  public static boolean isOncePerSecond() {
+    return oncePerSecond;
   }
 
   // Valid Stages
