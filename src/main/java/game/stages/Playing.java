@@ -108,6 +108,9 @@ public class Playing {
       }
     } else if (Game.getLifeStatus().checkInputs() == 0) {
       guis.remove(Game.getLifeStatus().getLifeStatusGui()[0]);
+      if (guis.contains(Game.getLifeStatus().getLifeStatusGui()[1])) {
+        guis.remove(Game.getLifeStatus().getLifeStatusGui()[1]);
+      }
     }
     floatingGoldStrings.update();
     ParticleMaster.renderParticles(Game.getActiveCamera());
