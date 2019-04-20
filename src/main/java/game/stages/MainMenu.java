@@ -75,11 +75,11 @@ public class MainMenu {
             1);
 
     name =
-            new GuiTexture(
-                    loader.loadTexture("nametype"),
-                    new Vector2f(-0.955556f, 0.975309f),
-                    new Vector2f(0.039722f, 0.016049f),
-                    1);
+        new GuiTexture(
+            loader.loadTexture("nametype"),
+            new Vector2f(-0.955556f, 0.975309f),
+            new Vector2f(0.039722f, 0.016049f),
+            1);
 
     // Choose Lobby
     chooseLobby =
@@ -118,14 +118,14 @@ public class MainMenu {
             new Vector2f(.097094f, .082347f));
 
     changeName =
-            new MenuButton(
-                    loader,
-                    "changeAR_norm",
-                    "changeAR_hover",
-                    new Vector2f(-0.958334f, 0.894791f),
-                    new Vector2f(0.024038f, 0.037038f));
+        new MenuButton(
+            loader,
+            "changeAR_norm",
+            "changeAR_hover",
+            new Vector2f(-0.958334f, 0.894791f),
+            new Vector2f(0.024038f, 0.037038f));
 
-    //change_arrows.png
+    // change_arrows.png
   }
 
   /**
@@ -182,7 +182,7 @@ public class MainMenu {
       MainMenu.done();
       Game.addActiveStage(Game.Stage.CHANGENAME);
       Game.removeActiveStage(Game.Stage.MAINMENU);
-    }else if ((InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1) && exitGame.isHover(x, y))) {
+    } else if ((InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1) && exitGame.isHover(x, y))) {
       Game.window.stop();
     } else if (InputHandler.isKeyPressed(GLFW_KEY_L)) {
       // TODO: remove this if option
@@ -200,9 +200,11 @@ public class MainMenu {
     TextMaster.render();
   }
 
-
-
-  private static void initText(){
+  /**
+   * Instantiates the ChangeableGuiText for the userName. Also sets Position, Colour, and
+   * Fontsize.
+   */
+  private static void initText() {
     userName = new ChangableGuiText();
     userName.setPosition(new Vector2f(0.045139f, -0.002469f));
     userName.setFontSize(0.9f);
@@ -211,6 +213,7 @@ public class MainMenu {
     initializedText = true;
   }
 
+  /** Deletes all the texts from the rendering list. */
   public static void done() {
     initializedText = false;
     TextMaster.removeAll();

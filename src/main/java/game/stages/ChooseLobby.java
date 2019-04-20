@@ -292,7 +292,7 @@ public class ChooseLobby {
     }
   }
 
-  /** Deletes all the texts from this Page from the rendering list. */
+  /** Deletes all the texts from the rendering list. */
   public static synchronized void done() {
     page = 0;
     initializedPageIndex = false;

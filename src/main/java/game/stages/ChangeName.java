@@ -1,23 +1,20 @@
 package game.stages;
 
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_ESCAPE;
+import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_1;
+
 import engine.io.InputHandler;
 import engine.render.Loader;
 import engine.render.fontrendering.TextMaster;
 import game.Game;
-import game.Settings;
 import gui.GuiTexture;
 import gui.MenuButton;
 import gui.text.ChangableGuiText;
-import net.packets.lobby.PacketCreateLobby;
+import java.util.ArrayList;
+import java.util.List;
 import net.packets.name.PacketSetName;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_ESCAPE;
-import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_1;
 
 /**
  * ChangeName Menu specification and rendering. Must be initialized. Specifies all the elements in
@@ -39,7 +36,6 @@ public class ChangeName {
   private static ChangableGuiText curName = new ChangableGuiText();
   private static int cooldown = 0;
   private static boolean initializedText = false;
-
 
   /**
    * Initializes the textures for this GUI-menu.
@@ -135,8 +131,8 @@ public class ChangeName {
   }
 
   /**
-   * Instantiates the ChangeableGuiText for the msgDisplay. Also sets Position, Colour, and
-   * Fontsize.
+   * Instantiates the ChangeableGuiText for the msgDisplayand curName. Also sets Position, Colour,
+   * and Fontsize.
    */
   @SuppressWarnings("Duplicates")
   public static void initText() {
@@ -153,7 +149,7 @@ public class ChangeName {
     curName.setCentered(false);
   }
 
-  /** Deletes all the texts from this Page from the rendering list. */
+  /** Deletes all the texts from the rendering list. */
   public static void done() {
     msg = "";
     initializedText = false;

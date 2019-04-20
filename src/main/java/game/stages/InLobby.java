@@ -169,7 +169,7 @@ public class InLobby {
     }
   }
 
-  /** Deletes all the texts from this Page from the rendering list. */
+  /** Deletes all the texts from the rendering list. */
   @SuppressWarnings("Duplicates")
   public static synchronized void done() {
     initializedText = false;
