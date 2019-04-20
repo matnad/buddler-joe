@@ -75,9 +75,18 @@ public class PacketLeaveLobbyStatus extends Packet {
       System.out.println(createErrorMessage());
     } else if (status.startsWith("OK")) {
       System.out.println("Successfully left lobby");
-      InLobby.done();
-      Game.addActiveStage(Game.Stage.CHOOSELOBBY);
-      Game.removeActiveStage(Game.Stage.INLOBBBY);
+      if (Game.getActiveStages().contains(Game.Stage.INLOBBBY)) {
+        InLobby.done();
+        Game.addActiveStage(Game.Stage.CHOOSELOBBY);
+        Game.removeActiveStage(Game.Stage.INLOBBBY);
+      }
+      if (Game.getActiveStages().contains(Game.Stage.PLAYING)
+          || Game.getActiveStages().contains(Game.Stage.GAMEMENU)) {
+        Game.addActiveStage(Game.Stage.MAINMENU);
+        Game.removeActiveStage(Game.Stage.PLAYING);
+        Game.removeActiveStage(Game.Stage.GAMEMENU);
+        //TODO:Trigger to reset everything here.
+      }
     } else { // Errors on Server
       System.out.println(status);
     }

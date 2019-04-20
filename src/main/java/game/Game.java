@@ -410,6 +410,9 @@ public class Game extends Thread {
            Optimally this should be mostly Masters here
         */
 
+        for (Stage activeStage : activeStages) {
+          System.out.println(activeStage);
+        }
         // List<Stage> stagesForThisFrame = new ArrayList<>(activeStages);
 
         if (activeStages.contains(LOADINGSCREEN)) {
