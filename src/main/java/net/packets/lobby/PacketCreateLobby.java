@@ -12,20 +12,24 @@ import net.packets.Packet;
  */
 public class PacketCreateLobby extends Packet {
 
-  private String lobbyname;
+  private String[] info;
 
   /**
    * Constructor that will be used by the Client to build the Packet. Which can then be send to the
    * Server.
    *
-   * @param data The name that the new lobby should have. {@link PacketCreateLobby#lobbyname} gets
-   *     set here, to equal data.
+   * @param data A String with the name of the new lobby and the mapSize(separated by "║"). {@code
+   *     data} gets split here.
    */
   public PacketCreateLobby(String data) {
     // client builds
     super(PacketTypes.CREATE_LOBBY);
     setData(data);
-    lobbyname = getData().trim();
+
+    info = getData().split("║");
+    if (info.length > 0 && info[0] != null) {
+      info[0] = info[0].trim();
+    }
     validate();
   }
 
@@ -34,37 +38,46 @@ public class PacketCreateLobby extends Packet {
    * "LOBCR".
    *
    * @param clientId ClientId of the Client that has sent the command.
-   * @param data The desired name of the new lobby. {@link PacketCreateLobby#lobbyname} gets set
-   *     here, to equal data.
+   * @param data The desired name of the new lobby. lobbyname gets set here, to equal data.
    */
   public PacketCreateLobby(int clientId, String data) {
     // server builds
     super(PacketTypes.CREATE_LOBBY);
     setClientId(clientId);
     setData(data);
-    lobbyname = getData().trim();
+    info = getData().split("║");
+    if (info.length > 0 && info[0] != null) {
+      info[0] = info[0].trim();
+    }
     validate();
   }
 
   /**
-   * Check if a {@link PacketCreateLobby#lobbyname} has been sent. Check if {@link
-   * PacketCreateLobby#lobbyname} is shorter than 17 characters. Check if {@link
-   * PacketCreateLobby#lobbyname} is longer than 3 characters. Check if {@link
-   * PacketCreateLobby#lobbyname} consists of extended ASCII characters. In the case of an error it
-   * gets added with {@link Packet#addError(String)}.
+   * Check if a lobbyname has been sent. Check if lobbyname is shorter than 17 characters. Check if
+   * lobbyname is longer than 3 characters. Check if lobbyname consists of extended ASCII
+   * characters. Check if a mapsize has been send. Check if mapsize id legal. In the case of an
+   * error it gets added with {@link Packet#addError(String)}.
    */
   @Override
   public void validate() {
-    if (lobbyname == null) {
+    if (info.length == 0) {
       addError("No lobbyname found.");
       return;
     }
-    if (lobbyname.length() > 16) {
+    if (info.length == 1) {
+      addError("No mapsize found");
+      return;
+    }
+    if (!info[1].equals("s") && !info[1].equals("m") && !info[1].equals("l")) {
+      addError("Illegal mapsize.");
+      return;
+    }
+    if (info[0].length() > 16) {
       addError("Lobbyname to long. Maximum is 16 Characters.");
-    } else if (lobbyname.length() < 4) {
+    } else if (info[0].length() < 4) {
       addError("Lobbyname to short. Minimum is 4 Characters.");
     }
-    isExtendedAscii(lobbyname);
+    isExtendedAscii(info[0]);
   }
 
   /**
@@ -90,7 +103,7 @@ public class PacketCreateLobby extends Packet {
     if (hasErrors()) {
       status = createErrorMessage();
     } else {
-      Lobby lobby = new Lobby(lobbyname, getClientId());
+      Lobby lobby = new Lobby(info[0], getClientId(), info[1]);
       status = ServerLogic.getLobbyList().addLobby(lobby);
       if (status.startsWith("OK")) {
         History.openAdd(lobby.getLobbyId(), lobby.getLobbyName());

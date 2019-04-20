@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><project name="Untitled Gantt Project" company="" webLink="http://" view-date="2019-04-08" view-index="0" gantt-divider-location="376" resource-divider-location="300" version="2.8.10" locale="en_CH">
+<?xml version="1.0" encoding="UTF-8"?><project name="Untitled Gantt Project" company="" webLink="http://" view-date="2019-04-09" view-index="0" gantt-divider-location="376" resource-divider-location="300" version="2.8.10" locale="en_CH">
     <description/>
     <view zooming-state="default:2" id="gantt-chart">
         <field id="tpd3" name="Name" width="182" order="0"/>
@@ -207,6 +207,7 @@ Chatverlauf]]>
             <depend id="653" type="2" difference="0" hardness="Strong"/>
         </task>
         <task id="556" name="Winning condition: Time" color="#8cb6ce" meeting="false" start="2019-04-10" duration="2" complete="0" thirdDate="2019-04-05" thirdDate-constraint="0" expand="true"/>
+        <task id="692" name="Textfeld für Userinput im Menü" color="#8cb6ce" meeting="false" start="2019-04-16" duration="2" complete="0" thirdDate="2019-04-08" thirdDate-constraint="0" expand="true"/>
         <task id="653" name="Charaktermodell animieren" color="#8cb6ce" meeting="false" start="2019-04-15" duration="4" complete="0" thirdDate="2019-04-08" thirdDate-constraint="0" expand="true"/>
         <task id="176" name="Game logic: Regeln werden angewandt" color="#8cb6ce" meeting="false" start="2019-04-15" duration="4" complete="0" thirdDate="2019-04-09" thirdDate-constraint="0" expand="true">
             <depend id="185" type="2" difference="0" hardness="Strong"/>
