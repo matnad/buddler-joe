@@ -136,9 +136,10 @@ public class MainMenu {
   public static void update() {
 
     if (!initializedText) {
+      done();
       initText();
     }
-    userName.changeText(Game.getActivePlayer().getUsername());
+    userName.changeText(Game.getSettings().getUsername());
 
     List<GuiTexture> guis = new ArrayList<>();
     guis.add(background);
@@ -211,7 +212,7 @@ public class MainMenu {
   }
 
   public static void done() {
-    userName.delete();
     initializedText = false;
+    TextMaster.removeAll();
   }
 }

@@ -61,7 +61,7 @@ public class TextMaster {
   }
 
   /** Remove ALL texts from the render list. Call this to hard-reset the interface. */
-  public static void removeAll() {
+  public static synchronized void removeAll() {
     for (CopyOnWriteArrayList<GuiText> t : texts.values()) {
       for (GuiText guiText : t) {
         removeText(guiText);

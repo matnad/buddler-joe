@@ -92,11 +92,12 @@ public class ChangeName {
   @SuppressWarnings("Duplicates")
   public static void update() {
     if (!initializedText) {
+      done();
       initText();
       initializedText = true;
     }
 
-    curName.changeText(Game.getActivePlayer().getUsername());
+    curName.changeText(Game.getSettings().getUsername());
 
     List<GuiTexture> guis = new ArrayList<>();
     // add textures here
@@ -155,9 +156,8 @@ public class ChangeName {
   /** Deletes all the texts from this Page from the rendering list. */
   public static void done() {
     msg = "";
-    msgDisplay.delete();
-    curName.delete();
     initializedText = false;
+    TextMaster.removeAll();
   }
 
   /**

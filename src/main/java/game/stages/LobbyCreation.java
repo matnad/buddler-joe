@@ -143,6 +143,7 @@ public class LobbyCreation {
   @SuppressWarnings("Duplicates")
   public static void update() {
     if (!initializedText) {
+      done();
       initText();
       initializedText = true;
     }
@@ -223,11 +224,11 @@ public class LobbyCreation {
   }
 
   /** Deletes all the texts from this Page from the rendering list. */
-  public static void done() {
+  public static synchronized void done() {
     mapSize = "";
     msg = "";
-    msgDisplay.delete();
     initializedText = false;
+    TextMaster.removeAll();
   }
 
   /**

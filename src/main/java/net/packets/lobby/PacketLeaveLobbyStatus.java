@@ -70,7 +70,7 @@ public class PacketLeaveLobbyStatus extends Packet {
    * ChooseLobby. Else in the case of an error on the serverside the error message gets printed.
    */
   @Override
-  public void processData() {
+  public synchronized void processData() {
     if (hasErrors()) { // Errors on Client
       System.out.println(createErrorMessage());
     } else if (status.startsWith("OK")) {
@@ -78,7 +78,6 @@ public class PacketLeaveLobbyStatus extends Packet {
       InLobby.done();
       Game.addActiveStage(Game.Stage.CHOOSELOBBY);
       Game.removeActiveStage(Game.Stage.INLOBBBY);
-      // InLobby.done();
     } else { // Errors on Server
       System.out.println(status);
     }
