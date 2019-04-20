@@ -64,6 +64,7 @@ public class ClientMap extends GameMap<Block> {
           }
         }
         if ((x == 0 || x == width - 1) || y == height - 1) {
+          blocks[x][y].remove();
           blocks[x][y] =
                   BlockMaster.generateBlock(
                           BlockMaster.BlockTypes.OBSIDIAN, new Vector3f(posX, posY, (float) size), x, y);

@@ -22,15 +22,15 @@ public class ServerMap extends GameMap<ServerBlock> {
     checkFallingBlocks();
   }
 
-  /**
+  /*/**
    * Create a random test map. Use this to develop a good mapping algorithm.
    *
    * @param args nothing
    */
-  public static void main(String[] args) {
-    ServerMap testMap = new ServerMap(64, 100, System.currentTimeMillis());
-    System.out.println(testMap);
-  }
+  //public static void main(String[] args) {
+  //  ServerMap testMap = new ServerMap(64, 100, System.currentTimeMillis());
+  //  System.out.println(testMap);
+  //}
 
   @Override
   void generateMap() {
