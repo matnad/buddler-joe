@@ -195,6 +195,7 @@ public abstract class Packet {
     try {
       Integer.parseInt(s);
     } catch (NumberFormatException e) {
+      addError("Not an Integer.");
       return false;
     }
     return true;

@@ -4,8 +4,10 @@ import static game.Game.Stage.CHOOSELOBBY;
 import static game.Game.Stage.CREDITS;
 import static game.Game.Stage.GAMEMENU;
 import static game.Game.Stage.GAMEOVER;
+import static game.Game.Stage.HIGHSCORE;
 import static game.Game.Stage.INLOBBBY;
 import static game.Game.Stage.LOADINGSCREEN;
+import static game.Game.Stage.LOBBYCREATION;
 import static game.Game.Stage.LOGIN;
 import static game.Game.Stage.MAINMENU;
 import static game.Game.Stage.OPTIONS;
@@ -32,8 +34,10 @@ import game.stages.ChooseLobby;
 import game.stages.Credits;
 import game.stages.GameMenu;
 import game.stages.GameOver;
+import game.stages.Highscore;
 import game.stages.InLobby;
 import game.stages.LoadingScreen;
+import game.stages.LobbyCreation;
 import game.stages.Login;
 import game.stages.MainMenu;
 import game.stages.Options;
@@ -120,6 +124,8 @@ public class Game extends Thread {
   private static TerrainFlat belowGround;
   private static GuiRenderer guiRenderer;
   private static CopyOnWriteArrayList<LobbyEntry> lobbyCatalog = new CopyOnWriteArrayList<>();
+  private static CopyOnWriteArrayList<HighscoreEntry> highscoreCatalog =
+      new CopyOnWriteArrayList<>();
   private static CopyOnWriteArrayList<LobbyPlayerEntry> lobbyPlayerCatalog =
       new CopyOnWriteArrayList<>();
   public String username = RandomName.getRandomName(); // TODO (Server Team): Username
@@ -128,7 +134,7 @@ public class Game extends Thread {
    * If someone wants to work on this, edit this comment or add an issue to the tracker in gitlab
    */
   private boolean autoJoin = false;
-  private Settings settings;
+  private static Settings settings;
 
   /**
    * The constructor for the game to be called from the main class.
@@ -149,6 +155,14 @@ public class Game extends Thread {
 
   public static void setLobbyCatalog(CopyOnWriteArrayList<LobbyEntry> lobbyCatalog) {
     Game.lobbyCatalog = lobbyCatalog;
+  }
+
+  public static CopyOnWriteArrayList<HighscoreEntry> getHighscoreCatalog() {
+    return highscoreCatalog;
+  }
+
+  public static void setHighscoreCatalog(CopyOnWriteArrayList<HighscoreEntry> highscoreCatalog) {
+    Game.highscoreCatalog = highscoreCatalog;
   }
 
   public static CopyOnWriteArrayList<LobbyPlayerEntry> getLobbyPlayerCatalog() {
@@ -201,6 +215,10 @@ public class Game extends Thread {
     return camera;
   }
 
+  public static SettingsSerialiser getSettingsSerialiser() {
+    return settingsSerialiser;
+  }
+
   public static void setActiveCamera(Camera camera) {
     Game.camera = camera;
   }
@@ -243,6 +261,10 @@ public class Game extends Thread {
 
   public static void setLobbyCreated(boolean lobbyCreated) {
     Game.lobbyCreated = lobbyCreated;
+  }
+
+  public static Settings getSettings() {
+    return settings;
   }
 
   /**
@@ -422,6 +444,10 @@ public class Game extends Thread {
             ChooseLobby.update();
           }
 
+          if (activeStages.contains(HIGHSCORE)) {
+            Highscore.update();
+          }
+
           if (activeStages.contains(CREDITS)) {
             Credits.update();
           }
@@ -440,6 +466,10 @@ public class Game extends Thread {
 
           if (activeStages.contains(INLOBBBY)) {
             InLobby.update();
+          }
+
+          if (activeStages.contains(LOBBYCREATION)) {
+            LobbyCreation.update();
           }
         }
 
@@ -491,9 +521,13 @@ public class Game extends Thread {
     LoadingScreen.progess();
     Login.init(loader);
     LoadingScreen.progess();
+    Highscore.init(loader);
+    LoadingScreen.progess();
     InLobby.init(loader);
     LoadingScreen.progess();
     GameOver.init(loader);
+    LoadingScreen.progess();
+    LobbyCreation.init(loader);
 
     // Generate Player
     NetPlayer.init(loader);
@@ -517,7 +551,7 @@ public class Game extends Thread {
     // Creating and joining Lobby
     // if (autoJoin) {
     LoadingScreen.updateLoadingMessage("joining lobby");
-    new PacketCreateLobby("lob1").sendToServer();
+    new PacketCreateLobby("lob1║m").sendToServer();
     while (!lobbyCreated) {
       Thread.sleep(50);
     }
@@ -565,9 +599,6 @@ public class Game extends Thread {
       if (!username.equals(settings.getUsername())) {
         this.username = settings.getUsername();
       }
-      if (!window.equals(settings.getWindow())) {
-        window = settings.getWindow();
-      }
     } else {
       this.settings = new Settings();
     }
@@ -585,6 +616,8 @@ public class Game extends Thread {
     WELCOME,
     LOGIN,
     INLOBBBY,
-    GAMEOVER
+    HIGHSCORE,
+    GAMEOVER,
+    LOBBYCREATION
   }
 }
