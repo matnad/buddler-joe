@@ -138,7 +138,7 @@ public class MainMenu {
     if (!initializedText) {
       initText();
     }
-    userName.changeText(Game.getSettings().getUsername());
+    userName.changeText(Game.getActivePlayer().getUsername());
 
     List<GuiTexture> guis = new ArrayList<>();
     guis.add(background);

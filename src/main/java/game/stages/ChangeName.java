@@ -26,8 +26,6 @@ import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_1;
  * @author Sebastian Schlachter
  */
 public class ChangeName {
-  private static final float FADE_TIME = .5f;
-  private static float fadeTimer;
   private static float currentAlpha;
   private static GuiTexture buddlerJoe;
 
@@ -41,7 +39,7 @@ public class ChangeName {
   private static ChangableGuiText curName = new ChangableGuiText();
   private static int cooldown = 0;
   private static boolean initializedText = false;
-  private static boolean firstLoop = true;
+
 
   /**
    * Initializes the textures for this GUI-menu.
@@ -97,13 +95,8 @@ public class ChangeName {
       initText();
       initializedText = true;
     }
-    /*
-    if (firstLoop) {
-      done();
-      firstLoop = false;
-    }
-*/
-    curName.changeText(Game.getSettings().getUsername());
+
+    curName.changeText(Game.getActivePlayer().getUsername());
 
     List<GuiTexture> guis = new ArrayList<>();
     // add textures here
