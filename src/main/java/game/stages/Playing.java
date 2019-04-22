@@ -60,8 +60,6 @@ public class Playing {
 
     List<GuiTexture> guis = new ArrayList<>();
     guis.add(Game.getChat().getChatGui());
-    guis.add(Game.getLifeStatus().getLifeStatusGui()[0]);
-    guis.add(Game.getLifeStatus().getLifeStatusGui()[1]);
 
     // ESC = Game Menu
     if (InputHandler.isKeyPressed(GLFW_KEY_ESCAPE)) {
@@ -97,21 +95,15 @@ public class Playing {
     Game.getChat().checkInputs();
     // GUI goes over everything else and then text on top of GUI
     Game.getGoldGuiText().update();
-    // Game.getLivesGuiText().update();
-    if (Game.getLifeStatus().checkInputs() == 2) {
-      if (!guis.contains(Game.getLifeStatus().getLifeStatusGui()[1])) {
+
+    // Update Gui Life Status
+    if (Game.getLifeStatus().checkLifeStatus() > 0) {
+      guis.add(Game.getLifeStatus().getLifeStatusGui()[0]);
+      if (Game.getLifeStatus().checkLifeStatus() > 1) {
         guis.add(Game.getLifeStatus().getLifeStatusGui()[1]);
       }
-    } else if (Game.getLifeStatus().checkInputs() == 1) {
-      if (guis.contains(Game.getLifeStatus().getLifeStatusGui()[1])) {
-        guis.remove(Game.getLifeStatus().getLifeStatusGui()[1]);
-      }
-    } else if (Game.getLifeStatus().checkInputs() == 0) {
-      guis.remove(Game.getLifeStatus().getLifeStatusGui()[0]);
-      if (guis.contains(Game.getLifeStatus().getLifeStatusGui()[1])) {
-        guis.remove(Game.getLifeStatus().getLifeStatusGui()[1]);
-      }
     }
+
     floatingGoldStrings.update();
     ParticleMaster.renderParticles(Game.getActiveCamera());
 

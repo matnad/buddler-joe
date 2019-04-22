@@ -1,4 +1,4 @@
-package gui.lifeStatus;
+package gui.lifestatus;
 
 import engine.render.Loader;
 import game.Game;
@@ -39,7 +39,7 @@ public class LifeStatus {
   }
 
   /** Called every frame. Returns the player's actual life status. */
-  public int checkInputs() {
+  public int checkLifeStatus() {
     if (Game.getActivePlayer().getCurrentLives() == 1) {
       return 1;
     } else if (Game.getActivePlayer().getCurrentLives() == 0) {

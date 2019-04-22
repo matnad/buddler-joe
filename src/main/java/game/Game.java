@@ -44,7 +44,7 @@ import game.stages.Options;
 import game.stages.Playing;
 import game.stages.Welcome;
 import gui.chat.Chat;
-import gui.lifeStatus.LifeStatus;
+import gui.lifestatus.LifeStatus;
 import gui.text.CurrentGold;
 import gui.text.CurrentLives;
 import gui.text.Fps;
@@ -574,7 +574,7 @@ public class Game extends Thread {
     // GUI / Other
     goldGuiText = new CurrentGold();
     //livesGuiText = new CurrentLives();
-    //lifeStatus = new LifeStatus(loader);
+    //lifestatus = new LifeStatus(loader);
     Playing.init(loader);
 
     LoadingScreen.updateLoadingMessage("Ready!");
