@@ -30,8 +30,7 @@ public class ClientMap extends GameMap<Block> {
 
   @Override
   void generateMap() {
-    Random rng = new Random(seed);
-    float[][] noiseMap = generateNoiseMap(rng);
+    float[][] noiseMap = generateNoiseMap(seed);
 
     // Threshold function and random gold/item blocks can replace stone/dirt blocks
     for (int y = 0; y < height; y++) {
@@ -62,6 +61,12 @@ public class ClientMap extends GameMap<Block> {
                 BlockMaster.generateBlock(
                     BlockMaster.BlockTypes.STONE, new Vector3f(posX, posY, (float) size), x, y);
           }
+        }
+        if ((x == 0 || x == width - 1) || y == height - 1) {
+          blocks[x][y].remove();
+          blocks[x][y] =
+                  BlockMaster.generateBlock(
+                          BlockMaster.BlockTypes.OBSIDIAN, new Vector3f(posX, posY, (float) size), x, y);
         }
       }
     }
