@@ -587,12 +587,12 @@ public class Game extends Thread {
   /** Method to load the settings out of the serialised file. */
   public void loadSettings() {
     if (settingsSerialiser.readSettings() != null) {
-      this.settings = settingsSerialiser.readSettings();
+      settings = settingsSerialiser.readSettings();
       if (!username.equals(settings.getUsername())) {
         this.username = settings.getUsername();
       }
     } else {
-      this.settings = new Settings();
+      settings = new Settings();
     }
   }
 

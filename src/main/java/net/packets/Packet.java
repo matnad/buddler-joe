@@ -7,6 +7,8 @@ import java.util.StringJoiner;
 import net.ClientLogic;
 import net.ServerLogic;
 import net.playerhandling.Player;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Abstract Packet class which all Packets implement and build upon. The enum represents all
@@ -18,6 +20,8 @@ public abstract class Packet {
   private PacketTypes packetType;
   private int clientId;
   private String data;
+  public static final Logger logger = LoggerFactory.getLogger(Packet.class);
+
 
   protected Packet(PacketTypes packetType) {
     this.packetType = packetType;
@@ -81,7 +85,6 @@ public abstract class Packet {
    * server and calls the sendToClient for every player on the server.
    */
   public void sendToAllClients() {
-    // TODO: When we use this, move it to ServerLogic
     HashMap<Integer, Player> players = ServerLogic.getPlayerList().getPlayers();
     for (Player p : players.values()) {
       sendToClient(p.getClientId());
@@ -208,7 +211,7 @@ public abstract class Packet {
    *
    * @return the created error message
    */
-  protected String createErrorMessage() {
+  public String createErrorMessage() {
     StringJoiner statusJ = new StringJoiner(" ", "ERRORS: ", "");
     for (String error : getErrors()) {
       statusJ.add(error);
@@ -227,13 +230,16 @@ public abstract class Packet {
   protected boolean checkUsername(String username) {
     if (username == null) {
       addError("No username found.");
+      logger.info("No username found");
       return false;
     }
     if (username.length() > 30) {
       addError("Username to long. Maximum is 30 Characters.");
+      logger.info("Username to long. Maximum is 30 Characters.");
       return false;
     } else if (username.length() < 4) {
       addError("Username to short. Minimum is 4 Characters.");
+      logger.info("Username to short. Minimum is 4 Characters.");
       return false;
     }
     return isExtendedAscii(username);
