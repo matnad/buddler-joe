@@ -11,6 +11,7 @@ import gui.MenuButton;
 import java.util.ArrayList;
 import java.util.List;
 import net.packets.lobby.PacketLeaveLobby;
+import net.packets.loginlogout.PacketDisconnect;
 import org.joml.Vector2f;
 
 /**
@@ -33,7 +34,10 @@ public class GameMenu {
     // Main Menu
     gameMenu =
         new GuiTexture(
-            loader.loadTexture("menuStone"), new Vector2f(0, 0), new Vector2f(.381944f*1.1f, 0.555556f*1.1f), 1);
+            loader.loadTexture("menuStone"),
+            new Vector2f(0, 0),
+            new Vector2f(.381944f * 1.1f, 0.555556f * 1.1f),
+            1);
 
     continueB =
         new MenuButton(
@@ -76,14 +80,17 @@ public class GameMenu {
     guis.add(continueB.getHoverTexture(x, y));
     guis.add(exit.getHoverTexture(x, y));
     guis.add(desktop.getHoverTexture(x, y));
+
+    // Input Handling:
     if (InputHandler.isKeyPressed(GLFW_KEY_ESCAPE)) {
       Game.addActiveStage(Game.Stage.PLAYING);
       Game.removeActiveStage(Game.Stage.GAMEMENU);
     } else if (InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1) && exit.isHover(x, y)) {
       new PacketLeaveLobby().sendToServer();
+    } else if (InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1) && desktop.isHover(x, y)) {
+      new PacketDisconnect().sendToServer();
+      Game.window.stop();
     }
-    //TODO:implement desktop Button.
-
     Game.getGuiRenderer().render(guis);
   }
 }
