@@ -30,7 +30,6 @@ public class ClientMap extends GameMap<Block> {
 
   @Override
   void generateMap() {
-    Random rng = new Random(seed);
     float[][] noiseMap = generateNoiseMap(seed);
 
     // Threshold function and random gold/item blocks can replace stone/dirt blocks

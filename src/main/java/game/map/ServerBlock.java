@@ -47,7 +47,7 @@ public class ServerBlock {
    * @param clientThatDealsDamage clientId that damaged the block
    */
   public void damageBlock(int clientThatDealsDamage, float damage) {
-    if (hardness == 100f) {
+    if (hardness >= 100f) {
       return;
     }
 

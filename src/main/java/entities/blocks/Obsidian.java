@@ -17,7 +17,7 @@ public class Obsidian extends Block {
       Vector3f position, float rotX, float rotY, float rotZ, float scale, int gridX, int gridY) {
     super(
         blockModel,
-        BlockMaster.BlockTypes.STONE,
+        BlockMaster.BlockTypes.OBSIDIAN,
         hardness,
         2f,
         position,
