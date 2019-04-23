@@ -1,5 +1,6 @@
 package game;
 
+import static game.Game.Stage.CHANGENAME;
 import static game.Game.Stage.CHOOSELOBBY;
 import static game.Game.Stage.CREDITS;
 import static game.Game.Stage.GAMEMENU;
@@ -30,6 +31,7 @@ import entities.blocks.debris.DebrisMaster;
 import entities.items.ItemMaster;
 import entities.light.LightMaster;
 import game.map.ClientMap;
+import game.stages.ChangeName;
 import game.stages.ChooseLobby;
 import game.stages.Credits;
 import game.stages.GameMenu;
@@ -392,7 +394,6 @@ public class Game extends Thread {
         .setBrightness(2f);
 
     // Connect after everything is loaded
-
     /*
     **************************************************************
     ---------HERE STARTS THE GAME LOOP!
@@ -415,7 +416,11 @@ public class Game extends Thread {
            The order of things is quite relevant here
            Optimally this should be mostly Masters here
         */
-
+        /*
+        for (Stage activeStage : activeStages) {
+          System.out.println(activeStage);
+        }
+        */
         // List<Stage> stagesForThisFrame = new ArrayList<>(activeStages);
 
         if (activeStages.contains(LOADINGSCREEN)) {
@@ -470,6 +475,10 @@ public class Game extends Thread {
 
           if (activeStages.contains(LOBBYCREATION)) {
             LobbyCreation.update();
+          }
+
+          if (activeStages.contains(CHANGENAME)) {
+            ChangeName.update();
           }
         }
 
@@ -528,6 +537,8 @@ public class Game extends Thread {
     GameOver.init(loader);
     LoadingScreen.progess();
     LobbyCreation.init(loader);
+    LoadingScreen.progess();
+    ChangeName.init(loader);
 
     // Generate Player
     NetPlayer.init(loader);
@@ -618,6 +629,7 @@ public class Game extends Thread {
     INLOBBBY,
     HIGHSCORE,
     GAMEOVER,
+    CHANGENAME,
     LOBBYCREATION
   }
 }
