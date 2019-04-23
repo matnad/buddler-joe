@@ -36,11 +36,11 @@ public class Highscore {
   private static GuiTexture buddlerJoe;
   // private static GuiTexture title;
   private static MenuButton back;
-  private static float[] namesY = {0.330864f, 0.4f, 0.469136f, 0.538272f, 0.607407f, 0.676534f};
-  private static float[] countY = {0.330864f, 0.4f, 0.469136f, 0.538272f, 0.607407f, 0.676534f};
+  private static float[] namesY = {0.261728f, 0.330864f, 0.4f, 0.469136f, 0.538272f, 0.607407f, 0.676534f, 0.745634f};
+  private static float[] countY = {0.261728f, 0.330864f, 0.4f, 0.469136f, 0.538272f, 0.607407f, 0.676534f, 0.745634f};
   private static CopyOnWriteArrayList<HighscoreEntry> catalog;
-  private static ChangableGuiText[] usernames = new ChangableGuiText[6];
-  private static ChangableGuiText[] times = new ChangableGuiText[6];
+  private static ChangableGuiText[] usernames = new ChangableGuiText[8];
+  private static ChangableGuiText[] times = new ChangableGuiText[8];
   private static int startInd = 0;
   private static boolean initializedText = false;
   private static Vector3f black = new Vector3f(0, 0, 0);
@@ -155,6 +155,7 @@ public class Highscore {
    * Instantiates the ChangeableGuiText for the player names and the player states. Also sets
    * Position, Colour, and Fontsize.
    */
+  @SuppressWarnings("Duplicates")
   public static void initText() {
     for (int i = 0; i < usernames.length; i++) {
       usernames[i] = new ChangableGuiText();

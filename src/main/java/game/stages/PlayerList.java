@@ -34,15 +34,15 @@ public class PlayerList {
   private static float fadeTimer;
   private static float currentAlpha;
   private static GuiTexture background;
-  // private static GuiTexture lobbyOverview;
+  private static GuiTexture playerlist;
   private static GuiTexture buddlerJoe;
   // private static GuiTexture title;
   private static MenuButton back;
   private static MenuButton up;
   private static MenuButton down;
-  private static float[] namesY = {0.330864f, 0.4f, 0.469136f, 0.538272f, 0.607407f, 0.676534f};
+  private static float[] namesY = {0.261728f, 0.330864f, 0.4f, 0.469136f, 0.538272f, 0.607407f, 0.676534f};
   private static CopyOnWriteArrayList<String> catalog;
-  private static ChangableGuiText[] names = new ChangableGuiText[6];
+  private static ChangableGuiText[] names = new ChangableGuiText[7];
   private static int startInd = 0;
   private static int page = 0;
   private static int n = 6;
@@ -73,14 +73,16 @@ public class PlayerList {
             new Vector2f(-0.730208f, -0.32963f),
             new Vector2f(0.181771f, 0.67963f),
             1);
-    // TODO: Title
-    //    lobbyOverview =
-    //        new GuiTexture(
-    //            loader.loadTexture("lobbyOverview"),
-    //            new Vector2f(0, -0.040741f),
-    //            new Vector2f(0.554167f, 0.757804f),
-    //            1);
+
+    playerlist =
+            new GuiTexture(
+                loader.loadTexture("lobbyOverview"),
+                new Vector2f(0, -0.040741f),
+                new Vector2f(0.554167f, 0.757804f),
+                1);
     //
+    // TODO: Title
+
     //    title =
     //        new GuiTexture(
     //            loader.loadTexture("availableLobbiesType"),
@@ -132,7 +134,7 @@ public class PlayerList {
     List<GuiTexture> guis = new ArrayList<>();
     // add textures here
     guis.add(background);
-    // guis.add(lobbyOverview);
+    guis.add(playerlist);
     guis.add(buddlerJoe);
     // guis.add(titel);
 
@@ -148,12 +150,11 @@ public class PlayerList {
     for (int i = 0; i < names.length; i++) {
       try {
         if (i + startInd < catalog.size()) {
-          names[i].changeText("Player: " + catalog.get(i + startInd));
+          names[i].changeText(catalog.get(i + startInd));
         } else {
           names[i].changeText("");
         }
       } catch (IndexOutOfBoundsException e) {
-        System.out.println("error in choose lobby");
         logger.error(e.getMessage());
       }
     }
@@ -181,7 +182,7 @@ public class PlayerList {
         || InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1) && back.isHover(x, y)) {
       done();
       Game.addActiveStage(Game.Stage.MAINMENU);
-      Game.removeActiveStage(Game.Stage.CHOOSELOBBY);
+      Game.removeActiveStage(Game.Stage.PLAYERLIST);
     } else if (InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1) && up.isHover(x, y)) {
       if (page != 0) {
         page = page - 1;

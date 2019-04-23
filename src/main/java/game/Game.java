@@ -1,20 +1,5 @@
 package game;
 
-import static game.Game.Stage.CHANGENAME;
-import static game.Game.Stage.CHOOSELOBBY;
-import static game.Game.Stage.CREDITS;
-import static game.Game.Stage.GAMEMENU;
-import static game.Game.Stage.GAMEOVER;
-import static game.Game.Stage.HIGHSCORE;
-import static game.Game.Stage.INLOBBBY;
-import static game.Game.Stage.LOADINGSCREEN;
-import static game.Game.Stage.LOBBYCREATION;
-import static game.Game.Stage.LOGIN;
-import static game.Game.Stage.MAINMENU;
-import static game.Game.Stage.OPTIONS;
-import static game.Game.Stage.PLAYING;
-import static game.Game.Stage.WELCOME;
-
 import engine.io.InputHandler;
 import engine.io.Window;
 import engine.particles.ParticleMaster;
@@ -31,20 +16,7 @@ import entities.blocks.debris.DebrisMaster;
 import entities.items.ItemMaster;
 import entities.light.LightMaster;
 import game.map.ClientMap;
-import game.stages.ChangeName;
-import game.stages.ChooseLobby;
-import game.stages.Credits;
-import game.stages.GameMenu;
-import game.stages.GameOver;
-import game.stages.Highscore;
-import game.stages.InLobby;
-import game.stages.LoadingScreen;
-import game.stages.LobbyCreation;
-import game.stages.Login;
-import game.stages.MainMenu;
-import game.stages.Options;
-import game.stages.Playing;
-import game.stages.Welcome;
+import game.stages.*;
 import gui.chat.Chat;
 import gui.lifestatus.LifeStatus;
 import gui.text.CurrentGold;
@@ -65,6 +37,8 @@ import org.slf4j.LoggerFactory;
 import terrains.Terrain;
 import terrains.TerrainFlat;
 import util.RandomName;
+
+import static game.Game.Stage.*;
 
 //  import org.slf4j.Logger;
 // import org.slf4j.LoggerFactory;
@@ -489,6 +463,9 @@ public class Game extends Thread {
           if (activeStages.contains(CHANGENAME)) {
             ChangeName.update();
           }
+          if (activeStages.contains(PLAYERLIST)) {
+            PlayerList.update();
+          }
         }
 
         activeStages.addAll(stagesToBeAdded);
@@ -540,6 +517,8 @@ public class Game extends Thread {
     Login.init(loader);
     LoadingScreen.progess();
     Highscore.init(loader);
+    LoadingScreen.progess();
+    PlayerList.init(loader);
     LoadingScreen.progess();
     InLobby.init(loader);
     LoadingScreen.progess();
