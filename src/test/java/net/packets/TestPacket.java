@@ -8,57 +8,53 @@ import org.mockito.Mock;
 
 public class TestPacket {
 
-    @Mock
-    private Packet p;
+  @Mock private Packet packet;
 
-    @Test
-    public void checkUsernameTooLong() {
-        p = mock(Packet.class);
-        Assert.assertFalse(p.checkUsername("My name is Buddle Joe and I am great!"));
-    }
+  @Test
+  public void checkUsernameTooLong() {
+    packet = mock(Packet.class);
+    Assert.assertFalse(packet.checkUsername("My name is Buddle Joe and I am great!"));
+  }
 
-    @Test
-    public void checkUsernameCorrect() {
-        p = mock(Packet.class);
-        Assert.assertTrue(p.checkUsername("Joe Buddler"));
-    }
+  @Test
+  public void checkUsernameCorrect() {
+    packet = mock(Packet.class);
+    Assert.assertTrue(packet.checkUsername("Joe Buddler"));
+  }
 
-    @Test
-    public void checkUsernameTooShort() {
-        p = mock(Packet.class);
-        Assert.assertFalse(p.checkUsername("tes"));
-    }
+  @Test
+  public void checkUsernameTooShort() {
+    packet = mock(Packet.class);
+    Assert.assertFalse(packet.checkUsername("tes"));
+  }
 
-    @Test
-    public void checkUsernameNull() {
-        p = mock(Packet.class);
-        Assert.assertFalse(p.checkUsername(null));
-    }
+  @Test
+  public void checkUsernameNull() {
+    packet = mock(Packet.class);
+    Assert.assertFalse(packet.checkUsername(null));
+  }
 
-    @Test
-    public void checkIsAsciiTrue() {
-        p = mock(Packet.class);
-        Assert.assertTrue(p.isExtendedAscii("TestData"));
-    }
+  @Test
+  public void checkIsAsciiTrue() {
+    packet = mock(Packet.class);
+    Assert.assertTrue(packet.isExtendedAscii("TestData"));
+  }
 
-    @Test
-    public void checkIsAsciiFalse() {
-        p = mock(Packet.class);
-        Assert.assertFalse(p.isExtendedAscii("║║║"));
-    }
+  @Test
+  public void checkIsAsciiFalse() {
+    packet = mock(Packet.class);
+    Assert.assertFalse(packet.isExtendedAscii("║║║"));
+  }
 
-    @Test
-    public void checkIsIntTrue() {
-        p = mock(Packet.class);
-        Assert.assertTrue(p.isInt("10"));
-    }
+  @Test
+  public void checkIsIntTrue() {
+    packet = mock(Packet.class);
+    Assert.assertTrue(packet.isInt("10"));
+  }
 
-    @Test
-    public void checkIsIntFalse() {
-        p = mock(Packet.class);
-        Assert.assertFalse(p.isInt("10B"));
-    }
-
-
-
+  @Test
+  public void checkIsIntFalse() {
+    packet = mock(Packet.class);
+    Assert.assertFalse(packet.isInt("10B"));
+  }
 }

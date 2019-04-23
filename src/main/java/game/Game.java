@@ -128,6 +128,7 @@ public class Game extends Thread {
   private static CopyOnWriteArrayList<LobbyEntry> lobbyCatalog = new CopyOnWriteArrayList<>();
   private static CopyOnWriteArrayList<HighscoreEntry> highscoreCatalog =
       new CopyOnWriteArrayList<>();
+  private static CopyOnWriteArrayList<String> playerList = new CopyOnWriteArrayList<>();
   private static CopyOnWriteArrayList<LobbyPlayerEntry> lobbyPlayerCatalog =
       new CopyOnWriteArrayList<>();
   public String username = RandomName.getRandomName(); // TODO (Server Team): Username
@@ -165,6 +166,14 @@ public class Game extends Thread {
 
   public static void setHighscoreCatalog(CopyOnWriteArrayList<HighscoreEntry> highscoreCatalog) {
     Game.highscoreCatalog = highscoreCatalog;
+  }
+
+  public static CopyOnWriteArrayList<String> getPlayerList() {
+    return playerList;
+  }
+
+  public static void setPlayerList(CopyOnWriteArrayList<String> playerList) {
+    Game.playerList = playerList;
   }
 
   public static CopyOnWriteArrayList<LobbyPlayerEntry> getLobbyPlayerCatalog() {
@@ -584,8 +593,8 @@ public class Game extends Thread {
 
     // GUI / Other
     goldGuiText = new CurrentGold();
-    //livesGuiText = new CurrentLives();
-    //lifestatus = new LifeStatus(loader);
+    // livesGuiText = new CurrentLives();
+    // lifestatus = new LifeStatus(loader);
     Playing.init(loader);
 
     LoadingScreen.updateLoadingMessage("Ready!");
@@ -630,6 +639,7 @@ public class Game extends Thread {
     HIGHSCORE,
     GAMEOVER,
     CHANGENAME,
+    PLAYERLIST,
     LOBBYCREATION
   }
 }

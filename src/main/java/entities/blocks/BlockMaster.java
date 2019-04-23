@@ -173,7 +173,7 @@ public class BlockMaster {
     STONE(11, 2, "\u001B[37m█\u001B[0m"),
     AIR(0, 0, "\u001B[35;1m█\u001B[0m"),
     QMARK(5, 5, "\u001B[34m█\u001B[0m"),
-    OBSIDIAN( 11, 6, "\u001B[37m█\u001B[0m");
+    OBSIDIAN(11, 6, "\u001B[37m█\u001B[0m");
 
     private final int textureId;
     private final String repr;

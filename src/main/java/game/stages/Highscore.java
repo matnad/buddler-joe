@@ -74,6 +74,7 @@ public class Highscore {
             new Vector2f(0, -0.040741f),
             new Vector2f(0.554167f, 0.757804f),
             1);
+    //TODO: Title
 
     // title =
     //   new GuiTexture(

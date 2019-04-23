@@ -3,6 +3,7 @@ package game.stages;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_ESCAPE;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_H;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_L;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_P;
 import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_1;
 
 import engine.io.InputHandler;
@@ -18,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import net.packets.gamestatus.PacketGetHistory;
 import net.packets.highscore.PacketHighscore;
+import net.packets.lists.PacketPlayerList;
 import net.packets.lobby.PacketGetLobbies;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
@@ -193,6 +195,10 @@ public class MainMenu {
       PacketHighscore p = new PacketHighscore();
       p.sendToServer();
       Game.addActiveStage(Game.Stage.HIGHSCORE);
+      Game.removeActiveStage(Game.Stage.MAINMENU);
+    } else if (InputHandler.isKeyPressed(GLFW_KEY_P)) {
+      new PacketPlayerList().sendToServer();
+      Game.addActiveStage(Game.Stage.PLAYERLIST);
       Game.removeActiveStage(Game.Stage.MAINMENU);
     }
 

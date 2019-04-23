@@ -114,6 +114,7 @@ public class ServerPlayerList {
   public String toString() {
     StringBuilder s = new StringBuilder();
     if (players.size() > 0) {
+      s.append("OK║");
       for (Player l : players.values()) {
         s.append(l.getUsername()).append("║");
       }

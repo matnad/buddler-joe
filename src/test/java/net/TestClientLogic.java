@@ -1,4 +1,3 @@
 package net;
 
-public class TestClientLogic {
-}
+public class TestClientLogic {}
