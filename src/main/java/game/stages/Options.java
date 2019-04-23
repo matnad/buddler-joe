@@ -105,14 +105,14 @@ public class Options {
     r1440 =
         new MenuButton(
             loader,
-            "r1440_placeholder",
-            "r1440_placeholder",
+            "2560x1440_norm",
+            "2560x1440_hover",
             new Vector2f(-0.179167f, 0.192683f),
             new Vector2f(0.085807f, .050407f));
 
     r1440Sta =
         new GuiTexture(
-            loader.loadTexture("3840x2160_hover"),
+            loader.loadTexture("2560x1440_hover"),
             new Vector2f(-0.179167f, 0.192683f),
             new Vector2f(0.085807f, .050407f),
             1);
@@ -120,14 +120,14 @@ public class Options {
     r1080 =
         new MenuButton(
             loader,
-            "r1080_placeholder",
-            "r1080_placeholder",
+            "1920x1080_norm",
+            "1920x1080_hover",
             new Vector2f(0.000694f, 0.192683f),
             new Vector2f(0.085807f, .050407f));
 
     r1080Sta =
         new GuiTexture(
-            loader.loadTexture("3840x2160_hover"),
+            loader.loadTexture("1920x1080_hover"),
             new Vector2f(0.000694f, 0.192683f),
             new Vector2f(0.085807f, .050407f),
             1);
@@ -135,14 +135,14 @@ public class Options {
     r720 =
         new MenuButton(
             loader,
-            "r720_placeholder",
-            "r720_placeholder",
+            "1280x720_norm",
+            "1280x720_hover",
             new Vector2f(0.181944f, 0.192683f),
             new Vector2f(0.085807f, .050407f));
 
     r720Sta =
         new GuiTexture(
-            loader.loadTexture("3840x2160_hover"),
+            loader.loadTexture("1280x720_hover"),
             new Vector2f(0.181944f, 0.192683f),
             new Vector2f(0.085807f, .050407f),
             1);
@@ -150,14 +150,14 @@ public class Options {
     fsOn =
         new MenuButton(
             loader,
-            "toggleFullscreen_placeholder",
-            "toggleFullscreen_placeholder",
+            "on_norm",
+            "on_hover",
             new Vector2f(-0.3625f, -0.082927f),
             new Vector2f(0.085807f, .050407f));
 
     fsOnSta =
         new GuiTexture(
-            loader.loadTexture("toggleFullscreen_placeholder"),
+            loader.loadTexture("on_hover"),
             new Vector2f(-0.3625f, -0.082927f),
             new Vector2f(0.085807f, .050407f),
             1);
@@ -165,14 +165,14 @@ public class Options {
     fsOff =
         new MenuButton(
             loader,
-            "toggleFullscreen_placeholder",
-            "toggleFullscreen_placeholder",
+            "off_norm",
+            "off_hover",
             new Vector2f(-0.179167f, -0.082927f),
             new Vector2f(0.085807f, .050407f));
 
     fsOffSta =
         new GuiTexture(
-            loader.loadTexture("toggleFullscreen_placeholder"),
+            loader.loadTexture("off_hover"),
             new Vector2f(-0.179167f, -0.082927f),
             new Vector2f(0.085807f, .050407f),
             1);
@@ -210,6 +210,7 @@ public class Options {
       // get current settings;
       height = Game.getSettings().getHeight();
       width = Game.getSettings().getWidth();
+      fullScreen = Game.getSettings().isFullscreen();
       firstLoop = false;
     }
 
