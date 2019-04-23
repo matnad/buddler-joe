@@ -11,6 +11,7 @@ import gui.MenuButton;
 import java.util.ArrayList;
 import java.util.List;
 import net.packets.lobby.PacketLeaveLobby;
+import net.packets.loginlogout.PacketDisconnect;
 import org.joml.Vector2f;
 
 /**
@@ -19,7 +20,9 @@ import org.joml.Vector2f;
  */
 public class GameMenu {
   private static GuiTexture gameMenu;
-  private static MenuButton exitGame;
+  private static MenuButton continueB;
+  private static MenuButton exit;
+  private static MenuButton desktop;
 
   /**
    * Initialize Game Menu. Will load the texture files and generate the basic menu parts. This needs
@@ -31,12 +34,34 @@ public class GameMenu {
     // Main Menu
     gameMenu =
         new GuiTexture(
-            loader.loadTexture("gameMenu"), new Vector2f(0, 0), new Vector2f(.5f, .5f / 1.5f), 1);
+            loader.loadTexture("menuStone"),
+            new Vector2f(0, 0),
+            new Vector2f(.381944f * 1.1f, 0.555556f * 1.1f),
+            1);
 
-    // Exit Game
-    exitGame =
+    continueB =
         new MenuButton(
-            loader, "exitGame1", "exitGame2", new Vector2f(0, 0), new Vector2f(.4f, .4f / 3));
+            loader,
+            "continue_norm",
+            "continue_hover",
+            new Vector2f(0, 0.2740f),
+            new Vector2f(.305521f, .128333f));
+
+    exit =
+        new MenuButton(
+            loader,
+            "exitM_norm",
+            "exitM_hover",
+            new Vector2f(0, 0),
+            new Vector2f(.305521f, .128333f));
+
+    desktop =
+        new MenuButton(
+            loader,
+            "desktop_norm",
+            "desktop_hover",
+            new Vector2f(0, -0.274074f),
+            new Vector2f(.305521f, .128333f));
   }
 
   /**
@@ -52,17 +77,20 @@ public class GameMenu {
     double x = 2 * (InputHandler.getMouseX() / Game.window.getWidth()) - 1;
     double y = 1 - 2 * (InputHandler.getMouseY() / Game.window.getHeight());
 
+    guis.add(continueB.getHoverTexture(x, y));
+    guis.add(exit.getHoverTexture(x, y));
+    guis.add(desktop.getHoverTexture(x, y));
+
+    // Input Handling:
     if (InputHandler.isKeyPressed(GLFW_KEY_ESCAPE)) {
       Game.addActiveStage(Game.Stage.PLAYING);
       Game.removeActiveStage(Game.Stage.GAMEMENU);
-    } else if (InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1) && exitGame.isHover(x, y)) {
-      Game.addActiveStage(Game.Stage.MAINMENU);
-      Game.removeActiveStage(Game.Stage.PLAYING);
-      Game.removeActiveStage(Game.Stage.GAMEMENU);
+    } else if (InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1) && exit.isHover(x, y)) {
       new PacketLeaveLobby().sendToServer();
+    } else if (InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1) && desktop.isHover(x, y)) {
+      new PacketDisconnect().sendToServer();
+      Game.window.stop();
     }
-    guis.add(exitGame.getHoverTexture(x, y));
-
     Game.getGuiRenderer().render(guis);
   }
 }

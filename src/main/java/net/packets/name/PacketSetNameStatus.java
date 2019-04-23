@@ -1,6 +1,7 @@
 package net.packets.name;
 
 import game.Game;
+import game.stages.ChangeName;
 import net.packets.Packet;
 
 public class PacketSetNameStatus extends Packet {
@@ -62,6 +63,7 @@ public class PacketSetNameStatus extends Packet {
       if (username.length == 2) {
         Game.getActivePlayer().setUsername(username[1]);
         Game.getSettings().setUsername(username[1]);
+        ChangeName.setMsg("");
       }
       System.out.println(status);
     } else if (status.startsWith("Changed")) {
@@ -69,14 +71,18 @@ public class PacketSetNameStatus extends Packet {
       if (usernameA.length >= 1) {
         Game.getActivePlayer().setUsername(usernameA[0].substring(12));
         Game.getSettings().setUsername(usernameA[0].substring(12));
+        ChangeName.setMsg("");
       }
       System.out.println(status);
+      ChangeName.setMsg(status);
     } else {
       if (hasErrors()) {
         System.out.println(createErrorMessage());
+
       } else {
         System.out.println(status);
       }
+      ChangeName.setMsg(status);
     }
   }
 }

@@ -7,7 +7,10 @@ import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_1;
 
 import engine.io.InputHandler;
 import engine.render.Loader;
+import engine.render.fontrendering.TextMaster;
 import game.Game;
+import game.NetPlayerMaster;
+import game.Settings;
 import gui.GuiTexture;
 import gui.MenuButton;
 import gui.text.ChangableGuiText;
@@ -17,6 +20,7 @@ import net.packets.gamestatus.PacketGetHistory;
 import net.packets.highscore.PacketHighscore;
 import net.packets.lobby.PacketGetLobbies;
 import org.joml.Vector2f;
+import org.joml.Vector3f;
 
 /**
  * Main Menu specification and rendering. Must be initialized. Specifies all the elements in the
@@ -36,6 +40,10 @@ public class MainMenu {
   private static MenuButton credits;
   private static MenuButton options;
   private static ChangableGuiText text;
+  private static ChangableGuiText userName;
+  private static boolean initializedText;
+  private static MenuButton changeName;
+  private static GuiTexture name;
 
   /**
    * * Initialize Game Menu. Will load the texture files and generate the basic menu parts. This
@@ -64,6 +72,13 @@ public class MainMenu {
             loader.loadTexture("titelBig"),
             new Vector2f(0, 0.588889f),
             new Vector2f(0.291667f, 0.3f),
+            1);
+
+    name =
+        new GuiTexture(
+            loader.loadTexture("nametype"),
+            new Vector2f(-0.955556f, 0.975309f),
+            new Vector2f(0.039722f, 0.016049f),
             1);
 
     // Choose Lobby
@@ -101,6 +116,16 @@ public class MainMenu {
             "quitWood_hover",
             new Vector2f(0.75f, -0.851852f),
             new Vector2f(.097094f, .082347f));
+
+    changeName =
+        new MenuButton(
+            loader,
+            "changeAR_norm",
+            "changeAR_hover",
+            new Vector2f(-0.958334f, 0.894791f),
+            new Vector2f(0.024038f, 0.037038f));
+
+    // change_arrows.png
   }
 
   /**
@@ -110,10 +135,17 @@ public class MainMenu {
   @SuppressWarnings("Duplicates")
   public static void update() {
 
+    if (!initializedText) {
+      done();
+      initText();
+    }
+    userName.changeText(Game.getSettings().getUsername());
+
     List<GuiTexture> guis = new ArrayList<>();
     guis.add(background);
     guis.add(buddlerJoe);
     guis.add(titel);
+    guis.add(name);
 
     // OpenGL Coordinates (0/0 = center of screen, -1/1 = corners)
     double x = 2 * (InputHandler.getMouseX() / Game.window.getWidth()) - 1;
@@ -123,52 +155,32 @@ public class MainMenu {
     guis.add(exitGame.getHoverTexture(x, y));
     guis.add(credits.getHoverTexture(x, y));
     guis.add(options.getHoverTexture(x, y));
+    guis.add(changeName.getHoverTexture(x, y));
 
     for (GuiTexture gui : guis) {
       gui.setAlpha(currentAlpha);
     }
-    /*
-    if (fadeTimer > 0) {
 
-      // Main Menu fading out, no longer accepting inputs, just rendering
-      if (fadeTimer >= FADE_TIME) {
-        // Fading finished, reset variables and hide GUI
-        fadeTimer = 0;
-        Game.removeActiveStage(Game.Stage.MAINMENU);
-        currentAlpha = 1;
-      } else {
-        fadeTimer += Game.window.getFrameTimeSeconds();
-        currentAlpha = (FADE_TIME - fadeTimer) / FADE_TIME;
-      }
-
-    } else {
-      // Active Main Menu, accepting inputs
-
-      if (InputHandler.isKeyPressed(GLFW_KEY_ESCAPE)
-          || ((InputHandler.isMouseDown(GLFW_MOUSE_BUTTON_1) && exitGame.isHover(x, y)))) {
-        Game.window.stop();
-      } else if (InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1) && chooseLobby.isHover(x, y)) {
-        Game.addActiveStage(Game.Stage.PLAYING);/*
-        fadeTimer = (float) Game.window.getFrameTimeSeconds();
-        currentAlpha = (FADE_TIME - fadeTimer) / FADE_TIME;
-      }
-
-
-    }
-    */
     if (InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1) && chooseLobby.isHover(x, y)) {
       new PacketGetLobbies().sendToServer();
+      MainMenu.done();
       Game.addActiveStage(Game.Stage.CHOOSELOBBY);
       Game.removeActiveStage(Game.Stage.MAINMENU);
       // trigger here
     } else if (InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1) && credits.isHover(x, y)) {
+      MainMenu.done();
       Game.addActiveStage(Game.Stage.CREDITS);
       Game.removeActiveStage(Game.Stage.MAINMENU);
     } else if (InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1) && options.isHover(x, y)) {
+      MainMenu.done();
       Game.addActiveStage(Game.Stage.OPTIONS);
       Game.removeActiveStage(Game.Stage.MAINMENU);
     } else if (InputHandler.isKeyPressed(GLFW_KEY_ESCAPE)) {
       Game.addActiveStage(Game.Stage.WELCOME);
+      Game.removeActiveStage(Game.Stage.MAINMENU);
+    } else if (InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1) && changeName.isHover(x, y)) {
+      MainMenu.done();
+      Game.addActiveStage(Game.Stage.CHANGENAME);
       Game.removeActiveStage(Game.Stage.MAINMENU);
     } else if ((InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1) && exitGame.isHover(x, y))) {
       Game.window.stop();
@@ -185,5 +197,25 @@ public class MainMenu {
     }
 
     Game.getGuiRenderer().render(guis);
+    TextMaster.render();
+  }
+
+  /**
+   * Instantiates the ChangeableGuiText for the userName. Also sets Position, Colour, and
+   * Fontsize.
+   */
+  private static void initText() {
+    userName = new ChangableGuiText();
+    userName.setPosition(new Vector2f(0.045139f, -0.002469f));
+    userName.setFontSize(0.9f);
+    userName.setTextColour(new Vector3f(0, 0, 0));
+    userName.setCentered(false);
+    initializedText = true;
+  }
+
+  /** Deletes all the texts from the rendering list. */
+  public static void done() {
+    initializedText = false;
+    TextMaster.removeAll();
   }
 }
