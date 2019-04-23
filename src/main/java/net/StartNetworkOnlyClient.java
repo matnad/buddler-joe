@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+import net.packets.Packet;
 import net.packets.chat.PacketChatMessageToServer;
 import net.packets.gamestatus.PacketGetHistory;
 import net.packets.highscore.PacketHighscore;
@@ -67,17 +68,12 @@ public class StartNetworkOnlyClient implements Runnable {
                 + "ping - Display your average ping to the server over the last 10 seconds\n"
                 + "login <username> - Login attempt with the server\n"
                 + "name <username> - Change your username\n"
-                + "C <message> - Chat with users in your lobby\n"
-                + "lobbies - Get a list of all lobbies on the server\n"
-                + "info - Get info about the lobby you are currently in\n"
                 + "create <lobby name> - Create lobby with specified name\n"
-                + "join <lobby name> - Join lobby with specified name\n"
                 + "leave - Leave your current lobby\n"
                 + "connect - reconnect if the socket has been closed, "
                 + "display connection info otherwise\n"
                 + "playerlist - Receive a List of all active  players\n"
                 + "disconnect - Disconnect from the server\n"
-                + "highscore - get the current highscore on the server\n"
                 + "history - show all past and present games\n"
                 + "help - Display this message");
       } else if (inputMessage.equals("ping")) {
@@ -87,12 +83,6 @@ public class StartNetworkOnlyClient implements Runnable {
                 + " ms");
       } else if (inputMessage.startsWith("name ") && inputMessage.length() > 5) {
         PacketSetName p = new PacketSetName(inputMessage.substring(5));
-        p.sendToServer();
-      } else if (inputMessage.equals("lobbies")) {
-        PacketGetLobbies p = new PacketGetLobbies();
-        p.sendToServer();
-      } else if (inputMessage.startsWith("join ") && inputMessage.length() > 5) {
-        PacketJoinLobby p = new PacketJoinLobby(inputMessage.substring(5));
         p.sendToServer();
       } else if (inputMessage.equals("leave")) {
         PacketLeaveLobby p = new PacketLeaveLobby();
@@ -104,14 +94,8 @@ public class StartNetworkOnlyClient implements Runnable {
       } else if (inputMessage.startsWith("login ") && inputMessage.length() > 6) {
         PacketLogin p = new PacketLogin(inputMessage.substring(6));
         p.sendToServer();
-      } else if (inputMessage.equals("info")) {
-        PacketGetLobbyInfo p = new PacketGetLobbyInfo();
-        p.sendToServer();
       } else if (inputMessage.startsWith("C ") && inputMessage.length() > 2) {
         PacketChatMessageToServer p = new PacketChatMessageToServer(inputMessage.substring(2));
-        p.sendToServer();
-      } else if (inputMessage.equals("highscore")) {
-        PacketHighscore p = new PacketHighscore();
         p.sendToServer();
       } else if (inputMessage.equals("playerlist")) {
         PacketPlayerList p = new PacketPlayerList();
@@ -173,34 +157,9 @@ public class StartNetworkOnlyClient implements Runnable {
     }
   }
 
-  /// **
-  // * Welcome message on the first login that asks for a username and provides a suggestion based
-  // on
-  // * the system name.
-  // *
-  // * <p>Will create and send a login packet.
-  // *
-  // * @throws IOException when buffer reader fails
-  // */
-  // private static void firstLogin() throws IOException {
-  //  System.out.println(
-  //      "Welcome player! What name would you like to give yourself? "
-  //          + "\n"
-  //          + "Your System says, that you are "
-  //          + System.getProperty("user.name")
-  //          + "."
-  //          + "\n"
-  //          + "Would you like to choose that name? Type Yes or "
-  //          + "the username you would like to choose.\n");
-  //  String answer = br.readLine();
-  //  if (answer.trim().toLowerCase().equals("yes")) {
-  //    PacketLogin p = new PacketLogin(System.getProperty("user.name"));
-  //    p.sendToServer();
-  //  } else {
-  //    PacketLogin p = new PacketLogin(answer);
-  //    p.sendToServer();
-  //  }
-  // }
+  public void sendToServerTest(Packet p) {
+    p.sendToServer();
+  }
 
   @Override
   public void run() {}

@@ -1,11 +1,16 @@
 package net.packets.block;
 
+import net.TestClient;
+import net.TestServer;
 import org.junit.Assert;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class TestBlockDamage {
+
+    //private TestClient client = new TestClient();
+    //private TestServer server = new TestServer();
 
     public static final Logger logger = LoggerFactory.getLogger(TestBlockDamage.class);
 
@@ -31,7 +36,6 @@ public class TestBlockDamage {
     @Test
     public void incorrectDamageDataServer() {
         PacketBlockDamage p = new PacketBlockDamage(1,"12║12║test");
-        logger.info(p.createErrorMessage());
         Assert.assertTrue(p.hasErrors());
     }
 
@@ -64,4 +68,5 @@ public class TestBlockDamage {
         PacketBlockDamage p = new PacketBlockDamage("1║12║12║test");
         Assert.assertTrue(p.hasErrors());
     }
+
 }
