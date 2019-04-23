@@ -22,20 +22,20 @@ public class ServerMap extends GameMap<ServerBlock> {
     checkFallingBlocks();
   }
 
-  /**
+  /*/**
    * Create a random test map. Use this to develop a good mapping algorithm.
    *
    * @param args nothing
    */
-  public static void main(String[] args) {
-    ServerMap testMap = new ServerMap(64, 100, System.currentTimeMillis());
-    System.out.println(testMap);
-  }
+  //public static void main(String[] args) {
+  //  ServerMap testMap = new ServerMap(64, 100, System.currentTimeMillis());
+  //  System.out.println(testMap);
+  //}
 
   @Override
   void generateMap() {
     Random rng = new Random(seed);
-    float[][] noiseMap = generateNoiseMap(rng);
+    float[][] noiseMap = generateNoiseMap(seed);
 
     /* Threshold function
      */
@@ -56,6 +56,9 @@ public class ServerMap extends GameMap<ServerBlock> {
           } else {
             blocks[x][y] = new ServerBlock(BlockMaster.BlockTypes.AIR, x, y); // Stone
           }
+        }
+        if ((x == 0 || x == width - 1) || y == height - 1) {
+          blocks[x][y] = new ServerBlock(BlockMaster.BlockTypes.OBSIDIAN, x, y);
         }
       }
     }

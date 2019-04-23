@@ -46,8 +46,7 @@ public class Playing {
             loader.loadTexture("damageTaken"), new Vector2f(0, 0), new Vector2f(1, 1), 1);
 
     frozenOverlay =
-        new GuiTexture(
-            loader.loadTexture("frozen"), new Vector2f(0, 0), new Vector2f(1, 1), 1);
+        new GuiTexture(loader.loadTexture("frozen"), new Vector2f(0, 0), new Vector2f(1, 1), 1);
 
     floatingGoldStrings = new FloatingStrings(Game.getActivePlayer().getBbox(), 3f);
   }
@@ -101,7 +100,15 @@ public class Playing {
     Game.getChat().checkInputs();
     // GUI goes over everything else and then text on top of GUI
     Game.getGoldGuiText().update();
-    Game.getLivesGuiText().update();
+
+    // Update Gui Life Status
+    if (Game.getLifeStatus().checkLifeStatus() > 0) {
+      guis.add(Game.getLifeStatus().getLifeStatusGui()[0]);
+      if (Game.getLifeStatus().checkLifeStatus() > 1) {
+        guis.add(Game.getLifeStatus().getLifeStatusGui()[1]);
+      }
+    }
+
     floatingGoldStrings.update();
     ParticleMaster.renderParticles(Game.getActiveCamera());
 
@@ -114,7 +121,6 @@ public class Playing {
     if (Game.getActivePlayer().isFrozen()) {
       guis.add(frozenOverlay);
     }
-
 
     Game.getGuiRenderer().render(guis);
     TextMaster.render();

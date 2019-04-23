@@ -46,6 +46,7 @@ import game.stages.Options;
 import game.stages.Playing;
 import game.stages.Welcome;
 import gui.chat.Chat;
+import gui.lifestatus.LifeStatus;
 import gui.text.CurrentGold;
 import gui.text.CurrentLives;
 import gui.text.Fps;
@@ -110,6 +111,7 @@ public class Game extends Thread {
   private static int serverPort;
   // This probably needs to go somewhere else when we work on the chat
   private static Chat chat;
+  private static LifeStatus lifeStatus;
   private static Player player;
   private static CurrentGold goldGuiText;
   private static CurrentLives livesGuiText;
@@ -239,6 +241,10 @@ public class Game extends Thread {
     return chat;
   }
 
+  public static LifeStatus getLifeStatus() {
+    return lifeStatus;
+  }
+
   public static List<Stage> getActiveStages() {
     return activeStages;
   }
@@ -363,6 +369,7 @@ public class Game extends Thread {
     }
 
     chat = new Chat(loader, 12, 0.34f);
+    lifeStatus = new LifeStatus(loader);
     Fps fpsCounter = new Fps();
 
     // Initialize Particle Master
@@ -577,7 +584,8 @@ public class Game extends Thread {
 
     // GUI / Other
     goldGuiText = new CurrentGold();
-    livesGuiText = new CurrentLives();
+    //livesGuiText = new CurrentLives();
+    //lifestatus = new LifeStatus(loader);
     Playing.init(loader);
 
     LoadingScreen.updateLoadingMessage("Ready!");
