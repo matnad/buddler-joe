@@ -49,7 +49,7 @@ public class PlayerList {
   private static ChangableGuiText[] names = new ChangableGuiText[7];
   private static int startInd = 0;
   private static int page = 0;
-  private static int n = 6;
+  private static int n = 7;
   private static ChangableGuiText pageIndex;
   private static boolean initializedText = false;
   private static boolean initializedPageIndex = false;
@@ -185,7 +185,7 @@ public class PlayerList {
     }
 
     // Place PageIndex
-    if (n == 6 || page != 0) {
+    if (n == 7 || page != 0) {
       guis.add(up.getHoverTexture(x, y));
       guis.add(down.getHoverTexture(x, y));
       if (!initializedPageIndex) {
@@ -275,6 +275,6 @@ public class PlayerList {
     } else if (n < 0) {
       n = 0;
     }
-    game.stages.PlayerList.n = n;
+    PlayerList.n = n;
   }
 }
