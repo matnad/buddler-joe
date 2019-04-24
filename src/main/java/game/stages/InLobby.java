@@ -8,6 +8,7 @@ import engine.render.fontrendering.TextMaster;
 import game.Game;
 import game.LobbyPlayerEntry;
 import game.NetPlayerMaster;
+import gui.chat.Chat;
 import gui.GuiTexture;
 import gui.MenuButton;
 import gui.text.ChangableGuiText;
@@ -94,6 +95,12 @@ public class InLobby {
     if (!initializedText) {
       done();
       initText();
+      Game.getChat().setLobbyChatPosition();
+      Game.getChat().setLobbyMaxLines();
+      Game.getChat().setLobbyColour();
+      Game.getChat().setLobbyMaxLineLength();
+      Game.getChat().setLobbyMessagePosition();
+      Game.getChat().setAlpha();
       initializedText = true;
     }
 
@@ -101,6 +108,8 @@ public class InLobby {
     lobbyname.changeText(NetPlayerMaster.getLobbyname());
 
     List<GuiTexture> guis = new ArrayList<>();
+    guis.add(Game.getChat().getChatGui());
+    Game.getChat().checkInputs();
     // add textures here
     guis.add(background);
     guis.add(inLobby);
