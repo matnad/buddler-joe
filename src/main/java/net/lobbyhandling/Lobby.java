@@ -2,7 +2,7 @@ package net.lobbyhandling;
 
 import game.History;
 import game.map.ServerMap;
-import java.util.ArrayList;
+import java.util.concurrent.CopyOnWriteArrayList;
 import net.ServerLogic;
 import net.highscore.ServerHighscoreSerialiser;
 import net.packets.gamestatus.PacketGameEnd;
@@ -24,7 +24,7 @@ public class Lobby {
   private int lobbyId;
   private boolean inGame;
   private String lobbyName;
-  private ArrayList<Player> lobbyPlayers;
+  private CopyOnWriteArrayList<Player> lobbyPlayers;
   private ServerMap map;
   private int createrPlayerId;
   private String mapSize;
@@ -47,7 +47,7 @@ public class Lobby {
     this.mapSize = mapSize;
     this.status = "open";
     this.inGame = false;
-    this.lobbyPlayers = new ArrayList<>();
+    this.lobbyPlayers = new CopyOnWriteArrayList<>();
     this.lobbyId = lobbyCounter;
     this.serverItemState = new ServerItemState();
     lobbyCounter++;
@@ -89,12 +89,21 @@ public class Lobby {
    *     not.
    */
   public String removePlayer(int clientId) {
+    try {
     if (ServerLogic.getPlayerList().isClientIdInList(clientId)) {
       Player player = ServerLogic.getPlayerList().getPlayer(clientId);
       lobbyPlayers.remove(player);
       return "OK";
     } else {
       return "Not in a Lobby";
+    }
+    } catch (NullPointerException e) {
+      for (int i = 0; i < lobbyPlayers.size(); i++) {
+        if (lobbyPlayers.get(i).getClientId() == clientId) {
+          lobbyPlayers.remove(lobbyPlayers.get(i));
+        }
+      }
+      return "Not connected to the server.";
     }
   }
 
@@ -110,7 +119,7 @@ public class Lobby {
     return lobbyName;
   }
 
-  public ArrayList<Player> getLobbyPlayers() {
+  public CopyOnWriteArrayList<Player> getLobbyPlayers() {
     return lobbyPlayers;
   }
 
@@ -237,6 +246,7 @@ public class Lobby {
     }
     this.status = status;
     if (!old.equals(this.status)) {
+      try {
       String info = "OK║" + ServerLogic.getLobbyList().getTopTen();
       if (getPlayerAmount() != 0) {
         new PacketLobbyOverview(lobbyPlayers.get(0).getClientId(), info).sendToClientsNotInALobby();
@@ -244,6 +254,10 @@ public class Lobby {
         new PacketLobbyOverview(1, info).sendToClientsNotInALobby();
         // TODO: check if this works with the "1", do we really need the clientId in the
         // constructor?
+      }
+      } catch (NullPointerException e) {
+        logger.error("Not connected to a server.");
+        return;
       }
       if (status.equals("running")) {
         inGame = true;
@@ -261,4 +275,6 @@ public class Lobby {
   public ServerItemState getServerItemState() {
     return serverItemState;
   }
+
+
 }

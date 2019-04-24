@@ -1,6 +1,6 @@
 package net.lobbyhandling;
 
-import java.util.HashMap;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * This class acts as a list. It is used by the Server to handle the current lobbies.
@@ -8,7 +8,7 @@ import java.util.HashMap;
  * @author Sebastian Schlachter
  */
 public class ServerLobbyList {
-  private HashMap<Integer, Lobby> lobbies;
+  private ConcurrentHashMap<Integer, Lobby> lobbies;
 
   /**
    * Constructs a {@link ServerLobbyList}.
@@ -16,7 +16,7 @@ public class ServerLobbyList {
    * <p>Lobby list is initially empty.
    */
   public ServerLobbyList() {
-    lobbies = new HashMap<>();
+    lobbies = new ConcurrentHashMap<>();
   }
 
   /**
@@ -91,16 +91,6 @@ public class ServerLobbyList {
     return -1;
   }
 
-  /*
-  public String toString(){
-      String s = "";
-      for (Lobby lobby : lobbies.values()) {
-          s = s + lobby.getLobbyName() + " ";
-      }
-      return s;
-  }
-  */
-
   /**
    * Creates a listing of at max 10 lobbies.
    *
@@ -155,5 +145,9 @@ public class ServerLobbyList {
       return "No Games active";
     }
     return s.toString();
+  }
+
+  public ConcurrentHashMap<Integer, Lobby> getLobbies() {
+    return lobbies;
   }
 }
