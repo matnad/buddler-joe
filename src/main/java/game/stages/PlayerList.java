@@ -162,7 +162,7 @@ public class PlayerList {
     // add buttons here
     guis.add(back.getHoverTexture(x, y));
 
-    startInd = page * 6;
+    startInd = page * 7;
     setN(catalog.size() - startInd);
     for (int i = 0; i < names.length; i++) {
       try {
@@ -270,8 +270,8 @@ public class PlayerList {
    * @param n the value that n should be set to.
    */
   public static void setN(int n) {
-    if (n > 6) {
-      n = 6;
+    if (n > 7) {
+      n = 7;
     } else if (n < 0) {
       n = 0;
     }

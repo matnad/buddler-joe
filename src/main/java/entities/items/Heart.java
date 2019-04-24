@@ -27,7 +27,7 @@ public class Heart extends Item {
    * @param position position to spawn the dynamite
    */
   Heart(Vector3f position) {
-    this(position, 0, 0, 0, .5f);
+    this(position, 0, 0, -90, .1f);
   }
 
   /**
