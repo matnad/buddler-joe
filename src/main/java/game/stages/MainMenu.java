@@ -46,6 +46,8 @@ public class MainMenu {
   private static boolean initializedText;
   private static MenuButton changeName;
   private static GuiTexture name;
+  private static MenuButton highscore;
+  private static MenuButton history;
 
   /**
    * * Initialize Game Menu. Will load the texture files and generate the basic menu parts. This
@@ -127,6 +129,22 @@ public class MainMenu {
             new Vector2f(-0.958334f, 0.894791f),
             new Vector2f(0.024038f, 0.037038f));
 
+    highscore =
+        new MenuButton(
+            loader,
+            "pokal_norm",
+            "pokal_hover",
+            new Vector2f(0.9625f + 0.0125f, 0.92963f + 0.022222f),
+            new Vector2f(0.023625f * 0.6f, 0.05f * 0.6f));
+
+    history =
+        new MenuButton(
+            loader,
+            "book_norm",
+            "book_hover",
+            new Vector2f(0.911522f + 0.0125f, 0.92963f + 0.022222f),
+            new Vector2f(0.035353f * 0.6f, 0.05f * 0.6f));
+
     // change_arrows.png
   }
 
@@ -158,6 +176,8 @@ public class MainMenu {
     guis.add(credits.getHoverTexture(x, y));
     guis.add(options.getHoverTexture(x, y));
     guis.add(changeName.getHoverTexture(x, y));
+    guis.add(highscore.getHoverTexture(x, y));
+    guis.add(history.getHoverTexture(x, y));
 
     for (GuiTexture gui : guis) {
       gui.setAlpha(currentAlpha);
@@ -183,14 +203,14 @@ public class MainMenu {
       Game.removeActiveStage(Game.Stage.MAINMENU);
     } else if ((InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1) && exitGame.isHover(x, y))) {
       Game.window.stop();
-    } else if (InputHandler.isKeyPressed(GLFW_KEY_H)) {
+    } else if (InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1) && highscore.isHover(x, y)) {
       new PacketHighscore().sendToServer();
-      PacketHighscore p = new PacketHighscore();
-      p.sendToServer();
+      MainMenu.done();
       Game.addActiveStage(Game.Stage.HIGHSCORE);
       Game.removeActiveStage(Game.Stage.MAINMENU);
+    } else if (InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1) && history.isHover(x, y)) {
+      // TODO: go to History Page.
     }
-
     Game.getGuiRenderer().render(guis);
     TextMaster.render();
   }
