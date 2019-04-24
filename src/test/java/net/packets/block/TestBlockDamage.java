@@ -1,7 +1,5 @@
 package net.packets.block;
 
-import net.TestClient;
-import net.TestServer;
 import org.junit.Assert;
 import org.junit.Test;
 import org.slf4j.Logger;

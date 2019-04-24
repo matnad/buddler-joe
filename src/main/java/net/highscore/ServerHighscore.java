@@ -51,7 +51,7 @@ public class ServerHighscore implements Serializable {
   public String getHighscoreAsString() {
 
     if (highscore.size() == 0) {
-      return "There is no Highscore yet.";
+      return "there is no Highscore yet.";
     }
 
     StringJoiner sj = new StringJoiner("║");
