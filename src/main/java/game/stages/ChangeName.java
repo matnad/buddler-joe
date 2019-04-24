@@ -5,10 +5,12 @@ import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_1;
 
 import engine.io.InputHandler;
 import engine.render.Loader;
+import engine.render.fontmeshcreator.FontType;
 import engine.render.fontrendering.TextMaster;
 import game.Game;
 import gui.GuiTexture;
 import gui.MenuButton;
+import engine.render.fontmeshcreator.GuiText;
 import gui.text.ChangableGuiText;
 import java.util.ArrayList;
 import java.util.List;
@@ -36,6 +38,12 @@ public class ChangeName {
   private static ChangableGuiText curName = new ChangableGuiText();
   private static int cooldown = 0;
   private static boolean initializedText = false;
+  private static String name = "";
+  private static String newname = "";
+  private static String output;
+  private static GuiText guiText;
+  private static FontType font;
+  private static Vector3f textColour;
 
   /**
    * Initializes the textures for this GUI-menu.
@@ -44,6 +52,8 @@ public class ChangeName {
    */
   @SuppressWarnings("Duplicates")
   public static void init(Loader loader) {
+    font = new FontType(loader, "verdanaAsciiEx");
+    textColour = new Vector3f(0f, 0f, 0f);
 
     currentAlpha = 1;
 
@@ -87,10 +97,26 @@ public class ChangeName {
   /** Updates the GUI every cycle. */
   @SuppressWarnings("Duplicates")
   public static void update() {
+
     if (!initializedText) {
       done();
       initText();
       initializedText = true;
+    }
+
+    newname = name;
+    InputHandler.readInputOn();
+    newname = InputHandler.getInputString();
+    //    System.out.println(newname);
+    if (newname.length()>30){
+      newname = name;
+      StringBuilder temp = new StringBuilder(newname);
+      InputHandler.setInputString(temp);
+    }
+
+    if (!name.equals(newname)) {
+      name = newname;
+      updateGuiText();
     }
 
     curName.changeText(Game.getSettings().getUsername());
@@ -121,8 +147,9 @@ public class ChangeName {
       Game.addActiveStage(Game.Stage.MAINMENU);
       Game.removeActiveStage(Game.Stage.CHANGENAME);
     } else if (InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1) && change.isHover(x, y)) {
-      new PacketSetName("user" + Long.toString(System.currentTimeMillis()).substring(4))
-          .sendToServer();
+      new PacketSetName(newname).sendToServer();
+      InputHandler.resetInputString();
+      initializedText = false;
       // TODO: replace "user+currentTime" with entered UserName.
     }
 
@@ -164,5 +191,28 @@ public class ChangeName {
   public static void setMsg(String msg) {
     ChangeName.msg = msg;
     cooldown = 300;
+  }
+
+  private static void updateGuiText() {
+    // guiText.setTextString(chatText); // doesn't work, we need to reload the texture and
+    // create a new text
+    output = name;
+    TextMaster.removeAll();
+    //        do {
+    //    TextMaster.removeText(guiText);
+
+    guiText =
+        new GuiText(
+            output, 1.5f, font, new Vector3f(0f, 0f, 0f), 1f, new Vector2f(.30f, .62f), 1f, false);
+
+    //    if (output.length() > 0) {
+    //      output = output.substring(1);
+    //    }
+    //
+    //        } while (guiText.getLengthOfLines().get(guiText.getLengthOfLines().size() - 1)
+    //                > maxLineLength - 0.04);
+    //
+    // System.out.println(guiText.getLengthOfLines().get(guiText.getLengthOfLines().size()-1));
+
   }
 }

@@ -102,65 +102,12 @@ public class Chat {
   public void checkInputs() {
     if (InputHandler.isKeyPressed(GLFW_KEY_ENTER)) {
       if (chatText.length() > 0 && enabled) {
-        //  check if the player wants to whisper
-        if (chatText.startsWith("@")) {
-          int wisperId = game.NetPlayerMaster.getClientIdForWhisper(chatText);
-          int usernameLength = Game.getActivePlayer().getUsername().length();
-
-          //  temporary solution
-          chatText = chatText + "   ";
-          //  check if the player wants whisper to himself
-          if (chatText.length() > usernameLength + 1) {
-            if (chatText
-                    .substring(1, usernameLength + 1)
-                    .equals(Game.getActivePlayer().getUsername())
-                && !chatText.substring(usernameLength + 1, usernameLength + 2).equals("_")
-                && !Character.isDigit(chatText.charAt(usernameLength + 1))) {
-              wisperId = -1;
-            }
-          }
-          //  wisperId = -1 player don't exist in the lobby
-          //  wisperId = -2 player sends message to all players
-          if (-1 == wisperId) {
-            text.add("Username ist ungültig");
-          } else if (-2 == wisperId) {
-            chatText = chatText.substring(4).trim();
-            //            System.out.println(chatText);
-            PacketChatMessageToServer broadcostmessage =
-                new PacketChatMessageToServer(
-                    "(to all from "
-                        + game.Game.getActivePlayer().getUsername()
-                        + ") "
-                        + chatText
-                        + "║-1");
-            broadcostmessage.sendToServer();
-
-          } else {
-            String userName = game.NetPlayerMaster.getNetPlayerById(wisperId).getUsername();
-            chatText = chatText.substring(userName.length() + 1);
-            PacketChatMessageToServer sendMessage =
-                new PacketChatMessageToServer("(whispered)" + chatText + "║" + wisperId);
-            sendMessage.sendToServer();
-
-            PacketChatMessageToServer sendMessage2 =
-                new PacketChatMessageToServer(
-                    "(whispered to "
-                        + userName
-                        + ")"
-                        + chatText.trim()
-                        + "║"
-                        + game.Game.getActivePlayer().getClientId());
-            sendMessage2.sendToServer();
-          }
-
-        } else {
-
-          PacketChatMessageToServer sendMessage = new PacketChatMessageToServer(chatText + "║0");
-          sendMessage.sendToServer();
-        }
+        PacketChatMessageToServer chatString = new PacketChatMessageToServer(chatText);
+        chatString.sendToServer();
 
         chatText = "";
         InputHandler.resetInputString();
+
       } else {
         if (enabled) {
           setEnabled(false);
