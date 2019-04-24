@@ -17,12 +17,6 @@ public class TestPacket {
   }
 
   @Test
-  public void checkUsernameCorrect() {
-    packet = mock(Packet.class);
-    Assert.assertTrue(packet.checkUsername("Joe Buddler"));
-  }
-
-  @Test
   public void checkUsernameTooShort() {
     packet = mock(Packet.class);
     Assert.assertFalse(packet.checkUsername("tes"));
@@ -35,21 +29,9 @@ public class TestPacket {
   }
 
   @Test
-  public void checkIsAsciiTrue() {
-    packet = mock(Packet.class);
-    Assert.assertTrue(packet.isExtendedAscii("TestData"));
-  }
-
-  @Test
   public void checkIsAsciiFalse() {
     packet = mock(Packet.class);
     Assert.assertFalse(packet.isExtendedAscii("║║║"));
-  }
-
-  @Test
-  public void checkIsIntTrue() {
-    packet = mock(Packet.class);
-    Assert.assertTrue(packet.isInt("10"));
   }
 
   @Test

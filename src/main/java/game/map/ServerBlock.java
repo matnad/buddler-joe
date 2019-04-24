@@ -100,7 +100,7 @@ public class ServerBlock {
   private void onQmarkDestroy(int clientId) {
 
     Random random = new Random();
-    int r = random.nextInt(4);
+    int r = 1;//random.nextInt(4);
     if (r == 0) {
       logger.debug("Spawning dynamite.");
       PacketSpawnItem packetSpawnItem =

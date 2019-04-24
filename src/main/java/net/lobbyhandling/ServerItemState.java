@@ -44,8 +44,11 @@ public class ServerItemState {
     for (int i = 0; i < serverItemsList.size(); i++) {
       if (serverItemsList.get(i).getItemId() == itemId) {
         removeItem(serverItemsList.get(i));
-        return;
       }
     }
+  }
+
+  public CopyOnWriteArrayList<ServerItem> getServerItemsList() {
+    return serverItemsList;
   }
 }
