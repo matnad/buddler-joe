@@ -195,9 +195,6 @@ public class MainMenu {
       MainMenu.done();
       Game.addActiveStage(Game.Stage.OPTIONS);
       Game.removeActiveStage(Game.Stage.MAINMENU);
-    } else if (InputHandler.isKeyPressed(GLFW_KEY_ESCAPE)) {
-      Game.addActiveStage(Game.Stage.WELCOME);
-      Game.removeActiveStage(Game.Stage.MAINMENU);
     } else if (InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1) && changeName.isHover(x, y)) {
       MainMenu.done();
       Game.addActiveStage(Game.Stage.CHANGENAME);
@@ -205,19 +202,15 @@ public class MainMenu {
     } else if ((InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1) && exitGame.isHover(x, y))) {
       Game.window.stop();
     } else if (InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1) && highscore.isHover(x, y)) {
+      new PacketHighscore().sendToServer();
       MainMenu.done();
       Game.addActiveStage(Game.Stage.HIGHSCORE);
       Game.removeActiveStage(Game.Stage.MAINMENU);
     } else if (InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1) && history.isHover(x, y)) {
       // TODO: go to History Page.
-    } else if (InputHandler.isKeyPressed(GLFW_KEY_L)) {
-      // TODO: remove this if option
-      Game.addActiveStage(Game.Stage.INLOBBBY);
-      Game.removeActiveStage(Game.Stage.MAINMENU);
     } else if (InputHandler.isKeyPressed(GLFW_KEY_H)) {
       new PacketHighscore().sendToServer();
-      PacketHighscore p = new PacketHighscore();
-      p.sendToServer();
+      MainMenu.done();
       Game.addActiveStage(Game.Stage.HIGHSCORE);
       Game.removeActiveStage(Game.Stage.MAINMENU);
     }
