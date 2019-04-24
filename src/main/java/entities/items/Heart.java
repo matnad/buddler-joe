@@ -36,7 +36,7 @@ public class Heart extends Item {
    * @param loader the loader to be passed on to this method.
    */
   public static void init(Loader loader) {
-    RawModel rawHeart = loader.loadToVao(ObjFileLoader.loadObj("block"));
+    RawModel rawHeart = loader.loadToVao(ObjFileLoader.loadObj("heart"));
     setPreloadedModel(new TexturedModel(rawHeart, new ModelTexture(loader.loadTexture("red"))));
   }
 
