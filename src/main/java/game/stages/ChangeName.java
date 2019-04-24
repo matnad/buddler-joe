@@ -104,10 +104,15 @@ public class ChangeName {
       initializedText = true;
     }
 
-    String newname = name;
+    newname = name;
     InputHandler.readInputOn();
     newname = InputHandler.getInputString();
     //    System.out.println(newname);
+    if (newname.length()>30){
+      newname = name;
+      StringBuilder temp = new StringBuilder(newname);
+      InputHandler.setInputString(temp);
+    }
 
     if (!name.equals(newname)) {
       name = newname;

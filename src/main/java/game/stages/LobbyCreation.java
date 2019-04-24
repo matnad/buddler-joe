@@ -164,7 +164,12 @@ public class LobbyCreation {
     newlobbyname = lobbyname;
     InputHandler.readInputOn();
     newlobbyname = InputHandler.getInputString();
-    //    System.out.println(newname);
+
+    if (newlobbyname.length()>16){
+      newlobbyname = lobbyname;
+      StringBuilder temp = new StringBuilder(lobbyname);
+      InputHandler.setInputString(temp);
+    }
 
     if (!lobbyname.equals(newlobbyname)) {
       lobbyname = newlobbyname;
