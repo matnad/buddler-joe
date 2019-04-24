@@ -18,8 +18,6 @@ import org.joml.Vector3f;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
-
 public class PlayerList {
 
   /**
@@ -41,8 +39,12 @@ public class PlayerList {
   private static MenuButton up;
   private static MenuButton down;
   private static MenuButton[] join = new MenuButton[7];
-  private static float[] joinY = {0.45f, 0.312963f, 0.175926f, 0.037037f, -0.1f, -0.238889f, -0.375926f};
-  private static float[] namesY = {0.261728f, 0.330864f, 0.4f, 0.469136f, 0.538272f, 0.607407f, 0.676534f};
+  private static float[] joinY = {
+    0.45f, 0.312963f, 0.175926f, 0.037037f, -0.1f, -0.238889f, -0.375926f
+  };
+  private static float[] namesY = {
+    0.261728f, 0.330864f, 0.4f, 0.469136f, 0.538272f, 0.607407f, 0.676534f
+  };
   private static CopyOnWriteArrayList<String> catalog;
   private static ChangableGuiText[] names = new ChangableGuiText[7];
   private static int startInd = 0;
@@ -77,11 +79,11 @@ public class PlayerList {
             1);
 
     playerlist =
-            new GuiTexture(
-                loader.loadTexture("lobbyOverview"),
-                new Vector2f(0, -0.040741f),
-                new Vector2f(0.554167f, 0.757804f),
-                1);
+        new GuiTexture(
+            loader.loadTexture("lobbyOverview"),
+            new Vector2f(0, -0.040741f),
+            new Vector2f(0.554167f, 0.757804f),
+            1);
     //
     // TODO: Title
 
@@ -117,17 +119,17 @@ public class PlayerList {
             new Vector2f(0.432032f, -0.512963f),
             new Vector2f(0.041406f, 0.0694444f));
 
-    //TODO: Neue Whisper Buttons:
+    // TODO: Neue Whisper Buttons:
 
     // initialize all whisper Buttons
     for (int i = 0; i < join.length; i++) {
       join[i] =
-              new MenuButton(
-                      loader,
-                      "join_norm",
-                      "join_hover",
-                      new Vector2f(0.391667f, joinY[i]),
-                      new Vector2f(0.082365f, .069444f));
+          new MenuButton(
+              loader,
+              "join_norm",
+              "join_hover",
+              new Vector2f(0.391667f, joinY[i]),
+              new Vector2f(0.082365f, .069444f));
     }
   }
 
@@ -204,7 +206,7 @@ public class PlayerList {
     if (InputHandler.isKeyPressed(GLFW_KEY_ESCAPE)
         || InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1) && back.isHover(x, y)) {
       done();
-      Game.addActiveStage(Game.Stage.MAINMENU);
+      Game.addActiveStage(Game.Stage.PLAYING);
       Game.removeActiveStage(Game.Stage.PLAYERLIST);
     } else if (InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1) && up.isHover(x, y)) {
       if (page != 0) {
@@ -215,8 +217,8 @@ public class PlayerList {
     } else {
       for (int i = 0; i < n; i++) {
         if (i + startInd < catalog.size()
-                && InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1)
-                && join[i].isHover(x, y)) {
+            && InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1)
+            && join[i].isHover(x, y)) {
           break;
         }
       }

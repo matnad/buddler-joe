@@ -1,6 +1,10 @@
 package game.stages;
 
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_6;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_7;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_ESCAPE;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_H;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_P;
 
 import engine.io.InputHandler;
 import engine.particles.ParticleMaster;
@@ -70,6 +74,17 @@ public class Playing {
     if (InputHandler.isKeyPressed(GLFW_KEY_ESCAPE)) {
       Game.addActiveStage(Game.Stage.GAMEMENU);
     }
+
+    // H = Highscore
+    if (InputHandler.isKeyPressed(GLFW_KEY_H)) {
+      Highscore.setInGame(true);
+      Game.addActiveStage(Game.Stage.HIGHSCORE);
+    }
+
+    if (InputHandler.isKeyPressed(GLFW_KEY_P)) {
+      Game.addActiveStage(Game.Stage.PLAYERLIST);
+    }
+    //TODO: Add Button for Whisper and all
 
     // Update positions of camera, player and 3D Mouse Pointer
     Game.getActiveCamera().move();

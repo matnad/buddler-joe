@@ -1,8 +1,7 @@
 package entities.items;
 
-import org.joml.Vector3f;
-
 import java.util.Objects;
+import org.joml.Vector3f;
 
 public class ServerItem {
 
@@ -39,8 +38,12 @@ public class ServerItem {
 
   @Override
   public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
     ServerItem that = (ServerItem) o;
     return owner == that.owner
         && exists == that.exists

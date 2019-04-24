@@ -177,28 +177,17 @@ public class MainMenu {
       MainMenu.done();
       Game.addActiveStage(Game.Stage.OPTIONS);
       Game.removeActiveStage(Game.Stage.MAINMENU);
-    } else if (InputHandler.isKeyPressed(GLFW_KEY_ESCAPE)) {
-      Game.addActiveStage(Game.Stage.WELCOME);
-      Game.removeActiveStage(Game.Stage.MAINMENU);
     } else if (InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1) && changeName.isHover(x, y)) {
       MainMenu.done();
       Game.addActiveStage(Game.Stage.CHANGENAME);
       Game.removeActiveStage(Game.Stage.MAINMENU);
     } else if ((InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1) && exitGame.isHover(x, y))) {
       Game.window.stop();
-    } else if (InputHandler.isKeyPressed(GLFW_KEY_L)) {
-      // TODO: remove this if option
-      Game.addActiveStage(Game.Stage.INLOBBBY);
-      Game.removeActiveStage(Game.Stage.MAINMENU);
     } else if (InputHandler.isKeyPressed(GLFW_KEY_H)) {
       new PacketHighscore().sendToServer();
       PacketHighscore p = new PacketHighscore();
       p.sendToServer();
       Game.addActiveStage(Game.Stage.HIGHSCORE);
-      Game.removeActiveStage(Game.Stage.MAINMENU);
-    } else if (InputHandler.isKeyPressed(GLFW_KEY_P)) {
-      new PacketPlayerList().sendToServer();
-      Game.addActiveStage(Game.Stage.PLAYERLIST);
       Game.removeActiveStage(Game.Stage.MAINMENU);
     }
 
@@ -207,8 +196,7 @@ public class MainMenu {
   }
 
   /**
-   * Instantiates the ChangeableGuiText for the userName. Also sets Position, Colour, and
-   * Fontsize.
+   * Instantiates the ChangeableGuiText for the userName. Also sets Position, Colour, and Fontsize.
    */
   private static void initText() {
     userName = new ChangableGuiText();
