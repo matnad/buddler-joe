@@ -92,6 +92,7 @@ public class InLobby {
   @SuppressWarnings("Duplicates")
   public static void update() {
     if (!initializedText) {
+      done();
       initText();
       initializedText = true;
     }
@@ -168,17 +169,10 @@ public class InLobby {
     }
   }
 
-  /** Deletes all the texts from this Page from the rendering list. */
+  /** Deletes all the texts from the rendering list. */
   @SuppressWarnings("Duplicates")
-  public static void done() {
-    if (lobbyname == null) {
-      return;
-    }
-    lobbyname.delete();
-    for (int i = 0; i < names.length; i++) {
-      names[i].delete();
-      status[i].delete();
-    }
+  public static synchronized void done() {
     initializedText = false;
+    TextMaster.removeAll();
   }
 }

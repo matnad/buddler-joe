@@ -31,6 +31,7 @@ import entities.blocks.debris.DebrisMaster;
 import entities.items.ItemMaster;
 import entities.light.LightMaster;
 import game.map.ClientMap;
+import game.stages.ChangeName;
 import game.stages.ChooseLobby;
 import game.stages.Credits;
 import game.stages.GameMenu;
@@ -395,7 +396,6 @@ public class Game extends Thread {
         .setBrightness(2f);
 
     // Connect after everything is loaded
-
     /*
     **************************************************************
     ---------HERE STARTS THE GAME LOOP!
@@ -547,6 +547,8 @@ public class Game extends Thread {
     GameOver.init(loader);
     LoadingScreen.progess();
     LobbyCreation.init(loader);
+    LoadingScreen.progess();
+    ChangeName.init(loader);
 
     // Generate ServerPlayer
     NetPlayer.init(loader);

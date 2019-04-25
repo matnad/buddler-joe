@@ -99,6 +99,7 @@ public class Highscore {
   @SuppressWarnings("Duplicates")
   public static void update() {
     if (!initializedText) {
+      done();
       initText();
       initializedText = true;
     }
@@ -169,11 +170,8 @@ public class Highscore {
   }
 
   /** Deletes all the texts from this Page from the rendering list. */
-  public static void done() {
-    for (int i = 0; i < usernames.length; i++) {
-      usernames[i].delete();
-      times[i].delete();
-    }
+  public static synchronized void done() {
     initializedText = false;
+    TextMaster.removeAll();
   }
 }

@@ -150,6 +150,7 @@ public class ChooseLobby {
   @SuppressWarnings("Duplicates")
   public static void update() {
     if (!initializedText) {
+      done();
       initText();
       initializedText = true;
     }
@@ -291,22 +292,12 @@ public class ChooseLobby {
     }
   }
 
-  /** Deletes all the texts from this Page from the rendering list. */
-  public static void done() {
+  /** Deletes all the texts from the rendering list. */
+  public static synchronized void done() {
     page = 0;
-    if (initializedPageIndex) {
-      pageIndex.delete();
-    }
     initializedPageIndex = false;
-    for (int i = 0; i < names.length; i++) {
-      // Catch Nullpointer
-      if (names[i] == null || count[i] == null) {
-        continue;
-      }
-      names[i].delete();
-      count[i].delete();
-    }
     initializedText = false;
+    TextMaster.removeAll();
   }
 
   /**

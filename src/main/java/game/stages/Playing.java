@@ -32,6 +32,7 @@ public class Playing {
   private static GuiTexture damageOverlay;
   private static GuiTexture frozenOverlay;
   private static float damageTakenScreenRemaining = 0f;
+  private static boolean firstloop = true;
 
   /**
    * * Initialize Game Menu. Will load the texture files and other GUI elements needed for this
@@ -57,6 +58,10 @@ public class Playing {
    * @param renderer master renderer from game loop
    */
   public static void update(MasterRenderer renderer) {
+    if (firstloop) {
+      TextMaster.removeAll();
+      firstloop = false;
+    }
 
     List<GuiTexture> guis = new ArrayList<>();
     guis.add(Game.getChat().getChatGui());
@@ -131,6 +136,7 @@ public class Playing {
 
   /** Delete all text objects from this stage. */
   public static void done() {
+    firstloop = true;
     floatingGoldStrings.done();
     Game.getGoldGuiText().done();
     Game.getLivesGuiText().done();
