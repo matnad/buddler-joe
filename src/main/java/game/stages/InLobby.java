@@ -8,7 +8,6 @@ import engine.render.fontrendering.TextMaster;
 import game.Game;
 import game.LobbyPlayerEntry;
 import game.NetPlayerMaster;
-import gui.chat.Chat;
 import gui.GuiTexture;
 import gui.MenuButton;
 import gui.text.ChangableGuiText;

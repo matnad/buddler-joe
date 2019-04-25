@@ -54,6 +54,7 @@ public class LobbyCreation {
   private static FontType font;
   private static Vector3f textColour;
   private static GuiText guiText;
+
   /**
    * Initializes the textures for this GUI-menu.
    *
@@ -165,7 +166,7 @@ public class LobbyCreation {
     InputHandler.readInputOn();
     newlobbyname = InputHandler.getInputString();
 
-    if (newlobbyname.length()>16){
+    if (newlobbyname.length() > 16) {
       newlobbyname = lobbyname;
       StringBuilder temp = new StringBuilder(lobbyname);
       InputHandler.setInputString(temp);

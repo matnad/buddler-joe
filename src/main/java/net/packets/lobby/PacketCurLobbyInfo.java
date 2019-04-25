@@ -153,7 +153,7 @@ public class PacketCurLobbyInfo extends Packet {
       }
 
     } else { // Errors ServerSide
-      System.out.println(infoArray[0]);
+      //System.out.println(infoArray[0]);
     }
   }
 }

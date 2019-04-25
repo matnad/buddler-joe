@@ -4,9 +4,9 @@ import static org.lwjgl.glfw.GLFW.GLFW_KEY_ESCAPE;
 import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_1;
 
 import engine.io.InputHandler;
-import engine.render.Loader;
 import engine.render.fontmeshcreator.FontType;
 import engine.render.fontrendering.TextMaster;
+import engine.render.Loader;
 import game.Game;
 import gui.GuiTexture;
 import gui.MenuButton;
@@ -108,7 +108,7 @@ public class ChangeName {
     InputHandler.readInputOn();
     newname = InputHandler.getInputString();
     //    System.out.println(newname);
-    if (newname.length()>30){
+    if (newname.length() > 30) {
       newname = name;
       StringBuilder temp = new StringBuilder(newname);
       InputHandler.setInputString(temp);

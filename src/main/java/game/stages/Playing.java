@@ -1,7 +1,5 @@
 package game.stages;
 
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_6;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_7;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_ESCAPE;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_H;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_P;
@@ -92,9 +90,10 @@ public class Playing {
 
     if (InputHandler.isKeyPressed(GLFW_KEY_P)) {
       PacketPlayerList playerList = new PacketPlayerList();
+      playerList.sendToServer();
       Game.addActiveStage(Game.Stage.PLAYERLIST);
     }
-    //TODO: Add Button for Whisper and all
+    // TODO: Add Button for Whisper and all
 
     // Update positions of camera, player and 3D Mouse Pointer
     Game.getActiveCamera().move();
