@@ -133,7 +133,7 @@ public class Game extends Thread {
   private static CopyOnWriteArrayList<String> playerList = new CopyOnWriteArrayList<>();
   private static CopyOnWriteArrayList<LobbyPlayerEntry> lobbyPlayerCatalog =
       new CopyOnWriteArrayList<>();
-  public String username = RandomName.getRandomName(); // TODO (Server Team): Username
+  public String username = RandomName.getRandomName();
   /*
    * Set your resolution here, feel free to add new entries and comment them with your name/machine
    * If someone wants to work on this, edit this comment or add an issue to the tracker in gitlab

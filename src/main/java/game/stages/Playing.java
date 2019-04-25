@@ -22,6 +22,8 @@ import gui.GuiTexture;
 import gui.text.FloatingStrings;
 import java.util.ArrayList;
 import java.util.List;
+
+import net.packets.lists.PacketPlayerList;
 import org.joml.Vector2f;
 import util.MousePlacer;
 
@@ -89,6 +91,7 @@ public class Playing {
     }
 
     if (InputHandler.isKeyPressed(GLFW_KEY_P)) {
+      PacketPlayerList playerList = new PacketPlayerList();
       Game.addActiveStage(Game.Stage.PLAYERLIST);
     }
     //TODO: Add Button for Whisper and all
