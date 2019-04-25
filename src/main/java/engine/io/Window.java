@@ -34,6 +34,8 @@ import static org.lwjgl.opengl.GL11.GL_TRUE;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.opengl.GL;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Set up the GLFW Game Window.
@@ -41,7 +43,10 @@ import org.lwjgl.opengl.GL;
  * <p>Controls
  */
 public class Window {
+  public static final Logger logger = LoggerFactory.getLogger(Window.class);
+
   private final double fpsCap;
+  private final double timePerFrame;
   private final String title;
   private int width;
   private int height;
@@ -67,6 +72,7 @@ public class Window {
     setSize(width, height);
     this.title = title;
     fpsCap = fps;
+    timePerFrame = 1 / fpsCap;
     processedTime = 0;
     frames = 0;
     frameTime = 0;
@@ -176,35 +182,50 @@ public class Window {
    *
    * @return true if the Game Loop should update and render a frame
    */
-  public boolean isUpdating() {
-    delta = 0;
-    boolean update = false;
-    double nextTime = getTime();
-    double passedTime = nextTime - time;
-    processedTime += passedTime;
-    time = nextTime;
-    frameTime += passedTime;
-
-    // Set the isOneSecond flag for one frame every second and
-    // saves the number of frames rendered during the last second
-    if (frameTime >= 1f) {
-      frameTime = 0;
-      currentFps = frames;
-      frames = 0;
-      isOneSecond = true;
-    } else {
-      isOneSecond = false;
-    }
-
-    // If time since last update is more than 1/fpsCap, update
-    while (processedTime > 1f / fpsCap) {
-      delta = processedTime;
-      processedTime -= 1f / fpsCap;
-      frames++;
-      update = true;
-    }
-    return update;
-  }
+  //public boolean isUpdating() {
+  //  delta = 0;
+  //  boolean update = false;
+  //  double nextTime = getTime();
+  //  double passedTime = nextTime - time;
+  //  processedTime += passedTime;
+  //  time = nextTime;
+  //  frameTime += passedTime;
+  //
+  //  // Set the isOneSecond flag for one frame every second and
+  //  // saves the number of frames rendered during the last second
+  //  // if (frameTime >= 1f) {
+  //  //  frameTime = 0;
+  //  //  currentFps = frames;
+  //  //  frames = 0;
+  //  //  isOneSecond = true;
+  //  // } else {
+  //  //  isOneSecond = false;
+  //  // }
+  //
+  //  // If time since last update is more than 1/fpsCap, update
+  //  while (processedTime > 1f / fpsCap) {
+  //    delta = processedTime;
+  //    processedTime -= 1f / fpsCap;
+  //    frames++;
+  //    update = true;
+  //  }
+  //  return update;
+  //}
+  //
+  //public boolean isUpdating() {
+  //
+  //  double frameStartTime = getTime();
+  //  // loop
+  //
+  //  double frameTime = getTime() - frameStartTime;
+  //  if (frameTime < timePerFrame) {
+  //    try {
+  //      Thread.sleep((long) ((timePerFrame - frameTime) * 1e3));
+  //    } catch (InterruptedException e) {
+  //      e.printStackTrace();
+  //    }
+  //  }
+  //}
 
   // Getters
   public int getWidth() {
@@ -245,6 +266,10 @@ public class Window {
    */
   public double getFrameTimeSeconds() {
     return delta;
+  }
+
+  public void setDelta(double delta) {
+    this.delta = delta;
   }
 
   public void setSize(int width, int height) {

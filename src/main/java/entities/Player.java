@@ -112,7 +112,7 @@ public class Player extends NetPlayer {
     }
 
     // Update position by distance travelled
-    // float distance = (float) (currentSpeed * Game.window.getFrameTimeSeconds());
+    // float distance = (float) (currentSpeed * Game.dt());
     // super.increasePosition(distance, 0, 0);
     // Turn character by the turnSpeed (which is set to make a nice turning animation when
     // changing direction)
@@ -120,7 +120,7 @@ public class Player extends NetPlayer {
     // Apply gravity and "slow horizontal correction"
     float ipfX = interpolationFactor;
     if (isInAir) {
-      goalVelocity.y += gravity * Game.window.getFrameTimeSeconds();
+      goalVelocity.y += gravity * Game.dt();
       ipfX /= 5;
     }
 
@@ -129,11 +129,11 @@ public class Player extends NetPlayer {
     currentVelocity.y += (goalVelocity.y - currentVelocity.y) * interpolationFactor;
 
     // Move player
-    increasePosition(new Vector3f(currentVelocity).mul((float) Game.window.getFrameTimeSeconds()));
+    increasePosition(new Vector3f(currentVelocity).mul((float) Game.dt()));
 
     // Handle character rotation (check run direction see if we need to rotate more)
     this.increaseRotation(
-        0, (float) (getCurrentTurnSpeed() * Game.window.getFrameTimeSeconds()), 0);
+        0, (float) (getCurrentTurnSpeed() * Game.dt()), 0);
 
     // Handle collisions, we only check close blocks to optimize performance
     // Distance is much cheaper to check than overlap
@@ -255,7 +255,7 @@ public class Player extends NetPlayer {
       } else {
         isJumping = false; // Walljumps! Felt cute. Might delete later.
         setPositionX(
-            (float) (getPosition().x - currentVelocity.x * Game.window.getFrameTimeSeconds()));
+            (float) (getPosition().x - currentVelocity.x * Game.dt()));
         stopVelocityX();
         // Dig blocks whenever we collide horizontal
         digBlock(block);
@@ -277,8 +277,8 @@ public class Player extends NetPlayer {
       digIntervallTimer = 0;
     }
     // Update damage and time, save locally
-    digIntervallTimer += Game.window.getFrameTimeSeconds();
-    lastDiggedBlockDamage += (float) (digDamage * Game.window.getFrameTimeSeconds());
+    digIntervallTimer += Game.dt();
+    lastDiggedBlockDamage += (float) (digDamage * Game.dt());
 
     // Check if we hit time threshold to send update to the server
     if (digIntervallTimer >= digIntervall) {
@@ -316,7 +316,7 @@ public class Player extends NetPlayer {
       return;
     }
 
-    torchTimeout += Game.window.getFrameTimeSeconds();
+    torchTimeout += Game.dt();
     if (InputHandler.isKeyPressed(GLFW_KEY_E)) {
       if (InputHandler.isPlacerMode()) {
         MousePlacer.cancelPlacing();

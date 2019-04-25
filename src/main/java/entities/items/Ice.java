@@ -58,7 +58,7 @@ public class Ice extends Item {
    */
   @Override
   public void update() {
-    time += Game.window.getFrameTimeSeconds();
+    time += Game.dt();
     if (isOwned()) {
       if (time >= freezeTime) {
         Game.getActivePlayer().defreeze();

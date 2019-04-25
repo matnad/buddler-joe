@@ -130,7 +130,7 @@ public class Dynamite extends Item {
     }
 
     // Update the fuse time
-    time += Game.window.getFrameTimeSeconds();
+    time += Game.dt();
 
     /*
     Case 1: Dynamite is about to blow -> play fuse animation, check for entities,
@@ -146,7 +146,7 @@ public class Dynamite extends Item {
         }
       }
       if (!collision) {
-        increasePosition(0, (float) -(gravity * Game.window.getFrameTimeSeconds()), 0);
+        increasePosition(0, (float) -(gravity * Game.dt()), 0);
       }
 
       float offset = getBbox().getDimY() * 2 * (fuseTimer - time) / fuseTimer;
@@ -169,10 +169,10 @@ public class Dynamite extends Item {
       setDestroyed(true); // Remove Object
       flash.setDestroyed(true);
     } else if (time >= fuseTimer + .3f) {
-      float scaleBrightness = (float) (1 - Game.window.getFrameTimeSeconds() * 5);
+      float scaleBrightness = (float) (1 - Game.dt() * 5);
       flash.setBrightness(flash.getBrightness() * scaleBrightness);
     } else if (time > fuseTimer) {
-      float scaleBrightness = (float) (1 + Game.window.getFrameTimeSeconds() * 10);
+      float scaleBrightness = (float) (1 + Game.dt() * 10);
       flash.setBrightness(flash.getBrightness() * scaleBrightness);
     }
   }

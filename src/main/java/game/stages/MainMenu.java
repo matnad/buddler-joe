@@ -136,7 +136,7 @@ public class MainMenu {
         Game.removeActiveStage(Game.Stage.MAINMENU);
         currentAlpha = 1;
       } else {
-        fadeTimer += Game.window.getFrameTimeSeconds();
+        fadeTimer += Game.dt();
         currentAlpha = (FADE_TIME - fadeTimer) / FADE_TIME;
       }
 
@@ -148,7 +148,7 @@ public class MainMenu {
         Game.window.stop();
       } else if (InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1) && chooseLobby.isHover(x, y)) {
         Game.addActiveStage(Game.Stage.PLAYING);/*
-        fadeTimer = (float) Game.window.getFrameTimeSeconds();
+        fadeTimer = (float) Game.dt();
         currentAlpha = (FADE_TIME - fadeTimer) / FADE_TIME;
       }
 

@@ -126,7 +126,7 @@ public class NetPlayer extends Entity {
 
     float ipfX = interpolationFactor;
     if (isInAir) {
-      goalVelocity.y += gravity * Game.window.getFrameTimeSeconds();
+      goalVelocity.y += gravity * Game.dt();
       ipfX /= 5;
     }
 
@@ -135,11 +135,11 @@ public class NetPlayer extends Entity {
     currentVelocity.y += (goalVelocity.y - currentVelocity.y) * interpolationFactor;
 
     // Move player
-    increasePosition(new Vector3f(currentVelocity).mul((float) Game.window.getFrameTimeSeconds()));
+    increasePosition(new Vector3f(currentVelocity).mul((float) Game.dt()));
 
     // Handle character rotation (check run direction see if we need to rotate more)
     this.increaseRotation(
-        0, (float) (getCurrentTurnSpeed() * Game.window.getFrameTimeSeconds()), 0);
+        0, (float) (getCurrentTurnSpeed() * Game.dt()), 0);
 
     for (Block closeBlock : closeBlocks) {
       handleNetPlayerCollision(closeBlock);
@@ -200,7 +200,7 @@ public class NetPlayer extends Entity {
         // Stop jumping up if we hit something above, will start accelerating down
       } else {
         setPositionX(
-            (float) (getPosition().x - currentVelocity.x * Game.window.getFrameTimeSeconds()));
+            (float) (getPosition().x - currentVelocity.x * Game.dt()));
       }
     }
   }

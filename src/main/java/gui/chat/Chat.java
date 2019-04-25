@@ -180,7 +180,7 @@ public class Chat {
     updateAlpha();
 
     if (showTemporary) {
-      temporaryShowElapsed += Game.window.getFrameTimeSeconds();
+      temporaryShowElapsed += Game.dt();
       if (temporaryShowElapsed >= temporaryShowDuration) {
         temporaryShowElapsed = 0;
         showTemporary = false;

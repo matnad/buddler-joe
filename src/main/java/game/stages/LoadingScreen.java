@@ -67,7 +67,7 @@ public class LoadingScreen {
       generateDottedText();
     }
 
-    elapsedSinceChange += Game.window.getFrameTimeSeconds();
+    elapsedSinceChange += Game.dt();
     if (elapsedSinceChange > .5f) {
       if (decreaseDots) {
         dots--;

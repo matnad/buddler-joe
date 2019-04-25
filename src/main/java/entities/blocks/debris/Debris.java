@@ -70,7 +70,7 @@ public class Debris extends Entity {
    */
   public void update() {
 
-    float delta = (float) Game.window.getFrameTimeSeconds();
+    float delta = (float) Game.dt();
 
     elapsedTime += delta;
     if (baseBlock.getType() == BlockMaster.BlockTypes.GOLD

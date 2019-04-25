@@ -101,7 +101,7 @@ public class Playing {
     ParticleMaster.renderParticles(Game.getActiveCamera());
 
     if (damageTakenScreenRemaining > 0) {
-      damageTakenScreenRemaining -= Game.window.getFrameTimeSeconds();
+      damageTakenScreenRemaining -= Game.dt();
       damageOverlay.setAlpha(damageTakenScreenRemaining / damageTakenScreenTotalDuration / 1.5f);
       guis.add(damageOverlay);
     }

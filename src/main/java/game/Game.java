@@ -50,7 +50,6 @@ import java.util.Random;
 import java.util.concurrent.CopyOnWriteArrayList;
 import net.ClientLogic;
 import net.StartNetworkOnlyClient;
-import net.packets.gamestatus.PacketReady;
 import net.packets.lobby.PacketCreateLobby;
 import net.packets.lobby.PacketJoinLobby;
 import net.packets.loginlogout.PacketLogin;
@@ -76,6 +75,7 @@ public class Game extends Thread {
   // Set up GLFW Window
   private static final List<Stage> activeStages = new ArrayList<>();
   private static final List<Stage> stagesToBeAdded = new ArrayList<>();
+  private static double dt;
   // Playing instance and player settings
   // private static ClientLogic socketClient;
   /*
@@ -124,7 +124,7 @@ public class Game extends Thread {
   private static CopyOnWriteArrayList<LobbyEntry> lobbyCatalog = new CopyOnWriteArrayList<>();
   private static CopyOnWriteArrayList<LobbyPlayerEntry> lobbyPlayerCatalog =
       new CopyOnWriteArrayList<>();
-  public String username = RandomName.getRandomName(); // TODO (Server Team): Username
+  public String username;
   /*
    * Set your resolution here, feel free to add new entries and comment them with your name/machine
    * If someone wants to work on this, edit this comment or add an issue to the tracker in gitlab
@@ -253,7 +253,6 @@ public class Game extends Thread {
    */
   public static void addActiveStage(Stage stage) {
     if (!activeStages.contains(stage) && !stagesToBeAdded.contains(stage)) {
-      // activeStages.add(stage);
       stagesToBeAdded.add(stage);
     }
   }
@@ -373,85 +372,89 @@ public class Game extends Thread {
     ---------HERE STARTS THE GAME LOOP!
     **************************************************************
     */
+    double timePerFrame = 1000 / 60.0;
+    double secondTimer = 0;
+    int frames = 0;
     while (!window.isClosed()) {
 
-      if (window.isOneSecond() && activeStages.contains(PLAYING)) {
-        // This runs once per second, we can use it for stuff that needs less frequent updates
+      double frameStartTime = System.nanoTime();
+
+      if (secondTimer > 1e9) {
         oncePerSecond = true;
-        fpsCounter.updateString("" + window.getCurrentFps());
+        secondTimer -= 1e9;
+        fpsCounter.updateString("" + frames);
+        frames = 0;
       }
 
-      // ...
+      if (activeStages.contains(LOADINGSCREEN)) {
+        LoadingScreen.update();
+      } else if (activeStages.contains(GAMEOVER)) {
+        GameOver.update();
+      } else {
+        /*InputHandler needs to be BEFORE polling (window.update()) so we still have access to
+        the events of last Frame. Everything else should be after polling.*/
+        InputHandler.update();
+        Game.window.update();
 
-      // This runs super often, we shouldn't use it
-
-      // ...
-
-      if (window.isUpdating()) {
-        /* This runs once per frame. Do all the updating here.
-           The order of things is quite relevant here
-           Optimally this should be mostly Masters here
-        */
-
-        // List<Stage> stagesForThisFrame = new ArrayList<>(activeStages);
-
-        if (activeStages.contains(LOADINGSCREEN)) {
-          LoadingScreen.update();
-        } else if (activeStages.contains(GAMEOVER)) {
-          GameOver.update();
-        } else {
-          /*InputHandler needs to be BEFORE polling (window.update()) so we still have access to
-          the events of last Frame. Everything else should be after polling.*/
-          InputHandler.update();
-          Game.window.update();
-
-          if (activeStages.contains(PLAYING)) {
-            Playing.update(renderer);
-          }
-
-          if (activeStages.contains(MAINMENU)) {
-            MainMenu.update();
-          }
-
-          if (activeStages.contains(GAMEMENU)) {
-            GameMenu.update();
-          }
-
-          if (activeStages.contains(CHOOSELOBBY)) {
-            ChooseLobby.update();
-          }
-
-          if (activeStages.contains(CREDITS)) {
-            Credits.update();
-          }
-
-          if (activeStages.contains(OPTIONS)) {
-            Options.update();
-          }
-
-          if (activeStages.contains(WELCOME)) {
-            Welcome.update();
-          }
-
-          if (activeStages.contains(LOGIN)) {
-            Login.update();
-          }
-
-          if (activeStages.contains(INLOBBBY)) {
-            InLobby.update();
-          }
+        if (activeStages.contains(PLAYING)) {
+          Playing.update(renderer);
         }
 
-        activeStages.addAll(stagesToBeAdded);
-        stagesToBeAdded.clear();
+        if (activeStages.contains(MAINMENU)) {
+          MainMenu.update();
+        }
 
-        // System.out.println("-----------------------------------");
-        // System.out.println(activeStages);
-        // Done with one frame
+        if (activeStages.contains(GAMEMENU)) {
+          GameMenu.update();
+        }
 
-        window.swapBuffers();
-        oncePerSecond = false;
+        if (activeStages.contains(CHOOSELOBBY)) {
+          ChooseLobby.update();
+        }
+
+        if (activeStages.contains(CREDITS)) {
+          Credits.update();
+        }
+
+        if (activeStages.contains(OPTIONS)) {
+          Options.update();
+        }
+
+        if (activeStages.contains(WELCOME)) {
+          Welcome.update();
+        }
+
+        if (activeStages.contains(LOGIN)) {
+          Login.update();
+        }
+
+        if (activeStages.contains(INLOBBBY)) {
+          InLobby.update();
+        }
       }
+
+      activeStages.addAll(stagesToBeAdded);
+      stagesToBeAdded.clear();
+
+      // System.out.println("-----------------------------------");
+      // System.out.println(activeStages);
+      // Done with one frame
+
+      window.swapBuffers();
+      oncePerSecond = false;
+
+      double frameTime = (System.nanoTime() - frameStartTime) / 1e6;
+      if (frameTime < timePerFrame) {
+        try {
+          Thread.sleep((long) (timePerFrame - frameTime));
+        } catch (InterruptedException e) {
+          e.printStackTrace();
+        }
+      }
+      //window.setDelta((System.nanoTime() - frameStartTime) / 1e9);
+      dt = (System.nanoTime() - frameStartTime) / 1e9;
+      secondTimer += (System.nanoTime() - frameStartTime);
+      frames++;
     }
 
     /*
@@ -473,6 +476,10 @@ public class Game extends Thread {
       disconnectFromServer();
     }
     System.exit(1); // For now...
+  }
+
+  public static double dt() {
+    return dt;
   }
 
   private void loadGame(Loader loader) throws InterruptedException {
@@ -549,7 +556,7 @@ public class Game extends Thread {
     Thread.sleep(500);
     LoadingScreen.done();
     if (autoJoin) {
-      //new PacketReady().sendToServer();
+      // new PacketReady().sendToServer();
       addActiveStage(INLOBBBY);
     } else {
       addActiveStage(MAINMENU);

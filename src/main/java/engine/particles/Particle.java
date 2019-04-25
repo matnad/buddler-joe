@@ -71,8 +71,8 @@ public class Particle {
    * @return true if the particle is still alive after the update
    */
   protected boolean update(Camera camera) {
-    velocity.y += Player.gravity * gravityEffect * Game.window.getFrameTimeSeconds();
-    Vector3f change = new Vector3f(velocity).mul((float) Game.window.getFrameTimeSeconds());
+    velocity.y += Player.gravity * gravityEffect * Game.dt();
+    Vector3f change = new Vector3f(velocity).mul((float) Game.dt());
     position.add(change);
 
     /*We use distance squared since it is faster and makes no difference. It is used to
@@ -81,7 +81,7 @@ public class Particle {
     distance = new Vector3f().set(camera.getPosition()).sub(position).lengthSquared();
 
     updateTextureCoordInfo();
-    elapsedTime += Game.window.getFrameTimeSeconds();
+    elapsedTime += Game.dt();
     return elapsedTime < lifeLength;
   }
 
