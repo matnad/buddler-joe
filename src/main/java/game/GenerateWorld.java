@@ -35,8 +35,8 @@ class GenerateWorld {
    */
   static void generateTerrain(Loader loader) {
     // Terrain Texture
-    TerrainTexture dirt = new TerrainTexture(loader.loadTexture("mud"));
-    TerrainTexture stone = new TerrainTexture(loader.loadTexture("red"));
+    TerrainTexture dirt = new TerrainTexture(loader.loadTexture("Erde512x512"));
+    TerrainTexture stone = new TerrainTexture(loader.loadTexture("Stein512x512"));
     TerrainTexture air = new TerrainTexture(loader.loadTexture("lightblue"));
     // Blend map defines how the textures get applies (each color = one texture with smooth
     // transition)

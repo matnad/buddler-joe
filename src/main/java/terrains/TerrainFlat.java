@@ -12,7 +12,7 @@ import org.joml.Vector3f;
 public class TerrainFlat {
 
   static final float SIZE = GameMap.getDim() * GameMap.getTerrainChunk();
-  private static final int VERTEX_COUNT = GameMap.getDim() * GameMap.getTerrainChunk() * 4;
+  private static final int VERTEX_COUNT = 1;//GameMap.getDim() * GameMap.getTerrainChunk();
   RawModel model;
   private float coordX;
   private float coordZ;
