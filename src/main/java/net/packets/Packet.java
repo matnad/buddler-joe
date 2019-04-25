@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.StringJoiner;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
+
 import net.ClientLogic;
 import net.ServerLogic;
 import net.playerhandling.Player;
@@ -16,7 +19,7 @@ import org.slf4j.LoggerFactory;
  */
 public abstract class Packet {
 
-  private List<String> errors = new ArrayList<>();
+  private List<String> errors = new CopyOnWriteArrayList<>();
   private PacketTypes packetType;
   private int clientId;
   private String data;
@@ -85,7 +88,7 @@ public abstract class Packet {
    * server and calls the sendToClient for every player on the server.
    */
   public void sendToAllClients() {
-    HashMap<Integer, Player> players = ServerLogic.getPlayerList().getPlayers();
+    ConcurrentHashMap<Integer, Player> players = ServerLogic.getPlayerList().getPlayers();
     for (Player p : players.values()) {
       sendToClient(p.getClientId());
     }

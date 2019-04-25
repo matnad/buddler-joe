@@ -2,11 +2,15 @@ package net.lobbyhandling;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.util.HashMap;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class TestServerLobbyList {
+
+    public static final Logger logger = LoggerFactory.getLogger(TestServerLobbyList.class);
+
 
     @Test
     public void checkAddLobby() {
@@ -113,7 +117,6 @@ public class TestServerLobbyList {
     @Test
     public void checkGetTopTen() {
         ServerLobbyList lobbyList = new ServerLobbyList();
-        ConcurrentHashMap<Integer, Lobby> lobbies = new ConcurrentHashMap<>();
         Lobby testLobby1 = new Lobby("test1", 1, "mid");
         Lobby testLobby2 = new Lobby("test2", 2, "large");
         Lobby testLobby3 = new Lobby("test3", 3, "large");
@@ -125,16 +128,6 @@ public class TestServerLobbyList {
         Lobby testLobby9 = new Lobby("test9", 29, "large");
         Lobby testLobby10 = new Lobby("test10", 20, "large");
         Lobby testLobby11 = new Lobby("test11", 24, "large");
-        lobbies.put(testLobby1.getLobbyId(),testLobby1);
-        lobbies.put(testLobby2.getLobbyId(),testLobby2);
-        lobbies.put(testLobby3.getLobbyId(),testLobby3);
-        lobbies.put(testLobby4.getLobbyId(),testLobby4);
-        lobbies.put(testLobby5.getLobbyId(),testLobby5);
-        lobbies.put(testLobby6.getLobbyId(),testLobby6);
-        lobbies.put(testLobby7.getLobbyId(),testLobby7);
-        lobbies.put(testLobby8.getLobbyId(),testLobby8);
-        lobbies.put(testLobby9.getLobbyId(),testLobby9);
-        lobbies.put(testLobby10.getLobbyId(),testLobby10);
         lobbyList.addLobby(testLobby1);
         lobbyList.addLobby(testLobby2);
         lobbyList.addLobby(testLobby3);
@@ -147,12 +140,7 @@ public class TestServerLobbyList {
         lobbyList.addLobby(testLobby10);
         lobbyList.addLobby(testLobby11);
         StringBuilder s = new StringBuilder();
-        s.append("10");
-        for(int i = 1; i <= 10; i++) {
-            s.append(lobbies.get(i).toString());
-        }
-        System.out.println(lobbyList.getTopTen());
-        System.out.println(s.toString());
+        s.append("10║test11║0║test1║0║test2║0║test3║0║test4║0║test5║0║test6║0║test7║0║test8║0║test9║0");
         Assert.assertTrue(lobbyList.getTopTen().equals(s.toString()));
     }
 

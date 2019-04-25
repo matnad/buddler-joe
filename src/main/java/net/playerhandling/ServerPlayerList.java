@@ -1,13 +1,13 @@
 package net.playerhandling;
 
-import java.util.HashMap;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class ServerPlayerList {
 
-  private HashMap<Integer, Player> players;
+  private ConcurrentHashMap<Integer, Player> players;
 
   public ServerPlayerList() {
-    this.players = new HashMap<>();
+    this.players = new ConcurrentHashMap<>();
   }
 
   /**
@@ -84,13 +84,10 @@ public class ServerPlayerList {
    * @return True if the clientId is in the List, false if not
    */
   public boolean isClientIdInList(int clientId) {
-    boolean b = true;
-    try {
-      getPlayer(clientId);
-    } catch (NullPointerException nfe) {
-      b = false;
+    if (getPlayer(clientId) != null) {
+      return true;
     }
-    return b;
+    return false;
   }
 
   /**
@@ -102,10 +99,13 @@ public class ServerPlayerList {
    * @return True if the username is in the list or false if it is not yet in the list
    */
   public boolean isUsernameInList(String username) {
+    try {
     for (Player p : players.values()) {
       if (username.equals(p.getUsername())) {
         return true;
       }
+    } } catch (NullPointerException e) {
+      return false;
     }
     return false;
   }
@@ -128,7 +128,7 @@ public class ServerPlayerList {
       return -2;
     }
 
-    HashMap<Integer, Integer> player = new HashMap<>();
+    ConcurrentHashMap<Integer, Integer> player = new ConcurrentHashMap<>();
     for (Player Player : players.values()) {
       if (message.startsWith(Player.getUsername())) {
 
@@ -176,7 +176,7 @@ public class ServerPlayerList {
    *
    * @return all players in the playerList
    */
-  public HashMap<Integer, Player> getPlayers() {
+  public ConcurrentHashMap<Integer, Player> getPlayers() {
     return players;
   }
 }
