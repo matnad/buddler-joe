@@ -4,6 +4,7 @@ import entities.blocks.BlockMaster;
 import entities.blocks.DirtBlock;
 import entities.blocks.GoldBlock;
 import entities.blocks.GrassBlock;
+import entities.blocks.Obsidian;
 import entities.blocks.QmarkBlock;
 import entities.blocks.StoneBlock;
 import entities.items.ItemMaster;
@@ -46,6 +47,10 @@ public class ServerBlock {
    * @param clientThatDealsDamage clientId that damaged the block
    */
   public void damageBlock(int clientThatDealsDamage, float damage) {
+    if (hardness >= 100f) {
+      return;
+    }
+
     if (type == BlockMaster.BlockTypes.AIR) {
       return;
     }
@@ -80,6 +85,8 @@ public class ServerBlock {
         return 0;
       case QMARK:
         return QmarkBlock.getHardness();
+      case OBSIDIAN:
+        return Obsidian.getHardness();
       default:
         return 0;
     }

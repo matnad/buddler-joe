@@ -28,6 +28,7 @@ public class BlockMaster {
     DirtBlock.init(loader);
     GoldBlock.init(loader);
     StoneBlock.init(loader);
+    Obsidian.init(loader);
     GrassBlock.init(loader);
     QmarkBlock.init(loader);
     AirBlock.init();
@@ -65,6 +66,9 @@ public class BlockMaster {
         break;
       case QMARK:
         block = new QmarkBlock(position, gridX, gridY);
+        break;
+      case OBSIDIAN:
+        block = new Obsidian(position, gridX, gridY);
         break;
       default:
         block = null;
@@ -168,7 +172,8 @@ public class BlockMaster {
     GOLD(30, 3, "\u001B[33m█\u001B[0m"),
     STONE(11, 2, "\u001B[37m█\u001B[0m"),
     AIR(0, 0, "\u001B[35;1m█\u001B[0m"),
-    QMARK(5, 5, "\u001B[34m█\u001B[0m");
+    QMARK(5, 5, "\u001B[34m█\u001B[0m"),
+    OBSIDIAN( 11, 6, "\u001B[37m█\u001B[0m");
 
     private final int textureId;
     private final String repr;

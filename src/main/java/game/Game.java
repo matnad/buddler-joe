@@ -4,8 +4,10 @@ import static game.Game.Stage.CHOOSELOBBY;
 import static game.Game.Stage.CREDITS;
 import static game.Game.Stage.GAMEMENU;
 import static game.Game.Stage.GAMEOVER;
+import static game.Game.Stage.HIGHSCORE;
 import static game.Game.Stage.INLOBBBY;
 import static game.Game.Stage.LOADINGSCREEN;
+import static game.Game.Stage.LOBBYCREATION;
 import static game.Game.Stage.LOGIN;
 import static game.Game.Stage.MAINMENU;
 import static game.Game.Stage.OPTIONS;
@@ -32,14 +34,17 @@ import game.stages.ChooseLobby;
 import game.stages.Credits;
 import game.stages.GameMenu;
 import game.stages.GameOver;
+import game.stages.Highscore;
 import game.stages.InLobby;
 import game.stages.LoadingScreen;
+import game.stages.LobbyCreation;
 import game.stages.Login;
 import game.stages.MainMenu;
 import game.stages.Options;
 import game.stages.Playing;
 import game.stages.Welcome;
 import gui.chat.Chat;
+import gui.lifestatus.LifeStatus;
 import gui.text.CurrentGold;
 import gui.text.CurrentLives;
 import gui.text.Fps;
@@ -108,6 +113,7 @@ public class Game extends Thread {
   private static int serverPort;
   // This probably needs to go somewhere else when we work on the chat
   private static Chat chat;
+  private static LifeStatus lifeStatus;
   private static Player player;
   private static CurrentGold goldGuiText;
   private static CurrentLives livesGuiText;
@@ -122,6 +128,8 @@ public class Game extends Thread {
   private static TerrainFlat belowGround;
   private static GuiRenderer guiRenderer;
   private static CopyOnWriteArrayList<LobbyEntry> lobbyCatalog = new CopyOnWriteArrayList<>();
+  private static CopyOnWriteArrayList<HighscoreEntry> highscoreCatalog =
+      new CopyOnWriteArrayList<>();
   private static CopyOnWriteArrayList<LobbyPlayerEntry> lobbyPlayerCatalog =
       new CopyOnWriteArrayList<>();
   public String username;
@@ -151,6 +159,14 @@ public class Game extends Thread {
 
   public static void setLobbyCatalog(CopyOnWriteArrayList<LobbyEntry> lobbyCatalog) {
     Game.lobbyCatalog = lobbyCatalog;
+  }
+
+  public static CopyOnWriteArrayList<HighscoreEntry> getHighscoreCatalog() {
+    return highscoreCatalog;
+  }
+
+  public static void setHighscoreCatalog(CopyOnWriteArrayList<HighscoreEntry> highscoreCatalog) {
+    Game.highscoreCatalog = highscoreCatalog;
   }
 
   public static CopyOnWriteArrayList<LobbyPlayerEntry> getLobbyPlayerCatalog() {
@@ -203,6 +219,10 @@ public class Game extends Thread {
     return camera;
   }
 
+  public static SettingsSerialiser getSettingsSerialiser() {
+    return settingsSerialiser;
+  }
+
   public static void setActiveCamera(Camera camera) {
     Game.camera = camera;
   }
@@ -223,6 +243,10 @@ public class Game extends Thread {
     return chat;
   }
 
+  public static LifeStatus getLifeStatus() {
+    return lifeStatus;
+  }
+
   public static List<Stage> getActiveStages() {
     return activeStages;
   }
@@ -241,6 +265,10 @@ public class Game extends Thread {
 
   public static void setLobbyCreated(boolean lobbyCreated) {
     Game.lobbyCreated = lobbyCreated;
+  }
+
+  public static Settings getSettings() {
+    return settings;
   }
 
   /**
@@ -342,6 +370,7 @@ public class Game extends Thread {
     }
 
     chat = new Chat(loader, 12, 0.34f);
+    lifeStatus = new LifeStatus(loader);
     Fps fpsCounter = new Fps();
 
     // Initialize Particle Master
@@ -498,9 +527,13 @@ public class Game extends Thread {
     LoadingScreen.progess();
     Login.init(loader);
     LoadingScreen.progess();
+    Highscore.init(loader);
+    LoadingScreen.progess();
     InLobby.init(loader);
     LoadingScreen.progess();
     GameOver.init(loader);
+    LoadingScreen.progess();
+    LobbyCreation.init(loader);
 
     // Generate ServerPlayer
     NetPlayer.init(loader);
@@ -549,7 +582,8 @@ public class Game extends Thread {
 
     // GUI / Other
     goldGuiText = new CurrentGold();
-    livesGuiText = new CurrentLives();
+    //livesGuiText = new CurrentLives();
+    //lifestatus = new LifeStatus(loader);
     Playing.init(loader);
 
     LoadingScreen.updateLoadingMessage("Ready!");
@@ -575,9 +609,6 @@ public class Game extends Thread {
       if (!username.equals(settings.getUsername())) {
         this.username = settings.getUsername();
       }
-      if (!window.equals(settings.getWindow())) {
-        window = settings.getWindow();
-      }
     } else {
       this.settings = new Settings();
     }
@@ -599,6 +630,8 @@ public class Game extends Thread {
     WELCOME,
     LOGIN,
     INLOBBBY,
-    GAMEOVER
+    HIGHSCORE,
+    GAMEOVER,
+    LOBBYCREATION
   }
 }

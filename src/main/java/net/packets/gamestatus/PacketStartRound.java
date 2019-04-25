@@ -57,6 +57,6 @@ public class PacketStartRound extends Packet {
     Player player = Game.getActivePlayer();
     new PacketPos(player.getPositionXy().x, player.getPositionXy().y, player.getRotY())
         .sendToServer();
-    InLobby.done();
+    // InLobby.done();
   }
 }

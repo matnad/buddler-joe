@@ -27,6 +27,7 @@ public class Lobby implements Runnable {
   private CopyOnWriteArrayList<ServerPlayer> lobbyPlayers;
   private ServerMap map;
   private int createrPlayerId;
+  private String mapSize;
   private String status;
   private long createdAt;
   private ServerItemState serverItemState;
@@ -40,10 +41,12 @@ public class Lobby implements Runnable {
    *     Lobby#lobbyCounter}. {@link Lobby#lobbyCounter} gets raised by one after every lobby
    *     construction.
    * @param createrPlayerId id of the player who is creating the lobby
+   * @param mapSize a String that should equal "s", "m" or "l" that describes the mapsize.
    */
-  public Lobby(String lobbyName, int createrPlayerId) {
+  public Lobby(String lobbyName, int createrPlayerId, String mapSize) {
     this.lobbyName = lobbyName;
     this.createrPlayerId = createrPlayerId;
+    this.mapSize = mapSize;
     this.status = "open";
     this.inGame = false;
     this.lobbyPlayers = new CopyOnWriteArrayList<>();
@@ -51,7 +54,6 @@ public class Lobby implements Runnable {
     this.serverItemState = new ServerItemState();
     lobbyCounter++;
     map = new ServerMap(33, 40, System.currentTimeMillis());
-    // System.out.println(map);
   }
 
   @Override

@@ -14,6 +14,7 @@ import gui.text.ChangableGuiText;
 import java.util.ArrayList;
 import java.util.List;
 import net.packets.gamestatus.PacketGetHistory;
+import net.packets.highscore.PacketHighscore;
 import net.packets.lobby.PacketGetLobbies;
 import org.joml.Vector2f;
 
@@ -176,8 +177,11 @@ public class MainMenu {
       Game.addActiveStage(Game.Stage.INLOBBBY);
       Game.removeActiveStage(Game.Stage.MAINMENU);
     } else if (InputHandler.isKeyPressed(GLFW_KEY_H)) {
-      // TODO: remove this if option
-      new PacketGetHistory().sendToServer();
+      new PacketHighscore().sendToServer();
+      PacketHighscore p = new PacketHighscore();
+      p.sendToServer();
+      Game.addActiveStage(Game.Stage.HIGHSCORE);
+      Game.removeActiveStage(Game.Stage.MAINMENU);
     }
 
     Game.getGuiRenderer().render(guis);
