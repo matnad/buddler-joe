@@ -469,9 +469,9 @@ public class Game extends Thread {
           LobbyCreation.update();
         }
 
-        //if (activeStages.contains(CHANGENAME)) {
-        //  ChangeName.update();
-        //}
+        if (activeStages.contains(CHANGENAME)) {
+          ChangeName.update();
+        }
       }
 
 
