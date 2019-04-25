@@ -26,6 +26,7 @@ import entities.Camera;
 import entities.Entity;
 import entities.NetPlayer;
 import entities.Player;
+import entities.SpectatorCamera;
 import entities.blocks.BlockMaster;
 import entities.blocks.debris.DebrisMaster;
 import entities.items.ItemMaster;
@@ -50,6 +51,7 @@ import gui.lifestatus.LifeStatus;
 import gui.text.CurrentGold;
 import gui.text.Fps;
 import gui.text.GuiString;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -230,6 +232,9 @@ public class Game extends Thread {
             new Vector3f(300, 400, 200),
             new Vector3f(1, 1, 1).normalize())
         .setBrightness(2f);
+
+    // Debug
+
 
     /*
     **************************************************************
@@ -440,7 +445,8 @@ public class Game extends Thread {
     }
 
     // Camera
-    camera = new Camera(player, window);
+    //camera = new Camera(player, window);
+    camera = new SpectatorCamera(window);
 
     // GUI / Other
     goldGuiText = new CurrentGold();

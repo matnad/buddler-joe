@@ -9,6 +9,7 @@ import engine.textures.ModelTexture;
 import engine.textures.TerrainTexture;
 import engine.textures.TerrainTexturePack;
 import entities.Entity;
+import game.map.ServerMap;
 import java.util.Random;
 import org.joml.Vector3f;
 import terrains.Terrain;
@@ -34,64 +35,65 @@ class GenerateWorld {
    */
   static void generateTerrain(Loader loader) {
     // Terrain Texture
-    TerrainTexture grass = new TerrainTexture(loader.loadTexture("grass"));
-    TerrainTexture mud = new TerrainTexture(loader.loadTexture("mud"));
-    TerrainTexture grassFlowers = new TerrainTexture(loader.loadTexture("grassFlowers"));
-    TerrainTexture path = new TerrainTexture(loader.loadTexture("path"));
+    TerrainTexture dirt = new TerrainTexture(loader.loadTexture("mud"));
+    TerrainTexture stone = new TerrainTexture(loader.loadTexture("red"));
+    TerrainTexture air = new TerrainTexture(loader.loadTexture("lightblue"));
     // Blend map defines how the textures get applies (each color = one texture with smooth
     // transition)
     // Check out the picture in resources
-    TerrainTexture blendMap = new TerrainTexture(loader.loadTexture("blendMap"));
+    //TerrainTexture blendMap = new TerrainTexture(loader.loadTexture("blendMap"));
+    ServerMap map = new ServerMap(10, 10, 50);
+    TerrainTexture blendMap = new TerrainTexture(loader.loadTexture(map, 0, 0));
 
     // Terrain Generation
-    TerrainTexturePack texturePack = new TerrainTexturePack(grass, mud, grassFlowers, path);
+    TerrainTexturePack texturePack = new TerrainTexturePack(dirt, dirt, dirt, dirt);
     aboveGround = new Terrain(0, -1, loader, texturePack, blendMap, "heightMap");
 
-    texturePack = new TerrainTexturePack(mud, mud, grass, mud);
+    texturePack = new TerrainTexturePack(dirt, stone, air, dirt);
     belowGround = new TerrainFlat(0, 0, loader, texturePack, blendMap);
-    belowGround.setRotation(new Vector3f(0, 0, 90));
+    //belowGround.setRotation(new Vector3f(0, 0, 0));
 
-    // Tree
-    ModelData data = ObjFileLoader.loadObj("tree");
-    RawModel rawTree = loader.loadToVao(data);
-    TexturedModel tree = new TexturedModel(rawTree, new ModelTexture(loader.loadTexture("tree")));
-
-    // Tree2
-    data = ObjFileLoader.loadObj("lowPolyTree");
-    RawModel rawTree2 =
-        loader.loadToVao(
-            data.getVertices(), data.getTextureCoords(), data.getNormals(), data.getIndices());
-    TexturedModel tree2 =
-        new TexturedModel(rawTree2, new ModelTexture(loader.loadTexture("lowPolyTree")));
-
-    // Fern
-    data = ObjFileLoader.loadObj("fern");
-    RawModel rawFern =
-        loader.loadToVao(
-            data.getVertices(), data.getTextureCoords(), data.getNormals(), data.getIndices());
-    ModelTexture fernAtlas = new ModelTexture(loader.loadTexture("fernAtlas"));
-    fernAtlas.setNumberOfRows(2);
-    TexturedModel fern = new TexturedModel(rawFern, fernAtlas);
-    fern.getTexture().setHasTransparency(true);
-
-    // Place some vegetation
-    for (int i = 0; i < 200; i++) {
-      if (i % 3 == 0) {
-        Game.addEntity(
-            new Entity(fern, random.nextInt(4), getNextRandomVector3f(aboveGround), 0, 0, 0, .9f));
-        Game.addEntity(
-            new Entity(
-                tree2,
-                getNextRandomVector3f(aboveGround),
-                0,
-                random.nextFloat() * 360,
-                0,
-                random.nextFloat() * 0.4f + .2f));
-        Game.addEntity(
-            new Entity(
-                tree, getNextRandomVector3f(aboveGround), 0, 0, 0, random.nextFloat() * 1 + 4));
-      }
-    }
+    //// Tree
+    //ModelData data = ObjFileLoader.loadObj("tree");
+    //RawModel rawTree = loader.loadToVao(data);
+    //TexturedModel tree = new TexturedModel(rawTree, new ModelTexture(loader.loadTexture("tree")));
+    //
+    //// Tree2
+    //data = ObjFileLoader.loadObj("lowPolyTree");
+    //RawModel rawTree2 =
+    //    loader.loadToVao(
+    //        data.getVertices(), data.getTextureCoords(), data.getNormals(), data.getIndices());
+    //TexturedModel tree2 =
+    //    new TexturedModel(rawTree2, new ModelTexture(loader.loadTexture("lowPolyTree")));
+    //
+    //// Fern
+    //data = ObjFileLoader.loadObj("fern");
+    //RawModel rawFern =
+    //    loader.loadToVao(
+    //        data.getVertices(), data.getTextureCoords(), data.getNormals(), data.getIndices());
+    //ModelTexture fernAtlas = new ModelTexture(loader.loadTexture("fernAtlas"));
+    //fernAtlas.setNumberOfRows(2);
+    //TexturedModel fern = new TexturedModel(rawFern, fernAtlas);
+    //fern.getTexture().setHasTransparency(true);
+    //
+    //// Place some vegetation
+    //for (int i = 0; i < 200; i++) {
+    //  if (i % 3 == 0) {
+    //    Game.addEntity(
+    //        new Entity(fern, random.nextInt(4), getNextRandomVector3f(aboveGround), 0, 0, 0, .9f));
+    //    Game.addEntity(
+    //        new Entity(
+    //            tree2,
+    //            getNextRandomVector3f(aboveGround),
+    //            0,
+    //            random.nextFloat() * 360,
+    //            0,
+    //            random.nextFloat() * 0.4f + .2f));
+    //    Game.addEntity(
+    //        new Entity(
+    //            tree, getNextRandomVector3f(aboveGround), 0, 0, 0, random.nextFloat() * 1 + 4));
+    //  }
+    //}
   }
 
   // We change seed management once we have World generation down.

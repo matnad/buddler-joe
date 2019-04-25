@@ -7,6 +7,7 @@ package util;
 
 import static org.lwjgl.BufferUtils.createByteBuffer;
 
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
@@ -20,7 +21,7 @@ public final class IoUtil {
 
   private IoUtil() {}
 
-  private static ByteBuffer resizeBuffer(ByteBuffer buffer, int newCapacity) {
+  public static ByteBuffer resizeBuffer(ByteBuffer buffer, int newCapacity) {
     ByteBuffer newBuffer = BufferUtils.createByteBuffer(newCapacity);
     buffer.flip();
     newBuffer.put(buffer);
@@ -57,4 +58,5 @@ public final class IoUtil {
     buffer.flip();
     return buffer.slice();
   }
+
 }

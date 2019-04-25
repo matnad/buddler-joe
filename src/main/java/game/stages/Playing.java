@@ -87,11 +87,11 @@ public class Playing {
     // Prepare and render the entities
     renderer.processEntity(Game.getActivePlayer());
     NetPlayerMaster.update(renderer);
-    renderer.processTerrain(Game.getAboveGround());
+    //renderer.processTerrain(Game.getAboveGround());
     renderer.processTerrain(Game.getBelowGround());
     for (Entity entity : Game.getEntities()) {
       if (entity != null) {
-        renderer.processEntity(entity);
+        //renderer.processEntity(entity);
       }
     }
 
