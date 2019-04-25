@@ -1,5 +1,6 @@
 package game;
 
+import static game.Game.Stage.CHANGENAME;
 import static game.Game.Stage.CHOOSELOBBY;
 import static game.Game.Stage.CREDITS;
 import static game.Game.Stage.GAMEMENU;
@@ -63,7 +64,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import terrains.Terrain;
 import terrains.TerrainFlat;
-import util.RandomName;
 
 //  import org.slf4j.Logger;
 // import org.slf4j.LoggerFactory;
@@ -138,7 +138,7 @@ public class Game extends Thread {
    * If someone wants to work on this, edit this comment or add an issue to the tracker in gitlab
    */
   private boolean autoJoin = true;
-  private Settings settings;
+  private static Settings settings;
 
   /**
    * The constructor for the game to be called from the main class.
@@ -421,7 +421,7 @@ public class Game extends Thread {
         GameOver.update();
       } else {
         /*InputHandler needs to be BEFORE polling (window.update()) so we still have access to
-        the events of last Frame. Everything else should be after polling.*/
+          the events of last Frame. Everything else should be after polling.*/
         InputHandler.update();
         Game.window.update();
 
@@ -439,6 +439,10 @@ public class Game extends Thread {
 
         if (activeStages.contains(CHOOSELOBBY)) {
           ChooseLobby.update();
+        }
+
+        if (activeStages.contains(HIGHSCORE)) {
+          Highscore.update();
         }
 
         if (activeStages.contains(CREDITS)) {
@@ -460,7 +464,16 @@ public class Game extends Thread {
         if (activeStages.contains(INLOBBBY)) {
           InLobby.update();
         }
+
+        if (activeStages.contains(LOBBYCREATION)) {
+          LobbyCreation.update();
+        }
+
+        //if (activeStages.contains(CHANGENAME)) {
+        //  ChangeName.update();
+        //}
       }
+
 
       activeStages.addAll(stagesToBeAdded);
       stagesToBeAdded.clear();
@@ -480,7 +493,7 @@ public class Game extends Thread {
           e.printStackTrace();
         }
       }
-      //window.setDelta((System.nanoTime() - frameStartTime) / 1e9);
+      // window.setDelta((System.nanoTime() - frameStartTime) / 1e9);
       dt = (System.nanoTime() - frameStartTime) / 1e9;
       secondTimer += (System.nanoTime() - frameStartTime);
       frames++;
@@ -558,7 +571,7 @@ public class Game extends Thread {
     // if (autoJoin) {
     String lobname = String.valueOf(new Random().nextInt((int) 10e15));
     LoadingScreen.updateLoadingMessage("joining lobby");
-    new PacketCreateLobby(lobname).sendToServer();
+    new PacketCreateLobby(lobname + "║s").sendToServer();
     while (!lobbyCreated) {
       Thread.sleep(50);
     }
@@ -582,8 +595,8 @@ public class Game extends Thread {
 
     // GUI / Other
     goldGuiText = new CurrentGold();
-    //livesGuiText = new CurrentLives();
-    //lifestatus = new LifeStatus(loader);
+    // livesGuiText = new CurrentLives();
+    // lifestatus = new LifeStatus(loader);
     Playing.init(loader);
 
     LoadingScreen.updateLoadingMessage("Ready!");
@@ -632,6 +645,8 @@ public class Game extends Thread {
     INLOBBBY,
     HIGHSCORE,
     GAMEOVER,
+    CHANGENAME,
     LOBBYCREATION
   }
+
 }

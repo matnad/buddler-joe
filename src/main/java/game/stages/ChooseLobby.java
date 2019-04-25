@@ -299,6 +299,10 @@ public class ChooseLobby {
     }
     initializedPageIndex = false;
     for (int i = 0; i < names.length; i++) {
+      // Catch Nullpointer
+      if (names[i] == null || count[i] == null) {
+        continue;
+      }
       names[i].delete();
       count[i].delete();
     }
