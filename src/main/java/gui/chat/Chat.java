@@ -39,9 +39,13 @@ public class Chat {
   private FontType font;
   private ChatText guiText;
   private Vector3f textColour;
+  private Vector2f chatPosition;
+  private Vector2f messagePosition;
 
   private float maxLineLength;
+  private float differenceMessageToChat;
   private int maxLines;
+  private boolean inLobby;
 
   private List<ChatText> messages;
   private int msgSize;
@@ -89,6 +93,10 @@ public class Chat {
     messages = new ArrayList<>();
     text = new ArrayList<>();
     msgSize = 0;
+    chatPosition = new Vector2f();
+    messagePosition = new Vector2f();
+    differenceMessageToChat = 0f;
+    inLobby = true;
   }
 
   /**
@@ -100,6 +108,10 @@ public class Chat {
    * <p>Called every frame. Reads chat input and toggles chat window text input handler
    */
   public void checkInputs() {
+    if (inLobby) {
+      setEnabled(true);
+      InputHandler.readInputOn();
+    }
     if (InputHandler.isKeyPressed(GLFW_KEY_ENTER)) {
       if (chatText.length() > 0 && enabled) {
         PacketChatMessageToServer chatString = new PacketChatMessageToServer(chatText);
@@ -123,9 +135,9 @@ public class Chat {
     if (messages.size() != text.size()) {
       addChatText();
     }
-
-    updateAlpha();
-
+    if (!inLobby) {
+      updateAlpha();
+    }
     if (showTemporary) {
       temporaryShowElapsed += Game.window.getFrameTimeSeconds();
       if (temporaryShowElapsed >= temporaryShowDuration) {
@@ -204,8 +216,8 @@ public class Chat {
   public void arrangeMessages() {
 
     if (messages.size() != msgSize) { // Something changed
-      float posY = .88f;
-      float posX = .03f;
+      float posY = chatPosition.y;
+      float posX = chatPosition.x;
       int currentLines = 0;
 
       for (int i = messages.size() - 1; i >= 0; i--) {
@@ -236,16 +248,14 @@ public class Chat {
     do {
       TextMaster.removeText(guiText);
 
-      guiText =
-          new ChatText(
-              output, 1, textColour, alpha, font, new Vector2f(.06f, .91f), 1f, false, false);
+      guiText = new ChatText(output, 1, textColour, alpha, font, messagePosition, 1f, false, false);
 
       if (output.length() > 0) {
         output = output.substring(1);
       }
 
     } while (guiText.getLengthOfLines().get(guiText.getLengthOfLines().size() - 1)
-        > maxLineLength - 0.04);
+        > maxLineLength - differenceMessageToChat);
     //    System.out.println(guiText.getLengthOfLines().get(guiText.getLengthOfLines().size()-1));
   }
 
@@ -272,7 +282,7 @@ public class Chat {
     return enabled;
   }
 
-  private void setEnabled(boolean enabled) {
+  public void setEnabled(boolean enabled) {
     this.enabled = enabled;
   }
 
@@ -317,5 +327,65 @@ public class Chat {
             false);
     guiText = clearChatText(guiText);
     messages.add(messageText);
+  }
+
+  public void setGameChatPosition() {
+    chatPosition.x = 0.03f;
+    chatPosition.y = 0.88f;
+  }
+
+  public void setLobbyChatPosition() {
+    chatPosition.x = 0.53f;
+    chatPosition.y = 0.71f;
+  }
+
+  public void setLobbyMaxLines() {
+    maxLines = 23;
+  }
+
+  public void setGameMaxLines() {
+    maxLines = 12;
+  }
+
+  public void setGameColour() {
+    textColour.x = 1f;
+    textColour.y = 1f;
+    textColour.z = 1f;
+  }
+
+  public void setLobbyColour() {
+    textColour.x = 0f;
+    textColour.y = 0f;
+    textColour.z = 0f;
+  }
+
+  public void setGameMaxLineLength() {
+    maxLineLength = 0.34f;
+  }
+
+  public void setLobbyMaxLineLength() {
+    maxLineLength = 0.205f;
+  }
+
+  public void setGameMessagePosition() {
+    messagePosition.x = 0.06f;
+    messagePosition.y = 0.91f;
+  }
+
+  public void setLobbyMessagePosition() {
+    messagePosition.x = 0.525f;
+    messagePosition.y = 0.785f;
+  }
+
+  public void setGamedifferendeMessageToLobby() {
+    differenceMessageToChat = 0.04f;
+  }
+
+  public void setInLobby(boolean status) {
+    this.inLobby = status;
+  }
+
+  public void setAlpha() {
+    alpha = 1;
   }
 }
