@@ -269,6 +269,10 @@ public class Game extends Thread {
     return settings;
   }
 
+  public static void setServerIp(String Ip) {
+    serverIp = Ip;
+  }
+
   /**
    * Add a stage to the game loop.
    *
@@ -306,6 +310,10 @@ public class Game extends Thread {
 
   public String getUsername() {
     return settings.getUsername();
+  }
+
+  public static String getServerIp() {
+    return serverIp;
   }
 
   public void setUsername(String username) {
@@ -584,8 +592,8 @@ public class Game extends Thread {
 
     // GUI / Other
     goldGuiText = new CurrentGold();
-    //livesGuiText = new CurrentLives();
-    //lifestatus = new LifeStatus(loader);
+    // livesGuiText = new CurrentLives();
+    // lifestatus = new LifeStatus(loader);
     Playing.init(loader);
 
     LoadingScreen.updateLoadingMessage("Ready!");

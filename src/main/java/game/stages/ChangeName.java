@@ -108,7 +108,7 @@ public class ChangeName {
     InputHandler.readInputOn();
     newname = InputHandler.getInputString();
     //    System.out.println(newname);
-    if (newname.length()>30){
+    if (newname.length() > 30) {
       newname = name;
       StringBuilder temp = new StringBuilder(newname);
       InputHandler.setInputString(temp);
@@ -150,7 +150,6 @@ public class ChangeName {
       new PacketSetName(newname).sendToServer();
       InputHandler.resetInputString();
       initializedText = false;
-      // TODO: replace "user+currentTime" with entered UserName.
     }
 
     Game.getGuiRenderer().render(guis);
@@ -194,25 +193,12 @@ public class ChangeName {
   }
 
   private static void updateGuiText() {
-    // guiText.setTextString(chatText); // doesn't work, we need to reload the texture and
-    // create a new text
+
     output = name;
     TextMaster.removeAll();
-    //        do {
-    //    TextMaster.removeText(guiText);
 
     guiText =
         new GuiText(
             output, 1.5f, font, new Vector3f(0f, 0f, 0f), 1f, new Vector2f(.30f, .62f), 1f, false);
-
-    //    if (output.length() > 0) {
-    //      output = output.substring(1);
-    //    }
-    //
-    //        } while (guiText.getLengthOfLines().get(guiText.getLengthOfLines().size() - 1)
-    //                > maxLineLength - 0.04);
-    //
-    // System.out.println(guiText.getLengthOfLines().get(guiText.getLengthOfLines().size()-1));
-
   }
 }

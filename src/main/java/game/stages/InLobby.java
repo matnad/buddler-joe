@@ -8,7 +8,6 @@ import engine.render.fontrendering.TextMaster;
 import game.Game;
 import game.LobbyPlayerEntry;
 import game.NetPlayerMaster;
-import gui.chat.Chat;
 import gui.GuiTexture;
 import gui.MenuButton;
 import gui.text.ChangableGuiText;
@@ -95,12 +94,13 @@ public class InLobby {
     if (!initializedText) {
       done();
       initText();
-      Game.getChat().setLobbyChatPosition();
-      Game.getChat().setLobbyMaxLines();
-      Game.getChat().setLobbyColour();
-      Game.getChat().setLobbyMaxLineLength();
-      Game.getChat().setLobbyMessagePosition();
-      Game.getChat().setAlpha();
+      //      Game.getChat().setLobbyChatPosition();
+      //      Game.getChat().setLobbyMaxLines();
+      //      Game.getChat().setLobbyColour();
+      //      Game.getChat().setLobbyMaxLineLength();
+      //      Game.getChat().setLobbyMessagePosition();
+      //      Game.getChat().setAlpha();
+      Game.getChat().setLobbyChatSettings();
       initializedText = true;
     }
 
