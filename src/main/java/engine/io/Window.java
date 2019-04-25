@@ -176,13 +176,16 @@ public class Window {
     return (double) System.nanoTime() / 1e9;
   }
 
-  /**
-   * Returns true if the Game Loop should update and render a frame. This is to limit the FPS of the
-   * game.
-   *
-   * @return true if the Game Loop should update and render a frame
-   */
-  //public boolean isUpdating() {
+  /// **
+  // * OUTDATED. Game loop has been changed to a new system and moved to game.Game
+  // *
+  // * <p>Returns true if the Game Loop should update and render a frame. This is to limit the FPS
+  // of
+  // * the game.
+  // *
+  // * @return true if the Game Loop should update and render a frame
+  // */
+  // public boolean isUpdating() {
   //  delta = 0;
   //  boolean update = false;
   //  double nextTime = getTime();
@@ -210,22 +213,8 @@ public class Window {
   //    update = true;
   //  }
   //  return update;
-  //}
+  // }
   //
-  //public boolean isUpdating() {
-  //
-  //  double frameStartTime = getTime();
-  //  // loop
-  //
-  //  double frameTime = getTime() - frameStartTime;
-  //  if (frameTime < timePerFrame) {
-  //    try {
-  //      Thread.sleep((long) ((timePerFrame - frameTime) * 1e3));
-  //    } catch (InterruptedException e) {
-  //      e.printStackTrace();
-  //    }
-  //  }
-  //}
 
   // Getters
   public int getWidth() {

@@ -139,6 +139,5 @@ public class Playing {
     firstloop = true;
     floatingGoldStrings.done();
     Game.getGoldGuiText().done();
-    Game.getLivesGuiText().done();
   }
 }

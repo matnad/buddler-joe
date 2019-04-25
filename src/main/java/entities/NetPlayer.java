@@ -15,12 +15,16 @@ import gui.text.Nameplate;
 import java.util.ArrayList;
 import java.util.List;
 import org.joml.Vector3f;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * This will be reworked very shortly so I will not fully document it. A LOT will change and it is
  * not really used now. Ignore the class please.
  */
 public class NetPlayer extends Entity {
+
+  private static final Logger logger = LoggerFactory.getLogger(NetPlayer.class);
 
   private static final float joeModelSize = .2f;
   private static final float ripModelSize = .5f;
@@ -49,7 +53,7 @@ public class NetPlayer extends Entity {
   Block collideWithBlockBelow;
 
   static final float jumpPower = 28; // Units per second
-  public static final float gravity = -45; // Units per second
+  public static final float gravity = -60; // Units per second
   static final float runSpeed = 20; // Units per second
   static final float turnSpeed = 720; // Degrees per second
 
@@ -60,6 +64,8 @@ public class NetPlayer extends Entity {
   List<Block> closeBlocks;
 
   boolean isInAir = false;
+
+  private long lastCrushed = System.currentTimeMillis();
 
   /**
    * Create a net player.
@@ -112,11 +118,9 @@ public class NetPlayer extends Entity {
   }
 
   /**
-   * Called every frame to update the position of the NetPlayer.
-   * Collision for every player is calculated locally.
-   * Once per second the positions are synced.
-   *
-   * */
+   * Called every frame to update the position of the NetPlayer. Collision for every player is
+   * calculated locally. Once per second the positions are synced.
+   */
   public void update() {
 
     collideWithBlockAbove = null;
@@ -125,29 +129,44 @@ public class NetPlayer extends Entity {
     updateCloseBlocks(BlockMaster.getBlocks());
 
     float ipfX = interpolationFactor;
+    float ipfY = interpolationFactor;
     if (isInAir) {
       goalVelocity.y += gravity * Game.dt();
       ipfX /= 5;
+      ipfY = Math.min(1, ipfY * 2);
     }
 
     // Linear Interpolation of current velocity and goal velocity
     currentVelocity.x += (goalVelocity.x - currentVelocity.x) * ipfX;
-    currentVelocity.y += (goalVelocity.y - currentVelocity.y) * interpolationFactor;
+    currentVelocity.y += (goalVelocity.y - currentVelocity.y) * ipfY;
 
     // Move player
     increasePosition(new Vector3f(currentVelocity).mul((float) Game.dt()));
 
     // Handle character rotation (check run direction see if we need to rotate more)
-    this.increaseRotation(
-        0, (float) (getCurrentTurnSpeed() * Game.dt()), 0);
+    this.increaseRotation(0, (float) (getCurrentTurnSpeed() * Game.dt()), 0);
 
     for (Block closeBlock : closeBlocks) {
       handleNetPlayerCollision(closeBlock);
     }
 
     isInAir = collideWithBlockBelow == null;
+    resolveNetCrush();
 
     nameplate.updateString();
+  }
+
+  private void resolveNetCrush() {
+    // Check if crushed
+    if (collideWithBlockAbove != null && collideWithBlockBelow != null) {
+      // Only register a crush every 500ms to give the crushed player the chance to update their
+      // position
+      if (System.currentTimeMillis() - lastCrushed > 500) {
+        // Notify the server that you saw a player get crushed
+        logger.info("I saw player " + username + " getting crushed. Reporting it to the server.");
+        lastCrushed = System.currentTimeMillis();
+      }
+    }
   }
 
   /**
@@ -199,8 +218,7 @@ public class NetPlayer extends Entity {
         setPositionY(e.getMinY() - p.getDimY());
         // Stop jumping up if we hit something above, will start accelerating down
       } else {
-        setPositionX(
-            (float) (getPosition().x - currentVelocity.x * Game.dt()));
+        setPositionX((float) (getPosition().x - currentVelocity.x * Game.dt()));
       }
     }
   }

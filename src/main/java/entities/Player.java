@@ -119,14 +119,16 @@ public class Player extends NetPlayer {
 
     // Apply gravity and "slow horizontal correction"
     float ipfX = interpolationFactor;
+    float ipfY = interpolationFactor;
     if (isInAir) {
       goalVelocity.y += gravity * Game.dt();
       ipfX /= 5;
+      ipfY = Math.min(1, ipfY * 2);
     }
 
     // Linear Interpolation of current velocity and goal velocity
     currentVelocity.x += (goalVelocity.x - currentVelocity.x) * ipfX;
-    currentVelocity.y += (goalVelocity.y - currentVelocity.y) * interpolationFactor;
+    currentVelocity.y += (goalVelocity.y - currentVelocity.y) * ipfY;
 
     // Move player
     increasePosition(new Vector3f(currentVelocity).mul((float) Game.dt()));
@@ -201,8 +203,9 @@ public class Player extends NetPlayer {
       // No empty room to teleport to. Just reset y to above ground.
       setPositionY(5);
     } else {
-      // Move player to an empty space
+      // Move player to an empty space and update position for all players
       setPosition(Game.getMap().gridToWorld(closestGridPos));
+      new PacketPos(getPositionXy().x, getPositionXy().y, getRotY()).sendToServer();
     }
   }
 
