@@ -54,6 +54,7 @@ public class LobbyCreation {
   private static FontType font;
   private static Vector3f textColour;
   private static GuiText guiText;
+
   /**
    * Initializes the textures for this GUI-menu.
    *

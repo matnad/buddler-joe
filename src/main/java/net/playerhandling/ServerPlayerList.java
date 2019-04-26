@@ -1,5 +1,6 @@
 package net.playerhandling;
 
+import entities.Player;
 import java.util.HashMap;
 
 public class ServerPlayerList {
@@ -129,15 +130,15 @@ public class ServerPlayerList {
     }
 
     HashMap<Integer, Integer> player = new HashMap<>();
-    for (Player Player : players.values()) {
-      if (message.startsWith(Player.getUsername())) {
+    for (ServerPlayer p : players.values()) {
+      if (message.startsWith(p.getUsername())) {
 
         x++;
-        for (int i = 0; i < Player.getUsername().length(); i++) {
-          if (message.charAt(i) == Player.getUsername().charAt(i)) {
+        for (int i = 0; i < p.getUsername().length(); i++) {
+          if (message.charAt(i) == p.getUsername().charAt(i)) {
             j++;
           }
-          player.put(j, Player.getClientId());
+          player.put(j, p.getClientId());
         }
       }
     }

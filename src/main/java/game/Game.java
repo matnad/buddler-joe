@@ -646,6 +646,10 @@ public class Game extends Thread {
     return settings.getUsername();
   }
 
+  public static String getServerIp() {
+    return serverIp;
+  }
+
   // Valid Stages
   public enum Stage {
     MAINMENU,

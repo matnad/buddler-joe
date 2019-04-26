@@ -97,7 +97,7 @@ public class PacketChatMessageToServer extends Packet {
             + "]";
     if (!hasErrors()) {
 
-      Player client = ServerLogic.getPlayerList().getPlayer(getClientId());
+      ServerPlayer client = ServerLogic.getPlayerList().getPlayer(getClientId());
       if (client == null) {
         addError("Not logged in");
       } else {
