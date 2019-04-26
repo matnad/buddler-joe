@@ -1,8 +1,8 @@
 package net.lobbyhandling;
 
-import java.util.concurrent.CopyOnWriteArrayList;
 import entities.items.ItemMaster;
 import entities.items.ServerItem;
+import java.util.concurrent.CopyOnWriteArrayList;
 import org.joml.Vector3f;
 import org.junit.Assert;
 import org.junit.Test;
