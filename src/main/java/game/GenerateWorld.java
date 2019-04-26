@@ -34,23 +34,23 @@ class GenerateWorld {
    *     one loader.
    */
   static void generateTerrain(Loader loader) {
-    // Terrain Texture
-    TerrainTexture dirt = new TerrainTexture(loader.loadTexture("Erde512x512"));
-    TerrainTexture stone = new TerrainTexture(loader.loadTexture("Stein512x512"));
-    TerrainTexture air = new TerrainTexture(loader.loadTexture("lightblue"));
+    //// Terrain Texture
+    //TerrainTexture dirt = new TerrainTexture(loader.loadTexture("Erde512x512"));
+    //TerrainTexture stone = new TerrainTexture(loader.loadTexture("Stein512x512"));
+    //TerrainTexture air = new TerrainTexture(loader.loadTexture("black"));
     // Blend map defines how the textures get applies (each color = one texture with smooth
     // transition)
     // Check out the picture in resources
     //TerrainTexture blendMap = new TerrainTexture(loader.loadTexture("blendMap"));
-    ServerMap map = new ServerMap(10, 10, 50);
-    TerrainTexture blendMap = new TerrainTexture(loader.loadTexture(map, 0, 0));
+    //ServerMap map = new ServerMap(10, 10, 50);
+    //TerrainTexture blendMap = new TerrainTexture(loader.loadTexture(map, 0, 0));
 
     // Terrain Generation
-    TerrainTexturePack texturePack = new TerrainTexturePack(dirt, dirt, dirt, dirt);
-    aboveGround = new Terrain(0, -1, loader, texturePack, blendMap, "heightMap");
+    //TerrainTexturePack texturePack = new TerrainTexturePack(dirt, dirt, dirt, dirt);
+    //aboveGround = new Terrain(0, -1, loader, texturePack, blendMap, "heightMap");
 
-    texturePack = new TerrainTexturePack(dirt, stone, air, dirt);
-    belowGround = new TerrainFlat(0, 0, loader, texturePack, blendMap);
+    //texturePack = new TerrainTexturePack(dirt, stone, air, dirt);
+    //belowGround = new TerrainFlat(0, 0, loader, texturePack, blendMap);
     //belowGround.setRotation(new Vector3f(0, 0, 0));
 
     //// Tree

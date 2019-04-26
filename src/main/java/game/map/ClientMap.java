@@ -1,17 +1,39 @@
 package game.map;
 
+import static org.lwjgl.BufferUtils.createByteBuffer;
+
+import engine.render.Loader;
+import engine.textures.TerrainTexture;
+import engine.textures.TerrainTexturePack;
 import entities.blocks.AirBlock;
 import entities.blocks.Block;
 import entities.blocks.BlockMaster;
+import game.Game;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.ByteBuffer;
+import java.nio.channels.Channels;
+import java.nio.channels.ReadableByteChannel;
+import java.util.Arrays;
+import java.util.Objects;
 import java.util.Random;
 import java.util.concurrent.CopyOnWriteArrayList;
+import javax.imageio.ImageIO;
 import org.joml.Vector2i;
 import org.joml.Vector3f;
+import terrains.TerrainFlat;
 
 public class ClientMap extends GameMap<Block> {
 
   private boolean local;
   private String[] lobbyMap;
+
+  private int terrainRows;
+  private int terrainCols;
 
   /**
    * Generate a map for the client and generate the blocks in the world.
@@ -30,7 +52,7 @@ public class ClientMap extends GameMap<Block> {
 
   @Override
   void generateMap() {
-    float[][] noiseMap = generateNoiseMap(seed);
+    float[][] noiseMap = generateNoiseMap();
 
     // Threshold function and random gold/item blocks can replace stone/dirt blocks
     for (int y = 0; y < height; y++) {
@@ -142,7 +164,7 @@ public class ClientMap extends GameMap<Block> {
         blocks[x][y].remove();
       }
     }
-
+    
     // Create new map
     width = lobbyMap[0].length();
     height = lobbyMap.length;
@@ -161,6 +183,110 @@ public class ClientMap extends GameMap<Block> {
                 y);
       }
     }
+  }
+
+  public BufferedImage getMapImage(int startRow, int startCol) {
+    int[] pixels = new int[terrainChunk * terrainChunk];
+
+    if (startRow + terrainChunk > height || startCol + terrainChunk > width) {
+      throw new IllegalArgumentException(
+          "startRow " + startRow + " or startCol " + startCol + " are out of Map Bounds.");
+    }
+
+    for (int i = 0; i < terrainChunk; i++) {
+      for (int j = 0; j < terrainChunk; j++) {
+        switch (blocks[startCol * terrainChunk + i][startRow * terrainChunk + j].getType()) {
+          case STONE:
+            pixels[j * terrainChunk + i] = Color.RED.getRGB();
+            break;
+          case AIR:
+            pixels[j * terrainChunk + i] = Color.GREEN.getRGB();
+            break;
+          case OBSIDIAN:
+            pixels[j * terrainChunk + i] = Color.BLUE.getRGB();
+            break;
+          default:
+            break;
+        }
+      }
+    }
+    BufferedImage pixelImage =
+        new BufferedImage(terrainChunk, terrainChunk, BufferedImage.TYPE_INT_RGB);
+    pixelImage.setRGB(0, 0, terrainChunk, terrainChunk, pixels, 0, terrainChunk);
+    return pixelImage;
+  }
+
+  public ByteBuffer getMapImageByteBuffer(int startRow, int startCol) {
+    BufferedImage img = getMapImage(startRow, startCol);
+
+    ByteBuffer buffer = null;
+
+    try {
+      ByteArrayOutputStream os = new ByteArrayOutputStream();
+      ImageIO.write(img, "png", os);
+      InputStream source = new ByteArrayInputStream(os.toByteArray());
+      ReadableByteChannel rbc = Channels.newChannel(Objects.requireNonNull(source));
+      buffer = createByteBuffer(8 * 1024);
+      while (true) {
+        int bytes = rbc.read(buffer);
+        if (bytes == -1) {
+          break;
+        }
+        if (buffer.remaining() == 0) {
+          buffer = util.IoUtil.resizeBuffer(buffer, buffer.capacity() * 3 / 2); // 50%
+        }
+      }
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+
+    if (buffer == null) {
+      return null;
+    }
+
+    buffer.flip();
+    return buffer.slice();
+  }
+
+  public TerrainFlat[][] generateTerrains(Loader loader) {
+
+    // Verify Map Dimensions
+    if (width % terrainChunk != 0 || height % terrainChunk != 0) {
+      throw new IllegalStateException(
+          "Fatal Error: Map dimensions must be multiples of "
+              + terrainChunk
+              + ". Restart the Game and create a new Lobby.");
+    }
+
+    // Check seed and noise map
+
+    if (seed < 0) {
+      throw new IllegalStateException(
+          "Map Seed was not set. Restart the Game and create a new Lobby.");
+    }
+    // generateNoiseMap();
+    // System.out.println(Arrays.deepToString(noiseMap));
+    // System.out.println(seed);
+
+    // Prepare Textures
+    TerrainTexture dirt = new TerrainTexture(loader.loadTexture("Erde512x512"));
+    TerrainTexture stone = new TerrainTexture(loader.loadTexture("Stein512x512"));
+    TerrainTexture air = new TerrainTexture(loader.loadTexture("Erde512x512"));
+    TerrainTexture obsidian = new TerrainTexture(loader.loadTexture("red"));
+
+    TerrainTexturePack texturePack = new TerrainTexturePack(dirt, stone, air, obsidian);
+
+    // Generate Terrains
+    terrainRows = height / terrainChunk;
+    terrainCols = width / terrainChunk;
+    TerrainFlat[][] terrains = new TerrainFlat[terrainCols][terrainRows];
+    for (int i = 0; i < terrainCols; i++) {
+      for (int j = 0; j < terrainRows; j++) {
+        TerrainTexture blendMap = new TerrainTexture(loader.loadTexture(this, j, i));
+        terrains[i][j] = new TerrainFlat(i, -j, loader, texturePack, blendMap);
+      }
+    }
+    return terrains;
   }
 
   /**
@@ -215,5 +341,13 @@ public class ClientMap extends GameMap<Block> {
   public void setLobbyMap(String[] lobbyMap) {
     this.lobbyMap = lobbyMap;
     this.local = false;
+  }
+
+  public int getTerrainRows() {
+    return terrainRows;
+  }
+
+  public int getTerrainCols() {
+    return terrainCols;
   }
 }

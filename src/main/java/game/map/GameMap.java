@@ -1,18 +1,5 @@
 package game.map;
 
-import static org.lwjgl.BufferUtils.createByteBuffer;
-
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.ByteBuffer;
-import java.nio.channels.Channels;
-import java.nio.channels.ReadableByteChannel;
-import java.util.Objects;
-import javax.imageio.ImageIO;
 import org.joml.SimplexNoise;
 import org.joml.Vector2i;
 import org.joml.Vector3f;
@@ -55,7 +42,7 @@ public abstract class GameMap<T> {
   public GameMap(int width, int height, long seed) {
     this.width = width;
     this.height = height;
-    this.seed = seed;
+    this.seed = (long) (seed % 1e6);
   }
 
   public static int getSize() {
@@ -75,14 +62,12 @@ public abstract class GameMap<T> {
   abstract void damageBlock(int clientId, int posX, int posY, float damage);
 
   /**
-   * Generates a noise map for map generation. TODO (Sanja): Implement map generation algorithm
+   * Generates a noise map for map generation.
    *
-   * @param seed the seed
    * @return the noise map for the specified random generator
    */
-  protected float[][] generateNoiseMap(long seed) {
+  protected float[][] generateNoiseMap() {
     // Generate Noise here
-    seed %= 1e6;
     int radius = 4; // "Smoothing" of noise
     noiseMap = new float[width][height];
     for (int y = 0; y < height; y++) {
@@ -93,62 +78,6 @@ public abstract class GameMap<T> {
       }
     }
     return noiseMap;
-  }
-
-  public BufferedImage getMapImage(int startRow, int startCol) {
-    int[] pixels = new int[terrainChunk * terrainChunk];
-
-    if (startRow + terrainChunk > height || startCol + terrainChunk > width) {
-      throw new IllegalArgumentException(
-          "startRow " + startRow + " or startCol " + startCol + " are out of Map Bounds.");
-    }
-
-    for (int i = startRow; i < terrainChunk; i++) {
-      for (int j = startCol; j < terrainChunk; j++) {
-        if (noiseMap[i][j] < thresholds[0]) {
-          pixels[i * terrainChunk + j] = Color.RED.getRGB();
-        } else if (noiseMap[i][j] < thresholds[1]) {
-          pixels[i * terrainChunk + j] = Color.BLUE.getRGB();
-        } else {
-          pixels[i * terrainChunk + j] = Color.GREEN.getRGB();
-        }
-      }
-    }
-    BufferedImage pixelImage = new BufferedImage(terrainChunk, terrainChunk, BufferedImage.TYPE_INT_RGB);
-    pixelImage.setRGB(0, 0, terrainChunk, terrainChunk, pixels, 0, terrainChunk);
-    return pixelImage;
-  }
-
-  public ByteBuffer getMapImageByteBuffer(int startRow, int startCol) {
-    BufferedImage img = getMapImage(startRow, startCol);
-
-    ByteBuffer buffer = null;
-
-    try {
-      ByteArrayOutputStream os = new ByteArrayOutputStream();
-      ImageIO.write(img, "png", os);
-      InputStream source = new ByteArrayInputStream(os.toByteArray());
-      ReadableByteChannel rbc = Channels.newChannel(Objects.requireNonNull(source));
-      buffer = createByteBuffer(8 * 1024);
-      while (true) {
-        int bytes = rbc.read(buffer);
-        if (bytes == -1) {
-          break;
-        }
-        if (buffer.remaining() == 0) {
-          buffer = util.IoUtil.resizeBuffer(buffer, buffer.capacity() * 3 / 2); // 50%
-        }
-      }
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
-
-    if (buffer == null) {
-      return null;
-    }
-
-    buffer.flip();
-    return buffer.slice();
   }
 
   @Override
@@ -178,5 +107,13 @@ public abstract class GameMap<T> {
   public Vector2i worldToGrid(Vector3f worldCoords) {
     return new Vector2i(
         (int) Math.floor(worldCoords.x / dim), (int) Math.floor(-worldCoords.y / dim));
+  }
+
+  public long getSeed() {
+    return seed;
+  }
+
+  public void setSeed(long seed) {
+    this.seed = seed;
   }
 }

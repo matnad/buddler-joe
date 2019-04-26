@@ -35,7 +35,7 @@ public class ServerMap extends GameMap<ServerBlock> {
   @Override
   void generateMap() {
     Random rng = new Random(seed);
-    float[][] noiseMap = generateNoiseMap(seed);
+    float[][] noiseMap = generateNoiseMap();
 
     /* Threshold function
      */

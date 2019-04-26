@@ -19,6 +19,7 @@ import static org.lwjgl.opengl.GL30.glTexParameteri;
 import engine.models.RawModel;
 import engine.render.objconverter.ModelData;
 import engine.textures.Texture;
+import game.map.ClientMap;
 import game.map.GameMap;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
@@ -186,7 +187,7 @@ public class Loader {
     return textureId;
   }
 
-  public int loadTexture(GameMap map, int startRow, int startCol) {
+  public int loadTexture(ClientMap map, int startRow, int startCol) {
     Texture texture = null;
     try {
       texture = TextureLoader.getTexture(map, startRow, startCol);
@@ -194,11 +195,11 @@ public class Loader {
       glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
       glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_LOD_BIAS, -.3f); // Textures appear blurred the
       // further away they are
-      // GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11
-      // .GL_LINEAR); //Experimental Filters
-      // GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_LINEAR);
-      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT); // Tiling
-      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
+      // !! NO TILING SINCE THE CHUNKS ARE DIFFERENT !!
+      //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT); // Tiling
+      //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
     } catch (Exception e) {
       e.printStackTrace();
       System.err.println("Tried to load texture for game map, didn't work");

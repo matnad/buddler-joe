@@ -94,6 +94,7 @@ public class Game extends Thread {
    * list with minimal maintenance.
    */
   private static final List<Entity> entities = new CopyOnWriteArrayList<>();
+  private static Loader loader = new Loader();
 
   // Set up windows with default vaules. However, setting values will be used later
   public static Window window = new Window(1080, 600, 60, "Buddler Joe");
@@ -128,13 +129,13 @@ public class Game extends Thread {
   public String username;
   private static LifeStatus lifeStatus;
   private static CurrentGold goldGuiText;
+
+  // Map and Terrain
   private static ClientMap map;
+  private static TerrainFlat[][] terrainChunks;
+
 
   private static GuiRenderer guiRenderer;
-
-  // Terrain
-  private static Terrain aboveGround;
-  private static TerrainFlat belowGround;
 
   // Lobby and Highscore lists
   private static CopyOnWriteArrayList<LobbyEntry> lobbyCatalog = new CopyOnWriteArrayList<>();
@@ -171,17 +172,17 @@ public class Game extends Thread {
 
     // Used to load 3D models (.obj) and convert them to coordinates for the shaders, also
     // initializes the Bounding Boxes
-    Loader loader = new Loader();
+
 
     // Stuff before loading screen
     // generate the world
-    GenerateWorld.generateTerrain(loader);
+    //GenerateWorld.generateTerrain(loader);
     // GenerateWorld.generateBlocks(loader);
-    aboveGround = GenerateWorld.getAboveGround();
-    belowGround = GenerateWorld.getBelowGround();
-    if (aboveGround == null || belowGround == null) {
-      logger.error("Could not generate terrain.");
-    }
+    //aboveGround = GenerateWorld.getAboveGround();
+    //belowGround = GenerateWorld.getBelowGround();
+    //if (aboveGround == null || belowGround == null) {
+    //  logger.error("Could not generate terrain.");
+    //}
 
     // Initialize NetPlayerModels
     NetPlayerMaster.init(loader);
@@ -406,6 +407,9 @@ public class Game extends Thread {
     NetPlayer.init(loader);
     player = new Player(getUsername(), new Vector3f(90, 2, 3), 0, 0, 0);
 
+    // Generate dummy map
+    map = new ClientMap(1, 1, -1);
+
     // Connecting to Server
     LoadingScreen.updateLoadingMessage("connecting to server");
     new Thread(() -> StartNetworkOnlyClient.startWith(serverIp, serverPort)).start();
@@ -430,8 +434,7 @@ public class Game extends Thread {
       Thread.sleep(50);
     }
     // }
-    // Generate dummy map
-    map = new ClientMap(1, 1, 1);
+
     if (autoJoin) {
 
       new PacketJoinLobby(lobname).sendToServer();
@@ -584,12 +587,18 @@ public class Game extends Thread {
     return player;
   }
 
-  public static Terrain getAboveGround() {
-    return aboveGround;
+  public static TerrainFlat[][] getTerrainChunks() {
+    if (terrainChunks == null) {
+      if (map == null) {
+        throw new IllegalStateException("No Map found, could not generate Terrain.");
+      }
+      terrainChunks = map.generateTerrains(loader);
+    }
+    return terrainChunks;
   }
 
-  public static TerrainFlat getBelowGround() {
-    return belowGround;
+  public static void setTerrainChunks(TerrainFlat[][] terrainChunks) {
+    Game.terrainChunks = terrainChunks;
   }
 
   public static Chat getChat() {
@@ -650,6 +659,10 @@ public class Game extends Thread {
 
   public String getUsername() {
     return settings.getUsername();
+  }
+
+  public static Loader getLoader() {
+    return loader;
   }
 
   // Valid Stages

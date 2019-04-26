@@ -19,6 +19,8 @@ import gui.text.FloatingStrings;
 import java.util.ArrayList;
 import java.util.List;
 import org.joml.Vector2f;
+import org.joml.Vector3f;
+import terrains.TerrainFlat;
 import util.MousePlacer;
 
 /**
@@ -63,6 +65,7 @@ public class Playing {
       firstloop = false;
     }
 
+
     List<GuiTexture> guis = new ArrayList<>();
     guis.add(Game.getChat().getChatGui());
 
@@ -84,14 +87,22 @@ public class Playing {
     ParticleMaster.update(Game.getActiveCamera());
     LightMaster.update(Game.getActiveCamera(), Game.getActivePlayer());
 
-    // Prepare and render the entities
+    // Prepare and render the terrains
+    TerrainFlat[][] terrainChunks = Game.getTerrainChunks();
+    for (int i = 0; i < Game.getMap().getTerrainRows(); i++) {
+      for (int j = 0; j < Game.getMap().getTerrainCols(); j++) {
+        renderer.processTerrain(terrainChunks[j][i]);
+      }
+    }
+
+    //renderer.processTerrain(Game.getTerrainChunks()[0][0]);
+
+    // Prepare and Render the entities
     renderer.processEntity(Game.getActivePlayer());
     NetPlayerMaster.update(renderer);
-    //renderer.processTerrain(Game.getAboveGround());
-    renderer.processTerrain(Game.getBelowGround());
     for (Entity entity : Game.getEntities()) {
       if (entity != null) {
-        //renderer.processEntity(entity);
+        renderer.processEntity(entity);
       }
     }
 

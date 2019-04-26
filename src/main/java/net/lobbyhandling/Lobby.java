@@ -53,7 +53,7 @@ public class Lobby implements Runnable {
     this.lobbyId = lobbyCounter;
     this.serverItemState = new ServerItemState();
     lobbyCounter++;
-    map = new ServerMap(33, 40, System.currentTimeMillis());
+    map = new ServerMap(8 * 4, 8 * 5, 123456);//System.currentTimeMillis());
   }
 
   @Override

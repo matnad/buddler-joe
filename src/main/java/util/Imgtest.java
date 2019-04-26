@@ -1,5 +1,6 @@
 package util;
 
+import game.map.ClientMap;
 import game.map.ServerMap;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
@@ -12,7 +13,7 @@ public class Imgtest {
 
   public static void main(String[] args) {
 
-    ServerMap map = new ServerMap(10, 10, 50);
+    ClientMap map = new ClientMap(10, 10, 50);
     BufferedImage pixelImage = map.getMapImage(0, 0);
 
     Image tmp = pixelImage.getScaledInstance(400, 400, Image.SCALE_SMOOTH);
