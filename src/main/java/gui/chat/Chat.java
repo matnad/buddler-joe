@@ -39,9 +39,13 @@ public class Chat {
   private FontType font;
   private ChatText guiText;
   private Vector3f textColour;
+  private Vector2f chatPosition;
+  private Vector2f messagePosition;
 
   private float maxLineLength;
+  private float differenceMessageToChat;
   private int maxLines;
+  private boolean inLobby;
 
   private List<ChatText> messages;
   private int msgSize;
@@ -89,6 +93,10 @@ public class Chat {
     messages = new ArrayList<>();
     text = new ArrayList<>();
     msgSize = 0;
+    chatPosition = new Vector2f();
+    messagePosition = new Vector2f();
+    differenceMessageToChat = 0f;
+    inLobby = true;
   }
 
   /**
@@ -100,67 +108,18 @@ public class Chat {
    * <p>Called every frame. Reads chat input and toggles chat window text input handler
    */
   public void checkInputs() {
+    if (inLobby) {
+      setEnabled(true);
+      InputHandler.readInputOn();
+    }
     if (InputHandler.isKeyPressed(GLFW_KEY_ENTER)) {
       if (chatText.length() > 0 && enabled) {
-        //  check if the player wants to whisper
-        if (chatText.startsWith("@")) {
-          int wisperId = game.NetPlayerMaster.getClientIdForWhisper(chatText);
-          int usernameLength = Game.getActivePlayer().getUsername().length();
-
-          //  temporary solution
-          chatText = chatText + "   ";
-          //  check if the player wants whisper to himself
-          if (chatText.length() > usernameLength + 1) {
-            if (chatText
-                    .substring(1, usernameLength + 1)
-                    .equals(Game.getActivePlayer().getUsername())
-                && !chatText.substring(usernameLength + 1, usernameLength + 2).equals("_")
-                && !Character.isDigit(chatText.charAt(usernameLength + 1))) {
-              wisperId = -1;
-            }
-          }
-          //  wisperId = -1 player don't exist in the lobby
-          //  wisperId = -2 player sends message to all players
-          if (-1 == wisperId) {
-            text.add("Username ist ungültig");
-          } else if (-2 == wisperId) {
-            chatText = chatText.substring(4).trim();
-            //            System.out.println(chatText);
-            PacketChatMessageToServer broadcostmessage =
-                new PacketChatMessageToServer(
-                    "(to all from "
-                        + game.Game.getActivePlayer().getUsername()
-                        + ") "
-                        + chatText
-                        + "║-1");
-            broadcostmessage.sendToServer();
-
-          } else {
-            String userName = game.NetPlayerMaster.getNetPlayerById(wisperId).getUsername();
-            chatText = chatText.substring(userName.length() + 1);
-            PacketChatMessageToServer sendMessage =
-                new PacketChatMessageToServer("(whispered)" + chatText + "║" + wisperId);
-            sendMessage.sendToServer();
-
-            PacketChatMessageToServer sendMessage2 =
-                new PacketChatMessageToServer(
-                    "(whispered to "
-                        + userName
-                        + ")"
-                        + chatText.trim()
-                        + "║"
-                        + game.Game.getActivePlayer().getClientId());
-            sendMessage2.sendToServer();
-          }
-
-        } else {
-
-          PacketChatMessageToServer sendMessage = new PacketChatMessageToServer(chatText + "║0");
-          sendMessage.sendToServer();
-        }
+        PacketChatMessageToServer chatString = new PacketChatMessageToServer(chatText);
+        chatString.sendToServer();
 
         chatText = "";
         InputHandler.resetInputString();
+
       } else {
         if (enabled) {
           setEnabled(false);
@@ -176,9 +135,9 @@ public class Chat {
     if (messages.size() != text.size()) {
       addChatText();
     }
-
-    updateAlpha();
-
+    if (!inLobby) {
+      updateAlpha();
+    }
     if (showTemporary) {
       temporaryShowElapsed += Game.dt();
       if (temporaryShowElapsed >= temporaryShowDuration) {
@@ -197,6 +156,12 @@ public class Chat {
     String newChatText = chatText;
 
     newChatText = InputHandler.getInputString();
+
+    if (newChatText.length() > 100) {
+      newChatText = chatText;
+      StringBuilder temp = new StringBuilder(chatText);
+      InputHandler.setInputString(temp);
+    }
 
     if (!chatText.equals(newChatText)) {
       chatText = newChatText;
@@ -257,8 +222,8 @@ public class Chat {
   public void arrangeMessages() {
 
     if (messages.size() != msgSize) { // Something changed
-      float posY = .88f;
-      float posX = .03f;
+      float posY = chatPosition.y;
+      float posX = chatPosition.x;
       int currentLines = 0;
 
       for (int i = messages.size() - 1; i >= 0; i--) {
@@ -289,16 +254,14 @@ public class Chat {
     do {
       TextMaster.removeText(guiText);
 
-      guiText =
-          new ChatText(
-              output, 1, textColour, alpha, font, new Vector2f(.06f, .91f), 1f, false, false);
+      guiText = new ChatText(output, 1, textColour, alpha, font, messagePosition, 1f, false, false);
 
       if (output.length() > 0) {
         output = output.substring(1);
       }
 
     } while (guiText.getLengthOfLines().get(guiText.getLengthOfLines().size() - 1)
-        > maxLineLength - 0.04);
+        > maxLineLength - differenceMessageToChat);
     //    System.out.println(guiText.getLengthOfLines().get(guiText.getLengthOfLines().size()-1));
   }
 
@@ -325,7 +288,7 @@ public class Chat {
     return enabled;
   }
 
-  private void setEnabled(boolean enabled) {
+  public void setEnabled(boolean enabled) {
     this.enabled = enabled;
   }
 
@@ -370,5 +333,33 @@ public class Chat {
             false);
     guiText = clearChatText(guiText);
     messages.add(messageText);
+  }
+
+  public void setGameChatSettings() {
+    chatPosition.x = 0.03f;
+    chatPosition.y = 0.88f;
+    maxLines = 12;
+    textColour.x = 1f;
+    textColour.y = 1f;
+    textColour.z = 1f;
+    maxLineLength = 0.34f;
+    differenceMessageToChat = 0.04f;
+    messagePosition.x = 0.06f;
+    messagePosition.y = 0.91f;
+    inLobby = false;
+    enabled = false;
+  }
+
+  public void setLobbyChatSettings() {
+    chatPosition.x = 0.53f;
+    chatPosition.y = 0.71f;
+    maxLines = 23;
+    textColour.x = 0f;
+    textColour.y = 0f;
+    textColour.z = 0f;
+    maxLineLength = 0.205f;
+    messagePosition.x = 0.525f;
+    messagePosition.y = 0.785f;
+    alpha = 1;
   }
 }

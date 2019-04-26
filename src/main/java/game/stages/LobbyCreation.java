@@ -5,6 +5,8 @@ import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_1;
 
 import engine.io.InputHandler;
 import engine.render.Loader;
+import engine.render.fontmeshcreator.FontType;
+import engine.render.fontmeshcreator.GuiText;
 import engine.render.fontrendering.TextMaster;
 import game.Game;
 import gui.GuiTexture;
@@ -46,7 +48,12 @@ public class LobbyCreation {
   private static int cooldown = 0;
   private static boolean initializedText = false;
   private static boolean firstLoop = true;
-
+  private static String newlobbyname = "";
+  private static String lobbyname = "";
+  private static String output;
+  private static FontType font;
+  private static Vector3f textColour;
+  private static GuiText guiText;
   /**
    * Initializes the textures for this GUI-menu.
    *
@@ -54,6 +61,8 @@ public class LobbyCreation {
    */
   @SuppressWarnings("Duplicates")
   public static void init(Loader loader) {
+    font = new FontType(loader, "verdanaAsciiEx");
+    textColour = new Vector3f(0f, 0f, 0f);
 
     currentAlpha = 1;
 
@@ -152,6 +161,21 @@ public class LobbyCreation {
       firstLoop = false;
     }
 
+    newlobbyname = lobbyname;
+    InputHandler.readInputOn();
+    newlobbyname = InputHandler.getInputString();
+
+    if (newlobbyname.length() > 16) {
+      newlobbyname = lobbyname;
+      StringBuilder temp = new StringBuilder(lobbyname);
+      InputHandler.setInputString(temp);
+    }
+
+    if (!lobbyname.equals(newlobbyname)) {
+      lobbyname = newlobbyname;
+      updateGuiText();
+    }
+
     List<GuiTexture> guis = new ArrayList<>();
     // add textures here
     guis.add(background);
@@ -201,9 +225,9 @@ public class LobbyCreation {
     } else if (InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1) && big.isHover(x, y)) {
       mapSize = "l";
     } else if (InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1) && create.isHover(x, y)) {
-      new PacketCreateLobby(Long.toString(System.currentTimeMillis()).substring(4) + "║" + mapSize)
-          .sendToServer();
-      // TODO: replace currentTime with entered Lobbyname.
+      new PacketCreateLobby(newlobbyname + "║" + mapSize).sendToServer();
+      InputHandler.resetInputString();
+      initializedText = false;
     }
 
     Game.getGuiRenderer().render(guis);
@@ -239,5 +263,15 @@ public class LobbyCreation {
   public static void setMsg(String msg) {
     LobbyCreation.msg = msg;
     cooldown = 300;
+  }
+
+  private static void updateGuiText() {
+
+    output = lobbyname;
+    TextMaster.removeAll();
+
+    guiText =
+        new GuiText(
+            output, 1.5f, font, new Vector3f(0f, 0f, 0f), 1f, new Vector2f(.30f, .465f), 1f, false);
   }
 }

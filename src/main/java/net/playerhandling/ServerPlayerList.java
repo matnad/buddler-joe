@@ -110,6 +110,53 @@ public class ServerPlayerList {
     return false;
   }
 
+  /**
+   * Get the client id for the user after the "@" in a String.
+   *
+   * <p>Checks for subsets of names too.
+   *
+   * @param message the message to be sent
+   * @return the client id for the target player, 0 for lobby chat message or -2 for a broadcast
+   *     message.
+   */
+  public int getClientIdForWhisper(String message) {
+    int x = 0;
+    int j = 0;
+    message = message.substring(1);
+
+    if (message.startsWith("all")) {
+      return -2;
+    }
+
+    HashMap<Integer, Integer> player = new HashMap<>();
+    for (Player Player : players.values()) {
+      if (message.startsWith(Player.getUsername())) {
+
+        x++;
+        for (int i = 0; i < Player.getUsername().length(); i++) {
+          if (message.charAt(i) == Player.getUsername().charAt(i)) {
+            j++;
+          }
+          player.put(j, Player.getClientId());
+        }
+      }
+    }
+    if (x == 1) {
+      return player.get(j);
+    }
+    if (x == 0) {
+      return -1;
+    } else {
+      int max = 0;
+      for (int i : player.keySet()) {
+        if (max < i) {
+          max = i;
+        }
+      }
+      return player.get(max);
+    }
+  }
+
   @Override
   public String toString() {
     StringBuilder s = new StringBuilder();
