@@ -16,8 +16,6 @@ public class PacketChatMessageToServer extends Packet {
 
   private String chatmsg;
   private String timestamp;
-  private String receiver;
-  private int wisperId;
 
   /**
    * Constructor that will be used by the Client to build the Packet. Which can then be send to the
@@ -34,7 +32,6 @@ public class PacketChatMessageToServer extends Packet {
     SimpleDateFormat simpleFormat = new SimpleDateFormat("HH:mm");
     Date date = new Date();
     timestamp = simpleFormat.format(date);
-    receiver = "0";
     setData(chatmsg + "║" + timestamp);
     validate();
   }
@@ -54,14 +51,12 @@ public class PacketChatMessageToServer extends Packet {
       data = ""; // To prevent nullpointer when splitting
     }
     String[] input = data.split("║");
-    if (input.length != 3) {
+    if (input.length != 2) {
       addError("Invalid Input");
       return;
     }
     chatmsg = input[0].trim();
-    receiver = input[1];
-    timestamp = input[2];
-    wisperId = Integer.parseInt(receiver);
+    timestamp = input[1];
     setData(data);
     validate();
   }
@@ -73,7 +68,7 @@ public class PacketChatMessageToServer extends Packet {
    */
   @Override
   public void validate() {
-    if (chatmsg == null) {
+    if (chatmsg.trim().length() == 0) {
       addError("No Message found");
       return;
     }
@@ -94,7 +89,14 @@ public class PacketChatMessageToServer extends Packet {
   @Override
   public void processData() {
     String status;
+    String starter =
+        "["
+            + ServerLogic.getPlayerList().getPlayer(getClientId()).getUsername()
+            + "-"
+            + timestamp
+            + "]";
     if (!hasErrors()) {
+
       Player client = ServerLogic.getPlayerList().getPlayer(getClientId());
       if (client == null) {
         addError("Not logged in");
@@ -103,23 +105,70 @@ public class PacketChatMessageToServer extends Packet {
         if (lobbyId == 0) {
           addError("Must been in a Lobby to use the chat.");
         } else {
-          String fullmessage = "[" + client.getUsername() + "-" + timestamp + "]  " + chatmsg;
-          //          System.out.println(fullmessage);
-          if (wisperId > 0) {
-            PacketChatMessageToClient sendMessage =
-                new PacketChatMessageToClient(getClientId(), fullmessage);
-            sendMessage.sendToClient(wisperId);
-          } else if (wisperId == 0) {
-            PacketChatMessageToClient sendMessage =
-                new PacketChatMessageToClient(getClientId(), fullmessage);
-            sendMessage.sendToLobby(client.getCurLobbyId());
+
+          //  check if the player wants to whisper
+          if (chatmsg.startsWith("@")) {
+            int wisperId = ServerLogic.getPlayerList().getClientIdForWhisper(chatmsg);
+            int usernameLength =
+                ServerLogic.getPlayerList().getPlayer(getClientId()).getUsername().length();
+
+            //  temporary solution
+            chatmsg = chatmsg + "   ";
+            //  check if the player wants whisper to himself
+            if (chatmsg.length() > usernameLength + 1) {
+              if (chatmsg
+                      .substring(1, usernameLength + 1)
+                      .equals(ServerLogic.getPlayerList().getPlayer(getClientId()).getUsername())
+                  && !chatmsg.substring(usernameLength + 1, usernameLength + 2).equals("_")
+                  && !Character.isDigit(chatmsg.charAt(usernameLength + 1))) {
+                wisperId = -1;
+              }
+            }
+
+            //  wisperId = -1 player don't exist in the lobby
+            //  wisperId = -2 player sends message to all players
+            if (-1 == wisperId) {
+              PacketChatMessageToClient sendMessage =
+                  new PacketChatMessageToClient(starter + "Username ist ungültig");
+              sendMessage.sendToClient(getClientId());
+
+            } else if (-2 == wisperId) {
+              chatmsg = chatmsg.substring(4).trim();
+              //            System.out.println(chatText);
+              PacketChatMessageToClient broadcostmessage =
+                  new PacketChatMessageToClient(
+                      getClientId(),
+                      starter
+                          + "(to all from "
+                          + ServerLogic.getPlayerList().getPlayer(getClientId()).getUsername()
+                          + ") "
+                          + chatmsg);
+              broadcostmessage.sendToAllClients();
+            } else {
+              String userName = ServerLogic.getPlayerList().getPlayer(wisperId).getUsername();
+              chatmsg = chatmsg.substring(userName.length() + 1);
+              PacketChatMessageToClient sendMessage =
+                  new PacketChatMessageToClient(getClientId(), starter + "(whispered)" + chatmsg);
+              sendMessage.sendToClient(wisperId);
+
+              PacketChatMessageToClient sendMessage2 =
+                  new PacketChatMessageToClient(
+                      getClientId(), starter + "(whispered to " + userName + ")" + chatmsg.trim());
+
+              sendMessage2.sendToClient(getClientId());
+            }
+
           } else {
-            PacketChatMessageToClient sendMessage = new PacketChatMessageToClient(fullmessage);
-            ServerLogic.sendBroadcastPacket(sendMessage);
+
+            PacketChatMessageToClient sendMessage =
+                new PacketChatMessageToClient(getClientId(), starter + chatmsg);
+            sendMessage.sendToLobby(
+                ServerLogic.getPlayerList().getPlayer(getClientId()).getCurLobbyId());
           }
         }
       }
     }
+
     if (hasErrors()) {
       status = createErrorMessage();
     } else {

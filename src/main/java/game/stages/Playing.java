@@ -59,6 +59,8 @@ public class Playing {
    */
   public static void update(MasterRenderer renderer) {
     if (firstloop) {
+
+      Game.getChat().setGameChatSettings();
       TextMaster.removeAll();
       firstloop = false;
     }
