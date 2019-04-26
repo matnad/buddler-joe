@@ -347,12 +347,18 @@ public class Chat {
     maxLines = 12;
   }
 
+  /**
+   * Method to set the game colour.
+   */
   public void setGameColour() {
     textColour.x = 1f;
     textColour.y = 1f;
     textColour.z = 1f;
   }
 
+  /**
+   * Method to set the lobby colour.
+   */
   public void setLobbyColour() {
     textColour.x = 0f;
     textColour.y = 0f;

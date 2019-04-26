@@ -1,18 +1,16 @@
 package net.playerhandling;
 
+import java.util.concurrent.ConcurrentHashMap;
 import org.junit.Assert;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.concurrent.ConcurrentHashMap;
-
 public class TestServerPlayerList {
 
-    public static final Logger logger = LoggerFactory.getLogger(TestServerPlayerList.class);
+  public static final Logger logger = LoggerFactory.getLogger(TestServerPlayerList.class);
 
-
-    @Test
+  @Test
   public void checkAddPlayerNewPlayer() {
     ConcurrentHashMap<Integer, Player> testPlayerList = new ConcurrentHashMap<>();
     ServerPlayerList playerList = new ServerPlayerList();
@@ -107,32 +105,31 @@ public class TestServerPlayerList {
     Assert.assertTrue(playerList.isClientIdInList(testPlayer.getClientId()));
   }
 
-    @Test
-    public void checkReturnCorrectUsernameInList() {
-        ServerPlayerList playerList = new ServerPlayerList();
-        Player testPlayer = new Player("Testuser", 1);
-        playerList.addPlayer(testPlayer);
-        Assert.assertTrue(playerList.isUsernameInList(testPlayer.getUsername()));
-    }
-
-    @Test
-    public void checkIsUsernameNotInList() {
-        ServerPlayerList playerList = new ServerPlayerList();
-        Assert.assertFalse(playerList.isUsernameInList("TestUser"));
-    }
-
-    @Test
-    public void checkReturnCorrectStringOneUser() {
-        ServerPlayerList playerList = new ServerPlayerList();
-        Player testPlayer = new Player("Testuser", 1);
-        playerList.addPlayer(testPlayer);
-        Assert.assertEquals(playerList.toString(), "OK║Testuser║");
+  @Test
+  public void checkReturnCorrectUsernameInList() {
+    ServerPlayerList playerList = new ServerPlayerList();
+    Player testPlayer = new Player("Testuser", 1);
+    playerList.addPlayer(testPlayer);
+    Assert.assertTrue(playerList.isUsernameInList(testPlayer.getUsername()));
   }
 
-    @Test
-    public void checkReturnCorrectStringNoUser() {
-        ServerPlayerList playerList = new ServerPlayerList();
-        Assert.assertEquals(playerList.toString(), "No Players online");
-    }
+  @Test
+  public void checkIsUsernameNotInList() {
+    ServerPlayerList playerList = new ServerPlayerList();
+    Assert.assertFalse(playerList.isUsernameInList("TestUser"));
+  }
 
+  @Test
+  public void checkReturnCorrectStringOneUser() {
+    ServerPlayerList playerList = new ServerPlayerList();
+    Player testPlayer = new Player("Testuser", 1);
+    playerList.addPlayer(testPlayer);
+    Assert.assertEquals(playerList.toString(), "OK║Testuser║");
+  }
+
+  @Test
+  public void checkReturnCorrectStringNoUser() {
+    ServerPlayerList playerList = new ServerPlayerList();
+    Assert.assertEquals(playerList.toString(), "No Players online");
+  }
 }

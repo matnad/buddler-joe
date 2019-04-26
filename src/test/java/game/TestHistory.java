@@ -1,10 +1,9 @@
 package game;
 
-import org.junit.Assert;
-import org.junit.Test;
-
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
+import org.junit.Assert;
+import org.junit.Test;
 
 public class TestHistory {
 
@@ -72,7 +71,9 @@ public class TestHistory {
     history.archive("TestLobby2");
 
     Assert.assertEquals(
-        "Open Lobbies:║TestLobby2║TestLobby4║Lobbies Of Running Games:║TestLobby2║TestLobby3║Old Games:║TestLobby6║TestLobby3║TestLobby2║",
+        "Open Lobbies:║TestLobby2║TestLobby4║"
+                + "Lobbies Of Running Games:║TestLobby2║TestLobby3║Old Games:"
+                + "║TestLobby6║TestLobby3║TestLobby2║",
         history.getStory());
   }
 }

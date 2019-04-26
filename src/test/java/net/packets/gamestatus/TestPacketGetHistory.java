@@ -5,6 +5,5 @@ import org.junit.Test;
 public class TestPacketGetHistory {
 
   @Test
-  public void testCorrectHistory() {
-  }
+  public void testCorrectHistory() {}
 }
