@@ -11,6 +11,7 @@ public class Player {
   private String username;
   private int clientId;
   private int curLobbyId;
+  private boolean ready;
 
   private int currentGold;
   private int currentLives;
@@ -33,6 +34,7 @@ public class Player {
   public Player(String username, int clientId) {
     this.username = username;
     this.clientId = clientId;
+    ready = false;
     curLobbyId = 0;
     currentLives = 2;
   }
@@ -144,5 +146,14 @@ public class Player {
             .sendToLobby(getCurLobbyId());
       }
     }
+  }
+
+
+  public void setReady(boolean ready) {
+    this.ready = ready;
+  }
+
+  public boolean isReady() {
+    return ready;
   }
 }

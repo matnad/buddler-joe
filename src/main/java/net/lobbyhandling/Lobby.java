@@ -6,6 +6,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import net.ServerLogic;
 import net.highscore.ServerHighscoreSerialiser;
 import net.packets.gamestatus.PacketGameEnd;
+import net.packets.gamestatus.PacketStartRound;
 import net.packets.lobby.PacketLobbyOverview;
 import net.playerhandling.Player;
 import org.slf4j.Logger;
@@ -90,18 +91,26 @@ public class Lobby {
    */
   public String removePlayer(int clientId) {
     try {
-    if (ServerLogic.getPlayerList().isClientIdInList(clientId)) {
-      Player player = ServerLogic.getPlayerList().getPlayer(clientId);
-      lobbyPlayers.remove(player);
-      return "OK";
-    } else {
-      return "Not in a Lobby";
-    }
+      if (ServerLogic.getPlayerList().isClientIdInList(clientId)) {
+        Player player = ServerLogic.getPlayerList().getPlayer(clientId);
+        player.setReady(false);
+        lobbyPlayers.remove(player);
+        if (allPlayersReady() && !isEmpty()) {
+          startRound();
+        }
+        return "OK";
+      } else {
+        return "Not in a Lobby";
+      }
     } catch (NullPointerException e) {
       for (int i = 0; i < lobbyPlayers.size(); i++) {
         if (lobbyPlayers.get(i).getClientId() == clientId) {
+          lobbyPlayers.get(i).setReady(false);
           lobbyPlayers.remove(lobbyPlayers.get(i));
         }
+      }
+      if (allPlayersReady() && !isEmpty()) {
+        startRound();
       }
       return "Not connected to the server.";
     }
@@ -141,10 +150,15 @@ public class Lobby {
    *
    * @return A String with the usernames of all IDs and Players in this Lobby separated by "║".
    */
-  public String getPlayerNamesAndIds() {
+  public String getPlayerNamesIdsReadies() {
     StringBuilder s = new StringBuilder();
     for (Player player : lobbyPlayers) {
-      s.append(player.getClientId()).append("║").append(player.getUsername()).append("║");
+      s.append(player.getClientId())
+          .append("║")
+          .append(player.getUsername())
+          .append("║")
+          .append(player.isReady())
+          .append("║");
     }
     return s.toString();
   }
@@ -247,14 +261,15 @@ public class Lobby {
     this.status = status;
     if (!old.equals(this.status)) {
       try {
-      String info = "OK║" + ServerLogic.getLobbyList().getTopTen();
-      if (getPlayerAmount() != 0) {
-        new PacketLobbyOverview(lobbyPlayers.get(0).getClientId(), info).sendToClientsNotInALobby();
-      } else {
-        new PacketLobbyOverview(1, info).sendToClientsNotInALobby();
-        // TODO: check if this works with the "1", do we really need the clientId in the
-        // constructor?
-      }
+        String info = "OK║" + ServerLogic.getLobbyList().getTopTen();
+        if (getPlayerAmount() != 0) {
+          new PacketLobbyOverview(lobbyPlayers.get(0).getClientId(), info)
+              .sendToClientsNotInALobby();
+        } else {
+          new PacketLobbyOverview(1, info).sendToClientsNotInALobby();
+          // TODO: check if this works with the "1", do we really need the clientId in the
+          // constructor?
+        }
       } catch (NullPointerException e) {
         logger.error("Not connected to a server.");
         return;
@@ -276,5 +291,27 @@ public class Lobby {
     return serverItemState;
   }
 
+  /**
+   * Checks if all lobbymembers are ready.
+   * @return true if all players in the lobby are ready, false otherwise.
+   * */
+  public boolean allPlayersReady() {
+    boolean allReady = true;
+    for (Player lobbyPlayer : lobbyPlayers) {
+      if (!lobbyPlayer.isReady()) {
+        allReady = false;
+      }
+    }
+    return allReady;
+  }
 
+  /**
+   * Starts the Round for this Lobby.
+   * */
+  public void startRound() {
+    setStatus("running");
+    History.openRemove(lobbyId);
+    History.runningAdd(lobbyId, lobbyName);
+    new PacketStartRound().sendToLobby(lobbyId);
+  }
 }
