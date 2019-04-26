@@ -69,4 +69,20 @@ public class History {
   public static void archive(String data) {
     finished.add(data);
   }
+
+  public static void clearArchive() {
+    finished.clear();
+  }
+
+  public static CopyOnWriteArrayList<String> getFinished() {
+    return finished;
+  }
+
+  public static ConcurrentHashMap<Integer, String> getOpen() {
+    return open;
+  }
+
+  public static ConcurrentHashMap<Integer, String> getRunning() {
+    return running;
+  }
 }

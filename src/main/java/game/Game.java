@@ -66,7 +66,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import terrains.Terrain;
 import terrains.TerrainFlat;
-import util.RandomName;
 
 //  import org.slf4j.Logger;
 // import org.slf4j.LoggerFactory;
@@ -133,7 +132,7 @@ public class Game extends Thread {
   private static CopyOnWriteArrayList<String> playerList = new CopyOnWriteArrayList<>();
   private static CopyOnWriteArrayList<LobbyPlayerEntry> lobbyPlayerCatalog =
       new CopyOnWriteArrayList<>();
-  public String username = RandomName.getRandomName();
+  private String username;
   /*
    * Set your resolution here, feel free to add new entries and comment them with your name/machine
    * If someone wants to work on this, edit this comment or add an issue to the tracker in gitlab
