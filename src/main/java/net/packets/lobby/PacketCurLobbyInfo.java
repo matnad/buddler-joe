@@ -98,7 +98,7 @@ public class PacketCurLobbyInfo extends Packet {
     } else {
       addError("No Status found.");
     }
-    if((infoArray.length-2)%3 != 0){
+    if ((infoArray.length - 2) % 3 != 0) {
       addError("Invalid number of arguments.");
       System.out.println("CurLobbyError--------------------------------");
     }
@@ -120,14 +120,14 @@ public class PacketCurLobbyInfo extends Packet {
       System.out.println("Players in Lobby \"" + infoArray[1] + "\":");
       CopyOnWriteArrayList<LobbyPlayerEntry> catalog = new CopyOnWriteArrayList<>();
       for (int i = 2; i < infoArray.length; i += 3) {
-        boolean isReady = infoArray[i+2].equals("true");
-        System.out.println(infoArray[i] + " - " + infoArray[i + 1]  + " - " + isReady);
+        boolean isReady = infoArray[i + 2].equals("true");
+        System.out.println(infoArray[i] + " - " + infoArray[i + 1] + " - " + isReady);
         catalog.add(new LobbyPlayerEntry(infoArray[i + 1], isReady));
       }
       Game.setLobbyPlayerCatalog(catalog);
       System.out.println("-------------------------------------");
-      //System.out.println("To chat with players in this lobby, type: C <message>");
-      //System.out.println("To leave this lobby, type: leave");
+      // System.out.println("To chat with players in this lobby, type: C <message>");
+      // System.out.println("To leave this lobby, type: leave");
 
       // Game Logic updates
 
@@ -158,7 +158,7 @@ public class PacketCurLobbyInfo extends Packet {
       }
 
     } else { // Errors ServerSide
-      //System.out.println(infoArray[0]);
+      // System.out.println(infoArray[0]);
     }
   }
 }

@@ -100,11 +100,12 @@ public class ServerPlayerList {
    */
   public boolean isUsernameInList(String username) {
     try {
-    for (Player p : players.values()) {
-      if (username.equals(p.getUsername())) {
-        return true;
+      for (Player p : players.values()) {
+        if (username.equals(p.getUsername())) {
+          return true;
+        }
       }
-    } } catch (NullPointerException e) {
+    } catch (NullPointerException e) {
       return false;
     }
     return false;
@@ -128,32 +129,32 @@ public class ServerPlayerList {
       return -2;
     }
 
-    ConcurrentHashMap<Integer, Integer> player = new ConcurrentHashMap<>();
-    for (Player Player : players.values()) {
-      if (message.startsWith(Player.getUsername())) {
+    ConcurrentHashMap<Integer, Integer> players = new ConcurrentHashMap<>();
+    for (Player player : this.players.values()) {
+      if (message.startsWith(player.getUsername())) {
 
         x++;
-        for (int i = 0; i < Player.getUsername().length(); i++) {
-          if (message.charAt(i) == Player.getUsername().charAt(i)) {
+        for (int i = 0; i < player.getUsername().length(); i++) {
+          if (message.charAt(i) == player.getUsername().charAt(i)) {
             j++;
           }
-          player.put(j, Player.getClientId());
+          players.put(j, player.getClientId());
         }
       }
     }
     if (x == 1) {
-      return player.get(j);
+      return players.get(j);
     }
     if (x == 0) {
       return -1;
     } else {
       int max = 0;
-      for (int i : player.keySet()) {
+      for (int i : players.keySet()) {
         if (max < i) {
           max = i;
         }
       }
-      return player.get(max);
+      return players.get(max);
     }
   }
 

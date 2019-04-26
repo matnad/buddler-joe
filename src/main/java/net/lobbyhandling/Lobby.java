@@ -93,8 +93,8 @@ public class Lobby {
     try {
       if (ServerLogic.getPlayerList().isClientIdInList(clientId)) {
         Player player = ServerLogic.getPlayerList().getPlayer(clientId);
-        lobbyPlayers.remove(player);
         player.setReady(false);
+        lobbyPlayers.remove(player);
         if (allPlayersReady() && !isEmpty()) {
           startRound();
         }
@@ -105,8 +105,8 @@ public class Lobby {
     } catch (NullPointerException e) {
       for (int i = 0; i < lobbyPlayers.size(); i++) {
         if (lobbyPlayers.get(i).getClientId() == clientId) {
-          lobbyPlayers.remove(lobbyPlayers.get(i));
           lobbyPlayers.get(i).setReady(false);
+          lobbyPlayers.remove(lobbyPlayers.get(i));
         }
       }
       if (allPlayersReady() && !isEmpty()) {
@@ -291,6 +291,10 @@ public class Lobby {
     return serverItemState;
   }
 
+  /**
+   * Checks if all lobbymembers are ready.
+   * @return true if all players in the lobby are ready, false otherwise.
+   * */
   public boolean allPlayersReady() {
     boolean allReady = true;
     for (Player lobbyPlayer : lobbyPlayers) {
@@ -301,6 +305,9 @@ public class Lobby {
     return allReady;
   }
 
+  /**
+   * Starts the Round for this Lobby.
+   * */
   public void startRound() {
     setStatus("running");
     History.openRemove(lobbyId);
