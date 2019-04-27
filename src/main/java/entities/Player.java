@@ -386,12 +386,14 @@ public class Player extends NetPlayer {
   }
 
   /** updates the player's life status and sends the life status to server. */
-  public void increaseCurrentLives() {
+  public boolean increaseCurrentLives() {
     if (currentLives < 2) {
       currentLives++;
+      PacketLifeStatus lives = new PacketLifeStatus(String.valueOf(currentLives));
+      lives.processData();
+      return true;
     }
-    PacketLifeStatus lives = new PacketLifeStatus(String.valueOf(currentLives));
-    lives.processData();
+    return false;
   }
 
   /** updates the player's life status and sends the life status to server. */
