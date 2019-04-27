@@ -319,6 +319,11 @@ public class Game extends Thread {
         if (activeStages.contains(CHANGENAME)) {
           ChangeName.update();
         }
+
+        if (activeStages.contains(PLAYERLIST)) {
+          PlayerList.update();
+        }
+
       }
 
       activeStages.addAll(stagesToBeAdded);
