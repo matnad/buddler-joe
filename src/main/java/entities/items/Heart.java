@@ -89,6 +89,8 @@ public class Heart extends Item {
 
     if (pickedUp && pickedUpBy != null) {
       setPosition(pickedUpBy.getBbox().getCenter());
+    } else {
+      setRotY((float) (getRotY() + 90 * Game.dt()) % 360);
     }
 
     time += Game.dt();
