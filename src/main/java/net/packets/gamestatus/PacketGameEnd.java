@@ -83,6 +83,7 @@ public class PacketGameEnd extends Packet {
       Game.removeActiveStage(Game.Stage.PLAYING);
       TextMaster.removeAll();
       Game.addActiveStage(Game.Stage.GAMEOVER);
+      //Game.addActiveStage(Game.Stage.INLOBBBY);
     } else {
       logger.warn("Packet Game End not properly received: " + createErrorMessage());
     }

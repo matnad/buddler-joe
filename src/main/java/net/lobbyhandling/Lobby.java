@@ -76,17 +76,17 @@ public class Lobby implements Runnable {
         }
       }
 
-      if (aliveLobbyPlayers.size() == 0 && checked == false) {
-        // System.out.println("here");
-        gameOver(getCurrentWinner().getClientId());
-
-      } else {
-        // Wait for the rest of the second
-        try {
+      try {
+        if (aliveLobbyPlayers.size() == 0 && checked == false) {
+          // System.out.println("here");
+          Thread.sleep(2500);
+          gameOver(getCurrentWinner().getClientId());
+        } else {
+          // Wait for the rest of the second
           Thread.sleep(1000 - System.currentTimeMillis() + startOfLoop);
-        } catch (InterruptedException e) {
-          e.printStackTrace();
         }
+      } catch (InterruptedException e) {
+        e.printStackTrace();
       }
     }
   }
