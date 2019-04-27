@@ -37,18 +37,16 @@ public class Highscore {
   private static GuiTexture buddlerJoe;
   // private static GuiTexture title;
   private static MenuButton back;
-  private static float[] namesY = {
-    0.261728f, 0.330864f, 0.4f, 0.469136f, 0.538272f, 0.607407f, 0.676534f, 0.745634f
-  };
-  private static float[] countY = {
-    0.261728f, 0.330864f, 0.4f, 0.469136f, 0.538272f, 0.607407f, 0.676534f, 0.745634f
-  };
+  private static float[] namesY = {0.330864f, 0.4f, 0.469136f, 0.538272f, 0.607407f, 0.676534f, 0,745661f};
+  private static float[] countY = {0.330864f, 0.4f, 0.469136f, 0.538272f, 0.607407f, 0.676534f, 0,745661f};
+
   private static CopyOnWriteArrayList<HighscoreEntry> catalog;
-  private static ChangableGuiText[] usernames = new ChangableGuiText[8];
-  private static ChangableGuiText[] times = new ChangableGuiText[8];
+  private static ChangableGuiText[] usernames = new ChangableGuiText[7];
+  private static ChangableGuiText[] times = new ChangableGuiText[7];
   private static int startInd = 0;
   private static boolean initializedText = false;
   private static Vector3f black = new Vector3f(0, 0, 0);
+  private static GuiTexture title;
 
   /**
    * Initialize Highscore textures. Will load the texture files and generate the basic highscore
@@ -81,12 +79,12 @@ public class Highscore {
             1);
     // TODO: Title
 
-    // title =
-    //   new GuiTexture(
-    //      loader.loadTexture("highscoreTitle"),
-    //     new Vector2f(-0.053125f, 0.446296f),
-    //   new Vector2f(0.379167f, 0.052778f),
-    // 1);
+    title =
+            new GuiTexture(
+                    loader.loadTexture("highscoretitel"),
+                    new Vector2f(-0.202083f, 0.446296f),
+                    new Vector2f(0.227882f, 0.052778f),
+                    1);
 
     // Back
     back =
@@ -118,7 +116,7 @@ public class Highscore {
     guis.add(background);
     guis.add(highscore);
     guis.add(buddlerJoe);
-    // guis.add(title);
+    guis.add(title);
 
     // OpenGL Coordinates (0/0 = center of screen, -1/1 = corners)
     double x = 2 * (InputHandler.getMouseX() / Game.window.getWidth()) - 1;
