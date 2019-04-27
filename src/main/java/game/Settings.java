@@ -22,7 +22,7 @@ public class Settings implements Serializable {
 
   public synchronized void setFullscreen(boolean fullscreen) {
     this.fullscreen = fullscreen;
-    Game.getSettingsSerialiser().serialiseSettings(Game.getSettings());
+    serialise();
   }
 
   public synchronized int getWidth() {
@@ -31,7 +31,7 @@ public class Settings implements Serializable {
 
   public synchronized void setWidth(int width) {
     this.width = width;
-    Game.getSettingsSerialiser().serialiseSettings(Game.getSettings());
+    serialise();
   }
 
   public synchronized int getHeight() {
@@ -40,7 +40,7 @@ public class Settings implements Serializable {
 
   public synchronized void setHeight(int height) {
     this.height = height;
-    Game.getSettingsSerialiser().serialiseSettings(Game.getSettings());
+    serialise();
   }
 
   public synchronized String getUsername() {
@@ -49,7 +49,7 @@ public class Settings implements Serializable {
 
   public synchronized void setUsername(String username) {
     this.username = username;
-    Game.getSettingsSerialiser().serialiseSettings(Game.getSettings());
+    serialise();
   }
 
   public synchronized String getIp() {
@@ -58,6 +58,11 @@ public class Settings implements Serializable {
 
   public synchronized void setIp(String ip) {
     this.ip = ip;
-    Game.getSettingsSerialiser().serialiseSettings(Game.getSettings());
+    serialise();
+  }
+
+  private void serialise() {
+    // TODO: Serialiser to static? No real reason to call it from game.Game
+    Game.getSettingsSerialiser().serialiseSettings(this);
   }
 }
