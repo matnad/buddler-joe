@@ -144,13 +144,13 @@ public class TestServerLobbyList {
 
   @Test
   public void checkGetLobbiesInGame() {
-    ServerLobbyList lobbyList = new ServerLobbyList();
     ConcurrentHashMap<Integer, Lobby> lobbies = new ConcurrentHashMap<>();
     Lobby testLobby1 = new Lobby("test1", 1, "mid");
     Lobby testLobby2 = new Lobby("test2", 1, "mid");
     testLobby1.setInGame(true);
     lobbies.put(testLobby1.getLobbyId(), testLobby1);
     lobbies.put(testLobby2.getLobbyId(), testLobby2);
+    ServerLobbyList lobbyList = new ServerLobbyList();
     lobbyList.addLobby(testLobby1);
     StringBuilder s = new StringBuilder();
     s.append(testLobby1.toString()).append("║");
