@@ -1,0 +1,48 @@
+Protokoll 23.04.2019 - Buddler Joe
+
+Anwesend: Alle
+
+Ort: Kollegienhaus Uni Basel
+
+Wir haben die folgenden Punkte besprochen und dies ist der neue Stand seit letzter Sitzung:
+
+HIGH PRIO:
+- Klasse zum im GUI user Input entgegen nehmen (Username, Lobbyname etc) -> Moritz
+- Neue Screen-Overlays für Freeze und Damage -> Sebastian
+- Hauptmenü fertig machen -> Done bis auf Highscore Button (Sebastian)
+- "Game Esc Menü" machen -> Done bis auf continue (Sebastian)
+- Unit Tests Net -> Viktor, Sanja
+- Lobby Status Änderungen erkennen
+    > Lobby löschen, wenn zulange niemand drin -> Sanja
+    > Game beenden wwenn alle tot oder disconnected -> Sanja
+
+MEDIUM PRIO:
+- Chat in Lobby Menü -> Moritz
+- Whisper an alle -> Moritz
+- Obsidian Texturen -> Moritz
+- Besserer Wand Terrain Generator (Im moment können wir nur rechteckige Wand Terrainsmachen) -> Matthias
+- Serverseitige Validierung der wichtigsten Spielaktionen -> Leben (Sanja)
+- Rework für Digging (im Moment 1 Packet pro Frame) -> Matthias
+- 3D Modelle mit Textur für Items -> Viktor
+- Partikel Effekte für Items -> Matthias
+- Kollision für Herzen ("aufnehmen") -> Matthias
+- Mehr Lichtquellen Rendern -> Matthias
+- Ready button implementieren -> Sebastian
+- Alle Konsolen Commands ins GUI bringen (Tasten oder Menüs) -> Mittwoch fragen
+
+LOW PRIO:
+- Nach Game Ende ins Hauptmenü und "alles resetten" -> Noch frei
+- BlendMap für Wand Textur -> Matthias
+- Netzwerkprotokoll Dokument -> Alle
+- CI / CD (Automatisierte Tests) -> Mittwoch fragen
+
+BONUS:
+- Sounds aufnehmen -> Noch frei
+- "Animationen" für Joe -> Noch frei
+
+Done:
+- Settings für Auflösung im Menü -> Done
+- Map Generation Alogrithm fertig machen -> Done
+- Obsidian Blocks am Rand der Map -> Done
+- Lebensanzeige mit Herzen statt Text? -> Done
+- Neues Movement System für Joe (Vector und Velocity basiert) -> Done

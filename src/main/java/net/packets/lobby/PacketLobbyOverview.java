@@ -89,7 +89,7 @@ public class PacketLobbyOverview extends Packet {
   @Override
   public void processData() {
     if (hasErrors()) {
-      System.out.println(createErrorMessage());
+      //System.out.println(createErrorMessage());
     } else if (in[0].equals("OK")) { // the "OK" gets added in PacketCreatLobby.processData and
       //System.out.println("-------------------------------------");
       //System.out.println("Available Lobbies:");
@@ -107,7 +107,7 @@ public class PacketLobbyOverview extends Packet {
       }
       Game.setLobbyCatalog(catalog);
     } else {
-      System.out.println(in[0]);
+      //System.out.println(in[0]);
     }
   }
 }

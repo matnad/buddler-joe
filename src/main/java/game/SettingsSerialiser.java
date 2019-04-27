@@ -63,6 +63,9 @@ public class SettingsSerialiser {
       Settings settings = (Settings) in.readObject();
       in.close();
       fileIn.close();
+      if (settings == null) {
+        settings = new Settings();
+      }
       return settings;
     } catch (IOException i) {
       logger.warn("No settings file found. Stating with default settings.");

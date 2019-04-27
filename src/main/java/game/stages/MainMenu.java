@@ -3,20 +3,18 @@ package game.stages;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_ESCAPE;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_H;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_L;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_P;
 import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_1;
 
 import engine.io.InputHandler;
 import engine.render.Loader;
 import engine.render.fontrendering.TextMaster;
 import game.Game;
-import game.NetPlayerMaster;
-import game.Settings;
 import gui.GuiTexture;
 import gui.MenuButton;
 import gui.text.ChangableGuiText;
 import java.util.ArrayList;
 import java.util.List;
-import net.packets.gamestatus.PacketGetHistory;
 import net.packets.highscore.PacketHighscore;
 import net.packets.lobby.PacketGetLobbies;
 import org.joml.Vector2f;
@@ -208,11 +206,6 @@ public class MainMenu {
       Game.removeActiveStage(Game.Stage.MAINMENU);
     } else if (InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1) && history.isHover(x, y)) {
       // TODO: go to History Page.
-    } else if (InputHandler.isKeyPressed(GLFW_KEY_H)) {
-      new PacketHighscore().sendToServer();
-      MainMenu.done();
-      Game.addActiveStage(Game.Stage.HIGHSCORE);
-      Game.removeActiveStage(Game.Stage.MAINMENU);
     }
     Game.getGuiRenderer().render(guis);
     TextMaster.render();

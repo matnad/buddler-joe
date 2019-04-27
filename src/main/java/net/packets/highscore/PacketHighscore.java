@@ -66,7 +66,6 @@ public class PacketHighscore extends Packet {
           if (!isExtendedAscii(highscore[i]) || !isExtendedAscii(highscore[i + 1])) {
             break;
           }
-          // logger.info(highscore[i+1]);
         }
       }
     } else {
@@ -86,27 +85,25 @@ public class PacketHighscore extends Packet {
   public void processData() {
     if (getClientId() > 0) {
       // Server side:
-      if (ServerLogic.getServerHighscore().getHighscoreAsString().startsWith("There")) {
+      if (ServerLogic.getServerHighscore().getHighscoreAsString().startsWith("there")) {
         setData("ERROR║" + ServerLogic.getServerHighscore().getHighscoreAsString());
       } else {
         setData("OK║" + ServerLogic.getServerHighscore().getHighscoreAsString());
       }
-      logger.info(getData());
       this.sendToClient(getClientId());
-      // logger.info(getData());
     } else {
       // Client side:
+      CopyOnWriteArrayList<HighscoreEntry> catalog = new CopyOnWriteArrayList<>();
       if (hasErrors()) {
         System.out.println(createErrorMessage());
       } else if (highscore[0].equals("OK")) {
-        logger.info(highscore[0]);
-        CopyOnWriteArrayList<HighscoreEntry> catalog = new CopyOnWriteArrayList<>();
         for (int i = 1; i < highscore.length; i += 2) {
           catalog.add(new HighscoreEntry(highscore[i], highscore[i + 1]));
         }
         Game.setHighscoreCatalog(catalog);
       } else {
-        System.out.println(highscore[1]);
+        catalog.add(new HighscoreEntry("Currently ",highscore[1]));
+        Game.setHighscoreCatalog(catalog);
       }
     }
   }

@@ -1,14 +1,13 @@
 package net.playerhandling;
 
-import entities.Player;
-import java.util.HashMap;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class ServerPlayerList {
 
-  private HashMap<Integer, ServerPlayer> players;
+  private ConcurrentHashMap<Integer, ServerPlayer> players;
 
   public ServerPlayerList() {
-    this.players = new HashMap<>();
+    this.players = new ConcurrentHashMap<>();
   }
 
   /**
@@ -85,13 +84,10 @@ public class ServerPlayerList {
    * @return True if the clientId is in the List, false if not
    */
   public boolean isClientIdInList(int clientId) {
-    boolean b = true;
-    try {
-      getPlayer(clientId);
-    } catch (NullPointerException nfe) {
-      b = false;
+    if (getPlayer(clientId) != null) {
+      return true;
     }
-    return b;
+    return false;
   }
 
   /**
@@ -103,10 +99,14 @@ public class ServerPlayerList {
    * @return True if the username is in the list or false if it is not yet in the list
    */
   public boolean isUsernameInList(String username) {
-    for (ServerPlayer p : players.values()) {
-      if (username.equals(p.getUsername())) {
-        return true;
+    try {
+      for (ServerPlayer p : players.values()) {
+        if (username.equals(p.getUsername())) {
+          return true;
+        }
       }
+    } catch (NullPointerException e) {
+      return false;
     }
     return false;
   }
@@ -129,32 +129,32 @@ public class ServerPlayerList {
       return -2;
     }
 
-    HashMap<Integer, Integer> player = new HashMap<>();
-    for (ServerPlayer p : players.values()) {
-      if (message.startsWith(p.getUsername())) {
+    ConcurrentHashMap<Integer, Integer> players = new ConcurrentHashMap<>();
+    for (ServerPlayer player : this.players.values()) {
+      if (message.startsWith(player.getUsername())) {
 
         x++;
-        for (int i = 0; i < p.getUsername().length(); i++) {
-          if (message.charAt(i) == p.getUsername().charAt(i)) {
+        for (int i = 0; i < player.getUsername().length(); i++) {
+          if (message.charAt(i) == player.getUsername().charAt(i)) {
             j++;
           }
-          player.put(j, p.getClientId());
+          players.put(j, player.getClientId());
         }
       }
     }
     if (x == 1) {
-      return player.get(j);
+      return players.get(j);
     }
     if (x == 0) {
       return -1;
     } else {
       int max = 0;
-      for (int i : player.keySet()) {
+      for (int i : players.keySet()) {
         if (max < i) {
           max = i;
         }
       }
-      return player.get(max);
+      return players.get(max);
     }
   }
 
@@ -162,6 +162,7 @@ public class ServerPlayerList {
   public String toString() {
     StringBuilder s = new StringBuilder();
     if (players.size() > 0) {
+      s.append("OK║");
       for (ServerPlayer l : players.values()) {
         s.append(l.getUsername()).append("║");
       }
@@ -176,7 +177,7 @@ public class ServerPlayerList {
    *
    * @return all players in the playerList
    */
-  public HashMap<Integer, ServerPlayer> getPlayers() {
+  public ConcurrentHashMap<Integer, ServerPlayer> getPlayers() {
     return players;
   }
 }
