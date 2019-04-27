@@ -56,6 +56,7 @@ public class PacketGameEnd extends Packet {
     String[] dataArray = getData().split("║");
     if (dataArray.length != 2) {
       addError("Invalid Game Over Packet received.");
+      return;
     }
     try {
       winner = dataArray[0];

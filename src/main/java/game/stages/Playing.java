@@ -1,6 +1,8 @@
 package game.stages;
 
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_ESCAPE;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_H;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_P;
 
 import engine.io.InputHandler;
 import engine.particles.ParticleMaster;
@@ -18,6 +20,8 @@ import gui.GuiTexture;
 import gui.text.FloatingStrings;
 import java.util.ArrayList;
 import java.util.List;
+
+import net.packets.lists.PacketPlayerList;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 import terrains.TerrainFlat;
@@ -61,6 +65,8 @@ public class Playing {
    */
   public static void update(MasterRenderer renderer) {
     if (firstloop) {
+
+      Game.getChat().setGameChatSettings();
       TextMaster.removeAll();
       firstloop = false;
     }
@@ -73,6 +79,19 @@ public class Playing {
     if (InputHandler.isKeyPressed(GLFW_KEY_ESCAPE)) {
       Game.addActiveStage(Game.Stage.GAMEMENU);
     }
+
+    // H = Highscore
+    if (InputHandler.isKeyPressed(GLFW_KEY_H)) {
+      Highscore.setInGame(true);
+      Game.addActiveStage(Game.Stage.HIGHSCORE);
+    }
+
+    if (InputHandler.isKeyPressed(GLFW_KEY_P)) {
+      PacketPlayerList playerList = new PacketPlayerList();
+      playerList.sendToServer();
+      Game.addActiveStage(Game.Stage.PLAYERLIST);
+    }
+    // TODO: Add Button for Whisper and all
 
     // Update positions of camera, player and 3D Mouse Pointer
     Game.getActiveCamera().move();

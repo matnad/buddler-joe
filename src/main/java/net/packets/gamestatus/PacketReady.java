@@ -1,9 +1,9 @@
 package net.packets.gamestatus;
 
-import game.History;
 import net.ServerLogic;
 import net.lobbyhandling.Lobby;
 import net.packets.Packet;
+import net.packets.lobby.PacketCurLobbyInfo;
 import net.playerhandling.ServerPlayer;
 
 /**
@@ -54,15 +54,14 @@ public class PacketReady extends Packet {
       ServerPlayer player = ServerLogic.getPlayerList().getPlayer(getClientId());
       int lobbyId = player.getCurLobbyId();
       Lobby lobby = ServerLogic.getLobbyList().getLobby(lobbyId);
-      // check ob sender der ersteller ist.
-      if (getClientId() == lobby.getCreaterPlayerId()) {
-        lobby.setStatus("running");
-        History.openRemove(lobby.getLobbyId());
-        History.runningAdd(lobby.getLobbyId(), lobby.getLobbyName());
-        new PacketStartRound().sendToLobby(lobby.getLobbyId());
-        // TODO: only start if all players are ready
-      } else {
-        // TODO: set ready for the sender
+
+      if (!player.isReady()) { // is the client ready allready?
+        player.setReady(true);
+        new PacketCurLobbyInfo(getClientId(), lobbyId).sendToLobby(lobbyId); // inform lobbymembers.
+        boolean allReady = lobby.allPlayersReady();
+        if (allReady && !lobby.isEmpty()) {
+          lobby.startRound();
+        }
       }
     }
   }

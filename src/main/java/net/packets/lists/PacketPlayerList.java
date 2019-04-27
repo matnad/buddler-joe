@@ -1,11 +1,13 @@
 package net.packets.lists;
 
+import game.Game;
+import java.util.concurrent.CopyOnWriteArrayList;
 import net.ServerLogic;
 import net.packets.Packet;
 
 public class PacketPlayerList extends Packet {
 
-  private String[] dataArray;
+  private String[] playerList;
 
   /**
    * Constructor if the packet arrives on the server side to be processed and sent to the player.
@@ -26,7 +28,7 @@ public class PacketPlayerList extends Packet {
   public PacketPlayerList(String data) {
     super(PacketTypes.PLAYERLIST);
     setData(data);
-    dataArray = data.split("║");
+    playerList = data.split("║");
   }
 
   /** Constructor to be used by the client to request the playerlist. */
@@ -37,11 +39,11 @@ public class PacketPlayerList extends Packet {
   /** Validate whether the PlayerList only consists of extended Ascii. */
   @Override
   public void validate() {
-    if (dataArray[1] == null) {
+    if (playerList[1] == null) {
       addError("There are no names in the list.");
     }
-    for (int i = 0; i < dataArray.length; i++) {
-      if (!isExtendedAscii(dataArray[i])) {
+    for (int i = 0; i < playerList.length; i++) {
+      if (!isExtendedAscii(playerList[i])) {
         break;
       }
     }
@@ -52,24 +54,29 @@ public class PacketPlayerList extends Packet {
    *
    * <p>On the server side send the data to the correct client.
    *
-   * <p>On the client side print out the playerList to the player.
+   * <p>On the client side add the playerlist to the catalog on the Game class to be displayed in
+   * the PlayerList screen..
    */
   @Override
+  @SuppressWarnings("Duplicates")
   public void processData() {
     if (getClientId() > 0) {
       // Server side
       this.sendToClient(getClientId());
     } else {
+      CopyOnWriteArrayList<String> catalog = new CopyOnWriteArrayList<>();
       // Client side
-      if (!hasErrors()) {
-        System.out.println("-------------------------------------");
-        System.out.println("Players on the Server: \"");
-        for (int i = 0; i < dataArray.length; i++) {
-          System.out.println(dataArray[i]);
+      if (hasErrors()) {
+        System.out.println(createErrorMessage());
+      } else if (playerList[0].equals("OK")) {
+        // logger.info(playerList[0]);
+        for (int i = 1; i < playerList.length; i += 2) {
+          catalog.add(playerList[i]);
         }
-        System.out.println("-------------------------------------");
+        Game.setPlayerList(catalog);
       } else {
-        System.out.println(getData());
+        catalog.add(playerList[0]);
+        Game.setPlayerList(catalog);
       }
     }
   }

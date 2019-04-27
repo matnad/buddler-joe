@@ -43,6 +43,8 @@ repositories {
 dependencies {
     compile group: 'ch.qos.logback', name: 'logback-classic', version: '1.0.9'
     compile group: 'ch.qos.logback', name: 'logback-core', version: '1.0.9'
+    testCompile 'junit:junit:4.12'
+    testCompile group: 'org.mockito', name: 'mockito-core', version: '2.27.0'
     implementation "org.lwjgl:lwjgl:3.2.1"
     implementation "org.lwjgl:lwjgl-assimp:3.2.1"
     implementation "org.lwjgl:lwjgl-bgfx:3.2.1"

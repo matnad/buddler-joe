@@ -38,11 +38,15 @@ public class LifeStatus {
             1);
   }
 
-  /** Called every frame. Returns the player's actual life status. */
+  /**
+   * Called every frame. Returns the player's actual life status.
+   *
+   * @return number of current lives
+   */
   public int checkLifeStatus() {
     if (Game.getActivePlayer().getCurrentLives() == 1) {
       return 1;
-    } else if (Game.getActivePlayer().getCurrentLives() == 0) {
+    } else if (Game.getActivePlayer().getCurrentLives() <= 0) {
       return 0;
     } else {
       return 2;

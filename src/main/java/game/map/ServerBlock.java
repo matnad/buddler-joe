@@ -100,26 +100,26 @@ public class ServerBlock {
   private void onQmarkDestroy(int clientId) {
 
     Random random = new Random();
-    int r = random.nextInt(4);
-    if (r == 0) {
+    int r = random.nextInt(100);
+    if (0 <= r && r <= 30) {
       logger.debug("Spawning dynamite.");
       PacketSpawnItem packetSpawnItem =
           new PacketSpawnItem(
               ItemMaster.ItemTypes.DYNAMITE, new Vector3f(gridX, gridY, gridZ), clientId);
       packetSpawnItem.sendToLobby(ServerLogic.getLobbyForClient(clientId).getLobbyId());
-    } else if (r == 1) {
+    } else if (30 < r && r <= 60) {
       logger.debug("Spawning heart.");
       PacketSpawnItem packetSpawnItem =
           new PacketSpawnItem(
               ItemMaster.ItemTypes.HEART, new Vector3f(gridX, gridY, gridZ), clientId);
       packetSpawnItem.sendToLobby(ServerLogic.getLobbyForClient(clientId).getLobbyId());
-    } else if (r == 2) {
+    } else if (60 < r && r <= 80) {
       logger.debug("Spawning star.");
       PacketSpawnItem packetSpawnItem =
           new PacketSpawnItem(
               ItemMaster.ItemTypes.STAR, new Vector3f(gridX, gridY, gridZ), clientId);
       packetSpawnItem.sendToLobby(ServerLogic.getLobbyForClient(clientId).getLobbyId());
-    } else if (r == 3) {
+    } else if (80 < r && r <= 100) {
       logger.debug("Spawning ice.");
       PacketSpawnItem packetSpawnItem =
           new PacketSpawnItem(

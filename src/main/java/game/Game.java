@@ -12,6 +12,7 @@ import static game.Game.Stage.LOBBYCREATION;
 import static game.Game.Stage.LOGIN;
 import static game.Game.Stage.MAINMENU;
 import static game.Game.Stage.OPTIONS;
+import static game.Game.Stage.PLAYERLIST;
 import static game.Game.Stage.PLAYING;
 import static game.Game.Stage.WELCOME;
 
@@ -44,6 +45,7 @@ import game.stages.LobbyCreation;
 import game.stages.Login;
 import game.stages.MainMenu;
 import game.stages.Options;
+import game.stages.PlayerList;
 import game.stages.Playing;
 import game.stages.Welcome;
 import gui.chat.Chat;
@@ -141,6 +143,7 @@ public class Game extends Thread {
   private static CopyOnWriteArrayList<LobbyEntry> lobbyCatalog = new CopyOnWriteArrayList<>();
   private static CopyOnWriteArrayList<HighscoreEntry> highscoreCatalog =
       new CopyOnWriteArrayList<>();
+  private static CopyOnWriteArrayList<String> playerList = new CopyOnWriteArrayList<>();
   private static CopyOnWriteArrayList<LobbyPlayerEntry> lobbyPlayerCatalog =
       new CopyOnWriteArrayList<>();
 
@@ -322,6 +325,11 @@ public class Game extends Thread {
         if (activeStages.contains(CHANGENAME)) {
           ChangeName.update();
         }
+
+        if (activeStages.contains(PLAYERLIST)) {
+          PlayerList.update();
+        }
+
       }
 
       activeStages.addAll(stagesToBeAdded);
@@ -394,6 +402,8 @@ public class Game extends Thread {
     Login.init(loader);
     LoadingScreen.progess();
     Highscore.init(loader);
+    LoadingScreen.progess();
+    PlayerList.init(loader);
     LoadingScreen.progess();
     InLobby.init(loader);
     LoadingScreen.progess();
@@ -665,6 +675,18 @@ public class Game extends Thread {
     return loader;
   }
 
+  public static String getServerIp() {
+    return serverIp;
+  }
+
+  public static CopyOnWriteArrayList<String> getPlayerList() {
+    return playerList;
+  }
+
+  public static void setPlayerList(CopyOnWriteArrayList<String> playerList) {
+    Game.playerList = playerList;
+  }
+
   // Valid Stages
   public enum Stage {
     MAINMENU,
@@ -680,6 +702,7 @@ public class Game extends Thread {
     HIGHSCORE,
     GAMEOVER,
     CHANGENAME,
+    PLAYERLIST,
     LOBBYCREATION
   }
 }

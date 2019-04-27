@@ -5,6 +5,8 @@ import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_1;
 
 import engine.io.InputHandler;
 import engine.render.Loader;
+import engine.render.fontmeshcreator.FontType;
+import engine.render.fontmeshcreator.GuiText;
 import engine.render.fontrendering.TextMaster;
 import game.Game;
 import game.Settings;
@@ -14,6 +16,8 @@ import gui.text.ChangableGuiText;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.StartNetworkOnlyClient;
+import net.packets.loginlogout.PacketDisconnect;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 
@@ -53,6 +57,12 @@ public class Options {
   private static boolean initializedText;
   private static GuiTexture fsOnSta;
   private static GuiTexture fsOffSta;
+  private static FontType font;
+  private static Vector3f textColour;
+  private static GuiText guiText;
+  private static String servername = "";
+  private static String newservername = "";
+  private static String output;
 
   /**
    * * Initialize Options-Menu. Will load the texture files and generate the basic menu parts. This
@@ -62,6 +72,8 @@ public class Options {
    */
   @SuppressWarnings("Duplicates")
   public static void init(Loader loader) {
+    font = new FontType(loader, "verdanaAsciiEx");
+    textColour = new Vector3f(0f, 0f, 0f);
 
     currentAlpha = 1;
 
@@ -204,7 +216,10 @@ public class Options {
     if (!initializedText) {
       done();
       initText();
+      StringBuilder stringBuilder = new StringBuilder(Game.getSettings().getIp());
+      InputHandler.setInputString(stringBuilder);
       initializedText = true;
+      updateGuiText();
     }
     if (firstLoop) {
       // get current settings;
@@ -212,6 +227,21 @@ public class Options {
       width = Game.getSettings().getWidth();
       fullScreen = Game.getSettings().isFullscreen();
       firstLoop = false;
+    }
+
+    newservername = servername;
+    InputHandler.readInputOn();
+    newservername = InputHandler.getInputString();
+
+    if (newservername.length() > 16) {
+      newservername = servername;
+      StringBuilder temp = new StringBuilder(servername);
+      InputHandler.setInputString(temp);
+    }
+
+    if (!servername.equals(newservername)) {
+      servername = newservername;
+      updateGuiText();
     }
 
     List<GuiTexture> guis = new ArrayList<>();
@@ -282,8 +312,9 @@ public class Options {
       settings.setFullscreen(fullScreen);
       settings.setHeight(height);
       settings.setWidth(width);
-      if (true) { // TODO: check if Textbox is empty.
-        // settings.setIp(); //TODO: the entered IP should be set here.
+      if (output.length() > 0) { // TODO: check if Textbox is empty.
+        settings.setIp(output); // TODO: the entered IP should be set here.
+        InputHandler.setInputString(new StringBuilder(output));
       }
       // TODO: remove console printing
       System.out.println("Height: " + height + "p");
@@ -312,5 +343,16 @@ public class Options {
     initializedText = false;
     firstLoop = true;
     TextMaster.removeAll();
+    InputHandler.setInputString(new StringBuilder(""));
+  }
+
+  private static void updateGuiText() {
+
+    output = servername;
+    TextMaster.removeAll();
+
+    guiText =
+        new GuiText(
+            output, 1.5f, font, new Vector3f(0f, 0f, 0f), 1f, new Vector2f(.30f, .685f), 1f, false);
   }
 }
