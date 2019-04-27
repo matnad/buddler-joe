@@ -34,6 +34,8 @@ public class Chat {
 
   private String chatText;
   private GuiTexture chatGui;
+
+
   private float alpha;
 
   private FontType font;
@@ -362,4 +364,9 @@ public class Chat {
     messagePosition.y = 0.785f;
     alpha = 1;
   }
+
+  public float getAlpha() {
+    return alpha;
+  }
+
 }

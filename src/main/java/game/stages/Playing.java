@@ -1,9 +1,5 @@
 package game.stages;
 
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_ESCAPE;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_H;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_P;
-
 import engine.io.InputHandler;
 import engine.particles.ParticleMaster;
 import engine.render.Loader;
@@ -17,13 +13,18 @@ import entities.light.LightMaster;
 import game.Game;
 import game.NetPlayerMaster;
 import gui.GuiTexture;
+import gui.MenuButton;
 import gui.text.FloatingStrings;
+
+import java.lang.management.MemoryUsage;
 import java.util.ArrayList;
 import java.util.List;
 
 import net.packets.lists.PacketPlayerList;
 import org.joml.Vector2f;
 import util.MousePlacer;
+
+import static org.lwjgl.glfw.GLFW.*;
 
 /**
  * MAIN GAME LOOP specification and rendering. Contains and manages the Game Loop while the player
@@ -37,6 +38,8 @@ public class Playing {
   private static GuiTexture frozenOverlay;
   private static float damageTakenScreenRemaining = 0f;
   private static boolean firstloop = true;
+  private static MenuButton whisper;
+  private static MenuButton all;
 
   /**
    * * Initialize Game Menu. Will load the texture files and other GUI elements needed for this
@@ -53,6 +56,24 @@ public class Playing {
         new GuiTexture(loader.loadTexture("frozen"), new Vector2f(0, 0), new Vector2f(1, 1), 1);
 
     floatingGoldStrings = new FloatingStrings(Game.getActivePlayer().getBbox(), 3f);
+
+    whisper =
+        new MenuButton(
+            loader,
+            "smallW_norm",
+            "smallW_hover",
+            new Vector2f(-0.836458f, -0.322296f),
+            new Vector2f(.057691f, .025f));
+    whisper.setActivationMinAlpha(0.8f);
+
+    all =
+        new MenuButton(
+            loader,
+            "smallA_norm",
+            "smallA_hover",
+            new Vector2f(-0.747917f, -0.322296f),
+            new Vector2f(.026799f, .025f));
+    all.setActivationMinAlpha(0.8f);
   }
 
   /**
@@ -69,8 +90,16 @@ public class Playing {
       firstloop = false;
     }
 
+    double x = 2 * (InputHandler.getMouseX() / Game.window.getWidth()) - 1;
+    double y = 1 - 2 * (InputHandler.getMouseY() / Game.window.getHeight());
+
     List<GuiTexture> guis = new ArrayList<>();
     guis.add(Game.getChat().getChatGui());
+
+    whisper.setAlpha(Game.getChat().getAlpha());
+    guis.add(whisper.getHoverTexture(x, y));
+    all.setAlpha(Game.getChat().getAlpha());
+    guis.add(all.getHoverTexture(x, y));
 
     // ESC = Game Menu
     if (InputHandler.isKeyPressed(GLFW_KEY_ESCAPE)
@@ -87,9 +116,12 @@ public class Playing {
     }
 
     if (InputHandler.isKeyPressed(GLFW_KEY_P)
-        && !Game.getChat().isEnabled()
-        && !Game.getActiveStages().contains(Game.Stage.GAMEMENU)
-        && !Game.getActiveStages().contains(Game.Stage.PLAYERLIST)) {
+            && !Game.getChat().isEnabled()
+            && !Game.getActiveStages().contains(Game.Stage.GAMEMENU)
+            && !Game.getActiveStages().contains(Game.Stage.PLAYERLIST)
+        || (whisper.isHover(x, y) && InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1))
+            && !Game.getActiveStages().contains(Game.Stage.GAMEMENU)
+            && !Game.getActiveStages().contains(Game.Stage.PLAYERLIST)) {
       PacketPlayerList playerList = new PacketPlayerList();
       playerList.sendToServer();
       Game.addActiveStage(Game.Stage.PLAYERLIST);
