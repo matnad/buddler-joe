@@ -190,7 +190,7 @@ public class Highscore {
     return inGame;
   }
 
-  public static void setInGame(boolean inGame) {
-    inGame = inGame;
+  public static void setInGame(boolean playerInGame) {
+    inGame = playerInGame;
   }
 }
