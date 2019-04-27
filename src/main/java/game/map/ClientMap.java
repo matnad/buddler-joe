@@ -199,7 +199,7 @@ public class ClientMap extends GameMap<Block> {
           case STONE:
             pixels[j * terrainChunk + i] = Color.RED.getRGB();
             break;
-          case AIR:
+          case GOLD:
             pixels[j * terrainChunk + i] = Color.GREEN.getRGB();
             break;
           case OBSIDIAN:
@@ -271,10 +271,10 @@ public class ClientMap extends GameMap<Block> {
     // Prepare Textures
     TerrainTexture dirt = new TerrainTexture(loader.loadTexture("Erde512x512"));
     TerrainTexture stone = new TerrainTexture(loader.loadTexture("Stein512x512"));
-    TerrainTexture air = new TerrainTexture(loader.loadTexture("Erde512x512"));
+    TerrainTexture gold = new TerrainTexture(loader.loadTexture("GoldBraun512x512"));
     TerrainTexture obsidian = new TerrainTexture(loader.loadTexture("red"));
 
-    TerrainTexturePack texturePack = new TerrainTexturePack(dirt, stone, air, obsidian);
+    TerrainTexturePack texturePack = new TerrainTexturePack(dirt, stone, gold, obsidian);
 
     // Generate Terrains
     terrainRows = height / terrainChunk;
