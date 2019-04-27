@@ -18,11 +18,10 @@ import entities.collision.BoundingBox;
 import entities.items.ItemMaster;
 import game.Game;
 import game.stages.Playing;
-import java.util.ArrayList;
-import java.util.List;
 import net.packets.block.PacketBlockDamage;
 import net.packets.life.PacketLifeStatus;
 import net.packets.playerprop.PacketPos;
+import net.packets.playerprop.PacketVelocity;
 import org.joml.Vector2i;
 import org.joml.Vector3f;
 import org.slf4j.Logger;
@@ -46,37 +45,29 @@ import util.MousePlacer;
 public class Player extends NetPlayer {
 
   public static final Logger logger = LoggerFactory.getLogger(Player.class);
-  // Movement Related
-  public static final float gravity = -45; // Units per second
-  private static final float runSpeed = 20; // Units per second
-  private static final float turnSpeed = 720; // Degrees per second
-  private static final float jumpPower = 25; // Units per second
-  private static final float collisionPushOffset = 0.1f;
-  private static final float angle45 = (float) (45 * Math.PI / 180);
+
   // Resources and Stats
   public int currentGold; // Current coins
   private int currentLives;
   private float digDamage; // Damage per second when colliding with blocks
-  private Block collideWithBlockAbove;
-  private Block collideWithBlockBelow;
+  private static final float digIntervall = 0.2f; // Number of dig updates per second
+  private Block lastDiggedBlock = null;
+  private float lastDiggedBlockDamage = 0;
+  private float digIntervallTimer = 0;
 
-  private float currentSpeed = 0;
-  private float currentTurnSpeed = 0;
-  private float upwardsSpeed = 0;
+  // Vector & Velocity based speed
+  private boolean isJumping = false; // Can't Jump while in the air
+  private boolean sendVelocityToServer = false; // If we need to update velocity this frame
+
+  // Other
+  private boolean controlsDisabled;
   private boolean frozen = false;
   private final float torchPlaceDelay = 10f;
   private float torchTimeout = torchPlaceDelay;
 
-
-  private List<Block> closeBlocks;
-
-  private boolean isInAir = false; // Can't Jump while in the air
-
-  private boolean controlsDisabled;
-
   /**
-   * Spawn the Player. This will be handled differently in the future when we rework the Player
-   * class structure.
+   * Spawn the ServerPlayer. This will be handled differently in the future when we rework the
+   * ServerPlayer class structure.
    *
    * @param username username of the player
    * @param position world coordinates for player position
@@ -103,47 +94,56 @@ public class Player extends NetPlayer {
     // Check if player can move
     controlsDisabled = isDefeated() || frozen || Game.getChat().isEnabled();
 
+    sendVelocityToServer = false;
     collideWithBlockAbove = null;
     collideWithBlockBelow = null;
 
-    updateCloseBlocks(
-        BlockMaster.getBlocks()); // We don't want to check entities.collision for all blocks
-    // every frame
+    updateCloseBlocks(BlockMaster.getBlocks());
+    // We don't want to check entities.collision for all block every frame
 
     if (Game.getActiveStages().size() == 1 && Game.getActiveStages().get(0) == PLAYING) {
       // Only check inputs if no other stage is active (stages are menu screens)
       checkInputs(); // See which relevant keys are pressed
       digDamage = 1;
     } else {
-      currentSpeed = 0;
+      stopVelocityX();
+      stopVelocityY();
       digDamage = 0;
     }
 
-    // Stop turning when facing directly left or right
-    if (getRotY() <= -90 && currentTurnSpeed < 0) {
-      currentTurnSpeed = 0;
-      setRotY(-90);
-    } else if (getRotY() >= 90 && currentTurnSpeed > 0) {
-      currentTurnSpeed = 0;
-      setRotY(90);
-    }
-
     // Update position by distance travelled
-    float distance = (float) (currentSpeed * Game.window.getFrameTimeSeconds());
-    super.increasePosition(distance, 0, 0);
+    // float distance = (float) (currentSpeed * Game.dt());
+    // super.increasePosition(distance, 0, 0);
     // Turn character by the turnSpeed (which is set to make a nice turning animation when
     // changing direction)
-    this.increaseRotation(0, (float) (currentTurnSpeed * Game.window.getFrameTimeSeconds()), 0);
 
-    // Apply gravity to upwardspeed and change vertical position
-    upwardsSpeed += gravity * Game.window.getFrameTimeSeconds();
-    super.increasePosition(0, (float) (upwardsSpeed * Game.window.getFrameTimeSeconds()), 0);
+    // Apply gravity and "slow horizontal correction"
+    float ipfX = interpolationFactor;
+    float ipfY = interpolationFactor;
+    if (isInAir) {
+      goalVelocity.y += gravity * Game.dt();
+      ipfX /= 5;
+      ipfY = Math.min(1, ipfY * 2);
+    }
+
+    // Linear Interpolation of current velocity and goal velocity
+    currentVelocity.x += (goalVelocity.x - currentVelocity.x) * ipfX;
+    currentVelocity.y += (goalVelocity.y - currentVelocity.y) * ipfY;
+
+    // Move player
+    increasePosition(new Vector3f(currentVelocity).mul((float) Game.dt()));
+
+    // Handle character rotation (check run direction see if we need to rotate more)
+    this.increaseRotation(
+        0, (float) (getCurrentTurnSpeed() * Game.dt()), 0);
 
     // Handle collisions, we only check close blocks to optimize performance
     // Distance is much cheaper to check than overlap
     for (Block closeBlock : closeBlocks) {
       handleCollision(closeBlock);
     }
+
+    isInAir = collideWithBlockBelow == null;
 
     // Check if crushed by a block and resolve it
     resolveCrush();
@@ -156,9 +156,19 @@ public class Player extends NetPlayer {
       turnHeadlightOn();
     }
 
-    // Send server update with update
-    if (Game.isConnectedToServer()
-        && (currentSpeed != 0 || upwardsSpeed != 0 || currentTurnSpeed != 0)) {
+    //// Send server update with update
+    // if (Game.isConnectedToServer()
+    //    && (!currentVelocity.equals(new Vector3f()) || currentTurnSpeed != 0)) {
+    //  new PacketPos(getPositionXy().x, getPositionXy().y, getRotY()).sendToServer();
+    // }
+
+    if (sendVelocityToServer) {
+      new PacketVelocity(currentVelocity.x, currentVelocity.y, goalVelocity.x, goalVelocity.y)
+          .sendToServer();
+    }
+
+    // Update server once per second
+    if (Game.isOncePerSecond()) {
       new PacketPos(getPositionXy().x, getPositionXy().y, getRotY()).sendToServer();
     }
   }
@@ -193,8 +203,9 @@ public class Player extends NetPlayer {
       // No empty room to teleport to. Just reset y to above ground.
       setPositionY(5);
     } else {
-      // Move player to an empty space
+      // Move player to an empty space and update position for all players
       setPosition(Game.getMap().gridToWorld(closestGridPos));
+      new PacketPos(getPositionXy().x, getPositionXy().y, getRotY()).sendToServer();
     }
   }
 
@@ -219,18 +230,17 @@ public class Player extends NetPlayer {
       if (theta <= angle45) {
         // From above
         collideWithBlockBelow = block;
-        // Undo the position change to keep the player in place
-        super.increasePosition(0, (float) -(upwardsSpeed * Game.window.getFrameTimeSeconds()), 0);
         // Have a grace distance, if the overlap is too large, we reset to position to prevent
         // hard clipping
         if (getPosition().y + 0.1 < e.getMaxY()) {
           setPositionY(e.getMaxY());
         }
         // Reset jumping ability and downwards momentum
-        if (upwardsSpeed < 0) {
-          upwardsSpeed = 0;
+        if (goalVelocity.y < 0) {
+          setGoalVelocityY(0);
+          stopVelocityY();
         }
-        isInAir = false;
+        isJumping = false;
         // If we hold S, dig down
         if (InputHandler.isKeyDown(GLFW_KEY_S) && !controlsDisabled) {
           digBlock(block);
@@ -241,20 +251,15 @@ public class Player extends NetPlayer {
         // Reset Position to below the block, this doesnt flicker since we are falling
         setPositionY(e.getMinY() - p.getDimY());
         // Stop jumping up if we hit something above, will start accelerating down
-        if (upwardsSpeed > 0) {
-          upwardsSpeed = 0;
+        if (goalVelocity.y > 0) {
+          setGoalVelocityY(0);
+          stopVelocityY();
         }
       } else {
-        if (direction.x > 0) {
-          // Have a small offset for smoother entities.collision
-          setPositionX(e.getMaxX() + p.getDimX() / 2 + collisionPushOffset);
-          currentSpeed = 0; // Stop moving
-          isInAir = false; // Walljumps! Felt cute. Might delete later.
-        } else {
-          setPositionX(e.getMinX() - p.getDimX() / 2 - collisionPushOffset);
-          currentSpeed = 0;
-          isInAir = false;
-        }
+        isJumping = false; // Walljumps! Felt cute. Might delete later.
+        setPositionX(
+            (float) (getPosition().x - currentVelocity.x * Game.dt()));
+        stopVelocityX();
         // Dig blocks whenever we collide horizontal
         digBlock(block);
       }
@@ -262,57 +267,42 @@ public class Player extends NetPlayer {
   }
 
   /**
-   * What happens PER FRAME when we dig a block.
+   * What happens PER FRAME when we dig a block. Sends updates to the server every few frames,
+   * specified in digIntervall
    *
    * @param block block to dig
    */
   private void digBlock(Block block) {
-    // Scale with frame time
-    //    block.increaseDamage((float) (digDamage * Game.window.getFrameTimeSeconds()), this);
-    if (Game.isConnectedToServer()) {
-      new PacketBlockDamage(
-              block.getGridX(),
-              block.getGridY(),
-              (float) (digDamage * Game.window.getFrameTimeSeconds()))
+    // Check if we dig the same block as last time, otherwise throw progress away
+    if (lastDiggedBlock != block) {
+      lastDiggedBlock = block;
+      lastDiggedBlockDamage = 0;
+      digIntervallTimer = 0;
+    }
+    // Update damage and time, save locally
+    digIntervallTimer += Game.dt();
+    lastDiggedBlockDamage += (float) (digDamage * Game.dt());
+
+    // Check if we hit time threshold to send update to the server
+    if (digIntervallTimer >= digIntervall) {
+      new PacketBlockDamage(block.getGridX(), block.getGridY(), lastDiggedBlockDamage)
           .sendToServer();
+      // Reset timer without losing overflow
+      digIntervallTimer -= digIntervallTimer;
+      lastDiggedBlockDamage = 0;
     }
   }
 
   /** VERY simple jump. */
   private void jump() {
-    if (!isInAir) {
-      this.upwardsSpeed = jumpPower;
-      isInAir = true;
+    // if (!isJumping) {
+    //  this.upwardsSpeed = jumpPower;
+    //  isJumping = true;
+    // }
+    if (!isJumping) {
+      setGoalVelocityY(jumpPower);
+      isJumping = true;
     }
-  }
-
-  /**
-   * Maintain a list with blocks that are closer than the specified distance. This is used to only
-   * check close block for entities.collision or other interaction
-   *
-   * @param blocks Usually all blocks {@link BlockMaster#getBlocks()}
-   * @param maxDistance Maximum distance for the block to be considered close
-   */
-  private void updateCloseBlocks(List<Block> blocks, float maxDistance) {
-    List<Block> closeBlocks = new ArrayList<>();
-    // Only 2D (XY) for performance
-    for (Block block : blocks) {
-      if (block.get2dDistanceFrom(super.getPositionXy()) <= block.getDim() + maxDistance) {
-        closeBlocks.add(block);
-      }
-    }
-    this.closeBlocks = closeBlocks;
-  }
-
-  /**
-   * Maintain a list with blocks that are closer than 5 units. A block is 6 units across, this will
-   * get all surrounding blocks This is used to only check close block for entities.collision or
-   * other interaction
-   *
-   * @param blocks Usually all blocks {@link BlockMaster#getBlocks()}
-   */
-  private void updateCloseBlocks(List<Block> blocks) {
-    updateCloseBlocks(blocks, 5);
   }
 
   /**
@@ -325,18 +315,11 @@ public class Player extends NetPlayer {
   private void checkInputs() {
 
     if (controlsDisabled) {
-      currentSpeed = 0;
+      setGoalVelocityX(0);
       return;
     }
 
-    // if (InputHandler.isKeyPressed(GLFW_KEY_Q)) {
-    //  if (InputHandler.isPlacerMode()) {
-    //    MousePlacer.cancelPlacing();
-    //  } else {
-    //    placeItem(DYNAMITE);
-    //  }
-    // }
-    torchTimeout += Game.window.getFrameTimeSeconds();
+    torchTimeout += Game.dt();
     if (InputHandler.isKeyPressed(GLFW_KEY_E)) {
       if (InputHandler.isPlacerMode()) {
         MousePlacer.cancelPlacing();
@@ -346,20 +329,25 @@ public class Player extends NetPlayer {
       }
     }
 
-    // SIMPLE Movement
-    if (InputHandler.isKeyDown(GLFW_KEY_A)) {
-      this.currentSpeed = -runSpeed;
-      this.currentTurnSpeed = -turnSpeed;
-    } else if (InputHandler.isKeyDown(GLFW_KEY_D)) {
-      this.currentSpeed = runSpeed;
-      this.currentTurnSpeed = turnSpeed;
-    } else {
-      this.currentSpeed = 0;
-      currentTurnSpeed = 0;
-    }
-
     if (InputHandler.isKeyPressed(GLFW_KEY_W) || InputHandler.isKeyPressed(GLFW_KEY_SPACE)) {
       jump();
+    }
+
+    if (InputHandler.isKeyDown(GLFW_KEY_A) && InputHandler.isKeyDown(GLFW_KEY_D)) {
+      return;
+    }
+
+    if (InputHandler.isKeyDown(GLFW_KEY_A) && goalVelocity.x != -runSpeed) {
+      // Set goal velocity
+      setGoalVelocityX(-runSpeed);
+    } else if (InputHandler.isKeyReleased(GLFW_KEY_A) && goalVelocity.x != 0) {
+      setGoalVelocityX(0);
+    }
+    if (InputHandler.isKeyDown(GLFW_KEY_D) && goalVelocity.x != runSpeed) {
+      // Set goal velocity
+      setGoalVelocityX(runSpeed);
+    } else if (InputHandler.isKeyReleased(GLFW_KEY_D) && goalVelocity.x != 0) {
+      setGoalVelocityX(0);
     }
 
     if (InputHandler.isKeyPressed(GLFW_KEY_T)) {
@@ -429,5 +417,37 @@ public class Player extends NetPlayer {
 
   public boolean isFrozen() {
     return frozen;
+  }
+
+  private void setGoalVelocityX(float x) {
+    if (goalVelocity.x != x) {
+      goalVelocity.x = x;
+      sendVelocityToServer = true;
+    }
+  }
+
+  private void setGoalVelocityY(float y) {
+    if (goalVelocity.y != y) {
+      goalVelocity.y = y;
+      sendVelocityToServer = true;
+    }
+  }
+
+  private void stopVelocityX() {
+    if (currentVelocity.x != 0) {
+      currentVelocity.x = 0;
+      sendVelocityToServer = true;
+    }
+  }
+
+  private void stopVelocityY() {
+    if (currentVelocity.y != 0) {
+      currentVelocity.y = 0;
+      sendVelocityToServer = true;
+    }
+  }
+
+  public static float getDigIntervall() {
+    return digIntervall;
   }
 }

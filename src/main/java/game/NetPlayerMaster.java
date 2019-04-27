@@ -47,8 +47,9 @@ public class NetPlayerMaster {
         } else {
           netPlayer.turnHeadlightOn();
         }
-      } // Else apply gravity?
-      netPlayer.updateNameplate(); // Kinda expensive?
+      }
+
+      netPlayer.update();
       renderer.processEntity(netPlayer);
     }
   }
@@ -128,8 +129,25 @@ public class NetPlayerMaster {
   }
 
   /**
-   * Returns the NetPlayer related to a clientId in this lobby. Will return a Player object if the
-   * clientId refers to the active player and will return null if the clientId is not found.
+   * Update the velocity vectors for a player. Called by the velocity packet.
+   *
+   * @param clientId player to update velocities for
+   * @param curvX current X velocity
+   * @param curvY current Y velocity
+   * @param tarvX goal X velocity for interpolation
+   * @param tarvY goal Y velocity for interpolation
+   */
+  public static void updateVelocities(
+      int clientId, float curvX, float curvY, float tarvX, float tarvY) {
+    NetPlayer netPlayer = netPlayers.get(clientId);
+    if (netPlayer != null) {
+      netPlayer.updateVelocities(new Vector3f(curvX, curvY, 0), new Vector3f(tarvX, tarvY, 0));
+    }
+  }
+
+  /**
+   * Returns the NetPlayer related to a clientId in this lobby. Will return a ServerPlayer object if
+   * the clientId refers to the active player and will return null if the clientId is not found.
    *
    * @param clientId clientId for a player in this lobby.
    * @return The NetPlayer object related to the clientId

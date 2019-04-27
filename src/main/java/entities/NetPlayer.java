@@ -5,17 +5,26 @@ import engine.models.TexturedModel;
 import engine.render.Loader;
 import engine.render.objconverter.ObjFileLoader;
 import engine.textures.ModelTexture;
+import entities.blocks.Block;
+import entities.blocks.BlockMaster;
+import entities.collision.BoundingBox;
 import entities.light.Light;
 import entities.light.LightMaster;
 import game.Game;
 import gui.text.Nameplate;
+import java.util.ArrayList;
+import java.util.List;
 import org.joml.Vector3f;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * This will be reworked very shortly so I will not fully document it. A LOT will change and it is
  * not really used now. Ignore the class please.
  */
 public class NetPlayer extends Entity {
+
+  private static final Logger logger = LoggerFactory.getLogger(NetPlayer.class);
 
   private static final float joeModelSize = .2f;
   private static final float ripModelSize = .5f;
@@ -37,6 +46,26 @@ public class NetPlayer extends Entity {
   private Nameplate nameplate;
 
   private boolean defeated;
+
+  // Movement related
+  static final float angle45 = (float) (45 * Math.PI / 180);
+  Block collideWithBlockAbove;
+  Block collideWithBlockBelow;
+
+  static final float jumpPower = 28; // Units per second
+  public static final float gravity = -60; // Units per second
+  static final float runSpeed = 20; // Units per second
+  static final float turnSpeed = 720; // Degrees per second
+
+  static final float interpolationFactor = 0.15f; // Rate of acceleration via LERP
+  Vector3f currentVelocity = new Vector3f();
+  Vector3f goalVelocity = new Vector3f();
+
+  List<Block> closeBlocks;
+
+  boolean isInAir = false;
+
+  private long lastCrushed = System.currentTimeMillis();
 
   /**
    * Create a net player.
@@ -88,6 +117,132 @@ public class NetPlayer extends Entity {
     ripModel = new TexturedModel(rawTomb, new ModelTexture(loader.loadTexture("tomb")));
   }
 
+  /**
+   * Called every frame to update the position of the NetPlayer. Collision for every player is
+   * calculated locally. Once per second the positions are synced.
+   */
+  public void update() {
+
+    collideWithBlockAbove = null;
+    collideWithBlockBelow = null;
+
+    updateCloseBlocks(BlockMaster.getBlocks());
+
+    float ipfX = interpolationFactor;
+    float ipfY = interpolationFactor;
+    if (isInAir) {
+      goalVelocity.y += gravity * Game.dt();
+      ipfX /= 5;
+      ipfY = Math.min(1, ipfY * 2);
+    }
+
+    // Linear Interpolation of current velocity and goal velocity
+    currentVelocity.x += (goalVelocity.x - currentVelocity.x) * ipfX;
+    currentVelocity.y += (goalVelocity.y - currentVelocity.y) * ipfY;
+
+    // Move player
+    increasePosition(new Vector3f(currentVelocity).mul((float) Game.dt()));
+
+    // Handle character rotation (check run direction see if we need to rotate more)
+    this.increaseRotation(0, (float) (getCurrentTurnSpeed() * Game.dt()), 0);
+
+    for (Block closeBlock : closeBlocks) {
+      handleNetPlayerCollision(closeBlock);
+    }
+
+    isInAir = collideWithBlockBelow == null;
+    resolveNetCrush();
+
+    nameplate.updateString();
+  }
+
+  private void resolveNetCrush() {
+    // Check if crushed
+    if (collideWithBlockAbove != null && collideWithBlockBelow != null) {
+      // Only register a crush every 500ms to give the crushed player the chance to update their
+      // position
+      if (System.currentTimeMillis() - lastCrushed > 500) {
+        // Notify the server that you saw a player get crushed
+        logger.info("I saw player " + username + " getting crushed. Reporting it to the server.");
+        lastCrushed = System.currentTimeMillis();
+      }
+    }
+  }
+
+  /**
+   * Maintain a list with blocks that are closer than the specified distance. This is used to only
+   * check close block for entities.collision or other interaction
+   *
+   * @param blocks Usually all blocks {@link BlockMaster#getBlocks()}
+   */
+  void updateCloseBlocks(List<Block> blocks) {
+    List<Block> closeBlocks = new ArrayList<>();
+    // Only 2D (XY) for performance
+    for (Block block : blocks) {
+      if (block.get2dDistanceSquaredFrom(super.getPositionXy()) <= 64) {
+        closeBlocks.add(block);
+      }
+    }
+    this.closeBlocks = closeBlocks;
+  }
+
+  /**
+   * Check if the player overlaps with a block. Determine from which direction the overlap is and
+   * handle it appropriately. This is still very basic but it works. Can be improved if we have
+   * time. -> Has been improved to be vector and angle based now. Works much smoother.
+   *
+   * @param block A block to check entities.collision with.
+   */
+  private void handleNetPlayerCollision(Block block) {
+    // Make this mess readable
+    BoundingBox p = super.getBbox(); // PlayerBox
+    BoundingBox e = block.getBbox(); // EntityBox
+
+    // Check if we collide with the block
+    if (this.collidesWith(block, 2)) {
+      Vector3f direction = new Vector3f(p.getCenter()).sub(e.getCenter());
+      direction.z = 0;
+      float theta = direction.angle(new Vector3f(0, 1, 0));
+      if (theta <= angle45) {
+        // From above
+        collideWithBlockBelow = block;
+        // Have a grace distance, if the overlap is too large, we reset to position to prevent
+        // hard clipping
+        if (getPosition().y + 0.1 < e.getMaxY()) {
+          setPositionY(e.getMaxY());
+        }
+      } else if (theta >= angle45 * 3) {
+        // From below
+        collideWithBlockAbove = block;
+        // Reset Position to below the block, this doesnt flicker since we are falling
+        setPositionY(e.getMinY() - p.getDimY());
+        // Stop jumping up if we hit something above, will start accelerating down
+      } else {
+        setPositionX((float) (getPosition().x - currentVelocity.x * Game.dt()));
+      }
+    }
+  }
+
+  float getCurrentTurnSpeed() {
+    float currentTurnSpeed;
+    if (goalVelocity.x == -runSpeed) {
+      currentTurnSpeed = -turnSpeed;
+      if (getRotY() <= -90) {
+        currentTurnSpeed = 0;
+        setRotY(-90);
+      }
+    } else if (goalVelocity.x == runSpeed) {
+      currentTurnSpeed = turnSpeed;
+      if (getRotY() >= 90) {
+        currentTurnSpeed = 0;
+        setRotY(90);
+      }
+    } else {
+      currentTurnSpeed = 0;
+    }
+    return currentTurnSpeed;
+  }
+
   public static TexturedModel getJoeModel() {
     return joeModel;
   }
@@ -124,10 +279,6 @@ public class NetPlayer extends Entity {
     this.clientId = clientId;
   }
 
-  public void updateNameplate() {
-    nameplate.updateString();
-  }
-
   public void turnHeadlightOff() {
     headLight.setBrightness(0);
     headLightGlow.setBrightness(0);
@@ -154,8 +305,8 @@ public class NetPlayer extends Entity {
   }
 
   /**
-   * Turn the player into a gravestone and disable all controls if it is the active player.
-   * Will set the defeated flag for other classes to use.
+   * Turn the player into a gravestone and disable all controls if it is the active player. Will set
+   * the defeated flag for other classes to use.
    *
    * @param defeated can only be true for now. No way to revive a player
    */
@@ -169,6 +320,11 @@ public class NetPlayer extends Entity {
         Game.setActiveCamera(new SpectatorCamera(Game.window, getPosition()));
       }
     }
+  }
+
+  public void updateVelocities(Vector3f current, Vector3f goal) {
+    currentVelocity = current;
+    goalVelocity = goal;
   }
 
   @Override
@@ -198,5 +354,13 @@ public class NetPlayer extends Entity {
   public void increasePosition(Vector3f velocity) {
     super.increasePosition(velocity);
     updateHeadlightPosition();
+  }
+
+  public static float getJumpPower() {
+    return jumpPower;
+  }
+
+  public static float getRunSpeed() {
+    return runSpeed;
   }
 }

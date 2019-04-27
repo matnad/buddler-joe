@@ -65,14 +65,14 @@ public class Particle {
    * Moves the particle along its direction and applies gravity to update the position for one
    * frame. Keeps track of the lifetime.
    *
-   * <p>Currently uses Player Gravity as constant. TODO: Move gravity to a settings class
+   * <p>Currently uses ServerPlayer Gravity as constant. TODO: Move gravity to a settings class
    *
    * @param camera The camera the particles should be facing
    * @return true if the particle is still alive after the update
    */
   protected boolean update(Camera camera) {
-    velocity.y += Player.gravity * gravityEffect * Game.window.getFrameTimeSeconds();
-    Vector3f change = new Vector3f(velocity).mul((float) Game.window.getFrameTimeSeconds());
+    velocity.y += Player.gravity * gravityEffect * Game.dt();
+    Vector3f change = new Vector3f(velocity).mul((float) Game.dt());
     position.add(change);
 
     /*We use distance squared since it is faster and makes no difference. It is used to
@@ -81,7 +81,7 @@ public class Particle {
     distance = new Vector3f().set(camera.getPosition()).sub(position).lengthSquared();
 
     updateTextureCoordInfo();
-    elapsedTime += Game.window.getFrameTimeSeconds();
+    elapsedTime += Game.dt();
     return elapsedTime < lifeLength;
   }
 

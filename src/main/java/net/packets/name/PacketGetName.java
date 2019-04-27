@@ -47,7 +47,7 @@ public class PacketGetName extends Packet {
       } else {
         try {
           if (!ServerLogic.getPlayerList().isClientIdInList(Integer.parseInt(playerId))) {
-            addError("Player is not on the server");
+            addError("ServerPlayer is not on the server");
           }
         } catch (NumberFormatException nfe) {
           addError("The clientId is not a number");

@@ -34,4 +34,16 @@ public class ServerItem {
   public void setItemId(int itemId) {
     this.itemId = itemId;
   }
+
+  public int getOwner() {
+    return owner;
+  }
+
+  public ItemMaster.ItemTypes getType() {
+    return type;
+  }
+
+  public boolean isExists() {
+    return exists;
+  }
 }

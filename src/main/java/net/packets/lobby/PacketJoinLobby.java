@@ -3,9 +3,8 @@ package net.packets.lobby;
 import game.map.ServerMap;
 import net.ServerLogic;
 import net.packets.Packet;
-import net.packets.block.PacketBlockDamage;
 import net.packets.map.PacketBroadcastMap;
-import net.playerhandling.Player;
+import net.playerhandling.ServerPlayer;
 
 /**
  * Packet that gets send from the client to the server if he wants to join a lobby. Packet-Code:
@@ -83,7 +82,7 @@ public class PacketJoinLobby extends Packet {
     if (hasErrors()) {
       status = createErrorMessage();
     } else {
-      Player player = ServerLogic.getPlayerList().getPlayer(getClientId());
+      ServerPlayer player = ServerLogic.getPlayerList().getPlayer(getClientId());
       int lobbyId = ServerLogic.getLobbyList().getLobbyId(lobbyname);
       status = ServerLogic.getLobbyList().getLobby(lobbyId).addPlayer(player);
       if (status.equals("OK")) {

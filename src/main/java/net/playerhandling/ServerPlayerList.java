@@ -1,10 +1,11 @@
 package net.playerhandling;
 
+import entities.Player;
 import java.util.HashMap;
 
 public class ServerPlayerList {
 
-  private HashMap<Integer, Player> players;
+  private HashMap<Integer, ServerPlayer> players;
 
   public ServerPlayerList() {
     this.players = new HashMap<>();
@@ -19,7 +20,7 @@ public class ServerPlayerList {
    * @return answer the the caller of the method to let them know whether the chosen username or a
    *     changed version of the username has been added to the playerList
    */
-  public String addPlayer(Player player) {
+  public String addPlayer(ServerPlayer player) {
     String answer;
     if (players.containsKey(player.getClientId())) {
       answer = "Already logged in.";
@@ -56,9 +57,9 @@ public class ServerPlayerList {
    * Method to search and return a player by clientId.
    *
    * @param clientId The looked for clientId
-   * @return either the Player or null
+   * @return either the ServerPlayer or null
    */
-  public Player getPlayer(int clientId) {
+  public ServerPlayer getPlayer(int clientId) {
     return players.get(clientId);
   }
 
@@ -102,7 +103,7 @@ public class ServerPlayerList {
    * @return True if the username is in the list or false if it is not yet in the list
    */
   public boolean isUsernameInList(String username) {
-    for (Player p : players.values()) {
+    for (ServerPlayer p : players.values()) {
       if (username.equals(p.getUsername())) {
         return true;
       }
@@ -129,15 +130,15 @@ public class ServerPlayerList {
     }
 
     HashMap<Integer, Integer> player = new HashMap<>();
-    for (Player Player : players.values()) {
-      if (message.startsWith(Player.getUsername())) {
+    for (ServerPlayer p : players.values()) {
+      if (message.startsWith(p.getUsername())) {
 
         x++;
-        for (int i = 0; i < Player.getUsername().length(); i++) {
-          if (message.charAt(i) == Player.getUsername().charAt(i)) {
+        for (int i = 0; i < p.getUsername().length(); i++) {
+          if (message.charAt(i) == p.getUsername().charAt(i)) {
             j++;
           }
-          player.put(j, Player.getClientId());
+          player.put(j, p.getClientId());
         }
       }
     }
@@ -161,7 +162,7 @@ public class ServerPlayerList {
   public String toString() {
     StringBuilder s = new StringBuilder();
     if (players.size() > 0) {
-      for (Player l : players.values()) {
+      for (ServerPlayer l : players.values()) {
         s.append(l.getUsername()).append("║");
       }
     } else {
@@ -175,7 +176,7 @@ public class ServerPlayerList {
    *
    * @return all players in the playerList
    */
-  public HashMap<Integer, Player> getPlayers() {
+  public HashMap<Integer, ServerPlayer> getPlayers() {
     return players;
   }
 }

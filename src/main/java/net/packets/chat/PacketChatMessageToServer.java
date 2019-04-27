@@ -4,7 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import net.ServerLogic;
 import net.packets.Packet;
-import net.playerhandling.Player;
+import net.playerhandling.ServerPlayer;
 
 /**
  * Packet that gets send from the Client to the Server, to send chat message from Client to a other
@@ -97,7 +97,7 @@ public class PacketChatMessageToServer extends Packet {
             + "]";
     if (!hasErrors()) {
 
-      Player client = ServerLogic.getPlayerList().getPlayer(getClientId());
+      ServerPlayer client = ServerLogic.getPlayerList().getPlayer(getClientId());
       if (client == null) {
         addError("Not logged in");
       } else {

@@ -309,7 +309,7 @@ public abstract class Block extends Entity {
    * frame for as long as you want the block to jiggle.
    */
   public void shake() {
-    float speed = (float) Game.window.getFrameTimeSeconds() * (new Random().nextFloat() * 60f + 45);
+    float speed = (float) Game.dt() * (new Random().nextFloat() * 60f + 45);
     if (isShakeLeft()) {
       setRotX(getRotX() - speed);
       if (getRotX() < -3) {

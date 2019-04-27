@@ -32,6 +32,7 @@ import net.packets.pingpong.PacketPing;
 import net.packets.pingpong.PacketPong;
 import net.packets.playerprop.PacketDefeated;
 import net.packets.playerprop.PacketPos;
+import net.packets.playerprop.PacketVelocity;
 import net.playerhandling.PingManager;
 
 /**
@@ -231,6 +232,9 @@ public class ClientLogic implements Runnable {
           break;
         case POSITION_UPDATE:
           p = new PacketPos(data);
+          break;
+        case PLAYER_VELOCITY:
+          p = new PacketVelocity(data);
           break;
         case BLOCK_DAMAGE:
           p = new PacketBlockDamage(data);

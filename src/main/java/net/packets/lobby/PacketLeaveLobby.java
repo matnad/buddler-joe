@@ -3,7 +3,7 @@ package net.packets.lobby;
 import net.ServerLogic;
 import net.lobbyhandling.Lobby;
 import net.packets.Packet;
-import net.playerhandling.Player;
+import net.playerhandling.ServerPlayer;
 
 /**
  * Packet that gets send from the client to the server if he wants to leave his current lobby.
@@ -65,7 +65,7 @@ public class PacketLeaveLobby extends Packet {
     if (hasErrors()) {
       status = createErrorMessage();
     } else {
-      Player player = ServerLogic.getPlayerList().getPlayer(getClientId());
+      ServerPlayer player = ServerLogic.getPlayerList().getPlayer(getClientId());
       lobbyId = player.getCurLobbyId();
       Lobby lobby = ServerLogic.getLobbyList().getLobby(lobbyId);
       status = lobby.removePlayer(getClientId());

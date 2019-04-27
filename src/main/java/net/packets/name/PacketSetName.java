@@ -75,7 +75,7 @@ public class PacketSetName extends Packet {
           status = "Successfully changed the name to: " + username;
         }
       } catch (NullPointerException e) {
-        status = "Player not logged in";
+        status = "ServerPlayer not logged in";
       }
     }
     PacketSetNameStatus p = new PacketSetNameStatus(getClientId(), status);

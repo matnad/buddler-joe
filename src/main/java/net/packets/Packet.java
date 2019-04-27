@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.StringJoiner;
 import net.ClientLogic;
 import net.ServerLogic;
-import net.playerhandling.Player;
+import net.playerhandling.ServerPlayer;
 
 /**
  * Abstract Packet class which all Packets implement and build upon. The enum represents all
@@ -82,8 +82,8 @@ public abstract class Packet {
    */
   public void sendToAllClients() {
     // TODO: When we use this, move it to ServerLogic
-    HashMap<Integer, Player> players = ServerLogic.getPlayerList().getPlayers();
-    for (Player p : players.values()) {
+    HashMap<Integer, ServerPlayer> players = ServerLogic.getPlayerList().getPlayers();
+    for (ServerPlayer p : players.values()) {
       sendToClient(p.getClientId());
     }
   }
@@ -324,7 +324,8 @@ public abstract class Packet {
     GET_HISTORY("HISGE"),
     HISTORY("HISTO"),
     LIFE_STATUS("LSTAT"),
-    PLAYER_DEFEATED("PDEAD");
+    PLAYER_DEFEATED("PDEAD"),
+    PLAYER_VELOCITY("VELXY");
 
     private final String packetCode;
 

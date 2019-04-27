@@ -3,7 +3,7 @@ package net.packets.playerprop;
 import game.NetPlayerMaster;
 import net.ServerLogic;
 import net.packets.Packet;
-import net.playerhandling.Player;
+import net.playerhandling.ServerPlayer;
 import org.joml.Vector2f;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -89,7 +89,7 @@ public class PacketPos extends Packet {
     if (!hasErrors()) {
       if (getClientId() > 0) {
         // Server
-        Player player = ServerLogic.getPlayerList().getPlayer(getClientId());
+        ServerPlayer player = ServerLogic.getPlayerList().getPlayer(getClientId());
         player.setPos2d(new Vector2f(posX, posY));
         player.setRotY(rotY);
         sendToLobby(player.getCurLobbyId());

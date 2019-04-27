@@ -167,7 +167,7 @@ public class ParticleSystem {
   @SuppressWarnings("UnusedReturnValue")
   public List<Particle> generateParticles(Vector3f systemCenter) {
     List<Particle> particles = new ArrayList<>();
-    float delta = (float) Game.window.getFrameTimeSeconds();
+    float delta = (float) Game.dt();
     float particlesToCreate = pps * delta;
 
     // Full particles

@@ -2,7 +2,7 @@ package net.packets.loginlogout;
 
 import net.ServerLogic;
 import net.packets.Packet;
-import net.playerhandling.Player;
+import net.playerhandling.ServerPlayer;
 
 public class PacketLogin extends Packet {
 
@@ -57,7 +57,7 @@ public class PacketLogin extends Packet {
     if (hasErrors()) {
       status = createErrorMessage();
     } else {
-      Player player = new Player(username, getClientId());
+      ServerPlayer player = new ServerPlayer(username, getClientId());
       status = ServerLogic.getPlayerList().addPlayer(player);
     }
     PacketLoginStatus p = new PacketLoginStatus(getClientId(), status);

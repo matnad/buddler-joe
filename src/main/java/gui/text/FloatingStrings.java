@@ -90,7 +90,7 @@ public class FloatingStrings {
         floatingString.setAlpha(alpha);
         floatingString.updateString();
         floatingString.setOffsetY(
-            (float) (floatingString.getOffsetY() + speed * Game.window.getFrameTimeSeconds()));
+            (float) (floatingString.getOffsetY() + speed * Game.dt()));
       }
     }
   }

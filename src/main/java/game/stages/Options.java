@@ -216,7 +216,7 @@ public class Options {
     if (!initializedText) {
       done();
       initText();
-      StringBuilder stringBuilder = new StringBuilder(Game.getServerIp());
+      StringBuilder stringBuilder = new StringBuilder(Game.getSettings().getIp());
       InputHandler.setInputString(stringBuilder);
       initializedText = true;
       updateGuiText();
@@ -314,8 +314,7 @@ public class Options {
       settings.setWidth(width);
       if (output.length() > 0) { // TODO: check if Textbox is empty.
         settings.setIp(output); // TODO: the entered IP should be set here.
-
-        InputHandler.setInputString(new StringBuilder(""));
+        InputHandler.setInputString(new StringBuilder(output));
       }
       // TODO: remove console printing
       System.out.println("Height: " + height + "p");
