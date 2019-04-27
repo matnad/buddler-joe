@@ -1,8 +1,5 @@
 package game.stages;
 
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_ESCAPE;
-import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_1;
-
 import engine.io.InputHandler;
 import engine.render.Loader;
 import engine.render.fontrendering.TextMaster;
@@ -17,6 +14,8 @@ import org.joml.Vector2f;
 import org.joml.Vector3f;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import static org.lwjgl.glfw.GLFW.*;
 
 public class PlayerList {
 
@@ -38,22 +37,19 @@ public class PlayerList {
   private static MenuButton back;
   private static MenuButton up;
   private static MenuButton down;
-  private static MenuButton[] join = new MenuButton[7];
-  private static float[] joinY = {
-    0.45f, 0.312963f, 0.175926f, 0.037037f, -0.1f, -0.238889f, -0.375926f
-  };
-  private static float[] namesY = {
-    0.261728f, 0.330864f, 0.4f, 0.469136f, 0.538272f, 0.607407f, 0.676534f
-  };
+  private static MenuButton[] join = new MenuButton[6];
+  private static float[] joinY = {0.312963f, 0.175926f, 0.037037f, -0.1f, -0.238889f, -0.375926f};
+  private static float[] namesY = {0.330864f, 0.4f, 0.469136f, 0.538272f, 0.607407f, 0.676534f};
   private static CopyOnWriteArrayList<String> catalog;
-  private static ChangableGuiText[] names = new ChangableGuiText[7];
+  private static ChangableGuiText[] names = new ChangableGuiText[6];
   private static int startInd = 0;
   private static int page = 0;
-  private static int n = 7;
+  private static int n = 6;
   private static ChangableGuiText pageIndex;
   private static boolean initializedText = false;
   private static boolean initializedPageIndex = false;
   private static Vector3f black = new Vector3f(0, 0, 0);
+  private static GuiTexture titel;
 
   /**
    * * Initialize PlayerList Menu. Will load the texture files and generate the basic menu parts.
@@ -84,15 +80,13 @@ public class PlayerList {
             new Vector2f(0, -0.040741f),
             new Vector2f(0.554167f, 0.757804f),
             1);
-    //
-    // TODO: Title
 
-    //    title =
-    //        new GuiTexture(
-    //            loader.loadTexture("availableLobbiesType"),
-    //            new Vector2f(-0.053125f, 0.446296f),
-    //            new Vector2f(0.379167f, 0.052778f),
-    //            1);
+    titel =
+            new GuiTexture(
+                    loader.loadTexture("playerListTitel"),
+                    new Vector2f(-0.202083f, 0.446296f),
+                    new Vector2f(0.227882f, 0.052778f),
+                    1);
 
     // Back
     back =
@@ -126,10 +120,10 @@ public class PlayerList {
       join[i] =
           new MenuButton(
               loader,
-              "join_norm",
-              "join_hover",
-              new Vector2f(0.391667f, joinY[i]),
-              new Vector2f(0.082365f, .069444f));
+              "whisper_norm",
+              "whisper_hover",
+              new Vector2f(0.33725f, joinY[i]),
+              new Vector2f(0.136332f, .069444f));
     }
   }
 
@@ -152,6 +146,7 @@ public class PlayerList {
     // add textures here
     // guis.add(background);
     guis.add(playerlist);
+    guis.add(titel);
     // guis.add(buddlerJoe);
     // guis.add(titel);
 
@@ -162,7 +157,7 @@ public class PlayerList {
     // add buttons here
     guis.add(back.getHoverTexture(x, y));
 
-    startInd = page * 7;
+    startInd = page * 6;
     setN(catalog.size() - startInd);
     for (int i = 0; i < names.length; i++) {
       try {
@@ -183,9 +178,8 @@ public class PlayerList {
     for (int i = 5; i > -1 + n; i--) {
       guis.remove(join[i].getHoverTexture(x, y));
     }
-
     // Place PageIndex
-    if (n == 7 || page != 0) {
+    if (n == 6 || page != 0) {
       guis.add(up.getHoverTexture(x, y));
       guis.add(down.getHoverTexture(x, y));
       if (!initializedPageIndex) {
@@ -204,7 +198,7 @@ public class PlayerList {
 
     // Input-Handling
     if (InputHandler.isKeyPressed(GLFW_KEY_ESCAPE)
-        || InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1) && back.isHover(x, y)) {
+        || InputHandler.isKeyPressed(GLFW_KEY_P)|| InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1) && back.isHover(x, y)) {
       done();
       Game.addActiveStage(Game.Stage.PLAYING);
       Game.removeActiveStage(Game.Stage.PLAYERLIST);
@@ -270,8 +264,8 @@ public class PlayerList {
    * @param n the value that n should be set to.
    */
   public static void setN(int n) {
-    if (n > 7) {
-      n = 7;
+    if (n > 6) {
+      n = 6;
     } else if (n < 0) {
       n = 0;
     }

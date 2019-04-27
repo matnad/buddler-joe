@@ -69,7 +69,7 @@ public class Chat {
     // Load the background image of the chat and set rendering parameters
     chatGui =
         new GuiTexture(
-            loader.loadTexture("chat"),
+            loader.loadTexture("chatBackground"),
             new Vector2f(-.6f, -.6f),
             new Vector2f(.4f, .4f),
             ALPHA_OFF);
@@ -338,7 +338,7 @@ public class Chat {
   public void setGameChatSettings() {
     chatPosition.x = 0.03f;
     chatPosition.y = 0.88f;
-    maxLines = 12;
+    maxLines = 10;
     textColour.x = 1f;
     textColour.y = 1f;
     textColour.z = 1f;

@@ -73,17 +73,23 @@ public class Playing {
     guis.add(Game.getChat().getChatGui());
 
     // ESC = Game Menu
-    if (InputHandler.isKeyPressed(GLFW_KEY_ESCAPE)) {
+    if (InputHandler.isKeyPressed(GLFW_KEY_ESCAPE)
+        && !Game.getActiveStages().contains(Game.Stage.PLAYERLIST)) {
       Game.addActiveStage(Game.Stage.GAMEMENU);
     }
 
     // H = Highscore
-    if (InputHandler.isKeyPressed(GLFW_KEY_H)) {
+    if (InputHandler.isKeyPressed(GLFW_KEY_H)
+        && !Game.getChat().isEnabled()
+        && !Game.getActiveStages().contains(Game.Stage.GAMEMENU)) {
       Highscore.setInGame(true);
       Game.addActiveStage(Game.Stage.HIGHSCORE);
     }
 
-    if (InputHandler.isKeyPressed(GLFW_KEY_P)) {
+    if (InputHandler.isKeyPressed(GLFW_KEY_P)
+        && !Game.getChat().isEnabled()
+        && !Game.getActiveStages().contains(Game.Stage.GAMEMENU)
+        && !Game.getActiveStages().contains(Game.Stage.PLAYERLIST)) {
       PacketPlayerList playerList = new PacketPlayerList();
       playerList.sendToServer();
       Game.addActiveStage(Game.Stage.PLAYERLIST);

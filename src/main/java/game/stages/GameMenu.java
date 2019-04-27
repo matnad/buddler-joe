@@ -82,7 +82,8 @@ public class GameMenu {
     guis.add(desktop.getHoverTexture(x, y));
 
     // Input Handling:
-    if (InputHandler.isKeyPressed(GLFW_KEY_ESCAPE)) {
+    if (InputHandler.isKeyPressed(GLFW_KEY_ESCAPE)
+        || InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1) && continueB.isHover(x, y)) {
       Game.addActiveStage(Game.Stage.PLAYING);
       Game.removeActiveStage(Game.Stage.GAMEMENU);
     } else if (InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1) && exit.isHover(x, y)) {
