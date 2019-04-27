@@ -9,7 +9,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 import net.ClientLogic;
 import net.ServerLogic;
-import net.playerhandling.Player;
+import net.playerhandling.ServerPlayer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -88,8 +88,8 @@ public abstract class Packet {
    * server and calls the sendToClient for every player on the server.
    */
   public void sendToAllClients() {
-    ConcurrentHashMap<Integer, Player> players = ServerLogic.getPlayerList().getPlayers();
-    for (Player p : players.values()) {
+    ConcurrentHashMap<Integer, ServerPlayer> players = ServerLogic.getPlayerList().getPlayers();
+    for (ServerPlayer p : players.values()) {
       sendToClient(p.getClientId());
     }
   }

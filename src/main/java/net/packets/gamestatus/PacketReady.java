@@ -1,11 +1,10 @@
 package net.packets.gamestatus;
 
-import game.History;
 import net.ServerLogic;
 import net.lobbyhandling.Lobby;
 import net.packets.Packet;
 import net.packets.lobby.PacketCurLobbyInfo;
-import net.playerhandling.Player;
+import net.playerhandling.ServerPlayer;
 
 /**
  * A packed that is send from the client to the server, to inform him that the client is ready to

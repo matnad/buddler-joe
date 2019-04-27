@@ -115,7 +115,7 @@ public class Lobby implements Runnable {
   public String removePlayer(int clientId) {
     try {
       if (ServerLogic.getPlayerList().isClientIdInList(clientId)) {
-        Player player = ServerLogic.getPlayerList().getPlayer(clientId);
+        ServerPlayer player = ServerLogic.getPlayerList().getPlayer(clientId);
         player.setReady(false);
         lobbyPlayers.remove(player);
         if (allPlayersReady() && !isEmpty()) {
@@ -175,7 +175,7 @@ public class Lobby implements Runnable {
    */
   public String getPlayerNamesIdsReadies() {
     StringBuilder s = new StringBuilder();
-    for (Player player : lobbyPlayers) {
+    for (ServerPlayer player : lobbyPlayers) {
       s.append(player.getClientId())
           .append("║")
           .append(player.getUsername())
@@ -323,7 +323,7 @@ public class Lobby implements Runnable {
    * */
   public boolean allPlayersReady() {
     boolean allReady = true;
-    for (Player lobbyPlayer : lobbyPlayers) {
+    for (ServerPlayer lobbyPlayer : lobbyPlayers) {
       if (!lobbyPlayer.isReady()) {
         allReady = false;
       }

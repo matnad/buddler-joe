@@ -4,7 +4,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class ServerPlayerList {
 
-  private ConcurrentHashMap<Integer, Player> players;
+  private ConcurrentHashMap<Integer, ServerPlayer> players;
 
   public ServerPlayerList() {
     this.players = new ConcurrentHashMap<>();
@@ -100,7 +100,7 @@ public class ServerPlayerList {
    */
   public boolean isUsernameInList(String username) {
     try {
-      for (Player p : players.values()) {
+      for (ServerPlayer p : players.values()) {
         if (username.equals(p.getUsername())) {
           return true;
         }
@@ -130,7 +130,7 @@ public class ServerPlayerList {
     }
 
     ConcurrentHashMap<Integer, Integer> players = new ConcurrentHashMap<>();
-    for (Player player : this.players.values()) {
+    for (ServerPlayer player : this.players.values()) {
       if (message.startsWith(player.getUsername())) {
 
         x++;
@@ -163,7 +163,7 @@ public class ServerPlayerList {
     StringBuilder s = new StringBuilder();
     if (players.size() > 0) {
       s.append("OK║");
-      for (Player l : players.values()) {
+      for (ServerPlayer l : players.values()) {
         s.append(l.getUsername()).append("║");
       }
     } else {
@@ -177,7 +177,7 @@ public class ServerPlayerList {
    *
    * @return all players in the playerList
    */
-  public ConcurrentHashMap<Integer, Player> getPlayers() {
+  public ConcurrentHashMap<Integer, ServerPlayer> getPlayers() {
     return players;
   }
 }
