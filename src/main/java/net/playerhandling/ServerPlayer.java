@@ -275,4 +275,8 @@ public class ServerPlayer {
       }
     }
   }
+
+  public boolean getDefeatedStatus() {
+    return this.defeated;
+  }
 }

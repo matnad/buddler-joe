@@ -25,12 +25,14 @@ public class Lobby implements Runnable {
   private boolean inGame;
   private String lobbyName;
   private CopyOnWriteArrayList<ServerPlayer> lobbyPlayers;
+  private CopyOnWriteArrayList<ServerPlayer> aliveLobbyPlayers;
   private ServerMap map;
   private int createrPlayerId;
   private String mapSize;
   private String status;
   private long createdAt;
   private ServerItemState serverItemState;
+  private boolean checked;
 
   private Thread gameLoop;
 
@@ -50,29 +52,41 @@ public class Lobby implements Runnable {
     this.status = "open";
     this.inGame = false;
     this.lobbyPlayers = new CopyOnWriteArrayList<>();
+    this.aliveLobbyPlayers = new CopyOnWriteArrayList<>();
     this.lobbyId = lobbyCounter;
     this.serverItemState = new ServerItemState();
     lobbyCounter++;
+    checked = false;
     map = new ServerMap(33, 40, System.currentTimeMillis());
   }
 
   @Override
   public void run() {
     // Loop once per second
-    while (status.equals("running")) {
+    while (!status.equals("finished")) {
       long startOfLoop = System.currentTimeMillis();
 
       // Do stuff
-      for (ServerPlayer lobbyPlayer : lobbyPlayers) {
+      for (ServerPlayer player : aliveLobbyPlayers) {
         // if (lobbyPlayer.getMovementViolations() > 0) {
         //  System.out.println(lobbyPlayer.getUsername() + " was caught speed hacking!");
         // }
+        if (player.getDefeatedStatus()) {
+          aliveLobbyPlayers.remove(player);
+        }
       }
-      // Wait for the rest of the second
-      try {
-        Thread.sleep(1000 - System.currentTimeMillis() + startOfLoop);
-      } catch (InterruptedException e) {
-        e.printStackTrace();
+
+      if (aliveLobbyPlayers.size() == 0 && checked == false) {
+        // System.out.println("here");
+        gameOver(getCurrentWinner().getClientId());
+
+      } else {
+        // Wait for the rest of the second
+        try {
+          Thread.sleep(1000 - System.currentTimeMillis() + startOfLoop);
+        } catch (InterruptedException e) {
+          e.printStackTrace();
+        }
       }
     }
   }
@@ -84,6 +98,19 @@ public class Lobby implements Runnable {
    */
   public static int getMaxPlayers() {
     return maxPlayers;
+  }
+
+  public ServerPlayer getCurrentWinner() {
+    checked = !checked;
+    int gold = -1;
+    ServerPlayer winner = null;
+    for (ServerPlayer player : lobbyPlayers) {
+      if (gold < player.getCurrentGold()) {
+        gold = player.getCurrentGold();
+        winner = player;
+      }
+    }
+    return winner;
   }
 
   /**
@@ -171,7 +198,6 @@ public class Lobby implements Runnable {
    * @param clientId id of the winning player
    */
   public void gameOver(int clientId) {
-
     // setStatus("open");
     History.runningRemove(lobbyId);
     // History.openAdd(lobbyId, lobbyName);
@@ -179,10 +205,12 @@ public class Lobby implements Runnable {
     History.archive("Lobbyname: " + lobbyName + "       Winner: " + userName);
     long time = System.currentTimeMillis() - getCreatedAt();
 
+    // BEACHTEN
     // Update highscore
-    ServerLogic.getServerHighscore().addPlayer(time, userName);
-    ServerHighscoreSerialiser.serialiseServerHighscore(ServerLogic.getServerHighscore());
-
+    if (!ServerLogic.getPlayerList().getPlayer(clientId).getDefeatedStatus()) {
+      ServerLogic.getServerHighscore().addPlayer(time, userName);
+      ServerHighscoreSerialiser.serialiseServerHighscore(ServerLogic.getServerHighscore());
+    }
     // TODO send EndGamepacket here i created a skeleton already.
     // Inform all clients
     new PacketGameEnd(userName, time).sendToLobby(lobbyId);
@@ -271,6 +299,9 @@ public class Lobby implements Runnable {
       }
       if (status.equals("running")) {
         inGame = true;
+        for (ServerPlayer player : lobbyPlayers) {
+          aliveLobbyPlayers.add(player);
+        }
         createdAt = System.currentTimeMillis();
         gameLoop = new Thread(this);
         gameLoop.start();
