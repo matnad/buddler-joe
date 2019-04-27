@@ -337,6 +337,9 @@ public class Chat {
     messages.add(messageText);
   }
 
+  /**
+   * Adjusts all variables for the chat to fit in the InGame-Chatbox.
+   * */
   public void setGameChatSettings() {
     chatPosition.x = 0.03f;
     chatPosition.y = 0.88f;
@@ -352,6 +355,9 @@ public class Chat {
     enabled = false;
   }
 
+  /**
+   * Adjusts all variables for the chat to fit in the InLobbyMenu-Chatbox.
+   * */
   public void setLobbyChatSettings() {
     chatPosition.x = 0.53f;
     chatPosition.y = 0.71f;

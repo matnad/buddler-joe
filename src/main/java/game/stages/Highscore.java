@@ -37,8 +37,12 @@ public class Highscore {
   private static GuiTexture buddlerJoe;
   // private static GuiTexture title;
   private static MenuButton back;
-  private static float[] namesY = {0.330864f, 0.4f, 0.469136f, 0.538272f, 0.607407f, 0.676534f, 0,745661f};
-  private static float[] countY = {0.330864f, 0.4f, 0.469136f, 0.538272f, 0.607407f, 0.676534f, 0,745661f};
+  private static float[] namesY = {
+    0.330864f, 0.4f, 0.469136f, 0.538272f, 0.607407f, 0.676534f, 0, 745661f
+  };
+  private static float[] countY = {
+    0.330864f, 0.4f, 0.469136f, 0.538272f, 0.607407f, 0.676534f, 0, 745661f
+  };
 
   private static CopyOnWriteArrayList<HighscoreEntry> catalog;
   private static ChangableGuiText[] usernames = new ChangableGuiText[7];
@@ -80,11 +84,11 @@ public class Highscore {
     // TODO: Title
 
     title =
-            new GuiTexture(
-                    loader.loadTexture("highscoretitel"),
-                    new Vector2f(-0.202083f, 0.446296f),
-                    new Vector2f(0.227882f, 0.052778f),
-                    1);
+        new GuiTexture(
+            loader.loadTexture("highscoretitel"),
+            new Vector2f(-0.202083f, 0.446296f),
+            new Vector2f(0.227882f, 0.052778f),
+            1);
 
     // Back
     back =

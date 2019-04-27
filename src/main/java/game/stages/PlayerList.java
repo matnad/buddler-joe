@@ -1,5 +1,9 @@
 package game.stages;
 
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_ESCAPE;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_P;
+import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_1;
+
 import engine.io.InputHandler;
 import engine.render.Loader;
 import engine.render.fontrendering.TextMaster;
@@ -14,8 +18,6 @@ import org.joml.Vector2f;
 import org.joml.Vector3f;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import static org.lwjgl.glfw.GLFW.*;
 
 public class PlayerList {
 
@@ -82,11 +84,11 @@ public class PlayerList {
             1);
 
     titel =
-            new GuiTexture(
-                    loader.loadTexture("playerListTitel"),
-                    new Vector2f(-0.202083f, 0.446296f),
-                    new Vector2f(0.227882f, 0.052778f),
-                    1);
+        new GuiTexture(
+            loader.loadTexture("playerListTitel"),
+            new Vector2f(-0.202083f, 0.446296f),
+            new Vector2f(0.227882f, 0.052778f),
+            1);
 
     // Back
     back =
@@ -198,7 +200,8 @@ public class PlayerList {
 
     // Input-Handling
     if (InputHandler.isKeyPressed(GLFW_KEY_ESCAPE)
-        || InputHandler.isKeyPressed(GLFW_KEY_P)|| InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1) && back.isHover(x, y)) {
+        || InputHandler.isKeyPressed(GLFW_KEY_P)
+        || InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1) && back.isHover(x, y)) {
       done();
       Game.addActiveStage(Game.Stage.PLAYING);
       Game.removeActiveStage(Game.Stage.PLAYERLIST);
