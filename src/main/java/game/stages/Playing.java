@@ -20,10 +20,8 @@ import gui.GuiTexture;
 import gui.text.FloatingStrings;
 import java.util.ArrayList;
 import java.util.List;
-
 import net.packets.lists.PacketPlayerList;
 import org.joml.Vector2f;
-import org.joml.Vector3f;
 import terrains.TerrainFlat;
 import util.MousePlacer;
 
@@ -71,7 +69,6 @@ public class Playing {
       firstloop = false;
     }
 
-
     List<GuiTexture> guis = new ArrayList<>();
     guis.add(Game.getChat().getChatGui());
 
@@ -114,7 +111,7 @@ public class Playing {
       }
     }
 
-    //renderer.processTerrain(Game.getTerrainChunks()[0][0]);
+    // renderer.processTerrain(Game.getTerrainChunks()[0][0]);
 
     // Prepare and Render the entities
     renderer.processEntity(Game.getActivePlayer());

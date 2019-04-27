@@ -40,7 +40,6 @@ import static util.IoUtil.ioResourceToByteBuffer;
 
 import engine.textures.Texture;
 import game.map.ClientMap;
-import game.map.GameMap;
 import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
 import org.lwjgl.system.MemoryStack;

@@ -17,6 +17,7 @@ public abstract class GameMap<T> {
 
   protected static final int dim = 6;
   protected static final int size = 3;
+  protected static final int terrainChunk = 8;
   /* Threshold function:
    * Values below first number will be STONE
    * Values between the first and second number will be DIRT BLOCKS
@@ -27,10 +28,7 @@ public abstract class GameMap<T> {
   protected int height;
   protected long seed;
   protected T[][] blocks;
-
   protected float[][] noiseMap;
-
-  protected static final int terrainChunk = 8;
 
   /**
    * Generate a new map.

@@ -7,7 +7,6 @@ import game.stages.Playing;
 import net.packets.Packet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.w3c.dom.Text;
 
 /**
  * A Packet that gets send from the Client to the Server, to inform him about the end of a Round.

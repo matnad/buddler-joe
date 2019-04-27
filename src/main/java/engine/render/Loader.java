@@ -20,7 +20,6 @@ import engine.models.RawModel;
 import engine.render.objconverter.ModelData;
 import engine.textures.Texture;
 import game.map.ClientMap;
-import game.map.GameMap;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
@@ -187,6 +186,15 @@ public class Loader {
     return textureId;
   }
 
+  /**
+   * Load background Map Texture for a chunk of a given Map into openGL, set some parameters and get
+   * the ID (position). The actual loading is done in the TextureLoader class.
+   *
+   * @param map the client map object to load the map for
+   * @param startCol column rank of the map chunk (0 for the first chunk, 1 for the second, etc)
+   * @param startRow row rank of the map chunk (0 for the first chunk, 1 for the second, etc)
+   * @return The OpenGL texture ID
+   */
   public int loadTexture(ClientMap map, int startRow, int startCol) {
     Texture texture = null;
     try {
@@ -197,8 +205,8 @@ public class Loader {
       // further away they are
 
       // !! NO TILING SINCE THE CHUNKS ARE DIFFERENT !!
-      //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT); // Tiling
-      //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+      // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT); // Tiling
+      // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
     } catch (Exception e) {
       e.printStackTrace();

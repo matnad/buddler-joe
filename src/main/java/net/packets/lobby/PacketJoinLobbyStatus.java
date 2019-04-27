@@ -67,14 +67,14 @@ public class PacketJoinLobbyStatus extends Packet {
   @Override
   public synchronized void processData() {
     if (hasErrors()) { // Errors on Client
-      //System.out.println(createErrorMessage());
+      // System.out.println(createErrorMessage());
     } else if (status.startsWith("OK")) {
-      //System.out.println("Successfully joined lobby");
+      // System.out.println("Successfully joined lobby");
       ChooseLobby.done();
       Game.addActiveStage(Game.Stage.INLOBBBY);
       Game.removeActiveStage(Game.Stage.CHOOSELOBBY);
     } else { // Errors on Server
-      //System.out.println(status);
+      // System.out.println(status);
     }
   }
 }

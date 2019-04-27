@@ -21,8 +21,6 @@ import org.joml.Vector3f;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
-
 /**
  * ChooseLobby Menu specification and rendering. Must be initialized. Specifies all the elements in
  * the ChooseLobby Menu . Contains and manages the Game Loop while the ChooseLobby Menu is active.

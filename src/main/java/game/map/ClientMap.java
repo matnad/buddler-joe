@@ -2,14 +2,18 @@ package game.map;
 
 import static org.lwjgl.BufferUtils.createByteBuffer;
 
+import engine.models.TexturedModel;
 import engine.render.Loader;
 import engine.textures.TerrainTexture;
 import engine.textures.TerrainTexturePack;
+import entities.Entity;
 import entities.blocks.AirBlock;
 import entities.blocks.Block;
 import entities.blocks.BlockMaster;
+import entities.blocks.DirtBlock;
+import entities.blocks.StoneBlock;
 import game.Game;
-import java.awt.*;
+import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -18,7 +22,6 @@ import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
-import java.util.Arrays;
 import java.util.Objects;
 import java.util.Random;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -164,7 +167,7 @@ public class ClientMap extends GameMap<Block> {
         blocks[x][y].remove();
       }
     }
-    
+
     // Create new map
     width = lobbyMap[0].length();
     height = lobbyMap.length;
@@ -183,9 +186,69 @@ public class ClientMap extends GameMap<Block> {
                 y);
       }
     }
+
+    // Create procedurally generated hills
+    Random rnd = new Random(seed); // seed is broadcast by the server
+    int depth = 6; // how many rows of hills
+    int[][] stack = new int[width][depth]; // we store the full stack to do some simple random walks
+    for (int i = 0; i < width; i++) {
+      float posX = i * dim + 3;
+      stack[i][0] = 1;
+      for (int j = 0; j < depth; j++) {
+        if (j > 0) {
+          // Simple random walk algorithm that is inclined to follow the slope of the last 2
+          // blocks. Will more likely generate something resembling hills.
+          stack[i][j] = stack[i][j - 1];
+          if (i >= 2) {
+            int slope = stack[i - 1][j] - stack[i - 2][j];
+            if (slope > 0 && rnd.nextFloat() < .6f) {
+              stack[i][j]++;
+            } else if (slope == 0 && rnd.nextFloat() < .35f) {
+              stack[i][j]++;
+            } else if (slope < 0 && rnd.nextFloat() < .2f) {
+              stack[i][j]++;
+            }
+          } else if (rnd.nextFloat() < .4f) {
+            stack[i][j]++;
+          }
+
+          if (j == depth - 1 && stack[i][j] == 1) {
+            stack[i][j]++;
+          }
+        }
+
+        float posY = -size;
+        for (int k = 0; k < stack[i][j]; k++) {
+          TexturedModel model = DirtBlock.getBlockModel();
+          // First row needs to blend in with the map
+          if (j == 0 && blocks[i][0].getType() == BlockMaster.BlockTypes.STONE) {
+            model = StoneBlock.getBlockModel();
+          } else if (j > 0) {
+            // The lower the blocks, the more likely they are stone instead of dirt
+            if ((1 - ((float) k / depth)) - .3f > rnd.nextFloat()) {
+              model = StoneBlock.getBlockModel();
+            }
+          }
+          // Add the block as entity. This is not managed by the blockmaster since it is just
+          // decoration
+          Game.addEntity(
+              new Entity(model, new Vector3f(posX, posY, -size - 0.02f - j * dim), 0, 0, 0, 3));
+          posY += dim;
+        }
+      }
+    }
   }
 
-  public BufferedImage getMapImage(int startRow, int startCol) {
+  /**
+   * Create a buffered RGB image of a game map chunk.
+   *
+   * <p>Every block is 1 pixel. Stone is red, gold is green, obsidian is blue and dirt is black.
+   *
+   * @param startCol column rank of the map chunk (0 for the first chunk, 1 for the second, etc)
+   * @param startRow row rank of the map chunk (0 for the first chunk, 1 for the second, etc)
+   * @return a BufferedImage representation of the map
+   */
+  private BufferedImage getMapImage(int startRow, int startCol) {
     int[] pixels = new int[terrainChunk * terrainChunk];
 
     if (startRow + terrainChunk > height || startCol + terrainChunk > width) {
@@ -216,6 +279,14 @@ public class ClientMap extends GameMap<Block> {
     return pixelImage;
   }
 
+  /**
+   * Return a byte buffer of a specified game map chunk, representing 3 values for each block of the
+   * map. Those values correspond to the block types.
+   *
+   * @param startCol column rank of the map chunk (0 for the first chunk, 1 for the second, etc)
+   * @param startRow row rank of the map chunk (0 for the first chunk, 1 for the second, etc)
+   * @return ByteBuffer than can be directly loaded into openGL
+   */
   public ByteBuffer getMapImageByteBuffer(int startRow, int startCol) {
     BufferedImage img = getMapImage(startRow, startCol);
 
@@ -248,6 +319,14 @@ public class ClientMap extends GameMap<Block> {
     return buffer.slice();
   }
 
+  /**
+   * Generate a 2D array with all map terrain chunks for this map.
+   *
+   * <p>Textures are specified here.
+   *
+   * @param loader main Loader
+   * @return a 2D array containing the full terrain for the map
+   */
   public TerrainFlat[][] generateTerrains(Loader loader) {
 
     // Verify Map Dimensions
@@ -257,16 +336,6 @@ public class ClientMap extends GameMap<Block> {
               + terrainChunk
               + ". Restart the Game and create a new Lobby.");
     }
-
-    // Check seed and noise map
-
-    if (seed < 0) {
-      throw new IllegalStateException(
-          "Map Seed was not set. Restart the Game and create a new Lobby.");
-    }
-    // generateNoiseMap();
-    // System.out.println(Arrays.deepToString(noiseMap));
-    // System.out.println(seed);
 
     // Prepare Textures
     TerrainTexture dirt = new TerrainTexture(loader.loadTexture("Erde512x512"));
