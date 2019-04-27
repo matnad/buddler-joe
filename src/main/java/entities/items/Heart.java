@@ -57,13 +57,13 @@ public class Heart extends Item {
   @Override
   public void update() {
     if (isOwned()) {
-      time += Game.window.getFrameTimeSeconds();
+      time += Game.dt();
       if (time >= showTime) {
         Game.getActivePlayer().increaseCurrentLives();
         setDestroyed(true);
       }
     } else {
-      time += Game.window.getFrameTimeSeconds();
+      time += Game.dt();
       if (time >= showTime) {
         setDestroyed(true);
       }

@@ -229,7 +229,6 @@ public class LobbyCreation {
       new PacketCreateLobby(newlobbyname + "║" + mapSize).sendToServer();
       InputHandler.resetInputString();
       initializedText = false;
-      // TODO: replace currentTime with entered Lobbyname.
     }
 
     Game.getGuiRenderer().render(guis);
@@ -268,25 +267,12 @@ public class LobbyCreation {
   }
 
   private static void updateGuiText() {
-    // guiText.setTextString(chatText); // doesn't work, we need to reload the texture and
-    // create a new text
+
     output = lobbyname;
     TextMaster.removeAll();
-    //        do {
-    //    TextMaster.removeText(guiText);
 
     guiText =
         new GuiText(
             output, 1.5f, font, new Vector3f(0f, 0f, 0f), 1f, new Vector2f(.30f, .465f), 1f, false);
-
-    //    if (output.length() > 0) {
-    //      output = output.substring(1);
-    //    }
-    //
-    //        } while (guiText.getLengthOfLines().get(guiText.getLengthOfLines().size() - 1)
-    //                > maxLineLength - 0.04);
-    //
-    // System.out.println(guiText.getLengthOfLines().get(guiText.getLengthOfLines().size()-1));
-
   }
 }

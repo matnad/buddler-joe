@@ -72,7 +72,7 @@ public class GoldBlock extends Block {
       //          new TimerTask() {
       //            @Override
       //            public void run() {
-      //              ((Player) getDestroyedBy()).increaseCurrentGold(value);
+      //              ((ServerPlayer) getDestroyedBy()).increaseCurrentGold(value);
       //              Playing.addFloatingGoldText(value);
       //            }
       //          },

@@ -139,7 +139,7 @@ public class Chat {
       updateAlpha();
     }
     if (showTemporary) {
-      temporaryShowElapsed += Game.window.getFrameTimeSeconds();
+      temporaryShowElapsed += Game.dt();
       if (temporaryShowElapsed >= temporaryShowDuration) {
         temporaryShowElapsed = 0;
         showTemporary = false;
@@ -156,6 +156,12 @@ public class Chat {
     String newChatText = chatText;
 
     newChatText = InputHandler.getInputString();
+
+    if (newChatText.length() > 100) {
+      newChatText = chatText;
+      StringBuilder temp = new StringBuilder(chatText);
+      InputHandler.setInputString(temp);
+    }
 
     if (!chatText.equals(newChatText)) {
       chatText = newChatText;
@@ -329,69 +335,31 @@ public class Chat {
     messages.add(messageText);
   }
 
-  public void setGameChatPosition() {
+  public void setGameChatSettings() {
     chatPosition.x = 0.03f;
     chatPosition.y = 0.88f;
-  }
-
-  public void setLobbyChatPosition() {
-    chatPosition.x = 0.53f;
-    chatPosition.y = 0.71f;
-  }
-
-  public void setLobbyMaxLines() {
-    maxLines = 23;
-  }
-
-  public void setGameMaxLines() {
     maxLines = 12;
-  }
-
-  /**
-   * Method to set the game colour.
-   */
-  public void setGameColour() {
     textColour.x = 1f;
     textColour.y = 1f;
     textColour.z = 1f;
+    maxLineLength = 0.34f;
+    differenceMessageToChat = 0.04f;
+    messagePosition.x = 0.06f;
+    messagePosition.y = 0.91f;
+    inLobby = false;
+    enabled = false;
   }
 
-  /**
-   * Method to set the lobby colour.
-   */
-  public void setLobbyColour() {
+  public void setLobbyChatSettings() {
+    chatPosition.x = 0.53f;
+    chatPosition.y = 0.71f;
+    maxLines = 23;
     textColour.x = 0f;
     textColour.y = 0f;
     textColour.z = 0f;
-  }
-
-  public void setGameMaxLineLength() {
-    maxLineLength = 0.34f;
-  }
-
-  public void setLobbyMaxLineLength() {
     maxLineLength = 0.205f;
-  }
-
-  public void setGameMessagePosition() {
-    messagePosition.x = 0.06f;
-    messagePosition.y = 0.91f;
-  }
-
-  public void setLobbyMessagePosition() {
     messagePosition.x = 0.525f;
     messagePosition.y = 0.785f;
-  }
-
-  public void setGamedifferendeMessageToLobby() {
-    differenceMessageToChat = 0.04f;
-  }
-
-  public void setInLobby(boolean status) {
-    this.inLobby = status;
-  }
-
-  public void setAlpha() {
     alpha = 1;
   }
 }

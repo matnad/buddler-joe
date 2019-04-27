@@ -52,7 +52,7 @@ public class PacketReady extends Packet {
   @Override
   public void processData() {
     if (isLoggedIn() && isInALobby()) {
-      Player player = ServerLogic.getPlayerList().getPlayer(getClientId());
+      ServerPlayer player = ServerLogic.getPlayerList().getPlayer(getClientId());
       int lobbyId = player.getCurLobbyId();
       Lobby lobby = ServerLogic.getLobbyList().getLobby(lobbyId);
 

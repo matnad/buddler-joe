@@ -63,13 +63,8 @@ public class Playing {
    */
   public static void update(MasterRenderer renderer) {
     if (firstloop) {
-      Game.getChat().setGameChatPosition();
-      Game.getChat().setGameMaxLines();
-      Game.getChat().setGameColour();
-      Game.getChat().setGameMaxLineLength();
-      Game.getChat().setGameMessagePosition();
-      Game.getChat().setGamedifferendeMessageToLobby();
-      Game.getChat().setInLobby(false);
+
+      Game.getChat().setGameChatSettings();
       TextMaster.removeAll();
       firstloop = false;
     }
@@ -137,7 +132,7 @@ public class Playing {
     ParticleMaster.renderParticles(Game.getActiveCamera());
 
     if (damageTakenScreenRemaining > 0) {
-      damageTakenScreenRemaining -= Game.window.getFrameTimeSeconds();
+      damageTakenScreenRemaining -= Game.dt();
       damageOverlay.setAlpha(damageTakenScreenRemaining / damageTakenScreenTotalDuration / 1.5f);
       guis.add(damageOverlay);
     }
@@ -163,6 +158,5 @@ public class Playing {
     firstloop = true;
     floatingGoldStrings.done();
     Game.getGoldGuiText().done();
-    Game.getLivesGuiText().done();
   }
 }

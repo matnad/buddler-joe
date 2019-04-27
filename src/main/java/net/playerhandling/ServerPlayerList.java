@@ -19,7 +19,7 @@ public class ServerPlayerList {
    * @return answer the the caller of the method to let them know whether the chosen username or a
    *     changed version of the username has been added to the playerList
    */
-  public String addPlayer(Player player) {
+  public String addPlayer(ServerPlayer player) {
     String answer;
     if (players.containsKey(player.getClientId())) {
       answer = "Already logged in.";
@@ -56,9 +56,9 @@ public class ServerPlayerList {
    * Method to search and return a player by clientId.
    *
    * @param clientId The looked for clientId
-   * @return either the Player or null
+   * @return either the ServerPlayer or null
    */
-  public Player getPlayer(int clientId) {
+  public ServerPlayer getPlayer(int clientId) {
     return players.get(clientId);
   }
 

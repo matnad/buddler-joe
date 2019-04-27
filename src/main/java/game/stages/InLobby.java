@@ -94,12 +94,13 @@ public class InLobby {
     if (!initializedText) {
       done();
       initText();
-      Game.getChat().setLobbyChatPosition();
-      Game.getChat().setLobbyMaxLines();
-      Game.getChat().setLobbyColour();
-      Game.getChat().setLobbyMaxLineLength();
-      Game.getChat().setLobbyMessagePosition();
-      Game.getChat().setAlpha();
+      //      Game.getChat().setLobbyChatPosition();
+      //      Game.getChat().setLobbyMaxLines();
+      //      Game.getChat().setLobbyColour();
+      //      Game.getChat().setLobbyMaxLineLength();
+      //      Game.getChat().setLobbyMessagePosition();
+      //      Game.getChat().setAlpha();
+      Game.getChat().setLobbyChatSettings();
       initializedText = true;
     }
 

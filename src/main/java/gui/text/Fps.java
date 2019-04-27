@@ -28,9 +28,7 @@ public class Fps extends GuiString {
       TextMaster.removeText(getGuiText());
     }
     try {
-      double fpsD = Double.parseDouble(fps);
-      fpsD = Math.round(fpsD);
-      setText("" + fpsD);
+      setText(fps);
       createGuiText();
     } catch (NumberFormatException ignored) {
       // Don't update if we get invalid string

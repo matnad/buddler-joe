@@ -109,14 +109,14 @@ public class BlockMaster {
           if (block.getPosition() != block.getMoveTo()) {
             if (!block.canMove()) {
               // Block is waiting to move. Update the delay
-              block.decreaseMoveDelay((float) Game.window.getFrameTimeSeconds());
+              block.decreaseMoveDelay((float) Game.dt());
               // "Shake"/jiggle the block while it is waiting to move
               block.shake();
             } else {
               // Reset Orientation
               block.setRotX(0);
               // Slowly move the block
-              block.accelerate((float) Game.window.getFrameTimeSeconds());
+              block.accelerate((float) Game.dt());
               if (block.getPosition().distance(block.getMoveStartPos()) > block.getMoveDistance()) {
                 block.setPosition(block.getMoveTo());
               } else {

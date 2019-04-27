@@ -12,9 +12,9 @@ public class TestServerPlayerList {
 
   @Test
   public void checkAddPlayerNewPlayer() {
-    ConcurrentHashMap<Integer, Player> testPlayerList = new ConcurrentHashMap<>();
+    ConcurrentHashMap<Integer, ServerPlayer> testPlayerList = new ConcurrentHashMap<>();
     ServerPlayerList playerList = new ServerPlayerList();
-    Player testPlayer = new Player("Testuser", 1);
+    ServerPlayer testPlayer = new ServerPlayer("Testuser", 1);
     testPlayerList.put(testPlayer.getClientId(), testPlayer);
     playerList.addPlayer(testPlayer);
     Assert.assertEquals(testPlayerList, playerList.getPlayers());
@@ -22,9 +22,9 @@ public class TestServerPlayerList {
 
   @Test
   public void checkAddPlayerDouble() {
-    ConcurrentHashMap<Integer, Player> testPlayerList = new ConcurrentHashMap<>();
+    ConcurrentHashMap<Integer, ServerPlayer> testPlayerList = new ConcurrentHashMap<>();
     ServerPlayerList playerList = new ServerPlayerList();
-    Player testPlayer = new Player("Testuser", 1);
+    ServerPlayer testPlayer = new ServerPlayer("Testuser", 1);
     testPlayerList.put(testPlayer.getClientId(), testPlayer);
     playerList.addPlayer(testPlayer);
     playerList.addPlayer(testPlayer);
@@ -34,8 +34,8 @@ public class TestServerPlayerList {
   @Test
   public void checkAddPlayerSameUsername() {
     ServerPlayerList playerList = new ServerPlayerList();
-    Player testPlayer1 = new Player("Testuser", 1);
-    Player testPlayer2 = new Player("Testuser", 2);
+    ServerPlayer testPlayer1 = new ServerPlayer("Testuser", 1);
+    ServerPlayer testPlayer2 = new ServerPlayer("Testuser", 2);
     playerList.addPlayer(testPlayer1);
     playerList.addPlayer(testPlayer2);
     Assert.assertEquals("Testuser_1", playerList.getUsername(testPlayer2.getClientId()));
@@ -44,9 +44,9 @@ public class TestServerPlayerList {
   @Test
   public void checkAddPlayerSameUsernameTwice() {
     ServerPlayerList playerList = new ServerPlayerList();
-    Player testPlayer1 = new Player("Testuser", 1);
-    Player testPlayer2 = new Player("Testuser_1", 2);
-    Player testPlayer3 = new Player("Testuser", 3);
+    ServerPlayer testPlayer1 = new ServerPlayer("Testuser", 1);
+    ServerPlayer testPlayer2 = new ServerPlayer("Testuser_1", 2);
+    ServerPlayer testPlayer3 = new ServerPlayer("Testuser", 3);
     playerList.addPlayer(testPlayer1);
     playerList.addPlayer(testPlayer2);
     playerList.addPlayer(testPlayer3);
@@ -56,7 +56,7 @@ public class TestServerPlayerList {
   @Test
   public void checkReturnCorrectUsername() {
     ServerPlayerList playerList = new ServerPlayerList();
-    Player testPlayer1 = new Player("Testuser", 1);
+    ServerPlayer testPlayer1 = new ServerPlayer("Testuser", 1);
     playerList.addPlayer(testPlayer1);
     Assert.assertEquals("Testuser", playerList.getUsername(testPlayer1.getClientId()));
   }
@@ -64,16 +64,16 @@ public class TestServerPlayerList {
   @Test
   public void checkReturnCorrectPlayer() {
     ServerPlayerList playerList = new ServerPlayerList();
-    Player testPlayer1 = new Player("Testuser", 1);
+    ServerPlayer testPlayer1 = new ServerPlayer("Testuser", 1);
     playerList.addPlayer(testPlayer1);
     Assert.assertEquals(testPlayer1, playerList.getPlayer(testPlayer1.getClientId()));
   }
 
   @Test
   public void checkRemovePlayerInPlayerList() {
-    ConcurrentHashMap<Integer, Player> testPlayerList = new ConcurrentHashMap<>();
+    ConcurrentHashMap<Integer, ServerPlayer> testPlayerList = new ConcurrentHashMap<>();
     ServerPlayerList playerList = new ServerPlayerList();
-    Player testPlayer = new Player("Testuser", 1);
+    ServerPlayer testPlayer = new ServerPlayer("Testuser", 1);
     playerList.addPlayer(testPlayer);
     playerList.removePlayer(testPlayer.getClientId());
     Assert.assertEquals(testPlayerList, playerList.getPlayers());
@@ -81,10 +81,10 @@ public class TestServerPlayerList {
 
   @Test
   public void checkRemovePlayerNotInPlayerList() {
-    ConcurrentHashMap<Integer, Player> testPlayerList = new ConcurrentHashMap<>();
+    ConcurrentHashMap<Integer, ServerPlayer> testPlayerList = new ConcurrentHashMap<>();
     ServerPlayerList playerList = new ServerPlayerList();
-    Player testPlayer1 = new Player("Testuser", 1);
-    Player testPlayer2 = new Player("Testuser2", 2);
+    ServerPlayer testPlayer1 = new ServerPlayer("Testuser", 1);
+    ServerPlayer testPlayer2 = new ServerPlayer("Testuser2", 2);
     testPlayerList.put(testPlayer1.getClientId(), testPlayer1);
     playerList.addPlayer(testPlayer1);
     playerList.removePlayer(testPlayer2.getClientId());
@@ -100,7 +100,7 @@ public class TestServerPlayerList {
   @Test
   public void checkReturnCorrectIntInList() {
     ServerPlayerList playerList = new ServerPlayerList();
-    Player testPlayer = new Player("Testuser", 1);
+    ServerPlayer testPlayer = new ServerPlayer("Testuser", 1);
     playerList.addPlayer(testPlayer);
     Assert.assertTrue(playerList.isClientIdInList(testPlayer.getClientId()));
   }
@@ -108,7 +108,7 @@ public class TestServerPlayerList {
   @Test
   public void checkReturnCorrectUsernameInList() {
     ServerPlayerList playerList = new ServerPlayerList();
-    Player testPlayer = new Player("Testuser", 1);
+    ServerPlayer testPlayer = new ServerPlayer("Testuser", 1);
     playerList.addPlayer(testPlayer);
     Assert.assertTrue(playerList.isUsernameInList(testPlayer.getUsername()));
   }
@@ -122,7 +122,7 @@ public class TestServerPlayerList {
   @Test
   public void checkReturnCorrectStringOneUser() {
     ServerPlayerList playerList = new ServerPlayerList();
-    Player testPlayer = new Player("Testuser", 1);
+    ServerPlayer testPlayer = new ServerPlayer("Testuser", 1);
     playerList.addPlayer(testPlayer);
     Assert.assertEquals(playerList.toString(), "OK║Testuser║");
   }

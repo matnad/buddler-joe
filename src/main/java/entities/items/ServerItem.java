@@ -36,6 +36,18 @@ public class ServerItem {
     this.itemId = itemId;
   }
 
+  public int getOwner() {
+    return owner;
+  }
+
+  public ItemMaster.ItemTypes getType() {
+    return type;
+  }
+
+  public boolean isExists() {
+    return exists;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) {

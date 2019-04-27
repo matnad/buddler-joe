@@ -8,7 +8,7 @@ import net.highscore.ServerHighscoreSerialiser;
 import net.packets.gamestatus.PacketGameEnd;
 import net.packets.gamestatus.PacketStartRound;
 import net.packets.lobby.PacketLobbyOverview;
-import net.playerhandling.Player;
+import net.playerhandling.ServerPlayer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,7 +17,7 @@ import org.slf4j.LoggerFactory;
  *
  * @author Sebastian Schlachter
  */
-public class Lobby {
+public class Lobby implements Runnable {
 
   public static final Logger logger = LoggerFactory.getLogger(Lobby.class);
   private static final int maxPlayers = 7;
@@ -25,13 +25,15 @@ public class Lobby {
   private int lobbyId;
   private boolean inGame;
   private String lobbyName;
-  private CopyOnWriteArrayList<Player> lobbyPlayers;
+  private CopyOnWriteArrayList<ServerPlayer> lobbyPlayers;
   private ServerMap map;
   private int createrPlayerId;
   private String mapSize;
   private String status;
   private long createdAt;
   private ServerItemState serverItemState;
+
+  private Thread gameLoop;
 
   /**
    * Constructor of the lobby-class uses by the Server.
@@ -55,6 +57,27 @@ public class Lobby {
     map = new ServerMap(33, 40, System.currentTimeMillis());
   }
 
+  @Override
+  public void run() {
+    // Loop once per second
+    while (status.equals("running")) {
+      long startOfLoop = System.currentTimeMillis();
+
+      // Do stuff
+      for (ServerPlayer lobbyPlayer : lobbyPlayers) {
+        // if (lobbyPlayer.getMovementViolations() > 0) {
+        //  System.out.println(lobbyPlayer.getUsername() + " was caught speed hacking!");
+        // }
+      }
+      // Wait for the rest of the second
+      try {
+        Thread.sleep(1000 - System.currentTimeMillis() + startOfLoop);
+      } catch (InterruptedException e) {
+        e.printStackTrace();
+      }
+    }
+  }
+
   /**
    * Getter that return the max amount of players per Lobby.
    *
@@ -71,7 +94,7 @@ public class Lobby {
    * @return statement to let the calling instance know, whether the action was successful or not.
    *     ("OK" or "Already joined this lobby.")
    */
-  public String addPlayer(Player player) {
+  public String addPlayer(ServerPlayer player) {
     if (!status.equals("open")) {
       return "Lobby not open.";
     }
@@ -128,7 +151,7 @@ public class Lobby {
     return lobbyName;
   }
 
-  public CopyOnWriteArrayList<Player> getLobbyPlayers() {
+  public CopyOnWriteArrayList<ServerPlayer> getLobbyPlayers() {
     return lobbyPlayers;
   }
 
@@ -139,7 +162,7 @@ public class Lobby {
    */
   public String getPlayerNames() {
     StringBuilder s = new StringBuilder();
-    for (Player player : lobbyPlayers) {
+    for (ServerPlayer player : lobbyPlayers) {
       s.append(player.getUsername()).append("║");
     }
     return s.toString();
@@ -164,8 +187,9 @@ public class Lobby {
   }
 
   /**
-   * Gets called if the Round should end. Updates Lobbystatus, updates Highscore, resets Player
-   * states, informs all clients about the end of the round. Archives the round in the History.
+   * Gets called if the Round should end. Updates Lobbystatus, updates Highscore, resets
+   * ServerPlayer states, informs all clients about the end of the round. Archives the round in the
+   * History.
    *
    * @param clientId id of the winning player
    */
@@ -188,7 +212,7 @@ public class Lobby {
     // create new Map and broadcast
     // map = new ServerMap(60, 40, System.currentTimeMillis());
     // new PacketBroadcastMap(map).sendToLobby(lobbyId);
-    // for (Player player : lobbyPlayers) {
+    // for (ServerPlayer player : lobbyPlayers) {
     // player.setCurrentGold(0);
     // }
   }
@@ -277,6 +301,8 @@ public class Lobby {
       if (status.equals("running")) {
         inGame = true;
         createdAt = System.currentTimeMillis();
+        gameLoop = new Thread(this);
+        gameLoop.start();
       } else {
         inGame = false;
       }

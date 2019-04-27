@@ -18,7 +18,7 @@ import net.packets.lobby.PacketCurLobbyInfo;
 import net.packets.lobby.PacketLobbyOverview;
 import net.packets.loginlogout.PacketDisconnect;
 import net.playerhandling.ClientThread;
-import net.playerhandling.Player;
+import net.playerhandling.ServerPlayer;
 import net.playerhandling.ServerPlayerList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -110,7 +110,7 @@ public class ServerLogic {
       return;
     }
 
-    for (Player p : lobby.getLobbyPlayers()) {
+    for (ServerPlayer p : lobby.getLobbyPlayers()) {
       sendPacketToClient(p.getClientId(), packet);
     }
   }
@@ -122,7 +122,7 @@ public class ServerLogic {
    * @param packet packet to distribute
    */
   public static void sendToClientsNotInALobby(Packet packet) {
-    for (Player player : getPlayerList().getPlayers().values()) {
+    for (ServerPlayer player : getPlayerList().getPlayers().values()) {
       if (player.getCurLobbyId() == 0) {
         sendPacketToClient(player.getClientId(), packet);
       }
@@ -135,7 +135,7 @@ public class ServerLogic {
    * @param packet packet to be sent to all players
    */
   public static void sendBroadcastPacket(Packet packet) {
-    for (Player player : getPlayerList().getPlayers().values()) {
+    for (ServerPlayer player : getPlayerList().getPlayers().values()) {
       sendPacketToClient(player.getClientId(), packet);
     }
   }
@@ -184,9 +184,9 @@ public class ServerLogic {
     logger.debug("Removing client no. " + clientId);
 
     // check if the client exists
-    Player player = ServerLogic.getPlayerList().getPlayer(clientId);
+    ServerPlayer player = ServerLogic.getPlayerList().getPlayer(clientId);
     if (player == null) {
-      logger.debug("Player already removed.");
+      logger.debug("ServerPlayer already removed.");
       return;
     }
 
@@ -245,7 +245,7 @@ public class ServerLogic {
    * @return Lobby of the client
    */
   public static Lobby getLobbyForClient(int clientId) {
-    Player player = playerList.getPlayer(clientId);
+    ServerPlayer player = playerList.getPlayer(clientId);
     if (player != null) {
       return player.getLobby();
     }
@@ -262,7 +262,7 @@ public class ServerLogic {
    * @throws IOException when the server socket fails
    */
   void waitForPlayers() throws IOException {
-    int clientId = 1; // Player IDs start at 1
+    int clientId = 1; // ServerPlayer IDs start at 1
 
     while (true) {
       Socket clientSocket = serverSocket.accept();
