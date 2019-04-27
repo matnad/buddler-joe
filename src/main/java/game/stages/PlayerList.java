@@ -150,9 +150,9 @@ public class PlayerList {
 
     List<GuiTexture> guis = new ArrayList<>();
     // add textures here
-    guis.add(background);
+    // guis.add(background);
     guis.add(playerlist);
-    guis.add(buddlerJoe);
+    // guis.add(buddlerJoe);
     // guis.add(titel);
 
     // OpenGL Coordinates (0/0 = center of screen, -1/1 = corners)
