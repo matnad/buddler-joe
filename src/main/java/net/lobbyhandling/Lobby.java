@@ -358,33 +358,57 @@ public class Lobby implements Runnable {
   }
 
   // playerId = player who had crush
-  //currentLives: potentiell
+  // currentLives: potentiell
   public void addPerspective(int playerId, int currentLives) {
-    //System.out.println("here");
-    //Referee ref = refereesForClients.get(playerId);
-
-    //OVDE SI NESTO ZAJEBALA
-    if (checkEventOpened(playerId)) { // man kann einsetzen
+    // System.out.println("here");
+    // Referee ref = refereesForClients.get(playerId);
+    
+    if (refereesForClients.get(playerId) == null) {
+      // System.out.println("here");
+      Referee ref = new Referee(playerId);
+      refereesForClients.put(playerId, ref);
       refereesForClients.get(playerId).add(currentLives);
-      //ref.add(currentLives);
-      //System.out.println("here");
-    } else {
-      //System.out.println("here");
-      if (refereesForClients.get(playerId).finalDecision()) { // entscheidung fällen
-        PacketLifeStatus finalDecision = new PacketLifeStatus(currentLives + "server" + playerId);
-        finalDecision.sendToLobby(this.getLobbyId());
+      if (refereesForClients.get(playerId).check()) { // haben alle ihre meinung gesagt?
+        //System.out.println("here");
+        if (refereesForClients.get(playerId).finalDecision()) { // entscheidung fällen
+          PacketLifeStatus finalDecision = new PacketLifeStatus(currentLives + "server" + playerId);
+          finalDecision.sendToLobby(this.getLobbyId());
+        }
+        refereesForClients.put(playerId, null);
       }
-      //ref = new Referee(playerId);
-      //ref.add(currentLives);
-      //refereesForClients.put(playerId, ref);
 
-      refereesForClients.put(playerId, refereesForClients.get(playerId));
+    } else if (checkEventOpened(playerId)) { // man kann einsetzen
+      refereesForClients.get(playerId).add(currentLives);
+      if (refereesForClients.get(playerId).check()) {
+        if (refereesForClients.get(playerId).finalDecision()) { // entscheidung fällen
+          PacketLifeStatus finalDecision = new PacketLifeStatus(currentLives + "server" + playerId);
+          finalDecision.sendToLobby(this.getLobbyId());
+        }
+        refereesForClients.put(playerId, null);
+      }
+      // ref.add(currentLives);
+      // System.out.println("here");
+
+    } else {
+      // System.out.println("here");
+      if (refereesForClients.get(playerId).check()) {
+        if (refereesForClients.get(playerId).finalDecision()) { // entscheidung fällen
+          PacketLifeStatus finalDecision = new PacketLifeStatus(currentLives + "server" + playerId);
+          finalDecision.sendToLobby(this.getLobbyId());
+        }
+      }
+      // System.out.println("here");
+      // ref = new Referee(playerId);
+      // ref.add(currentLives);
+      // refereesForClients.put(playerId, ref);
+      // refereesForClients.put(playerId, refereesForClients.get(playerId));
+      refereesForClients.put(playerId, null);
     }
   }
 
   // check if event is already opened/realized return true
   public boolean checkEventOpened(int playerId) {
-    //System.out.println("here");
-    return System.currentTimeMillis() - refereesForClients.get(playerId).getTimestamp() <= 500;
+    // System.out.println("here");
+    return ((System.currentTimeMillis() - refereesForClients.get(playerId).getTimestamp()) <= 500);
   }
 }
