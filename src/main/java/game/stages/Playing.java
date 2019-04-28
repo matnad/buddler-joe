@@ -114,7 +114,6 @@ public class Playing {
       Highscore.setInGame(true);
       Game.addActiveStage(Game.Stage.HIGHSCORE);
     }
-
     if (InputHandler.isKeyPressed(GLFW_KEY_P)
             && !Game.getChat().isEnabled()
             && !Game.getActiveStages().contains(Game.Stage.GAMEMENU)
@@ -126,6 +125,14 @@ public class Playing {
       playerList.sendToServer();
       Game.addActiveStage(Game.Stage.PLAYERLIST);
     }
+
+    if (all.isHover(x, y)
+        && InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1)
+        && !Game.getActiveStages().contains(Game.Stage.GAMEMENU)
+        && !Game.getActiveStages().contains(Game.Stage.PLAYERLIST)) {
+      Game.getChat().setWisperName("all");
+    }
+
     // TODO: Add Button for Whisper and all
 
     // Update positions of camera, player and 3D Mouse Pointer

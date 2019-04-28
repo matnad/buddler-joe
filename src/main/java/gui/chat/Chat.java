@@ -35,7 +35,6 @@ public class Chat {
   private String chatText;
   private GuiTexture chatGui;
 
-
   private float alpha;
 
   private FontType font;
@@ -53,6 +52,8 @@ public class Chat {
   private int msgSize;
   private List<String> text;
   private String output;
+  private String wisperName;
+  private boolean backToChat;
 
   /**
    * Initialize Chat, only needs to be called once on game init.
@@ -116,8 +117,9 @@ public class Chat {
     }
     if (InputHandler.isKeyPressed(GLFW_KEY_ENTER)) {
       if (chatText.length() > 0 && enabled) {
-        PacketChatMessageToServer chatString = new PacketChatMessageToServer(chatText);
+        PacketChatMessageToServer chatString = new PacketChatMessageToServer(wisperName + chatText);
         chatString.sendToServer();
+        wisperName = "";
 
         chatText = "";
         InputHandler.resetInputString();
@@ -223,7 +225,7 @@ public class Chat {
    */
   public void arrangeMessages() {
 
-    if (messages.size() != msgSize) { // Something changed
+    if (messages.size() != msgSize || backToChat) { // Something changed
       float posY = chatPosition.y;
       float posX = chatPosition.x;
       int currentLines = 0;
@@ -244,6 +246,7 @@ public class Chat {
       //  message.setPosition(new Vector2f(posX, posY));
       //  posY += .02f * message.getNumberOfLines();
       // }
+      backToChat = false;
       msgSize = messages.size(); // Update size so we can detect further changes
     }
   }
@@ -369,4 +372,11 @@ public class Chat {
     return alpha;
   }
 
+  public void setWisperName(String wisperName) {
+    this.wisperName = "@" + wisperName;
+  }
+
+  public void setBackToChat(boolean backToChat) {
+    this.backToChat = backToChat;
+  }
 }

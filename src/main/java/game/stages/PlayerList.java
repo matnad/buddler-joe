@@ -10,6 +10,7 @@ import gui.text.ChangableGuiText;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.logging.ConsoleHandler;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 import org.slf4j.Logger;
@@ -82,11 +83,11 @@ public class PlayerList {
             1);
 
     titel =
-            new GuiTexture(
-                    loader.loadTexture("playerListTitel"),
-                    new Vector2f(-0.202083f, 0.446296f),
-                    new Vector2f(0.227882f, 0.052778f),
-                    1);
+        new GuiTexture(
+            loader.loadTexture("playerListTitel"),
+            new Vector2f(-0.202083f, 0.446296f),
+            new Vector2f(0.227882f, 0.052778f),
+            1);
 
     // Back
     back =
@@ -198,8 +199,10 @@ public class PlayerList {
 
     // Input-Handling
     if (InputHandler.isKeyPressed(GLFW_KEY_ESCAPE)
-        || InputHandler.isKeyPressed(GLFW_KEY_P)|| InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1) && back.isHover(x, y)) {
+        || InputHandler.isKeyPressed(GLFW_KEY_P)
+        || InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1) && back.isHover(x, y)) {
       done();
+      removePlayerFromPlayerlist();
       Game.addActiveStage(Game.Stage.PLAYING);
       Game.removeActiveStage(Game.Stage.PLAYERLIST);
     } else if (InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1) && up.isHover(x, y)) {
@@ -213,6 +216,13 @@ public class PlayerList {
         if (i + startInd < catalog.size()
             && InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1)
             && join[i].isHover(x, y)) {
+          done();
+          Game.getChat().setWisperName(catalog.get(i));
+          Game.removeActiveStage(Game.Stage.PLAYERLIST);
+          removePlayerFromPlayerlist();
+          Game.getChat().setBackToChat(true);
+          Game.getChat().arrangeMessages();
+
           break;
         }
       }
@@ -255,7 +265,8 @@ public class PlayerList {
     page = 0;
     initializedPageIndex = false;
     initializedText = false;
-    TextMaster.removeAll();
+    //    TextMaster.removeAll();
+
   }
 
   /**
@@ -270,5 +281,11 @@ public class PlayerList {
       n = 0;
     }
     PlayerList.n = n;
+  }
+
+  public static void removePlayerFromPlayerlist() {
+    for (int i = 0; i < names.length; i++) {
+      names[i].delete();
+    }
   }
 }
