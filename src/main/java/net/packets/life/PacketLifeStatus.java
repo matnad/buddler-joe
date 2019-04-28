@@ -2,6 +2,7 @@ package net.packets.life;
 
 import game.NetPlayerMaster;
 import net.ServerLogic;
+import net.lobbyhandling.Lobby;
 import net.packets.Packet;
 
 public class PacketLifeStatus extends Packet {
@@ -96,9 +97,17 @@ public class PacketLifeStatus extends Packet {
       // packet erstellt bei server nachdem erhalten von client
       if (getClientId() != 0 && sender.equals("client")) {
         // ...entscheiden
+
+        Lobby lobby = ServerLogic.getLobbyForClient(playerId);
+        if (!lobby.checkEventOpened(playerId)) {
+          lobby.openEvent(playerId, currentLives);
+        } else { // else schon offen
+          lobby.getRefereeForPlayer(playerId).add(currentLives);
+          //getClientId = perspektive des absenders des packets
+        }
+
         int lives = 0; // lives nach entscheid!
-        PacketLifeStatus finalDecision =
-            new PacketLifeStatus(lives + "server" + playerId);
+        PacketLifeStatus finalDecision = new PacketLifeStatus(lives + "server" + playerId);
         finalDecision.sendToLobby(ServerLogic.getLobbyForClient(getClientId()).getLobbyId());
       }
       // packet erstellt bei allen clients nachdem server verschickt

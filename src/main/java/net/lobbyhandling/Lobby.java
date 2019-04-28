@@ -2,12 +2,15 @@ package net.lobbyhandling;
 
 import game.History;
 import game.map.ServerMap;
+
+import java.util.HashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import net.ServerLogic;
 import net.highscore.ServerHighscoreSerialiser;
 import net.packets.gamestatus.PacketGameEnd;
 import net.packets.gamestatus.PacketStartRound;
 import net.packets.lobby.PacketLobbyOverview;
+import net.playerhandling.Referee;
 import net.playerhandling.ServerPlayer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,6 +35,7 @@ public class Lobby implements Runnable {
   private String status;
   private long createdAt;
   private ServerItemState serverItemState;
+  private HashMap<Integer, Referee> refereesForClients; // Integer = clientId
 
   private Thread gameLoop;
 
@@ -53,6 +57,7 @@ public class Lobby implements Runnable {
     this.lobbyPlayers = new CopyOnWriteArrayList<>();
     this.lobbyId = lobbyCounter;
     this.serverItemState = new ServerItemState();
+    this.refereesForClients = new HashMap<>();
     lobbyCounter++;
     map = new ServerMap(33, 40, System.currentTimeMillis());
   }
@@ -319,8 +324,9 @@ public class Lobby implements Runnable {
 
   /**
    * Checks if all lobbymembers are ready.
+   *
    * @return true if all players in the lobby are ready, false otherwise.
-   * */
+   */
   public boolean allPlayersReady() {
     boolean allReady = true;
     for (ServerPlayer lobbyPlayer : lobbyPlayers) {
@@ -331,13 +337,34 @@ public class Lobby implements Runnable {
     return allReady;
   }
 
-  /**
-   * Starts the Round for this Lobby.
-   * */
+  /** Starts the Round for this Lobby. */
   public void startRound() {
     setStatus("running");
     History.openRemove(lobbyId);
     History.runningAdd(lobbyId, lobbyName);
+    for (ServerPlayer player : lobbyPlayers) {
+      refereesForClients.put(player.getClientId(), null);
+    }
     new PacketStartRound().sendToLobby(lobbyId);
+  }
+
+  public Referee getRefereeForPlayer(int clientId) {
+    return refereesForClients.get(clientId);
+  }
+
+  public HashMap getRefereesForClients() {
+    return refereesForClients;
+  }
+
+  // open an event for respective player
+  public void openEvent(int clientId, int currentLives) {
+    Referee referee = new Referee();
+    referee.add(currentLives);
+    refereesForClients.put(clientId, referee);
+  }
+
+  // check if event is already opened/realized return true
+  public boolean checkEventOpened(int clientId) {
+    return refereesForClients.get(clientId) != null;
   }
 }
