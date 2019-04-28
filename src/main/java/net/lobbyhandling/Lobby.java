@@ -367,7 +367,7 @@ public class Lobby implements Runnable {
         PacketLifeStatus finalDecision = new PacketLifeStatus(currentLives + "server" + playerId);
         finalDecision.sendToLobby(this.getLobbyId());
       }
-      ref = new Referee();
+      ref = new Referee(playerId);
       ref.add(currentLives);
       refereesForClients.put(playerId, ref);
     }

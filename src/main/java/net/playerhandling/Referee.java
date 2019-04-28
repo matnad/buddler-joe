@@ -1,10 +1,11 @@
 package net.playerhandling;
 
-import java.util.HashMap;
+import net.ServerLogic;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class Referee {
 
+  int playerId;
   private long timestamp;
   private int counter;
   private ConcurrentHashMap<Integer, Integer> allPerspectives;
@@ -14,7 +15,8 @@ public class Referee {
   des einen spieler
   gespeichert.*/
 
-  public Referee() {
+  public Referee(int playerId) {
+    this.playerId = playerId; // wem dieser referee gehört
     allPerspectives = new ConcurrentHashMap<>();
     this.counter = -1;
     this.timestamp = System.currentTimeMillis();
@@ -22,6 +24,9 @@ public class Referee {
 
   public boolean finalDecision() {
     int val = allPerspectives.get(0);
+    if (allPerspectives.size() < ServerLogic.getLobbyForClient(playerId).getPlayerAmount()) {
+      return false; // es gab zu wenige meinungen
+    }
     for (int lives : allPerspectives.values()) {
       if (lives != val) {
         return false;
@@ -38,6 +43,6 @@ public class Referee {
   }
 
   public long getTimestamp() {
-      return timestamp;
+    return timestamp;
   }
 }

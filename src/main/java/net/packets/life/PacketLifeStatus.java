@@ -100,7 +100,6 @@ public class PacketLifeStatus extends Packet {
 
         Lobby lobby = ServerLogic.getLobbyForClient(playerId);
         lobby.addPerspective(playerId, currentLives);
-
       }
       // packet erstellt bei allen clients nachdem server verschickt
       if (getClientId() == 0 && sender.equals("server")) {
