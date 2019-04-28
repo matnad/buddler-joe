@@ -69,3 +69,14 @@ public class PacketLifeStatus extends Packet {
     }
   }
 }
+
+
+    private int currentLives;
+    private int playerId;
+    private String sender;
+    //data = currentLives+sender+playerId
+    //bsp: 2server4
+
+    public PacketLifeStatus(String data) {
+
+    }
