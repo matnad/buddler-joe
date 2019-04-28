@@ -98,26 +98,13 @@ public class PacketLifeStatus extends Packet {
         // ...entscheiden
         int lives = 0; // lives nach entscheid!
         PacketLifeStatus finalDecision =
-            new PacketLifeStatus(String.valueOf(lives) + "server" + String.valueOf(playerId));
+            new PacketLifeStatus(lives + "server" + playerId);
         finalDecision.sendToLobby(ServerLogic.getLobbyForClient(getClientId()).getLobbyId());
       }
       // packet erstellt bei allen clients nachdem server verschickt
       if (getClientId() == 0 && sender.equals("server")) {
         // updaten bei ihrem netmaster
         NetPlayerMaster.getNetPlayerById(playerId).updateLives(currentLives);
-      }
-
-      if (getClientId() == 0) { // when packet gets created by client
-        sendToServer();
-      } else { // when server receives packet
-        /*try {
-          ServerLogic.getPlayerList()
-              .getPlayer(getClientId())
-              .setCurrentLives(Integer.parseInt(getData()));
-        } catch (NumberFormatException e) {
-          System.out.println("Failed to assign the data.");
-        }*/
-        ServerLogic.getPlayerList().getPlayer(getClientId()).setCurrentLives(currentLives);
       }
     }
   }
