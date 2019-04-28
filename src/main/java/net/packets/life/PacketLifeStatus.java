@@ -99,16 +99,8 @@ public class PacketLifeStatus extends Packet {
         // ...entscheiden
 
         Lobby lobby = ServerLogic.getLobbyForClient(playerId);
-        if (!lobby.checkEventOpened(playerId)) {
-          lobby.openEvent(playerId, currentLives);
-        } else { // else schon offen
-          lobby.getRefereeForPlayer(playerId).add(currentLives);
-          //getClientId = perspektive des absenders des packets
-        }
+        lobby.addPerspective(playerId, currentLives);
 
-        int lives = 0; // lives nach entscheid!
-        PacketLifeStatus finalDecision = new PacketLifeStatus(lives + "server" + playerId);
-        finalDecision.sendToLobby(ServerLogic.getLobbyForClient(getClientId()).getLobbyId());
       }
       // packet erstellt bei allen clients nachdem server verschickt
       if (getClientId() == 0 && sender.equals("server")) {

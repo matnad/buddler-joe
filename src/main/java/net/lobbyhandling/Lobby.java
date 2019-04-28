@@ -9,6 +9,7 @@ import net.ServerLogic;
 import net.highscore.ServerHighscoreSerialiser;
 import net.packets.gamestatus.PacketGameEnd;
 import net.packets.gamestatus.PacketStartRound;
+import net.packets.life.PacketLifeStatus;
 import net.packets.lobby.PacketLobbyOverview;
 import net.playerhandling.Referee;
 import net.playerhandling.ServerPlayer;
@@ -356,15 +357,24 @@ public class Lobby implements Runnable {
     return refereesForClients;
   }
 
-  // open an event for respective player
-  public void openEvent(int clientId, int currentLives) {
-    Referee referee = new Referee();
-    referee.add(currentLives);
-    refereesForClients.put(clientId, referee);
+  // playerId = player who had crush
+  public void addPerspective(int playerId, int currentLives) {
+    Referee ref = refereesForClients.get(playerId);
+    if (checkEventOpened(playerId)) { // man kann einsetzen
+      ref.add(currentLives);
+    } else {
+      if (ref.finalDecision()) { // entscheidung fällen
+        PacketLifeStatus finalDecision = new PacketLifeStatus(currentLives + "server" + playerId);
+        finalDecision.sendToLobby(this.getLobbyId());
+      }
+      ref = new Referee();
+      ref.add(currentLives);
+      refereesForClients.put(playerId, ref);
+    }
   }
 
   // check if event is already opened/realized return true
-  public boolean checkEventOpened(int clientId) {
-    return refereesForClients.get(clientId) != null;
+  public boolean checkEventOpened(int playerId) {
+    return System.currentTimeMillis() - refereesForClients.get(playerId).getTimestamp() <= 500;
   }
 }
