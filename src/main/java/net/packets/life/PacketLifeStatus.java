@@ -106,6 +106,11 @@ public class PacketLifeStatus extends Packet {
       if (getClientId() == 0 && sender.equals("server")) {
         // updaten bei ihrem netmaster
         // System.out.println("I received packet");
+        if (0 <= currentLives && currentLives <= 2) {
+          //ServerLogic.getPlayerList().getPlayer(playerId).setCurrentLives(currentLives);
+          //ServerLogic.getPlayerList().getPlayers().get(playerId).setCurrentLives(currentLives);
+          
+        }
         NetPlayerMaster.getNetPlayerById(playerId).updateLives(currentLives);
       }
     }
