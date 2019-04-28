@@ -48,7 +48,6 @@ public class Player extends NetPlayer {
 
   // Resources and Stats
   public int currentGold; // Current coins
-  private int currentLives;
   private float digDamage; // Damage per second when colliding with blocks
   private static final float digIntervall = 0.2f; // Number of dig updates per second
   private Block lastDiggedBlock = null;
@@ -79,7 +78,6 @@ public class Player extends NetPlayer {
     super(0, username, position, rotX, rotY, rotZ);
     digDamage = 1;
     currentGold = 0;
-    currentLives = 2;
     controlsDisabled = false;
   }
 
@@ -134,8 +132,7 @@ public class Player extends NetPlayer {
     increasePosition(new Vector3f(currentVelocity).mul((float) Game.dt()));
 
     // Handle character rotation (check run direction see if we need to rotate more)
-    this.increaseRotation(
-        0, (float) (getCurrentTurnSpeed() * Game.dt()), 0);
+    this.increaseRotation(0, (float) (getCurrentTurnSpeed() * Game.dt()), 0);
 
     // Handle collisions, we only check close blocks to optimize performance
     // Distance is much cheaper to check than overlap
@@ -184,7 +181,13 @@ public class Player extends NetPlayer {
     }
     // Effects when being crushed
     Playing.showDamageTakenOverlay();
-    decreaseCurrentLives();
+
+    // decreaseCurrentLives();
+
+    // Send to server to inform
+    PacketLifeStatus informServer = new PacketLifeStatus((currentLives - 1) + "client" + clientId);
+    informServer.processData();
+
     // Find a place to move the player to
     Vector2i playerGridPos =
         new Vector2i(collideWithBlockBelow.getGridX(), collideWithBlockBelow.getGridY() - 1);
@@ -257,8 +260,7 @@ public class Player extends NetPlayer {
         }
       } else {
         isJumping = false; // Walljumps! Felt cute. Might delete later.
-        setPositionX(
-            (float) (getPosition().x - currentVelocity.x * Game.dt()));
+        setPositionX((float) (getPosition().x - currentVelocity.x * Game.dt()));
         stopVelocityX();
         // Dig blocks whenever we collide horizontal
         digBlock(block);
@@ -384,27 +386,6 @@ public class Player extends NetPlayer {
 
   public int getCurrentGold() {
     return currentGold;
-  }
-
-  /** updates the player's life status and sends the life status to server. */
-  public void increaseCurrentLives() {
-    if (currentLives < 2) {
-      currentLives++;
-    }
-    PacketLifeStatus lives = new PacketLifeStatus(String.valueOf(currentLives));
-    lives.processData();
-  }
-
-  /** updates the player's life status and sends the life status to server. */
-  public void decreaseCurrentLives() {
-    currentLives--;
-    // hier send paket
-    PacketLifeStatus lives = new PacketLifeStatus(String.valueOf(currentLives));
-    lives.processData();
-  }
-
-  public int getCurrentLives() {
-    return currentLives;
   }
 
   public void freeze() {

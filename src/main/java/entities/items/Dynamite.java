@@ -17,6 +17,7 @@ import game.stages.Playing;
 import java.util.Random;
 import net.packets.block.PacketBlockDamage;
 import net.packets.items.PacketItemUsed;
+import net.packets.life.PacketLifeStatus;
 import org.joml.Vector3f;
 
 /** A bundle of dynamite that can damage blocks or the player. */
@@ -192,7 +193,14 @@ public class Dynamite extends Item {
     if (getPosition().distanceSquared(Game.getActivePlayer().getPosition()) <= 576) {
       Playing.showDamageTakenOverlay();
       // Damage player
-      Game.getActivePlayer().decreaseCurrentLives();
+      // Game.getActivePlayer().decreaseCurrentLives();
+      // Send to server to inform
+      PacketLifeStatus informServer =
+          new PacketLifeStatus(
+              (Game.getActivePlayer().getCurrentLives() - 1)
+                  + "client"
+                  + Game.getActivePlayer().getClientId());
+      informServer.processData();
     }
 
     // Deal Damage if dynamite is owned

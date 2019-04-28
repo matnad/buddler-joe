@@ -16,9 +16,10 @@ public class PacketLifeStatus extends Packet {
    * contains the life status from the sender's perspective, sender specification(server/client) and
    * the playerId of the crushed player.
    *
-   * Server creates this packet to send the final decision to all players in the lobby.
-   * <p>if sender equals server, the packet will be sent from server to clients. currentLives will be
-   * the final decision of server. This packet will be sent to lobby, so that every client can
+   * <p>Server creates this packet to send the final decision to all players in the lobby.
+   *
+   * <p>if sender equals server, the packet will be sent from server to clients. currentLives will
+   * be the final decision of server. This packet will be sent to lobby, so that every client can
    * update the life status of the respective player.
    *
    * @param data is currentLives+sender+playerId; example: 2server4

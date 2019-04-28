@@ -40,13 +40,13 @@ public class NetPlayer extends Entity {
   private static TexturedModel joeModel;
   private static TexturedModel ripModel;
   private static int counter;
-  private int clientId;
+  protected int clientId;
   private String username;
   private Light headLight;
   private Light headLightGlow;
   // private DirectionalUsername directionalUsername;
   private Nameplate nameplate;
-  private int currentLives;
+  protected int currentLives;
   private boolean defeated;
 
   // Movement related
@@ -166,12 +166,13 @@ public class NetPlayer extends Entity {
       // position
       if (System.currentTimeMillis() - lastCrushed > 500) {
         // Notify the server that you saw a player get crushed
-        currentLives -= 1;
+
         PacketLifeStatus informServer =
             new PacketLifeStatus(
-                String.valueOf(currentLives) + "client" + String.valueOf(clientId));
+                (currentLives - 1) + "client" + clientId);
         informServer.processData();
         // HIER Packet zu server
+
         logger.info("I saw player " + username + " getting crushed. Reporting it to the server.");
         lastCrushed = System.currentTimeMillis();
       }
@@ -180,6 +181,10 @@ public class NetPlayer extends Entity {
 
   public void updateLives(int lives) {
     this.currentLives = lives;
+  }
+
+  public int getCurrentLives() {
+    return currentLives;
   }
 
   /**
