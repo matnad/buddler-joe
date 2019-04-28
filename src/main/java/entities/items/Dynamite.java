@@ -193,14 +193,10 @@ public class Dynamite extends Item {
     if (getPosition().distanceSquared(Game.getActivePlayer().getPosition()) <= 576) {
       Playing.showDamageTakenOverlay();
       // Damage player
+
       // Game.getActivePlayer().decreaseCurrentLives();
       // Send to server to inform
-      PacketLifeStatus informServer =
-          new PacketLifeStatus(
-              (Game.getActivePlayer().getCurrentLives() - 1)
-                  + "client"
-                  + Game.getActivePlayer().getClientId());
-      informServer.processData();
+      Game.getActivePlayer().informServer(-1);
     }
 
     // Deal Damage if dynamite is owned

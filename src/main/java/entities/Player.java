@@ -185,8 +185,7 @@ public class Player extends NetPlayer {
     // decreaseCurrentLives();
 
     // Send to server to inform
-    PacketLifeStatus informServer = new PacketLifeStatus((currentLives - 1) + "client" + clientId);
-    informServer.processData();
+    informServer(-1);
 
     // Find a place to move the player to
     Vector2i playerGridPos =

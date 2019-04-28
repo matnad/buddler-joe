@@ -61,11 +61,7 @@ public class Heart extends Item {
       time += Game.dt();
       if (time >= showTime) {
         //Game.getActivePlayer().increaseCurrentLives();
-        PacketLifeStatus informServer =
-            new PacketLifeStatus(
-                (Game.getActivePlayer().getCurrentLives() + 1)
-                    + "client"
-                    + Game.getActivePlayer().getClientId());
+        Game.getActivePlayer().informServer(1);
         setDestroyed(true);
       }
     } else {

@@ -167,15 +167,28 @@ public class NetPlayer extends Entity {
       if (System.currentTimeMillis() - lastCrushed > 500) {
         // Notify the server that you saw a player get crushed
 
-        PacketLifeStatus informServer =
-            new PacketLifeStatus(
-                (currentLives - 1) + "client" + clientId);
-        informServer.processData();
+        informServer(-1);
         // HIER Packet zu server
 
         logger.info("I saw player " + username + " getting crushed. Reporting it to the server.");
         lastCrushed = System.currentTimeMillis();
       }
+    }
+  }
+
+  public void informServer(int val) {
+    if (val == -1) {
+      PacketLifeStatus informServer =
+              new PacketLifeStatus(
+                      (currentLives - 1) + "client" + clientId);
+      informServer.processData();
+    } else if (val == 1) {
+      PacketLifeStatus informPacket =
+              new PacketLifeStatus(
+                      (Game.getActivePlayer().getCurrentLives() + 1)
+                              + "client"
+                              + Game.getActivePlayer().getClientId());
+      informPacket.processData();
     }
   }
 
