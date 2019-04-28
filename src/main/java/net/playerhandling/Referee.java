@@ -25,9 +25,10 @@ public class Referee {
   public boolean finalDecision() {
     //System.out.println("here");
     int val = allPerspectives.get(0);
-    if (allPerspectives.size() < ServerLogic.getLobbyForClient(playerId).getPlayerAmount()) {
-      return false; // es gab zu wenige meinungen
-    }
+    System.out.println(val);
+    //if (allPerspectives.size() < ServerLogic.getLobbyForClient(playerId).getPlayerAmount()) {
+    //  return false; // es gab zu wenige meinungen
+    //}
     for (int lives : allPerspectives.values()) {
       if (lives != val) {
         return false;
@@ -39,9 +40,13 @@ public class Referee {
 
   public void add(int currentLives) {
     //if (System.currentTimeMillis() - timestamp <= 500) {
-      allPerspectives.put(counter++, currentLives);
+      allPerspectives.put(++counter, currentLives);
     //}
     //System.out.println("here");
+  }
+
+  public boolean check(){
+    return ServerLogic.getLobbyForClient(playerId).getPlayerAmount() == allPerspectives.size();
   }
 
   public long getTimestamp() {
