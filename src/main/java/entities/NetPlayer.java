@@ -44,7 +44,7 @@ public class NetPlayer extends Entity {
   private Light headLightGlow;
   // private DirectionalUsername directionalUsername;
   private Nameplate nameplate;
-
+  private int currentLives;
   private boolean defeated;
 
   // Movement related
@@ -85,6 +85,7 @@ public class NetPlayer extends Entity {
 
     this.clientId = clientId;
     this.username = username;
+    this.currentLives = 2;
     this.defeated = false;
     int colorIdx = counter++ % lampColors.length;
     headLight =
@@ -163,6 +164,8 @@ public class NetPlayer extends Entity {
       // position
       if (System.currentTimeMillis() - lastCrushed > 500) {
         // Notify the server that you saw a player get crushed
+
+        //HIER Packet zu server
         logger.info("I saw player " + username + " getting crushed. Reporting it to the server.");
         lastCrushed = System.currentTimeMillis();
       }
