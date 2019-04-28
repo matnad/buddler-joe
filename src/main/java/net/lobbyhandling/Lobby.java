@@ -361,8 +361,7 @@ public class Lobby implements Runnable {
   // currentLives: potentiell
   public void addPerspective(int playerId, int currentLives) {
     // System.out.println("here");
-    // Referee ref = refereesForClients.get(playerId);
-    
+
     if (refereesForClients.get(playerId) == null) {
       // System.out.println("here");
       Referee ref = new Referee(playerId);
@@ -374,7 +373,7 @@ public class Lobby implements Runnable {
           PacketLifeStatus finalDecision = new PacketLifeStatus(currentLives + "server" + playerId);
           finalDecision.sendToLobby(this.getLobbyId());
         }
-        refereesForClients.put(playerId, null);
+        refereesForClients.put(playerId, null); //nachdem allen status geschickt wieder ref = null
       }
 
     } else if (checkEventOpened(playerId)) { // man kann einsetzen
@@ -386,7 +385,6 @@ public class Lobby implements Runnable {
         }
         refereesForClients.put(playerId, null);
       }
-      // ref.add(currentLives);
       // System.out.println("here");
 
     } else {
@@ -398,10 +396,6 @@ public class Lobby implements Runnable {
         }
       }
       // System.out.println("here");
-      // ref = new Referee(playerId);
-      // ref.add(currentLives);
-      // refereesForClients.put(playerId, ref);
-      // refereesForClients.put(playerId, refereesForClients.get(playerId));
       refereesForClients.put(playerId, null);
     }
   }
