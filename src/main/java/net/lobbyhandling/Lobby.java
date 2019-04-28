@@ -368,12 +368,12 @@ public class Lobby implements Runnable {
       refereesForClients.put(playerId, ref);
       refereesForClients.get(playerId).add(currentLives);
       if (refereesForClients.get(playerId).check()) { // haben alle ihre meinung gesagt?
-        //System.out.println("here");
+        // System.out.println("here");
         if (refereesForClients.get(playerId).finalDecision()) { // entscheidung fällen
           PacketLifeStatus finalDecision = new PacketLifeStatus(currentLives + "server" + playerId);
           finalDecision.sendToLobby(this.getLobbyId());
         }
-        refereesForClients.put(playerId, null); //nachdem allen status geschickt wieder ref = null
+        refereesForClients.put(playerId, null); // nachdem allen status geschickt wieder ref = null
       }
 
     } else if (checkEventOpened(playerId)) { // man kann einsetzen

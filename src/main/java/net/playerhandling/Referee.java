@@ -23,7 +23,7 @@ public class Referee {
   }
 
   public boolean finalDecision() {
-    //System.out.println("here");
+    // System.out.println("here");
     int val = allPerspectives.get(0);
     System.out.println(val);
 
@@ -34,10 +34,10 @@ public class Referee {
       val = lives;
     }
 
-    if(val > 2 || val < 0) {
-      //könnte man schon früher checken!
-      //false potenzielle leben grösser 2 oder kleiner 0, dann passiert nichts
-      //wäre unnötig
+    if (val > 2 || val < 0) {
+      // könnte man schon früher checken!
+      // false potenzielle leben grösser 2 oder kleiner 0, dann passiert nichts
+      // wäre unnötig
       return false;
     }
 
@@ -45,12 +45,12 @@ public class Referee {
   }
 
   public void add(int currentLives) {
-      allPerspectives.put(++counter, currentLives);
+    allPerspectives.put(++counter, currentLives);
 
-    //System.out.println("here");
+    // System.out.println("here");
   }
 
-  public boolean check(){
+  public boolean check() {
     return ServerLogic.getLobbyForClient(playerId).getPlayerAmount() == allPerspectives.size();
   }
 
