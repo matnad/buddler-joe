@@ -14,6 +14,8 @@ import game.Game;
 import gui.text.Nameplate;
 import java.util.ArrayList;
 import java.util.List;
+
+import net.packets.life.PacketLifeStatus;
 import org.joml.Vector3f;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -164,12 +166,20 @@ public class NetPlayer extends Entity {
       // position
       if (System.currentTimeMillis() - lastCrushed > 500) {
         // Notify the server that you saw a player get crushed
-
-        //HIER Packet zu server
+        currentLives -= 1;
+        PacketLifeStatus informServer =
+            new PacketLifeStatus(
+                String.valueOf(currentLives) + "client" + String.valueOf(clientId));
+        informServer.processData();
+        // HIER Packet zu server
         logger.info("I saw player " + username + " getting crushed. Reporting it to the server.");
         lastCrushed = System.currentTimeMillis();
       }
     }
+  }
+
+  public void updateLives(int lives) {
+    this.currentLives = lives;
   }
 
   /**

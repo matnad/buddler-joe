@@ -1,32 +1,45 @@
 package net.packets.life;
 
+import game.NetPlayerMaster;
 import net.ServerLogic;
 import net.packets.Packet;
 
 public class PacketLifeStatus extends Packet {
+  private int currentLives;
+  private String sender;
+  private int playerId;
+  // data = currentLives+sender+playerId
+  // bsp: 2server4
 
   /**
-   * After receiving, creates a packet by server side and extracts data.
+   * Client creates packet (and sends to server if sender equals client), if he saw a crush. Data
+   * contains the life status from the sender's perspective, sender specification(server/client) and
+   * the playerId of the crushed player.
    *
-   * @param clientId who sent the packet
-   * @param data amount of lives of the specific player
+   * Server creates this packet to send the final decision to all players in the lobby.
+   * <p>if sender equals server, the packet will be sent from server to clients. currentLives will be
+   * the final decision of server. This packet will be sent to lobby, so that every client can
+   * update the life status of the respective player.
+   *
+   * @param data is currentLives+sender+playerId; example: 2server4
    */
-  public PacketLifeStatus(int clientId, String data) {
+  public PacketLifeStatus(String data) {
     super(PacketTypes.LIFE_STATUS);
-    setClientId(clientId);
     setData(data);
     validate();
   }
 
   /**
-   * Creates a <code>lifestatus</code> object by client side and validates its <code>data</code> and
-   * sends to server.
+   * Server creates packet after receiving and processes. (Decides if there will be a change of life
+   * status of playerId). data contains the life status from the sender's perspective, sender
+   * specification(client) and the playerId of the crushed player.
    *
-   * @param data is the actual life status.
+   * @param data is currentLives+sender+playerId; example: 2server4
    */
-  public PacketLifeStatus(String data) {
+  public PacketLifeStatus(int clientId, String data) {
     super(PacketTypes.LIFE_STATUS);
     setData(data);
+    setClientId(clientId);
     validate();
   }
 
@@ -37,7 +50,7 @@ public class PacketLifeStatus extends Packet {
   // hier muss man dann checken ob die zahl im bereich [0,2] liegt, sonst invalid.
   @Override
   public void validate() {
-    if (getData() == null) {
+    /*if (getData() == null) {
       addError("Empty message");
     } else {
       for (int i = 0; i < getData().length(); i++) {
@@ -45,6 +58,26 @@ public class PacketLifeStatus extends Packet {
           addError("Invalid number");
         }
       }
+    }*/
+    String currentLives = getData().substring(0, 1);
+    String sender = getData().substring(1, 7);
+    String playerId = getData().substring(7);
+
+    try {
+      this.playerId = Integer.parseInt(playerId);
+      this.currentLives = Integer.parseInt(currentLives); // throws NumberFormatException
+      if (this.currentLives < 0 || this.currentLives > 2) {
+        throw new RuntimeException();
+      }
+      if (!(sender.equals("server") || sender.equals("client"))) {
+        throw new RuntimeException();
+      } else {
+        this.sender = sender;
+      }
+    } catch (NumberFormatException e) {
+      addError("Invalid playerId or life status");
+    } catch (RuntimeException e) {
+      addError("Invalid life status or invalid sender");
     }
   }
 
@@ -55,28 +88,36 @@ public class PacketLifeStatus extends Packet {
   @Override
   public void processData() {
     if (!hasErrors()) {
+      // Packet erstellt bei client um server zu schicken
+      if (getClientId() == 0 && sender.equals("client")) {
+        sendToServer();
+      }
+      // packet erstellt bei server nachdem erhalten von client
+      if (getClientId() != 0 && sender.equals("client")) {
+        // ...entscheiden
+        int lives = 0; // lives nach entscheid!
+        PacketLifeStatus finalDecision =
+            new PacketLifeStatus(String.valueOf(lives) + "server" + String.valueOf(playerId));
+        finalDecision.sendToLobby(ServerLogic.getLobbyForClient(getClientId()).getLobbyId());
+      }
+      // packet erstellt bei allen clients nachdem server verschickt
+      if (getClientId() == 0 && sender.equals("server")) {
+        // updaten bei ihrem netmaster
+        NetPlayerMaster.getNetPlayerById(playerId).updateLives(currentLives);
+      }
+
       if (getClientId() == 0) { // when packet gets created by client
         sendToServer();
       } else { // when server receives packet
-        try {
+        /*try {
           ServerLogic.getPlayerList()
               .getPlayer(getClientId())
               .setCurrentLives(Integer.parseInt(getData()));
         } catch (NumberFormatException e) {
           System.out.println("Failed to assign the data.");
-        }
+        }*/
+        ServerLogic.getPlayerList().getPlayer(getClientId()).setCurrentLives(currentLives);
       }
     }
   }
 }
-
-
-    private int currentLives;
-    private int playerId;
-    private String sender;
-    //data = currentLives+sender+playerId
-    //bsp: 2server4
-
-    public PacketLifeStatus(String data) {
-
-    }
