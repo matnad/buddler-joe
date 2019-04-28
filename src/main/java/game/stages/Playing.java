@@ -1,5 +1,10 @@
 package game.stages;
 
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_ESCAPE;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_H;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_P;
+import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_1;
+
 import engine.io.InputHandler;
 import engine.particles.ParticleMaster;
 import engine.render.Loader;
@@ -23,8 +28,6 @@ import net.packets.lists.PacketPlayerList;
 import org.joml.Vector2f;
 import terrains.TerrainFlat;
 import util.MousePlacer;
-
-import static org.lwjgl.glfw.GLFW.*;
 
 /**
  * MAIN GAME LOOP specification and rendering. Contains and manages the Game Loop while the player
