@@ -178,6 +178,7 @@ public class NetPlayer extends Entity {
 
   public void informServer(int val) {
     if (val == -1) {
+      //System.out.println("here");
       PacketLifeStatus informServer =
               new PacketLifeStatus(
                       (currentLives - 1) + "client" + clientId);
@@ -185,9 +186,9 @@ public class NetPlayer extends Entity {
     } else if (val == 1) {
       PacketLifeStatus informPacket =
               new PacketLifeStatus(
-                      (Game.getActivePlayer().getCurrentLives() + 1)
+                      (currentLives + 1)
                               + "client"
-                              + Game.getActivePlayer().getClientId());
+                              + clientId);
       informPacket.processData();
     }
   }

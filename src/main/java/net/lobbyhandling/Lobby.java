@@ -358,23 +358,33 @@ public class Lobby implements Runnable {
   }
 
   // playerId = player who had crush
+  //currentLives: potentiell
   public void addPerspective(int playerId, int currentLives) {
-    Referee ref = refereesForClients.get(playerId);
+    //System.out.println("here");
+    //Referee ref = refereesForClients.get(playerId);
+
+    //OVDE SI NESTO ZAJEBALA
     if (checkEventOpened(playerId)) { // man kann einsetzen
-      ref.add(currentLives);
+      refereesForClients.get(playerId).add(currentLives);
+      //ref.add(currentLives);
+      //System.out.println("here");
     } else {
-      if (ref.finalDecision()) { // entscheidung fällen
+      //System.out.println("here");
+      if (refereesForClients.get(playerId).finalDecision()) { // entscheidung fällen
         PacketLifeStatus finalDecision = new PacketLifeStatus(currentLives + "server" + playerId);
         finalDecision.sendToLobby(this.getLobbyId());
       }
-      ref = new Referee(playerId);
-      ref.add(currentLives);
-      refereesForClients.put(playerId, ref);
+      //ref = new Referee(playerId);
+      //ref.add(currentLives);
+      //refereesForClients.put(playerId, ref);
+
+      refereesForClients.put(playerId, refereesForClients.get(playerId));
     }
   }
 
   // check if event is already opened/realized return true
   public boolean checkEventOpened(int playerId) {
+    //System.out.println("here");
     return System.currentTimeMillis() - refereesForClients.get(playerId).getTimestamp() <= 500;
   }
 }

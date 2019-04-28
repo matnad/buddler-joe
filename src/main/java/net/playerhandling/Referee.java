@@ -23,6 +23,7 @@ public class Referee {
   }
 
   public boolean finalDecision() {
+    //System.out.println("here");
     int val = allPerspectives.get(0);
     if (allPerspectives.size() < ServerLogic.getLobbyForClient(playerId).getPlayerAmount()) {
       return false; // es gab zu wenige meinungen
@@ -37,9 +38,10 @@ public class Referee {
   }
 
   public void add(int currentLives) {
-    if (System.currentTimeMillis() - timestamp <= 500) {
+    //if (System.currentTimeMillis() - timestamp <= 500) {
       allPerspectives.put(counter++, currentLives);
-    }
+    //}
+    //System.out.println("here");
   }
 
   public long getTimestamp() {

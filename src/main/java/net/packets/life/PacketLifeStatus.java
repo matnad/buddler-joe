@@ -92,18 +92,20 @@ public class PacketLifeStatus extends Packet {
     if (!hasErrors()) {
       // Packet erstellt bei client um server zu schicken
       if (getClientId() == 0 && sender.equals("client")) {
+        //System.out.println("here");
         sendToServer();
       }
       // packet erstellt bei server nachdem erhalten von client
       if (getClientId() != 0 && sender.equals("client")) {
         // ...entscheiden
-
+        //System.out.println("here");
         Lobby lobby = ServerLogic.getLobbyForClient(playerId);
         lobby.addPerspective(playerId, currentLives);
       }
       // packet erstellt bei allen clients nachdem server verschickt
       if (getClientId() == 0 && sender.equals("server")) {
         // updaten bei ihrem netmaster
+        //System.out.println("I received packet");
         NetPlayerMaster.getNetPlayerById(playerId).updateLives(currentLives);
       }
     }
