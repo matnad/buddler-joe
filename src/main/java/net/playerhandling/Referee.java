@@ -26,22 +26,27 @@ public class Referee {
     //System.out.println("here");
     int val = allPerspectives.get(0);
     System.out.println(val);
-    //if (allPerspectives.size() < ServerLogic.getLobbyForClient(playerId).getPlayerAmount()) {
-    //  return false; // es gab zu wenige meinungen
-    //}
+
     for (int lives : allPerspectives.values()) {
       if (lives != val) {
         return false;
       }
       val = lives;
     }
+
+    if(val > 2 || val < 0) {
+      //könnte man schon früher checken!
+      //false potenzielle leben grösser 2 oder kleiner 0, dann passiert nichts
+      //wäre unnötig
+      return false;
+    }
+
     return true; // falls alle gleich
   }
 
   public void add(int currentLives) {
-    //if (System.currentTimeMillis() - timestamp <= 500) {
       allPerspectives.put(++counter, currentLives);
-    //}
+
     //System.out.println("here");
   }
 
