@@ -4,7 +4,6 @@ import engine.render.Loader;
 import engine.render.MasterRenderer;
 import entities.NetPlayer;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.StringJoiner;

@@ -105,9 +105,9 @@ public class PacketJoinLobby extends Packet {
       // Broadcast Map
       ServerMap map = ServerLogic.getLobbyList().getLobby(lobbyId).getMap();
       new PacketBroadcastMap(map).sendToClient(getClientId());
-      //for (PacketBlockDamage damagePacket : map.getDamagePackets()) {
+      // for (PacketBlockDamage damagePacket : map.getDamagePackets()) {
       //  damagePacket.sendToClient(getClientId());
-      //}
+      // }
     }
   }
 }

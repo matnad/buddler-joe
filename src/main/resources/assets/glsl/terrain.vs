@@ -18,7 +18,6 @@ uniform vec3 lightPosition[8];
 const float density = 0.01;
 const float gradient = 5;
 
-
 void main(void) {
 
     vec4 worldPosition = transformationMatrix * vec4(position, 1.0);

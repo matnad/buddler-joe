@@ -53,6 +53,10 @@ public class DirtBlock extends Block {
     return blockModel;
   }
 
+  public static TexturedModel getBlockModel() {
+    return blockModel;
+  }
+
   public static float getHardness() {
     return hardness;
   }

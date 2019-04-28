@@ -84,10 +84,7 @@ public class ServerPlayerList {
    * @return True if the clientId is in the List, false if not
    */
   public boolean isClientIdInList(int clientId) {
-    if (getPlayer(clientId) != null) {
-      return true;
-    }
-    return false;
+    return getPlayer(clientId) != null;
   }
 
   /**

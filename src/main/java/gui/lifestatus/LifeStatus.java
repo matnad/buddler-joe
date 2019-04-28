@@ -7,12 +7,12 @@ import org.joml.Vector2f;
 
 public class LifeStatus {
 
-  private GuiTexture heart1;
-  private GuiTexture heart2;
   private final float xheart1 = -.95f;
   private final float yheart1 = .88f;
   private final float xheart2 = -.87f;
   private final float yheart2 = .88f;
+  private GuiTexture heart1;
+  private GuiTexture heart2;
 
   /**
    * Initializes life status(displayed hearts), only needs to be called once on game init. An

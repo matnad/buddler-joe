@@ -89,16 +89,16 @@ public class PacketLobbyOverview extends Packet {
   @Override
   public void processData() {
     if (hasErrors()) {
-      //System.out.println(createErrorMessage());
+      // System.out.println(createErrorMessage());
     } else if (in[0].equals("OK")) { // the "OK" gets added in PacketCreatLobby.processData and
-      //System.out.println("-------------------------------------");
-      //System.out.println("Available Lobbies:");
-      //for (int i = 2; i < in.length - 1; i = i + 2) {
+      // System.out.println("-------------------------------------");
+      // System.out.println("Available Lobbies:");
+      // for (int i = 2; i < in.length - 1; i = i + 2) {
       //  System.out.println("Name: " + in[i] + " Players: " + in[i + 1]);
-      //}
-      //System.out.println("-------------------------------------");
-      //System.out.println("To join a lobby, type: join <lobby name>");
-      //System.out.println("To create a new lobby, type: create <lobby name>");
+      // }
+      // System.out.println("-------------------------------------");
+      // System.out.println("To join a lobby, type: join <lobby name>");
+      // System.out.println("To create a new lobby, type: create <lobby name>");
 
       CopyOnWriteArrayList<LobbyEntry> catalog = new CopyOnWriteArrayList<LobbyEntry>();
 
@@ -107,7 +107,7 @@ public class PacketLobbyOverview extends Packet {
       }
       Game.setLobbyCatalog(catalog);
     } else {
-      //System.out.println(in[0]);
+      // System.out.println(in[0]);
     }
   }
 }

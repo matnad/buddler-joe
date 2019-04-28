@@ -54,7 +54,16 @@ public class Lobby implements Runnable {
     this.lobbyId = lobbyCounter;
     this.serverItemState = new ServerItemState();
     lobbyCounter++;
-    map = new ServerMap(33, 40, System.currentTimeMillis());
+    map = new ServerMap(8 * 4, 8 * 5, System.currentTimeMillis());
+  }
+
+  /**
+   * Getter that return the max amount of players per Lobby.
+   *
+   * @return the maximum number of players for all lobbies
+   */
+  public static int getMaxPlayers() {
+    return maxPlayers;
   }
 
   @Override
@@ -76,15 +85,6 @@ public class Lobby implements Runnable {
         e.printStackTrace();
       }
     }
-  }
-
-  /**
-   * Getter that return the max amount of players per Lobby.
-   *
-   * @return the maximum number of players for all lobbies
-   */
-  public static int getMaxPlayers() {
-    return maxPlayers;
   }
 
   /**
@@ -319,8 +319,9 @@ public class Lobby implements Runnable {
 
   /**
    * Checks if all lobbymembers are ready.
+   *
    * @return true if all players in the lobby are ready, false otherwise.
-   * */
+   */
   public boolean allPlayersReady() {
     boolean allReady = true;
     for (ServerPlayer lobbyPlayer : lobbyPlayers) {
@@ -331,9 +332,7 @@ public class Lobby implements Runnable {
     return allReady;
   }
 
-  /**
-   * Starts the Round for this Lobby.
-   * */
+  /** Starts the Round for this Lobby. */
   public void startRound() {
     setStatus("running");
     History.openRemove(lobbyId);

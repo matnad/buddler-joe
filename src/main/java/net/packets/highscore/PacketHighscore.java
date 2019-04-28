@@ -8,7 +8,6 @@ import net.packets.Packet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
 /**
  * Packet that gets send from the Server to the Client, to inform the him over the result of the
  * send message attempt. Packet-Code: CHATN
@@ -102,7 +101,7 @@ public class PacketHighscore extends Packet {
         }
         Game.setHighscoreCatalog(catalog);
       } else {
-        catalog.add(new HighscoreEntry("Currently ",highscore[1]));
+        catalog.add(new HighscoreEntry("Currently ", highscore[1]));
         Game.setHighscoreCatalog(catalog);
       }
     }

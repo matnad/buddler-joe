@@ -45,24 +45,21 @@ import util.MousePlacer;
 public class Player extends NetPlayer {
 
   public static final Logger logger = LoggerFactory.getLogger(Player.class);
-
+  private static final float digIntervall = 0.2f; // Number of dig updates per second
+  private final float torchPlaceDelay = 10f;
   // Resources and Stats
   public int currentGold; // Current coins
   private int currentLives;
   private float digDamage; // Damage per second when colliding with blocks
-  private static final float digIntervall = 0.2f; // Number of dig updates per second
   private Block lastDiggedBlock = null;
   private float lastDiggedBlockDamage = 0;
   private float digIntervallTimer = 0;
-
   // Vector & Velocity based speed
   private boolean isJumping = false; // Can't Jump while in the air
   private boolean sendVelocityToServer = false; // If we need to update velocity this frame
-
   // Other
   private boolean controlsDisabled;
   private boolean frozen = false;
-  private final float torchPlaceDelay = 10f;
   private float torchTimeout = torchPlaceDelay;
 
   /**
@@ -81,6 +78,10 @@ public class Player extends NetPlayer {
     currentGold = 0;
     currentLives = 2;
     controlsDisabled = false;
+  }
+
+  public static float getDigIntervall() {
+    return digIntervall;
   }
 
   /**
@@ -134,8 +135,7 @@ public class Player extends NetPlayer {
     increasePosition(new Vector3f(currentVelocity).mul((float) Game.dt()));
 
     // Handle character rotation (check run direction see if we need to rotate more)
-    this.increaseRotation(
-        0, (float) (getCurrentTurnSpeed() * Game.dt()), 0);
+    this.increaseRotation(0, (float) (getCurrentTurnSpeed() * Game.dt()), 0);
 
     // Handle collisions, we only check close blocks to optimize performance
     // Distance is much cheaper to check than overlap
@@ -257,8 +257,7 @@ public class Player extends NetPlayer {
         }
       } else {
         isJumping = false; // Walljumps! Felt cute. Might delete later.
-        setPositionX(
-            (float) (getPosition().x - currentVelocity.x * Game.dt()));
+        setPositionX((float) (getPosition().x - currentVelocity.x * Game.dt()));
         stopVelocityX();
         // Dig blocks whenever we collide horizontal
         digBlock(block);
@@ -445,9 +444,5 @@ public class Player extends NetPlayer {
       currentVelocity.y = 0;
       sendVelocityToServer = true;
     }
-  }
-
-  public static float getDigIntervall() {
-    return digIntervall;
   }
 }

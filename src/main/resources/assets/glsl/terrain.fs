@@ -28,7 +28,7 @@ void main(void) {
     vec4 blendMapColour = texture(blendMap, pass_textureCoordinates);
 
     float backTextureAmount = 1 - (blendMapColour.r + blendMapColour.g + blendMapColour.b);
-    vec2 tiledCoords = pass_textureCoordinates * 40.0;
+    vec2 tiledCoords = pass_textureCoordinates * 8; // 8x8 terrains
     vec4 backgroundTextureColour = texture(backgroundTexture, tiledCoords) * backTextureAmount;
     vec4 rTextureColour = texture(textureR, tiledCoords) * blendMapColour.r;
     vec4 gTextureColour = texture(textureG, tiledCoords) * blendMapColour.g;
