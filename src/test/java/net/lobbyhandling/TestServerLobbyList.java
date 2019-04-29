@@ -127,7 +127,7 @@ public class TestServerLobbyList {
     Lobby testLobby5 = new Lobby("test5", 5, "large");
     lobbyList.addLobby(testLobby5);
     Assert.assertEquals(
-        "5║test1║0║test2║0║test3║0║test4║0║test5║0",
+        "5║test1║0║mid║test2║0║large║test3║0║large║test4║0║large║test5║0║large",
         lobbyList.getTopTen());
   }
 

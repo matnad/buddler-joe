@@ -28,8 +28,11 @@ public class PacketHighscore extends Packet {
   public PacketHighscore(String data) {
     super(PacketTypes.HIGHSCORE);
     setData(data);
-    logger.info(getData());
-    highscore = getData().split("║");
+    try {
+      highscore = getData().split("║");
+    } catch (NullPointerException e) {
+      addError("No Highscore found.");
+    }
     validate();
   }
 
@@ -55,20 +58,13 @@ public class PacketHighscore extends Packet {
   /** Check whether the Highscore only contains extended ascii and exists at all. */
   @Override
   public void validate() {
-    if (highscore != null) {
-      if (highscore.length < 3) {
-        if (!isExtendedAscii(highscore[1])) {
-          return;
-        }
-      } else {
-        for (int i = 1; i < highscore.length; i += 2) {
-          if (!isExtendedAscii(highscore[i]) || !isExtendedAscii(highscore[i + 1])) {
-            break;
-          }
-        }
+    if (hasErrors()) {
+      return;
+    }
+    for (int i = 1; i < highscore.length; i += 2) {
+      if (!isExtendedAscii(highscore[i]) || !isExtendedAscii(highscore[i + 1])) {
+        break;
       }
-    } else {
-      addError("No Highscore found.");
     }
   }
 
@@ -94,7 +90,6 @@ public class PacketHighscore extends Packet {
       // Client side:
       CopyOnWriteArrayList<HighscoreEntry> catalog = new CopyOnWriteArrayList<>();
       if (hasErrors()) {
-        System.out.println(createErrorMessage());
       } else if (highscore[0].equals("OK")) {
         for (int i = 1; i < highscore.length; i += 2) {
           catalog.add(new HighscoreEntry(highscore[i], highscore[i + 1]));

@@ -174,7 +174,5 @@ public class PacketChatMessageToServer extends Packet {
     } else {
       status = "OK";
     }
-    PacketChatMessageStatus sendMessage = new PacketChatMessageStatus(getClientId(), status);
-    sendMessage.sendToClient(getClientId());
   }
 }

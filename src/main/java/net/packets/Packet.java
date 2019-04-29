@@ -121,7 +121,7 @@ public abstract class Packet {
     this.packetType = packetType;
   }
 
-  protected int getClientId() {
+  public int getClientId() {
     return clientId;
   }
 
@@ -129,7 +129,7 @@ public abstract class Packet {
     this.clientId = clientId;
   }
 
-  protected String getData() {
+  public String getData() {
     return data;
   }
 
