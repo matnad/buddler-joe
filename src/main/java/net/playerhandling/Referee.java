@@ -47,7 +47,7 @@ public class Referee {
     if (votes[allPerspectives.get(playerId)] == votes[maxInd]) {
       maxInd = allPerspectives.get(playerId);
     }
-    if (allPerspectives.size() < lobby.getPlayerAmount() / 2) {
+    if (allPerspectives.size() < lobby.getPlayerAmount() / 2f) {
       return;
     }
     PacketLifeStatus finalDecision = new PacketLifeStatus(maxInd + "server" + playerId);
