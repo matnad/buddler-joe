@@ -43,6 +43,7 @@ public class PacketLifeStatus extends Packet {
    */
   public PacketLifeStatus(int clientId, String data) {
     super(PacketTypes.LIFE_STATUS);
+    // System.out.println("here");
     setData(data);
     setClientId(clientId);
     validate();
@@ -57,29 +58,31 @@ public class PacketLifeStatus extends Packet {
     String currentLives = getData().substring(0, 1);
     String sender = getData().substring(1, 7);
     String playerId = getData().substring(7);
-
+    // System.out.println("here");
     try {
       this.playerId = Integer.parseInt(playerId);
       this.currentLives = Integer.parseInt(currentLives); // throws NumberFormatException
       if (this.currentLives < 0 || this.currentLives > 2) {
         throw new RuntimeException();
       }
+      // System.out.println("here");
       if (!(sender.equals("server") || sender.equals("client"))) {
         throw new RuntimeException();
       } else {
         this.sender = sender;
       }
-      boolean isIn = false;
-      for (ServerPlayer player : ServerLogic.getLobbyForClient(getClientId()).getLobbyPlayers()) {
-        if (this.playerId == player.getClientId()) {
-          isIn = true;
-          break;
+      if (getClientId() != 0) {
+        boolean isIn = false;
+        for (ServerPlayer player : ServerLogic.getLobbyForClient(getClientId()).getLobbyPlayers()) {
+          if (this.playerId == player.getClientId()) {
+            isIn = true;
+            break;
+          }
+        }
+        if (isIn == false) {
+          throw new RuntimeException();
         }
       }
-      if (isIn == false) {
-        throw new RuntimeException();
-      }
-
     } catch (NumberFormatException e) {
       addError("Invalid playerId or life status");
     } catch (RuntimeException e) {

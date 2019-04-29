@@ -15,21 +15,27 @@ public class Referee {
   private long timestamp;
 
   public Referee(int playerId, Lobby lobby) {
+    //System.out.println("here");
     this.playerId = playerId; // wem dieser referee gehört
     allPerspectives = new ConcurrentHashMap<>();
     this.lobby = lobby;
     this.timestamp = System.currentTimeMillis();
     // nach 500 ms führt es finalDecision aus
+    try {
     new java.util.Timer()
         .schedule(
             new java.util.TimerTask() {
               @Override
               public void run() {
                 finalDecision();
-                lobby.getReferees().put(playerId, null); // sich löschen wenn abgelaufen
+                //lobby.getReferees().put(playerId, null); // sich löschen wenn abgelaufen
+                lobby.clear(playerId);
               }
             },
             500);
+    } catch(NullPointerException e) {
+
+    }
   }
 
   public void finalDecision() {
@@ -56,6 +62,7 @@ public class Referee {
     }
     PacketLifeStatus finalDecision = new PacketLifeStatus(maxInd + "server" + playerId);
     finalDecision.sendToLobby(lobby.getLobbyId());
+    //System.out.println("here");
     ServerLogic.getPlayerList().getPlayer(playerId).setCurrentLives(maxInd);
   }
 
@@ -63,6 +70,7 @@ public class Referee {
     allPerspectives.put(clientId, currentLives);
     if (allPerspectives.size() == lobby.getPlayerAmount()) {
       finalDecision();
+      lobby.clear(playerId);
     }
   }
 

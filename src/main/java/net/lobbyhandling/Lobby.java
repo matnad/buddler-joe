@@ -37,7 +37,7 @@ public class Lobby implements Runnable {
   private String status;
   private long createdAt;
   private ServerItemState serverItemState;
-  private ConcurrentHashMap<Integer, Referee> refereesForClients; // Integer = clientId
+  private HashMap<Integer, Referee> refereesForClients; // Integer = clientId
 
   private Thread gameLoop;
 
@@ -59,7 +59,7 @@ public class Lobby implements Runnable {
     this.lobbyPlayers = new CopyOnWriteArrayList<>();
     this.lobbyId = lobbyCounter;
     this.serverItemState = new ServerItemState();
-    this.refereesForClients = new ConcurrentHashMap<>();
+    this.refereesForClients = new HashMap<>();
     lobbyCounter++;
     map = new ServerMap(33, 40, System.currentTimeMillis());
   }
@@ -350,11 +350,12 @@ public class Lobby implements Runnable {
     new PacketStartRound().sendToLobby(lobbyId);
   }
 
-  public ConcurrentHashMap<Integer, Referee> getReferees() {
+  public HashMap<Integer, Referee> getReferees() {
     return refereesForClients;
   }
 
   public void addPerspective(int clientId, int playerId, int currentLives) {
+    //System.out.println("here");
     Referee ref;
     if (!checkEventOpened(playerId)) { // event closed
       ref = new Referee(playerId, this);
@@ -368,5 +369,9 @@ public class Lobby implements Runnable {
   // check if event is already opened/realized return true
   public boolean checkEventOpened(int playerId) {
     return refereesForClients.get(playerId) != null && System.currentTimeMillis() - refereesForClients.get(playerId).getTimestamp() <= 500;
+  }
+
+  public void clear(int playerId) {
+    refereesForClients.put(playerId, null);
   }
 }
