@@ -58,14 +58,22 @@ public class PacketLifeStatus extends Packet {
     String currentLives = getData().substring(0, 1);
     String sender = getData().substring(1, 7);
     String playerId = getData().substring(7);
-    // System.out.println("here");
     try {
       this.playerId = Integer.parseInt(playerId);
-      this.currentLives = Integer.parseInt(currentLives); // throws NumberFormatException
+      int test = Integer.parseInt(currentLives);
+      if (test < -1 || test > 3) {
+        throw new RuntimeException();
+      }
+      if (test == 3) {
+        this.currentLives = 2;
+      } else if (test == -1) {
+        this.currentLives = 0;
+      } else {
+        this.currentLives = test;
+      }
       if (this.currentLives < 0 || this.currentLives > 2) {
         throw new RuntimeException();
       }
-      // System.out.println("here");
       if (!(sender.equals("server") || sender.equals("client"))) {
         throw new RuntimeException();
       } else {

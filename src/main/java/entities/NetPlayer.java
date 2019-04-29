@@ -179,18 +179,10 @@ public class NetPlayer extends Entity {
   public void informServer(int val) {
     PacketLifeStatus informServer;
     if (val == -1) {
-      if (currentLives > 0) {
-        informServer = new PacketLifeStatus((currentLives - 1) + "client" + clientId);
-      } else {
-        informServer = new PacketLifeStatus((currentLives) + "client" + clientId);
-      }
+      informServer = new PacketLifeStatus((currentLives - 1) + "client" + clientId);
       informServer.processData();
     } else if (val == 1) {
-      if (currentLives < 2) {
-        informServer = new PacketLifeStatus((currentLives + 1) + "client" + clientId);
-      } else {
-        informServer = new PacketLifeStatus((currentLives) + "client" + clientId);
-      }
+      informServer = new PacketLifeStatus((currentLives + 1) + "client" + clientId);
       informServer.processData();
     }
   }
