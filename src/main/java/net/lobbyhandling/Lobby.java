@@ -372,6 +372,7 @@ public class Lobby implements Runnable {
         if (refereesForClients.get(playerId).finalDecision()) { // entscheidung fällen
           PacketLifeStatus finalDecision = new PacketLifeStatus(currentLives + "server" + playerId);
           finalDecision.sendToLobby(this.getLobbyId());
+          ServerLogic.getPlayerList().getPlayer(playerId).setCurrentLives(currentLives);
         }
         refereesForClients.put(playerId, null); // nachdem allen status geschickt wieder ref = null
       }
@@ -382,6 +383,7 @@ public class Lobby implements Runnable {
         if (refereesForClients.get(playerId).finalDecision()) { // entscheidung fällen
           PacketLifeStatus finalDecision = new PacketLifeStatus(currentLives + "server" + playerId);
           finalDecision.sendToLobby(this.getLobbyId());
+          ServerLogic.getPlayerList().getPlayer(playerId).setCurrentLives(currentLives);
         }
         refereesForClients.put(playerId, null);
       }
@@ -393,6 +395,7 @@ public class Lobby implements Runnable {
         if (refereesForClients.get(playerId).finalDecision()) { // entscheidung fällen
           PacketLifeStatus finalDecision = new PacketLifeStatus(currentLives + "server" + playerId);
           finalDecision.sendToLobby(this.getLobbyId());
+          ServerLogic.getPlayerList().getPlayer(playerId).setCurrentLives(currentLives);
         }
       }
       // System.out.println("here");
