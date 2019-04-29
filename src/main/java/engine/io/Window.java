@@ -81,6 +81,22 @@ public class Window {
     setFullscreen(false);
   }
 
+  /**
+   * Testconstructor for Unit Tests with testParameters to be called by Mockito.spy.
+   */
+  public Window() {
+    setSize(600,500);
+    this.title = "TestWindow";
+    fpsCap = 60;
+    timePerFrame = 1 / fpsCap;
+    processedTime = 0;
+    frames = 0;
+    frameTime = 0;
+    currentFps = 0;
+    isOneSecond = false;
+    setFullscreen(false);
+  }
+
   /** Calls the openGL binds to create a game window and sets openGL parameters. */
   public void create() {
     if (!glfwInit()) {

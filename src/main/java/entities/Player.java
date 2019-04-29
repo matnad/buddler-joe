@@ -80,6 +80,13 @@ public class Player extends NetPlayer {
     controlsDisabled = false;
   }
 
+  /**
+   * Testconstructor for Unit Tests to create a Test User with Mockito.
+   */
+  public Player() {
+    super(new Vector3f(1,2,3),1.0f,1.0f,1.0f);
+  }
+
   public static float getDigIntervall() {
     return digIntervall;
   }
