@@ -362,7 +362,9 @@ public class Lobby implements Runnable {
       refereesForClients.put(playerId, ref);
       refereesForClients.get(playerId).add(clientId, currentLives);
     } else { // event opened
-      refereesForClients.get(playerId).add(clientId, currentLives);
+      if (!refereesForClients.get(playerId).isInAllPerspectives(clientId)) {
+        refereesForClients.get(playerId).add(clientId, currentLives);
+      }
     }
   }
 
