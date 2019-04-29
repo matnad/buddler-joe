@@ -32,6 +32,9 @@ public class Referee {
   }
 
   public void finalDecision() {
+    if (allPerspectives == null) {
+      return;
+    }
     int[] votes = new int[3];
     for (int val : allPerspectives.values()) {
       votes[val]++;
