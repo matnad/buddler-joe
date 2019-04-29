@@ -64,11 +64,16 @@ public class PacketLobbyOverview extends Packet {
         isExtendedAscii(s);
       }
       if (in.length > 1 && isInt(in[1])) {
-        for (int i = 2; i < in.length; i = i + 2) {
+        for (int i = 2; i < in.length; i = i + 3) {
           try {
             if (!isInt(in[i + 1])) {
               addError("Data Format error");
               break;
+            }
+            if (isExtendedAscii(in[i + 2])) {
+              if (!in[i + 2].equals("s") && !in[i + 2].equals("m") && !in[i + 2].equals("l")) {
+                addError("Illegal mapsize.");
+              }
             }
           } catch (ArrayIndexOutOfBoundsException e) {
             addError("Data Format error");
@@ -102,8 +107,8 @@ public class PacketLobbyOverview extends Packet {
 
       CopyOnWriteArrayList<LobbyEntry> catalog = new CopyOnWriteArrayList<LobbyEntry>();
 
-      for (int i = 2; i < in.length; i = i + 2) {
-        catalog.add(new LobbyEntry(in[i], in[i + 1]));
+      for (int i = 2; i < in.length; i = i + 3) {
+        catalog.add(new LobbyEntry(in[i], in[i + 1], in[i + 2]));
       }
       Game.setLobbyCatalog(catalog);
     } else {
