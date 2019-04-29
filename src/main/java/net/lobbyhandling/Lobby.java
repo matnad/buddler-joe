@@ -349,63 +349,23 @@ public class Lobby implements Runnable {
     new PacketStartRound().sendToLobby(lobbyId);
   }
 
-  public Referee getRefereeForPlayer(int clientId) {
-    return refereesForClients.get(clientId);
-  }
-
-  public HashMap getRefereesForClients() {
+  public HashMap getReferees() {
     return refereesForClients;
   }
 
-  // playerId = player who had crush
-  // currentLives: potentiell
-  public void addPerspective(int playerId, int currentLives) {
-    // System.out.println("here");
-
-    if (refereesForClients.get(playerId) == null) {
-      // System.out.println("here");
-      Referee ref = new Referee(playerId);
+  public void addPerspective(int clientId, int playerId, int currentLives) {
+    Referee ref;
+    if (!checkEventOpened(playerId)) { // event closed
+      ref = new Referee(playerId, this);
       refereesForClients.put(playerId, ref);
-      refereesForClients.get(playerId).add(currentLives);
-      if (refereesForClients.get(playerId).check()) { // haben alle ihre meinung gesagt?
-        // System.out.println("here");
-        if (refereesForClients.get(playerId).finalDecision()) { // entscheidung fällen
-          PacketLifeStatus finalDecision = new PacketLifeStatus(currentLives + "server" + playerId);
-          finalDecision.sendToLobby(this.getLobbyId());
-          ServerLogic.getPlayerList().getPlayer(playerId).setCurrentLives(currentLives);
-        }
-        refereesForClients.put(playerId, null); // nachdem allen status geschickt wieder ref = null
-      }
-
-    } else if (checkEventOpened(playerId)) { // man kann einsetzen
-      refereesForClients.get(playerId).add(currentLives);
-      if (refereesForClients.get(playerId).check()) {
-        if (refereesForClients.get(playerId).finalDecision()) { // entscheidung fällen
-          PacketLifeStatus finalDecision = new PacketLifeStatus(currentLives + "server" + playerId);
-          finalDecision.sendToLobby(this.getLobbyId());
-          ServerLogic.getPlayerList().getPlayer(playerId).setCurrentLives(currentLives);
-        }
-        refereesForClients.put(playerId, null);
-      }
-      // System.out.println("here");
-
-    } else {
-      // System.out.println("here");
-      if (refereesForClients.get(playerId).check()) {
-        if (refereesForClients.get(playerId).finalDecision()) { // entscheidung fällen
-          PacketLifeStatus finalDecision = new PacketLifeStatus(currentLives + "server" + playerId);
-          finalDecision.sendToLobby(this.getLobbyId());
-          ServerLogic.getPlayerList().getPlayer(playerId).setCurrentLives(currentLives);
-        }
-      }
-      // System.out.println("here");
-      refereesForClients.put(playerId, null);
+      refereesForClients.get(playerId).add(clientId, currentLives);
+    } else { // event opened
+      refereesForClients.get(playerId).add(clientId, currentLives);
     }
   }
 
   // check if event is already opened/realized return true
   public boolean checkEventOpened(int playerId) {
-    // System.out.println("here");
-    return ((System.currentTimeMillis() - refereesForClients.get(playerId).getTimestamp()) <= 500);
+    return refereesForClients.get(playerId) != null;
   }
 }

@@ -177,15 +177,23 @@ public class NetPlayer extends Entity {
   }
 
   public void informServer(int val) {
+    PacketLifeStatus informServer;
+
     if (val == -1) {
       // System.out.println("here");
-      PacketLifeStatus informServer =
-          new PacketLifeStatus((currentLives - 1) + "client" + clientId);
+      if (currentLives > 0) {
+        informServer = new PacketLifeStatus((currentLives - 1) + "client" + clientId);
+      } else {
+        informServer = new PacketLifeStatus((currentLives) + "client" + clientId);
+      }
       informServer.processData();
     } else if (val == 1) {
-      PacketLifeStatus informPacket =
-          new PacketLifeStatus((currentLives + 1) + "client" + clientId);
-      informPacket.processData();
+      if (currentLives < 2) {
+        informServer = new PacketLifeStatus((currentLives + 1) + "client" + clientId);
+      } else {
+        informServer = new PacketLifeStatus((currentLives) + "client" + clientId);
+      }
+      informServer.processData();
     }
   }
 

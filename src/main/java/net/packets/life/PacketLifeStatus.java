@@ -49,18 +49,8 @@ public class PacketLifeStatus extends Packet {
    * Checks whether the data is in the correct format and everything is in order with the validation
    * requirements.
    */
-  // hier muss man dann checken ob die zahl im bereich [0,2] liegt, sonst invalid.
   @Override
   public void validate() {
-    /*if (getData() == null) {
-      addError("Empty message");
-    } else {
-      for (int i = 0; i < getData().length(); i++) {
-        if (!Character.isDigit(getData().charAt(i))) {
-          addError("Invalid number");
-        }
-      }
-    }*/
     String currentLives = getData().substring(0, 1);
     String sender = getData().substring(1, 7);
     String playerId = getData().substring(7);
@@ -92,25 +82,16 @@ public class PacketLifeStatus extends Packet {
     if (!hasErrors()) {
       // Packet erstellt bei client um server zu schicken
       if (getClientId() == 0 && sender.equals("client")) {
-        // System.out.println("here");
         sendToServer();
       }
       // packet erstellt bei server nachdem erhalten von client
       if (getClientId() != 0 && sender.equals("client")) {
         // ...entscheiden
-        // System.out.println("here");
         Lobby lobby = ServerLogic.getLobbyForClient(playerId);
-        lobby.addPerspective(playerId, currentLives);
+        lobby.addPerspective(getClientId(), playerId, currentLives);
       }
       // packet erstellt bei allen clients nachdem server verschickt
       if (getClientId() == 0 && sender.equals("server")) {
-        // updaten bei ihrem netmaster
-        // System.out.println("I received packet");
-
-          //ServerLogic.getPlayerList().getPlayer(playerId).setCurrentLives(currentLives);
-          //ServerLogic.getPlayerList().getPlayers().get(playerId).setCurrentLives(currentLives);
-
-        
         NetPlayerMaster.getNetPlayerById(playerId).updateLives(currentLives);
       }
     }

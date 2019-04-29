@@ -1,60 +1,61 @@
 package net.playerhandling;
 
 import net.ServerLogic;
+import net.lobbyhandling.Lobby;
+import net.packets.life.PacketLifeStatus;
+
 import java.util.concurrent.ConcurrentHashMap;
 
 public class Referee {
 
   int playerId;
-  private long timestamp;
-  private int counter;
+  // private long timestamp;
   private ConcurrentHashMap<Integer, Integer> allPerspectives;
+  private Lobby lobby;
 
-  /*clientid(0,1,2,3,4 neu gesetzt), currentLives
-  in map ist die perspektive jedes spielers bezüglich des einen crushes
-  des einen spieler
-  gespeichert.*/
-
-  public Referee(int playerId) {
+  public Referee(int playerId, Lobby lobby) {
     this.playerId = playerId; // wem dieser referee gehört
     allPerspectives = new ConcurrentHashMap<>();
-    this.counter = -1;
-    this.timestamp = System.currentTimeMillis();
+    this.lobby = lobby;
+
+    // nach 500 ms führt es finalDecision aus
+    new java.util.Timer()
+        .schedule(
+            new java.util.TimerTask() {
+              @Override
+              public void run() {
+                finalDecision();
+                lobby.getReferees().put(playerId, null); // sich löschen wenn abgelaufen
+              }
+            },
+            500);
   }
 
-  public boolean finalDecision() {
-    // System.out.println("here");
-    int val = allPerspectives.get(0);
-    System.out.println(val);
-
-    for (int lives : allPerspectives.values()) {
-      if (lives != val) {
-        return false;
+  public void finalDecision() {
+    int[] votes = new int[3];
+    for (int val : allPerspectives.values()) {
+      votes[val]++;
+    }
+    int max = -1;
+    int maxInd = -1;
+    for (int i = 0; i <= 2; i++) {
+      if (votes[i] >= max) {
+        maxInd = i;
+        max = votes[i];
       }
-      val = lives;
     }
-
-    if (val > 2 || val < 0) {
-      // könnte man schon früher checken!
-      // false potenzielle leben grösser 2 oder kleiner 0, dann passiert nichts
-      // wäre unnötig
-      return false;
+    if (votes[allPerspectives.get(playerId)] == votes[maxInd]) {
+      maxInd = allPerspectives.get(playerId);
     }
-
-    return true; // falls alle gleich
+    if (allPerspectives.size() < lobby.getPlayerAmount() / 2) {
+      return;
+    }
+    PacketLifeStatus finalDecision = new PacketLifeStatus(maxInd + "server" + playerId);
+    finalDecision.sendToLobby(lobby.getLobbyId());
+    ServerLogic.getPlayerList().getPlayer(playerId).setCurrentLives(maxInd);
   }
 
-  public void add(int currentLives) {
-    allPerspectives.put(++counter, currentLives);
-
-    // System.out.println("here");
-  }
-
-  public boolean check() {
-    return ServerLogic.getLobbyForClient(playerId).getPlayerAmount() == allPerspectives.size();
-  }
-
-  public long getTimestamp() {
-    return timestamp;
+  public void add(int clientId, int currentLives) {
+    allPerspectives.put(clientId, currentLives);
   }
 }
