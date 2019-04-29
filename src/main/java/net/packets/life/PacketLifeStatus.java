@@ -4,6 +4,9 @@ import game.NetPlayerMaster;
 import net.ServerLogic;
 import net.lobbyhandling.Lobby;
 import net.packets.Packet;
+import net.playerhandling.ServerPlayer;
+
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class PacketLifeStatus extends Packet {
   private int currentLives;
@@ -66,10 +69,21 @@ public class PacketLifeStatus extends Packet {
       } else {
         this.sender = sender;
       }
+      boolean isIn = false;
+      for (ServerPlayer player : ServerLogic.getLobbyForClient(getClientId()).getLobbyPlayers()) {
+        if (this.playerId == player.getClientId()) {
+          isIn = true;
+          break;
+        }
+      }
+      if (isIn == false) {
+        throw new RuntimeException();
+      }
+
     } catch (NumberFormatException e) {
       addError("Invalid playerId or life status");
     } catch (RuntimeException e) {
-      addError("Invalid life status or invalid sender");
+      addError("Invalid life status or invalid sender or invalid playerId");
     }
   }
 

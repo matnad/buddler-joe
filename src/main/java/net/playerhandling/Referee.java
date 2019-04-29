@@ -12,12 +12,13 @@ public class Referee {
   // private long timestamp;
   private ConcurrentHashMap<Integer, Integer> allPerspectives;
   private Lobby lobby;
+  private long timestamp;
 
   public Referee(int playerId, Lobby lobby) {
     this.playerId = playerId; // wem dieser referee gehört
     allPerspectives = new ConcurrentHashMap<>();
     this.lobby = lobby;
-
+    this.timestamp = System.currentTimeMillis();
     // nach 500 ms führt es finalDecision aus
     new java.util.Timer()
         .schedule(
@@ -60,5 +61,12 @@ public class Referee {
 
   public void add(int clientId, int currentLives) {
     allPerspectives.put(clientId, currentLives);
+    if (allPerspectives.size() == lobby.getPlayerAmount()) {
+      finalDecision();
+    }
+  }
+
+  public long getTimestamp() {
+    return timestamp;
   }
 }
