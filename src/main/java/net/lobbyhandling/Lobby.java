@@ -355,7 +355,7 @@ public class Lobby implements Runnable {
   }
 
   public void addPerspective(int clientId, int playerId, int currentLives) {
-    //System.out.println("here");
+    // System.out.println("here");
     Referee ref;
     if (!checkEventOpened(playerId)) { // event closed
       ref = new Referee(playerId, this);
@@ -368,7 +368,8 @@ public class Lobby implements Runnable {
 
   // check if event is already opened/realized return true
   public boolean checkEventOpened(int playerId) {
-    return refereesForClients.get(playerId) != null && System.currentTimeMillis() - refereesForClients.get(playerId).getTimestamp() <= 500;
+    return refereesForClients.get(playerId) != null
+        && System.currentTimeMillis() - refereesForClients.get(playerId).getTimestamp() <= 500;
   }
 
   public void clear(int playerId) {

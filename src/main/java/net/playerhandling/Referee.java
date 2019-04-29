@@ -13,32 +13,39 @@ public class Referee {
   private ConcurrentHashMap<Integer, Integer> allPerspectives;
   private Lobby lobby;
   private long timestamp;
+  private boolean decided;
 
   public Referee(int playerId, Lobby lobby) {
-    //System.out.println("here");
+    // System.out.println("here");
+    this.decided = false;
     this.playerId = playerId; // wem dieser referee gehört
     allPerspectives = new ConcurrentHashMap<>();
     this.lobby = lobby;
     this.timestamp = System.currentTimeMillis();
     // nach 500 ms führt es finalDecision aus
     try {
-    new java.util.Timer()
-        .schedule(
-            new java.util.TimerTask() {
-              @Override
-              public void run() {
-                finalDecision();
-                //lobby.getReferees().put(playerId, null); // sich löschen wenn abgelaufen
-                lobby.clear(playerId);
-              }
-            },
-            500);
-    } catch(NullPointerException e) {
+      new java.util.Timer()
+          .schedule(
+              new java.util.TimerTask() {
+                @Override
+                public void run() {
+                  if (!decided) {
+                    //System.out.println("here-aus constructor");
+                    finalDecision();
+                    // lobby.getReferees().put(playerId, null); // sich löschen wenn abgelaufen
+                    lobby.clear(playerId);
+                  }
+                }
+              },
+              500);
+    } catch (NullPointerException e) {
 
     }
   }
 
   public void finalDecision() {
+    //System.out.println("here");
+    decided = true;
     if (allPerspectives == null) {
       return;
     }
@@ -62,13 +69,15 @@ public class Referee {
     }
     PacketLifeStatus finalDecision = new PacketLifeStatus(maxInd + "server" + playerId);
     finalDecision.sendToLobby(lobby.getLobbyId());
-    //System.out.println("here");
+    // System.out.println("here");
     ServerLogic.getPlayerList().getPlayer(playerId).setCurrentLives(maxInd);
   }
 
   public void add(int clientId, int currentLives) {
     allPerspectives.put(clientId, currentLives);
-    if (allPerspectives.size() == lobby.getPlayerAmount()) {
+    System.out.println("meinung von client " + clientId + "zu event von client " + playerId);
+    if (allPerspectives.size() == lobby.getPlayerAmount() && !decided) {
+      //System.out.println("here-aus add()");
       finalDecision();
       lobby.clear(playerId);
     }
