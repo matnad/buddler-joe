@@ -254,15 +254,6 @@ public class Lobby implements Runnable {
   }
 
   /**
-   * Getter that returns the PlayerId of the player that created this lobby.
-   *
-   * @return the client id of the player that created this lobby
-   */
-  public int getCreaterPlayerId() {
-    return createrPlayerId;
-  }
-
-  /**
    * Getter that returns the status of the lobby as String.
    *
    * @return status of the lobby ["open", "running", "finished"]
@@ -323,13 +314,12 @@ public class Lobby implements Runnable {
    * @return true if all players in the lobby are ready, false otherwise.
    */
   public boolean allPlayersReady() {
-    boolean allReady = true;
     for (ServerPlayer lobbyPlayer : lobbyPlayers) {
       if (!lobbyPlayer.isReady()) {
-        allReady = false;
+        return false;
       }
     }
-    return allReady;
+    return true;
   }
 
   /** Starts the Round for this Lobby. */

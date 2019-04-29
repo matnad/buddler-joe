@@ -1,20 +1,21 @@
 package net.highscore;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.StringJoiner;
-import net.packets.highscore.PacketHighscore;
+import java.util.concurrent.CopyOnWriteArrayList;
+
+import net.packets.lists.PacketHighscore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class ServerHighscore implements Serializable {
 
   public static final Logger logger = LoggerFactory.getLogger(PacketHighscore.class);
-  private ArrayList<Standing> highscore;
+  private CopyOnWriteArrayList<Standing> highscore;
 
   /** Contructor to be called to create a new Highscore if none has been created before. */
   public ServerHighscore() {
-    this.highscore = new ArrayList<>();
+    this.highscore = new CopyOnWriteArrayList<>();
   }
 
   /**
@@ -70,7 +71,7 @@ public class ServerHighscore implements Serializable {
    * Global Highscore kept by the Server to save the best results of all players. Implements
    * serializable to be able to save it and open it next time the server will be started.
    */
-  private static class Standing implements Serializable {
+  public static class Standing implements Serializable {
 
     /**
      * Private class to save a standing in the ArrayList.
@@ -91,5 +92,9 @@ public class ServerHighscore implements Serializable {
     public String toString() {
       return username + "║" + util.Util.milisToString(time);
     }
+  }
+
+  public CopyOnWriteArrayList<Standing> getHighscore() {
+    return highscore;
   }
 }

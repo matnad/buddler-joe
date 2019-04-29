@@ -1,4 +1,4 @@
-package net.packets.highscore;
+package net.packets.lists;
 
 import game.Game;
 import game.HighscoreEntry;

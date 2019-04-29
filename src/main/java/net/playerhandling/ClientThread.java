@@ -13,7 +13,7 @@ import net.packets.block.PacketBlockDamage;
 import net.packets.chat.PacketChatMessageToServer;
 import net.packets.gamestatus.PacketGetHistory;
 import net.packets.gamestatus.PacketReady;
-import net.packets.highscore.PacketHighscore;
+import net.packets.lists.PacketHighscore;
 import net.packets.items.PacketItemUsed;
 import net.packets.items.PacketSpawnItem;
 import net.packets.life.PacketLifeStatus;

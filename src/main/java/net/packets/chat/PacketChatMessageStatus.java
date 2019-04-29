@@ -38,6 +38,7 @@ public class PacketChatMessageStatus extends Packet {
     super(PacketTypes.CHAT_MESSAGE_STATUS);
     setClientId(clientId);
     setData(data);
+    status = getData();
     validate();
   }
 
@@ -64,7 +65,6 @@ public class PacketChatMessageStatus extends Packet {
   @Override
   public void processData() {
     if (status.startsWith("OK")) {
-      //            System.out.println("Successfully sent a Message");
     } else {
       System.out.println(status);
     }

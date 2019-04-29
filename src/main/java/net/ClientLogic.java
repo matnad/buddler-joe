@@ -14,7 +14,7 @@ import net.packets.chat.PacketChatMessageToClient;
 import net.packets.gamestatus.PacketGameEnd;
 import net.packets.gamestatus.PacketHistory;
 import net.packets.gamestatus.PacketStartRound;
-import net.packets.highscore.PacketHighscore;
+import net.packets.lists.PacketHighscore;
 import net.packets.items.PacketSpawnItem;
 import net.packets.lists.PacketGamesOverview;
 import net.packets.lists.PacketPlayerList;

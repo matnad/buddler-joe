@@ -62,6 +62,14 @@ public class ServerLogic {
     serverHighscore = ServerHighscoreSerialiser.readServerHighscore();
   }
 
+  ServerLogic() {
+    playerList = new ServerPlayerList();
+    clientThreadMap = new HashMap<>();
+    lobbyList = new ServerLobbyList();
+    serverItemState = new ServerItemState();
+    serverHighscore = ServerHighscoreSerialiser.readServerHighscore();
+  }
+
   /**
    * Players are managed with their own handler class: {@link ServerPlayerList}.
    *
