@@ -109,10 +109,6 @@ public class ClientLogic implements Runnable {
     return connected;
   }
 
-  public static boolean isDisconnectFromServer() {
-    return disconnectFromServer;
-  }
-
   /**
    * A method to disconnect from the server.
    *
@@ -154,6 +150,7 @@ public class ClientLogic implements Runnable {
    * @throws IOException when the socket fails
    * @throws RuntimeException when something unexpected happens
    */
+  @SuppressWarnings("Duplicates")
   private void waitForServer() throws IOException, RuntimeException {
     while (!disconnectFromServer) {
       String in;
