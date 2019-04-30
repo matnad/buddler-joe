@@ -178,20 +178,18 @@ public class HistoryMenu {
     }
 
     // Input-Handling-------------------------------------------------------------------
-    if (Game.getActiveStages().contains(Game.Stage.PLAYING)) {
-      if (InputHandler.isKeyPressed(GLFW_KEY_ESCAPE)
-              || InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1) && back.isHover(x, y)) {
+    if (InputHandler.isKeyPressed(GLFW_KEY_ESCAPE)
+        || InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1) && back.isHover(x, y)) {
+      if (Game.getActiveStages().contains(Game.Stage.PLAYING)) {
         done();
         Game.removeActiveStage(Game.Stage.HISTORYMENU);
-      }
-    } else {
-      if (InputHandler.isKeyPressed(GLFW_KEY_ESCAPE)
-          || InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1) && back.isHover(x, y)) {
+      } else {
         done();
         Game.addActiveStage(Game.Stage.MAINMENU);
         Game.removeActiveStage(Game.Stage.HISTORYMENU);
       }
     }
+
     if (InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1) && up.isHover(x, y)) {
       if (page != 0) {
         page = page - 1;
@@ -232,7 +230,15 @@ public class HistoryMenu {
     page = 0;
     initializedPageIndex = false;
     initializedText = false;
-    TextMaster.removeAll();
+    for (ChangableGuiText line : lines) {
+      if (line != null) {
+        line.delete();
+      }
+    }
+    if (pageIndex != null) {
+      pageIndex.delete();
+    }
+    // TextMaster.removeAll();
   }
 
   /**

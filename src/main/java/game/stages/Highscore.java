@@ -187,7 +187,17 @@ public class Highscore {
   /** Deletes all the texts from this Page from the rendering list. */
   public static synchronized void done() {
     initializedText = false;
-    TextMaster.removeAll();
+    for (ChangableGuiText username : usernames) {
+      if (username != null) {
+        username.delete();
+      }
+    }
+    for (ChangableGuiText time : times) {
+      if (time != null) {
+        time.delete();
+      }
+    }
+    //TextMaster.removeAll();
   }
 
   public static boolean isInGame() {

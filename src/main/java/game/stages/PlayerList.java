@@ -252,11 +252,20 @@ public class PlayerList {
   }
 
   /** Deletes all the texts from the rendering list. */
+  @SuppressWarnings("Duplicates")
   public static synchronized void done() {
     page = 0;
     initializedPageIndex = false;
     initializedText = false;
-    TextMaster.removeAll();
+    for (ChangableGuiText name : names) {
+      if (name != null) {
+        name.delete();
+      }
+    }
+    if (pageIndex != null) {
+      pageIndex.delete();
+    }
+    // TextMaster.removeAll();
   }
 
   /**
