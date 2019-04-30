@@ -203,6 +203,9 @@ public class PlayerList {
       done();
       Game.addActiveStage(Game.Stage.PLAYING);
       Game.removeActiveStage(Game.Stage.PLAYERLIST);
+      if (Game.getActiveStages().contains(Game.Stage.PLAYING)) {
+        Game.getChat().unhide();
+      }
     } else if (InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1) && up.isHover(x, y)) {
       if (page != 0) {
         page = page - 1;

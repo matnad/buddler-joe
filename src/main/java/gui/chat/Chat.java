@@ -27,6 +27,7 @@ public class Chat {
 
   private static final float ALPHA_OFF = .1f;
   private static final float ALPHA_ON = .8f;
+  private static final float ALPHA_HIDDEN = 0f;
   private final float temporaryShowDuration = 3f;
   private boolean enabled;
   private boolean showTemporary;
@@ -34,7 +35,6 @@ public class Chat {
 
   private String chatText;
   private GuiTexture chatGui;
-
 
   private float alpha;
 
@@ -53,6 +53,8 @@ public class Chat {
   private int msgSize;
   private List<String> text;
   private String output;
+
+  private boolean hidden = false;
 
   /**
    * Initialize Chat, only needs to be called once on game init.
@@ -112,6 +114,7 @@ public class Chat {
   public void checkInputs() {
     if (inLobby) {
       setEnabled(true);
+      hidden = false;
       InputHandler.readInputOn();
     }
     if (InputHandler.isKeyPressed(GLFW_KEY_ENTER)) {
@@ -126,7 +129,7 @@ public class Chat {
         if (enabled) {
           setEnabled(false);
           InputHandler.readInputOff();
-        } else {
+        } else if (!hidden) {
           setEnabled(true);
           InputHandler.readInputOn();
         }
@@ -273,7 +276,19 @@ public class Chat {
       alpha += .02f;
 
     } else if (!enabled && !showTemporary && alpha > ALPHA_OFF) {
-      alpha -= .025f;
+      if (alpha - ALPHA_OFF > 0.001f) {
+        alpha -= .02f;
+      }
+    }
+
+    if (hidden) {
+      if (alpha > ALPHA_HIDDEN) {
+        alpha -= .02f;
+      }
+    } else if (alpha < ALPHA_OFF) {
+      if (ALPHA_OFF - alpha > 0.001f) {
+        alpha += .02f;
+      }
     }
     chatGui.setAlpha(alpha);
     guiText.setAlpha(alpha);
@@ -337,9 +352,7 @@ public class Chat {
     messages.add(messageText);
   }
 
-  /**
-   * Adjusts all variables for the chat to fit in the InGame-Chatbox.
-   * */
+  /** Adjusts all variables for the chat to fit in the InGame-Chatbox. */
   public void setGameChatSettings() {
     chatPosition.x = 0.03f;
     chatPosition.y = 0.88f;
@@ -355,9 +368,7 @@ public class Chat {
     enabled = false;
   }
 
-  /**
-   * Adjusts all variables for the chat to fit in the InLobbyMenu-Chatbox.
-   * */
+  /** Adjusts all variables for the chat to fit in the InLobbyMenu-Chatbox. */
   public void setLobbyChatSettings() {
     chatPosition.x = 0.53f;
     chatPosition.y = 0.71f;
@@ -375,4 +386,13 @@ public class Chat {
     return alpha;
   }
 
+  public void hide() {
+    hidden = true;
+    enabled = false;
+    showTemporary = false;
+  }
+
+  public void unhide() {
+    hidden = false;
+  }
 }

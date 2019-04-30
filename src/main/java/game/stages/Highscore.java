@@ -1,8 +1,5 @@
 package game.stages;
 
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_ESCAPE;
-import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_1;
-
 import engine.io.InputHandler;
 import engine.render.Loader;
 import engine.render.fontrendering.TextMaster;
@@ -18,6 +15,8 @@ import org.joml.Vector2f;
 import org.joml.Vector3f;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import static org.lwjgl.glfw.GLFW.*;
 
 /**
  * Highscore Screen specification and rendering. Must be initialized. Specifies all the elements in
@@ -117,9 +116,11 @@ public class Highscore {
 
     List<GuiTexture> guis = new ArrayList<>();
     // add textures here
-    guis.add(background);
+    if (!Game.getActiveStages().contains(Game.Stage.PLAYING)) {
+      guis.add(background);
+      guis.add(buddlerJoe);
+    }
     guis.add(highscore);
-    guis.add(buddlerJoe);
     guis.add(title);
 
     // OpenGL Coordinates (0/0 = center of screen, -1/1 = corners)
@@ -148,11 +149,13 @@ public class Highscore {
 
     // Input-Handling:
     if (InputHandler.isKeyPressed(GLFW_KEY_ESCAPE)
+        || InputHandler.isKeyPressed(GLFW_KEY_H)
         || InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1) && back.isHover(x, y)) {
       done();
       if (inGame) {
         Game.addActiveStage(Game.Stage.PLAYING);
         Game.removeActiveStage(Game.Stage.HIGHSCORE);
+        Game.getChat().unhide();
         inGame = false;
       } else {
         Game.addActiveStage(Game.Stage.MAINMENU);
@@ -197,7 +200,7 @@ public class Highscore {
         time.delete();
       }
     }
-    //TextMaster.removeAll();
+    // TextMaster.removeAll();
   }
 
   public static boolean isInGame() {

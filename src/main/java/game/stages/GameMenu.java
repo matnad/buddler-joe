@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.packets.gamestatus.PacketGetHistory;
+import net.packets.highscore.PacketHighscore;
 import net.packets.lobby.PacketLeaveLobby;
 import net.packets.loginlogout.PacketDisconnect;
 import org.joml.Vector2f;
@@ -118,12 +119,15 @@ public class GameMenu {
       Game.window.stop();
     }else if (InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1) && history.isHover(x, y)){
       new PacketGetHistory().sendToServer();
+      Game.getChat().hide();
       Game.addActiveStage(Game.Stage.HISTORYMENU);
       Game.removeActiveStage(Game.Stage.GAMEMENU);
     }else if (InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1) && highscore.isHover(x, y)){
       Highscore.setInGame(true);
+      new PacketHighscore().sendToServer();
       Game.addActiveStage(Game.Stage.HIGHSCORE);
       Game.removeActiveStage(Game.Stage.GAMEMENU);
+      Game.getChat().hide();
     }
     Game.getGuiRenderer().render(guis);
   }
