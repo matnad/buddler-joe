@@ -15,7 +15,6 @@ import static game.Game.Stage.MAINMENU;
 import static game.Game.Stage.OPTIONS;
 import static game.Game.Stage.PLAYERLIST;
 import static game.Game.Stage.PLAYING;
-import static game.Game.Stage.WELCOME;
 
 import engine.io.InputHandler;
 import engine.io.Window;
@@ -48,7 +47,6 @@ import game.stages.MainMenu;
 import game.stages.Options;
 import game.stages.PlayerList;
 import game.stages.Playing;
-import game.stages.Welcome;
 import gui.chat.Chat;
 import gui.lifestatus.LifeStatus;
 import gui.text.CurrentGold;
@@ -471,10 +469,6 @@ Game extends Thread {
           Options.update();
         }
 
-        if (activeStages.contains(WELCOME)) {
-          Welcome.update();
-        }
-
         if (activeStages.contains(LOGIN)) {
           Login.update();
         }
@@ -559,8 +553,6 @@ Game extends Thread {
     Credits.init(loader);
     LoadingScreen.progess();
     Options.init(loader);
-    LoadingScreen.progess();
-    Welcome.init(loader);
     LoadingScreen.progess();
     Login.init(loader);
     LoadingScreen.progess();

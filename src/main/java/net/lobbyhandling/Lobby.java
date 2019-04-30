@@ -194,27 +194,19 @@ public class Lobby implements Runnable {
    * @param clientId id of the winning player
    */
   public void gameOver(int clientId) {
-
     // setStatus("open");
     History.runningRemove(lobbyId);
     // History.openAdd(lobbyId, lobbyName);
     String userName = ServerLogic.getPlayerList().getUsername(clientId);
     History.archive("Lobbyname: " + lobbyName + "       Winner: " + userName);
     long time = System.currentTimeMillis() - getCreatedAt();
-
     // Update highscore
     ServerLogic.getServerHighscore().addPlayer(time, userName);
     ServerHighscoreSerialiser.serialiseServerHighscore(ServerLogic.getServerHighscore());
-
     // TODO send EndGamepacket here i created a skeleton already.
     // Inform all clients
     new PacketGameEnd(userName, time).sendToLobby(lobbyId);
     // create new Map and broadcast
-    // map = new ServerMap(60, 40, System.currentTimeMillis());
-    // new PacketBroadcastMap(map).sendToLobby(lobbyId);
-    // for (ServerPlayer player : lobbyPlayers) {
-    // player.setCurrentGold(0);
-    // }
   }
 
   @Override

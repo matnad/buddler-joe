@@ -12,7 +12,7 @@ import gui.text.ChangableGuiText;
 import java.util.ArrayList;
 import java.util.List;
 import net.packets.gamestatus.PacketGetHistory;
-import net.packets.highscore.PacketHighscore;
+import net.packets.lists.PacketHighscore;
 import net.packets.lobby.PacketGetLobbies;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
