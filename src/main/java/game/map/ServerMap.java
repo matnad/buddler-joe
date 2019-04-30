@@ -11,12 +11,12 @@ public class ServerMap extends GameMap<ServerBlock> {
   /**
    * Generate a new map for the Server.
    *
-   * @param width number of blocks on the horizontal
-   * @param height number of blocks on the vertical = depth
+   * @param mapSize can be s, m or l
    * @param seed random seed
    */
-  public ServerMap(int width, int height, long seed) {
-    super(width, height, seed);
+  public ServerMap(String mapSize, long seed) {
+    super(mapSize, seed);
+    System.out.println("width = " + width + " height = " + height);
     blocks = new ServerBlock[width][height];
     generateMap();
     checkFallingBlocks();

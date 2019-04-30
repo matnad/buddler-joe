@@ -41,12 +41,11 @@ public class ClientMap extends GameMap<Block> {
   /**
    * Generate a map for the client and generate the blocks in the world.
    *
-   * @param width number of blocks on the horizontal
-   * @param height number of blocks on the vertical = depth
+   * @param mapSize can be s, m or l
    * @param seed random seed
    */
-  public ClientMap(int width, int height, long seed) {
-    super(width, height, seed);
+  public ClientMap(String mapSize, long seed) {
+    super(mapSize, seed);
     local = true;
     blocks = new Block[width][height];
     generateMap();
