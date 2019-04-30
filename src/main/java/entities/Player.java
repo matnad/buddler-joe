@@ -45,23 +45,20 @@ import util.MousePlacer;
 public class Player extends NetPlayer {
 
   public static final Logger logger = LoggerFactory.getLogger(Player.class);
-
+  private static final float digIntervall = 0.2f; // Number of dig updates per second
+  private final float torchPlaceDelay = 10f;
   // Resources and Stats
   public int currentGold; // Current coins
   private float digDamage; // Damage per second when colliding with blocks
-  private static final float digIntervall = 0.2f; // Number of dig updates per second
   private Block lastDiggedBlock = null;
   private float lastDiggedBlockDamage = 0;
   private float digIntervallTimer = 0;
-
   // Vector & Velocity based speed
   private boolean isJumping = false; // Can't Jump while in the air
   private boolean sendVelocityToServer = false; // If we need to update velocity this frame
-
   // Other
   private boolean controlsDisabled;
   private boolean frozen = false;
-  private final float torchPlaceDelay = 10f;
   private float torchTimeout = torchPlaceDelay;
 
   /**
@@ -79,6 +76,10 @@ public class Player extends NetPlayer {
     digDamage = 1;
     currentGold = 0;
     controlsDisabled = false;
+  }
+
+  public static float getDigIntervall() {
+    return digIntervall;
   }
 
   /**
@@ -425,9 +426,5 @@ public class Player extends NetPlayer {
       currentVelocity.y = 0;
       sendVelocityToServer = true;
     }
-  }
-
-  public static float getDigIntervall() {
-    return digIntervall;
   }
 }

@@ -121,7 +121,7 @@ public class TerrainRenderer {
   private void loadModelMatrix(TerrainFlat terrain) {
     Matrix4f transformationMatrix =
         Maths.createTransformationMatrix(
-            new Vector3f(terrain.getCoordX(), 0, terrain.getCoordZ()),
+            new Vector3f(terrain.getCoordX(), terrain.getCoordZ(), 0),
             terrain.getRotation().x,
             terrain.getRotation().y,
             terrain.getRotation().z,

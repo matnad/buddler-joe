@@ -15,9 +15,6 @@ import gui.MenuButton;
 import gui.text.ChangableGuiText;
 import java.util.ArrayList;
 import java.util.List;
-
-import net.StartNetworkOnlyClient;
-import net.packets.loginlogout.PacketDisconnect;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 
@@ -343,7 +340,7 @@ public class Options {
     initializedText = false;
     firstLoop = true;
     TextMaster.removeAll();
-    InputHandler.setInputString(new StringBuilder(""));
+    InputHandler.setInputString(new StringBuilder());
   }
 
   private static void updateGuiText() {

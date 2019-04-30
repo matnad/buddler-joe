@@ -3,16 +3,11 @@ package net;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-
 import net.packets.Packet;
 import net.packets.chat.PacketChatMessageToServer;
 import net.packets.gamestatus.PacketGetHistory;
-import net.packets.highscore.PacketHighscore;
 import net.packets.lists.PacketPlayerList;
 import net.packets.lobby.PacketCreateLobby;
-import net.packets.lobby.PacketGetLobbies;
-import net.packets.lobby.PacketGetLobbyInfo;
-import net.packets.lobby.PacketJoinLobby;
 import net.packets.lobby.PacketLeaveLobby;
 import net.packets.loginlogout.PacketDisconnect;
 import net.packets.loginlogout.PacketLogin;

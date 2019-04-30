@@ -26,8 +26,14 @@ import org.slf4j.LoggerFactory;
  */
 public class NetPlayer extends Entity {
 
+  public static final float gravity = -60; // Units per second
+  // Movement related
+  static final float angle45 = (float) (45 * Math.PI / 180);
+  static final float jumpPower = 28; // Units per second
+  static final float runSpeed = 20; // Units per second
+  static final float turnSpeed = 720; // Degrees per second
+  static final float interpolationFactor = 0.15f; // Rate of acceleration via LERP
   private static final Logger logger = LoggerFactory.getLogger(NetPlayer.class);
-
   private static final float joeModelSize = .2f;
   private static final float ripModelSize = .5f;
   private static final Vector3f[] lampColors = {
@@ -40,6 +46,12 @@ public class NetPlayer extends Entity {
   private static TexturedModel joeModel;
   private static TexturedModel ripModel;
   private static int counter;
+  Block collideWithBlockAbove;
+  Block collideWithBlockBelow;
+  Vector3f currentVelocity = new Vector3f();
+  Vector3f goalVelocity = new Vector3f();
+  List<Block> closeBlocks;
+  boolean isInAir = false;
   protected int clientId;
   private String username;
   private Light headLight;
@@ -48,25 +60,6 @@ public class NetPlayer extends Entity {
   private Nameplate nameplate;
   protected int currentLives;
   private boolean defeated;
-
-  // Movement related
-  static final float angle45 = (float) (45 * Math.PI / 180);
-  Block collideWithBlockAbove;
-  Block collideWithBlockBelow;
-
-  static final float jumpPower = 28; // Units per second
-  public static final float gravity = -60; // Units per second
-  static final float runSpeed = 20; // Units per second
-  static final float turnSpeed = 720; // Degrees per second
-
-  static final float interpolationFactor = 0.15f; // Rate of acceleration via LERP
-  Vector3f currentVelocity = new Vector3f();
-  Vector3f goalVelocity = new Vector3f();
-
-  List<Block> closeBlocks;
-
-  boolean isInAir = false;
-
   private long lastCrushed = System.currentTimeMillis();
 
   /**
@@ -118,6 +111,30 @@ public class NetPlayer extends Entity {
 
     RawModel rawTomb = loader.loadToVao(ObjFileLoader.loadObj("tomb"));
     ripModel = new TexturedModel(rawTomb, new ModelTexture(loader.loadTexture("tomb")));
+  }
+
+  public static TexturedModel getJoeModel() {
+    return joeModel;
+  }
+
+  public static float getJoeModelSize() {
+    return joeModelSize;
+  }
+
+  public static float getRipModelSize() {
+    return ripModelSize;
+  }
+
+  public static TexturedModel getRipModel() {
+    return ripModel;
+  }
+
+  public static float getJumpPower() {
+    return jumpPower;
+  }
+
+  public static float getRunSpeed() {
+    return runSpeed;
   }
 
   /**
@@ -269,24 +286,26 @@ public class NetPlayer extends Entity {
     return currentTurnSpeed;
   }
 
-  public static TexturedModel getJoeModel() {
-    return joeModel;
-  }
-
-  public static float getJoeModelSize() {
-    return joeModelSize;
-  }
-
   public boolean isDefeated() {
     return defeated;
   }
 
-  public static float getRipModelSize() {
-    return ripModelSize;
-  }
-
-  public static TexturedModel getRipModel() {
-    return ripModel;
+  /**
+   * Turn the player into a gravestone and disable all controls if it is the active player. Will set
+   * the defeated flag for other classes to use.
+   *
+   * @param defeated can only be true for now. No way to revive a player
+   */
+  public void setDefeated(boolean defeated) {
+    if (defeated) {
+      this.defeated = defeated;
+      setModel(ripModel);
+      setScale(new Vector3f(ripModelSize, ripModelSize, ripModelSize));
+      setRotY(0);
+      if (getClientId() == Game.getActivePlayer().getClientId()) {
+        Game.setActiveCamera(new SpectatorCamera(Game.window, getPosition()));
+      }
+    }
   }
 
   public String getUsername() {
@@ -330,24 +349,6 @@ public class NetPlayer extends Entity {
     headLight.setDirection(direction);
   }
 
-  /**
-   * Turn the player into a gravestone and disable all controls if it is the active player. Will set
-   * the defeated flag for other classes to use.
-   *
-   * @param defeated can only be true for now. No way to revive a player
-   */
-  public void setDefeated(boolean defeated) {
-    if (defeated) {
-      this.defeated = defeated;
-      setModel(ripModel);
-      setScale(new Vector3f(ripModelSize, ripModelSize, ripModelSize));
-      setRotY(0);
-      if (getClientId() == Game.getActivePlayer().getClientId()) {
-        Game.setActiveCamera(new SpectatorCamera(Game.window, getPosition()));
-      }
-    }
-  }
-
   public void updateVelocities(Vector3f current, Vector3f goal) {
     currentVelocity = current;
     goalVelocity = goal;
@@ -380,13 +381,5 @@ public class NetPlayer extends Entity {
   public void increasePosition(Vector3f velocity) {
     super.increasePosition(velocity);
     updateHeadlightPosition();
-  }
-
-  public static float getJumpPower() {
-    return jumpPower;
-  }
-
-  public static float getRunSpeed() {
-    return runSpeed;
   }
 }

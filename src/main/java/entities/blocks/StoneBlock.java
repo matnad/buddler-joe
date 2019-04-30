@@ -52,6 +52,10 @@ public class StoneBlock extends Block {
     return hardness;
   }
 
+  public static TexturedModel getBlockModel() {
+    return blockModel;
+  }
+
   @Override
   protected void onDestroy() {}
 

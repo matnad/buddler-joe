@@ -31,7 +31,7 @@ public class SettingsSerialiser {
     try {
       File buddlerSettingsDir = new File(path);
       if (buddlerSettingsDir.exists()) {
-        //logger.info("Settings directory found.");
+        // logger.info("Settings directory found.");
       } else if (buddlerSettingsDir.mkdirs()) {
         logger.info(buddlerSettingsDir + " was created");
       } else {

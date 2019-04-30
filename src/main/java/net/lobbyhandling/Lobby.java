@@ -61,7 +61,16 @@ public class Lobby implements Runnable {
     this.serverItemState = new ServerItemState();
     this.refereesForClients = new ConcurrentHashMap<>();
     lobbyCounter++;
-    map = new ServerMap(33, 40, System.currentTimeMillis());
+    map = new ServerMap(8 * 4, 8 * 5, System.currentTimeMillis());
+  }
+
+  /**
+   * Getter that return the max amount of players per Lobby.
+   *
+   * @return the maximum number of players for all lobbies
+   */
+  public static int getMaxPlayers() {
+    return maxPlayers;
   }
 
   @Override
@@ -83,15 +92,6 @@ public class Lobby implements Runnable {
         e.printStackTrace();
       }
     }
-  }
-
-  /**
-   * Getter that return the max amount of players per Lobby.
-   *
-   * @return the maximum number of players for all lobbies
-   */
-  public static int getMaxPlayers() {
-    return maxPlayers;
   }
 
   /**
@@ -226,7 +226,7 @@ public class Lobby implements Runnable {
 
   @Override
   public String toString() {
-    return "║" + lobbyName + "║" + getPlayerAmount();
+    return "║" + lobbyName + "║" + getPlayerAmount() + "║" + mapSize;
   }
 
   /**
