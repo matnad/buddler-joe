@@ -131,7 +131,7 @@ public class HistoryMenu {
 
     List<GuiTexture> guis = new ArrayList<>();
     // add textures here
-    if (!Game.getActiveStages().contains(Game.Stage.PLAYING)){
+    if (!Game.getActiveStages().contains(Game.Stage.PLAYING)) {
       guis.add(background);
       guis.add(buddlerJoe);
     }

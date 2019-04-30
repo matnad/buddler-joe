@@ -11,6 +11,7 @@ public class LobbyEntry {
   private int players;
   private String size;
 
+  /**Constructor of LobbyEntry.*/
   public LobbyEntry(String name, String n, String size) {
     this.name = name;
     this.players = Integer.parseInt(n);

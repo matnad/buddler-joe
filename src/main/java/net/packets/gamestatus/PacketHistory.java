@@ -1,9 +1,10 @@
 package net.packets.gamestatus;
 
 import game.Game;
+import java.util.concurrent.CopyOnWriteArrayList;
 import net.packets.Packet;
 
-import java.util.concurrent.CopyOnWriteArrayList;
+
 
 /**
  * A packed that is send from the server to the client, which contains the "History". Packet-Code:

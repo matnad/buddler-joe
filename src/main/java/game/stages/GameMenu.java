@@ -69,24 +69,24 @@ public class GameMenu {
             new Vector2f(.305521f, .128333f));
 
     highscore =
-            new MenuButton(
-                    loader,
-                    "pokal_norm",
-                    "pokal_hover",
-                    new Vector2f(-0.232844f, 0.455556f),
-                    new Vector2f(0.023625f * 0.6f, 0.05f * 0.6f));
+        new MenuButton(
+            loader,
+            "pokal_norm",
+            "pokal_hover",
+            new Vector2f(-0.232844f, 0.455556f),
+            new Vector2f(0.023625f * 0.6f, 0.05f * 0.6f));
 
     history =
-            new MenuButton(
-                    loader,
-                    "book_norm",
-                    "book_hover",
-                    new Vector2f(-0.283822f, 0.455556f),
-                    new Vector2f(0.035353f * 0.6f, 0.05f * 0.6f));
+        new MenuButton(
+            loader,
+            "book_norm",
+            "book_hover",
+            new Vector2f(-0.283822f, 0.455556f),
+            new Vector2f(0.035353f * 0.6f, 0.05f * 0.6f));
   }
 
-  //new Vector2f(0.025489f, -0.496296f),
-  //new Vector2f(-0.025489f, -0.496296f),
+  // new Vector2f(0.025489f, -0.496296f),
+  // new Vector2f(-0.025489f, -0.496296f),
 
   /**
    * Game Loop while the stage is active. This runs every frame as long as the Game Menu is active.
@@ -117,12 +117,12 @@ public class GameMenu {
     } else if (InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1) && desktop.isHover(x, y)) {
       new PacketDisconnect().sendToServer();
       Game.window.stop();
-    }else if (InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1) && history.isHover(x, y)){
+    } else if (InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1) && history.isHover(x, y)) {
       new PacketGetHistory().sendToServer();
       Game.getChat().hide();
       Game.addActiveStage(Game.Stage.HISTORYMENU);
       Game.removeActiveStage(Game.Stage.GAMEMENU);
-    }else if (InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1) && highscore.isHover(x, y)){
+    } else if (InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1) && highscore.isHover(x, y)) {
       Highscore.setInGame(true);
       new PacketHighscore().sendToServer();
       Game.addActiveStage(Game.Stage.HIGHSCORE);

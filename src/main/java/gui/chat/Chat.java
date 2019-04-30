@@ -386,12 +386,14 @@ public class Chat {
     return alpha;
   }
 
+  /** Hides the chat. */
   public void hide() {
     hidden = true;
     enabled = false;
     showTemporary = false;
   }
 
+  /** Unhides the Chat. */
   public void unhide() {
     hidden = false;
   }
