@@ -11,7 +11,12 @@ public class LobbyEntry {
   private int players;
   private String size;
 
-  /**Constructor of LobbyEntry.*/
+  /**Constructor of LobbyEntry.
+   * @param name the Name.
+   * @param n the amount of Players.
+   * @param size the mapsize.
+   *
+   * */
   public LobbyEntry(String name, String n, String size) {
     this.name = name;
     this.players = Integer.parseInt(n);
