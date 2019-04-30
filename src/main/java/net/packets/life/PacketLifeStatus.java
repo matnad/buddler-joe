@@ -63,6 +63,7 @@ public class PacketLifeStatus extends Packet {
       int test = Integer.parseInt(currentLives);
       if (test < -1 || test > 3) {
         throw new RuntimeException();
+        //illegalargumentexcept
       }
       if (test == 3) {
         this.currentLives = 2;
@@ -95,6 +96,7 @@ public class PacketLifeStatus extends Packet {
       addError("Invalid playerId or life status");
     } catch (RuntimeException e) {
       addError("Invalid life status or invalid sender or invalid playerId");
+      //logger
     }
   }
 
@@ -106,12 +108,12 @@ public class PacketLifeStatus extends Packet {
   public void processData() {
     if (!hasErrors()) {
       // Packet erstellt bei client um server zu schicken
-      if (getClientId() == 0 && sender.equals("client")) {
-        sendToServer();
-      }
+
       // packet erstellt bei server nachdem erhalten von client
-      if (getClientId() != 0 && sender.equals("client")) {
+      if (getClientId() != 0) {
         // ...entscheiden
+
+        //schauen dass lobby nicht null ist
         Lobby lobby = ServerLogic.getLobbyForClient(playerId);
         lobby.addPerspective(getClientId(), playerId, currentLives);
       }
