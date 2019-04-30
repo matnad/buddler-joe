@@ -38,7 +38,7 @@ public class Obsidian extends Block {
 
   static void init(Loader loader) {
     RawModel rawBlock = loader.loadToVao(ObjFileLoader.loadObj("block"));
-    ModelTexture blockAtlas = new ModelTexture(loader.loadTexture("stone4x4"));
+    ModelTexture blockAtlas = new ModelTexture(loader.loadTexture("Obsidian"));
     blockAtlas.setNumberOfRows(2);
     blockModel = new TexturedModel(rawBlock, blockAtlas);
   }
