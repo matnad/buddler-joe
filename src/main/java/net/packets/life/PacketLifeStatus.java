@@ -4,16 +4,14 @@ import game.NetPlayerMaster;
 import net.ServerLogic;
 import net.lobbyhandling.Lobby;
 import net.packets.Packet;
-import net.playerhandling.ServerPlayer;
-
-import java.util.concurrent.CopyOnWriteArrayList;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class PacketLifeStatus extends Packet {
   private int currentLives;
   private String sender;
   private int playerId;
-  // data = currentLives+sender+playerId
-  // bsp: 2server4
+  public static final Logger logger = LoggerFactory.getLogger(PacketLifeStatus.class);
 
   /**
    * Client creates packet (and sends to server if sender equals client), if he saw a crush. Data
@@ -43,7 +41,6 @@ public class PacketLifeStatus extends Packet {
    */
   public PacketLifeStatus(int clientId, String data) {
     super(PacketTypes.LIFE_STATUS);
-    // System.out.println("here");
     setData(data);
     setClientId(clientId);
     validate();
@@ -62,8 +59,7 @@ public class PacketLifeStatus extends Packet {
       this.playerId = Integer.parseInt(playerId);
       int test = Integer.parseInt(currentLives);
       if (test < -1 || test > 3) {
-        throw new RuntimeException();
-        //illegalargumentexcept
+        throw new IllegalArgumentException();
       }
       if (test == 3) {
         this.currentLives = 2;
@@ -72,31 +68,28 @@ public class PacketLifeStatus extends Packet {
       } else {
         this.currentLives = test;
       }
-      if (this.currentLives < 0 || this.currentLives > 2) {
-        throw new RuntimeException();
-      }
       if (!(sender.equals("server") || sender.equals("client"))) {
-        throw new RuntimeException();
+        throw new IllegalArgumentException();
       } else {
         this.sender = sender;
       }
       if (getClientId() != 0) {
-        boolean isIn = false;
-        for (ServerPlayer player : ServerLogic.getLobbyForClient(getClientId()).getLobbyPlayers()) {
-          if (this.playerId == player.getClientId()) {
-            isIn = true;
-            break;
+        Lobby lobby = ServerLogic.getLobbyForClient(getClientId());
+        if (lobby != null) {
+          if (!lobby
+              .getLobbyPlayers()
+              .contains(ServerLogic.getPlayerList().getPlayer(this.playerId))) {
+            throw new IllegalArgumentException();
           }
-        }
-        if (isIn == false) {
-          throw new RuntimeException();
+        } else {
+          throw new IllegalArgumentException();
         }
       }
     } catch (NumberFormatException e) {
       addError("Invalid playerId or life status");
-    } catch (RuntimeException e) {
-      addError("Invalid life status or invalid sender or invalid playerId");
-      //logger
+    } catch (IllegalArgumentException e) {
+      addError(
+          "Invalid life status or invalid sender or invalid playerId or player is not in a lobby");
     }
   }
 
@@ -107,20 +100,16 @@ public class PacketLifeStatus extends Packet {
   @Override
   public void processData() {
     if (!hasErrors()) {
-      // Packet erstellt bei client um server zu schicken
-
-      // packet erstellt bei server nachdem erhalten von client
       if (getClientId() != 0) {
-        // ...entscheiden
-
-        //schauen dass lobby nicht null ist
         Lobby lobby = ServerLogic.getLobbyForClient(playerId);
         lobby.addPerspective(getClientId(), playerId, currentLives);
       }
-      // packet erstellt bei allen clients nachdem server verschickt
       if (getClientId() == 0 && sender.equals("server")) {
         NetPlayerMaster.getNetPlayerById(playerId).updateLives(currentLives);
       }
+    } else {
+      logger.error(
+          "Invalid playerId or invalid life status or invalid sender or the player is not in a lobby");
     }
   }
 }

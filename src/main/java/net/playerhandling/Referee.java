@@ -8,31 +8,25 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class Referee {
 
-  int playerId;
-  // private long timestamp;
+  private int playerId;
   private ConcurrentHashMap<Integer, Integer> allPerspectives;
   private Lobby lobby;
   private long timestamp;
   private boolean decided;
 
   public Referee(int playerId, Lobby lobby) {
-    // System.out.println("here");
     this.decided = false;
-    this.playerId = playerId; // wem dieser referee gehört
+    this.playerId = playerId;
     allPerspectives = new ConcurrentHashMap<>();
     this.lobby = lobby;
     this.timestamp = System.currentTimeMillis();
-    // nach 500 ms führt es finalDecision aus
     new java.util.Timer()
         .schedule(
             new java.util.TimerTask() {
               @Override
               public void run() {
                 if (!decided) {
-                  // System.out.println("here-aus constructor");
                   finalDecision();
-                  // lobby.getReferees().put(playerId, null); // sich löschen wenn abgelaufen
-                  // lobby.clear(playerId);
                 }
               }
             },
@@ -41,7 +35,6 @@ public class Referee {
 
   public void finalDecision() {
     try {
-      // System.out.println("here");
       decided = true;
       if (allPerspectives == null) {
         return;
@@ -66,11 +59,12 @@ public class Referee {
       }
       PacketLifeStatus finalDecision = new PacketLifeStatus(maxInd + "server" + playerId);
       finalDecision.sendToLobby(lobby.getLobbyId());
+
       lobby.clear(playerId);
-      // System.out.println("here");
+
       ServerLogic.getPlayerList().getPlayer(playerId).setCurrentLives(maxInd);
     } catch (NullPointerException e) {
-      System.out.println("theres a nullpointer in referee");
+      System.out.println("there's a nullpointer in Referee");
     }
   }
 
@@ -78,9 +72,7 @@ public class Referee {
     allPerspectives.put(clientId, currentLives);
     System.out.println("meinung von client " + clientId + "zu event von client " + playerId);
     if (allPerspectives.size() == lobby.getPlayerAmount() && !decided) {
-      // System.out.println("here-aus add()");
       finalDecision();
-      // lobby.clear(playerId);
     }
   }
 
@@ -88,13 +80,7 @@ public class Referee {
     return timestamp;
   }
 
-  public boolean isInAllPerspectives(int clientId) {
-    for (int id : allPerspectives.keySet()) {
-      if (id == clientId) {
-        return true;
-      }
-    }
-    //allPerspectives.containsKey(clientId)
-    return false;
+  public ConcurrentHashMap getAllPerspectives() {
+    return allPerspectives;
   }
 }

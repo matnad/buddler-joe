@@ -3,15 +3,12 @@ package net.lobbyhandling;
 import game.History;
 import game.map.ServerMap;
 
-
-import java.util.HashMap;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import net.ServerLogic;
 import net.highscore.ServerHighscoreSerialiser;
 import net.packets.gamestatus.PacketGameEnd;
 import net.packets.gamestatus.PacketStartRound;
-import net.packets.life.PacketLifeStatus;
 import net.packets.lobby.PacketLobbyOverview;
 import net.playerhandling.Referee;
 import net.playerhandling.ServerPlayer;
@@ -348,25 +345,19 @@ public class Lobby implements Runnable {
     new PacketStartRound().sendToLobby(lobbyId);
   }
 
-  public ConcurrentHashMap<Integer, Referee> getReferees() {
-    return refereesForClients;
-  }
-
   public void addPerspective(int clientId, int playerId, int currentLives) {
-    // System.out.println("here");
     Referee ref;
-    if (!checkEventOpened(playerId)) { // event closed
+    if (!checkEventOpened(playerId)) {
       ref = new Referee(playerId, this);
       refereesForClients.put(playerId, ref);
       refereesForClients.get(playerId).add(clientId, currentLives);
-    } else { // event opened
-      if (!refereesForClients.get(playerId).isInAllPerspectives(clientId)) {
+    } else {
+      if (!refereesForClients.get(playerId).getAllPerspectives().containsKey(clientId)) {
         refereesForClients.get(playerId).add(clientId, currentLives);
       }
     }
   }
 
-  // check if event is already opened/realized return true
   public boolean checkEventOpened(int playerId) {
     return refereesForClients.get(playerId) != null
         && System.currentTimeMillis() - refereesForClients.get(playerId).getTimestamp() <= 500;
@@ -374,6 +365,5 @@ public class Lobby implements Runnable {
 
   public void clear(int playerId) {
     refereesForClients.remove(playerId);
-    //put(playerId, null);
   }
 }
