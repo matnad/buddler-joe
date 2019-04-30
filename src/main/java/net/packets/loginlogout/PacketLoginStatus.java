@@ -1,6 +1,7 @@
 package net.packets.loginlogout;
 
 import game.Game;
+import game.Settings;
 import net.packets.Packet;
 import net.packets.lobby.PacketGetLobbies;
 
@@ -69,6 +70,7 @@ public class PacketLoginStatus extends Packet {
       //        + "We assigned you this username: "
       //        + getData().substring(6));
       Game.getActivePlayer().setUsername(getData().substring(6));
+      Game.getSettings().setUsername(getData().substring(6));
       PacketGetLobbies p = new PacketGetLobbies();
       p.sendToServer();
       Game.setLoggedIn(true);

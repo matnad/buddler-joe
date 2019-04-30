@@ -2,6 +2,7 @@ import game.Game;
 import game.Settings;
 import game.SettingsSerialiser;
 import net.StartServer;
+import net.packets.name.PacketSetName;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -70,7 +70,9 @@ import terrains.TerrainFlat;
  * in the same execution. Getters and setters should be static so we can access them from anywhere,
  * but we have to be very careful which variables we want to be "global"
  */
-public class Game extends Thread {
+public class
+
+Game extends Thread {
 
   private static final Logger logger = LoggerFactory.getLogger(Game.class);
   // Set up list of stages, stages will be updated at the end of every frame
