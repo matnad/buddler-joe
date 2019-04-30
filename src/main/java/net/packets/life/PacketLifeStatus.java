@@ -38,11 +38,11 @@ public class PacketLifeStatus extends Packet {
   @Override
   public void validate() {
     if (getData() == null) {
-      addError("Empty message");
+      addError("Empty message.");
     } else {
       for (int i = 0; i < getData().length(); i++) {
         if (!Character.isDigit(getData().charAt(i))) {
-          addError("Invalid number");
+          addError("Invalid number.");
         }
       }
     }
@@ -62,8 +62,8 @@ public class PacketLifeStatus extends Packet {
           ServerLogic.getPlayerList()
               .getPlayer(getClientId())
               .setCurrentLives(Integer.parseInt(getData()));
-        } catch (NumberFormatException e) {
-          System.out.println("Failed to assign the data.");
+        } catch (NullPointerException | NumberFormatException e) {
+          addError("Failed to assign the data.");
         }
       }
     }

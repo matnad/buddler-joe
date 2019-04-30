@@ -19,6 +19,7 @@ public class PacketHighscore extends Packet {
   public static final Logger logger = LoggerFactory.getLogger(PacketHighscore.class);
 
   private String[] highscore;
+  private CopyOnWriteArrayList<HighscoreEntry> catalog = new CopyOnWriteArrayList<>();
 
   /**
    * Constructor that is used by the Client to verify the data and process the data.
@@ -88,7 +89,6 @@ public class PacketHighscore extends Packet {
       this.sendToClient(getClientId());
     } else {
       // Client side:
-      CopyOnWriteArrayList<HighscoreEntry> catalog = new CopyOnWriteArrayList<>();
       if (hasErrors()) {
         logger.info(createErrorMessage());
       } else if (highscore[0].equals("OK")) {
@@ -101,5 +101,9 @@ public class PacketHighscore extends Packet {
         Game.setHighscoreCatalog(catalog);
       }
     }
+  }
+
+  public CopyOnWriteArrayList<HighscoreEntry> getCatalog() {
+    return catalog;
   }
 }

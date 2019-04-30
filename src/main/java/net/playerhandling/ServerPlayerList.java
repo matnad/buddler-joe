@@ -34,10 +34,10 @@ public class ServerPlayerList {
         counter++;
       }
       players.put(player.getClientId(), player);
-      answer = "CHANGE" + player.getUsername();
+      answer = "CHANGE║" + player.getUsername();
     } else {
       players.put(player.getClientId(), player);
-      answer = "OK" + player.getUsername();
+      answer = "OK║" + player.getUsername();
     }
     return answer;
   }

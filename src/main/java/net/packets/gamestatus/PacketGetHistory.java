@@ -18,9 +18,9 @@ public class PacketGetHistory extends Packet {
    * @param clientId ClientId of the Client that has sent the command.
    */
   public PacketGetHistory(int clientId) {
-    // server builds
     super(PacketTypes.GET_HISTORY);
     setClientId(clientId);
+    validate();
   }
 
   /**
@@ -29,14 +29,12 @@ public class PacketGetHistory extends Packet {
    * Type, HISGE).
    */
   public PacketGetHistory() {
-    // client builds
     super(PacketTypes.GET_HISTORY);
   }
 
   /** Dummy method since there is no data to validate. */
   @Override
   public void validate() {
-    // Nothing to validate.
   }
 
   /**
@@ -48,14 +46,18 @@ public class PacketGetHistory extends Packet {
   public void processData() {
     String info;
     if (!isLoggedIn()) {
-      addError("Not loggedin yet");
+      addError("Not loggedin yet.");
     }
     if (hasErrors()) {
       info = createErrorMessage();
     } else {
       info = "OK║" + History.getStory();
     }
+    try {
     PacketHistory p = new PacketHistory(getClientId(), info);
     p.sendToClient(getClientId());
+    }catch (NullPointerException e) {
+      logger.info("Not connected to a Server.");
+    }
   }
 }

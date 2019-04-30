@@ -23,7 +23,6 @@ public class PacketStartRound extends Packet {
    * @param clientId a ClientId (to allow second constructor) Not sure if needed.
    */
   public PacketStartRound(int clientId) {
-    // server builds
     super(PacketTypes.START);
     setClientId(clientId);
     validate();
@@ -33,7 +32,6 @@ public class PacketStartRound extends Packet {
    * Constructor that is used by the Client to build the Packet, after receiving the Command STOPG.
    */
   public PacketStartRound() {
-    // client builds
     super(PacketTypes.START);
     validate();
   }

@@ -60,6 +60,22 @@ public class ServerLogic {
   }
 
   /**
+   * Constructor to mock a ServerLogic for certain Unit Tests.
+   */
+  ServerLogic() {
+    playerList = new ServerPlayerList();
+    clientThreadMap = new HashMap<>();
+    lobbyList = new ServerLobbyList();
+    try {
+    serverSocket = new ServerSocket(6666);
+    } catch (IOException e) {
+      logger.info("Not a real server due to a Unit Test.");
+    }
+    System.out.println("Started Server on port " + 6666);
+
+    serverHighscore = ServerHighscoreSerialiser.readServerHighscore();
+  }
+  /**
    * Players are managed with their own handler class: {@link ServerPlayerList}.
    *
    * @return an instance of ServerPlayerList with all the connected players and methods to manage

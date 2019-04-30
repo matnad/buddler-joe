@@ -30,7 +30,11 @@ public class PacketLogin extends Packet {
   public PacketLogin(String username) {
     super(PacketTypes.LOGIN);
     setData(username);
-    this.username = username.trim();
+    try {
+      this.username = username.trim();
+    } catch (NullPointerException e) {
+      addError("There is no username.");
+    }
     validate();
   }
 
@@ -60,10 +64,13 @@ public class PacketLogin extends Packet {
       ServerPlayer player = new ServerPlayer(username, getClientId());
       status = ServerLogic.getPlayerList().addPlayer(player);
     }
-    PacketLoginStatus p = new PacketLoginStatus(getClientId(), status);
-    p.sendToClient(getClientId());
-
-    // Send update for clientid to player
-    new PacketUpdateClientId(getClientId()).sendToClient(getClientId());
+    try {
+      PacketLoginStatus p = new PacketLoginStatus(getClientId(), status);
+      p.sendToClient(getClientId());
+      // Send update for clientid to player
+      new PacketUpdateClientId(getClientId()).sendToClient(getClientId());
+    } catch (NullPointerException e) {
+      addError("No server.");
+    }
   }
 }

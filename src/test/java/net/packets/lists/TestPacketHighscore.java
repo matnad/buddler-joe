@@ -30,4 +30,19 @@ public class TestPacketHighscore {
     PacketHighscore packetHighscore = new PacketHighscore(1);
     Assert.assertEquals(1, packetHighscore.getClientId());
   }
+
+  @Test
+  public void checkPacketCreationCorrectClient() {
+    PacketHighscore packetHighscore = new PacketHighscore();
+    Assert.assertEquals("ERRORS: ", packetHighscore.createErrorMessage());
+  }
+
+  @Test
+  public void checkPacketProcessDataCorrectly() {
+    PacketHighscore packetHighscore = new PacketHighscore("OK║test1║1║test2║2");
+    packetHighscore.processData();
+    Assert.assertEquals(
+        "test1",
+        packetHighscore.getCatalog().get(0).getUsername());
+  }
 }

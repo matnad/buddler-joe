@@ -28,7 +28,11 @@ public class PacketChatMessageToServer extends Packet {
   // client
   public PacketChatMessageToServer(String chatmsg) {
     super(PacketTypes.CHAT_MESSAGE_TO_SERVER);
+    try {
     this.chatmsg = chatmsg.trim();
+    } catch (NullPointerException e) {
+      addError("There is no message.");
+    }
     SimpleDateFormat simpleFormat = new SimpleDateFormat("HH:mm");
     Date date = new Date();
     timestamp = simpleFormat.format(date);
@@ -52,7 +56,7 @@ public class PacketChatMessageToServer extends Packet {
     }
     String[] input = data.split("║");
     if (input.length != 2) {
-      addError("Invalid Input");
+      addError("Invalid Input.");
       return;
     }
     chatmsg = input[0].trim();
@@ -68,8 +72,7 @@ public class PacketChatMessageToServer extends Packet {
    */
   @Override
   public void validate() {
-    if (chatmsg.trim().length() == 0) {
-      addError("No Message found");
+    if(hasErrors()) {
       return;
     }
     if (chatmsg.length() > 100) {
