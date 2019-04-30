@@ -33,7 +33,7 @@ public abstract class GameMap<T> {
   /**
    * Generate a new map.
    *
-   * @param mapSize can be s, m or l
+   * @param mapSize size of the map
    * @param seed random seed
    */
   public GameMap(String mapSize, long seed) {

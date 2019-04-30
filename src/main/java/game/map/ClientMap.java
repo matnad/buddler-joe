@@ -41,7 +41,7 @@ public class ClientMap extends GameMap<Block> {
   /**
    * Generate a map for the client and generate the blocks in the world.
    *
-   * @param mapSize can be s, m or l
+   * @param mapSize size of map
    * @param seed random seed
    */
   public ClientMap(String mapSize, long seed) {

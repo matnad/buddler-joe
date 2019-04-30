@@ -581,7 +581,7 @@ public class Game extends Thread {
     player = new Player(getUsername(), new Vector3f(90, 2, 3), 0, 0, 0);
 
     // Generate dummy map
-    map = new ClientMap("m" ,System.currentTimeMillis());
+    map = new ClientMap("m", System.currentTimeMillis());
 
     // Connecting to Server
     LoadingScreen.updateLoadingMessage("connecting to server");
