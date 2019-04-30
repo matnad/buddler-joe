@@ -3,6 +3,7 @@ package net.lobbyhandling;
 import game.History;
 import game.map.ServerMap;
 
+
 import java.util.HashMap;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -37,8 +38,7 @@ public class Lobby implements Runnable {
   private String status;
   private long createdAt;
   private ServerItemState serverItemState;
-  private HashMap<Integer, Referee> refereesForClients; // Integer = clientId
-
+  private ConcurrentHashMap<Integer, Referee> refereesForClients; // Integer = clientId
   private Thread gameLoop;
 
   /**
@@ -59,7 +59,7 @@ public class Lobby implements Runnable {
     this.lobbyPlayers = new CopyOnWriteArrayList<>();
     this.lobbyId = lobbyCounter;
     this.serverItemState = new ServerItemState();
-    this.refereesForClients = new HashMap<>();
+    this.refereesForClients = new ConcurrentHashMap<>();
     lobbyCounter++;
     map = new ServerMap(33, 40, System.currentTimeMillis());
   }
@@ -350,7 +350,7 @@ public class Lobby implements Runnable {
     new PacketStartRound().sendToLobby(lobbyId);
   }
 
-  public HashMap<Integer, Referee> getReferees() {
+  public ConcurrentHashMap<Integer, Referee> getReferees() {
     return refereesForClients;
   }
 
@@ -375,6 +375,7 @@ public class Lobby implements Runnable {
   }
 
   public void clear(int playerId) {
-    refereesForClients.put(playerId, null);
+    refereesForClients.remove(playerId);
+    //put(playerId, null);
   }
 }
