@@ -42,7 +42,6 @@ import game.stages.HistoryMenu;
 import game.stages.InLobby;
 import game.stages.LoadingScreen;
 import game.stages.LobbyCreation;
-import game.stages.Login;
 import game.stages.MainMenu;
 import game.stages.Options;
 import game.stages.PlayerList;
@@ -469,10 +468,6 @@ Game extends Thread {
           Options.update();
         }
 
-        if (activeStages.contains(LOGIN)) {
-          Login.update();
-        }
-
         if (activeStages.contains(INLOBBBY)) {
           InLobby.update();
         }
@@ -550,11 +545,9 @@ Game extends Thread {
     LoadingScreen.progess();
     ChooseLobby.init(loader);
     LoadingScreen.progess();
-    Credits.init(loader);
+    //Credits.init(loader);
     LoadingScreen.progess();
     Options.init(loader);
-    LoadingScreen.progess();
-    Login.init(loader);
     LoadingScreen.progess();
     Highscore.init(loader);
     LoadingScreen.progess();
