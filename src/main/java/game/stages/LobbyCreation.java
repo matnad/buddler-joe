@@ -153,7 +153,7 @@ public class LobbyCreation {
   @SuppressWarnings("Duplicates")
   public static void update() {
     if (!initializedText) {
-      done();
+      //done();
       initText();
       initializedText = true;
     }
@@ -228,7 +228,8 @@ public class LobbyCreation {
     } else if (InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1) && create.isHover(x, y)) {
       new PacketCreateLobby(newlobbyname + "║" + mapSize).sendToServer();
       InputHandler.resetInputString();
-      initializedText = false;
+      lobbyname = "";
+      updateGuiText();
     }
 
     Game.getGuiRenderer().render(guis);
@@ -252,6 +253,8 @@ public class LobbyCreation {
   public static synchronized void done() {
     mapSize = "";
     msg = "";
+    lobbyname = "";
+    InputHandler.resetInputString();
     initializedText = false;
     TextMaster.removeAll();
   }

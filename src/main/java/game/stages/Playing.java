@@ -24,6 +24,8 @@ import gui.text.FloatingStrings;
 import java.lang.management.MemoryUsage;
 import java.util.ArrayList;
 import java.util.List;
+
+import net.packets.highscore.PacketHighscore;
 import net.packets.lists.PacketPlayerList;
 import org.joml.Vector2f;
 import terrains.TerrainFlat;
@@ -113,9 +115,12 @@ public class Playing {
     // H = Highscore
     if (InputHandler.isKeyPressed(GLFW_KEY_H)
         && !Game.getChat().isEnabled()
-        && !Game.getActiveStages().contains(Game.Stage.GAMEMENU)) {
+        && !Game.getActiveStages().contains(Game.Stage.GAMEMENU)
+        && !Game.getActiveStages().contains(Game.Stage.HIGHSCORE)) {
+      new PacketHighscore().sendToServer();
       Highscore.setInGame(true);
       Game.addActiveStage(Game.Stage.HIGHSCORE);
+      Game.getChat().hide();
     }
 
     if (InputHandler.isKeyPressed(GLFW_KEY_P)
@@ -128,6 +133,7 @@ public class Playing {
       PacketPlayerList playerList = new PacketPlayerList();
       playerList.sendToServer();
       Game.addActiveStage(Game.Stage.PLAYERLIST);
+      Game.getChat().hide();
     }
     // TODO: Add Button for Whisper and all
 

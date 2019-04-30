@@ -219,7 +219,7 @@ public class Lobby implements Runnable {
 
   @Override
   public String toString() {
-    return "║" + lobbyName + "║" + getPlayerAmount();
+    return "║" + lobbyName + "║" + getPlayerAmount() + "║" + mapSize;
   }
 
   /**

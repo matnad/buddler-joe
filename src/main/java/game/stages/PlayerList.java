@@ -39,7 +39,7 @@ public class PlayerList {
   private static MenuButton back;
   private static MenuButton up;
   private static MenuButton down;
-  private static MenuButton[] join = new MenuButton[6];
+  private static MenuButton[] whisper = new MenuButton[6];
   private static float[] joinY = {0.312963f, 0.175926f, 0.037037f, -0.1f, -0.238889f, -0.375926f};
   private static float[] namesY = {0.330864f, 0.4f, 0.469136f, 0.538272f, 0.607407f, 0.676534f};
   private static CopyOnWriteArrayList<String> catalog;
@@ -115,11 +115,9 @@ public class PlayerList {
             new Vector2f(0.432032f, -0.512963f),
             new Vector2f(0.041406f, 0.0694444f));
 
-    // TODO: Neue Whisper Buttons:
-
     // initialize all whisper Buttons
-    for (int i = 0; i < join.length; i++) {
-      join[i] =
+    for (int i = 0; i < whisper.length; i++) {
+      whisper[i] =
           new MenuButton(
               loader,
               "whisper_norm",
@@ -175,10 +173,10 @@ public class PlayerList {
 
     // Place Join
     for (int i = 0; i < n; i++) {
-      guis.add(join[i].getHoverTexture(x, y));
+      guis.add(whisper[i].getHoverTexture(x, y));
     }
     for (int i = 5; i > -1 + n; i--) {
-      guis.remove(join[i].getHoverTexture(x, y));
+      guis.remove(whisper[i].getHoverTexture(x, y));
     }
     // Place PageIndex
     if (n == 6 || page != 0) {
@@ -205,6 +203,9 @@ public class PlayerList {
       done();
       Game.addActiveStage(Game.Stage.PLAYING);
       Game.removeActiveStage(Game.Stage.PLAYERLIST);
+      if (Game.getActiveStages().contains(Game.Stage.PLAYING)) {
+        Game.getChat().unhide();
+      }
     } else if (InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1) && up.isHover(x, y)) {
       if (page != 0) {
         page = page - 1;
@@ -215,7 +216,7 @@ public class PlayerList {
       for (int i = 0; i < n; i++) {
         if (i + startInd < catalog.size()
             && InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1)
-            && join[i].isHover(x, y)) {
+            && whisper[i].isHover(x, y)) {
           break;
         }
       }
@@ -254,11 +255,20 @@ public class PlayerList {
   }
 
   /** Deletes all the texts from the rendering list. */
+  @SuppressWarnings("Duplicates")
   public static synchronized void done() {
     page = 0;
     initializedPageIndex = false;
     initializedText = false;
-    TextMaster.removeAll();
+    for (ChangableGuiText name : names) {
+      if (name != null) {
+        name.delete();
+      }
+    }
+    if (pageIndex != null) {
+      pageIndex.delete();
+    }
+    // TextMaster.removeAll();
   }
 
   /**
