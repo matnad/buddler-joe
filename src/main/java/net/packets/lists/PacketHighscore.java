@@ -90,6 +90,7 @@ public class PacketHighscore extends Packet {
       // Client side:
       CopyOnWriteArrayList<HighscoreEntry> catalog = new CopyOnWriteArrayList<>();
       if (hasErrors()) {
+        logger.info(createErrorMessage());
       } else if (highscore[0].equals("OK")) {
         for (int i = 1; i < highscore.length; i += 2) {
           catalog.add(new HighscoreEntry(highscore[i], highscore[i + 1]));

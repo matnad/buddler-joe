@@ -1,4 +1,3 @@
 package net.packets.loginlogout;
 
-public class TestPacketUpdateClientId {
-}
+public class TestPacketUpdateClientId {}

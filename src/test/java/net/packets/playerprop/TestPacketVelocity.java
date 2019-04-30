@@ -1,4 +1,3 @@
 package net.packets.playerprop;
 
-public class TestPacketVelocity {
-}
+public class TestPacketVelocity {}

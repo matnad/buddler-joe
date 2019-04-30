@@ -1,4 +1,3 @@
 package net.packets.name;
 
-public class TestPacketSetName {
-}
+public class TestPacketSetName {}

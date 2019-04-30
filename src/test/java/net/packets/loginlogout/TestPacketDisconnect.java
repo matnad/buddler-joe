@@ -1,4 +1,3 @@
 package net.packets.loginlogout;
 
-public class TestPacketDisconnect {
-}
+public class TestPacketDisconnect {}

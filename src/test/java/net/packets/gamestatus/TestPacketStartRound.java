@@ -1,4 +1,3 @@
 package net.packets.gamestatus;
 
-public class TestPacketStartRound {
-}
+public class TestPacketStartRound {}

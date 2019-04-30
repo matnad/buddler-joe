@@ -37,17 +37,23 @@ public class TestPacketChatMessageToClient {
     Assert.assertEquals("ERRORS: No Message found.", packet.createErrorMessage());
   }
 
-    @Test
-    public void checkStatusIsNullServer() {
-        PacketChatMessageToClient packet = new PacketChatMessageToClient(1,null);
-        Assert.assertEquals("ERRORS: No Message found.", packet.createErrorMessage());
-    }
+  @Test
+  public void checkStatusIsNullServer() {
+    PacketChatMessageToClient packet = new PacketChatMessageToClient(1, null);
+    Assert.assertEquals("ERRORS: No Message found.", packet.createErrorMessage());
+  }
 
   @Test
   public void checkStatusIsTooLong() {
     PacketChatMessageToClient packet =
         new PacketChatMessageToClient(
-            "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+            "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+                + "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+                + "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+                + "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+                + "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+                + "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+                + "aaaaaaaaaaaaaaaaaa");
     Assert.assertEquals(
         "ERRORS: Message to long. Maximum is 100 Characters.", packet.createErrorMessage());
   }

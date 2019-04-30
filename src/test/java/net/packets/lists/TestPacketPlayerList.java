@@ -1,4 +1,3 @@
 package net.packets.lists;
 
-public class TestPacketPlayerList {
-}
+public class TestPacketPlayerList {}

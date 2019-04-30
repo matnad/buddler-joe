@@ -53,7 +53,7 @@ public class PacketSpawnItem extends Packet {
     ServerItem serverItem = new ServerItem(clientId, type, position);
     setClientId(clientId);
     try {
-    ServerLogic.getLobbyForClient(getClientId()).getServerItemState().addItem(serverItem);
+      ServerLogic.getLobbyForClient(getClientId()).getServerItemState().addItem(serverItem);
     } catch (NullPointerException e) {
       addError("Client not in a lobby.");
     }
@@ -91,7 +91,7 @@ public class PacketSpawnItem extends Packet {
     ServerItem serverItem =
         new ServerItem(clientId, ItemMaster.ItemTypes.getItemTypeById(type), position);
     try {
-    ServerLogic.getLobbyForClient(getClientId()).getServerItemState().addItem(serverItem);
+      ServerLogic.getLobbyForClient(getClientId()).getServerItemState().addItem(serverItem);
     } catch (NullPointerException e) {
       addError("Not in a lobby.");
     }

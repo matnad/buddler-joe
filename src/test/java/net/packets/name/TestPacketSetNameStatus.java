@@ -1,4 +1,3 @@
 package net.packets.name;
 
-public class TestPacketSetNameStatus {
-}
+public class TestPacketSetNameStatus {}

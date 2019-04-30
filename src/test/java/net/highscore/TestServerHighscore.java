@@ -3,8 +3,6 @@ package net.highscore;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.util.concurrent.CopyOnWriteArrayList;
-
 public class TestServerHighscore {
 
   @Test

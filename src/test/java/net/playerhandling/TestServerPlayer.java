@@ -1,4 +1,3 @@
 package net.playerhandling;
 
-public class TestServerPlayer {
-}
+public class TestServerPlayer {}

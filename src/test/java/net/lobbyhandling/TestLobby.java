@@ -12,7 +12,6 @@ import org.mockito.Mockito;
 import org.mockito.Spy;
 import org.mockito.junit.MockitoJUnitRunner;
 
-
 public class TestLobby {
 
   @Test
@@ -90,5 +89,4 @@ public class TestLobby {
         1 + "║" + "TestPlayer1" + "║" + true + "║" + 2 + "║" + "TestPlayer2" + "║" + true + "║",
         testLobby.getPlayerNamesIdsReadies());
   }
-
 }

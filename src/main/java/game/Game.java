@@ -10,7 +10,6 @@ import static game.Game.Stage.HISTORYMENU;
 import static game.Game.Stage.INLOBBBY;
 import static game.Game.Stage.LOADINGSCREEN;
 import static game.Game.Stage.LOBBYCREATION;
-import static game.Game.Stage.LOGIN;
 import static game.Game.Stage.MAINMENU;
 import static game.Game.Stage.OPTIONS;
 import static game.Game.Stage.PLAYERLIST;
@@ -69,9 +68,7 @@ import terrains.TerrainFlat;
  * in the same execution. Getters and setters should be static so we can access them from anywhere,
  * but we have to be very careful which variables we want to be "global"
  */
-public class
-
-Game extends Thread {
+public class Game extends Thread {
 
   private static final Logger logger = LoggerFactory.getLogger(Game.class);
   // Set up list of stages, stages will be updated at the end of every frame
@@ -545,7 +542,7 @@ Game extends Thread {
     LoadingScreen.progess();
     ChooseLobby.init(loader);
     LoadingScreen.progess();
-    //Credits.init(loader);
+    // Credits.init(loader);
     LoadingScreen.progess();
     Options.init(loader);
     LoadingScreen.progess();

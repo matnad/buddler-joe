@@ -113,7 +113,6 @@ public class TestServerLobbyList {
     Assert.assertTrue(testLobby1.getLobbyId() == lobbyList.getLobbyId(testLobby1.getLobbyName()));
   }
 
-  
   // This test depends on the linenumber of this
   // file being even or not...very strange...
   @Test
@@ -148,5 +147,4 @@ public class TestServerLobbyList {
     s.append(testLobby1.toString()).append("║");
     Assert.assertTrue(s.toString().equals(lobbyList.getLobbiesInGame()));
   }
-
 }

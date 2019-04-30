@@ -42,29 +42,31 @@ public class TestPacketSpawnItem {
     Assert.assertEquals("ERRORS: ", spawnItem.createErrorMessage());
   }
 
-    @Test
-    public void checkValidDataTorch() {
-        PacketSpawnItem spawnItem = new PacketSpawnItem("1║TRCH║1.0f║1.0f║1.0f");
-        Assert.assertEquals("ERRORS: ", spawnItem.createErrorMessage());
-    }
+  @Test
+  public void checkValidDataTorch() {
+    PacketSpawnItem spawnItem = new PacketSpawnItem("1║TRCH║1.0f║1.0f║1.0f");
+    Assert.assertEquals("ERRORS: ", spawnItem.createErrorMessage());
+  }
 
-    @Test
-    public void checkClientCreatesValidPacket() {
-      PacketSpawnItem packetSpawnItem = new PacketSpawnItem(ItemMaster.ItemTypes.STAR, new Vector3f(1,2,3));
-      Assert.assertEquals("0║STAR║1.0║2.0║3.0║0", packetSpawnItem.getData());
-    }
+  @Test
+  public void checkClientCreatesValidPacket() {
+    PacketSpawnItem packetSpawnItem =
+        new PacketSpawnItem(ItemMaster.ItemTypes.STAR, new Vector3f(1, 2, 3));
+    Assert.assertEquals("0║STAR║1.0║2.0║3.0║0", packetSpawnItem.getData());
+  }
 
-    @Test
-    public void checkQmarkBlockCreatesValidPacket() {
-        ServerLogic serverLogic = Mockito.spy(ServerLogic.class);
-        PacketSpawnItem packetSpawnItem = new PacketSpawnItem(ItemMaster.ItemTypes.STAR, new Vector3f(1,2,3), 3);
-        Assert.assertEquals("3║STAR║1.0║2.0║3.0║0", packetSpawnItem.getData());
-    }
+  @Test
+  public void checkQmarkBlockCreatesValidPacket() {
+    ServerLogic serverLogic = Mockito.spy(ServerLogic.class);
+    PacketSpawnItem packetSpawnItem =
+        new PacketSpawnItem(ItemMaster.ItemTypes.STAR, new Vector3f(1, 2, 3), 3);
+    Assert.assertEquals("3║STAR║1.0║2.0║3.0║0", packetSpawnItem.getData());
+  }
 
-    @Test
-    public void checkServerBroadcastCreatesValidPacket() {
-        ServerLogic serverLogic = Mockito.spy(ServerLogic.class);
-        PacketSpawnItem packetSpawnItem = new PacketSpawnItem(1, "1║STAR║2.0║2.0║2.0");
-        Assert.assertEquals("1║STAR║15.0║-15.0║2.0║0", packetSpawnItem.getData());
-    }
+  @Test
+  public void checkServerBroadcastCreatesValidPacket() {
+    ServerLogic serverLogic = Mockito.spy(ServerLogic.class);
+    PacketSpawnItem packetSpawnItem = new PacketSpawnItem(1, "1║STAR║2.0║2.0║2.0");
+    Assert.assertEquals("1║STAR║15.0║-15.0║2.0║0", packetSpawnItem.getData());
+  }
 }

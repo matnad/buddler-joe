@@ -1,4 +1,3 @@
 package net.playerhandling;
 
-public class TestPingManager {
-}
+public class TestPingManager {}

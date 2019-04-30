@@ -40,7 +40,7 @@ public class PacketChatMessageToClient extends Packet {
     setClientId(clientId);
     setData(data);
     try {
-    chatmsg = getData().trim();
+      chatmsg = getData().trim();
     } catch (NullPointerException e) {
       addError("No Message found.");
     }

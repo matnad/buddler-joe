@@ -72,8 +72,8 @@ public class TestHistory {
 
     Assert.assertEquals(
         "Open Lobbies:║TestLobby2║TestLobby4║"
-                + "Lobbies Of Running Games:║TestLobby2║TestLobby3║Old Games:"
-                + "║TestLobby6║TestLobby3║TestLobby2║",
+            + "Lobbies Of Running Games:║TestLobby2║TestLobby3║Old Games:"
+            + "║TestLobby6║TestLobby3║TestLobby2║",
         history.getStory());
   }
 }
