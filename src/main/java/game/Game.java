@@ -6,6 +6,7 @@ import static game.Game.Stage.CREDITS;
 import static game.Game.Stage.GAMEMENU;
 import static game.Game.Stage.GAMEOVER;
 import static game.Game.Stage.HIGHSCORE;
+import static game.Game.Stage.HISTORYMENU;
 import static game.Game.Stage.INLOBBBY;
 import static game.Game.Stage.LOADINGSCREEN;
 import static game.Game.Stage.LOBBYCREATION;
@@ -38,6 +39,7 @@ import game.stages.Credits;
 import game.stages.GameMenu;
 import game.stages.GameOver;
 import game.stages.Highscore;
+import game.stages.HistoryMenu;
 import game.stages.InLobby;
 import game.stages.LoadingScreen;
 import game.stages.LobbyCreation;
@@ -123,6 +125,7 @@ Game extends Thread {
   private static CopyOnWriteArrayList<LobbyEntry> lobbyCatalog = new CopyOnWriteArrayList<>();
   private static CopyOnWriteArrayList<HighscoreEntry> highscoreCatalog =
       new CopyOnWriteArrayList<>();
+  private static CopyOnWriteArrayList<String> historyCatalog = new CopyOnWriteArrayList<>();
   private static CopyOnWriteArrayList<String> playerList = new CopyOnWriteArrayList<>();
   private static CopyOnWriteArrayList<LobbyPlayerEntry> lobbyPlayerCatalog =
       new CopyOnWriteArrayList<>();
@@ -214,6 +217,14 @@ Game extends Thread {
   public static void setLobbyPlayerCatalog(
       CopyOnWriteArrayList<LobbyPlayerEntry> lobbyPlayerCatalog) {
     Game.lobbyPlayerCatalog = lobbyPlayerCatalog;
+  }
+
+  public static CopyOnWriteArrayList<String> getHistoryCatalog() {
+    return historyCatalog;
+  }
+
+  public static void setHistoryCatalog(CopyOnWriteArrayList<String> historyCatalog) {
+    Game.historyCatalog = historyCatalog;
   }
 
   /**
@@ -483,6 +494,9 @@ Game extends Thread {
         if (activeStages.contains(PLAYERLIST)) {
           PlayerList.update();
         }
+        if (activeStages.contains(HISTORYMENU)) {
+          HistoryMenu.update();
+        }
       }
 
       activeStages.addAll(stagesToBeAdded);
@@ -561,6 +575,8 @@ Game extends Thread {
     LobbyCreation.init(loader);
     LoadingScreen.progess();
     ChangeName.init(loader);
+    LoadingScreen.progess();
+    HistoryMenu.init(loader);
 
     // Generate ServerPlayer
     NetPlayer.init(loader);
@@ -676,6 +692,7 @@ Game extends Thread {
     GAMEOVER,
     CHANGENAME,
     PLAYERLIST,
+    HISTORYMENU,
     LOBBYCREATION
   }
 }

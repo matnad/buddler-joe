@@ -11,7 +11,8 @@ import gui.MenuButton;
 import gui.text.ChangableGuiText;
 import java.util.ArrayList;
 import java.util.List;
-import net.packets.lists.PacketHighscore;
+import net.packets.gamestatus.PacketGetHistory;
+import net.packets.highscore.PacketHighscore;
 import net.packets.lobby.PacketGetLobbies;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
@@ -201,7 +202,10 @@ public class MainMenu {
       Game.addActiveStage(Game.Stage.HIGHSCORE);
       Game.removeActiveStage(Game.Stage.MAINMENU);
     } else if (InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1) && history.isHover(x, y)) {
-      // TODO: go to History Page.
+      new PacketGetHistory().sendToServer();
+      MainMenu.done();
+      Game.addActiveStage(Game.Stage.HISTORYMENU);
+      Game.removeActiveStage(Game.Stage.MAINMENU);
     }
     Game.getGuiRenderer().render(guis);
     TextMaster.render();
