@@ -1,21 +1,5 @@
 package game;
 
-import static game.Game.Stage.CHANGENAME;
-import static game.Game.Stage.CHOOSELOBBY;
-import static game.Game.Stage.CREDITS;
-import static game.Game.Stage.GAMEMENU;
-import static game.Game.Stage.GAMEOVER;
-import static game.Game.Stage.HIGHSCORE;
-import static game.Game.Stage.INLOBBBY;
-import static game.Game.Stage.LOADINGSCREEN;
-import static game.Game.Stage.LOBBYCREATION;
-import static game.Game.Stage.LOGIN;
-import static game.Game.Stage.MAINMENU;
-import static game.Game.Stage.OPTIONS;
-import static game.Game.Stage.PLAYERLIST;
-import static game.Game.Stage.PLAYING;
-import static game.Game.Stage.WELCOME;
-
 import engine.io.InputHandler;
 import engine.io.Window;
 import engine.particles.ParticleMaster;
@@ -32,21 +16,7 @@ import entities.blocks.debris.DebrisMaster;
 import entities.items.ItemMaster;
 import entities.light.LightMaster;
 import game.map.ClientMap;
-import game.stages.ChangeName;
-import game.stages.ChooseLobby;
-import game.stages.Credits;
-import game.stages.GameMenu;
-import game.stages.GameOver;
-import game.stages.Highscore;
-import game.stages.InLobby;
-import game.stages.LoadingScreen;
-import game.stages.LobbyCreation;
-import game.stages.Login;
-import game.stages.MainMenu;
-import game.stages.Options;
-import game.stages.PlayerList;
-import game.stages.Playing;
-import game.stages.Welcome;
+import game.stages.*;
 import gui.chat.Chat;
 import gui.lifestatus.LifeStatus;
 import gui.text.CurrentGold;
@@ -64,6 +34,8 @@ import org.joml.Vector3f;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import terrains.TerrainFlat;
+
+import static game.Game.Stage.*;
 
 /**
  * Playing is static for all intents and purposes. There will never be multiple instances of Playing
@@ -121,6 +93,7 @@ public class Game extends Thread {
   private static CopyOnWriteArrayList<LobbyEntry> lobbyCatalog = new CopyOnWriteArrayList<>();
   private static CopyOnWriteArrayList<HighscoreEntry> highscoreCatalog =
       new CopyOnWriteArrayList<>();
+  private static CopyOnWriteArrayList<String> historyCatalog = new CopyOnWriteArrayList<>();
   private static CopyOnWriteArrayList<String> playerList = new CopyOnWriteArrayList<>();
   private static CopyOnWriteArrayList<LobbyPlayerEntry> lobbyPlayerCatalog =
       new CopyOnWriteArrayList<>();
@@ -212,6 +185,14 @@ public class Game extends Thread {
   public static void setLobbyPlayerCatalog(
       CopyOnWriteArrayList<LobbyPlayerEntry> lobbyPlayerCatalog) {
     Game.lobbyPlayerCatalog = lobbyPlayerCatalog;
+  }
+
+  public static CopyOnWriteArrayList<String> getHistoryCatalog() {
+    return historyCatalog;
+  }
+
+  public static void setHistoryCatalog(CopyOnWriteArrayList<String> historyCatalog) {
+    Game.historyCatalog = historyCatalog;
   }
 
   /**
@@ -481,6 +462,9 @@ public class Game extends Thread {
         if (activeStages.contains(PLAYERLIST)) {
           PlayerList.update();
         }
+        if (activeStages.contains(HISTORYMENU)) {
+          HistoryMenu.update();
+        }
       }
 
       activeStages.addAll(stagesToBeAdded);
@@ -559,6 +543,8 @@ public class Game extends Thread {
     LobbyCreation.init(loader);
     LoadingScreen.progess();
     ChangeName.init(loader);
+    LoadingScreen.progess();
+    HistoryMenu.init(loader);
 
     // Generate ServerPlayer
     NetPlayer.init(loader);
@@ -674,6 +660,7 @@ public class Game extends Thread {
     GAMEOVER,
     CHANGENAME,
     PLAYERLIST,
+    HISTORYMENU,
     LOBBYCREATION
   }
 }
