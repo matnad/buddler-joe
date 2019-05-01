@@ -19,7 +19,7 @@ public class PacketLogin extends Packet {
     setData(data);
     setClientId(clientId);
     try {
-      this.username = username.trim();
+      this.username = getData().trim();
     } catch (NullPointerException e) {
       addError("There is no username.");
     }
