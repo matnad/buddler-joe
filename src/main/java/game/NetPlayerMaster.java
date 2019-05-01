@@ -9,11 +9,15 @@ import java.util.Set;
 import java.util.StringJoiner;
 import java.util.concurrent.ConcurrentHashMap;
 import org.joml.Vector3f;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Represents the current lobby on the client side. Gets updated via Packets and is fully static.
  */
 public class NetPlayerMaster {
+
+  private static final Logger logger = LoggerFactory.getLogger(NetPlayerMaster.class);
 
   private static String lobbyname;
   private static Map<Integer, NetPlayer> netPlayers;
@@ -76,7 +80,15 @@ public class NetPlayerMaster {
    * @param presentIds list of all currently connected (to the lobby) players by their client id
    */
   public static void removeMissing(ArrayList<Integer> presentIds) {
-    getIds().removeIf(netId -> !presentIds.contains(netId));
+    // getIds().removeIf(netId -> !presentIds.contains(netId));
+    for (Map.Entry<Integer, NetPlayer> netPlayer : netPlayers.entrySet()) {
+      if (!presentIds.contains(netPlayer.getKey())) {
+        logger.debug("Removing " + netPlayer.getValue().getUsername());
+        netPlayers.remove(netPlayer.getKey());
+        netPlayer.getValue().removeNameplate();
+      }
+    }
+
     System.out.println(NetPlayerMaster.staticToString());
   }
 

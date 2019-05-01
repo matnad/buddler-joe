@@ -325,6 +325,10 @@ public class NetPlayer extends Entity {
     }
   }
 
+  public void removeNameplate() {
+    nameplate.delete();
+  }
+
   public String getUsername() {
     return username;
   }

@@ -153,7 +153,7 @@ public class Lobby implements Runnable {
         ServerPlayer player = ServerLogic.getPlayerList().getPlayer(clientId);
         player.setReady(false);
         lobbyPlayers.remove(player);
-        if (allPlayersReady() && !isEmpty()) {
+        if (status.equals("open") && allPlayersReady() && !isEmpty()) {
           startRound();
         }
         return "OK";
@@ -167,7 +167,7 @@ public class Lobby implements Runnable {
           lobbyPlayers.remove(lobbyPlayers.get(i));
         }
       }
-      if (allPlayersReady() && !isEmpty()) {
+      if (status.equals("open") && allPlayersReady() && !isEmpty()) {
         startRound();
       }
       return "Not connected to the server.";
