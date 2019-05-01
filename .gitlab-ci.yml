@@ -1,0 +1,15 @@
+stages:
+  - build
+  - test
+
+build:
+  stage: build
+  script: ./gradlew build-cs108
+
+javadoc:
+  stage: test
+  script: ./gradlew javadoc
+
+checkstyle:
+  stage: test
+  script: ./gradlew checkstyleMain
