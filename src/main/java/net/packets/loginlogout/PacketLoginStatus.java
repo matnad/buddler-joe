@@ -44,10 +44,11 @@ public class PacketLoginStatus extends Packet {
   @Override
   public void validate() {
     if (status != null) {
-      isExtendedAscii(status);
       String[] temp = status.split("║");
       try {
         username = temp[1];
+        isExtendedAscii(username);
+        isExtendedAscii(temp[0]);
       } catch (ArrayIndexOutOfBoundsException e) {
         addError("There is no username attached.");
       }
