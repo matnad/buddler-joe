@@ -44,10 +44,10 @@ public class Playing {
   private static float damageTakenScreenRemaining = 0f;
   private static int redDown = 0;
   private static int redUp = 0;
+  private static int fase = 0;
   private static boolean firstloop = true;
   private static MenuButton whisper;
   private static MenuButton all;
-  private static int redDownTotal;
   private static GuiTexture damageCorner;
 
   /**
@@ -194,29 +194,33 @@ public class Playing {
     if (damageTakenScreenRemaining > 0) {
       damageTakenScreenRemaining -= Game.dt();
       float alpha = damageOverlay.getAlpha();
-      if (redDown == 0 && redUp == 0) {
-        redDown = 30;
-        redUp = 15;
-        if (redDownTotal == 30) {
-          redUp = 0;
-        }
-      }
-      if (redDown > 0) {
+
+      if (fase == 1){
         if (alpha - 0.033333f > 0) {
           damageOverlay.setAlpha(alpha - 0.033333f);
         }
-        if (redDownTotal < 30) {
-          damageCorner.setAlpha(alpha - 0.033333f);
-        }
         redDown--;
-        redDownTotal--;
       }
-      if (redDown == 0 && redUp > 0) {
-        if (alpha + 0.066666f < 1) {
-          damageOverlay.setAlpha(alpha + 0.066666f);
+      if (fase == 2){
+        if (alpha + 0.033333f < 1) {
+          damageOverlay.setAlpha(alpha + 0.033333f);
         }
         redUp--;
       }
+      if (fase == 3){
+        if (alpha - 0.022222f > 0) {
+          damageOverlay.setAlpha(alpha - 0.022222f);
+        }
+        if(damageCorner.getAlpha()-0.011111f>0){
+          damageCorner.setAlpha(damageCorner.getAlpha()-0.022222f - 0.011111f);
+        }
+      }
+      if(redDown == 0 && redUp == 15){
+        fase = 2;
+      }else if (redDown == 0 && redUp == 0){
+        fase = 3;
+      }
+
       guis.add(damageOverlay);
       guis.add(damageCorner);
     }
@@ -238,7 +242,7 @@ public class Playing {
     damageCorner.setAlpha(1f);
     redDown = 30;
     redUp = 15;
-    redDownTotal = 90;
+    fase = 1;
   }
 
   /** Delete all text objects from this stage. */
