@@ -34,7 +34,7 @@ public class PacketDisconnect extends Packet {
   @Override
   public void processData() {
     try {
-    ServerLogic.removePlayer(getClientId());
+      ServerLogic.removePlayer(getClientId());
     } catch (NullPointerException e) {
       addError("Not Connected to the Server.");
     }

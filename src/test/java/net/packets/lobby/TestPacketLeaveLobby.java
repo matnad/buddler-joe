@@ -1,4 +1,3 @@
 package net.packets.lobby;
 
-public class TestPacketLeaveLobby {
-}
+public class TestPacketLeaveLobby {}

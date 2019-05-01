@@ -34,8 +34,7 @@ public class PacketGetHistory extends Packet {
 
   /** Dummy method since there is no data to validate. */
   @Override
-  public void validate() {
-  }
+  public void validate() {}
 
   /**
    * Method that lets the Server react to the receiving of this packet. Check for errors in validate
@@ -54,9 +53,9 @@ public class PacketGetHistory extends Packet {
       info = "OK║" + History.getStory();
     }
     try {
-    PacketHistory p = new PacketHistory(getClientId(), info);
-    p.sendToClient(getClientId());
-    }catch (NullPointerException e) {
+      PacketHistory p = new PacketHistory(getClientId(), info);
+      p.sendToClient(getClientId());
+    } catch (NullPointerException e) {
       logger.info("Not connected to a Server.");
     }
   }

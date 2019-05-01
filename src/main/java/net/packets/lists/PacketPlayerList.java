@@ -19,7 +19,7 @@ public class PacketPlayerList extends Packet {
     super(PacketTypes.PLAYERLIST);
     setClientId(clientId);
     try {
-    setData(ServerLogic.getPlayerList().toString());
+      setData(ServerLogic.getPlayerList().toString());
     } catch (NullPointerException e) {
       addError("Not a server.");
     }
@@ -34,7 +34,7 @@ public class PacketPlayerList extends Packet {
     super(PacketTypes.PLAYERLIST);
     setData(data);
     try {
-    playerList = data.split("║");
+      playerList = data.split("║");
     } catch (NullPointerException e) {
       addError("There are no names in the list.");
     }
@@ -49,7 +49,7 @@ public class PacketPlayerList extends Packet {
   /** Validate whether the PlayerList only consists of extended Ascii. */
   @Override
   public void validate() {
-    if(hasErrors()) {
+    if (hasErrors()) {
       return;
     }
     for (int i = 0; i < playerList.length; i++) {

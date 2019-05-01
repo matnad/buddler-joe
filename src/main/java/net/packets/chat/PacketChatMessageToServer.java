@@ -29,7 +29,7 @@ public class PacketChatMessageToServer extends Packet {
   public PacketChatMessageToServer(String chatmsg) {
     super(PacketTypes.CHAT_MESSAGE_TO_SERVER);
     try {
-    this.chatmsg = chatmsg.trim();
+      this.chatmsg = chatmsg.trim();
     } catch (NullPointerException e) {
       addError("There is no message.");
     }
@@ -72,7 +72,7 @@ public class PacketChatMessageToServer extends Packet {
    */
   @Override
   public void validate() {
-    if(hasErrors()) {
+    if (hasErrors()) {
       return;
     }
     if (chatmsg.length() > 100) {

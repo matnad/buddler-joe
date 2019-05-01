@@ -73,7 +73,7 @@ public class PacketCreateLobbyStatus extends Packet {
       String errMsg = createErrorMessage();
       LobbyCreation.setMsg(errMsg);
     } else if (status.startsWith("OK")) {
-      //System.out.println("Lobby-Creation Successful");
+      // System.out.println("Lobby-Creation Successful");
       if (Game.getActiveStages().contains(Game.Stage.LOBBYCREATION)) {
         LobbyCreation.done();
         Game.addActiveStage(Game.Stage.CHOOSELOBBY);

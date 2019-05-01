@@ -50,7 +50,7 @@ public class PacketUpdateClientId extends Packet {
     } catch (NumberFormatException e) {
       addError("Invalid client ID for current player received from server. ID: " + clientIdString);
       logger.error(
-              "Invalid client ID for current player received from server. ID: " + clientIdString);
+          "Invalid client ID for current player received from server. ID: " + clientIdString);
     }
   }
 
@@ -58,12 +58,11 @@ public class PacketUpdateClientId extends Packet {
   @Override
   public void processData() {
     if (!hasErrors()) {
-        try {
-          Game.getActivePlayer().setClientId(clientId);
-        } catch (NullPointerException ignored) {
-          addError("Not connected to the server.");
-        }
-
+      try {
+        Game.getActivePlayer().setClientId(clientId);
+      } catch (NullPointerException ignored) {
+        addError("Not connected to the server.");
+      }
     }
   }
 }

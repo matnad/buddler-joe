@@ -22,10 +22,10 @@ public class TestPacketCreateLobbyStatus {
     Assert.assertEquals("ERRORS: Invalid characters, only extended ASCII.", p.createErrorMessage());
   }
 
-    @Test
-    public void checkGameNotCreated() {
-        PacketCreateLobbyStatus p = new PacketCreateLobbyStatus("NOTOK");
-        p.processData();
-        Assert.assertEquals("ERRORS: ", p.createErrorMessage());
-    }
+  @Test
+  public void checkGameNotCreated() {
+    PacketCreateLobbyStatus p = new PacketCreateLobbyStatus("NOTOK");
+    p.processData();
+    Assert.assertEquals("ERRORS: ", p.createErrorMessage());
+  }
 }

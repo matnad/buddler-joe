@@ -56,14 +56,14 @@ public class PacketStartRound extends Packet {
     Game.removeActiveStage(INLOBBBY);
     ClientMap map = Game.getMap();
     try {
-    map.reloadMap();
-    Player player = Game.getActivePlayer();
-    player.setPosition(map.getSpawnPositionForPlayer(player));
-    new PacketPos(player.getPositionXy().x, player.getPositionXy().y, player.getRotY())
-        .sendToServer();
-    Game.addActiveStage(PLAYING);
-    // InLobby.done();
-      } catch (NullPointerException e) {
+      map.reloadMap();
+      Player player = Game.getActivePlayer();
+      player.setPosition(map.getSpawnPositionForPlayer(player));
+      new PacketPos(player.getPositionXy().x, player.getPositionXy().y, player.getRotY())
+          .sendToServer();
+      Game.addActiveStage(PLAYING);
+      // InLobby.done();
+    } catch (NullPointerException e) {
       addError("No map available.");
     }
   }

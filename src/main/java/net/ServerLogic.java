@@ -59,15 +59,13 @@ public class ServerLogic {
     serverHighscore = ServerHighscoreSerialiser.readServerHighscore();
   }
 
-  /**
-   * Constructor to mock a ServerLogic for certain Unit Tests.
-   */
+  /** Constructor to mock a ServerLogic for certain Unit Tests. */
   ServerLogic() {
     playerList = new ServerPlayerList();
     clientThreadMap = new HashMap<>();
     lobbyList = new ServerLobbyList();
     try {
-    serverSocket = new ServerSocket(6666);
+      serverSocket = new ServerSocket(6666);
     } catch (IOException e) {
       logger.info("Not a real server due to a Unit Test.");
     }
@@ -82,6 +80,7 @@ public class ServerLogic {
    *     them
    * @see ServerPlayerList
    */
+
   public static ServerPlayerList getPlayerList() {
     return playerList;
   }

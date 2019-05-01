@@ -37,8 +37,7 @@ public class PacketReady extends Packet {
 
   /** Dummy method since there is no data to validate. */
   @Override
-  public void validate() {
-  }
+  public void validate() {}
 
   /**
    * Method that lets the Server react to the receiving of this packet. Checks if the sender is

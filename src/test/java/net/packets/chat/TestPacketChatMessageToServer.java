@@ -25,23 +25,23 @@ public class TestPacketChatMessageToServer {
         "ERRORS: Message to long. Maximum is 100 Characters.", packet.createErrorMessage());
   }
 
-    @Test
-    public void checkStatusIsNotAsciiClient() {
-        PacketChatMessageToServer packet = new PacketChatMessageToServer("ඥ");
-        Assert.assertEquals(
-                "ERRORS: Invalid characters, only extended ASCII.", packet.createErrorMessage());
-    }
-    @Test
-    public void checkStatusIsNotAsciiServer() {
-        PacketChatMessageToServer packet = new PacketChatMessageToServer(1,"ඥ║1");
-        Assert.assertEquals(
-                "ERRORS: Invalid characters, only extended ASCII.", packet.createErrorMessage());
-    }
+  @Test
+  public void checkStatusIsNotAsciiClient() {
+    PacketChatMessageToServer packet = new PacketChatMessageToServer("ඥ");
+    Assert.assertEquals(
+        "ERRORS: Invalid characters, only extended ASCII.", packet.createErrorMessage());
+  }
 
-    @Test
-    public void checkStatusIsTooShortServer() {
-        PacketChatMessageToServer packet = new PacketChatMessageToServer(1,"ඥ");
-        Assert.assertEquals(
-                "ERRORS: Invalid Input.", packet.createErrorMessage());
-    }
+  @Test
+  public void checkStatusIsNotAsciiServer() {
+    PacketChatMessageToServer packet = new PacketChatMessageToServer(1, "ඥ║1");
+    Assert.assertEquals(
+        "ERRORS: Invalid characters, only extended ASCII.", packet.createErrorMessage());
+  }
+
+  @Test
+  public void checkStatusIsTooShortServer() {
+    PacketChatMessageToServer packet = new PacketChatMessageToServer(1, "ඥ");
+    Assert.assertEquals("ERRORS: Invalid Input.", packet.createErrorMessage());
+  }
 }

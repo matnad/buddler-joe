@@ -47,7 +47,7 @@ public class PacketLoginStatus extends Packet {
       isExtendedAscii(status);
       String[] temp = status.split("║");
       try {
-      username = temp[1];
+        username = temp[1];
       } catch (ArrayIndexOutOfBoundsException e) {
         addError("There is no username attached.");
       }

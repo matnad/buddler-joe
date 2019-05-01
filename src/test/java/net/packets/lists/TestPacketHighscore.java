@@ -41,8 +41,6 @@ public class TestPacketHighscore {
   public void checkPacketProcessDataCorrectly() {
     PacketHighscore packetHighscore = new PacketHighscore("OK║test1║1║test2║2");
     packetHighscore.processData();
-    Assert.assertEquals(
-        "test1",
-        packetHighscore.getCatalog().get(0).getUsername());
+    Assert.assertEquals("test1", packetHighscore.getCatalog().get(0).getUsername());
   }
 }

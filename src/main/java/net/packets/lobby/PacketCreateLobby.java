@@ -26,11 +26,11 @@ public class PacketCreateLobby extends Packet {
     super(PacketTypes.CREATE_LOBBY);
     setData(data);
     try {
-    info = getData().split("║");
-    if (info.length > 0 && info[0] != null) {
-      info[0] = info[0].trim();
-    }
-    validate();
+      info = getData().split("║");
+      if (info.length > 0 && info[0] != null) {
+        info[0] = info[0].trim();
+      }
+      validate();
     } catch (NullPointerException e) {
       addError("There is no String attached.");
     }
@@ -49,14 +49,14 @@ public class PacketCreateLobby extends Packet {
     setClientId(clientId);
     setData(data);
     try {
-    info = getData().split("║");
-    if (info.length > 0 && info[0] != null) {
-      info[0] = info[0].trim();
-    }
-    validate();
+      info = getData().split("║");
+      if (info.length > 0 && info[0] != null) {
+        info[0] = info[0].trim();
+      }
+      validate();
     } catch (NullPointerException e) {
-    addError("There is no String attached.");
-  }
+      addError("There is no String attached.");
+    }
   }
 
   /**
