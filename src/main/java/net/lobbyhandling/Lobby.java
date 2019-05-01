@@ -101,6 +101,11 @@ public class Lobby implements Runnable {
     return maxPlayers;
   }
 
+  /**
+   * checks the player who collected the largest amount of gold.
+   *
+   * @return the winner
+   */
   public ServerPlayer getCurrentWinner() {
     checked = !checked;
     int gold = -1;
