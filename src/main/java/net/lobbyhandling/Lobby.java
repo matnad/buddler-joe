@@ -153,6 +153,7 @@ public class Lobby implements Runnable {
         ServerPlayer player = ServerLogic.getPlayerList().getPlayer(clientId);
         player.setReady(false);
         lobbyPlayers.remove(player);
+        aliveLobbyPlayers.remove(player);
         if (status.equals("open") && allPlayersReady() && !isEmpty()) {
           startRound();
         }
