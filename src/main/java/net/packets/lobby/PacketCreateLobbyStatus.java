@@ -1,7 +1,6 @@
 package net.packets.lobby;
 
 import game.Game;
-import game.stages.InLobby;
 import game.stages.LobbyCreation;
 import net.packets.Packet;
 
@@ -72,7 +71,6 @@ public class PacketCreateLobbyStatus extends Packet {
     Game.setLobbyCreated(true); // Duplicate Lobby is okay
     if (hasErrors()) {
       String errMsg = createErrorMessage();
-      System.out.println(errMsg);
       LobbyCreation.setMsg(errMsg);
     } else if (status.startsWith("OK")) {
       System.out.println("Lobby-Creation Successful");
@@ -83,7 +81,6 @@ public class PacketCreateLobbyStatus extends Packet {
       }
       LobbyCreation.done();
     } else {
-      System.out.println(status);
       LobbyCreation.setMsg(status);
     }
   }

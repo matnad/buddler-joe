@@ -1,0 +1,65 @@
+﻿Protokoll 30.04.2019 - Buddler Joe
+
+Anwesend: Alle
+
+Ort: Kollegienhaus Uni Basel
+
+Wir haben die folgenden Punkte besprochen und dies ist der neue Stand seit letzter Sitzung:
+
+HIGH PRIO:
+- Neue Screen-Overlays für Freeze und Damage -> Sebastian
+- Unit Tests Net -> Viktor weiterhin
+- Nullpointer wenn Spieler auf einem Computer das Spiel verlässt -> Matthias
+- Lobby Status Änderungen erkennen
+    > Lobby löschen, wenn zulange niemand drin -> Sanja (Fehlerbehebung, LobbyOverviewPacket)
+- Optisches Feedback beim Whispern/All 
+- Eigener Name nicht anzeigen bei den Buttons
+- Nach Game Ende ins Hauptmenü und "alles resetten" -> Matthias
+- Mapgrösse mit Mapcreation -> Sanja und Sebastian
+
+MEDIUM PRIO:
+- Chat in Lobby Menü -> Moritz (noch Bug Fixes bei zu langem Text)
+- Partikel Effekte für Items -> Matthias
+- Mehr Lichtquellen Rendern -> Matthias
+- CI / CD (Automatisierte Tests) -> Matthias
+- Strafpunkte und Enforcment -> Matthias
+- Spieler der aus der Karte fällt -> Matthias
+
+LOW PRIO: 
+- Netzwerkprotokoll Dokument -> 14.05.2019
+- Login Packete mit Trennzeichen aktualisieren
+- QA Dokument -> 14.05.2019
+- Twitchy Video am Sonntag 
+- Connection Lost am Sonntag
+- Archidekturdokument: -> 14.05.2019
+  > Engine -> Matthias
+  > Game -> Stages (Sebastian)
+         -> Map und Validierung (Sanja)
+  > GUI -> Chat und Lobbies (Moritz)
+  > Net -> Viktor
+- Logo -> Sebastian
+- Mouse Icon -> Sebastian
+- Manual -> 14.05.2019
+- Reconnect
+
+BONUS:
+- Sounds aufnehmen -> Noch frei
+- Tutorial ingame -> Noch frei
+- "Animationen" für Joe -> Noch frei
+
+Done:
+- Kollision für Herzen ("aufnehmen")
+- Serverseitige Validierung der wichtigsten Spielaktionen
+- BlendMap für Wand Textur
+- Alle Konsolen Commands ins GUI bringen
+- Ready button implementieren
+- 3D Modelle mit Textur für Items
+- Rework für Digging (im Moment 1 Packet pro Frame)
+- Klasse zum im GUI user Input entgegen nehmen (Username, Lobbyname etc)
+- Hauptmenü fertig machen
+- Besserer Wand Terrain Generator (Im moment können wir nur rechteckige Wand Terrainsmachen)
+- "Game Esc Menü" machen
+- Obsidian Texturen
+- Whisper an alle
+- Lobby Status: 
+    > Game beenden wwenn alle tot oder disconnected -> Sanja

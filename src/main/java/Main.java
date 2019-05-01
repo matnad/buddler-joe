@@ -2,7 +2,6 @@ import game.Game;
 import game.Settings;
 import game.SettingsSerialiser;
 import net.StartServer;
-import net.packets.name.PacketSetName;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,7 +14,6 @@ public class Main {
   // DEFAULT VALUES
   private static boolean client = true;
   private static int port = 11337;
-
 
   /**
    * Start the GUI and the Network client of the game.
@@ -33,8 +31,6 @@ public class Main {
       if (client) {
         String[] ipPort = args[1].split(":");
         settings.setIp(ipPort[0]);
-        settingsSerialiser.serialiseSettings(settings);
-
         // Validate Port
         if (ipPort.length >= 2) {
           port = validatePort(ipPort[1]);
@@ -47,7 +43,6 @@ public class Main {
     if (args.length >= 3 && client && args[2].length() <= 30 && args[2].length() >= 4) {
       String username = args[2];
       settings.setUsername(username);
-      settingsSerialiser.serialiseSettings(settings);
     }
 
     if (client) {

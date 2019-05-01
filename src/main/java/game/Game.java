@@ -6,12 +6,14 @@ import static game.Game.Stage.CREDITS;
 import static game.Game.Stage.GAMEMENU;
 import static game.Game.Stage.GAMEOVER;
 import static game.Game.Stage.HIGHSCORE;
+import static game.Game.Stage.HISTORYMENU;
 import static game.Game.Stage.INLOBBBY;
 import static game.Game.Stage.LOADINGSCREEN;
 import static game.Game.Stage.LOBBYCREATION;
 import static game.Game.Stage.LOGIN;
 import static game.Game.Stage.MAINMENU;
 import static game.Game.Stage.OPTIONS;
+import static game.Game.Stage.PLAYERLIST;
 import static game.Game.Stage.PLAYING;
 import static game.Game.Stage.WELCOME;
 
@@ -37,12 +39,14 @@ import game.stages.Credits;
 import game.stages.GameMenu;
 import game.stages.GameOver;
 import game.stages.Highscore;
+import game.stages.HistoryMenu;
 import game.stages.InLobby;
 import game.stages.LoadingScreen;
 import game.stages.LobbyCreation;
 import game.stages.Login;
 import game.stages.MainMenu;
 import game.stages.Options;
+import game.stages.PlayerList;
 import game.stages.Playing;
 import game.stages.Welcome;
 import gui.chat.Chat;
@@ -61,7 +65,6 @@ import net.packets.loginlogout.PacketLogin;
 import org.joml.Vector3f;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import terrains.Terrain;
 import terrains.TerrainFlat;
 
 /**
@@ -72,30 +75,17 @@ import terrains.TerrainFlat;
 public class Game extends Thread {
 
   private static final Logger logger = LoggerFactory.getLogger(Game.class);
-
-  // Set to true to create and join a lobby. For quicker testing.
-  private boolean autoJoin = true;
-
   // Set up list of stages, stages will be updated at the end of every frame
   private static final List<Stage> activeStages = new CopyOnWriteArrayList<>();
   private static final List<Stage> stagesToBeAdded = new CopyOnWriteArrayList<>();
-
-  // The duration of the last frame (delta time)
-  private static double dt;
-
-  // Set to true one frame every second
-  private static boolean oncePerSecond = false;
-
   /*
    * All entities that need to be rendered.
    * We keep all the Sub-Entities organized in Masters and keep this as a global Playing-Static
    * list with minimal maintenance.
    */
   private static final List<Entity> entities = new CopyOnWriteArrayList<>();
-
   // Set up windows with default vaules. However, setting values will be used later
   public static Window window = new Window(1080, 600, 60, "Buddler Joe");
-
   /*
    * We want everything set up so we could use multiple cameras, even if we don't end up needing
    * them.
@@ -104,42 +94,44 @@ public class Game extends Thread {
    * defeated.
    */
   public static Camera camera;
-
+  // The duration of the last frame (delta time)
+  private static double dt;
+  // Set to true one frame every second
+  private static boolean oncePerSecond = false;
+  private static Loader loader = new Loader();
   // Settings
   private static SettingsSerialiser settingsSerialiser = new SettingsSerialiser();
   private static Settings settings;
-
   // Network related variables, still temporary/dummies
   private static boolean connectedToServer = false;
   private static boolean loggedIn = false;
   private static boolean lobbyCreated = false; // temporary
-
   // Variables to connect to the server
   private static String serverIp;
   private static int serverPort;
-
   // TODO (Moritz): Move chat to playing stage
   private static Chat chat;
-
+  // Keep track of elapsed time in game
+  private static long startedAt;
   // Player and Gui elements
   private static Player player;
-  public String username;
   private static LifeStatus lifeStatus;
   private static CurrentGold goldGuiText;
+  // Map and Terrain
   private static ClientMap map;
-
+  private static TerrainFlat[][] terrainChunks;
   private static GuiRenderer guiRenderer;
-
-  // Terrain
-  private static Terrain aboveGround;
-  private static TerrainFlat belowGround;
-
   // Lobby and Highscore lists
   private static CopyOnWriteArrayList<LobbyEntry> lobbyCatalog = new CopyOnWriteArrayList<>();
   private static CopyOnWriteArrayList<HighscoreEntry> highscoreCatalog =
       new CopyOnWriteArrayList<>();
+  private static CopyOnWriteArrayList<String> historyCatalog = new CopyOnWriteArrayList<>();
+  private static CopyOnWriteArrayList<String> playerList = new CopyOnWriteArrayList<>();
   private static CopyOnWriteArrayList<LobbyPlayerEntry> lobbyPlayerCatalog =
       new CopyOnWriteArrayList<>();
+  public String username;
+  // Set to true to create and join a lobby. For quicker testing.
+  private boolean autoJoin = true;
 
   /**
    * The constructor for the game to be called from the main class.
@@ -154,6 +146,200 @@ public class Game extends Thread {
     this.username = username;
   }
 
+  public static double dt() {
+    return dt;
+  }
+
+  /**
+   * Any entity added via this function will be passed to the Master Renderer and rendered in the
+   * Playing World.
+   *
+   * @param entity any entity that can be rendered
+   */
+  public static void addEntity(Entity entity) {
+    entities.add(entity);
+  }
+
+  /**
+   * Stops an entity from being passed to the Master Renderer and being rendered in the Playing
+   * World. Can be used to effectively destroy an entity in the game.
+   *
+   * @param entity entity that should no longer be rendered
+   */
+  public static void removeEntity(Entity entity) {
+    entities.remove(entity);
+  }
+
+  /**
+   * Add a stage to the game loop.
+   *
+   * <p>Will include this stage to be processed each game loop. Can not add the same stage multiple
+   * times.
+   *
+   * @param stage stage to add to the game loop
+   */
+  public static void addActiveStage(Stage stage) {
+    if (!activeStages.contains(stage) && !stagesToBeAdded.contains(stage)) {
+      stagesToBeAdded.add(stage);
+    }
+  }
+
+  public static void removeActiveStage(Stage stage) {
+    activeStages.remove(stage);
+  }
+
+  public static boolean isOncePerSecond() {
+    return oncePerSecond;
+  }
+
+  public static CopyOnWriteArrayList<LobbyEntry> getLobbyCatalog() {
+    return lobbyCatalog;
+  }
+
+  public static void setLobbyCatalog(CopyOnWriteArrayList<LobbyEntry> lobbyCatalog) {
+    Game.lobbyCatalog = lobbyCatalog;
+  }
+
+  public static CopyOnWriteArrayList<HighscoreEntry> getHighscoreCatalog() {
+    return highscoreCatalog;
+  }
+
+  // Getters and Setters
+
+  public static void setHighscoreCatalog(CopyOnWriteArrayList<HighscoreEntry> highscoreCatalog) {
+    Game.highscoreCatalog = highscoreCatalog;
+  }
+
+  public static CopyOnWriteArrayList<LobbyPlayerEntry> getLobbyPlayerCatalog() {
+    return lobbyPlayerCatalog;
+  }
+
+  public static void setLobbyPlayerCatalog(
+      CopyOnWriteArrayList<LobbyPlayerEntry> lobbyPlayerCatalog) {
+    Game.lobbyPlayerCatalog = lobbyPlayerCatalog;
+  }
+
+  public static CopyOnWriteArrayList<String> getHistoryCatalog() {
+    return historyCatalog;
+  }
+
+  public static void setHistoryCatalog(CopyOnWriteArrayList<String> historyCatalog) {
+    Game.historyCatalog = historyCatalog;
+  }
+
+  /**
+   * Returns the active camera that determines which View Matrix is used in the shaders.
+   *
+   * @return returns the active camera object for the game
+   */
+  public static Camera getActiveCamera() {
+    return camera;
+  }
+
+  public static void setActiveCamera(Camera camera) {
+    Game.camera = camera;
+  }
+
+  public static SettingsSerialiser getSettingsSerialiser() {
+    return settingsSerialiser;
+  }
+
+  public static Player getActivePlayer() {
+    return player;
+  }
+
+  /**
+   * Get a 2D array of all wall terrain chunks for the current game map. If the terrain doesn't
+   * exist yet, it is generated.
+   *
+   * @return 2D array with all wall terrain chunks [X][Y]
+   */
+  public static TerrainFlat[][] getTerrainChunks() {
+    if (terrainChunks == null) {
+      if (map == null) {
+        throw new IllegalStateException("No Map found, could not generate Terrain.");
+      }
+      terrainChunks = map.generateTerrains(loader);
+    }
+    return terrainChunks;
+  }
+
+  public static void setTerrainChunks(TerrainFlat[][] terrainChunks) {
+    Game.terrainChunks = terrainChunks;
+  }
+
+  public static Chat getChat() {
+    return chat;
+  }
+
+  public static LifeStatus getLifeStatus() {
+    return lifeStatus;
+  }
+
+  public static List<Stage> getActiveStages() {
+    return activeStages;
+  }
+
+  public static ClientMap getMap() {
+    return map;
+  }
+
+  public static void setMap(ClientMap map) {
+    Game.map = map;
+  }
+
+  public static void setLoggedIn(boolean loggedIn) {
+    Game.loggedIn = loggedIn;
+  }
+
+  public static void setLobbyCreated(boolean lobbyCreated) {
+    Game.lobbyCreated = lobbyCreated;
+  }
+
+  public static Settings getSettings() {
+    return settings;
+  }
+
+  public static List<Entity> getEntities() {
+    return entities;
+  }
+
+  public static boolean isConnectedToServer() {
+    return connectedToServer;
+  }
+
+  public static void setConnectedToServer(boolean connectedToServer) {
+    Game.connectedToServer = connectedToServer;
+  }
+
+  public static GuiRenderer getGuiRenderer() {
+    return guiRenderer;
+  }
+
+  public static void setWindow(Window window) {
+    Game.window = window;
+  }
+
+  public static CurrentGold getGoldGuiText() {
+    return goldGuiText;
+  }
+
+  public static Loader getLoader() {
+    return loader;
+  }
+
+  public static String getServerIp() {
+    return serverIp;
+  }
+
+  public static CopyOnWriteArrayList<String> getPlayerList() {
+    return playerList;
+  }
+
+  public static void setPlayerList(CopyOnWriteArrayList<String> playerList) {
+    Game.playerList = playerList;
+  }
+
   /** Here we initialize all the Masters and other classes and generate the world. */
   @Override
   public void run() {
@@ -166,20 +352,6 @@ public class Game extends Thread {
 
     // Initiate the master renderer class
     MasterRenderer renderer = new MasterRenderer();
-
-    // Used to load 3D models (.obj) and convert them to coordinates for the shaders, also
-    // initializes the Bounding Boxes
-    Loader loader = new Loader();
-
-    // Stuff before loading screen
-    // generate the world
-    GenerateWorld.generateTerrain(loader);
-    // GenerateWorld.generateBlocks(loader);
-    aboveGround = GenerateWorld.getAboveGround();
-    belowGround = GenerateWorld.getBelowGround();
-    if (aboveGround == null || belowGround == null) {
-      logger.error("Could not generate terrain.");
-    }
 
     // Initialize NetPlayerModels
     NetPlayerMaster.init(loader);
@@ -230,6 +402,8 @@ public class Game extends Thread {
             new Vector3f(300, 400, 200),
             new Vector3f(1, 1, 1).normalize())
         .setBrightness(2f);
+
+    // Debug
 
     /*
     **************************************************************
@@ -316,6 +490,13 @@ public class Game extends Thread {
         if (activeStages.contains(CHANGENAME)) {
           ChangeName.update();
         }
+
+        if (activeStages.contains(PLAYERLIST)) {
+          PlayerList.update();
+        }
+        if (activeStages.contains(HISTORYMENU)) {
+          HistoryMenu.update();
+        }
       }
 
       activeStages.addAll(stagesToBeAdded);
@@ -367,10 +548,6 @@ public class Game extends Thread {
     System.exit(1); // For now...
   }
 
-  public static double dt() {
-    return dt;
-  }
-
   private void loadGame(Loader loader) throws InterruptedException {
     // Load Stages
     MainMenu.init(loader);
@@ -389,6 +566,8 @@ public class Game extends Thread {
     LoadingScreen.progess();
     Highscore.init(loader);
     LoadingScreen.progess();
+    PlayerList.init(loader);
+    LoadingScreen.progess();
     InLobby.init(loader);
     LoadingScreen.progess();
     GameOver.init(loader);
@@ -396,10 +575,15 @@ public class Game extends Thread {
     LobbyCreation.init(loader);
     LoadingScreen.progess();
     ChangeName.init(loader);
+    LoadingScreen.progess();
+    HistoryMenu.init(loader);
 
     // Generate ServerPlayer
     NetPlayer.init(loader);
-    player = new Player(getUsername(), new Vector3f(90, 2, 3), 0, 0, 0);
+    player = new Player(getUsername(), new Vector3f(12, 10, 3), 0, 0, 0);
+
+    // Generate dummy map
+    map = new ClientMap("m", System.currentTimeMillis());
 
     // Connecting to Server
     LoadingScreen.updateLoadingMessage("connecting to server");
@@ -425,8 +609,7 @@ public class Game extends Thread {
       Thread.sleep(50);
     }
     // }
-    // Generate dummy map
-    map = new ClientMap(1, 1, 1);
+
     if (autoJoin) {
 
       new PacketJoinLobby(lobname).sendToServer();
@@ -441,6 +624,7 @@ public class Game extends Thread {
 
     // Camera
     camera = new Camera(player, window);
+    // camera = new SpectatorCamera(window);
 
     // GUI / Other
     goldGuiText = new CurrentGold();
@@ -460,44 +644,6 @@ public class Game extends Thread {
     removeActiveStage(LOADINGSCREEN);
   }
 
-  /**
-   * Any entity added via this function will be passed to the Master Renderer and rendered in the
-   * Playing World.
-   *
-   * @param entity any entity that can be rendered
-   */
-  public static void addEntity(Entity entity) {
-    entities.add(entity);
-  }
-
-  /**
-   * Stops an entity from being passed to the Master Renderer and being rendered in the Playing
-   * World. Can be used to effectively destroy an entity in the game.
-   *
-   * @param entity entity that should no longer be rendered
-   */
-  public static void removeEntity(Entity entity) {
-    entities.remove(entity);
-  }
-
-  /**
-   * Add a stage to the game loop.
-   *
-   * <p>Will include this stage to be processed each game loop. Can not add the same stage multiple
-   * times.
-   *
-   * @param stage stage to add to the game loop
-   */
-  public static void addActiveStage(Stage stage) {
-    if (!activeStages.contains(stage) && !stagesToBeAdded.contains(stage)) {
-      stagesToBeAdded.add(stage);
-    }
-  }
-
-  public static void removeActiveStage(Stage stage) {
-    activeStages.remove(stage);
-  }
-
   private void disconnectFromServer() {
     // Stuff to do on disconnect
   }
@@ -514,7 +660,9 @@ public class Game extends Thread {
     }
   }
 
-  // Getters and Setters
+  public String getUsername() {
+    return settings.getUsername();
+  }
 
   /**
    * Set new username and save it to settings.
@@ -528,126 +676,12 @@ public class Game extends Thread {
     settingsSerialiser.serialiseSettings(settings);
   }
 
-  public static boolean isOncePerSecond() {
-    return oncePerSecond;
+  public static long getStartedAt() {
+    return startedAt;
   }
 
-  public static CopyOnWriteArrayList<LobbyEntry> getLobbyCatalog() {
-    return lobbyCatalog;
-  }
-
-  public static void setLobbyCatalog(CopyOnWriteArrayList<LobbyEntry> lobbyCatalog) {
-    Game.lobbyCatalog = lobbyCatalog;
-  }
-
-  public static CopyOnWriteArrayList<HighscoreEntry> getHighscoreCatalog() {
-    return highscoreCatalog;
-  }
-
-  public static void setHighscoreCatalog(CopyOnWriteArrayList<HighscoreEntry> highscoreCatalog) {
-    Game.highscoreCatalog = highscoreCatalog;
-  }
-
-  public static CopyOnWriteArrayList<LobbyPlayerEntry> getLobbyPlayerCatalog() {
-    return lobbyPlayerCatalog;
-  }
-
-  public static void setLobbyPlayerCatalog(
-      CopyOnWriteArrayList<LobbyPlayerEntry> lobbyPlayerCatalog) {
-    Game.lobbyPlayerCatalog = lobbyPlayerCatalog;
-  }
-
-  /**
-   * Returns the active camera that determines which View Matrix is used in the shaders.
-   *
-   * @return returns the active camera object for the game
-   */
-  public static Camera getActiveCamera() {
-    return camera;
-  }
-
-  public static SettingsSerialiser getSettingsSerialiser() {
-    return settingsSerialiser;
-  }
-
-  public static void setActiveCamera(Camera camera) {
-    Game.camera = camera;
-  }
-
-  public static Player getActivePlayer() {
-    return player;
-  }
-
-  public static Terrain getAboveGround() {
-    return aboveGround;
-  }
-
-  public static TerrainFlat getBelowGround() {
-    return belowGround;
-  }
-
-  public static Chat getChat() {
-    return chat;
-  }
-
-  public static LifeStatus getLifeStatus() {
-    return lifeStatus;
-  }
-
-  public static List<Stage> getActiveStages() {
-    return activeStages;
-  }
-
-  public static ClientMap getMap() {
-    return map;
-  }
-
-  public static void setMap(ClientMap map) {
-    Game.map = map;
-  }
-
-  public static void setLoggedIn(boolean loggedIn) {
-    Game.loggedIn = loggedIn;
-  }
-
-  public static void setLobbyCreated(boolean lobbyCreated) {
-    Game.lobbyCreated = lobbyCreated;
-  }
-
-  public static Settings getSettings() {
-    return settings;
-  }
-
-  public static List<Entity> getEntities() {
-    return entities;
-  }
-
-  public static boolean isConnectedToServer() {
-    return connectedToServer;
-  }
-
-  public static void setConnectedToServer(boolean connectedToServer) {
-    Game.connectedToServer = connectedToServer;
-  }
-
-  public static GuiRenderer getGuiRenderer() {
-    return guiRenderer;
-  }
-
-  public static void setWindow(Window window) {
-    Game.window = window;
-  }
-
-  public static CurrentGold getGoldGuiText() {
-    return goldGuiText;
-  }
-
-  public String getUsername() {
-    return settings.getUsername();
-  }
-
-  public static String getServerIp() {
-    return serverIp;
+  public static void setStartedAt(long startedAt) {
+    Game.startedAt = startedAt;
   }
 
   // Valid Stages
@@ -665,6 +699,8 @@ public class Game extends Thread {
     HIGHSCORE,
     GAMEOVER,
     CHANGENAME,
+    PLAYERLIST,
+    HISTORYMENU,
     LOBBYCREATION
   }
 }

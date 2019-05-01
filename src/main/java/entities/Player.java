@@ -17,6 +17,7 @@ import entities.blocks.BlockMaster;
 import entities.collision.BoundingBox;
 import entities.items.ItemMaster;
 import game.Game;
+import game.map.GameMap;
 import game.stages.Playing;
 import net.packets.block.PacketBlockDamage;
 import net.packets.life.PacketLifeStatus;
@@ -45,24 +46,21 @@ import util.MousePlacer;
 public class Player extends NetPlayer {
 
   public static final Logger logger = LoggerFactory.getLogger(Player.class);
-
+  private static final float digIntervall = 0.2f; // Number of dig updates per second
+  private final float torchPlaceDelay = 10f;
   // Resources and Stats
   public int currentGold; // Current coins
   private int currentLives;
   private float digDamage; // Damage per second when colliding with blocks
-  private static final float digIntervall = 0.2f; // Number of dig updates per second
   private Block lastDiggedBlock = null;
   private float lastDiggedBlockDamage = 0;
   private float digIntervallTimer = 0;
-
   // Vector & Velocity based speed
   private boolean isJumping = false; // Can't Jump while in the air
   private boolean sendVelocityToServer = false; // If we need to update velocity this frame
-
   // Other
   private boolean controlsDisabled;
   private boolean frozen = false;
-  private final float torchPlaceDelay = 10f;
   private float torchTimeout = torchPlaceDelay;
 
   /**
@@ -83,6 +81,10 @@ public class Player extends NetPlayer {
     controlsDisabled = false;
   }
 
+  public static float getDigIntervall() {
+    return digIntervall;
+  }
+
   /**
    * Updates player position every frame.
    *
@@ -90,6 +92,11 @@ public class Player extends NetPlayer {
    * handling and potentially server communication
    */
   public void move() {
+
+    // Dont update during the first second
+    if (Game.getStartedAt() + 1000 > System.currentTimeMillis()) {
+      return;
+    }
 
     // Check if player can move
     controlsDisabled = isDefeated() || frozen || Game.getChat().isEnabled();
@@ -132,10 +139,10 @@ public class Player extends NetPlayer {
 
     // Move player
     increasePosition(new Vector3f(currentVelocity).mul((float) Game.dt()));
+    enforceMapBounds();
 
     // Handle character rotation (check run direction see if we need to rotate more)
-    this.increaseRotation(
-        0, (float) (getCurrentTurnSpeed() * Game.dt()), 0);
+    this.increaseRotation(0, (float) (getCurrentTurnSpeed() * Game.dt()), 0);
 
     // Handle collisions, we only check close blocks to optimize performance
     // Distance is much cheaper to check than overlap
@@ -257,8 +264,7 @@ public class Player extends NetPlayer {
         }
       } else {
         isJumping = false; // Walljumps! Felt cute. Might delete later.
-        setPositionX(
-            (float) (getPosition().x - currentVelocity.x * Game.dt()));
+        setPositionX((float) (getPosition().x - currentVelocity.x * Game.dt()));
         stopVelocityX();
         // Dig blocks whenever we collide horizontal
         digBlock(block);
@@ -445,9 +451,5 @@ public class Player extends NetPlayer {
       currentVelocity.y = 0;
       sendVelocityToServer = true;
     }
-  }
-
-  public static float getDigIntervall() {
-    return digIntervall;
   }
 }

@@ -37,19 +37,18 @@ public class Camera {
   private static float pitch;
   private static float yaw;
   private final Window window;
-  protected float panSpeed = 20;
   private final Player player;
-  private float roll; // Not used right now, but we might
+  protected float panSpeed = 20;
   protected float offsetX;
   protected float offsetY;
   protected float offsetZ;
-
   protected float minZoom = 5;
   protected float maxZoom = 100;
   protected float maxOffsetX = 30;
   protected float maxOffsetY = 50;
   protected float maxPitch = 60;
   protected float minPitch = -10;
+  private float roll; // Not used right now, but we might
 
   /**
    * Create a new Camera.

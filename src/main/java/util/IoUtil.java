@@ -20,7 +20,14 @@ public final class IoUtil {
 
   private IoUtil() {}
 
-  private static ByteBuffer resizeBuffer(ByteBuffer buffer, int newCapacity) {
+  /**
+   * Resize a Byte Buffer.
+   *
+   * @param buffer buffer to resize
+   * @param newCapacity new size
+   * @return resized buffer
+   */
+  public static ByteBuffer resizeBuffer(ByteBuffer buffer, int newCapacity) {
     ByteBuffer newBuffer = BufferUtils.createByteBuffer(newCapacity);
     buffer.flip();
     newBuffer.put(buffer);

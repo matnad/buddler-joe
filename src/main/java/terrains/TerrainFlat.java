@@ -4,21 +4,22 @@ import engine.models.RawModel;
 import engine.render.Loader;
 import engine.textures.TerrainTexture;
 import engine.textures.TerrainTexturePack;
+import game.map.GameMap;
 import org.joml.Vector3f;
 
 /** Flat Terrain with blend map. */
 @SuppressWarnings("Duplicates")
 public class TerrainFlat {
 
-  static final float SIZE = 200;
-  private static final int VERTEX_COUNT = 128;
+  static final float SIZE = GameMap.getDim() * GameMap.getTerrainChunk();
+  private static final int VERTEX_COUNT = GameMap.getDim() * GameMap.getTerrainChunk();
   RawModel model;
   private float coordX;
   private float coordZ;
   private TerrainTexturePack texturePack;
   private TerrainTexture blendMap;
 
-  private Vector3f rotation = new Vector3f(0f, 0f, 0f); // in degrees
+  private Vector3f rotation = new Vector3f(0f, 0f, 180f); // in degrees
 
   /**
    * Create a flat terrain tile.
@@ -63,11 +64,13 @@ public class TerrainFlat {
     for (int i = 0; i < VERTEX_COUNT; i++) {
       for (int j = 0; j < VERTEX_COUNT; j++) {
         vertices[vertexPointer * 3] = (float) j / ((float) VERTEX_COUNT - 1) * SIZE;
-        vertices[vertexPointer * 3 + 1] = 0;
-        vertices[vertexPointer * 3 + 2] = (float) i / ((float) VERTEX_COUNT - 1) * SIZE;
+        vertices[vertexPointer * 3 + 1] = (float) i / ((float) VERTEX_COUNT - 1) * SIZE;
+        vertices[vertexPointer * 3 + 2] = 0;
+
         normals[vertexPointer * 3] = 0;
-        normals[vertexPointer * 3 + 1] = 1;
-        normals[vertexPointer * 3 + 2] = 0;
+        normals[vertexPointer * 3 + 1] = 0;
+        normals[vertexPointer * 3 + 2] = -1;
+
         textureCoords[vertexPointer * 2] = (float) j / ((float) VERTEX_COUNT - 1);
         textureCoords[vertexPointer * 2 + 1] = (float) i / ((float) VERTEX_COUNT - 1);
         vertexPointer++;

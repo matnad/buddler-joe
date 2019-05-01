@@ -66,4 +66,8 @@ public class StartServer {
       }
     }
   }
+
+  public ServerLogic getServerLogic() {
+    return serverLogic;
+  }
 }

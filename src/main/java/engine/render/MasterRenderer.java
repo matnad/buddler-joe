@@ -35,7 +35,7 @@ public class MasterRenderer {
 
   private static final float FOV = 60;
   private static final float NEAR_PLANE = .1f;
-  private static final float FAR_PLANE = 200;
+  private static final float FAR_PLANE = 500;
 
   private static final float RED = .0f;
   private static final float GREEN = .0f;

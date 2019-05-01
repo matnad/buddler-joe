@@ -38,6 +38,4 @@ public class SpectatorCamera extends Camera {
     position.x = anchor.x + offsetX;
     position.y = anchor.y + offsetY;
   }
-
-
 }

@@ -59,27 +59,27 @@ public class PacketLoginStatus extends Packet {
   @Override
   public void processData() {
     if (status.startsWith("OK") && !hasErrors() && status.length() > 2) {
-      System.out.println("Login Successful, your username is: " + getData().substring(2));
+      // System.out.println("Login Successful, your username is: " + getData().substring(2));
       PacketGetLobbies p = new PacketGetLobbies();
       p.sendToServer();
       Game.setLoggedIn(true);
     } else if (status.startsWith("CHANGE") && !hasErrors() && status.length() > 6) {
-      System.out.println(
-          "Login Successful, however your username has already been taken. "
-              + "We assigned you this username: "
-              + getData().substring(6));
+      // System.out.println(
+      //    "Login Successful, however your username has already been taken. "
+      //        + "We assigned you this username: "
+      //        + getData().substring(6));
       Game.getActivePlayer().setUsername(getData().substring(6));
       PacketGetLobbies p = new PacketGetLobbies();
       p.sendToServer();
       Game.setLoggedIn(true);
     } else {
       if (hasErrors()) {
-        System.out.println(status + "\n" + createErrorMessage());
+        // System.out.println(status + "\n" + createErrorMessage());
       } else {
-        System.out.println(status);
+        // System.out.println(status);
       }
     }
-    System.out.println(
-        "Type \"help\" at any point to see a list of commands to interact with the server.");
+    // System.out.println(
+    //    "Type \"help\" at any point to see a list of commands to interact with the server.");
   }
 }

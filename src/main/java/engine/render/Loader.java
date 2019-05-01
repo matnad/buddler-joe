@@ -19,6 +19,7 @@ import static org.lwjgl.opengl.GL30.glTexParameteri;
 import engine.models.RawModel;
 import engine.render.objconverter.ModelData;
 import engine.textures.Texture;
+import game.map.ClientMap;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
@@ -182,6 +183,38 @@ public class Loader {
     int textureId = texture.getTextureId();
     textures.add(textureId);
     textureIds.put(fileName, textureId);
+    return textureId;
+  }
+
+  /**
+   * Load background Map Texture for a chunk of a given Map into openGL, set some parameters and get
+   * the ID (position). The actual loading is done in the TextureLoader class.
+   *
+   * @param map the client map object to load the map for
+   * @param startCol column rank of the map chunk (0 for the first chunk, 1 for the second, etc)
+   * @param startRow row rank of the map chunk (0 for the first chunk, 1 for the second, etc)
+   * @return The OpenGL texture ID
+   */
+  public int loadTexture(ClientMap map, int startRow, int startCol) {
+    Texture texture = null;
+    try {
+      texture = TextureLoader.getTexture(map, startRow, startCol);
+      glGenerateMipmap(GL_TEXTURE_2D);
+      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+      glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_LOD_BIAS, -.3f); // Textures appear blurred the
+      // further away they are
+
+      // !! NO TILING SINCE THE CHUNKS ARE DIFFERENT !!
+      // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT); // Tiling
+      // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
+    } catch (Exception e) {
+      e.printStackTrace();
+      System.err.println("Tried to load texture for game map, didn't work");
+      System.exit(-1);
+    }
+    int textureId = texture.getTextureId();
+    textures.add(textureId);
     return textureId;
   }
 

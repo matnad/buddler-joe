@@ -1,6 +1,9 @@
 package game.stages;
 
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_ESCAPE;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_H;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_P;
+import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_1;
 
 import engine.io.InputHandler;
 import engine.particles.ParticleMaster;
@@ -15,10 +18,17 @@ import entities.light.LightMaster;
 import game.Game;
 import game.NetPlayerMaster;
 import gui.GuiTexture;
+import gui.MenuButton;
 import gui.text.FloatingStrings;
+
+import java.lang.management.MemoryUsage;
 import java.util.ArrayList;
 import java.util.List;
+
+import net.packets.highscore.PacketHighscore;
+import net.packets.lists.PacketPlayerList;
 import org.joml.Vector2f;
+import terrains.TerrainFlat;
 import util.MousePlacer;
 
 /**
@@ -33,6 +43,8 @@ public class Playing {
   private static GuiTexture frozenOverlay;
   private static float damageTakenScreenRemaining = 0f;
   private static boolean firstloop = true;
+  private static MenuButton whisper;
+  private static MenuButton all;
 
   /**
    * * Initialize Game Menu. Will load the texture files and other GUI elements needed for this
@@ -49,6 +61,24 @@ public class Playing {
         new GuiTexture(loader.loadTexture("frozen"), new Vector2f(0, 0), new Vector2f(1, 1), 1);
 
     floatingGoldStrings = new FloatingStrings(Game.getActivePlayer().getBbox(), 3f);
+
+    whisper =
+        new MenuButton(
+            loader,
+            "smallW_norm",
+            "smallW_hover",
+            new Vector2f(-0.836458f, -0.322296f),
+            new Vector2f(.057691f, .025f));
+    whisper.setActivationMinAlpha(0.8f);
+
+    all =
+        new MenuButton(
+            loader,
+            "smallA_norm",
+            "smallA_hover",
+            new Vector2f(-0.747917f, -0.322296f),
+            new Vector2f(.026799f, .025f));
+    all.setActivationMinAlpha(0.8f);
   }
 
   /**
@@ -65,13 +95,47 @@ public class Playing {
       firstloop = false;
     }
 
+    double x = 2 * (InputHandler.getMouseX() / Game.window.getWidth()) - 1;
+    double y = 1 - 2 * (InputHandler.getMouseY() / Game.window.getHeight());
+
     List<GuiTexture> guis = new ArrayList<>();
     guis.add(Game.getChat().getChatGui());
 
+    whisper.setAlpha(Game.getChat().getAlpha());
+    guis.add(whisper.getHoverTexture(x, y));
+    all.setAlpha(Game.getChat().getAlpha());
+    guis.add(all.getHoverTexture(x, y));
+
     // ESC = Game Menu
-    if (InputHandler.isKeyPressed(GLFW_KEY_ESCAPE)) {
+    if (InputHandler.isKeyPressed(GLFW_KEY_ESCAPE)
+        && !Game.getActiveStages().contains(Game.Stage.PLAYERLIST)) {
       Game.addActiveStage(Game.Stage.GAMEMENU);
     }
+
+    // H = Highscore
+    if (InputHandler.isKeyPressed(GLFW_KEY_H)
+        && !Game.getChat().isEnabled()
+        && !Game.getActiveStages().contains(Game.Stage.GAMEMENU)
+        && !Game.getActiveStages().contains(Game.Stage.HIGHSCORE)) {
+      new PacketHighscore().sendToServer();
+      Highscore.setInGame(true);
+      Game.addActiveStage(Game.Stage.HIGHSCORE);
+      Game.getChat().hide();
+    }
+
+    if (InputHandler.isKeyPressed(GLFW_KEY_P)
+            && !Game.getChat().isEnabled()
+            && !Game.getActiveStages().contains(Game.Stage.GAMEMENU)
+            && !Game.getActiveStages().contains(Game.Stage.PLAYERLIST)
+        || (whisper.isHover(x, y) && InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1))
+            && !Game.getActiveStages().contains(Game.Stage.GAMEMENU)
+            && !Game.getActiveStages().contains(Game.Stage.PLAYERLIST)) {
+      PacketPlayerList playerList = new PacketPlayerList();
+      playerList.sendToServer();
+      Game.addActiveStage(Game.Stage.PLAYERLIST);
+      Game.getChat().hide();
+    }
+    // TODO: Add Button for Whisper and all
 
     // Update positions of camera, player and 3D Mouse Pointer
     Game.getActiveCamera().move();
@@ -86,11 +150,19 @@ public class Playing {
     ParticleMaster.update(Game.getActiveCamera());
     LightMaster.update(Game.getActiveCamera(), Game.getActivePlayer());
 
-    // Prepare and render the entities
+    // Prepare and render the terrains
+    TerrainFlat[][] terrainChunks = Game.getTerrainChunks();
+    for (int i = 0; i < Game.getMap().getTerrainRows(); i++) {
+      for (int j = 0; j < Game.getMap().getTerrainCols(); j++) {
+        renderer.processTerrain(terrainChunks[j][i]);
+      }
+    }
+
+    // renderer.processTerrain(Game.getTerrainChunks()[0][0]);
+
+    // Prepare and Render the entities
     renderer.processEntity(Game.getActivePlayer());
     NetPlayerMaster.update(renderer);
-    renderer.processTerrain(Game.getAboveGround());
-    renderer.processTerrain(Game.getBelowGround());
     for (Entity entity : Game.getEntities()) {
       if (entity != null) {
         renderer.processEntity(entity);

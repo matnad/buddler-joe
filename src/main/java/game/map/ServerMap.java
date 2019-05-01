@@ -11,12 +11,11 @@ public class ServerMap extends GameMap<ServerBlock> {
   /**
    * Generate a new map for the Server.
    *
-   * @param width number of blocks on the horizontal
-   * @param height number of blocks on the vertical = depth
+   * @param mapSize size of the map
    * @param seed random seed
    */
-  public ServerMap(int width, int height, long seed) {
-    super(width, height, seed);
+  public ServerMap(String mapSize, long seed) {
+    super(mapSize, seed);
     blocks = new ServerBlock[width][height];
     generateMap();
     checkFallingBlocks();
@@ -27,15 +26,15 @@ public class ServerMap extends GameMap<ServerBlock> {
    *
    * @param args nothing
    */
-  //public static void main(String[] args) {
+  // public static void main(String[] args) {
   //  ServerMap testMap = new ServerMap(64, 100, System.currentTimeMillis());
   //  System.out.println(testMap);
-  //}
+  // }
 
   @Override
   void generateMap() {
     Random rng = new Random(seed);
-    float[][] noiseMap = generateNoiseMap(seed);
+    float[][] noiseMap = generateNoiseMap();
 
     /* Threshold function
      */
@@ -98,9 +97,7 @@ public class ServerMap extends GameMap<ServerBlock> {
   public void damageBlock(int clientId, int posX, int posY, float damage) {
 
     // Validate if the block damage packet is not violating any rules
-    if (!ServerLogic.getPlayerList()
-        .getPlayer(clientId)
-        .validateBlockDamage(posX, posY, damage)) {
+    if (!ServerLogic.getPlayerList().getPlayer(clientId).validateBlockDamage(posX, posY, damage)) {
       return;
     }
 

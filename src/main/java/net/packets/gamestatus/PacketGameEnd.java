@@ -7,7 +7,6 @@ import game.stages.Playing;
 import net.packets.Packet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.w3c.dom.Text;
 
 /**
  * A Packet that gets send from the Client to the Server, to inform him about the end of a Round.
@@ -56,6 +55,7 @@ public class PacketGameEnd extends Packet {
     String[] dataArray = getData().split("║");
     if (dataArray.length != 2) {
       addError("Invalid Game Over Packet received.");
+      return;
     }
     try {
       winner = dataArray[0];

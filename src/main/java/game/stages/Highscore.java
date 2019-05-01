@@ -1,6 +1,7 @@
 package game.stages;
 
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_ESCAPE;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_H;
 import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_1;
 
 import engine.io.InputHandler;
@@ -31,19 +32,26 @@ public class Highscore {
   private static final float FADE_TIME = .5f;
   private static float fadeTimer;
   private static float currentAlpha;
+  private static boolean inGame = false;
   private static GuiTexture background;
   private static GuiTexture highscore;
   private static GuiTexture buddlerJoe;
   // private static GuiTexture title;
   private static MenuButton back;
-  private static float[] namesY = {0.330864f, 0.4f, 0.469136f, 0.538272f, 0.607407f, 0.676534f};
-  private static float[] countY = {0.330864f, 0.4f, 0.469136f, 0.538272f, 0.607407f, 0.676534f};
+  private static float[] namesY = {
+    0.330864f, 0.4f, 0.469136f, 0.538272f, 0.607407f, 0.676534f, 0, 745661f
+  };
+  private static float[] countY = {
+    0.330864f, 0.4f, 0.469136f, 0.538272f, 0.607407f, 0.676534f, 0, 745661f
+  };
+
   private static CopyOnWriteArrayList<HighscoreEntry> catalog;
-  private static ChangableGuiText[] usernames = new ChangableGuiText[6];
-  private static ChangableGuiText[] times = new ChangableGuiText[6];
+  private static ChangableGuiText[] usernames = new ChangableGuiText[7];
+  private static ChangableGuiText[] times = new ChangableGuiText[7];
   private static int startInd = 0;
   private static boolean initializedText = false;
   private static Vector3f black = new Vector3f(0, 0, 0);
+  private static GuiTexture title;
 
   /**
    * Initialize Highscore textures. Will load the texture files and generate the basic highscore
@@ -74,13 +82,14 @@ public class Highscore {
             new Vector2f(0, -0.040741f),
             new Vector2f(0.554167f, 0.757804f),
             1);
+    // TODO: Title
 
-    // title =
-    //   new GuiTexture(
-    //      loader.loadTexture("highscoreTitle"),
-    //     new Vector2f(-0.053125f, 0.446296f),
-    //   new Vector2f(0.379167f, 0.052778f),
-    // 1);
+    title =
+        new GuiTexture(
+            loader.loadTexture("highscoretitel"),
+            new Vector2f(-0.202083f, 0.446296f),
+            new Vector2f(0.227882f, 0.052778f),
+            1);
 
     // Back
     back =
@@ -109,10 +118,12 @@ public class Highscore {
 
     List<GuiTexture> guis = new ArrayList<>();
     // add textures here
-    guis.add(background);
+    if (!Game.getActiveStages().contains(Game.Stage.PLAYING)) {
+      guis.add(background);
+      guis.add(buddlerJoe);
+    }
     guis.add(highscore);
-    guis.add(buddlerJoe);
-    // guis.add(title);
+    guis.add(title);
 
     // OpenGL Coordinates (0/0 = center of screen, -1/1 = corners)
     double x = 2 * (InputHandler.getMouseX() / Game.window.getWidth()) - 1;
@@ -140,10 +151,18 @@ public class Highscore {
 
     // Input-Handling:
     if (InputHandler.isKeyPressed(GLFW_KEY_ESCAPE)
+        || InputHandler.isKeyPressed(GLFW_KEY_H)
         || InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1) && back.isHover(x, y)) {
       done();
-      Game.addActiveStage(Game.Stage.MAINMENU);
-      Game.removeActiveStage(Game.Stage.HIGHSCORE);
+      if (inGame) {
+        Game.addActiveStage(Game.Stage.PLAYING);
+        Game.removeActiveStage(Game.Stage.HIGHSCORE);
+        Game.getChat().unhide();
+        inGame = false;
+      } else {
+        Game.addActiveStage(Game.Stage.MAINMENU);
+        Game.removeActiveStage(Game.Stage.HIGHSCORE);
+      }
     }
 
     Game.getGuiRenderer().render(guis);
@@ -154,6 +173,7 @@ public class Highscore {
    * Instantiates the ChangeableGuiText for the player names and the player states. Also sets
    * Position, Colour, and Fontsize.
    */
+  @SuppressWarnings("Duplicates")
   public static void initText() {
     for (int i = 0; i < usernames.length; i++) {
       usernames[i] = new ChangableGuiText();
@@ -172,6 +192,24 @@ public class Highscore {
   /** Deletes all the texts from this Page from the rendering list. */
   public static synchronized void done() {
     initializedText = false;
-    TextMaster.removeAll();
+    for (ChangableGuiText username : usernames) {
+      if (username != null) {
+        username.delete();
+      }
+    }
+    for (ChangableGuiText time : times) {
+      if (time != null) {
+        time.delete();
+      }
+    }
+    // TextMaster.removeAll();
+  }
+
+  public static boolean isInGame() {
+    return inGame;
+  }
+
+  public static void setInGame(boolean playerInGame) {
+    inGame = playerInGame;
   }
 }

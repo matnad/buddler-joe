@@ -89,8 +89,7 @@ public class FloatingStrings {
         float alpha = 1 - elapsed / lifeTime;
         floatingString.setAlpha(alpha);
         floatingString.updateString();
-        floatingString.setOffsetY(
-            (float) (floatingString.getOffsetY() + speed * Game.dt()));
+        floatingString.setOffsetY((float) (floatingString.getOffsetY() + speed * Game.dt()));
       }
     }
   }

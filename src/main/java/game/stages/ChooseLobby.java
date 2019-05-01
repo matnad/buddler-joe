@@ -21,8 +21,6 @@ import org.joml.Vector3f;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
-
 /**
  * ChooseLobby Menu specification and rendering. Must be initialized. Specifies all the elements in
  * the ChooseLobby Menu . Contains and manages the Game Loop while the ChooseLobby Menu is active.
@@ -48,9 +46,11 @@ public class ChooseLobby {
   private static float[] joinY = {0.312963f, 0.175926f, 0.037037f, -0.1f, -0.238889f, -0.375926f};
   private static float[] namesY = {0.330864f, 0.4f, 0.469136f, 0.538272f, 0.607407f, 0.676534f};
   private static float[] countY = {0.330864f, 0.4f, 0.469136f, 0.538272f, 0.607407f, 0.676534f};
+  private static float[] sizesY = {0.330864f, 0.4f, 0.469136f, 0.538272f, 0.607407f, 0.676534f};
   private static CopyOnWriteArrayList<LobbyEntry> catalog;
   private static ChangableGuiText[] names = new ChangableGuiText[6];
   private static ChangableGuiText[] count = new ChangableGuiText[6];
+  private static ChangableGuiText[] sizes = new ChangableGuiText[6];
   private static int startInd = 0;
   private static int page = 0;
   private static ChangableGuiText pageIndex;
@@ -183,9 +183,11 @@ public class ChooseLobby {
           count[i].changeText(
               "Players: " + catalog.get(i + startInd).getPlayers() + "/" + Lobby.getMaxPlayers());
           // System.out.println(i);
+          sizes[i].changeText("Size: " + catalog.get(i + startInd).getSize().toUpperCase());
         } else {
           names[i].changeText("");
           count[i].changeText("");
+          sizes[i].changeText("");
         }
       } catch (IndexOutOfBoundsException e) {
         System.out.println("error in choose lobby");
@@ -289,6 +291,12 @@ public class ChooseLobby {
       count[i].setFontSize(1);
       count[i].setTextColour(black);
       names[i].setCentered(false);
+      sizes[i] = new ChangableGuiText();
+      sizes[i].setPosition(new Vector2f(0.5625f, sizesY[i]));
+      sizes[i].setFontSize(1);
+      sizes[i].setTextColour(black);
+      sizes[i].setCentered(false);
+
     }
   }
 
