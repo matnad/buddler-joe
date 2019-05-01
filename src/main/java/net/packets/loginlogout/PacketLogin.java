@@ -70,7 +70,7 @@ public class PacketLogin extends Packet {
       // Send update for clientid to player
       new PacketUpdateClientId(getClientId()).sendToClient(getClientId());
     } catch (NullPointerException e) {
-      addError("No server.");
+      addError("Not connected to the server.");
     }
   }
 }

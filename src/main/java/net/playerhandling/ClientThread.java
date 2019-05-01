@@ -20,13 +20,11 @@ import net.packets.lists.PacketHighscore;
 import net.packets.lists.PacketPlayerList;
 import net.packets.lobby.PacketCreateLobby;
 import net.packets.lobby.PacketGetLobbies;
-import net.packets.lobby.PacketGetLobbyInfo;
 import net.packets.lobby.PacketJoinLobby;
 import net.packets.lobby.PacketJoinLobbyStatus;
 import net.packets.lobby.PacketLeaveLobby;
 import net.packets.loginlogout.PacketDisconnect;
 import net.packets.loginlogout.PacketLogin;
-import net.packets.name.PacketGetName;
 import net.packets.name.PacketSetName;
 import net.packets.pingpong.PacketPing;
 import net.packets.pingpong.PacketPong;
@@ -113,9 +111,6 @@ public class ClientThread implements Runnable {
                       + " has connected.");
             }
             break;
-          case GET_NAME:
-            p = new PacketGetName(clientId, data);
-            break;
           case SET_NAME:
             p = new PacketSetName(clientId, data);
             break;
@@ -136,9 +131,6 @@ public class ClientThread implements Runnable {
             break;
           case JOIN_LOBBY_STATUS:
             p = new PacketJoinLobbyStatus(clientId, data);
-            break;
-          case GET_LOBBY_INFO:
-            p = new PacketGetLobbyInfo(clientId);
             break;
           case LEAVE_LOBBY:
             p = new PacketLeaveLobby(clientId);

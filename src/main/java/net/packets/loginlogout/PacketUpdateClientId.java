@@ -11,6 +11,7 @@ public class PacketUpdateClientId extends Packet {
   private static final Logger logger = LoggerFactory.getLogger(PacketCurLobbyInfo.class);
 
   private String clientIdString;
+  private int clientId;
 
   /**
    * Constructor when the client receives a PacketUpdateClientId packet from the server.
@@ -42,6 +43,14 @@ public class PacketUpdateClientId extends Packet {
   public void validate() {
     if (clientIdString == null) {
       addError("No Status found.");
+      return;
+    }
+    try {
+      this.clientId = Integer.parseInt(clientIdString);
+    } catch (NumberFormatException e) {
+      addError("Invalid client ID for current player received from server. ID: " + clientIdString);
+      logger.error(
+              "Invalid client ID for current player received from server. ID: " + clientIdString);
     }
   }
 
@@ -49,17 +58,12 @@ public class PacketUpdateClientId extends Packet {
   @Override
   public void processData() {
     if (!hasErrors()) {
-      try {
-        int id = Integer.parseInt(clientIdString);
         try {
-          Game.getActivePlayer().setClientId(id);
+          Game.getActivePlayer().setClientId(clientId);
         } catch (NullPointerException ignored) {
-          // This is a network only client and no game is running, or the game has not loaded yet
+          addError("Not connected to the server.");
         }
-      } catch (NumberFormatException e) {
-        logger.error(
-            "Invalid client ID for current player received from server. ID: " + clientIdString);
-      }
+
     }
   }
 }

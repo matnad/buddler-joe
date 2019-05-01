@@ -24,7 +24,6 @@ import net.packets.lobby.PacketLobbyOverview;
 import net.packets.loginlogout.PacketLoginStatus;
 import net.packets.loginlogout.PacketUpdateClientId;
 import net.packets.map.PacketBroadcastMap;
-import net.packets.name.PacketSendName;
 import net.packets.name.PacketSetNameStatus;
 import net.packets.pingpong.PacketPing;
 import net.packets.pingpong.PacketPong;
@@ -191,9 +190,6 @@ public class ClientLogic implements Runnable {
           break;
         case UPDATE_CLIENT_ID:
           p = new PacketUpdateClientId(data);
-          break;
-        case SEND_NAME:
-          p = new PacketSendName(data);
           break;
         case SET_NAME_STATUS:
           p = new PacketSetNameStatus(data);
