@@ -42,9 +42,13 @@ public class Playing {
   private static GuiTexture damageOverlay;
   private static GuiTexture frozenOverlay;
   private static float damageTakenScreenRemaining = 0f;
+  private static int redDown = 0;
+  private static int redUp = 0;
   private static boolean firstloop = true;
   private static MenuButton whisper;
   private static MenuButton all;
+  private static int redDownTotal;
+  private static GuiTexture damageCorner;
 
   /**
    * * Initialize Game Menu. Will load the texture files and other GUI elements needed for this
@@ -54,8 +58,9 @@ public class Playing {
    */
   public static void init(Loader loader) {
     damageOverlay =
-        new GuiTexture(
-            loader.loadTexture("damageTaken"), new Vector2f(0, 0), new Vector2f(1, 1), 1);
+        new GuiTexture(loader.loadTexture("HurtRed"), new Vector2f(0, 0), new Vector2f(1, 1), 1);
+    damageCorner =
+        new GuiTexture(loader.loadTexture("RedGrad4K"), new Vector2f(0, 0), new Vector2f(1, 1), 1);
 
     frozenOverlay =
         new GuiTexture(loader.loadTexture("frozen"), new Vector2f(0, 0), new Vector2f(1, 1), 1);
@@ -188,14 +193,37 @@ public class Playing {
 
     if (damageTakenScreenRemaining > 0) {
       damageTakenScreenRemaining -= Game.dt();
-      damageOverlay.setAlpha(damageTakenScreenRemaining / damageTakenScreenTotalDuration / 1.5f);
+      float alpha = damageOverlay.getAlpha();
+      if (redDown == 0 && redUp == 0) {
+        redDown = 30;
+        redUp = 15;
+        if (redDownTotal == 30) {
+          redUp = 0;
+        }
+      }
+      if (redDown > 0) {
+        if (alpha - 0.033333f > 0) {
+          damageOverlay.setAlpha(alpha - 0.033333f);
+        }
+        if (redDownTotal < 30) {
+          damageCorner.setAlpha(alpha - 0.033333f);
+        }
+        redDown--;
+        redDownTotal--;
+      }
+      if (redDown == 0 && redUp > 0) {
+        if (alpha + 0.066666f < 1) {
+          damageOverlay.setAlpha(alpha + 0.066666f);
+        }
+        redUp--;
+      }
       guis.add(damageOverlay);
+      guis.add(damageCorner);
     }
 
     if (Game.getActivePlayer().isFrozen()) {
       guis.add(frozenOverlay);
     }
-
     Game.getGuiRenderer().render(guis);
     TextMaster.render();
   }
@@ -206,6 +234,11 @@ public class Playing {
 
   public static void showDamageTakenOverlay() {
     damageTakenScreenRemaining = damageTakenScreenTotalDuration;
+    damageOverlay.setAlpha(1f);
+    damageCorner.setAlpha(1f);
+    redDown = 30;
+    redUp = 15;
+    redDownTotal = 90;
   }
 
   /** Delete all text objects from this stage. */
