@@ -101,7 +101,6 @@ public class ServerBlock {
 
     Random random = new Random();
     int r = random.nextInt(100);
-    r = 35;
     if (0 <= r && r <= 30) {
       logger.debug("Spawning dynamite.");
       PacketSpawnItem packetSpawnItem =
