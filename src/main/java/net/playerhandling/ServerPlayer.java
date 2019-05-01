@@ -278,6 +278,10 @@ public class ServerPlayer {
     }
   }
 
+  public boolean isDefeated() {
+    return this.defeated;
+  }
+
   public boolean isReady() {
     return ready;
   }

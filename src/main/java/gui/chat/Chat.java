@@ -40,6 +40,7 @@ public class Chat {
 
   private FontType font;
   private ChatText guiText;
+  private ChatText wisperAddress;
   private Vector3f textColour;
   private Vector2f chatPosition;
   private Vector2f messagePosition;
@@ -53,6 +54,8 @@ public class Chat {
   private int msgSize;
   private List<String> text;
   private String output;
+  private String wisperName;
+  private boolean backToChat;
 
   private boolean hidden = false;
 
@@ -94,6 +97,19 @@ public class Chat {
             false,
             false);
 
+    wisperAddress =
+        new ChatText(
+            chatText,
+            0.25f,
+            new Vector3f(textColour.x, textColour.y, textColour.z),
+            alpha,
+            font,
+            new Vector2f(.06f, .91f),
+            maxLineLength,
+            false,
+            false);
+
+    wisperName = "";
     messages = new ArrayList<>();
     text = new ArrayList<>();
     msgSize = 0;
@@ -119,8 +135,10 @@ public class Chat {
     }
     if (InputHandler.isKeyPressed(GLFW_KEY_ENTER)) {
       if (chatText.length() > 0 && enabled) {
-        PacketChatMessageToServer chatString = new PacketChatMessageToServer(chatText);
+        PacketChatMessageToServer chatString = new PacketChatMessageToServer(wisperName + chatText);
         chatString.sendToServer();
+        TextMaster.removeText(wisperAddress);
+        wisperName = "";
 
         chatText = "";
         InputHandler.resetInputString();
@@ -226,7 +244,7 @@ public class Chat {
    */
   public void arrangeMessages() {
 
-    if (messages.size() != msgSize) { // Something changed
+    if (messages.size() != msgSize || backToChat) { // Something changed
       float posY = chatPosition.y;
       float posX = chatPosition.x;
       int currentLines = 0;
@@ -247,6 +265,7 @@ public class Chat {
       //  message.setPosition(new Vector2f(posX, posY));
       //  posY += .02f * message.getNumberOfLines();
       // }
+      backToChat = false;
       msgSize = messages.size(); // Update size so we can detect further changes
     }
   }
@@ -292,6 +311,7 @@ public class Chat {
     }
     chatGui.setAlpha(alpha);
     guiText.setAlpha(alpha);
+    wisperAddress.setAlpha(alpha);
     for (ChatText message : messages) {
       message.setAlpha(alpha);
     }
@@ -396,5 +416,29 @@ public class Chat {
   /** Unhides the Chat. */
   public void unhide() {
     hidden = false;
+  }
+
+  public void setWisperName(String wisperName) {
+    this.wisperName = "@" + wisperName;
+    updateGuiWisperName();
+  }
+
+  public void setBackToChat(boolean backToChat) {
+    this.backToChat = backToChat;
+  }
+
+  /** changes the wisperaddress, which tells the player to whom he will write the next message. */
+  public void updateGuiWisperName() {
+    wisperAddress =
+        new ChatText(
+            wisperName,
+            0.75f,
+            textColour,
+            alpha,
+            font,
+            new Vector2f(0.145f, 0.65f),
+            1f,
+            false,
+            false);
   }
 }

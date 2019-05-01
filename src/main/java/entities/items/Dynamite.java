@@ -8,11 +8,14 @@ import engine.particles.systems.Smoke;
 import engine.render.Loader;
 import engine.render.objconverter.ObjFileLoader;
 import engine.textures.ModelTexture;
+import entities.NetPlayer;
 import entities.blocks.Block;
 import entities.blocks.BlockMaster;
 import entities.light.Light;
 import entities.light.LightMaster;
 import game.Game;
+import game.NetPlayerMaster;
+import game.map.GameMap;
 import game.stages.Playing;
 import java.util.Random;
 import net.packets.block.PacketBlockDamage;
@@ -22,6 +25,10 @@ import org.joml.Vector3f;
 /** A bundle of dynamite that can damage blocks or the player. */
 @SuppressWarnings("FieldCanBeLocal") // We want settings on top even if it could be local
 public class Dynamite extends Item {
+
+  private static final int DYNAMITE_DAMAGE_DISTANCE_SQ =
+      4 * 4 * GameMap.getDim() * GameMap.getDim();
+
   private static TexturedModel preloadedModel;
   private final float gravity = 20;
   private final float fuseTimer = 3f;
@@ -188,11 +195,22 @@ public class Dynamite extends Item {
         LightMaster.generateLight(
             LightMaster.LightTypes.FLASH, getPosition(), new Vector3f(1, 1, 1));
     flash.setBrightness(10);
+
     // Deal damage to the active player if too close (4 blocks (6 units) distance squared is 576)
-    if (getPosition().distanceSquared(Game.getActivePlayer().getPosition()) <= 576) {
+    if (getPosition().distanceSquared(Game.getActivePlayer().getPosition())
+        <= DYNAMITE_DAMAGE_DISTANCE_SQ) {
       Playing.showDamageTakenOverlay();
-      // Damage player
-      Game.getActivePlayer().decreaseCurrentLives();
+      // Send to server to inform of damage
+      Game.getActivePlayer().informServerOfLifeChange(-1);
+    }
+
+    // Inform server is a NetPlayer is damaged
+    for (Integer id : NetPlayerMaster.getIds()) {
+      NetPlayer netPlayer = NetPlayerMaster.getNetPlayerById(id);
+      if (getPosition().distanceSquared(netPlayer.getPosition()) <= DYNAMITE_DAMAGE_DISTANCE_SQ) {
+        // Send to server to inform of damage
+        netPlayer.informServerOfLifeChange(-1);
+      }
     }
 
     // Deal Damage if dynamite is owned

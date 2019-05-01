@@ -216,6 +216,8 @@ public class PacketSpawnItem extends Packet {
           if (owner == Game.getActivePlayer().getClientId()) {
             item.setOwned(true);
           }
+          // Correct Heart position
+          item.setPositionY(item.getPosition().y - 1.5f * item.getBbox().getDimY());
         } else if (item instanceof Ice) {
           if (owner == Game.getActivePlayer().getClientId()) {
             item.setOwned(true);

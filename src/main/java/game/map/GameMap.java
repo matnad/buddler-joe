@@ -1,5 +1,6 @@
 package game.map;
 
+import entities.Player;
 import org.joml.SimplexNoise;
 import org.joml.Vector2i;
 import org.joml.Vector3f;
@@ -33,13 +34,23 @@ public abstract class GameMap<T> {
   /**
    * Generate a new map.
    *
-   * @param width number of blocks on the horizontal
-   * @param height number of blocks on the vertical = depth
+   * @param mapSize size of the map
    * @param seed random seed
    */
-  public GameMap(int width, int height, long seed) {
-    this.width = width;
-    this.height = height;
+  public GameMap(String mapSize, long seed) {
+    if (mapSize.equals("s")) {
+      this.width = 16;
+      this.height = 64;
+    } else if (mapSize.equals("m")) {
+      this.width = 32;
+      this.height = 56;
+    } else if (mapSize.equals("l")) {
+      this.width = 64;
+      this.height = 40;
+    } else {
+      this.width = 32;
+      this.height = 40;
+    }
     this.seed = (long) (seed % 1e6);
   }
 

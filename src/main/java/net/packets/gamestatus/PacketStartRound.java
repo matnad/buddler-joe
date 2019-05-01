@@ -1,11 +1,14 @@
 package net.packets.gamestatus;
 
 import static game.Game.Stage.INLOBBBY;
+import static game.Game.Stage.LOADINGSCREEN;
 import static game.Game.Stage.PLAYING;
 
 import entities.Player;
 import game.Game;
+import game.map.ClientMap;
 import game.stages.InLobby;
+import game.stages.LoadingScreen;
 import net.packets.Packet;
 import net.packets.playerprop.PacketPos;
 
@@ -49,12 +52,15 @@ public class PacketStartRound extends Packet {
   @Override
   public void processData() {
     InLobby.done();
+    Game.setStartedAt(System.currentTimeMillis());
     Game.removeActiveStage(INLOBBBY);
-    Game.getMap().reloadMap();
-    Game.addActiveStage(PLAYING);
+    ClientMap map = Game.getMap();
+    map.reloadMap();
     Player player = Game.getActivePlayer();
+    player.setPosition(map.getSpawnPositionForPlayer(player));
     new PacketPos(player.getPositionXy().x, player.getPositionXy().y, player.getRotY())
         .sendToServer();
+    Game.addActiveStage(PLAYING);
     // InLobby.done();
   }
 }
