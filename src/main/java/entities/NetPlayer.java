@@ -11,6 +11,7 @@ import entities.collision.BoundingBox;
 import entities.light.Light;
 import entities.light.LightMaster;
 import game.Game;
+import game.map.GameMap;
 import gui.text.Nameplate;
 import java.util.ArrayList;
 import java.util.List;
@@ -162,6 +163,7 @@ public class NetPlayer extends Entity {
 
     // Move player
     increasePosition(new Vector3f(currentVelocity).mul((float) Game.dt()));
+    enforceMapBounds();
 
     // Handle character rotation (check run direction see if we need to rotate more)
     this.increaseRotation(0, (float) (getCurrentTurnSpeed() * Game.dt()), 0);
@@ -305,6 +307,15 @@ public class NetPlayer extends Entity {
       if (getClientId() == Game.getActivePlayer().getClientId()) {
         Game.setActiveCamera(new SpectatorCamera(Game.window, getPosition()));
       }
+    }
+  }
+
+  protected void enforceMapBounds() {
+    float offset = 1;
+    if (getPosition().x < offset) {
+      setPositionX(offset);
+    } else if (getPosition().x > Game.getMap().getWidth() * GameMap.getDim() - offset) {
+      setPositionX(Game.getMap().getWidth() * GameMap.getDim() - offset);
     }
   }
 

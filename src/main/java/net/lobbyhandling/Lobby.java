@@ -58,7 +58,7 @@ public class Lobby implements Runnable {
     this.serverItemState = new ServerItemState();
     this.refereesForClients = new ConcurrentHashMap<>();
     lobbyCounter++;
-    map = new ServerMap(8 * 4, 8 * 5, System.currentTimeMillis());
+    map = new ServerMap(mapSize, System.currentTimeMillis());
   }
 
   /**
