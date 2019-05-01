@@ -20,14 +20,13 @@ import org.joml.Vector3f;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * PlayerLsit Menu specification and rendering. Must be initialized. Specifies all the elements in
+ * the PlayerList Menu . Contains and manages the Game Loop while the PlayerList Menu is active.
+ *
+ * @author Viktor Gsteiger
+ */
 public class PlayerList {
-
-  /**
-   * PlayerLsit Menu specification and rendering. Must be initialized. Specifies all the elements in
-   * the PlayerList Menu . Contains and manages the Game Loop while the PlayerList Menu is active.
-   *
-   * @author Viktor Gsteiger
-   */
   public static final Logger logger = LoggerFactory.getLogger(game.stages.ChooseLobby.class);
 
   private static final float FADE_TIME = .5f;
