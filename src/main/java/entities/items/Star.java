@@ -13,7 +13,7 @@ import org.joml.Vector3f;
 public class Star extends Item {
   private static TexturedModel preloadedModel;
   private final Explosion particleExplosion;
-  private final float freezeTime = 8f;
+  private static final float freezeTime = 8f;
   private float time;
   private int itemId;
 
@@ -103,4 +103,9 @@ public class Star extends Item {
   public void setItemId(int itemId) {
     this.itemId = itemId;
   }
+
+  public static float getFreezeTime() {
+    return freezeTime;
+  }
+
 }

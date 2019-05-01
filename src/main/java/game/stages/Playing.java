@@ -1,10 +1,5 @@
 package game.stages;
 
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_ESCAPE;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_H;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_P;
-import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_1;
-
 import engine.io.InputHandler;
 import engine.particles.ParticleMaster;
 import engine.render.Loader;
@@ -14,6 +9,7 @@ import entities.Entity;
 import entities.blocks.BlockMaster;
 import entities.blocks.debris.DebrisMaster;
 import entities.items.ItemMaster;
+import entities.items.Star;
 import entities.light.LightMaster;
 import game.Game;
 import game.NetPlayerMaster;
@@ -31,6 +27,8 @@ import org.joml.Vector2f;
 import terrains.TerrainFlat;
 import util.MousePlacer;
 
+import static org.lwjgl.glfw.GLFW.*;
+
 /**
  * MAIN GAME LOOP specification and rendering. Contains and manages the Game Loop while the player
  * is playing the game. All the rendering and updating is done here.
@@ -40,7 +38,6 @@ public class Playing {
   private static final float damageTakenScreenTotalDuration = 2f;
   private static FloatingStrings floatingGoldStrings;
   private static GuiTexture damageOverlay;
-  private static GuiTexture frozenOverlay;
   private static float damageTakenScreenRemaining = 0f;
   private static int redDown = 0;
   private static int redUp = 0;
@@ -49,6 +46,13 @@ public class Playing {
   private static MenuButton whisper;
   private static MenuButton all;
   private static GuiTexture damageCorner;
+  private static float freezeRemaining = 0f;
+  private static int freezeFramesRemaining;
+  private static int freezeFramesTotal;
+  private static GuiTexture iceCracks;
+  private static GuiTexture iceGradient;
+  private static GuiTexture iceTotal;
+  private static boolean freezeShow = false;
 
   /**
    * * Initialize Game Menu. Will load the texture files and other GUI elements needed for this
@@ -62,8 +66,15 @@ public class Playing {
     damageCorner =
         new GuiTexture(loader.loadTexture("RedGrad4K"), new Vector2f(0, 0), new Vector2f(1, 1), 1);
 
-    frozenOverlay =
-        new GuiTexture(loader.loadTexture("frozen"), new Vector2f(0, 0), new Vector2f(1, 1), 1);
+    iceCracks =
+        new GuiTexture(loader.loadTexture("EisRisse"), new Vector2f(0, 0), new Vector2f(1, 1), 1);
+    iceGradient =
+        new GuiTexture(
+            loader.loadTexture("whitegradient"), new Vector2f(0, 0), new Vector2f(1, 1), 1);
+
+    iceTotal =
+        new GuiTexture(
+            loader.loadTexture("whiteOut"), new Vector2f(0, 0), new Vector2f(1, 1), 1);
 
     floatingGoldStrings = new FloatingStrings(Game.getActivePlayer().getBbox(), 3f);
 
@@ -195,29 +206,29 @@ public class Playing {
       damageTakenScreenRemaining -= Game.dt();
       float alpha = damageOverlay.getAlpha();
 
-      if (fase == 1){
+      if (fase == 1) {
         if (alpha - 0.033333f > 0) {
           damageOverlay.setAlpha(alpha - 0.033333f);
         }
         redDown--;
       }
-      if (fase == 2){
+      if (fase == 2) {
         if (alpha + 0.033333f < 1) {
           damageOverlay.setAlpha(alpha + 0.033333f);
         }
         redUp--;
       }
-      if (fase == 3){
+      if (fase == 3) {
         if (alpha - 0.022222f > 0) {
           damageOverlay.setAlpha(alpha - 0.022222f);
         }
-        if(damageCorner.getAlpha()-0.011111f>0){
-          damageCorner.setAlpha(damageCorner.getAlpha()-0.022222f - 0.011111f);
+        if (damageCorner.getAlpha() - 0.011111f > 0) {
+          damageCorner.setAlpha(damageCorner.getAlpha() - 0.022222f - 0.011111f);
         }
       }
-      if(redDown == 0 && redUp == 15){
+      if (redDown == 0 && redUp == 15) {
         fase = 2;
-      }else if (redDown == 0 && redUp == 0){
+      } else if (redDown == 0 && redUp == 0) {
         fase = 3;
       }
 
@@ -225,9 +236,49 @@ public class Playing {
       guis.add(damageCorner);
     }
 
-    if (Game.getActivePlayer().isFrozen()) {
-      guis.add(frozenOverlay);
+    if (freezeRemaining > 0) {
+      freezeRemaining -= Game.dt();
+
+      if (freezeFramesRemaining > (int) (0.75f * freezeFramesTotal)) {
+        float stepsize = 1 / (0.25f * (float) freezeFramesTotal);
+        if (iceTotal.getAlpha() - stepsize > 0) {
+          iceTotal.setAlpha(iceTotal.getAlpha() - stepsize);
+        }
+      } else if (freezeFramesRemaining <= (int) (0.75f * freezeFramesTotal)
+              && freezeFramesRemaining > (int) (0.5 * freezeFramesTotal)) {
+        float stepsize = 1 / (0.5f * (float) freezeFramesTotal);
+        if (iceGradient.getAlpha() - stepsize > 0) {
+          iceGradient.setAlpha(iceGradient.getAlpha() - stepsize);
+        }
+      } else if (freezeFramesRemaining <= (int) (0.5f * freezeFramesTotal)) {
+        float stepsize = 1 / (0.5f * (float) freezeFramesTotal);
+        if (iceGradient.getAlpha() - stepsize > 0) {
+          iceGradient.setAlpha(iceGradient.getAlpha() - stepsize);
+        }
+        if (iceCracks.getAlpha() - stepsize > 0) {
+          iceCracks.setAlpha(iceCracks.getAlpha() - stepsize);
+        }
+      }
+      guis.add(iceTotal);
+      guis.add(iceGradient);
+      guis.add(iceCracks);
+      freezeFramesRemaining--;
+    } else {
+      freezeShow = false;
+      iceTotal.setAlpha(0);
+      iceCracks.setAlpha(0);
+      iceGradient.setAlpha(0);
     }
+
+    if (Game.getActivePlayer().isFrozen() && !freezeShow) {
+      showFreezeOverlay();
+    }
+
+    if(InputHandler.isKeyPressed(GLFW_KEY_F)){
+      showFreezeOverlay();
+      //TODO remove this if Statement.
+    }
+
     Game.getGuiRenderer().render(guis);
     TextMaster.render();
   }
@@ -243,6 +294,16 @@ public class Playing {
     redDown = 30;
     redUp = 15;
     fase = 1;
+  }
+
+  public static void showFreezeOverlay() {
+    freezeShow = true;
+    freezeRemaining = Star.getFreezeTime();
+    freezeFramesRemaining = (int) freezeRemaining * 60;
+    freezeFramesTotal = freezeFramesRemaining;
+    iceTotal.setAlpha(1);
+    iceCracks.setAlpha(1);
+    iceGradient.setAlpha(1);
   }
 
   /** Delete all text objects from this stage. */
