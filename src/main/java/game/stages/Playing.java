@@ -1,5 +1,11 @@
 package game.stages;
 
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_ESCAPE;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_F;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_H;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_P;
+import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_1;
+
 import engine.io.InputHandler;
 import engine.particles.ParticleMaster;
 import engine.render.Loader;
@@ -16,7 +22,6 @@ import game.NetPlayerMaster;
 import gui.GuiTexture;
 import gui.MenuButton;
 import gui.text.FloatingStrings;
-
 import java.lang.management.MemoryUsage;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,8 +31,6 @@ import net.packets.lists.PacketPlayerList;
 import org.joml.Vector2f;
 import terrains.TerrainFlat;
 import util.MousePlacer;
-
-import static org.lwjgl.glfw.GLFW.*;
 
 /**
  * MAIN GAME LOOP specification and rendering. Contains and manages the Game Loop while the player
@@ -221,6 +224,9 @@ public class Playing {
     floatingGoldStrings.addString("+ " + goldValue);
   }
 
+  /**
+   * Prepares variables, so that the DamageTakenOverlay can be displayed.
+   * */
   public static void showDamageTakenOverlay() {
     damageTakenScreenRemaining = damageTakenScreenTotalDuration;
     damageOverlay.setAlpha(1f);
@@ -230,6 +236,9 @@ public class Playing {
     fase = 1;
   }
 
+  /**
+   * Prepares variables, so that the FreezeOverlay can be displayed.
+   * */
   public static void showFreezeOverlay() {
     freezeShow = true;
     freezeRemaining = Star.getFreezeTime();
