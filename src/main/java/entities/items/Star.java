@@ -16,6 +16,7 @@ public class Star extends Item {
   private static final float freezeTime = 8f;
   private float time;
   private int itemId;
+  private boolean freezeTriggered = false;
 
   /** Extended Constructor for Ice. Don't use directly. Use the Item Master to create items. */
   private Star(Vector3f position, float rotX, float rotY, float rotZ, float scale) {
@@ -67,15 +68,16 @@ public class Star extends Item {
    */
   @Override
   public void update() {
+    time += Game.dt();
     if (!isOwned()) {
-      Game.getActivePlayer().freeze();
-      time += Game.dt();
       if (time >= freezeTime) {
         Game.getActivePlayer().defreeze();
         setDestroyed(true);
+      } else if (time >= 0.2f) {
+        Game.getActivePlayer().freeze(!freezeTriggered);
+        freezeTriggered = true;
       }
     } else {
-      time += Game.dt();
       if (time >= freezeTime) {
         setDestroyed(true);
       }
@@ -107,5 +109,4 @@ public class Star extends Item {
   public static float getFreezeTime() {
     return freezeTime;
   }
-
 }

@@ -15,6 +15,7 @@ public class Ice extends Item {
   private final float freezeTime = 8f;
   private float time;
   private int itemId;
+  private boolean freezeTriggered = false;
 
   /** Extended Constructor for Ice. Don't use directly. Use the Item Master to create items. */
   private Ice(Vector3f position, float rotX, float rotY, float rotZ, float scale) {
@@ -64,7 +65,8 @@ public class Ice extends Item {
         Game.getActivePlayer().defreeze();
         setDestroyed(true);
       } else if (time >= 0.2f) {
-        Game.getActivePlayer().freeze();
+        Game.getActivePlayer().freeze(!freezeTriggered);
+        freezeTriggered = true;
       }
     } else {
       if (time >= freezeTime) {

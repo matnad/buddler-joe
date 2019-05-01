@@ -2,6 +2,7 @@ package entities;
 
 import static entities.items.ItemMaster.ItemTypes.TORCH;
 import static game.Game.Stage.PLAYING;
+import static game.stages.Playing.showFreezeOverlay;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_A;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_D;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_E;
@@ -413,8 +414,12 @@ public class Player extends NetPlayer {
     return currentLives;
   }
 
-  public void freeze() {
-    this.frozen = true;
+  /** Triggers FreezeOverlay. And sets Player as frozen. */
+  public void freeze(boolean initial) {
+    frozen = true;
+    if (initial) {
+      showFreezeOverlay();
+    }
   }
 
   public void defreeze() {

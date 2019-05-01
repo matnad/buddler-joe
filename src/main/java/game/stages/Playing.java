@@ -207,15 +207,6 @@ public class Playing {
     guis = applyDamage(guis);
     guis = applyFreeze(guis);
 
-    if (Game.getActivePlayer().isFrozen() && !freezeShow) {
-      showFreezeOverlay();
-    }
-
-    if (InputHandler.isKeyPressed(GLFW_KEY_F)) {
-      showFreezeOverlay();
-      // TODO remove this if Statement.
-    }
-
     Game.getGuiRenderer().render(guis);
     TextMaster.render();
   }
