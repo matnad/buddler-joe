@@ -219,11 +219,14 @@ public class PlayerList {
             && InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1)
             && whisper[i].isHover(x, y)) {
           done();
+          Game.getChat().unhide();
+          Game.getChat().setEnabled(true);
           Game.getChat().setWisperName(catalog.get(i));
           Game.removeActiveStage(Game.Stage.PLAYERLIST);
           removePlayerFromPlayerlist();
           Game.getChat().setBackToChat(true);
           Game.getChat().arrangeMessages();
+          InputHandler.readInputOn();
           break;
         }
       }

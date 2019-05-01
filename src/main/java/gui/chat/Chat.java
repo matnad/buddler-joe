@@ -381,11 +381,12 @@ public class Chat {
     textColour.y = 1f;
     textColour.z = 1f;
     maxLineLength = 0.34f;
-    differenceMessageToChat = 0.04f;
-    messagePosition.x = 0.06f;
-    messagePosition.y = 0.91f;
+    differenceMessageToChat = 0.02f;
+    messagePosition.x = 0.04f;
+    messagePosition.y = 0.915f;
     inLobby = false;
     enabled = false;
+    InputHandler.readInputOff();
   }
 
   /** Adjusts all variables for the chat to fit in the InLobbyMenu-Chatbox. */
