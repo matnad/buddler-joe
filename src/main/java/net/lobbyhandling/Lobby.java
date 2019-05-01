@@ -34,7 +34,7 @@ public class Lobby implements Runnable {
   private String status;
   private long createdAt;
   private ServerItemState serverItemState;
-  private volatile ConcurrentHashMap<Integer, Referee> refereesForClients; // Integer = clientId
+  private ConcurrentHashMap<Integer, Referee> refereesForClients; // Integer = clientId
   private Thread gameLoop;
 
   /**
