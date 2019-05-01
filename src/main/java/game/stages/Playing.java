@@ -73,8 +73,7 @@ public class Playing {
             loader.loadTexture("whitegradient"), new Vector2f(0, 0), new Vector2f(1, 1), 1);
 
     iceTotal =
-        new GuiTexture(
-            loader.loadTexture("whiteOut"), new Vector2f(0, 0), new Vector2f(1, 1), 1);
+        new GuiTexture(loader.loadTexture("whiteOut"), new Vector2f(0, 0), new Vector2f(1, 1), 1);
 
     floatingGoldStrings = new FloatingStrings(Game.getActivePlayer().getBbox(), 3f);
 
@@ -202,81 +201,16 @@ public class Playing {
     floatingGoldStrings.update();
     ParticleMaster.renderParticles(Game.getActiveCamera());
 
-    if (damageTakenScreenRemaining > 0) {
-      damageTakenScreenRemaining -= Game.dt();
-      float alpha = damageOverlay.getAlpha();
-
-      if (fase == 1) {
-        if (alpha - 0.033333f > 0) {
-          damageOverlay.setAlpha(alpha - 0.033333f);
-        }
-        redDown--;
-      }
-      if (fase == 2) {
-        if (alpha + 0.033333f < 1) {
-          damageOverlay.setAlpha(alpha + 0.033333f);
-        }
-        redUp--;
-      }
-      if (fase == 3) {
-        if (alpha - 0.022222f > 0) {
-          damageOverlay.setAlpha(alpha - 0.022222f);
-        }
-        if (damageCorner.getAlpha() - 0.011111f > 0) {
-          damageCorner.setAlpha(damageCorner.getAlpha() - 0.022222f - 0.011111f);
-        }
-      }
-      if (redDown == 0 && redUp == 15) {
-        fase = 2;
-      } else if (redDown == 0 && redUp == 0) {
-        fase = 3;
-      }
-
-      guis.add(damageOverlay);
-      guis.add(damageCorner);
-    }
-
-    if (freezeRemaining > 0) {
-      freezeRemaining -= Game.dt();
-
-      if (freezeFramesRemaining > (int) (0.75f * freezeFramesTotal)) {
-        float stepsize = 1 / (0.25f * (float) freezeFramesTotal);
-        if (iceTotal.getAlpha() - stepsize > 0) {
-          iceTotal.setAlpha(iceTotal.getAlpha() - stepsize);
-        }
-      } else if (freezeFramesRemaining <= (int) (0.75f * freezeFramesTotal)
-              && freezeFramesRemaining > (int) (0.5 * freezeFramesTotal)) {
-        float stepsize = 1 / (0.5f * (float) freezeFramesTotal);
-        if (iceGradient.getAlpha() - stepsize > 0) {
-          iceGradient.setAlpha(iceGradient.getAlpha() - stepsize);
-        }
-      } else if (freezeFramesRemaining <= (int) (0.5f * freezeFramesTotal)) {
-        float stepsize = 1 / (0.5f * (float) freezeFramesTotal);
-        if (iceGradient.getAlpha() - stepsize > 0) {
-          iceGradient.setAlpha(iceGradient.getAlpha() - stepsize);
-        }
-        if (iceCracks.getAlpha() - stepsize > 0) {
-          iceCracks.setAlpha(iceCracks.getAlpha() - stepsize);
-        }
-      }
-      guis.add(iceTotal);
-      guis.add(iceGradient);
-      guis.add(iceCracks);
-      freezeFramesRemaining--;
-    } else {
-      freezeShow = false;
-      iceTotal.setAlpha(0);
-      iceCracks.setAlpha(0);
-      iceGradient.setAlpha(0);
-    }
+    guis = applyDamage(guis);
+    guis = applyFreeze(guis);
 
     if (Game.getActivePlayer().isFrozen() && !freezeShow) {
       showFreezeOverlay();
     }
 
-    if(InputHandler.isKeyPressed(GLFW_KEY_F)){
+    if (InputHandler.isKeyPressed(GLFW_KEY_F)) {
       showFreezeOverlay();
-      //TODO remove this if Statement.
+      // TODO remove this if Statement.
     }
 
     Game.getGuiRenderer().render(guis);
@@ -304,6 +238,90 @@ public class Playing {
     iceTotal.setAlpha(1);
     iceCracks.setAlpha(1);
     iceGradient.setAlpha(1);
+  }
+
+  /**
+   * Calculates and applies alpha values for freeze GuiTextures.
+   *
+   * @param guis the current gui List to which the Freeze-GuiTextures should be added.
+   * @return a list that equals the parameter guis with added Freeze-GuiTextures if necessary.
+   */
+  public static List<GuiTexture> applyFreeze(List<GuiTexture> guis) {
+    if (freezeRemaining > 0) {
+      freezeRemaining -= Game.dt();
+
+      if (freezeFramesRemaining > (int) (0.75f * freezeFramesTotal)) {
+        float stepsize = 1 / (0.25f * (float) freezeFramesTotal);
+        if (iceTotal.getAlpha() - stepsize > 0) {
+          iceTotal.setAlpha(iceTotal.getAlpha() - stepsize);
+        }
+      } else if (freezeFramesRemaining <= (int) (0.75f * freezeFramesTotal)
+          && freezeFramesRemaining > (int) (0.5 * freezeFramesTotal)) {
+        float stepsize = 1 / (0.5f * (float) freezeFramesTotal);
+        if (iceGradient.getAlpha() - stepsize > 0) {
+          iceGradient.setAlpha(iceGradient.getAlpha() - stepsize);
+        }
+      } else if (freezeFramesRemaining <= (int) (0.5f * freezeFramesTotal)) {
+        float stepsize = 1 / (0.5f * (float) freezeFramesTotal);
+        if (iceGradient.getAlpha() - stepsize > 0) {
+          iceGradient.setAlpha(iceGradient.getAlpha() - stepsize);
+        }
+        if (iceCracks.getAlpha() - stepsize > 0) {
+          iceCracks.setAlpha(iceCracks.getAlpha() - stepsize);
+        }
+      }
+      guis.add(iceTotal);
+      guis.add(iceGradient);
+      guis.add(iceCracks);
+      freezeFramesRemaining--;
+    } else {
+      freezeShow = false;
+      iceTotal.setAlpha(0);
+      iceCracks.setAlpha(0);
+      iceGradient.setAlpha(0);
+    }
+    return guis;
+  }
+
+  /**
+   * Calculates and applies alpha values for Damage GuiTextures.
+   *
+   * @param guis the current gui List to which the Damage-GuiTextures should be added.
+   * @return a list that equals the parameter guis with added Damage-GuiTextures if necessary.
+   */
+  public static List<GuiTexture> applyDamage(List<GuiTexture> guis) {
+    if (damageTakenScreenRemaining > 0) {
+      damageTakenScreenRemaining -= Game.dt();
+      float alpha = damageOverlay.getAlpha();
+      if (fase == 1) {
+        if (alpha - 0.033333f > 0) {
+          damageOverlay.setAlpha(alpha - 0.033333f);
+        }
+        redDown--;
+      }
+      if (fase == 2) {
+        if (alpha + 0.033333f < 1) {
+          damageOverlay.setAlpha(alpha + 0.033333f);
+        }
+        redUp--;
+      }
+      if (fase == 3) {
+        if (alpha - 0.022222f > 0) {
+          damageOverlay.setAlpha(alpha - 0.022222f);
+        }
+        if (damageCorner.getAlpha() - 0.011111f > 0) {
+          damageCorner.setAlpha(damageCorner.getAlpha() - 0.022222f - 0.011111f);
+        }
+      }
+      if (redDown == 0 && redUp == 15) {
+        fase = 2;
+      } else if (redDown == 0 && redUp == 0) {
+        fase = 3;
+      }
+      guis.add(damageOverlay);
+      guis.add(damageCorner);
+    }
+    return guis;
   }
 
   /** Delete all text objects from this stage. */
