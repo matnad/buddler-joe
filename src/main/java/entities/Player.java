@@ -17,6 +17,7 @@ import entities.blocks.BlockMaster;
 import entities.collision.BoundingBox;
 import entities.items.ItemMaster;
 import game.Game;
+import game.map.GameMap;
 import game.stages.Playing;
 import net.packets.block.PacketBlockDamage;
 import net.packets.life.PacketLifeStatus;
@@ -49,7 +50,6 @@ public class Player extends NetPlayer {
   private final float torchPlaceDelay = 10f;
   // Resources and Stats
   public int currentGold; // Current coins
-  private int currentLives;
   private float digDamage; // Damage per second when colliding with blocks
   private Block lastDiggedBlock = null;
   private float lastDiggedBlockDamage = 0;
@@ -76,7 +76,6 @@ public class Player extends NetPlayer {
     super(0, username, position, rotX, rotY, rotZ);
     digDamage = 1;
     currentGold = 0;
-    currentLives = 2;
     controlsDisabled = false;
   }
 
@@ -91,6 +90,11 @@ public class Player extends NetPlayer {
    * handling and potentially server communication
    */
   public void move() {
+
+    // Dont update during the first second
+    if (Game.getStartedAt() + 1000 > System.currentTimeMillis()) {
+      return;
+    }
 
     // Check if player can move
     controlsDisabled = isDefeated() || frozen || Game.getChat().isEnabled();
@@ -133,6 +137,7 @@ public class Player extends NetPlayer {
 
     // Move player
     increasePosition(new Vector3f(currentVelocity).mul((float) Game.dt()));
+    enforceMapBounds();
 
     // Handle character rotation (check run direction see if we need to rotate more)
     this.increaseRotation(0, (float) (getCurrentTurnSpeed() * Game.dt()), 0);
@@ -184,7 +189,12 @@ public class Player extends NetPlayer {
     }
     // Effects when being crushed
     Playing.showDamageTakenOverlay();
-    decreaseCurrentLives();
+
+    // decreaseCurrentLives();
+
+    // Send to server to inform
+    informServer(-1);
+
     // Find a place to move the player to
     Vector2i playerGridPos =
         new Vector2i(collideWithBlockBelow.getGridX(), collideWithBlockBelow.getGridY() - 1);
@@ -383,29 +393,6 @@ public class Player extends NetPlayer {
 
   public int getCurrentGold() {
     return currentGold;
-  }
-
-  /** updates the player's life status and sends the life status to server. */
-  public boolean increaseCurrentLives() {
-    if (currentLives < 2) {
-      currentLives++;
-      PacketLifeStatus lives = new PacketLifeStatus(String.valueOf(currentLives));
-      lives.processData();
-      return true;
-    }
-    return false;
-  }
-
-  /** updates the player's life status and sends the life status to server. */
-  public void decreaseCurrentLives() {
-    currentLives--;
-    // hier send paket
-    PacketLifeStatus lives = new PacketLifeStatus(String.valueOf(currentLives));
-    lives.processData();
-  }
-
-  public int getCurrentLives() {
-    return currentLives;
   }
 
   public void freeze() {

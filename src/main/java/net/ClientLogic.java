@@ -16,6 +16,7 @@ import net.packets.gamestatus.PacketHistory;
 import net.packets.gamestatus.PacketStartRound;
 import net.packets.highscore.PacketHighscore;
 import net.packets.items.PacketSpawnItem;
+import net.packets.life.PacketLifeStatus;
 import net.packets.lists.PacketGamesOverview;
 import net.packets.lists.PacketPlayerList;
 import net.packets.lobby.PacketCreateLobbyStatus;
@@ -265,6 +266,9 @@ public class ClientLogic implements Runnable {
           break;
         case PLAYER_DEFEATED:
           p = new PacketDefeated(data);
+          break;
+        case LIFE_STATUS:
+          p = new PacketLifeStatus(data);
           break;
         default:
       }

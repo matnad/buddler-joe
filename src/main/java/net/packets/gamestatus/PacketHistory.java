@@ -1,6 +1,10 @@
 package net.packets.gamestatus;
 
+import game.Game;
+import java.util.concurrent.CopyOnWriteArrayList;
 import net.packets.Packet;
+
+
 
 /**
  * A packed that is send from the server to the client, which contains the "History". Packet-Code:
@@ -74,9 +78,16 @@ public class PacketHistory extends Packet {
       System.out.println(createErrorMessage());
     } else if (in[0].equals("OK")) {
       System.out.println("-----------------------------------------------------");
+      CopyOnWriteArrayList<String> catalog = new CopyOnWriteArrayList<>();
       for (int i = 1; i < in.length; i++) {
         System.out.println(in[i]);
+        if ((catalog.size() + 1) % 6 == 0
+            && (in[i].equals("Lobbies Of Running Games:") || in[i].equals("Old Games:"))) {
+          catalog.add("");
+        }
+        catalog.add(in[i]);
       }
+      Game.setHistoryCatalog(catalog);
       System.out.println("-----------------------------------------------------");
     } else {
       System.out.println(in[0]);

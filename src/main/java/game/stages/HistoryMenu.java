@@ -22,12 +22,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * ChooseLobby Menu specification and rendering. Must be initialized. Specifies all the elements in
- * the ChooseLobby Menu . Contains and manages the Game Loop while the ChooseLobby Menu is active.
+ * History Menu specification and rendering. Must be initialized. Specifies all the elements in the
+ * History Menu . Contains and manages the Game Loop while the History Menu is active.
  *
  * @author Sebastian Schlachter
  */
-public class ChooseLobby {
+public class HistoryMenu {
 
   public static final Logger logger = LoggerFactory.getLogger(ChooseLobby.class);
   private static final float FADE_TIME = .5f;
@@ -38,19 +38,12 @@ public class ChooseLobby {
   private static GuiTexture buddlerJoe;
   private static GuiTexture titel;
   private static MenuButton back;
-  private static MenuButton[] join = new MenuButton[6];
   private static MenuButton up;
   private static MenuButton down;
-  private static MenuButton[] create = new MenuButton[6];
   private static int n = 6; // varibale that defines how many join buttons are displayed. Max is 6.
-  private static float[] joinY = {0.312963f, 0.175926f, 0.037037f, -0.1f, -0.238889f, -0.375926f};
-  private static float[] namesY = {0.330864f, 0.4f, 0.469136f, 0.538272f, 0.607407f, 0.676534f};
-  private static float[] countY = {0.330864f, 0.4f, 0.469136f, 0.538272f, 0.607407f, 0.676534f};
-  private static float[] sizesY = {0.330864f, 0.4f, 0.469136f, 0.538272f, 0.607407f, 0.676534f};
-  private static CopyOnWriteArrayList<LobbyEntry> catalog;
-  private static ChangableGuiText[] names = new ChangableGuiText[6];
-  private static ChangableGuiText[] count = new ChangableGuiText[6];
-  private static ChangableGuiText[] sizes = new ChangableGuiText[6];
+  private static float[] lineY = {0.330864f, 0.4f, 0.469136f, 0.538272f, 0.607407f, 0.676534f};
+  private static CopyOnWriteArrayList<String> catalog;
+  private static ChangableGuiText[] lines = new ChangableGuiText[6];
   private static int startInd = 0;
   private static int page = 0;
   private static ChangableGuiText pageIndex;
@@ -90,9 +83,9 @@ public class ChooseLobby {
 
     titel =
         new GuiTexture(
-            loader.loadTexture("availableLobbiesType"),
-            new Vector2f(-0.053125f, 0.446296f),
-            new Vector2f(0.379167f, 0.052778f),
+            loader.loadTexture("historytitel"),
+            new Vector2f(-0.252083f, 0.446296f),
+            new Vector2f(0.175157f, 0.052778f),
             1);
 
     // Back
@@ -103,28 +96,6 @@ public class ChooseLobby {
             "back_hover",
             new Vector2f(0.75f, -0.851852f),
             new Vector2f(.097094f, .082347f));
-
-    // initialize all create Buttens
-    for (int i = 0; i < create.length; i++) {
-      create[i] =
-          new MenuButton(
-              loader,
-              "create_norm",
-              "create_hover",
-              new Vector2f(0.391667f, joinY[i]),
-              new Vector2f(0.082365f, .069444f));
-    }
-
-    // initialize all join Buttens
-    for (int i = 0; i < join.length; i++) {
-      join[i] =
-          new MenuButton(
-              loader,
-              "join_norm",
-              "join_hover",
-              new Vector2f(0.391667f, joinY[i]),
-              new Vector2f(0.082365f, .069444f));
-    }
 
     up =
         new MenuButton(
@@ -155,14 +126,16 @@ public class ChooseLobby {
       initializedText = true;
     }
 
-    catalog = Game.getLobbyCatalog();
+    catalog = Game.getHistoryCatalog();
     // System.out.println(catalog.toString());
 
     List<GuiTexture> guis = new ArrayList<>();
     // add textures here
-    guis.add(background);
+    if (!Game.getActiveStages().contains(Game.Stage.PLAYING)) {
+      guis.add(background);
+      guis.add(buddlerJoe);
+    }
     guis.add(lobbyOverview);
-    guis.add(buddlerJoe);
     guis.add(titel);
 
     // OpenGL Coordinates (0/0 = center of screen, -1/1 = corners)
@@ -174,42 +147,19 @@ public class ChooseLobby {
 
     startInd = page * 6;
     setN(catalog.size() - startInd);
-    for (int i = 0; i < names.length; i++) {
+    for (int i = 0; i < lines.length; i++) {
       try {
         if (i + startInd < catalog.size()) {
           // System.out.print(catalog.get(i+startInd).getPlayers()+" ");
           // System.out.println(i);
-          names[i].changeText("Name: " + catalog.get(i + startInd).getName());
-          count[i].changeText(
-              "Players: " + catalog.get(i + startInd).getPlayers() + "/" + Lobby.getMaxPlayers());
-          // System.out.println(i);
-          sizes[i].changeText("Size: " + catalog.get(i + startInd).getSize().toUpperCase());
+          lines[i].changeText(catalog.get(i + startInd));
         } else {
-          names[i].changeText("");
-          count[i].changeText("");
-          sizes[i].changeText("");
+          lines[i].changeText("");
         }
       } catch (IndexOutOfBoundsException e) {
         System.out.println("error in choose lobby");
         logger.error(e.getMessage());
       }
-    }
-
-    // Place Create----------------------------------------------------------------------
-    if (n < create.length) {
-      guis.add(create[n].getHoverTexture(x, y));
-    }
-    for (int i = 0; i < 6; i++) {
-      if (i != n) {
-        guis.remove(create[i].getHoverTexture(x, y));
-      }
-    }
-    // Place Join------------------------------------------------------------------------
-    for (int i = 0; i < n; i++) {
-      guis.add(join[i].getHoverTexture(x, y));
-    }
-    for (int i = 5; i > -1 + n; i--) {
-      guis.remove(join[i].getHoverTexture(x, y));
     }
     // Place PageIndex-------------------------------------------------------------------
     if (n == 6 || page != 0) {
@@ -232,31 +182,23 @@ public class ChooseLobby {
     // Input-Handling-------------------------------------------------------------------
     if (InputHandler.isKeyPressed(GLFW_KEY_ESCAPE)
         || InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1) && back.isHover(x, y)) {
-      done();
-      Game.addActiveStage(Game.Stage.MAINMENU);
-      Game.removeActiveStage(Game.Stage.CHOOSELOBBY);
-    } else if (InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1) && up.isHover(x, y)) {
+      if (Game.getActiveStages().contains(Game.Stage.PLAYING)) {
+        done();
+        Game.removeActiveStage(Game.Stage.HISTORYMENU);
+        Game.getChat().unhide();
+      } else {
+        done();
+        Game.addActiveStage(Game.Stage.MAINMENU);
+        Game.removeActiveStage(Game.Stage.HISTORYMENU);
+      }
+    }
+
+    if (InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1) && up.isHover(x, y)) {
       if (page != 0) {
         page = page - 1;
       }
     } else if (InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1) && down.isHover(x, y)) {
       page = page + 1;
-    } else if (n < create.length
-        && InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1)
-        && create[n].isHover(x, y)) {
-      done();
-      Game.addActiveStage(Game.Stage.LOBBYCREATION);
-      Game.removeActiveStage(Game.Stage.CHOOSELOBBY);
-      // done();
-    } else {
-      for (int i = 0; i < n; i++) {
-        if (i + startInd < catalog.size()
-            && InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1)
-            && join[i].isHover(x, y)) {
-          new PacketJoinLobby(catalog.get(i + startInd).getName()).sendToServer();
-          break;
-        }
-      }
     }
 
     Game.getGuiRenderer().render(guis);
@@ -275,28 +217,14 @@ public class ChooseLobby {
     pageIndex.setCentered(false);
   }
 
-  /**
-   * Instantiates the ChangeableGuiText for the player names and the player states. Also sets
-   * Position, Colour, and Fontsize.
-   */
+  /** Instantiates the ChangeableGuiText for the lines. Also sets Position, Colour, and Fontsize. */
   public static void initText() {
-    for (int i = 0; i < names.length; i++) {
-      names[i] = new ChangableGuiText();
-      names[i].setPosition(new Vector2f(0.286719f, namesY[i]));
-      names[i].setFontSize(1);
-      names[i].setTextColour(black);
-      names[i].setCentered(false);
-      count[i] = new ChangableGuiText();
-      count[i].setPosition(new Vector2f(0, countY[i]));
-      count[i].setFontSize(1);
-      count[i].setTextColour(black);
-      names[i].setCentered(false);
-      sizes[i] = new ChangableGuiText();
-      sizes[i].setPosition(new Vector2f(0.5625f, sizesY[i]));
-      sizes[i].setFontSize(1);
-      sizes[i].setTextColour(black);
-      sizes[i].setCentered(false);
-
+    for (int i = 0; i < lines.length; i++) {
+      lines[i] = new ChangableGuiText();
+      lines[i].setPosition(new Vector2f(0.286719f, lineY[i]));
+      lines[i].setFontSize(1);
+      lines[i].setTextColour(black);
+      lines[i].setCentered(false);
     }
   }
 
@@ -305,7 +233,15 @@ public class ChooseLobby {
     page = 0;
     initializedPageIndex = false;
     initializedText = false;
-    TextMaster.removeAll();
+    for (ChangableGuiText line : lines) {
+      if (line != null) {
+        line.delete();
+      }
+    }
+    if (pageIndex != null) {
+      pageIndex.delete();
+    }
+    // TextMaster.removeAll();
   }
 
   /**
@@ -319,6 +255,6 @@ public class ChooseLobby {
     } else if (n < 0) {
       n = 0;
     }
-    ChooseLobby.n = n;
+    HistoryMenu.n = n;
   }
 }

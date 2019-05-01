@@ -10,6 +10,7 @@ import entities.NetPlayer;
 import game.Game;
 import game.NetPlayerMaster;
 import net.packets.items.PacketItemUsed;
+import net.packets.life.PacketLifeStatus;
 import org.joml.Vector3f;
 
 public class Heart extends Item {
