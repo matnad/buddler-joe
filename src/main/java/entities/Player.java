@@ -401,7 +401,10 @@ public class Player extends NetPlayer {
     return currentGold;
   }
 
-  /** Triggers FreezeOverlay. And sets Player as frozen. */
+  /**
+   * Triggers FreezeOverlay. And sets Player as frozen.
+   * @param initial the current freeze status.
+   */
   public void freeze(boolean initial) {
     frozen = true;
     if (initial) {
