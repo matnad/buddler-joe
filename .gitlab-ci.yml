@@ -1,15 +1,22 @@
+image: openjdk:11.0.3-jdk-stretch
+
 stages:
   - build
-  - test
+  - unitTests
+  - qualityAssurance
 
 build:
   stage: build
-  script: ./gradlew build-cs108
+  script: ./gradlew clean shadowJar
 
-javadoc:
-  stage: test
-  script: ./gradlew javadoc
+test:
+  stage: unitTests
+  script: ./gradlew test
 
 checkstyle:
-  stage: test
-  script: ./gradlew checkstyleMain
+  stage: qualityAssurance
+  script: ./gradlew checkstyleMain; ./gradlew checkstyleTest
+
+javadoc:
+  stage: qualityAssurance
+  script: ./gradlew javadoc
