@@ -15,7 +15,6 @@ import game.map.GameMap;
 import gui.text.Nameplate;
 import java.util.ArrayList;
 import java.util.List;
-
 import net.packets.life.PacketLifeStatus;
 import org.joml.Vector3f;
 import org.slf4j.Logger;
@@ -195,6 +194,13 @@ public class NetPlayer extends Entity {
     }
   }
 
+  /**
+   * Report an observed life total change for this player to the server.
+   *
+   * <p>The server will decide how to handle it from there.
+   *
+   * @param val lifetotal change: -1 or +1
+   */
   public void informServer(int val) {
     PacketLifeStatus informServer;
     if (val == -1) {

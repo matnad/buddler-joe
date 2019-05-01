@@ -37,6 +37,7 @@ public class PacketLifeStatus extends Packet {
    * status of playerId). data contains the life status from the sender's perspective, sender
    * specification(client) and the playerId of the crushed player.
    *
+   * @param clientId clientId of the sender
    * @param data is currentLives+sender+playerId; example: 2server4
    */
   public PacketLifeStatus(int clientId, String data) {
@@ -109,8 +110,7 @@ public class PacketLifeStatus extends Packet {
         NetPlayerMaster.getNetPlayerById(playerId).updateLives(currentLives);
       }
     } else {
-      logger.error(
-          "Invalid playerId or invalid life status or invalid sender or the player is not in a lobby");
+      logger.error("Errors processing life status packet: " + createErrorMessage());
     }
   }
 }

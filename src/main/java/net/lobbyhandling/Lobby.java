@@ -2,7 +2,6 @@ package net.lobbyhandling;
 
 import game.History;
 import game.map.ServerMap;
-
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import net.ServerLogic;
@@ -345,27 +344,28 @@ public class Lobby implements Runnable {
     new PacketStartRound().sendToLobby(lobbyId);
   }
 
+  /**
+   * Add the perspective for a life change event from one player.
+   *
+   * <p>Whenever a player observers himself or another player getting a life change, this is
+   * reported to the server and the server adds this perspective to a Referee object. The Referee
+   * class will then decide how to proceed.
+   *
+   * <p>This method will check if there is a running referee event to add the perspective to and if
+   * not, will create a new instance.
+   *
+   * @param voter the clientId of the player who is making the observation
+   * @param effected the clientId of the effected player (the player with the life change)
+   * @param currentLives the new value of lives for the effected player
+   */
   public void addPerspective(int voter, int effected, int currentLives) {
     Referee ref = refereesForClients.get(effected);
     if (ref == null || !ref.isOpen()) {
       ref = new Referee(effected, this);
       refereesForClients.put(effected, ref);
     }
-    ref.add(voter, currentLives);
+    ref.addPerspective(voter, currentLives);
   }
-
-  //public void addPerspective(int clientId, int playerId, int currentLives) {
-  //  Referee ref;
-  //  if (!checkEventOpened(playerId)) {
-  //    ref = new Referee(playerId, this);
-  //    refereesForClients.put(playerId, ref);
-  //    refereesForClients.get(playerId).add(clientId, currentLives);
-  //  } else {
-  //    if (!refereesForClients.get(playerId).getAllPerspectives().containsKey(clientId)) {
-  //      refereesForClients.get(playerId).add(clientId, currentLives);
-  //    }
-  //  }
-  //}
 
   public void clearRef(int playerId) {
     refereesForClients.remove(playerId);
