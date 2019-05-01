@@ -9,15 +9,13 @@ import java.net.Socket;
 import java.net.SocketException;
 import net.packets.Packet;
 import net.packets.block.PacketBlockDamage;
-import net.packets.chat.PacketChatMessageStatus;
 import net.packets.chat.PacketChatMessageToClient;
 import net.packets.gamestatus.PacketGameEnd;
 import net.packets.gamestatus.PacketHistory;
 import net.packets.gamestatus.PacketStartRound;
-import net.packets.highscore.PacketHighscore;
 import net.packets.items.PacketSpawnItem;
 import net.packets.life.PacketLifeStatus;
-import net.packets.lists.PacketGamesOverview;
+import net.packets.lists.PacketHighscore;
 import net.packets.lists.PacketPlayerList;
 import net.packets.lobby.PacketCreateLobbyStatus;
 import net.packets.lobby.PacketCurLobbyInfo;
@@ -27,7 +25,6 @@ import net.packets.lobby.PacketLobbyOverview;
 import net.packets.loginlogout.PacketLoginStatus;
 import net.packets.loginlogout.PacketUpdateClientId;
 import net.packets.map.PacketBroadcastMap;
-import net.packets.name.PacketSendName;
 import net.packets.name.PacketSetNameStatus;
 import net.packets.pingpong.PacketPing;
 import net.packets.pingpong.PacketPong;
@@ -112,10 +109,6 @@ public class ClientLogic implements Runnable {
     return connected;
   }
 
-  public static boolean isDisconnectFromServer() {
-    return disconnectFromServer;
-  }
-
   /**
    * A method to disconnect from the server.
    *
@@ -157,6 +150,7 @@ public class ClientLogic implements Runnable {
    * @throws IOException when the socket fails
    * @throws RuntimeException when something unexpected happens
    */
+  @SuppressWarnings("Duplicates")
   private void waitForServer() throws IOException, RuntimeException {
     while (!disconnectFromServer) {
       String in;
@@ -198,9 +192,6 @@ public class ClientLogic implements Runnable {
         case UPDATE_CLIENT_ID:
           p = new PacketUpdateClientId(data);
           break;
-        case SEND_NAME:
-          p = new PacketSendName(data);
-          break;
         case SET_NAME_STATUS:
           p = new PacketSetNameStatus(data);
           break;
@@ -222,9 +213,6 @@ public class ClientLogic implements Runnable {
         case CHAT_MESSAGE_TO_CLIENT:
           p = new PacketChatMessageToClient(data);
           break;
-        case CHAT_MESSAGE_STATUS:
-          p = new PacketChatMessageStatus(data);
-          break;
         case PING:
           p = new PacketPing(data);
           break;
@@ -245,9 +233,6 @@ public class ClientLogic implements Runnable {
           break;
         case SPAWN_ITEM:
           p = new PacketSpawnItem(data);
-          break;
-        case GAMES_OVERVIEW:
-          p = new PacketGamesOverview(data);
           break;
         case HIGHSCORE:
           p = new PacketHighscore(data);

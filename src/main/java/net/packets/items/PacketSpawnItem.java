@@ -23,7 +23,6 @@ public class PacketSpawnItem extends Packet {
   private int owner;
   private Vector3f position;
   private String type;
-  private int itemId;
 
   private String[] dataArray;
 
@@ -53,7 +52,11 @@ public class PacketSpawnItem extends Packet {
     super(Packet.PacketTypes.SPAWN_ITEM);
     ServerItem serverItem = new ServerItem(clientId, type, position);
     setClientId(clientId);
-    ServerLogic.getLobbyForClient(getClientId()).getServerItemState().addItem(serverItem);
+    try {
+      ServerLogic.getLobbyForClient(getClientId()).getServerItemState().addItem(serverItem);
+    } catch (NullPointerException e) {
+      addError("Client not in a lobby.");
+    }
     setData(
         clientId
             + "║"
@@ -79,7 +82,6 @@ public class PacketSpawnItem extends Packet {
   public PacketSpawnItem(int clientId, String data) {
     super(PacketTypes.SPAWN_ITEM);
     setClientId(clientId);
-    position = new Vector3f();
     dataArray = data.split("║");
     dataArray[0] = "" + clientId;
     validate(); // Validate and assign in one step
@@ -88,7 +90,11 @@ public class PacketSpawnItem extends Packet {
     }
     ServerItem serverItem =
         new ServerItem(clientId, ItemMaster.ItemTypes.getItemTypeById(type), position);
-    ServerLogic.getLobbyForClient(getClientId()).getServerItemState().addItem(serverItem);
+    try {
+      ServerLogic.getLobbyForClient(getClientId()).getServerItemState().addItem(serverItem);
+    } catch (NullPointerException e) {
+      addError("Not in a lobby.");
+    }
     setData(
         clientId
             + "║"
@@ -135,12 +141,11 @@ public class PacketSpawnItem extends Packet {
     }
     type = dataArray[1];
     if (!isExtendedAscii(type)) {
-      addError("Invalid item type");
+      addError("Invalid item type.");
       return;
     }
     try {
       owner = Integer.parseInt(dataArray[0]);
-      itemId = Integer.parseInt(dataArray[5]);
     } catch (NumberFormatException e) {
       addError("Invalid item owner.");
     }

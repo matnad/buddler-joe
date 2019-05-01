@@ -13,20 +13,18 @@ import net.packets.block.PacketBlockDamage;
 import net.packets.chat.PacketChatMessageToServer;
 import net.packets.gamestatus.PacketGetHistory;
 import net.packets.gamestatus.PacketReady;
-import net.packets.highscore.PacketHighscore;
 import net.packets.items.PacketItemUsed;
 import net.packets.items.PacketSpawnItem;
 import net.packets.life.PacketLifeStatus;
+import net.packets.lists.PacketHighscore;
 import net.packets.lists.PacketPlayerList;
 import net.packets.lobby.PacketCreateLobby;
 import net.packets.lobby.PacketGetLobbies;
-import net.packets.lobby.PacketGetLobbyInfo;
 import net.packets.lobby.PacketJoinLobby;
 import net.packets.lobby.PacketJoinLobbyStatus;
 import net.packets.lobby.PacketLeaveLobby;
 import net.packets.loginlogout.PacketDisconnect;
 import net.packets.loginlogout.PacketLogin;
-import net.packets.name.PacketGetName;
 import net.packets.name.PacketSetName;
 import net.packets.pingpong.PacketPing;
 import net.packets.pingpong.PacketPong;
@@ -101,13 +99,6 @@ public class ClientThread implements Runnable {
         } else {
           data = in.substring(6);
         }
-
-        // Print command to server console if it is not a ping/pong command
-        // if (!code.equals(Packet.PacketTypes.PING.getPacketCode())
-        //    && !code.equals(Packet.PacketTypes.PONG.getPacketCode())
-        //    && !code.equals(Packet.PacketTypes.POSITION_UPDATE.getPacketCode())) {
-        //  System.out.println("Client #" + clientId + " sent command '" + code + "'.");
-        // }
         Packet p = null;
         switch (Packet.lookupPacket(code)) {
           case LOGIN:
@@ -119,9 +110,6 @@ public class ClientThread implements Runnable {
                       + ServerLogic.getPlayerList().getUsername(clientId)
                       + " has connected.");
             }
-            break;
-          case GET_NAME:
-            p = new PacketGetName(clientId, data);
             break;
           case SET_NAME:
             p = new PacketSetName(clientId, data);
@@ -143,9 +131,6 @@ public class ClientThread implements Runnable {
             break;
           case JOIN_LOBBY_STATUS:
             p = new PacketJoinLobbyStatus(clientId, data);
-            break;
-          case GET_LOBBY_INFO:
-            p = new PacketGetLobbyInfo(clientId);
             break;
           case LEAVE_LOBBY:
             p = new PacketLeaveLobby(clientId);

@@ -247,11 +247,6 @@ public class Lobby implements Runnable {
     // Inform all clients
     new PacketGameEnd(userName, time).sendToLobby(lobbyId);
     // create new Map and broadcast
-    // map = new ServerMap(60, 40, System.currentTimeMillis());
-    // new PacketBroadcastMap(map).sendToLobby(lobbyId);
-    // for (ServerPlayer player : lobbyPlayers) {
-    // player.setCurrentGold(0);
-    // }
   }
 
   @Override
@@ -288,15 +283,6 @@ public class Lobby implements Runnable {
 
   public ServerMap getMap() {
     return map;
-  }
-
-  /**
-   * Getter that returns the PlayerId of the player that created this lobby.
-   *
-   * @return the client id of the player that created this lobby
-   */
-  public int getCreaterPlayerId() {
-    return createrPlayerId;
   }
 
   /**
@@ -363,13 +349,12 @@ public class Lobby implements Runnable {
    * @return true if all players in the lobby are ready, false otherwise.
    */
   public boolean allPlayersReady() {
-    boolean allReady = true;
     for (ServerPlayer lobbyPlayer : lobbyPlayers) {
       if (!lobbyPlayer.isReady()) {
-        allReady = false;
+        return false;
       }
     }
-    return allReady;
+    return true;
   }
 
   /** Starts the Round for this Lobby. */

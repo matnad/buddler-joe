@@ -78,6 +78,13 @@ public class Player extends NetPlayer {
     controlsDisabled = false;
   }
 
+  /**
+   * Testconstructor for Unit Tests to create a Test User with Mockito.
+   */
+  public Player() {
+    super(new Vector3f(1,2,3),1.0f,1.0f,1.0f);
+  }
+
   public static float getDigIntervall() {
     return digIntervall;
   }
@@ -394,7 +401,10 @@ public class Player extends NetPlayer {
     return currentGold;
   }
 
-  /** Triggers FreezeOverlay. And sets Player as frozen. */
+  /**
+   * Triggers FreezeOverlay. And sets Player as frozen.
+   * @param initial the current freeze status.
+   */
   public void freeze(boolean initial) {
     frozen = true;
     if (initial) {

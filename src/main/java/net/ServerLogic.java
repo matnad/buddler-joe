@@ -41,7 +41,6 @@ public class ServerLogic {
   private static HashMap<Integer, ClientThread> clientThreadMap;
   private static ServerSocket serverSocket;
   private static ServerHighscore serverHighscore;
-  private static ServerItemState serverItemState;
 
   /**
    * Initialize a new Server Logic. Creates the Socket to listen on. You have to call {@link
@@ -54,14 +53,26 @@ public class ServerLogic {
     playerList = new ServerPlayerList();
     clientThreadMap = new HashMap<>();
     lobbyList = new ServerLobbyList();
-    serverItemState = new ServerItemState();
-
     serverSocket = new ServerSocket(portValue);
     System.out.println("Started Server on port " + portValue);
 
     serverHighscore = ServerHighscoreSerialiser.readServerHighscore();
   }
 
+  /** Constructor to mock a ServerLogic for certain Unit Tests. */
+  ServerLogic() {
+    playerList = new ServerPlayerList();
+    clientThreadMap = new HashMap<>();
+    lobbyList = new ServerLobbyList();
+    try {
+      serverSocket = new ServerSocket(6666);
+    } catch (IOException e) {
+      logger.info("Not a real server due to a Unit Test.");
+    }
+    System.out.println("Started Server on port " + 6666);
+
+    serverHighscore = ServerHighscoreSerialiser.readServerHighscore();
+  }
   /**
    * Players are managed with their own handler class: {@link ServerPlayerList}.
    *
@@ -69,6 +80,7 @@ public class ServerLogic {
    *     them
    * @see ServerPlayerList
    */
+
   public static ServerPlayerList getPlayerList() {
     return playerList;
   }
@@ -137,21 +149,6 @@ public class ServerLogic {
     for (ServerPlayer player : getPlayerList().getPlayers().values()) {
       sendPacketToClient(player.getClientId(), packet);
     }
-  }
-
-  /**
-   * Method to broadcast a message to every Client on the server.
-   *
-   * @param message the message to be sent.
-   */
-  public static void broadcastChatMessage(String message) {
-    String timestamp;
-    SimpleDateFormat simpleFormat = new SimpleDateFormat("HH:mm");
-    Date date = new Date();
-    timestamp = simpleFormat.format(date);
-    PacketChatMessageToClient sendMessage =
-        new PacketChatMessageToClient("[SERVER-" + timestamp + "] " + message);
-    sendBroadcastPacket(sendMessage);
   }
 
   /**

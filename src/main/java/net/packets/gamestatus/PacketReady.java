@@ -20,7 +20,6 @@ public class PacketReady extends Packet {
    * @param clientId ClientId of the client that has sent this packet.
    */
   public PacketReady(int clientId) {
-    // server builds
     super(PacketTypes.READY);
     setClientId(clientId);
     validate();
@@ -32,16 +31,13 @@ public class PacketReady extends Packet {
    * Type, "READY").
    */
   public PacketReady() {
-    // client builds
     super(PacketTypes.READY);
     validate();
   }
 
   /** Dummy method since there is no data to validate. */
   @Override
-  public void validate() {
-    // No data to validate since it is a Empty Packet
-  }
+  public void validate() {}
 
   /**
    * Method that lets the Server react to the receiving of this packet. Checks if the sender is
@@ -55,7 +51,7 @@ public class PacketReady extends Packet {
       int lobbyId = player.getCurLobbyId();
       Lobby lobby = ServerLogic.getLobbyList().getLobby(lobbyId);
 
-      if (!player.isReady()) { // is the client ready allready?
+      if (!player.isReady()) { // are the clients all ready?
         player.setReady(true);
         new PacketCurLobbyInfo(getClientId(), lobbyId).sendToLobby(lobbyId); // inform lobbymembers.
         boolean allReady = lobby.allPlayersReady();
@@ -63,6 +59,8 @@ public class PacketReady extends Packet {
           lobby.startRound();
         }
       }
+    } else {
+      addError("Not Connected.");
     }
   }
 }

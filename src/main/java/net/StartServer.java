@@ -20,7 +20,6 @@ public class StartServer {
   private boolean created;
   private ServerLogic serverLogic;
   private int serverPort;
-  private ServerItemState serverItemState = new ServerItemState();
 
   /**
    * Start the Interface for the server, listening on a specific port.
@@ -65,9 +64,5 @@ public class StartServer {
         }
       }
     }
-  }
-
-  public ServerLogic getServerLogic() {
-    return serverLogic;
   }
 }

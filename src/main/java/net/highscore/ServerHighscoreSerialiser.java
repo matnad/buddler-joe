@@ -31,7 +31,7 @@ public class ServerHighscoreSerialiser {
     try {
       File buddlerDir = new File(path);
       if (buddlerDir.exists()) {
-        // logger.info("Settings directory found.");
+        int i = 1;
       } else if (buddlerDir.mkdirs()) {
         logger.info(buddlerDir + " was created");
       } else {

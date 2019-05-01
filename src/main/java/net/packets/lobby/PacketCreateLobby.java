@@ -25,12 +25,15 @@ public class PacketCreateLobby extends Packet {
     // client builds
     super(PacketTypes.CREATE_LOBBY);
     setData(data);
-
-    info = getData().split("║");
-    if (info.length > 0 && info[0] != null) {
-      info[0] = info[0].trim();
+    try {
+      info = getData().split("║");
+      if (info.length > 0 && info[0] != null) {
+        info[0] = info[0].trim();
+      }
+      validate();
+    } catch (NullPointerException e) {
+      addError("There is no String attached.");
     }
-    validate();
   }
 
   /**
@@ -45,11 +48,15 @@ public class PacketCreateLobby extends Packet {
     super(PacketTypes.CREATE_LOBBY);
     setClientId(clientId);
     setData(data);
-    info = getData().split("║");
-    if (info.length > 0 && info[0] != null) {
-      info[0] = info[0].trim();
+    try {
+      info = getData().split("║");
+      if (info.length > 0 && info[0] != null) {
+        info[0] = info[0].trim();
+      }
+      validate();
+    } catch (NullPointerException e) {
+      addError("There is no String attached.");
     }
-    validate();
   }
 
   /**
@@ -60,12 +67,8 @@ public class PacketCreateLobby extends Packet {
    */
   @Override
   public void validate() {
-    if (info.length == 0) {
-      addError("No lobbyname found.");
-      return;
-    }
-    if (info.length == 1) {
-      addError("No mapsize found");
+    if (info.length != 2) {
+      addError("No mapsize found.");
       return;
     }
     if (!info[1].equals("s") && !info[1].equals("m") && !info[1].equals("l")) {
@@ -78,6 +81,7 @@ public class PacketCreateLobby extends Packet {
       addError("Lobbyname to short. Minimum is 4 Characters.");
     }
     isExtendedAscii(info[0]);
+    isExtendedAscii(info[1]);
   }
 
   /**
@@ -94,14 +98,15 @@ public class PacketCreateLobby extends Packet {
   @Override
   public void processData() {
     if (!isLoggedIn()) {
-      addError("Not loggedin yet");
+      addError("Not logged in yet.");
     }
     if (isInALobby()) {
-      addError("You are in a lobby, leave the current lobby first");
+      addError("You are in a lobby, leave the current lobby first.");
     }
     String status;
     if (hasErrors()) {
       status = createErrorMessage();
+      return;
     } else {
       Lobby lobby = new Lobby(info[0], getClientId(), info[1]);
       status = ServerLogic.getLobbyList().addLobby(lobby);

@@ -19,7 +19,11 @@ public class PacketChatMessageToClient extends Packet {
    */
   public PacketChatMessageToClient(String chatmsg) {
     super(PacketTypes.CHAT_MESSAGE_TO_CLIENT);
-    this.chatmsg = chatmsg.trim();
+    try {
+      this.chatmsg = chatmsg.trim();
+    } catch (NullPointerException e) {
+      addError("No Message found.");
+    }
     setData(chatmsg);
     validate();
   }
@@ -35,7 +39,11 @@ public class PacketChatMessageToClient extends Packet {
     super(PacketTypes.CHAT_MESSAGE_TO_CLIENT);
     setClientId(clientId);
     setData(data);
-    chatmsg = getData().trim();
+    try {
+      chatmsg = getData().trim();
+    } catch (NullPointerException e) {
+      addError("No Message found.");
+    }
     validate();
   }
 
@@ -45,8 +53,7 @@ public class PacketChatMessageToClient extends Packet {
    * added with {@link Packet#addError(String)}.
    */
   public void validate() {
-    if (chatmsg == null) {
-      addError("No Message found");
+    if (hasErrors()) {
       return;
     }
     if (chatmsg.length() > 130) {
@@ -64,7 +71,6 @@ public class PacketChatMessageToClient extends Packet {
     String status;
     if (hasErrors()) {
       status = createErrorMessage();
-      System.out.println(status);
     } else {
       Game.getChat().addText(chatmsg);
     }

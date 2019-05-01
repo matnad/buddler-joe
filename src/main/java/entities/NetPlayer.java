@@ -97,6 +97,18 @@ public class NetPlayer extends Entity {
   }
 
   /**
+   * Test Constructor for unit Tests.
+   * @param position A test position
+   * @param rotX A test RotationX
+   * @param rotY A test RotationY
+   * @param rotZ A test RotationZ
+   */
+
+  public NetPlayer(Vector3f position, float rotX, float rotY, float rotZ) {
+    super(position, rotX, rotY, rotZ);
+  }
+
+  /**
    * Load the player model before creating player models.
    *
    * @param loader main loader

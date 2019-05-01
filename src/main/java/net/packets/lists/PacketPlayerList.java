@@ -8,6 +8,7 @@ import net.packets.Packet;
 public class PacketPlayerList extends Packet {
 
   private String[] playerList;
+  CopyOnWriteArrayList<String> catalog = new CopyOnWriteArrayList<>();
 
   /**
    * Constructor if the packet arrives on the server side to be processed and sent to the player.
@@ -17,7 +18,11 @@ public class PacketPlayerList extends Packet {
   public PacketPlayerList(int clientId) {
     super(PacketTypes.PLAYERLIST);
     setClientId(clientId);
-    setData(ServerLogic.getPlayerList().toString());
+    try {
+      setData(ServerLogic.getPlayerList().toString());
+    } catch (NullPointerException e) {
+      addError("Not a server.");
+    }
   }
 
   /**
@@ -28,7 +33,12 @@ public class PacketPlayerList extends Packet {
   public PacketPlayerList(String data) {
     super(PacketTypes.PLAYERLIST);
     setData(data);
-    playerList = data.split("║");
+    try {
+      playerList = data.split("║");
+    } catch (NullPointerException e) {
+      addError("There are no names in the list.");
+    }
+    validate();
   }
 
   /** Constructor to be used by the client to request the playerlist. */
@@ -39,12 +49,12 @@ public class PacketPlayerList extends Packet {
   /** Validate whether the PlayerList only consists of extended Ascii. */
   @Override
   public void validate() {
-    if (playerList[1] == null) {
-      addError("There are no names in the list.");
+    if (hasErrors()) {
+      return;
     }
     for (int i = 0; i < playerList.length; i++) {
       if (!isExtendedAscii(playerList[i])) {
-        break;
+        return;
       }
     }
   }
@@ -64,10 +74,9 @@ public class PacketPlayerList extends Packet {
       // Server side
       this.sendToClient(getClientId());
     } else {
-      CopyOnWriteArrayList<String> catalog = new CopyOnWriteArrayList<>();
       // Client side
       if (hasErrors()) {
-        System.out.println(createErrorMessage());
+        logger.info(createErrorMessage());
       } else if (playerList[0].equals("OK")) {
         // logger.info(playerList[0]);
         for (int i = 1; i < playerList.length; i++) {
@@ -79,5 +88,9 @@ public class PacketPlayerList extends Packet {
         Game.setPlayerList(catalog);
       }
     }
+  }
+
+  public CopyOnWriteArrayList<String> getCatalog() {
+    return catalog;
   }
 }

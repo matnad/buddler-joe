@@ -10,12 +10,10 @@ import static game.Game.Stage.HISTORYMENU;
 import static game.Game.Stage.INLOBBBY;
 import static game.Game.Stage.LOADINGSCREEN;
 import static game.Game.Stage.LOBBYCREATION;
-import static game.Game.Stage.LOGIN;
 import static game.Game.Stage.MAINMENU;
 import static game.Game.Stage.OPTIONS;
 import static game.Game.Stage.PLAYERLIST;
 import static game.Game.Stage.PLAYING;
-import static game.Game.Stage.WELCOME;
 
 import engine.io.InputHandler;
 import engine.io.Window;
@@ -43,12 +41,10 @@ import game.stages.HistoryMenu;
 import game.stages.InLobby;
 import game.stages.LoadingScreen;
 import game.stages.LobbyCreation;
-import game.stages.Login;
 import game.stages.MainMenu;
 import game.stages.Options;
 import game.stages.PlayerList;
 import game.stages.Playing;
-import game.stages.Welcome;
 import gui.chat.Chat;
 import gui.lifestatus.LifeStatus;
 import gui.text.CurrentGold;
@@ -471,14 +467,6 @@ public class Game extends Thread {
           Options.update();
         }
 
-        if (activeStages.contains(WELCOME)) {
-          Welcome.update();
-        }
-
-        if (activeStages.contains(LOGIN)) {
-          Login.update();
-        }
-
         if (activeStages.contains(INLOBBBY)) {
           InLobby.update();
         }
@@ -556,13 +544,9 @@ public class Game extends Thread {
     LoadingScreen.progess();
     ChooseLobby.init(loader);
     LoadingScreen.progess();
-    Credits.init(loader);
+    // Credits.init(loader);
     LoadingScreen.progess();
     Options.init(loader);
-    LoadingScreen.progess();
-    Welcome.init(loader);
-    LoadingScreen.progess();
-    Login.init(loader);
     LoadingScreen.progess();
     Highscore.init(loader);
     LoadingScreen.progess();

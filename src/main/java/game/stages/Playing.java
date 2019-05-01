@@ -26,7 +26,7 @@ import java.lang.management.MemoryUsage;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.packets.highscore.PacketHighscore;
+import net.packets.lists.PacketHighscore;
 import net.packets.lists.PacketPlayerList;
 import org.joml.Vector2f;
 import terrains.TerrainFlat;

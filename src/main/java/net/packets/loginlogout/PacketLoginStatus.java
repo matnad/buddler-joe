@@ -7,6 +7,7 @@ import net.packets.lobby.PacketGetLobbies;
 public class PacketLoginStatus extends Packet {
 
   private String status;
+  private String username;
 
   /**
    * Constructor when the client receives a PacketLoginStatus packet from the server.
@@ -43,7 +44,14 @@ public class PacketLoginStatus extends Packet {
   @Override
   public void validate() {
     if (status != null) {
-      isExtendedAscii(status);
+      String[] temp = status.split("║");
+      try {
+        username = temp[1];
+        isExtendedAscii(username);
+        isExtendedAscii(temp[0]);
+      } catch (ArrayIndexOutOfBoundsException e) {
+        addError("There is no username attached.");
+      }
     } else {
       addError("No Status found.");
     }
@@ -58,28 +66,20 @@ public class PacketLoginStatus extends Packet {
    */
   @Override
   public void processData() {
+    if (hasErrors()) {
+      logger.info(createErrorMessage());
+      return;
+    }
     if (status.startsWith("OK") && !hasErrors() && status.length() > 2) {
-      // System.out.println("Login Successful, your username is: " + getData().substring(2));
       PacketGetLobbies p = new PacketGetLobbies();
       p.sendToServer();
       Game.setLoggedIn(true);
     } else if (status.startsWith("CHANGE") && !hasErrors() && status.length() > 6) {
-      // System.out.println(
-      //    "Login Successful, however your username has already been taken. "
-      //        + "We assigned you this username: "
-      //        + getData().substring(6));
-      Game.getActivePlayer().setUsername(getData().substring(6));
+      Game.getActivePlayer().setUsername(username);
+      Game.getSettings().setUsername(username);
       PacketGetLobbies p = new PacketGetLobbies();
       p.sendToServer();
       Game.setLoggedIn(true);
-    } else {
-      if (hasErrors()) {
-        // System.out.println(status + "\n" + createErrorMessage());
-      } else {
-        // System.out.println(status);
-      }
     }
-    // System.out.println(
-    //    "Type \"help\" at any point to see a list of commands to interact with the server.");
   }
 }

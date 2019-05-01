@@ -86,6 +86,16 @@ public class Entity {
     }
   }
 
+  /**
+   * Testconstructor for Unit Tests with limited functionalities.
+   * @param position A test position
+   * @param rotX A test RotationX
+   * @param rotY A test RotationY
+   * @param rotZ A test RotationZ
+   */
+
+  public Entity(Vector3f position, float rotX, float rotY, float rotZ) {}
+
   // Entity entities.collision
 
   /**

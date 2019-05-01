@@ -121,7 +121,7 @@ public abstract class Packet {
     this.packetType = packetType;
   }
 
-  protected int getClientId() {
+  public int getClientId() {
     return clientId;
   }
 
@@ -129,7 +129,7 @@ public abstract class Packet {
     this.clientId = clientId;
   }
 
-  protected String getData() {
+  public String getData() {
     return data;
   }
 
@@ -234,12 +234,12 @@ public abstract class Packet {
       return false;
     }
     if (username.length() > 30) {
-      addError("Username to long. Maximum is 30 Characters.");
-      logger.info("Username to long. Maximum is 30 Characters.");
+      addError("Username too long. Maximum is 30 Characters.");
+      logger.info("Username too long. Maximum is 30 Characters.");
       return false;
     } else if (username.length() < 4) {
-      addError("Username to short. Minimum is 4 Characters.");
-      logger.info("Username to short. Minimum is 4 Characters.");
+      addError("Username too short. Minimum is 4 Characters.");
+      logger.info("Username too short. Minimum is 4 Characters.");
       return false;
     }
     return isExtendedAscii(username);

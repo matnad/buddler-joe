@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="UTF-8"?><project name="Untitled Gantt Project" company="" webLink="http://" view-date="2019-04-09" view-index="0" gantt-divider-location="376" resource-divider-location="300" version="2.8.10" locale="en_CH">
+<?xml version="1.0" encoding="UTF-8"?><project name="Untitled Gantt Project" company="" webLink="http://" view-date="2019-04-10" view-index="0" gantt-divider-location="361" resource-divider-location="300" version="2.8.10" locale="en_CH">
     <description/>
     <view zooming-state="default:2" id="gantt-chart">
-        <field id="tpd3" name="Name" width="182" order="0"/>
-        <field id="tpd4" name="Begin date" width="87" order="1"/>
-        <field id="tpd5" name="End date" width="86" order="2"/>
+        <field id="tpd3" name="Name" width="174" order="0"/>
+        <field id="tpd4" name="Begin date" width="83" order="1"/>
+        <field id="tpd5" name="End date" width="83" order="2"/>
     </view>
     <view id="resource-table">
         <field id="0" name="Name" width="209" order="0"/>
@@ -206,7 +206,31 @@ Chatverlauf]]>
             <depend id="176" type="2" difference="0" hardness="Strong"/>
             <depend id="653" type="2" difference="0" hardness="Strong"/>
         </task>
+        <task id="693" name="Settings Auflösung" meeting="false" start="2019-04-10" duration="1" complete="0" expand="true"/>
+        <task id="694" name="Klasse für User Input" meeting="false" start="2019-04-10" duration="1" complete="0" expand="true"/>
+        <task id="695" name="Button Klasse mit Changeable Text" meeting="false" start="2019-04-10" duration="1" complete="0" expand="true"/>
+        <task id="696" name="Hauptmenü Buttons für Highscore und History" meeting="false" start="2019-04-10" duration="1" complete="0" expand="true"/>
         <task id="556" name="Winning condition: Time" color="#8cb6ce" meeting="false" start="2019-04-10" duration="2" complete="0" thirdDate="2019-04-05" thirdDate-constraint="0" expand="true"/>
+        <task id="697" name="Game esc Menü" meeting="false" start="2019-04-10" duration="1" complete="0" expand="true"/>
+        <task id="698" name="Chat in Lobby Menü" color="#8cb6ce" meeting="false" start="2019-04-10" duration="1" complete="0" thirdDate="2019-04-10" thirdDate-constraint="0" expand="true"/>
+        <task id="701" name="Map Generation Algorithm" meeting="false" start="2019-04-10" duration="1" complete="0" expand="true"/>
+        <task id="702" name="Obsidian Blocks" meeting="false" start="2019-04-10" duration="1" complete="0" expand="true"/>
+        <task id="703" name="Blend Maps für Wandtextur" meeting="false" start="2019-04-10" duration="1" complete="0" expand="true"/>
+        <task id="704" name="Wand Textur Generator" meeting="false" start="2019-04-10" duration="1" complete="0" expand="true"/>
+        <task id="705" name="Serverseitige Validierung Move" meeting="false" start="2019-04-10" duration="1" complete="0" expand="true"/>
+        <task id="707" name="Serverseitige Validierung Hearts" color="#8cb6ce" meeting="false" start="2019-04-10" duration="1" complete="0" thirdDate="2019-04-10" thirdDate-constraint="0" expand="true"/>
+        <task id="710" name="Serverseitige Validierung Gold" color="#8cb6ce" meeting="false" start="2019-04-10" duration="1" complete="0" thirdDate="2019-04-10" thirdDate-constraint="0" expand="true"/>
+        <task id="713" name="Serverseitige Validierung Items" color="#8cb6ce" meeting="false" start="2019-04-10" duration="1" complete="0" thirdDate="2019-04-10" thirdDate-constraint="0" expand="true"/>
+        <task id="715" name="Rework Digging" meeting="false" start="2019-04-10" duration="1" complete="0" expand="true"/>
+        <task id="716" name="3D Modelle Items" meeting="false" start="2019-04-10" duration="1" complete="0" expand="true"/>
+        <task id="717" name="Partikel Effekte Items" meeting="false" start="2019-04-10" duration="1" complete="0" expand="true"/>
+        <task id="718" name="Kollision Herzen" meeting="false" start="2019-04-10" duration="1" complete="0" expand="true"/>
+        <task id="719" name="Engine Lichtquellen" meeting="false" start="2019-04-10" duration="1" complete="0" expand="true"/>
+        <task id="720" name="Lebensanzeige Herzen" meeting="false" start="2019-04-10" duration="1" complete="0" expand="true"/>
+        <task id="721" name="Ready Button in Lobbyoverview" meeting="false" start="2019-04-10" duration="1" complete="0" expand="true"/>
+        <task id="722" name="Lobbystatus änderung erkennen" meeting="false" start="2019-04-10" duration="1" complete="0" expand="true"/>
+        <task id="723" name="Reset nach Spiel" meeting="false" start="2019-04-10" duration="1" complete="0" expand="true"/>
+        <task id="724" name="Neues Movement System für Joe" meeting="false" start="2019-04-10" duration="1" complete="0" expand="true"/>
         <task id="692" name="Textfeld für Userinput im Menü" color="#8cb6ce" meeting="false" start="2019-04-16" duration="2" complete="0" thirdDate="2019-04-08" thirdDate-constraint="0" expand="true"/>
         <task id="653" name="Charaktermodell animieren" color="#8cb6ce" meeting="false" start="2019-04-15" duration="4" complete="0" thirdDate="2019-04-08" thirdDate-constraint="0" expand="true"/>
         <task id="176" name="Game logic: Regeln werden angewandt" color="#8cb6ce" meeting="false" start="2019-04-15" duration="4" complete="0" thirdDate="2019-04-09" thirdDate-constraint="0" expand="true">

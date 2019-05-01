@@ -47,82 +47,6 @@ public class StartNetworkOnlyClient implements Runnable {
   }
 
   /**
-   * Provide a console Interface for the user. Will process console input and create/send packets. A
-   * primitive version of a GUI.
-   *
-   * <p>It is not possible to send commands to the server directly.
-   *
-   * @throws IOException when the socket fails
-   */
-  private static void takeInputAndAct() throws IOException {
-    while (true) {
-      String inputMessage = br.readLine();
-      if (inputMessage.equals("help")) {
-        System.out.println(
-            "You can use these commands:\n"
-                + "ping - Display your average ping to the server over the last 10 seconds\n"
-                + "login <username> - Login attempt with the server\n"
-                + "name <username> - Change your username\n"
-                + "create <lobby name> - Create lobby with specified name\n"
-                + "leave - Leave your current lobby\n"
-                + "connect - reconnect if the socket has been closed, "
-                + "display connection info otherwise\n"
-                + "playerlist - Receive a List of all active  players\n"
-                + "disconnect - Disconnect from the server\n"
-                + "history - show all past and present games\n"
-                + "help - Display this message");
-      } else if (inputMessage.equals("ping")) {
-        System.out.println(
-            "Ping to the server over the last 10 packets: "
-                + ClientLogic.getPingManager().getPing()
-                + " ms");
-      } else if (inputMessage.startsWith("name ") && inputMessage.length() > 5) {
-        PacketSetName p = new PacketSetName(inputMessage.substring(5));
-        p.sendToServer();
-      } else if (inputMessage.equals("leave")) {
-        PacketLeaveLobby p = new PacketLeaveLobby();
-        p.sendToServer();
-      } else if (inputMessage.startsWith("create ") && inputMessage.length() > 7) {
-        PacketCreateLobby p =
-            new PacketCreateLobby(inputMessage.substring(7) + "║m"); // The standard map size is m
-        p.sendToServer();
-      } else if (inputMessage.startsWith("login ") && inputMessage.length() > 6) {
-        PacketLogin p = new PacketLogin(inputMessage.substring(6));
-        p.sendToServer();
-      } else if (inputMessage.startsWith("C ") && inputMessage.length() > 2) {
-        PacketChatMessageToServer p = new PacketChatMessageToServer(inputMessage.substring(2));
-        p.sendToServer();
-      } else if (inputMessage.equals("playerlist")) {
-        PacketPlayerList p = new PacketPlayerList();
-        p.sendToServer();
-      } else if (inputMessage.equals("history")) {
-        PacketGetHistory p = new PacketGetHistory();
-        p.sendToServer();
-      } else if (inputMessage.equals("disconnect")) {
-        PacketDisconnect p = new PacketDisconnect();
-        p.sendToServer();
-        ClientLogic.getServer().close();
-      } else if (inputMessage.equals("connect")) {
-        if (ClientLogic.getServer().isClosed()) {
-          // Try to reconnect to the server
-          new ClientLogic(serverIp, serverPort);
-          if (ClientLogic.getServer().isClosed()) {
-            System.out.println("Connection could not be re-established. Exiting program.");
-            System.exit(-1);
-          } else {
-            System.out.println(
-                "Connection to the server re-established. Socket status: "
-                    + ClientLogic.getServer());
-          }
-        } else {
-          System.out.println(
-              "You are still connected to the server. Socket status: " + ClientLogic.getServer());
-        }
-      }
-    }
-  }
-
-  /**
    * Start the User Interface. You can pass an IP and Port to try and connect to. Otherwise defaults
    * will be used.
    *
@@ -145,17 +69,8 @@ public class StartNetworkOnlyClient implements Runnable {
 
     // Start Interface
     new StartNetworkOnlyClient();
-    try {
-      takeInputAndAct();
-    } catch (IOException e) {
-      System.out.println("Buffer Reader does not exist");
-    }
   }
-
-  public void sendToServerTest(Packet p) {
-    p.sendToServer();
-  }
-
+  
   @Override
   public void run() {}
 }
