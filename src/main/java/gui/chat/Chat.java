@@ -39,6 +39,7 @@ public class Chat {
 
   private FontType font;
   private ChatText guiText;
+  private ChatText wisperAddress;
   private Vector3f textColour;
   private Vector2f chatPosition;
   private Vector2f messagePosition;
@@ -93,6 +94,19 @@ public class Chat {
             false,
             false);
 
+    wisperAddress =
+            new ChatText(
+                    chatText,
+                    0.25f,
+                    new Vector3f(textColour.x, textColour.y, textColour.z),
+                    alpha,
+                    font,
+                    new Vector2f(.06f, .91f),
+                    maxLineLength,
+                    false,
+                    false);
+
+    wisperName = "";
     messages = new ArrayList<>();
     text = new ArrayList<>();
     msgSize = 0;
@@ -119,6 +133,7 @@ public class Chat {
       if (chatText.length() > 0 && enabled) {
         PacketChatMessageToServer chatString = new PacketChatMessageToServer(wisperName + chatText);
         chatString.sendToServer();
+        TextMaster.removeText(wisperAddress);
         wisperName = "";
 
         chatText = "";
@@ -280,6 +295,7 @@ public class Chat {
     }
     chatGui.setAlpha(alpha);
     guiText.setAlpha(alpha);
+    wisperAddress.setAlpha(alpha);
     for (ChatText message : messages) {
       message.setAlpha(alpha);
     }
@@ -374,9 +390,13 @@ public class Chat {
 
   public void setWisperName(String wisperName) {
     this.wisperName = "@" + wisperName;
+    updateGuiWisperName();
   }
 
   public void setBackToChat(boolean backToChat) {
     this.backToChat = backToChat;
+  }
+  public void updateGuiWisperName(){
+    wisperAddress = new ChatText(wisperName, 0.75f, textColour, alpha, font, new Vector2f(0.145f,0.65f), 1f, false, false);
   }
 }

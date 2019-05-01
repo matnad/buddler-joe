@@ -70,7 +70,7 @@ public class PacketPlayerList extends Packet {
         System.out.println(createErrorMessage());
       } else if (playerList[0].equals("OK")) {
         // logger.info(playerList[0]);
-        for (int i = 1; i < playerList.length; i += 2) {
+        for (int i = 1; i < playerList.length; i++) {
           catalog.add(playerList[i]);
         }
         Game.setPlayerList(catalog);

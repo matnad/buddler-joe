@@ -94,7 +94,7 @@ public class PacketChatMessageToServer extends Packet {
             + ServerLogic.getPlayerList().getPlayer(getClientId()).getUsername()
             + "-"
             + timestamp
-            + "]";
+            + "] ";
     if (!hasErrors()) {
 
       ServerPlayer client = ServerLogic.getPlayerList().getPlayer(getClientId());
@@ -148,12 +148,12 @@ public class PacketChatMessageToServer extends Packet {
               String userName = ServerLogic.getPlayerList().getPlayer(wisperId).getUsername();
               chatmsg = chatmsg.substring(userName.length() + 1);
               PacketChatMessageToClient sendMessage =
-                  new PacketChatMessageToClient(getClientId(), starter + "(whispered)" + chatmsg);
+                  new PacketChatMessageToClient(getClientId(), starter + "(whispered) " + chatmsg);
               sendMessage.sendToClient(wisperId);
 
               PacketChatMessageToClient sendMessage2 =
                   new PacketChatMessageToClient(
-                      getClientId(), starter + "(whispered to " + userName + ")" + chatmsg.trim());
+                      getClientId(), starter + "(whispered to " + userName + ") " + chatmsg.trim());
 
               sendMessage2.sendToClient(getClientId());
             }

@@ -139,8 +139,8 @@ public class PlayerList {
       initText();
       initializedText = true;
     }
-
     catalog = Game.getPlayerList();
+    catalog.remove(Game.getActivePlayer().getUsername());
     // System.out.println(catalog.toString());
 
     List<GuiTexture> guis = new ArrayList<>();
