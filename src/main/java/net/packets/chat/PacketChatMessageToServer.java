@@ -156,7 +156,7 @@ public class PacketChatMessageToServer extends Packet {
 
               PacketChatMessageToClient sendMessage2 =
                   new PacketChatMessageToClient(
-                      getClientId(), starter + "(whispered to " + userName + ") " + chatmsg.trim());
+                      getClientId(), starter + "(to " + userName + ") " + chatmsg.trim());
 
               sendMessage2.sendToClient(getClientId());
             }
