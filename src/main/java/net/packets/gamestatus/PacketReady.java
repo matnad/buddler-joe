@@ -60,6 +60,8 @@ public class PacketReady extends Packet {
           lobby.startRound();
         }
       }
+    } else {
+      addError("Not Connected.");
     }
   }
 }

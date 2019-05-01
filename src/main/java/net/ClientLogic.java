@@ -16,7 +16,6 @@ import net.packets.gamestatus.PacketStartRound;
 import net.packets.items.PacketSpawnItem;
 import net.packets.lists.PacketHighscore;
 import net.packets.life.PacketLifeStatus;
-import net.packets.lists.PacketGamesOverview;
 import net.packets.lists.PacketPlayerList;
 import net.packets.lobby.PacketCreateLobbyStatus;
 import net.packets.lobby.PacketCurLobbyInfo;

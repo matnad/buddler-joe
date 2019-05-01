@@ -55,6 +55,7 @@ public class PacketStartRound extends Packet {
     Game.setStartedAt(System.currentTimeMillis());
     Game.removeActiveStage(INLOBBBY);
     ClientMap map = Game.getMap();
+    try {
     map.reloadMap();
     Player player = Game.getActivePlayer();
     player.setPosition(map.getSpawnPositionForPlayer(player));
@@ -62,5 +63,8 @@ public class PacketStartRound extends Packet {
         .sendToServer();
     Game.addActiveStage(PLAYING);
     // InLobby.done();
+      } catch (NullPointerException e) {
+      addError("No map available.");
+    }
   }
 }

@@ -4,8 +4,6 @@ import game.Game;
 import java.util.concurrent.CopyOnWriteArrayList;
 import net.packets.Packet;
 
-
-
 /**
  * A packed that is send from the server to the client, which contains the "History". Packet-Code:
  * HISTO
@@ -15,6 +13,7 @@ import net.packets.Packet;
 public class PacketHistory extends Packet {
 
   private String[] in;
+  CopyOnWriteArrayList<String> catalog = new CopyOnWriteArrayList<>();
 
   /**
    * Constructor that is used by the Client to build the Packet, after receiving the Command HISTO.
@@ -29,7 +28,11 @@ public class PacketHistory extends Packet {
     // Client receives
     super(PacketTypes.HISTORY);
     setData(data);
-    in = getData().split("║");
+    try {
+      in = getData().split("║");
+    } catch (NullPointerException e) {
+      addError("Data is null.");
+    }
     validate();
   }
 
@@ -48,7 +51,11 @@ public class PacketHistory extends Packet {
     super(PacketTypes.HISTORY);
     setClientId(clientId);
     setData(data);
-    in = getData().split("║");
+    try {
+      in = getData().split("║");
+    } catch (NullPointerException e) {
+      addError("Data is null.");
+    }
     validate();
   }
 
@@ -63,7 +70,7 @@ public class PacketHistory extends Packet {
         isExtendedAscii(s);
       }
     } else {
-      addError("No data has been found");
+      addError("No data has been found.");
     }
   }
 
@@ -75,12 +82,11 @@ public class PacketHistory extends Packet {
   @Override
   public void processData() {
     if (hasErrors()) {
-      System.out.println(createErrorMessage());
+      // System.out.println(createErrorMessage());
     } else if (in[0].equals("OK")) {
-      System.out.println("-----------------------------------------------------");
-      CopyOnWriteArrayList<String> catalog = new CopyOnWriteArrayList<>();
+      // System.out.println("-----------------------------------------------------");
       for (int i = 1; i < in.length; i++) {
-        System.out.println(in[i]);
+        // System.out.println(in[i]);
         if ((catalog.size() + 1) % 6 == 0
             && (in[i].equals("Lobbies Of Running Games:") || in[i].equals("Old Games:"))) {
           catalog.add("");
@@ -88,9 +94,13 @@ public class PacketHistory extends Packet {
         catalog.add(in[i]);
       }
       Game.setHistoryCatalog(catalog);
-      System.out.println("-----------------------------------------------------");
+      // System.out.println("-----------------------------------------------------");
     } else {
-      System.out.println(in[0]);
+      // System.out.println(in[0]);
     }
+  }
+
+  public CopyOnWriteArrayList<String> getCatalog() {
+    return catalog;
   }
 }
