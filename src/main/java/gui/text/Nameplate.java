@@ -1,6 +1,7 @@
 package gui.text;
 
 import engine.render.MasterRenderer;
+import engine.render.fontmeshcreator.GuiText;
 import engine.render.fontrendering.TextMaster;
 import entities.Camera;
 import entities.NetPlayer;
@@ -77,4 +78,5 @@ public class Nameplate extends GuiString {
     float y = 1 - (loc.y / loc.w + 1) / 2f;
     return new Vector2f(x - 0.15f, y);
   }
+
 }

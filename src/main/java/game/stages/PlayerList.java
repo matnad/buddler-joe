@@ -14,19 +14,19 @@ import gui.text.ChangableGuiText;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.logging.ConsoleHandler;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * PlayerLsit Menu specification and rendering. Must be initialized. Specifies all the elements in
+ * the PlayerList Menu . Contains and manages the Game Loop while the PlayerList Menu is active.
+ *
+ * @author Viktor Gsteiger
+ */
 public class PlayerList {
-
-  /**
-   * PlayerLsit Menu specification and rendering. Must be initialized. Specifies all the elements in
-   * the PlayerList Menu . Contains and manages the Game Loop while the PlayerList Menu is active.
-   *
-   * @author Viktor Gsteiger
-   */
   public static final Logger logger = LoggerFactory.getLogger(game.stages.ChooseLobby.class);
 
   private static final float FADE_TIME = .5f;
@@ -138,8 +138,8 @@ public class PlayerList {
       initText();
       initializedText = true;
     }
-
     catalog = Game.getPlayerList();
+    catalog.remove(Game.getActivePlayer().getUsername());
     // System.out.println(catalog.toString());
 
     List<GuiTexture> guis = new ArrayList<>();
@@ -201,6 +201,7 @@ public class PlayerList {
         || InputHandler.isKeyPressed(GLFW_KEY_P)
         || InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1) && back.isHover(x, y)) {
       done();
+      removePlayerFromPlayerlist();
       Game.addActiveStage(Game.Stage.PLAYING);
       Game.removeActiveStage(Game.Stage.PLAYERLIST);
       if (Game.getActiveStages().contains(Game.Stage.PLAYING)) {
@@ -217,6 +218,12 @@ public class PlayerList {
         if (i + startInd < catalog.size()
             && InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1)
             && whisper[i].isHover(x, y)) {
+          done();
+          Game.getChat().setWisperName(catalog.get(i));
+          Game.removeActiveStage(Game.Stage.PLAYERLIST);
+          removePlayerFromPlayerlist();
+          Game.getChat().setBackToChat(true);
+          Game.getChat().arrangeMessages();
           break;
         }
       }
@@ -283,5 +290,15 @@ public class PlayerList {
       n = 0;
     }
     PlayerList.n = n;
+  }
+
+  /**
+   * solves the player name texture individually, and not everything together, so that the chat
+   * history is not lost.
+   */
+  public static void removePlayerFromPlayerlist() {
+    for (int i = 0; i < names.length; i++) {
+      names[i].delete();
+    }
   }
 }

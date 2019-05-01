@@ -62,6 +62,13 @@ public abstract class GuiString {
     createGuiText();
   }
 
+  /** Stop the nameplate from being rendered. */
+  public void delete() {
+    if (guiText != null) {
+      TextMaster.removeText(guiText);
+    }
+  }
+
   public Vector2f getPosition() {
     return new Vector2f(position);
   }

@@ -15,6 +15,7 @@ import game.map.GameMap;
 import gui.text.Nameplate;
 import java.util.ArrayList;
 import java.util.List;
+import net.packets.life.PacketLifeStatus;
 import org.joml.Vector3f;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -51,12 +52,13 @@ public class NetPlayer extends Entity {
   Vector3f goalVelocity = new Vector3f();
   List<Block> closeBlocks;
   boolean isInAir = false;
-  private int clientId;
+  protected int clientId;
   private String username;
   private Light headLight;
   private Light headLightGlow;
   // private DirectionalUsername directionalUsername;
   private Nameplate nameplate;
+  protected int currentLives;
   private boolean defeated;
   private long lastCrushed = System.currentTimeMillis();
 
@@ -78,6 +80,7 @@ public class NetPlayer extends Entity {
 
     this.clientId = clientId;
     this.username = username;
+    this.currentLives = 2;
     this.defeated = false;
     int colorIdx = counter++ % lampColors.length;
     headLight =
@@ -181,10 +184,40 @@ public class NetPlayer extends Entity {
       // position
       if (System.currentTimeMillis() - lastCrushed > 500) {
         // Notify the server that you saw a player get crushed
+
+        informServerOfLifeChange(-1);
+        // HIER Packet zu server
+
         logger.info("I saw player " + username + " getting crushed. Reporting it to the server.");
         lastCrushed = System.currentTimeMillis();
       }
     }
+  }
+
+  /**
+   * Report an observed life total change for this player to the server.
+   *
+   * <p>The server will decide how to handle it from there.
+   *
+   * @param val lifetotal change: -1 or +1
+   */
+  public void informServerOfLifeChange(int val) {
+    PacketLifeStatus informServer;
+    if (val == -1) {
+      informServer = new PacketLifeStatus((currentLives - 1) + "client" + clientId);
+      informServer.sendToServer();
+    } else if (val == 1) {
+      informServer = new PacketLifeStatus((currentLives + 1) + "client" + clientId);
+      informServer.sendToServer();
+    }
+  }
+
+  public void updateLives(int lives) {
+    this.currentLives = lives;
+  }
+
+  public int getCurrentLives() {
+    return currentLives;
   }
 
   /**
@@ -290,6 +323,10 @@ public class NetPlayer extends Entity {
     } else if (getPosition().x > Game.getMap().getWidth() * GameMap.getDim() - offset) {
       setPositionX(Game.getMap().getWidth() * GameMap.getDim() - offset);
     }
+  }
+
+  public void removeNameplate() {
+    nameplate.delete();
   }
 
   public String getUsername() {

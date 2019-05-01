@@ -61,6 +61,9 @@ public class GameOver {
    */
   public static void update() {
 
+    InputHandler.update();
+    Game.window.update();
+
     guis = new ArrayList<>();
 
     // OpenGL Coordinates (0/0 = center of screen, -1/1 = corners)
@@ -79,7 +82,7 @@ public class GameOver {
       createTexts();
     }
 
-    Game.window.update();
+
 
     Game.getGuiRenderer().render(guis);
     TextMaster.render();
