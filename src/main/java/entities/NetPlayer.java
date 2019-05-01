@@ -185,7 +185,7 @@ public class NetPlayer extends Entity {
       if (System.currentTimeMillis() - lastCrushed > 500) {
         // Notify the server that you saw a player get crushed
 
-        informServer(-1);
+        informServerOfLifeChange(-1);
         // HIER Packet zu server
 
         logger.info("I saw player " + username + " getting crushed. Reporting it to the server.");
@@ -201,7 +201,7 @@ public class NetPlayer extends Entity {
    *
    * @param val lifetotal change: -1 or +1
    */
-  public void informServer(int val) {
+  public void informServerOfLifeChange(int val) {
     PacketLifeStatus informServer;
     if (val == -1) {
       informServer = new PacketLifeStatus((currentLives - 1) + "client" + clientId);

@@ -201,7 +201,7 @@ public class Dynamite extends Item {
         <= DYNAMITE_DAMAGE_DISTANCE_SQ) {
       Playing.showDamageTakenOverlay();
       // Send to server to inform of damage
-      Game.getActivePlayer().informServer(-1);
+      Game.getActivePlayer().informServerOfLifeChange(-1);
     }
 
     // Inform server is a NetPlayer is damaged
@@ -209,7 +209,7 @@ public class Dynamite extends Item {
       NetPlayer netPlayer = NetPlayerMaster.getNetPlayerById(id);
       if (getPosition().distanceSquared(netPlayer.getPosition()) <= DYNAMITE_DAMAGE_DISTANCE_SQ) {
         // Send to server to inform of damage
-        netPlayer.informServer(-1);
+        netPlayer.informServerOfLifeChange(-1);
       }
     }
 

@@ -41,8 +41,10 @@ public class FontRenderer {
       // For each font atlas, bind the font atlas and then render all texts in that font
       glActiveTexture(GL_TEXTURE0);
       glBindTexture(GL_TEXTURE_2D, fontType.getTextureAtlas());
-      for (GuiText guiText : texts.get(fontType)) {
-        renderText(guiText);
+      if (texts.get(fontType) != null) { // Thread safety
+        for (GuiText guiText : texts.get(fontType)) {
+          renderText(guiText);
+        }
       }
     }
     endRendering();

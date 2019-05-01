@@ -10,7 +10,6 @@ import entities.NetPlayer;
 import game.Game;
 import game.NetPlayerMaster;
 import net.packets.items.PacketItemUsed;
-import net.packets.life.PacketLifeStatus;
 import org.joml.Vector3f;
 
 public class Heart extends Item {
@@ -23,7 +22,6 @@ public class Heart extends Item {
   private NetPlayer pickedUpBy;
   private boolean pickedUp;
   private final Sparkle sparkle;
-
 
   /** Extended Constructor for Heart. Don't use directly. Use the Item Master to create items. */
   private Heart(Vector3f position, float rotX, float rotY, float rotZ, float scale) {
@@ -77,14 +75,19 @@ public class Heart extends Item {
   public void update() {
 
     if (collidesWith(Game.getActivePlayer()) && !pickedUp) {
-      if (Game.getActivePlayer().increaseCurrentLives()) {
+      if (Game.getActivePlayer().getCurrentLives() <= 1
+          && Game.getActivePlayer().getCurrentLives() >= 0) {
+        Game.getActivePlayer().informServerOfLifeChange(1);
         setPickedUpBy(Game.getActivePlayer());
       }
     }
 
     for (NetPlayer netPlayer : NetPlayerMaster.getNetPlayers().values()) {
       if (collidesWith(netPlayer) && !pickedUp) {
-        setPickedUpBy(netPlayer);
+        if (netPlayer.getCurrentLives() <= 1 && netPlayer.getCurrentLives() >= 0) {
+          netPlayer.informServerOfLifeChange(1);
+          setPickedUpBy(netPlayer);
+        }
       }
     }
 
@@ -103,7 +106,6 @@ public class Heart extends Item {
       sparkle.generateParticles(
           new Vector3f(getPosition()).add(new Vector3f(0, getBbox().getDimY() / 2, 0)));
     }
-
   }
 
   /**
@@ -133,6 +135,6 @@ public class Heart extends Item {
   private void setPickedUpBy(NetPlayer pickedUpBy) {
     this.pickedUpBy = pickedUpBy;
     pickedUp = true;
-    setScale(new Vector3f(0,0,0));
+    setScale(new Vector3f(0, 0, 0));
   }
 }
