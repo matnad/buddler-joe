@@ -111,6 +111,8 @@ public class Game extends Thread {
   private static int serverPort;
   // TODO (Moritz): Move chat to playing stage
   private static Chat chat;
+  // Keep track of elapsed time in game
+  private static long startedAt;
   // Player and Gui elements
   private static Player player;
   private static LifeStatus lifeStatus;
@@ -578,10 +580,10 @@ public class Game extends Thread {
 
     // Generate ServerPlayer
     NetPlayer.init(loader);
-    player = new Player(getUsername(), new Vector3f(90, 2, 3), 0, 0, 0);
+    player = new Player(getUsername(), new Vector3f(12, 10, 3), 0, 0, 0);
 
     // Generate dummy map
-    map = new ClientMap(1, 1, -1);
+    map = new ClientMap("m", System.currentTimeMillis());
 
     // Connecting to Server
     LoadingScreen.updateLoadingMessage("connecting to server");
@@ -672,6 +674,14 @@ public class Game extends Thread {
   public void setUsername(String username) {
     settings.setUsername(username);
     settingsSerialiser.serialiseSettings(settings);
+  }
+
+  public static long getStartedAt() {
+    return startedAt;
+  }
+
+  public static void setStartedAt(long startedAt) {
+    Game.startedAt = startedAt;
   }
 
   // Valid Stages

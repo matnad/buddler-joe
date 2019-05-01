@@ -91,7 +91,7 @@ public class PacketBroadcastMap extends Packet {
   public void processData() {
     ClientMap map = Game.getMap();
     if (map == null) {
-      map = new ClientMap(1, 1, -1); // Dummy map with right seed
+      map = new ClientMap("m", System.currentTimeMillis()); // Dummy map with right seed
       Game.setMap(map);
     }
     if (!hasErrors()) {

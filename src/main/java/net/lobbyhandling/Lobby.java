@@ -54,7 +54,7 @@ public class Lobby implements Runnable {
     this.lobbyId = lobbyCounter;
     this.serverItemState = new ServerItemState();
     lobbyCounter++;
-    map = new ServerMap(8 * 4, 8 * 5, System.currentTimeMillis());
+    map = new ServerMap(mapSize, System.currentTimeMillis());
   }
 
   /**

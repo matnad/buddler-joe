@@ -17,6 +17,7 @@ import entities.blocks.BlockMaster;
 import entities.collision.BoundingBox;
 import entities.items.ItemMaster;
 import game.Game;
+import game.map.GameMap;
 import game.stages.Playing;
 import net.packets.block.PacketBlockDamage;
 import net.packets.life.PacketLifeStatus;
@@ -92,6 +93,11 @@ public class Player extends NetPlayer {
    */
   public void move() {
 
+    // Dont update during the first second
+    if (Game.getStartedAt() + 1000 > System.currentTimeMillis()) {
+      return;
+    }
+
     // Check if player can move
     controlsDisabled = isDefeated() || frozen || Game.getChat().isEnabled();
 
@@ -133,6 +139,7 @@ public class Player extends NetPlayer {
 
     // Move player
     increasePosition(new Vector3f(currentVelocity).mul((float) Game.dt()));
+    enforceMapBounds();
 
     // Handle character rotation (check run direction see if we need to rotate more)
     this.increaseRotation(0, (float) (getCurrentTurnSpeed() * Game.dt()), 0);
