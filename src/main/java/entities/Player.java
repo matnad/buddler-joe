@@ -17,10 +17,8 @@ import entities.blocks.BlockMaster;
 import entities.collision.BoundingBox;
 import entities.items.ItemMaster;
 import game.Game;
-import game.map.GameMap;
 import game.stages.Playing;
 import net.packets.block.PacketBlockDamage;
-import net.packets.life.PacketLifeStatus;
 import net.packets.playerprop.PacketPos;
 import net.packets.playerprop.PacketVelocity;
 import org.joml.Vector2i;
@@ -193,7 +191,7 @@ public class Player extends NetPlayer {
     // decreaseCurrentLives();
 
     // Send to server to inform
-    informServer(-1);
+    informServerOfLifeChange(-1);
 
     // Find a place to move the player to
     Vector2i playerGridPos =

@@ -158,4 +158,8 @@ public class NetPlayerMaster {
       return netPlayers.get(clientId);
     }
   }
+
+  public static Map<Integer, NetPlayer> getNetPlayers() {
+    return netPlayers;
+  }
 }
