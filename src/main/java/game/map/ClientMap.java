@@ -7,13 +7,15 @@ import engine.render.Loader;
 import engine.textures.TerrainTexture;
 import engine.textures.TerrainTexturePack;
 import entities.Entity;
+import entities.Player;
 import entities.blocks.AirBlock;
 import entities.blocks.Block;
 import entities.blocks.BlockMaster;
 import entities.blocks.DirtBlock;
 import entities.blocks.StoneBlock;
 import game.Game;
-import java.awt.Color;
+import game.NetPlayerMaster;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -22,6 +24,9 @@ import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Objects;
 import java.util.Random;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -46,6 +51,9 @@ public class ClientMap extends GameMap<Block> {
    */
   public ClientMap(String mapSize, long seed) {
     super(mapSize, seed);
+    // Create empty map, the real map will be loaded from the server
+    width = 0;
+    height = 0;
     local = true;
     blocks = new Block[width][height];
     generateMap();
@@ -409,6 +417,46 @@ public class ClientMap extends GameMap<Block> {
   public void setLobbyMap(String[] lobbyMap) {
     this.lobbyMap = lobbyMap;
     this.local = false;
+  }
+
+  /**
+   * Calculate the block where the player spawns on this map so that all players are spaced evenly.
+   * The order is according to clientId (ascending).
+   *
+   * @param player player to get spawn block for
+   * @return The x coordinate of the block in grid coords
+   */
+  private int getSpawnBlockForPlayer(Player player) {
+    List<Integer> ids = new ArrayList<>(NetPlayerMaster.getIds());
+    Collections.sort(ids);
+
+    int pos = ids.size();
+    int players = ids.size() + 1;
+
+    for (int i = 0; i < ids.size(); i++) {
+      if (player.getClientId() < ids.get(i)) {
+        pos = i;
+        break;
+      }
+    }
+
+    if (pos >= players || width < players) {
+      // Invalid spawn data, spawn on block 1/1
+      return width / 2;
+    }
+
+    return width / (players + 1) * (pos + 1);
+  }
+
+  /**
+   * Get world coordinates for the player to spawn on the map given the static NetPlayerMaster.
+   *
+   * @param player player to get spawn location for
+   * @return world coordinates for spawn position
+   */
+  public Vector3f getSpawnPositionForPlayer(Player player) {
+    int block = getSpawnBlockForPlayer(player);
+    return new Vector3f(dim * block + size, 1, 3);
   }
 
   public int getTerrainRows() {

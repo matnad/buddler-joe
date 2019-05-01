@@ -1,5 +1,6 @@
 package game.map;
 
+import entities.Player;
 import org.joml.SimplexNoise;
 import org.joml.Vector2i;
 import org.joml.Vector3f;
