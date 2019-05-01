@@ -59,6 +59,7 @@ public class PacketLifeStatus extends Packet {
       this.playerId = Integer.parseInt(playerId);
       int test = Integer.parseInt(currentLives);
       if (test < -1 || test > 3) {
+        logger.error("Can't set lives to " + test);
         throw new IllegalArgumentException();
       }
       if (test == 3) {

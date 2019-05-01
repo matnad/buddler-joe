@@ -35,7 +35,7 @@ public class Lobby implements Runnable {
   private String status;
   private long createdAt;
   private ServerItemState serverItemState;
-  private ConcurrentHashMap<Integer, Referee> refereesForClients; // Integer = clientId
+  private volatile ConcurrentHashMap<Integer, Referee> refereesForClients; // Integer = clientId
   private Thread gameLoop;
 
   /**
@@ -345,25 +345,29 @@ public class Lobby implements Runnable {
     new PacketStartRound().sendToLobby(lobbyId);
   }
 
-  public void addPerspective(int clientId, int playerId, int currentLives) {
-    Referee ref;
-    if (!checkEventOpened(playerId)) {
-      ref = new Referee(playerId, this);
-      refereesForClients.put(playerId, ref);
-      refereesForClients.get(playerId).add(clientId, currentLives);
-    } else {
-      if (!refereesForClients.get(playerId).getAllPerspectives().containsKey(clientId)) {
-        refereesForClients.get(playerId).add(clientId, currentLives);
-      }
+  public void addPerspective(int voter, int effected, int currentLives) {
+    Referee ref = refereesForClients.get(effected);
+    if (ref == null || !ref.isOpen()) {
+      ref = new Referee(effected, this);
+      refereesForClients.put(effected, ref);
     }
+    ref.add(voter, currentLives);
   }
 
-  public boolean checkEventOpened(int playerId) {
-    return refereesForClients.get(playerId) != null
-        && System.currentTimeMillis() - refereesForClients.get(playerId).getTimestamp() <= 500;
-  }
+  //public void addPerspective(int clientId, int playerId, int currentLives) {
+  //  Referee ref;
+  //  if (!checkEventOpened(playerId)) {
+  //    ref = new Referee(playerId, this);
+  //    refereesForClients.put(playerId, ref);
+  //    refereesForClients.get(playerId).add(clientId, currentLives);
+  //  } else {
+  //    if (!refereesForClients.get(playerId).getAllPerspectives().containsKey(clientId)) {
+  //      refereesForClients.get(playerId).add(clientId, currentLives);
+  //    }
+  //  }
+  //}
 
-  public void clear(int playerId) {
+  public void clearRef(int playerId) {
     refereesForClients.remove(playerId);
   }
 }
