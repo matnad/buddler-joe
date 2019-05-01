@@ -293,6 +293,10 @@ public class PlayerList {
     PlayerList.n = n;
   }
 
+  /**
+   * solves the player name texture individually, and not everything together, so that the chat
+   * history is not lost.
+   */
   public static void removePlayerFromPlayerlist() {
     for (int i = 0; i < names.length; i++) {
       names[i].delete();

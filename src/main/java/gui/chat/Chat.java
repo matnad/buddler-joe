@@ -98,16 +98,16 @@ public class Chat {
             false);
 
     wisperAddress =
-            new ChatText(
-                    chatText,
-                    0.25f,
-                    new Vector3f(textColour.x, textColour.y, textColour.z),
-                    alpha,
-                    font,
-                    new Vector2f(.06f, .91f),
-                    maxLineLength,
-                    false,
-                    false);
+        new ChatText(
+            chatText,
+            0.25f,
+            new Vector3f(textColour.x, textColour.y, textColour.z),
+            alpha,
+            font,
+            new Vector2f(.06f, .91f),
+            maxLineLength,
+            false,
+            false);
 
     wisperName = "";
     messages = new ArrayList<>();
@@ -417,6 +417,7 @@ public class Chat {
   public void unhide() {
     hidden = false;
   }
+
   public void setWisperName(String wisperName) {
     this.wisperName = "@" + wisperName;
     updateGuiWisperName();
@@ -425,7 +426,19 @@ public class Chat {
   public void setBackToChat(boolean backToChat) {
     this.backToChat = backToChat;
   }
-  public void updateGuiWisperName(){
-    wisperAddress = new ChatText(wisperName, 0.75f, textColour, alpha, font, new Vector2f(0.145f,0.65f), 1f, false, false);
+
+  /** changes the wisperaddress, which tells the player to whom he will write the next message. */
+  public void updateGuiWisperName() {
+    wisperAddress =
+        new ChatText(
+            wisperName,
+            0.75f,
+            textColour,
+            alpha,
+            font,
+            new Vector2f(0.145f, 0.65f),
+            1f,
+            false,
+            false);
   }
 }
