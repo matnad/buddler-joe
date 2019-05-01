@@ -2,12 +2,14 @@ package net.lobbyhandling;
 
 import game.History;
 import game.map.ServerMap;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import net.ServerLogic;
 import net.highscore.ServerHighscoreSerialiser;
 import net.packets.gamestatus.PacketGameEnd;
 import net.packets.gamestatus.PacketStartRound;
 import net.packets.lobby.PacketLobbyOverview;
+import net.playerhandling.Referee;
 import net.playerhandling.ServerPlayer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,7 +34,7 @@ public class Lobby implements Runnable {
   private String status;
   private long createdAt;
   private ServerItemState serverItemState;
-
+  private ConcurrentHashMap<Integer, Referee> refereesForClients; // Integer = clientId
   private Thread gameLoop;
 
   /**
@@ -53,6 +55,7 @@ public class Lobby implements Runnable {
     this.lobbyPlayers = new CopyOnWriteArrayList<>();
     this.lobbyId = lobbyCounter;
     this.serverItemState = new ServerItemState();
+    this.refereesForClients = new ConcurrentHashMap<>();
     lobbyCounter++;
     map = new ServerMap(mapSize, System.currentTimeMillis());
   }
@@ -337,6 +340,34 @@ public class Lobby implements Runnable {
     setStatus("running");
     History.openRemove(lobbyId);
     History.runningAdd(lobbyId, lobbyName);
+
     new PacketStartRound().sendToLobby(lobbyId);
+  }
+
+  /**
+   * Add the perspective for a life change event from one player.
+   *
+   * <p>Whenever a player observers himself or another player getting a life change, this is
+   * reported to the server and the server adds this perspective to a Referee object. The Referee
+   * class will then decide how to proceed.
+   *
+   * <p>This method will check if there is a running referee event to add the perspective to and if
+   * not, will create a new instance.
+   *
+   * @param voter the clientId of the player who is making the observation
+   * @param effected the clientId of the effected player (the player with the life change)
+   * @param currentLives the new value of lives for the effected player
+   */
+  public void addPerspective(int voter, int effected, int currentLives) {
+    Referee ref = refereesForClients.get(effected);
+    if (ref == null || !ref.isOpen()) {
+      ref = new Referee(effected, this);
+      refereesForClients.put(effected, ref);
+    }
+    ref.addPerspective(voter, currentLives);
+  }
+
+  public void clearRef(int playerId) {
+    refereesForClients.remove(playerId);
   }
 }
