@@ -11,6 +11,12 @@ targetCompatibility = '1.11'
 group 'gruppe-8'
 version 'buddlerjoe-0.3.0'
 
+compileJava.options.encoding = 'UTF-8'
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
 
 jar {
     manifest {
