@@ -6,7 +6,6 @@ import java.net.Socket;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
-
 import net.highscore.ServerHighscore;
 import net.highscore.ServerHighscoreSerialiser;
 import net.lobbyhandling.Lobby;

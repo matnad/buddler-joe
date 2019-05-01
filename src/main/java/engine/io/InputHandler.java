@@ -402,7 +402,7 @@ public class InputHandler {
     InputHandler.inputString = inputString;
   }
 
-  /** Reset the Input String to clear it for further use. */
+  /** Reset the Input String to clearRef it for further use. */
   public static void resetInputString() {
     InputHandler.inputString = new StringBuilder();
   }

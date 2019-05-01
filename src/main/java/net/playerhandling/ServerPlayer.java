@@ -142,6 +142,10 @@ public class ServerPlayer {
     }
   }
 
+  public Vector2f getPos2d() {
+    return pos2d;
+  }
+
   /**
    * Update the player position and validate if this "move" violates any rules. This is triggered by
    * the update position packet and should happen once every second.
@@ -154,10 +158,6 @@ public class ServerPlayer {
     if (!validatePos2d()) {
       movementViolations++;
     }
-  }
-
-  public Vector2f getPos2d() {
-    return pos2d;
   }
 
   /**
@@ -278,12 +278,12 @@ public class ServerPlayer {
     }
   }
 
+  public boolean isReady() {
+    return ready;
+  }
 
   public void setReady(boolean ready) {
     this.ready = ready;
   }
 
-  public boolean isReady() {
-    return ready;
-  }
 }

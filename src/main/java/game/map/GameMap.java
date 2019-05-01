@@ -1,6 +1,6 @@
 package game.map;
 
-import java.util.Random;
+import entities.Player;
 import org.joml.SimplexNoise;
 import org.joml.Vector2i;
 import org.joml.Vector3f;
@@ -18,6 +18,7 @@ public abstract class GameMap<T> {
 
   protected static final int dim = 6;
   protected static final int size = 3;
+  protected static final int terrainChunk = 8;
   /* Threshold function:
    * Values below first number will be STONE
    * Values between the first and second number will be DIRT BLOCKS
@@ -28,18 +29,29 @@ public abstract class GameMap<T> {
   protected int height;
   protected long seed;
   protected T[][] blocks;
+  protected float[][] noiseMap;
 
   /**
    * Generate a new map.
    *
-   * @param width number of blocks on the horizontal
-   * @param height number of blocks on the vertical = depth
+   * @param mapSize size of the map
    * @param seed random seed
    */
-  public GameMap(int width, int height, long seed) {
-    this.width = width;
-    this.height = height;
-    this.seed = seed;
+  public GameMap(String mapSize, long seed) {
+    if (mapSize.equals("s")) {
+      this.width = 16;
+      this.height = 64;
+    } else if (mapSize.equals("m")) {
+      this.width = 32;
+      this.height = 56;
+    } else if (mapSize.equals("l")) {
+      this.width = 64;
+      this.height = 40;
+    } else {
+      this.width = 32;
+      this.height = 40;
+    }
+    this.seed = (long) (seed % 1e6);
   }
 
   public static int getSize() {
@@ -50,24 +62,26 @@ public abstract class GameMap<T> {
     return dim;
   }
 
+  public static int getTerrainChunk() {
+    return terrainChunk;
+  }
+
   abstract void generateMap();
 
   abstract void damageBlock(int clientId, int posX, int posY, float damage);
 
   /**
-   * Generates a noise map for map generation. TODO (Sanja): Implement map generation algorithm
+   * Generates a noise map for map generation.
    *
-   * @param seed the seed
    * @return the noise map for the specified random generator
    */
-  protected float[][] generateNoiseMap(long seed) {
+  protected float[][] generateNoiseMap() {
     // Generate Noise here
-    seed %= 1e6;
     int radius = 4; // "Smoothing" of noise
-    float[][] noiseMap = new float[width][height];
+    noiseMap = new float[width][height];
     for (int y = 0; y < height; y++) {
       for (int x = 0; x < width; x++) {
-        float dx = (x + seed  - radius) / (float) radius;
+        float dx = (x + seed - radius) / (float) radius;
         float dy = (y + seed - radius) / (float) radius;
         noiseMap[x][y] = (SimplexNoise.noise(dx, dy) + 1) / 2;
       }
@@ -102,5 +116,13 @@ public abstract class GameMap<T> {
   public Vector2i worldToGrid(Vector3f worldCoords) {
     return new Vector2i(
         (int) Math.floor(worldCoords.x / dim), (int) Math.floor(-worldCoords.y / dim));
+  }
+
+  public long getSeed() {
+    return seed;
+  }
+
+  public void setSeed(long seed) {
+    this.seed = seed;
   }
 }

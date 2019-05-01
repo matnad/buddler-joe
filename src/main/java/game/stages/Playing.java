@@ -1,5 +1,10 @@
 package game.stages;
 
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_ESCAPE;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_H;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_P;
+import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_1;
+
 import engine.io.InputHandler;
 import engine.particles.ParticleMaster;
 import engine.render.Loader;
@@ -20,11 +25,11 @@ import java.lang.management.MemoryUsage;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.packets.highscore.PacketHighscore;
 import net.packets.lists.PacketPlayerList;
 import org.joml.Vector2f;
+import terrains.TerrainFlat;
 import util.MousePlacer;
-
-import static org.lwjgl.glfw.GLFW.*;
 
 /**
  * MAIN GAME LOOP specification and rendering. Contains and manages the Game Loop while the player
@@ -110,9 +115,12 @@ public class Playing {
     // H = Highscore
     if (InputHandler.isKeyPressed(GLFW_KEY_H)
         && !Game.getChat().isEnabled()
-        && !Game.getActiveStages().contains(Game.Stage.GAMEMENU)) {
+        && !Game.getActiveStages().contains(Game.Stage.GAMEMENU)
+        && !Game.getActiveStages().contains(Game.Stage.HIGHSCORE)) {
+      new PacketHighscore().sendToServer();
       Highscore.setInGame(true);
       Game.addActiveStage(Game.Stage.HIGHSCORE);
+      Game.getChat().hide();
     }
     if (InputHandler.isKeyPressed(GLFW_KEY_P)
             && !Game.getChat().isEnabled()
@@ -124,6 +132,7 @@ public class Playing {
       PacketPlayerList playerList = new PacketPlayerList();
       playerList.sendToServer();
       Game.addActiveStage(Game.Stage.PLAYERLIST);
+      Game.getChat().hide();
     }
 
     if (all.isHover(x, y)
@@ -148,11 +157,19 @@ public class Playing {
     ParticleMaster.update(Game.getActiveCamera());
     LightMaster.update(Game.getActiveCamera(), Game.getActivePlayer());
 
-    // Prepare and render the entities
+    // Prepare and render the terrains
+    TerrainFlat[][] terrainChunks = Game.getTerrainChunks();
+    for (int i = 0; i < Game.getMap().getTerrainRows(); i++) {
+      for (int j = 0; j < Game.getMap().getTerrainCols(); j++) {
+        renderer.processTerrain(terrainChunks[j][i]);
+      }
+    }
+
+    // renderer.processTerrain(Game.getTerrainChunks()[0][0]);
+
+    // Prepare and Render the entities
     renderer.processEntity(Game.getActivePlayer());
     NetPlayerMaster.update(renderer);
-    renderer.processTerrain(Game.getAboveGround());
-    renderer.processTerrain(Game.getBelowGround());
     for (Entity entity : Game.getEntities()) {
       if (entity != null) {
         renderer.processEntity(entity);

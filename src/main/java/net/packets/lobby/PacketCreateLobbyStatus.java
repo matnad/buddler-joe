@@ -1,7 +1,6 @@
 package net.packets.lobby;
 
 import game.Game;
-import game.stages.InLobby;
 import game.stages.LobbyCreation;
 import net.packets.Packet;
 

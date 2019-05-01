@@ -7,6 +7,7 @@ import engine.render.objconverter.ObjFileLoader;
 import engine.textures.ModelTexture;
 import game.Game;
 import net.packets.items.PacketItemUsed;
+import net.packets.life.PacketLifeStatus;
 import org.joml.Vector3f;
 
 public class Heart extends Item {
@@ -59,7 +60,8 @@ public class Heart extends Item {
     if (isOwned()) {
       time += Game.dt();
       if (time >= showTime) {
-        Game.getActivePlayer().increaseCurrentLives();
+        //Game.getActivePlayer().increaseCurrentLives();
+        Game.getActivePlayer().informServer(1);
         setDestroyed(true);
       }
     } else {

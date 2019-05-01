@@ -15,7 +15,6 @@ public class Main {
   private static boolean client = true;
   private static int port = 11337;
 
-
   /**
    * Start the GUI and the Network client of the game.
    *

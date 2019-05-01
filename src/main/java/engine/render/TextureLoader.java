@@ -39,6 +39,7 @@ import static org.lwjgl.system.MemoryUtil.memFree;
 import static util.IoUtil.ioResourceToByteBuffer;
 
 import engine.textures.Texture;
+import game.map.ClientMap;
 import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
 import org.lwjgl.system.MemoryStack;
@@ -63,8 +64,14 @@ public class TextureLoader implements Texture {
    * @param imagePath fill image path
    */
   private TextureLoader(String imagePath) {
-    ByteBuffer imageBuffer;
-    imageBuffer = ioResourceToByteBuffer(imagePath, 8 * 1024);
+    this(ioResourceToByteBuffer(imagePath, 8 * 1024));
+  }
+
+  private TextureLoader(ClientMap map, int startRow, int startCol) {
+    this(map.getMapImageByteBuffer(startRow, startCol));
+  }
+
+  private TextureLoader(ByteBuffer imageBuffer) {
     try (MemoryStack stack = stackPush()) {
       IntBuffer w = stack.mallocInt(1);
       IntBuffer h = stack.mallocInt(1);
@@ -97,6 +104,10 @@ public class TextureLoader implements Texture {
    */
   public static Texture getTexture(String imagePath) {
     return new TextureLoader(imagePath);
+  }
+
+  public static Texture getTexture(ClientMap map, int startRow, int startCol) {
+    return new TextureLoader(map, startRow, startCol);
   }
 
   /** To create transparency. */

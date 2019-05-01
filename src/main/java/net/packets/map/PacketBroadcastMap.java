@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 public class PacketBroadcastMap extends Packet {
 
   private static final Logger logger = LoggerFactory.getLogger(PacketBroadcastMap.class);
+  private long seed;
   private String mapString;
   private String[] mapArray;
 
@@ -24,7 +25,9 @@ public class PacketBroadcastMap extends Packet {
   public PacketBroadcastMap(ServerMap serverMap) {
     super(PacketTypes.FULL_MAP_BROADCAST);
     mapString = serverMap.toPacketString();
-    setData(mapString);
+    seed = serverMap.getSeed();
+    System.out.println(seed);
+    setData(seed + "║" + mapString);
   }
 
   /**
@@ -46,6 +49,20 @@ public class PacketBroadcastMap extends Packet {
 
   @Override
   public void validate() {
+
+    if (mapArray.length < 2) {
+      addError("Map data is incomplete.");
+      return;
+    }
+
+    // Store seed and remove it from the map array
+    try {
+      seed = Integer.parseInt(mapArray[0]);
+    } catch (NumberFormatException e) {
+      addError("Invalid map seed.");
+    }
+    mapArray = Arrays.copyOfRange(mapArray, 1, mapArray.length);
+
     int len = mapArray[0].length();
     for (String s : mapArray) {
       if (s.length() != len) {
@@ -74,12 +91,12 @@ public class PacketBroadcastMap extends Packet {
   public void processData() {
     ClientMap map = Game.getMap();
     if (map == null) {
-      map = new ClientMap(1, 1, 1); // Dummy map
+      map = new ClientMap("m", System.currentTimeMillis()); // Dummy map with right seed
       Game.setMap(map);
     }
     if (!hasErrors()) {
-      //map.reloadMap(mapArray);
       map.setLobbyMap(mapArray);
+      map.setSeed(seed);
     } else {
       logger.error(
           "Error trying to reload map: " + createErrorMessage() + "\n" + Arrays.toString(mapArray));

@@ -1,12 +1,9 @@
 package net.packets;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.StringJoiner;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
-
 import net.ClientLogic;
 import net.ServerLogic;
 import net.playerhandling.ServerPlayer;
@@ -19,12 +16,11 @@ import org.slf4j.LoggerFactory;
  */
 public abstract class Packet {
 
+  public static final Logger logger = LoggerFactory.getLogger(Packet.class);
   private List<String> errors = new CopyOnWriteArrayList<>();
   private PacketTypes packetType;
   private int clientId;
   private String data;
-  public static final Logger logger = LoggerFactory.getLogger(Packet.class);
-
 
   protected Packet(PacketTypes packetType) {
     this.packetType = packetType;
@@ -168,6 +164,7 @@ public abstract class Packet {
    */
   protected void addError(String error) {
     errors.add(error);
+    logger.info(error);
   }
 
   /**
