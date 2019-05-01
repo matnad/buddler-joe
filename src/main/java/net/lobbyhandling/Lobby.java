@@ -61,15 +61,6 @@ public class Lobby implements Runnable {
     map = new ServerMap(mapSize, System.currentTimeMillis());
   }
 
-  /**
-   * Getter that return the max amount of players per Lobby.
-   *
-   * @return the maximum number of players for all lobbies
-   */
-  public static int getMaxPlayers() {
-    return maxPlayers;
-  }
-
   @Override
   public void run() {
     // Loop once per second
@@ -81,7 +72,7 @@ public class Lobby implements Runnable {
         // if (lobbyPlayer.getMovementViolations() > 0) {
         //  System.out.println(lobbyPlayer.getUsername() + " was caught speed hacking!");
         // }
-        if (player.getDefeatedStatus()) {
+        if (player.isDefeated()) {
           aliveLobbyPlayers.remove(player);
         }
       }
@@ -239,7 +230,7 @@ public class Lobby implements Runnable {
 
     // BEACHTEN
     // Update highscore
-    if (!ServerLogic.getPlayerList().getPlayer(clientId).getDefeatedStatus()) {
+    if (!ServerLogic.getPlayerList().getPlayer(clientId).isDefeated()) {
       ServerLogic.getServerHighscore().addPlayer(time, userName);
       ServerHighscoreSerialiser.serialiseServerHighscore(ServerLogic.getServerHighscore());
     }
