@@ -46,7 +46,7 @@ public class Player extends NetPlayer {
 
   public static final Logger logger = LoggerFactory.getLogger(Player.class);
   private static final float digIntervall = 0.2f; // Number of dig updates per second
-  private final float torchPlaceDelay = 10f;
+  private final float torchPlaceDelay = 5f;
   // Resources and Stats
   public int currentGold; // Current coins
   private float digDamage; // Damage per second when colliding with blocks
