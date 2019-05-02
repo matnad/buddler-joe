@@ -2,7 +2,7 @@
 
 in vec2 pass_textureCoordinates;
 in vec3 surfaceNormal;
-in vec3 toLightVector[8];
+in vec3 toLightVector[24];
 in vec3 toCameraVector;
 in float visibility;
 
@@ -15,10 +15,10 @@ uniform sampler2D textureB;
 uniform sampler2D blendMap;
 
 uniform sampler2D modelTexture;
-uniform vec3 lightColour[8];
-uniform vec3 attenuation[8];
-uniform vec3 lightDirection[8];
-uniform float lightCutoff[8];
+uniform vec3 lightColour[24];
+uniform vec3 attenuation[24];
+uniform vec3 lightDirection[24];
+uniform float lightCutoff[24];
 uniform float shineDamper;
 uniform float reflectivity;
 uniform vec3 skyColour;
@@ -44,7 +44,7 @@ void main(void) {
 
     float lightMul = 100;
 
-    for(int i=0; i<8; i++) {
+    for(int i=0; i<24; i++) {
         float damper = 6;
         if (i == 0) {
           damper = 2;

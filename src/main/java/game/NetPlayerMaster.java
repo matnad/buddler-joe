@@ -83,18 +83,18 @@ public class NetPlayerMaster {
     for (Map.Entry<Integer, NetPlayer> netPlayer : netPlayers.entrySet()) {
       if (!presentIds.contains(netPlayer.getKey())) {
         logger.debug("Removing " + netPlayer.getValue().getUsername());
-        netPlayers.remove(netPlayer.getKey());
         netPlayer.getValue().removeNameplate();
+        netPlayers.remove(netPlayer.getKey());
       }
     }
 
     System.out.println(NetPlayerMaster.staticToString());
   }
 
-  public static void removePlayer(int clientId) {
-    netPlayers.remove(clientId);
-    System.out.println(NetPlayerMaster.staticToString());
-  }
+  //public static void removePlayer(int clientId) {
+  //  netPlayers.remove(clientId);
+  //  System.out.println(NetPlayerMaster.staticToString());
+  //}
 
   public static Set<Integer> getIds() {
     return netPlayers.keySet();

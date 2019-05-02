@@ -11,6 +11,7 @@ import org.joml.Vector2i;
 import org.joml.Vector3f;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import util.Util;
 
 public class ServerPlayer {
 
@@ -36,6 +37,7 @@ public class ServerPlayer {
 
   private int movementViolations = -1;
   private int damageViolations = 0;
+  private boolean kicked = false;
 
   /**
    * Constructor of the player class to create a new player Creates an instance of the main
@@ -155,8 +157,12 @@ public class ServerPlayer {
   public void setPos2d(Vector2f pos2d) {
     this.pos2dOld = this.pos2d;
     this.pos2d = pos2d;
-    if (!validatePos2d()) {
-      movementViolations++;
+    if (!validatePos2d(1f) && movementViolations > 0) {
+      logger.warn(
+          getUsername()
+              + ": Total "
+              + movementViolations
+              + " out of 5 allowed movement violations.");
     }
   }
 
@@ -167,21 +173,43 @@ public class ServerPlayer {
    *
    * <p>If there are any violations, they will be logged and added to the player's count.
    *
+   * @param intervall the frequency of calls to this function per second. 0.5f means twice per
+   *     second for example
    * @return true if there are no violations
    */
-  public boolean validatePos2d() {
+  public boolean validatePos2d(float intervall) {
+
     // Sanity check for goal velocity
     if (goalVelocity2d.x > NetPlayer.getRunSpeed()
         || goalVelocity2d.x < -NetPlayer.getRunSpeed()
         || goalVelocity2d.y > NetPlayer.getJumpPower()) {
-      logger.warn(getUsername() + ": Goal velocity exceeds allowed limits.");
+      logger.warn(getUsername() + ": Goal velocity exceeds allowed limits. 1 violation.");
+      addMovementViolations(1);
+
+      // If the velocity is far too high, add another 4 violations
+      if (goalVelocity2d.x > NetPlayer.getRunSpeed() * 2
+          || goalVelocity2d.x < -NetPlayer.getRunSpeed() * 2
+          || goalVelocity2d.y > NetPlayer.getJumpPower() * 2) {
+        logger.warn(getUsername() + ": Goal velocity is off the charts! 4 violations.");
+        addMovementViolations(4);
+      }
       return false;
     }
+
     // Sanity check for current velocity
     if (currentVelocity2d.x > NetPlayer.getRunSpeed()
         || currentVelocity2d.x < -NetPlayer.getRunSpeed()
         || currentVelocity2d.y > NetPlayer.getJumpPower()) {
-      logger.warn(getUsername() + ": Current velocity exceeds allowed limits.");
+      logger.warn(getUsername() + ": Current velocity exceeds allowed limits. 1 violation.");
+      addMovementViolations(1);
+
+      // If the velocity is far too high, add another 4 violations
+      if (currentVelocity2d.x > NetPlayer.getRunSpeed() * 2
+          || currentVelocity2d.x < -NetPlayer.getRunSpeed() * 2
+          || currentVelocity2d.y > NetPlayer.getJumpPower() * 2) {
+        logger.warn(getUsername() + ": Current velocity is off the charts! 4 violations.");
+        addMovementViolations(4);
+      }
       return false;
     }
 
@@ -190,13 +218,21 @@ public class ServerPlayer {
     if (Math.abs(pos2dOld.x - pos2d.x) > NetPlayer.getRunSpeed() + 5) {
       if (movementViolations >= 0) {
         // The first "violation" is for placing the player and will be ignored
-        logger.warn(getUsername() + " is moving too fast.");
+        logger.warn(getUsername() + " is moving too fast. 1 violation.");
+        addMovementViolations(1);
+
+        // If the moved distance is more than twice the allowed, add another 4 violations
+        if (Math.abs(pos2dOld.x - pos2d.x) > NetPlayer.getRunSpeed() * 2) {
+          logger.warn(getUsername() + " is teleporting. 4 violations.");
+          addMovementViolations(4);
+        }
       }
       return false;
     }
 
     if (Math.abs(pos2dOld.y - pos2d.y) > 200) {
-      logger.warn(getUsername() + "  falling or jumping too fast.");
+      addMovementViolations(1);
+      logger.warn(getUsername() + "  falling or jumping too fast. 1 violation.");
       return false;
     }
 
@@ -218,29 +254,35 @@ public class ServerPlayer {
 
     // If player has an active dynamite, we don't check stuff for now
     if (!getLobby().getServerItemState().hasDynamiteOwnedBy(clientId)) {
-      // Check if damage is too high
-      float maxDmg = Player.getDigIntervall() * digDamage;
+      // Check if damage is too high (with tolerance)
+      float maxDmg = Player.getDigInterval() * digDamage;
       if (damage > maxDmg * 1.2f) {
-        logger.warn("Too much dig damage for one packet.");
-        damageViolations++;
+        logger.warn("Too much dig damage for one packet. 1 violation.");
+        addDamageViolations(1);
         return false;
       }
       // Check if packets are sent too fast
-      if (System.currentTimeMillis() - lastDig < 900 * Player.getDigIntervall()) {
+      if (System.currentTimeMillis() - lastDig < 900 * Player.getDigInterval()) {
+        // We dont give violations for digging too fast since this can happen out of the player's
+        // control. However, we do ignore any dig attempts that violate the dig interval.
         logger.warn("Player digging too fast.");
-        damageViolations++;
         return false;
       }
       // Check if player is too far away from block. This is fairly generous since we only update
       // positions once per second
       Vector3f blockPos = getLobby().getMap().gridToWorld(new Vector2i(posX, posY));
       if (new Vector2f(blockPos.x, blockPos.y).distance(getPos2d()) > Player.getRunSpeed() * 2) {
-        logger.warn("Block too far away.");
-        damageViolations++;
+        logger.warn(getUsername() + ": Trying to dig a block too far away. 1 violation.");
+        addDamageViolations(1);
+
+        // Another 4 violations if the block is way too far away
+        if (new Vector2f(blockPos.x, blockPos.y).distance(getPos2d()) > Player.getRunSpeed() * 4) {
+          logger.warn(getUsername() + ": Trying to dig a block accross the map... 4 violations.");
+          addDamageViolations(4);
+        }
         return false;
       }
     }
-
     lastDig = System.currentTimeMillis();
     return true;
   }
@@ -262,6 +304,41 @@ public class ServerPlayer {
   }
 
   /**
+   * Add a number of violations and enforce actions when too many violations are accumulated.
+   *
+   * @param violations number of violations to add
+   */
+  private void addMovementViolations(int violations) {
+    movementViolations += violations;
+    if (movementViolations >= 5 && !kicked) {
+      kick();
+    }
+  }
+
+  /**
+   * Add a number of violations and enforce actions when too many violations are accumulated.
+   *
+   * @param violations number of violations to add
+   */
+  private void addDamageViolations(int violations) {
+    damageViolations += violations;
+    if (damageViolations >= 5 && !kicked) {
+      kick();
+    }
+  }
+
+  private void kick() {
+    // Set kicked flag. Will be handled by the lobby game loop.
+    kicked = true;
+    // Inform GameLobby
+    String timestamp = Util.getFormattedTimestamp();
+    new PacketChatMessageToClient(
+            clientId,
+            "[SERVER-" + timestamp + "] removing " + getUsername() + " due to inconsistencies.")
+        .sendToLobby(getCurLobbyId());
+  }
+
+  /**
    * Set a player as defeated and inform the clients. Sends a PacketDefeated with the client ID and
    * a Message to all players in the lobby.
    *
@@ -278,6 +355,10 @@ public class ServerPlayer {
     }
   }
 
+  public ClientThread getClientThread() {
+    return ServerLogic.getThreadByClientId(getClientId());
+  }
+
   public boolean isDefeated() {
     return this.defeated;
   }
@@ -288,5 +369,9 @@ public class ServerPlayer {
 
   public void setReady(boolean ready) {
     this.ready = ready;
+  }
+
+  public boolean isKicked() {
+    return kicked;
   }
 }

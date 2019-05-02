@@ -72,9 +72,10 @@ public class Lobby implements Runnable {
 
       // Do stuff
       for (ServerPlayer player : aliveLobbyPlayers) {
-        // if (lobbyPlayer.getMovementViolations() > 0) {
-        //  System.out.println(lobbyPlayer.getUsername() + " was caught speed hacking!");
-        // }
+        if (player.isKicked()) {
+          logger.info("Kicking " + player.getUsername() + ".");
+          ServerLogic.removePlayer(player.getClientId());
+        }
         if (player.isDefeated()) {
           aliveLobbyPlayers.remove(player);
         }
