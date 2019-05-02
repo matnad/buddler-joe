@@ -114,6 +114,7 @@ public class GameMenu {
       Game.removeActiveStage(Game.Stage.GAMEMENU);
     } else if (InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1) && exit.isHover(x, y)) {
       new PacketLeaveLobby().sendToServer();
+      Game.restart();
     } else if (InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1) && desktop.isHover(x, y)) {
       new PacketDisconnect().sendToServer();
       Game.window.stop();

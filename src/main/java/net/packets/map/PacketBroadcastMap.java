@@ -26,7 +26,6 @@ public class PacketBroadcastMap extends Packet {
     super(PacketTypes.FULL_MAP_BROADCAST);
     mapString = serverMap.toPacketString();
     seed = serverMap.getSeed();
-    System.out.println(seed);
     setData(seed + "║" + mapString);
   }
 

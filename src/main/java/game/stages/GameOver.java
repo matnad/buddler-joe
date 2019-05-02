@@ -75,14 +75,12 @@ public class GameOver {
     guis.add(exitGame.getHoverTexture(x, y));
 
     if ((InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1) && exitGame.isHover(x, y))) {
-      Game.window.stop();
+      Game.restart();
     }
 
     if (gameOver == null || winnerMsg == null) {
       createTexts();
     }
-
-
 
     Game.getGuiRenderer().render(guis);
     TextMaster.render();
@@ -112,6 +110,7 @@ public class GameOver {
    * @param msg message to display on the game over screen
    */
   public static void setMsg(String msg) {
+    gameOver = null;
     winnerString = msg;
   }
 

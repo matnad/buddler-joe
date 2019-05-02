@@ -77,8 +77,12 @@ public class Entity {
       float[] boundingCoords = model.getRawModel().getBoundingCoords();
       if (this instanceof NetPlayer) {
         // Adjust box for player model (shovel can clip into the wall)
-        boundingCoords[0] *= 1.15;
-        boundingCoords[1] *= 1.35;
+        // Copy the array so don't alter the underlying model data
+        float[] boundingCoordsNew = new float[6];
+        System.arraycopy(boundingCoords, 0, boundingCoordsNew, 0, 6);
+        boundingCoordsNew[0] *= 1.15;
+        boundingCoordsNew[1] *= 1.35;
+        boundingCoords = boundingCoordsNew;
       }
       bbox = new BoundingBox(boundingCoords);
       bbox.scale(getScale());

@@ -12,10 +12,10 @@ import org.joml.Vector3f;
 /** Create and manage blocks. Only ever create blocks using this class */
 public class BlockMaster {
   // Organize Blocks in lists that can be accessed by their type
-  private static final Map<BlockTypes, CopyOnWriteArrayList<Block>> blockLists =
+  private static Map<BlockTypes, CopyOnWriteArrayList<Block>> blockLists =
       new ConcurrentHashMap<>();
   // Keep a list with just blocks
-  private static final List<Block> blocks = new CopyOnWriteArrayList<>();
+  private static List<Block> blocks = new CopyOnWriteArrayList<>();
   // List of debris (small blocks)
 
   /**
@@ -156,6 +156,12 @@ public class BlockMaster {
   public static List<Block> getBlocks() {
     return blocks;
   }
+
+  public static void clear() {
+    blockLists = new ConcurrentHashMap<>();
+    blocks = new CopyOnWriteArrayList<>();
+  }
+
 
   // public static Map<BlockTypes, List<Block>> getBlockLists() {
   //  return blockLists;

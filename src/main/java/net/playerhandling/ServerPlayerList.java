@@ -11,6 +11,21 @@ public class ServerPlayerList {
   }
 
   /**
+   * Reset the player after a game has ended (after the player was removed form a lobby). Needs to
+   * be called before a new game is started.
+   *
+   * @param serverPlayer The player to reset
+   */
+  public void resetPlayer(ServerPlayer serverPlayer) {
+    // Check if player exists and then create new instance
+    if (serverPlayer != null) {
+      players.put(
+          serverPlayer.getClientId(),
+          new ServerPlayer(serverPlayer.getUsername(), serverPlayer.getClientId()));
+    }
+  }
+
+  /**
    * Method to add a player the the HashMap of all to the server connected players. Also checks
    * whether a username is already in use and then assigns a name with a number added at the end to
    * avoid the same username twice.

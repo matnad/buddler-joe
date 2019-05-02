@@ -42,7 +42,6 @@ public class NetPlayerMaster {
   public static void update(MasterRenderer renderer) {
 
     for (NetPlayer netPlayer : netPlayers.values()) {
-
       if (!netPlayer.isDefeated()) {
         float pctBrightness = Game.getMap().getLightLevel(netPlayer.getPosition().y);
         if (pctBrightness > .7f) {
@@ -174,4 +173,10 @@ public class NetPlayerMaster {
   public static Map<Integer, NetPlayer> getNetPlayers() {
     return netPlayers;
   }
+
+  public static void reset() {
+    lobbyname = "";
+    netPlayers.clear();
+  }
+
 }

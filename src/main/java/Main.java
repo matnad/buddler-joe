@@ -2,7 +2,6 @@ import game.Game;
 import game.Settings;
 import game.SettingsSerialiser;
 import net.StartServer;
-import net.packets.name.PacketSetName;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,6 +14,8 @@ public class Main {
   // DEFAULT VALUES
   private static boolean client = true;
   private static int port = 11337;
+
+  private static Thread gameThread;
 
   /**
    * Start the GUI and the Network client of the game.
@@ -48,7 +49,9 @@ public class Main {
 
     if (client) {
       Game game = new Game(settings.getIp(), port, settings.getUsername());
-      game.start();
+      gameThread = new Thread(game);
+      gameThread.setName("Game-Loop");
+      gameThread.start();
     } else {
       StartServer server = new StartServer(port);
       server.startServer();

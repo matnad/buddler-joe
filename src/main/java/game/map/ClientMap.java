@@ -174,7 +174,7 @@ public class ClientMap extends GameMap<Block> {
    */
   public void reloadMap() {
 
-    logger.debug("Reloading map: " + Arrays.toString(lobbyMap));
+    //logger.debug("Reloading map: " + Arrays.toString(lobbyMap));
 
     // Kill old map
     for (int y = 0; y < height; y++) {
