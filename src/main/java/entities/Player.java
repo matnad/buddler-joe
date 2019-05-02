@@ -45,7 +45,7 @@ import util.MousePlacer;
 public class Player extends NetPlayer {
 
   public static final Logger logger = LoggerFactory.getLogger(Player.class);
-  private static final float digIntervall = 0.2f; // Number of dig updates per second
+  private static final float digInterval = 0.2f; // Number of dig updates per second
   private final float torchPlaceDelay = 5f;
   // Resources and Stats
   public int currentGold; // Current coins
@@ -78,15 +78,13 @@ public class Player extends NetPlayer {
     controlsDisabled = false;
   }
 
-  /**
-   * Testconstructor for Unit Tests to create a Test User with Mockito.
-   */
+  /** Testconstructor for Unit Tests to create a Test User with Mockito. */
   public Player() {
-    super(new Vector3f(1,2,3),1.0f,1.0f,1.0f);
+    super(new Vector3f(1, 2, 3), 1.0f, 1.0f, 1.0f);
   }
 
-  public static float getDigIntervall() {
-    return digIntervall;
+  public static float getDigInterval() {
+    return digInterval;
   }
 
   /**
@@ -115,7 +113,7 @@ public class Player extends NetPlayer {
     if (Game.getActiveStages().size() == 1 && Game.getActiveStages().get(0) == PLAYING) {
       // Only check inputs if no other stage is active (stages are menu screens)
       checkInputs(); // See which relevant keys are pressed
-      digDamage = 1;
+      digDamage = 2;
     } else {
       stopVelocityX();
       stopVelocityY();
@@ -283,7 +281,7 @@ public class Player extends NetPlayer {
 
   /**
    * What happens PER FRAME when we dig a block. Sends updates to the server every few frames,
-   * specified in digIntervall
+   * specified in digInterval
    *
    * @param block block to dig
    */
@@ -299,7 +297,10 @@ public class Player extends NetPlayer {
     lastDiggedBlockDamage += (float) (digDamage * Game.dt());
 
     // Check if we hit time threshold to send update to the server
-    if (digIntervallTimer >= digIntervall) {
+    if (digIntervallTimer >= digInterval) {
+      // Make sure we don't send invalid packets. If framerate is below 5, the player will dig
+      // slower but not violate any rules
+      lastDiggedBlockDamage = Math.min(lastDiggedBlockDamage, digDamage * digIntervallTimer);
       new PacketBlockDamage(block.getGridX(), block.getGridY(), lastDiggedBlockDamage)
           .sendToServer();
       // Reset timer without losing overflow
@@ -403,6 +404,7 @@ public class Player extends NetPlayer {
 
   /**
    * Triggers FreezeOverlay. And sets Player as frozen.
+   *
    * @param initial the current freeze status.
    */
   public void freeze(boolean initial) {

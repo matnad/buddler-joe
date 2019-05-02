@@ -21,6 +21,7 @@ import net.playerhandling.ServerPlayer;
 import net.playerhandling.ServerPlayerList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import util.Util;
 
 /**
  * Server Logic is responsible for managing all the connections to the clients and for managing all
@@ -186,6 +187,12 @@ public class ServerLogic {
       return;
     }
 
+    // Close socket
+    ClientThread thread = clientThreadMap.get(clientId);
+    if (thread != null) {
+      thread.closeSocket();
+    }
+
     // Check if client is in lobby and remove him
     int lobbyId = player.getCurLobbyId();
     if (lobbyId == 0) {
@@ -208,10 +215,7 @@ public class ServerLogic {
     // Inform the lobby that a player left
     if (lobby != null) {
       // set the time when the player left the lobby
-      String timestamp;
-      SimpleDateFormat simpleFormat = new SimpleDateFormat("HH:mm");
-      Date date = new Date();
-      timestamp = simpleFormat.format(date);
+      String timestamp = Util.getFormattedTimestamp();
 
       // send the message "[SERVER 'TIME']'username' left lobby" to the lobby
       PacketChatMessageToClient sendMessage =
