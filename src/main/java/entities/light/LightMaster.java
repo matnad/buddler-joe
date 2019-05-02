@@ -19,7 +19,7 @@ public class LightMaster {
    CHANGING THIS VARIABLE IS NOT ENOUGH! You also need to change the shader code in
          -> entity.vs, entity.fs, terrain.fs and terrain.vs
   */
-  private static final int maxLights = 8;
+  private static final int maxLights = 24;
 
   // Organize Items in lists that can be accessed by their PRIORITY (ItemTypes.TYPE.getPriority())
   private static final Map<Integer, List<Light>> lightLists = new HashMap<>();
