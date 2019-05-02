@@ -18,7 +18,7 @@ import net.packets.loginlogout.PacketDisconnect;
 import org.joml.Vector2f;
 
 /**
- * run.Main Menu specification and rendering. Must be initialized. Specifies all the elements in the
+ * Main Menu specification and rendering. Must be initialized. Specifies all the elements in the
  * Game Menu. Contains and manages the Game Loop while the Game Menu is active.
  */
 public class GameMenu {
@@ -36,7 +36,7 @@ public class GameMenu {
    * @param loader main loader
    */
   public static void init(Loader loader) {
-    // run.Main Menu
+    // Main Menu
     gameMenu =
         new GuiTexture(
             loader.loadTexture("menuStone"),
@@ -114,6 +114,7 @@ public class GameMenu {
       Game.removeActiveStage(Game.Stage.GAMEMENU);
     } else if (InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1) && exit.isHover(x, y)) {
       new PacketLeaveLobby().sendToServer();
+      Game.restart();
     } else if (InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1) && desktop.isHover(x, y)) {
       new PacketDisconnect().sendToServer();
       Game.window.stop();

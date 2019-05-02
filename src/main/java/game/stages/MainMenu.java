@@ -18,8 +18,8 @@ import org.joml.Vector2f;
 import org.joml.Vector3f;
 
 /**
- * run.Main Menu specification and rendering. Must be initialized. Specifies all the elements in the
- * run.Main Menu. Contains and manages the Game Loop while the run.Main Menu is active.
+ * Main Menu specification and rendering. Must be initialized. Specifies all the elements in the
+ * Main Menu. Contains and manages the Game Loop while the Main Menu is active.
  */
 public class MainMenu {
 
@@ -142,7 +142,7 @@ public class MainMenu {
   }
 
   /**
-   * Game Loop while the stage is active. This runs every frame as long as the run.Main Menu is active.
+   * Game Loop while the stage is active. This runs every frame as long as the Main Menu is active.
    * Include all rendering and input handling here.
    */
   @SuppressWarnings("Duplicates")

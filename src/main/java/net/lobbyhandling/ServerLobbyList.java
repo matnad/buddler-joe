@@ -114,7 +114,7 @@ public class ServerLobbyList {
       }
       s.insert(0, counter);
       if (s.toString().equals("0")) {
-        s = new StringBuilder("All Lobbies are full");
+        s = new StringBuilder("No open Lobbies");
       }
     } else {
       s = new StringBuilder("No Lobbies online");

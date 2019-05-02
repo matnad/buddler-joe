@@ -62,6 +62,7 @@ import net.packets.loginlogout.PacketLogin;
 import org.joml.Vector3f;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.w3c.dom.Text;
 import terrains.TerrainFlat;
 
 /**
@@ -102,7 +103,7 @@ public class Game extends Thread {
   private static SettingsSerialiser settingsSerialiser = new SettingsSerialiser();
   private static Settings settings;
   // Network related variables, still temporary/dummies
-  private Thread networkThread;
+  private static Thread networkThread;
   private static boolean connectedToServer = false;
   private static boolean loggedIn = false;
   private static boolean lobbyCreated = false; // temporary
@@ -114,6 +115,7 @@ public class Game extends Thread {
   // Keep track of elapsed time in game
   private static long startedAt;
   // Player and Gui elements
+  private static boolean clearAllTextOnFrameEnd;
   private static Player player;
   private static LifeStatus lifeStatus;
   private static CurrentGold goldGuiText;
@@ -132,6 +134,7 @@ public class Game extends Thread {
   public String username;
   // Set to true to create and join a lobby. For quicker testing.
   private boolean autoJoin = true;
+
 
   /**
    * The constructor for the game to be called from the main class.
@@ -496,6 +499,12 @@ public class Game extends Thread {
       activeStages.addAll(stagesToBeAdded);
       stagesToBeAdded.clear();
 
+      // Clear text if requested
+      if (clearAllTextOnFrameEnd) {
+        TextMaster.removeAll();
+        clearAllTextOnFrameEnd = false;
+      }
+
       // Done with one frame
 
       window.swapBuffers();
@@ -544,6 +553,25 @@ public class Game extends Thread {
     //}
   }
 
+  public static void restart() {
+    TextMaster.removeAll();
+    activeStages.clear();
+
+    entities.clear();
+    BlockMaster.clear();
+    NetPlayerMaster.reset();
+    terrainChunks = null;
+
+    int clientId = player.getClientId();
+    player = new Player(getUsername(), new Vector3f(12, 10, 3), 0, 0, 0);
+    player.setClientId(clientId);
+
+    camera = new Camera(player, window);
+    map = new ClientMap("s", System.currentTimeMillis());
+
+    Game.addActiveStage(Game.Stage.MAINMENU);
+  }
+
   private void cleanUp() {
     // Clean up memory and unbind openGL shader programs
     TextMaster.cleanUp();
@@ -551,6 +579,10 @@ public class Game extends Thread {
     renderer.cleanUp();
     loader.cleanUp();
     ParticleMaster.cleanUp();
+  }
+
+  public static void clearAllTextAtEndOfCurrentFrame() {
+    clearAllTextOnFrameEnd = true;
   }
 
   private void loadGame(Loader loader) throws InterruptedException {
@@ -561,7 +593,7 @@ public class Game extends Thread {
     LoadingScreen.progess();
     ChooseLobby.init(loader);
     LoadingScreen.progess();
-    // Credits.init(loader);
+    Credits.init(loader);
     LoadingScreen.progess();
     Options.init(loader);
     LoadingScreen.progess();
@@ -588,10 +620,7 @@ public class Game extends Thread {
 
     // Connecting to Server
     LoadingScreen.updateLoadingMessage("connecting to server");
-    networkThread = new Thread(() -> StartNetworkOnlyClient.startWith(serverIp, serverPort));
-    networkThread.setName("Network Thread");
-    networkThread.start();
-
+    startNetworkThread();
     while (!ClientLogic.isConnected()) {
       Thread.sleep(50);
     }
@@ -622,7 +651,7 @@ public class Game extends Thread {
       }
       LoadingScreen.updateLoadingMessage("generating map");
       while (map.isLocal()) {
-        Thread.sleep(500);
+        Thread.sleep(50);
       }
     }
 
@@ -664,7 +693,7 @@ public class Game extends Thread {
     }
   }
 
-  public String getUsername() {
+  public static String getUsername() {
     return settings.getUsername();
   }
 
@@ -678,6 +707,12 @@ public class Game extends Thread {
   public void setUsername(String username) {
     settings.setUsername(username);
     settingsSerialiser.serialiseSettings(settings);
+  }
+
+  public static void startNetworkThread() {
+    networkThread = new Thread(() -> StartNetworkOnlyClient.startWith(serverIp, serverPort));
+    networkThread.setName("Network Thread");
+    networkThread.start();
   }
 
   public static long getStartedAt() {

@@ -15,7 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * run.Main lobby class to save the vital information which the server has to access at all times.
+ * Main lobby class to save the vital information which the server has to access at all times.
  *
  * @author Sebastian Schlachter
  */
@@ -81,10 +81,12 @@ public class Lobby implements Runnable {
       }
 
       try {
-        if (aliveLobbyPlayers.size() == 0 && checked == false) {
+        if (aliveLobbyPlayers.size() == 0 && !checked) {
           // System.out.println("here");
           Thread.sleep(2500);
-          gameOver(getCurrentWinner().getClientId());
+          if (getCurrentWinner() != null) {
+            gameOver(getCurrentWinner().getClientId());
+          }
         } else {
           // Wait for the rest of the second
           Thread.sleep(1000 - System.currentTimeMillis() + startOfLoop);
@@ -162,6 +164,7 @@ public class Lobby implements Runnable {
         return "Not in a Lobby";
       }
     } catch (NullPointerException e) {
+      logger.warn("nullpointer in remove player. " + e.getMessage());
       for (int i = 0; i < lobbyPlayers.size(); i++) {
         if (lobbyPlayers.get(i).getClientId() == clientId) {
           lobbyPlayers.get(i).setReady(false);
@@ -246,7 +249,11 @@ public class Lobby implements Runnable {
     // TODO send EndGamepacket here i created a skeleton already.
     // Inform all clients
     new PacketGameEnd(userName, time).sendToLobby(lobbyId);
-    // create new Map and broadcast
+    // Reset Server Players
+    for (ServerPlayer lobbyPlayer : lobbyPlayers) {
+      removePlayer(lobbyPlayer.getClientId());
+      ServerLogic.getPlayerList().resetPlayer(lobbyPlayer);
+    }
   }
 
   @Override

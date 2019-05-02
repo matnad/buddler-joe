@@ -2,6 +2,7 @@ package net.packets.lobby;
 
 import game.Game;
 import game.LobbyEntry;
+import java.util.Arrays;
 import java.util.concurrent.CopyOnWriteArrayList;
 import net.packets.Packet;
 
@@ -63,6 +64,10 @@ public class PacketLobbyOverview extends Packet {
       for (String s : in) {
         isExtendedAscii(s);
       }
+      if (in.length == 2 && in[1].equals("No open Lobbies")) {
+        // No need to validate anything else
+        return;
+      }
       if (in.length > 1 && isInt(in[1])) {
         for (int i = 2; i < in.length; i = i + 3) {
           try {
@@ -106,9 +111,10 @@ public class PacketLobbyOverview extends Packet {
       // System.out.println("To create a new lobby, type: create <lobby name>");
 
       CopyOnWriteArrayList<LobbyEntry> catalog = new CopyOnWriteArrayList<LobbyEntry>();
-
-      for (int i = 2; i < in.length; i = i + 3) {
-        catalog.add(new LobbyEntry(in[i], in[i + 1], in[i + 2]));
+      if (in.length > 2) {
+        for (int i = 2; i < in.length; i = i + 3) {
+          catalog.add(new LobbyEntry(in[i], in[i + 1], in[i + 2]));
+        }
       }
       Game.setLobbyCatalog(catalog);
     } else {
