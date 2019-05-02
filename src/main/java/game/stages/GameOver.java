@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
+import run.Main;
 
 /** A simple loading screen with minimal animations and changeable loading message. */
 public class GameOver {
@@ -75,14 +76,13 @@ public class GameOver {
     guis.add(exitGame.getHoverTexture(x, y));
 
     if ((InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1) && exitGame.isHover(x, y))) {
+      Main.enableRestart();
       Game.window.stop();
     }
 
     if (gameOver == null || winnerMsg == null) {
       createTexts();
     }
-
-
 
     Game.getGuiRenderer().render(guis);
     TextMaster.render();

@@ -15,7 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Main lobby class to save the vital information which the server has to access at all times.
+ * run.Main lobby class to save the vital information which the server has to access at all times.
  *
  * @author Sebastian Schlachter
  */

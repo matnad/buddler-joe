@@ -1,12 +1,13 @@
+package run;
+
 import game.Game;
 import game.Settings;
 import game.SettingsSerialiser;
 import net.StartServer;
-import net.packets.name.PacketSetName;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/** Start the Main Game Thread. */
+/** Start the run.Main Game Thread. */
 public class Main {
 
   public static final Logger logger = LoggerFactory.getLogger(Main.class);
@@ -15,6 +16,9 @@ public class Main {
   // DEFAULT VALUES
   private static boolean client = true;
   private static int port = 11337;
+
+  private static Thread gameThread;
+  private static boolean restart = true;
 
   /**
    * Start the GUI and the Network client of the game.
@@ -47,8 +51,25 @@ public class Main {
     }
 
     if (client) {
-      Game game = new Game(settings.getIp(), port, settings.getUsername());
-      game.start();
+
+      // Keep the game running as long as we keep restart to true set restart to true
+      while (restart) {
+        if (gameThread == null || !gameThread.isAlive()) {
+          restart = false;
+          Game game = new Game(settings.getIp(), port, settings.getUsername());
+          gameThread = new Thread(game);
+          gameThread.setName("Game-Loop");
+          gameThread.start();
+        }
+        // Wait for gamethread to terminate
+        try {
+          gameThread.join();
+          Thread.sleep(1);
+        } catch (InterruptedException e) {
+          e.printStackTrace();
+        }
+      }
+
     } else {
       StartServer server = new StartServer(port);
       server.startServer();
@@ -69,5 +90,9 @@ public class Main {
       logger.error("Port not properly formatted. Using default.");
     }
     return serverPort;
+  }
+
+  public static void enableRestart() {
+    restart = true;
   }
 }

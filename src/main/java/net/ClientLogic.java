@@ -47,6 +47,7 @@ public class ClientLogic implements Runnable {
   private static BufferedReader input;
   private static Socket server;
   private static PingManager pingManager;
+  private static Thread pingManagerThread;
 
   private static boolean connected;
 
@@ -71,7 +72,9 @@ public class ClientLogic implements Runnable {
 
     // Start ping manager to survey the connection responsiveness
     pingManager = new PingManager();
-    new Thread(pingManager).start();
+    pingManagerThread = new Thread(pingManager);
+    pingManagerThread.setName("Ping-Manager");
+    pingManagerThread.start();
 
     // Connected
     if (input != null && output != null) {
@@ -109,12 +112,17 @@ public class ClientLogic implements Runnable {
     return connected;
   }
 
+  public static void disconnect() {
+    connected = false;
+  }
+
   /**
    * A method to disconnect from the server.
    *
    * @param disconnectFromServer The boolean if to be disconnected
    */
   public static void setDisconnectFromServer(boolean disconnectFromServer) {
+    pingManager.stop();
     ClientLogic.disconnectFromServer = disconnectFromServer;
     try {
       server.close();

@@ -34,7 +34,7 @@ public class StartServer {
   /**
    * Start the Interface for the server, listening on a default.
    *
-   * @param args none. Use Main to start via commandline.
+   * @param args none. Use run.Main to start via commandline.
    * @see ServerLogic
    */
   public static void main(String[] args) {

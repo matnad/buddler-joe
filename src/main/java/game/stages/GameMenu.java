@@ -18,7 +18,7 @@ import net.packets.loginlogout.PacketDisconnect;
 import org.joml.Vector2f;
 
 /**
- * Main Menu specification and rendering. Must be initialized. Specifies all the elements in the
+ * run.Main Menu specification and rendering. Must be initialized. Specifies all the elements in the
  * Game Menu. Contains and manages the Game Loop while the Game Menu is active.
  */
 public class GameMenu {
@@ -36,7 +36,7 @@ public class GameMenu {
    * @param loader main loader
    */
   public static void init(Loader loader) {
-    // Main Menu
+    // run.Main Menu
     gameMenu =
         new GuiTexture(
             loader.loadTexture("menuStone"),

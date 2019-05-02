@@ -21,7 +21,7 @@ tasks.withType(JavaCompile) {
 jar {
     manifest {
         attributes(
-                'Main-Class': 'Main'
+                'Main-Class': 'run.Main'
         )
     }
 }

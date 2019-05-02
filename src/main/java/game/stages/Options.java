@@ -205,7 +205,7 @@ public class Options {
   }
 
   /**
-   * Game Loop while the stage is active. This runs every frame as long as the Main Menu is active.
+   * Game Loop while the stage is active. This runs every frame as long as the run.Main Menu is active.
    * Include all rendering and input handling here.
    */
   @SuppressWarnings("Duplicates")

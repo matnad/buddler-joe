@@ -52,6 +52,7 @@ import gui.text.Fps;
 import gui.text.GuiString;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
 import net.ClientLogic;
 import net.StartNetworkOnlyClient;
@@ -71,6 +72,7 @@ import terrains.TerrainFlat;
 public class Game extends Thread {
 
   private static final Logger logger = LoggerFactory.getLogger(Game.class);
+
   // Set up list of stages, stages will be updated at the end of every frame
   private static final List<Stage> activeStages = new CopyOnWriteArrayList<>();
   private static final List<Stage> stagesToBeAdded = new CopyOnWriteArrayList<>();
@@ -79,6 +81,7 @@ public class Game extends Thread {
    * We keep all the Sub-Entities organized in Masters and keep this as a global Playing-Static
    * list with minimal maintenance.
    */
+  private MasterRenderer renderer;
   private static final List<Entity> entities = new CopyOnWriteArrayList<>();
   // Set up windows with default vaules. However, setting values will be used later
   public static Window window = new Window(1080, 600, 60, "Buddler Joe");
@@ -99,6 +102,7 @@ public class Game extends Thread {
   private static SettingsSerialiser settingsSerialiser = new SettingsSerialiser();
   private static Settings settings;
   // Network related variables, still temporary/dummies
+  private Thread networkThread;
   private static boolean connectedToServer = false;
   private static boolean loggedIn = false;
   private static boolean lobbyCreated = false; // temporary
@@ -339,6 +343,8 @@ public class Game extends Thread {
   /** Here we initialize all the Masters and other classes and generate the world. */
   @Override
   public void run() {
+    this.setName("Game Loop"); // Set thread name
+
     loadSettings();
 
     // Create GLFW Window
@@ -347,7 +353,7 @@ public class Game extends Thread {
     window.create();
 
     // Initiate the master renderer class
-    MasterRenderer renderer = new MasterRenderer();
+    renderer = new MasterRenderer();
 
     // Initialize NetPlayerModels
     NetPlayerMaster.init(loader);
@@ -522,18 +528,29 @@ public class Game extends Thread {
     */
 
     // Clean up memory and unbind openGL shader programs
-    TextMaster.cleanUp();
-    guiRenderer.cleanUp();
-    renderer.cleanUp();
-    loader.cleanUp();
-    ParticleMaster.cleanUp();
+    cleanUp();
 
     // Close and disconnect (still need a window close callback)
     window.kill();
     if (connectedToServer) {
       disconnectFromServer();
+      connectedToServer = false;
     }
-    System.exit(1); // For now...
+
+    //Set<Thread> threadSet = Thread.getAllStackTraces().keySet();
+    //for (Thread thread : threadSet) {
+    //  //
+    //  System.out.println(thread.getName() + " " + thread.getState());
+    //}
+  }
+
+  private void cleanUp() {
+    // Clean up memory and unbind openGL shader programs
+    TextMaster.cleanUp();
+    guiRenderer.cleanUp();
+    renderer.cleanUp();
+    loader.cleanUp();
+    ParticleMaster.cleanUp();
   }
 
   private void loadGame(Loader loader) throws InterruptedException {
@@ -567,11 +584,14 @@ public class Game extends Thread {
     player = new Player(getUsername(), new Vector3f(12, 10, 3), 0, 0, 0);
 
     // Generate dummy map
-    map = new ClientMap("m", System.currentTimeMillis());
+    map = new ClientMap("s", System.currentTimeMillis());
 
     // Connecting to Server
     LoadingScreen.updateLoadingMessage("connecting to server");
-    new Thread(() -> StartNetworkOnlyClient.startWith(serverIp, serverPort)).start();
+    networkThread = new Thread(() -> StartNetworkOnlyClient.startWith(serverIp, serverPort));
+    networkThread.setName("Network Thread");
+    networkThread.start();
+
     while (!ClientLogic.isConnected()) {
       Thread.sleep(50);
     }
@@ -629,7 +649,7 @@ public class Game extends Thread {
   }
 
   private void disconnectFromServer() {
-    // Stuff to do on disconnect
+    ClientLogic.setDisconnectFromServer(true);
   }
 
   /** Method to load the settings out of the serialised file. */

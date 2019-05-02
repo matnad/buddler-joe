@@ -2,7 +2,7 @@
 
 ## INFOS FÜR MILESTONE 3
 
-Programm wird über /src/main/java/Main.java gestartet und unterstützt folgende Kommandozeilen Parameter:
+Programm wird über /src/main/java/run.Main.java gestartet und unterstützt folgende Kommandozeilen Parameter:
 
 Client starten:
 [client] [<hostadress>[:<port>]] [<username>]

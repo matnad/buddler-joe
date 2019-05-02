@@ -174,4 +174,10 @@ public class NetPlayerMaster {
   public static Map<Integer, NetPlayer> getNetPlayers() {
     return netPlayers;
   }
+
+  public static void reset() {
+    lobbyname = "";
+    netPlayers.clear();
+  }
+
 }

@@ -30,6 +30,8 @@ public class StartNetworkOnlyClient implements Runnable {
   private static String serverIp;
   private static int serverPort;
 
+  private static Thread networkThread;
+
   /**
    * Start the client logic and pass ip + port.
    *
@@ -54,7 +56,9 @@ public class StartNetworkOnlyClient implements Runnable {
    *     errors
    */
   public static void main(String[] args) {
-    new Thread(() -> StartNetworkOnlyClient.startWith("127.0.0.1", 11337)).start();
+    networkThread = new Thread(() -> StartNetworkOnlyClient.startWith("127.0.0.1", 11337));
+    networkThread.setName("Network Client");
+    networkThread.start();
   }
 
   /**

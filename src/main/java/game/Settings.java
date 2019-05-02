@@ -3,7 +3,7 @@ package game;
 import java.io.Serializable;
 
 /**
- * Main class to save the user settings. Used in various classes and data can be accessed through
+ * run.Main class to save the user settings. Used in various classes and data can be accessed through
  * getters/setters
  */
 public class Settings implements Serializable {
