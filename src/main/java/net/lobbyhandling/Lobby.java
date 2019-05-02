@@ -153,6 +153,7 @@ public class Lobby implements Runnable {
     try {
       if (ServerLogic.getPlayerList().isClientIdInList(clientId)) {
         ServerPlayer player = ServerLogic.getPlayerList().getPlayer(clientId);
+        ServerLogic.getPlayerList().resetPlayer(player);
         player.setReady(false);
         lobbyPlayers.remove(player);
         aliveLobbyPlayers.remove(player);
@@ -252,7 +253,6 @@ public class Lobby implements Runnable {
     // Reset Server Players
     for (ServerPlayer lobbyPlayer : lobbyPlayers) {
       removePlayer(lobbyPlayer.getClientId());
-      ServerLogic.getPlayerList().resetPlayer(lobbyPlayer);
     }
   }
 

@@ -133,7 +133,6 @@ public class PacketCurLobbyInfo extends Packet {
       // Game Logic updates
 
       // Add missing players and create list of present players
-      System.out.println(Arrays.toString(infoArray));
       NetPlayerMaster.setLobbyname(infoArray[1]);
       ArrayList<Integer> presentIds = new ArrayList<>();
       for (int i = 2; i < infoArray.length; i += 3) {

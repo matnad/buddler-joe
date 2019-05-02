@@ -10,6 +10,12 @@ public class ServerPlayerList {
     this.players = new ConcurrentHashMap<>();
   }
 
+  /**
+   * Reset the player after a game has ended (after the player was removed form a lobby). Needs to
+   * be called before a new game is started.
+   *
+   * @param serverPlayer The player to reset
+   */
   public void resetPlayer(ServerPlayer serverPlayer) {
     // Check if player exists and then create new instance
     if (serverPlayer != null) {

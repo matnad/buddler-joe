@@ -52,7 +52,6 @@ import gui.text.Fps;
 import gui.text.GuiString;
 import java.util.List;
 import java.util.Random;
-import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
 import net.ClientLogic;
 import net.StartNetworkOnlyClient;
@@ -62,7 +61,6 @@ import net.packets.loginlogout.PacketLogin;
 import org.joml.Vector3f;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.w3c.dom.Text;
 import terrains.TerrainFlat;
 
 /**
@@ -134,7 +132,6 @@ public class Game extends Thread {
   public String username;
   // Set to true to create and join a lobby. For quicker testing.
   private boolean autoJoin = true;
-
 
   /**
    * The constructor for the game to be called from the main class.
@@ -546,13 +543,16 @@ public class Game extends Thread {
       connectedToServer = false;
     }
 
-    //Set<Thread> threadSet = Thread.getAllStackTraces().keySet();
-    //for (Thread thread : threadSet) {
+    // Set<Thread> threadSet = Thread.getAllStackTraces().keySet();
+    // for (Thread thread : threadSet) {
     //  //
     //  System.out.println(thread.getName() + " " + thread.getState());
-    //}
+    // }
   }
 
+  /**
+   * Reset everything, so that a new Game can be started. Unload all stages and go to the Main Menu.
+   */
   public static void restart() {
     TextMaster.removeAll();
     activeStages.clear();
@@ -709,6 +709,7 @@ public class Game extends Thread {
     settingsSerialiser.serialiseSettings(settings);
   }
 
+  /** Start the network thread. Can be used to start a new connection. */
   public static void startNetworkThread() {
     networkThread = new Thread(() -> StartNetworkOnlyClient.startWith(serverIp, serverPort));
     networkThread.setName("Network Thread");
