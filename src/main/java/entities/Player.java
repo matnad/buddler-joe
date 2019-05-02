@@ -113,7 +113,7 @@ public class Player extends NetPlayer {
     if (Game.getActiveStages().size() == 1 && Game.getActiveStages().get(0) == PLAYING) {
       // Only check inputs if no other stage is active (stages are menu screens)
       checkInputs(); // See which relevant keys are pressed
-      digDamage = 2;
+      digDamage = 1;
     } else {
       stopVelocityX();
       stopVelocityY();

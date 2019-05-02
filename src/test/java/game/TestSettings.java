@@ -16,8 +16,11 @@ public class TestSettings {
   public void checkChangeFullscreen() {
     Mockito.mock(Game.class);
     Settings settings = new Settings();
+    boolean orig = settings.isFullscreen();
     settings.setFullscreen(true);
     Assert.assertTrue(settings.isFullscreen());
+    // Revert Settings
+    settings.setFullscreen(orig);
   }
 
   //    @Test
