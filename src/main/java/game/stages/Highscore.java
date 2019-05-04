@@ -39,10 +39,10 @@ public class Highscore {
   // private static GuiTexture title;
   private static MenuButton back;
   private static float[] namesY = {
-    0.330864f, 0.4f, 0.469136f, 0.538272f, 0.607407f, 0.676534f, 0, 745661f
+    0.330864f, 0.4f, 0.469136f, 0.538272f, 0.607407f, 0.676534f, 0.745661f
   };
   private static float[] countY = {
-    0.330864f, 0.4f, 0.469136f, 0.538272f, 0.607407f, 0.676534f, 0, 745661f
+    0.330864f, 0.4f, 0.469136f, 0.538272f, 0.607407f, 0.676534f, 0.745661f
   };
 
   private static CopyOnWriteArrayList<HighscoreEntry> catalog;
