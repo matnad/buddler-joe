@@ -118,7 +118,7 @@ public class Camera {
       offsetY -= speed;
     }
 
-    if (InputHandler.isMouseDown(GLFW_MOUSE_BUTTON_3)) {
+    if (InputHandler.isMouseDown(GLFW_MOUSE_BUTTON_1)) {
       offsetX += (float) (InputHandler.getCursorPosDx() * 0.1f);
       offsetY -= (float) (InputHandler.getCursorPosDy() * 0.1f);
     }
@@ -157,7 +157,7 @@ public class Camera {
    * <p>Pitch is also used for Ray Casting calculations.
    */
   private void calculatePitch() {
-    if (InputHandler.isMouseDown(GLFW_MOUSE_BUTTON_1)) {
+    if (InputHandler.isMouseDown(GLFW_MOUSE_BUTTON_2)) {
       float pitchChange = (float) (InputHandler.getCursorPosDy() * 0.2f);
       pitch += pitchChange;
       if (pitch > maxPitch) {

@@ -205,6 +205,7 @@ public class PacketSpawnItem extends Packet {
           return;
         }
         Item item = ItemMaster.generateItem(itemType, position);
+        item.setOwner(owner);
         if (item instanceof Torch) {
           ((Torch) item).checkForBlock(); // Attach to a block if placed on one.
         } else if (item instanceof Dynamite) {

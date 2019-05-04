@@ -9,6 +9,7 @@ public abstract class Item extends Entity {
 
   private final ItemMaster.ItemTypes type;
   private boolean owned;
+  private int owner;
   private int key;
 
   /**
@@ -47,6 +48,14 @@ public abstract class Item extends Entity {
 
   public void setOwned(boolean owned) {
     this.owned = owned;
+  }
+
+  public int getOwner() {
+    return owner;
+  }
+
+  public void setOwner(int owner) {
+    this.owner = owner;
   }
 
   public ItemMaster.ItemTypes getType() {
