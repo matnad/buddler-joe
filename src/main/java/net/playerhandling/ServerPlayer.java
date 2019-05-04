@@ -2,6 +2,7 @@ package net.playerhandling;
 
 import entities.NetPlayer;
 import entities.Player;
+import entities.items.Star;
 import net.ServerLogic;
 import net.lobbyhandling.Lobby;
 import net.packets.chat.PacketChatMessageToClient;
@@ -28,6 +29,8 @@ public class ServerPlayer {
   private long lastDig;
 
   private boolean defeated;
+  private boolean frozen;
+  private long frozenAt;
 
   private Vector2f pos2d = new Vector2f();
   private Vector2f pos2dOld = new Vector2f();
@@ -174,21 +177,34 @@ public class ServerPlayer {
    * <p>If there are any violations, they will be logged and added to the player's count.
    *
    * @param intervall the frequency of calls to this function per second. 0.5f means twice per
-   *     second for example
+   *     second for example. (Currently not implemented. Intervall always 1.)
    * @return true if there are no violations
    */
   public boolean validatePos2d(float intervall) {
 
+    float allowedRunSpeed = NetPlayer.getRunSpeed();
+
+    if (frozen) {
+      allowedRunSpeed *= getFreezeFactor();
+    }
+
     // Sanity check for goal velocity
-    if (goalVelocity2d.x > NetPlayer.getRunSpeed()
-        || goalVelocity2d.x < -NetPlayer.getRunSpeed()
-        || goalVelocity2d.y > NetPlayer.getJumpPower()) {
+    if (goalVelocity2d.x > allowedRunSpeed + 1
+        || goalVelocity2d.x < -allowedRunSpeed - 1
+        || goalVelocity2d.y > NetPlayer.getJumpPower() + 1) {
       logger.warn(getUsername() + ": Goal velocity exceeds allowed limits. 1 violation.");
+      logger.debug(
+          "allowed: "
+              + allowedRunSpeed
+              + " factor: "
+              + getFreezeFactor()
+              + " current: "
+              + goalVelocity2d.x);
       addMovementViolations(1);
 
       // If the velocity is far too high, add another 4 violations
-      if (goalVelocity2d.x > NetPlayer.getRunSpeed() * 2
-          || goalVelocity2d.x < -NetPlayer.getRunSpeed() * 2
+      if (goalVelocity2d.x > allowedRunSpeed * 2
+          || goalVelocity2d.x < -allowedRunSpeed * 2
           || goalVelocity2d.y > NetPlayer.getJumpPower() * 2) {
         logger.warn(getUsername() + ": Goal velocity is off the charts! 4 violations.");
         addMovementViolations(4);
@@ -199,8 +215,15 @@ public class ServerPlayer {
     // Sanity check for current velocity
     if (currentVelocity2d.x > NetPlayer.getRunSpeed()
         || currentVelocity2d.x < -NetPlayer.getRunSpeed()
-        || currentVelocity2d.y > NetPlayer.getJumpPower()) {
+        || currentVelocity2d.y > NetPlayer.getJumpPower() + 1) {
       logger.warn(getUsername() + ": Current velocity exceeds allowed limits. 1 violation.");
+      logger.debug(
+          "allowed: "
+              + allowedRunSpeed
+              + " factor: "
+              + getFreezeFactor()
+              + " current: "
+              + currentVelocity2d.x);
       addMovementViolations(1);
 
       // If the velocity is far too high, add another 4 violations
@@ -215,14 +238,14 @@ public class ServerPlayer {
 
     // Check moved distance with some margin
     // System.out.println("moved: " + Math.abs(pos2dOld.x - pos2d.x));
-    if (Math.abs(pos2dOld.x - pos2d.x) > NetPlayer.getRunSpeed() + 5) {
+    if (Math.abs(pos2dOld.x - pos2d.x) > allowedRunSpeed + 5) {
       if (movementViolations >= 0) {
         // The first "violation" is for placing the player and will be ignored
         logger.warn(getUsername() + " is moving too fast. 1 violation.");
         addMovementViolations(1);
 
         // If the moved distance is more than twice the allowed, add another 4 violations
-        if (Math.abs(pos2dOld.x - pos2d.x) > NetPlayer.getRunSpeed() * 2) {
+        if (Math.abs(pos2dOld.x - pos2d.x) > allowedRunSpeed * 2) {
           logger.warn(getUsername() + " is teleporting. 4 violations.");
           addMovementViolations(4);
         }
@@ -254,10 +277,23 @@ public class ServerPlayer {
 
     // If player has an active dynamite, we don't check stuff for now
     if (!getLobby().getServerItemState().hasDynamiteOwnedBy(clientId)) {
-      // Check if damage is too high (with tolerance)
+
       float maxDmg = Player.getDigInterval() * digDamage;
+
+      if (frozen) {
+        maxDmg *= getFreezeFactor();
+      }
+
+      // Check if damage is too high (with tolerance)
       if (damage > maxDmg * 1.2f) {
         logger.warn("Too much dig damage for one packet. 1 violation.");
+        logger.debug(
+            "allowed: "
+                + maxDmg
+                + " factor: "
+                + getFreezeFactor()
+                + " current: "
+                + damage);
         addDamageViolations(1);
         return false;
       }
@@ -357,6 +393,30 @@ public class ServerPlayer {
 
   public ClientThread getClientThread() {
     return ServerLogic.getThreadByClientId(getClientId());
+  }
+
+  public void freeze() {
+    frozen = true;
+    frozenAt = System.currentTimeMillis();
+  }
+
+  private float getFreezeFactor() {
+    // Allow up to 500ms delay
+    float freezeDuration = (System.currentTimeMillis() - frozenAt) / 1000f;
+    if (freezeDuration < .5f) {
+      return 1;
+    } else if (freezeDuration > Star.getFreezeTime() - 2f) {
+      frozen = false;
+      return 1;
+    }
+
+    float freezeFactor;
+    if (freezeDuration > 1.5f) {
+      freezeFactor = Math.max((freezeDuration - 2) / Star.getFreezeTime() * .5f, 0);
+    } else {
+      freezeFactor = 0;
+    }
+    return freezeFactor;
   }
 
   public boolean isDefeated() {

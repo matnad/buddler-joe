@@ -10,7 +10,9 @@ import entities.blocks.StoneBlock;
 import entities.items.ItemMaster;
 import java.util.Random;
 import net.ServerLogic;
+import net.lobbyhandling.Lobby;
 import net.packets.items.PacketSpawnItem;
+import net.playerhandling.ServerPlayer;
 import org.joml.Vector3f;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -98,7 +100,17 @@ public class ServerBlock {
   }
 
   private void onQmarkDestroy(int clientId) {
+    // Get Player and Lobby
+    ServerPlayer itemOwner = ServerLogic.getPlayerList().getPlayer(clientId);
+    if (itemOwner == null) {
+      return;
+    }
+    Lobby lobby = itemOwner.getLobby();
+    if (lobby == null) {
+      return;
+    }
 
+    // Spawn Item
     Random random = new Random();
     int r = random.nextInt(100);
     r = 85;
@@ -107,25 +119,31 @@ public class ServerBlock {
       PacketSpawnItem packetSpawnItem =
           new PacketSpawnItem(
               ItemMaster.ItemTypes.DYNAMITE, new Vector3f(gridX, gridY, gridZ), clientId);
-      packetSpawnItem.sendToLobby(ServerLogic.getLobbyForClient(clientId).getLobbyId());
+      packetSpawnItem.sendToLobby(lobby.getLobbyId());
     } else if (30 < r && r <= 60) {
       logger.debug("Spawning heart.");
       PacketSpawnItem packetSpawnItem =
           new PacketSpawnItem(
               ItemMaster.ItemTypes.HEART, new Vector3f(gridX, gridY, gridZ), clientId);
-      packetSpawnItem.sendToLobby(ServerLogic.getLobbyForClient(clientId).getLobbyId());
+      packetSpawnItem.sendToLobby(lobby.getLobbyId());
     } else if (60 < r && r <= 80) {
       logger.debug("Spawning star.");
+      for (ServerPlayer lobbyPlayer : lobby.getLobbyPlayers()) {
+        if (lobbyPlayer != itemOwner) {
+          lobbyPlayer.freeze();
+        }
+      }
       PacketSpawnItem packetSpawnItem =
           new PacketSpawnItem(
               ItemMaster.ItemTypes.STAR, new Vector3f(gridX, gridY, gridZ), clientId);
-      packetSpawnItem.sendToLobby(ServerLogic.getLobbyForClient(clientId).getLobbyId());
+      packetSpawnItem.sendToLobby(lobby.getLobbyId());
     } else if (80 < r && r <= 100) {
       logger.debug("Spawning ice.");
+      itemOwner.freeze();
       PacketSpawnItem packetSpawnItem =
           new PacketSpawnItem(
               ItemMaster.ItemTypes.ICE, new Vector3f(gridX, gridY, gridZ), clientId);
-      packetSpawnItem.sendToLobby(ServerLogic.getLobbyForClient(clientId).getLobbyId());
+      packetSpawnItem.sendToLobby(lobby.getLobbyId());
     }
   }
 

@@ -10,6 +10,7 @@ import static org.lwjgl.glfw.GLFW.GLFW_KEY_S;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_SPACE;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_T;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_W;
+import static org.lwjgl.glfw.GLFW.glfwSetCursorEnterCallback;
 
 import engine.io.InputHandler;
 import entities.blocks.AirBlock;
@@ -117,7 +118,7 @@ public class Player extends NetPlayer {
       freezeDuration += Game.dt();
       float freezeFactor;
       if (freezeDuration > 2) {
-        freezeFactor = (freezeDuration - 2) / Star.getFreezeTime() * .5f;
+        freezeFactor = Math.max((freezeDuration - 2) / Star.getFreezeTime() * .5f, 0);
       } else {
         freezeFactor = 0;
       }
