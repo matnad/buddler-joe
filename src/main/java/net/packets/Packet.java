@@ -260,6 +260,7 @@ public abstract class Packet {
         return true;
       }
     } catch (NullPointerException e) {
+      addError("Not logged in yet.");
       return false;
     }
   }

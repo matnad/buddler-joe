@@ -51,6 +51,9 @@ public class PacketReady extends Packet {
    */
   @Override
   public void processData() {
+    if(!isLoggedIn()) {
+      return;
+    }
     if (isLoggedIn() && isInALobby()) {
       ServerPlayer player = ServerLogic.getPlayerList().getPlayer(getClientId());
       int lobbyId = player.getCurLobbyId();
@@ -66,6 +69,7 @@ public class PacketReady extends Packet {
       }
     } else {
       addError("Not Connected.");
+      return;
     }
   }
 }

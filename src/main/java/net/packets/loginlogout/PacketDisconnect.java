@@ -33,13 +33,20 @@ public class PacketDisconnect extends Packet {
   /** Remove the player from the server and inform the other players in the lobby. */
   @Override
   public void processData() {
+    try {
     if (!ServerLogic.getPlayerList().isClientIdInList(getClientId())) {
       addError("Not Connected to the Server.");
+      return;
+    }
+    } catch (NullPointerException e) {
+      addError("Not Connected to the Server.");
+      return;
     }
     try {
       ServerLogic.removePlayer(getClientId());
     } catch (NullPointerException e) {
       addError("Not Connected to the Server.");
+      return;
     }
   }
 }

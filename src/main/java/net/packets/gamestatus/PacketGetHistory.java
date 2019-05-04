@@ -50,7 +50,7 @@ public class PacketGetHistory extends Packet {
   public void processData() {
     String info;
     if (!isLoggedIn()) {
-      addError("Not loggedin yet.");
+      return;
     }
     if (hasErrors()) {
       info = createErrorMessage();
@@ -62,6 +62,7 @@ public class PacketGetHistory extends Packet {
       p.sendToClient(getClientId());
     } catch (NullPointerException e) {
       logger.info("Not connected to a Server.");
+      return;
     }
   }
 }

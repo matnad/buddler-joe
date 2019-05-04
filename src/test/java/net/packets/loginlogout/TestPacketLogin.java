@@ -28,6 +28,6 @@ public class TestPacketLogin {
     ServerLogic serverLogic = Mockito.spy(ServerLogic.class);
     PacketLogin p = new PacketLogin("Peter Gryffin");
     p.sendToServer();
-    Assert.assertEquals("PeteGryFFin", p.getData());
+    Assert.assertEquals("Peter Gryffin", p.getData());
   }
 }

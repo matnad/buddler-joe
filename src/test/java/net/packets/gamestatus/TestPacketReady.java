@@ -20,6 +20,6 @@ public class TestPacketReady {
   public void checkNotLoggedInt() {
     PacketReady p = new PacketReady();
     p.processData();
-    Assert.assertEquals("ERRORS: Not Connected.", p.createErrorMessage());
+    Assert.assertEquals("ERRORS: Not logged in yet.", p.createErrorMessage());
   }
 }
