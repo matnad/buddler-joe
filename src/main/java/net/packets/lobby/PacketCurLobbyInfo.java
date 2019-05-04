@@ -61,7 +61,7 @@ public class PacketCurLobbyInfo extends Packet {
     super(PacketTypes.CUR_LOBBY_INFO);
     setData(data);
     info = getData();
-    if(data == null) {
+    if (data == null) {
       addError("Invalid Data.");
       return;
     }
@@ -79,7 +79,7 @@ public class PacketCurLobbyInfo extends Packet {
   public void validate() {
     if (info != null) {
       for (String s : infoArray) {
-        if(!isExtendedAscii(s)){
+        if (!isExtendedAscii(s)) {
           return;
         }
       }

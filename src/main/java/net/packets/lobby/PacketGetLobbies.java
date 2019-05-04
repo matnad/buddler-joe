@@ -52,6 +52,7 @@ public class PacketGetLobbies extends Packet {
   public void processData() {
     String info;
     if (!isLoggedIn()) {
+      /*do we still need this if statement*/
     }
     if (hasErrors()) {
       info = createErrorMessage();
