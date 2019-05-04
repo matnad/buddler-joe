@@ -57,6 +57,7 @@ public class ChooseLobby {
   private static boolean initializedText = false;
   private static boolean initializedPageIndex = false;
   private static Vector3f black = new Vector3f(0, 0, 0);
+  private static boolean removeAtEndOfFrame = false;
 
   /**
    * * Initialize ChooseLobby Menu. Will load the texture files and generate the basic menu parts.
@@ -261,6 +262,10 @@ public class ChooseLobby {
 
     Game.getGuiRenderer().render(guis);
     TextMaster.render();
+    if (removeAtEndOfFrame) {
+      done();
+      removeAtEndOfFrame = false;
+    }
   }
 
   /**
@@ -296,7 +301,6 @@ public class ChooseLobby {
       sizes[i].setFontSize(1);
       sizes[i].setTextColour(black);
       sizes[i].setCentered(false);
-
     }
   }
 
@@ -321,4 +325,10 @@ public class ChooseLobby {
     }
     ChooseLobby.n = n;
   }
+
+
+  public static void setRemoveAtEndOfFrame(boolean removeAtEndOfFrame) {
+    ChooseLobby.removeAtEndOfFrame = removeAtEndOfFrame;
+  }
+
 }
