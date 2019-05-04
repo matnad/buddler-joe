@@ -113,20 +113,31 @@ public class ServerBlock {
     // Spawn Item
     Random random = new Random();
     int r = random.nextInt(100);
-    r = 85;
+    // Less stars if there are more players
+    float heartOrStar;
+    switch (lobby.getPlayerAmount()) {
+      case 1: case 2:
+        heartOrStar = 60;
+        break;
+      case 3: case 4:
+        heartOrStar = 64;
+        break;
+      default:
+        heartOrStar = 68;
+    }
     if (0 <= r && r <= 30) {
       logger.debug("Spawning dynamite.");
       PacketSpawnItem packetSpawnItem =
           new PacketSpawnItem(
               ItemMaster.ItemTypes.DYNAMITE, new Vector3f(gridX, gridY, gridZ), clientId);
       packetSpawnItem.sendToLobby(lobby.getLobbyId());
-    } else if (30 < r && r <= 60) {
+    } else if (30 < r && r <= heartOrStar) {
       logger.debug("Spawning heart.");
       PacketSpawnItem packetSpawnItem =
           new PacketSpawnItem(
               ItemMaster.ItemTypes.HEART, new Vector3f(gridX, gridY, gridZ), clientId);
       packetSpawnItem.sendToLobby(lobby.getLobbyId());
-    } else if (60 < r && r <= 80) {
+    } else if (heartOrStar < r && r <= 80) {
       logger.debug("Spawning star.");
       for (ServerPlayer lobbyPlayer : lobby.getLobbyPlayers()) {
         if (lobbyPlayer != itemOwner) {

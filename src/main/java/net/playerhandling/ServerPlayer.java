@@ -412,7 +412,7 @@ public class ServerPlayer {
 
     float freezeFactor;
     if (freezeDuration > 1.5f) {
-      freezeFactor = Math.max((freezeDuration - 2) / Star.getFreezeTime() * .5f, 0);
+      freezeFactor = Math.max((freezeDuration - 2) / Star.getFreezeTime() * .4f, 0);
     } else {
       freezeFactor = 0;
     }

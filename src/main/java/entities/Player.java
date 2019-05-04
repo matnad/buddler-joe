@@ -60,7 +60,7 @@ public class Player extends NetPlayer {
   private boolean sendVelocityToServer = false; // If we need to update velocity this frame
   // Other
   private boolean controlsDisabled;
-  private boolean frozen = false;
+
   private float currentRunSpeed;
   private float currentDigDamage;
   private float currentJumpPower;
@@ -118,7 +118,7 @@ public class Player extends NetPlayer {
       freezeDuration += Game.dt();
       float freezeFactor;
       if (freezeDuration > 2) {
-        freezeFactor = Math.max((freezeDuration - 2) / Star.getFreezeTime() * .5f, 0);
+        freezeFactor = Math.max((freezeDuration - 2) / Star.getFreezeTime() * .4f, 0);
       } else {
         freezeFactor = 0;
       }

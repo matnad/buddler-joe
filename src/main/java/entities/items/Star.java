@@ -3,32 +3,44 @@ package entities.items;
 import engine.models.RawModel;
 import engine.models.TexturedModel;
 import engine.particles.systems.Explosion;
+import engine.particles.systems.Frozen;
+import engine.particles.systems.Magic;
+import engine.particles.systems.Snow;
 import engine.render.Loader;
 import engine.render.objconverter.ObjFileLoader;
 import engine.textures.ModelTexture;
+import entities.NetPlayer;
 import game.Game;
+import game.NetPlayerMaster;
 import net.packets.items.PacketItemUsed;
 import org.joml.Vector3f;
 
 public class Star extends Item {
   private static TexturedModel preloadedModel;
-  private final Explosion particleExplosion;
   private static final float freezeTime = 8f;
   private float time;
   private int itemId;
   private boolean freezeTriggered = false;
 
+  private Magic starExplosion;
+  private Snow snowEffect;
+
   /** Extended Constructor for Ice. Don't use directly. Use the Item Master to create items. */
   private Star(Vector3f position, float rotX, float rotY, float rotZ, float scale) {
-    super(ItemMaster.ItemTypes.STAR, getPreloadedModel(), position, rotX, rotY, rotZ, scale);
+    super(ItemMaster.ItemTypes.STAR, getPreloadedModel(), position, rotX, rotY, rotZ, 0);
     time = 0;
 
     /* Generate Fancy Particle Effects for an explosion */
-    // Generate Explosion Effect
-    particleExplosion = new Explosion(200, 11, 0, .4f, 15);
-    particleExplosion.setScaleError(.4f);
-    particleExplosion.setSpeedError(.3f);
-    particleExplosion.setLifeError(.2f);
+    starExplosion = new Magic(200, 8, 0, .8f, 5);
+    starExplosion.setScaleError(.4f);
+    starExplosion.setSpeedError(.3f);
+    starExplosion.setLifeError(.2f);
+
+    // Generate Player Effect
+    snowEffect = new Snow(2, 0, .1f, 1.5f, .4f);
+    snowEffect.setScaleError(.2f);
+    snowEffect.setLifeError(.6f);
+    snowEffect.setSpeedError(.3f);
   }
 
   /**
@@ -81,6 +93,20 @@ public class Star extends Item {
       if (time >= freezeTime) {
         setDestroyed(true);
       }
+    }
+
+    if (time < .5f) {
+      starExplosion.generateParticles(getPosition());
+    }
+
+    NetPlayer owner = NetPlayerMaster.getNetPlayerById(getOwner());
+    for (NetPlayer netPlayer : NetPlayerMaster.getNetPlayers().values()) {
+      if (netPlayer != owner) {
+        snowEffect.makeItSnow(netPlayer, 20);
+      }
+    }
+    if (!isOwned()) {
+      snowEffect.makeItSnow(Game.getActivePlayer(), 20);
     }
   }
 

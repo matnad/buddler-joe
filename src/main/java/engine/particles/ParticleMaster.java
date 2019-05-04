@@ -3,7 +3,10 @@ package engine.particles;
 import engine.particles.systems.Cosmic;
 import engine.particles.systems.Explosion;
 import engine.particles.systems.Fire;
+import engine.particles.systems.Frozen;
+import engine.particles.systems.Magic;
 import engine.particles.systems.Smoke;
+import engine.particles.systems.Snow;
 import engine.particles.systems.Sparkle;
 import engine.render.Loader;
 import entities.Camera;
@@ -41,6 +44,9 @@ public class ParticleMaster {
     Smoke.init(loader);
     Cosmic.init(loader);
     Sparkle.init(loader);
+    Frozen.init(loader);
+    Snow.init(loader);
+    Magic.init(loader);
   }
 
   /**
