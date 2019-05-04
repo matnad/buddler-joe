@@ -8,35 +8,31 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class PacketLifeStatus extends Packet {
-  private int currentLives;
-  private int effectedPlayer;
+  private int newLives;
+  private int effectedPlayerId;
   public static final Logger logger = LoggerFactory.getLogger(PacketLifeStatus.class);
 
   /**
-   * Client creates packet, if he saw a crush. Data contains the life status from the sender's
-   * perspective, sender specification(server/client) and the playerId of the crushed player.
+   * Client creates packet, if he saw a crush. Data contains the new life status from the sender's
+   * perspective and the playerId of the crushed player.
    *
-   * <p>Server creates this packet to send the final decision to all players in the lobby.
-   *
-   * <p>if sender equals server, the packet will be sent from server to clients. currentLives will
-   * be the final decision of server. This packet will be sent to lobby, so that every client can
-   * update the life status of the respective player.
-   *
-   * @param currentLives actual life status of effected player
-   * @param effectedPlayer the effected player
+   * @param newLives life status of effected player
+   * @param effectedPlayerId the effected player
    */
-  public PacketLifeStatus(int currentLives, int effectedPlayer) {
+  public PacketLifeStatus(int newLives, int effectedPlayerId) {
     super(PacketTypes.LIFE_STATUS);
-    setData(currentLives + "║" + effectedPlayer);
+    this.newLives = newLives;
+    this.effectedPlayerId = effectedPlayerId;
+    setData(this.newLives + "║" + this.effectedPlayerId);
+    // no validation like PacketVelocity
   }
 
   /**
    * Server creates packet after receiving and processes. (Decides if there will be a change of life
-   * status of playerId). data contains the life status from the sender's perspective, sender
-   * specification(client) and the playerId of the crushed player.
+   * status of effected player).
    *
    * @param clientId clientId of the sender
-   * @param data is currentLives+sender+playerId; example: 2server4
+   * @param data contains the new life status from the sender's perspective and the effected player.
    */
   public PacketLifeStatus(int clientId, String data) {
     super(PacketTypes.LIFE_STATUS);
@@ -46,11 +42,11 @@ public class PacketLifeStatus extends Packet {
   }
 
   /**
-   * Server creates this packet to inform all players about the decision.
-   * It will be sent to the lobby.
+   * Server creates this packet to inform all players about the decision. It will be sent to the
+   * lobby.
    *
-   * The client also creates this packet after receiving it from server.
-   * All clients will update the life status of their NetPlayer (effected player).
+   * <p>The client also creates this packet after receiving it from server. All clients will update
+   * the life status of their NetPlayer (effected player).
    *
    * @param data contains the final life status and the effected player
    */
@@ -76,21 +72,16 @@ public class PacketLifeStatus extends Packet {
       return;
     }
     try {
-      this.currentLives = Integer.parseInt(informations[0]);
-      this.effectedPlayer = Integer.parseInt(informations[1]);
-    } catch (NumberFormatException e) {
-      addError("Invalid life status odr invalid playerId");
-    }
-
-    try {
-      if (currentLives < -1 || currentLives > 3) {
-        logger.error("Can't set lives to " + currentLives);
+      this.newLives = Integer.parseInt(informations[0]);
+      this.effectedPlayerId = Integer.parseInt(informations[1]);
+      if (newLives < -1 || newLives > 3) {
+        logger.error("Can't set lives to " + newLives);
         throw new IllegalArgumentException();
       }
-      if (currentLives == 3) {
-        this.currentLives = 2;
-      } else if (currentLives == -1) {
-        this.currentLives = 0;
+      if (newLives == 3) {
+        this.newLives = 2;
+      } else if (newLives == -1) {
+        this.newLives = 0;
       }
 
       if (getClientId() != 0) {
@@ -98,7 +89,7 @@ public class PacketLifeStatus extends Packet {
         if (lobby != null) {
           if (!lobby
               .getLobbyPlayers()
-              .contains(ServerLogic.getPlayerList().getPlayer(this.effectedPlayer))) {
+              .contains(ServerLogic.getPlayerList().getPlayer(this.effectedPlayerId))) {
             throw new IllegalArgumentException();
           }
         } else {
@@ -108,8 +99,7 @@ public class PacketLifeStatus extends Packet {
     } catch (NumberFormatException e) {
       addError("Invalid playerId or life status");
     } catch (IllegalArgumentException e) {
-      addError(
-          "Invalid life status or invalid playerId or player is not in a lobby");
+      addError("Invalid life status or invalid playerId or player is not in a lobby");
     }
   }
 
@@ -121,11 +111,10 @@ public class PacketLifeStatus extends Packet {
   public void processData() {
     if (!hasErrors()) {
       if (getClientId() != 0) {
-        Lobby lobby = ServerLogic.getLobbyForClient(effectedPlayer);
-        lobby.addPerspective(getClientId(), effectedPlayer, currentLives);
-      }
-      if (getClientId() == 0) {
-        NetPlayerMaster.getNetPlayerById(effectedPlayer).updateLives(currentLives);
+        Lobby lobby = ServerLogic.getLobbyForClient(effectedPlayerId);
+        lobby.addPerspective(getClientId(), effectedPlayerId, newLives);
+      } else {
+        NetPlayerMaster.getNetPlayerById(effectedPlayerId).updateLives(newLives);
       }
     } else {
       logger.error("Errors processing life status packet: " + createErrorMessage());

@@ -115,7 +115,7 @@ public class Referee {
               + " to "
               + newLives
               + ".");
-      PacketLifeStatus finalDecision = new PacketLifeStatus(newLives + "║" +effectedId);
+      PacketLifeStatus finalDecision = new PacketLifeStatus(newLives + "║" + effectedId);
       finalDecision.sendToLobby(lobby.getLobbyId());
       effectedPlayer.setCurrentLives(newLives);
     }
