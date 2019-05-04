@@ -9,7 +9,7 @@ import org.mockito.Mockito;
 
 public class TestPacketCurLobbyInfo {
 
-    @Test
+  @Test
   public void checkLobbyDoesNotExist() {
     ServerLogic serverLogic = Mockito.spy(ServerLogic.class);
     PacketCurLobbyInfo p = new PacketCurLobbyInfo(1, 1);
@@ -58,15 +58,15 @@ public class TestPacketCurLobbyInfo {
     Assert.assertEquals("ERRORS: ", p.createErrorMessage());
   }
 
-    @Test
-    public void checkCatalogIncorrect() {
-        ServerLogic serverLogic = Mockito.spy(ServerLogic.class);
-        Lobby lobby = new Lobby("TestLobby", 1, "l");
-        ServerPlayer player = new ServerPlayer("Peter", 1);
-        lobby.addPlayer(player);
-        ServerLogic.getLobbyList().addLobby(lobby);
-        PacketCurLobbyInfo p = new PacketCurLobbyInfo("OK║TestLobby║abs║TestPlayer║true");
-        p.processData();
-        Assert.assertEquals("ERRORS: Number incorrect.", p.createErrorMessage());
-    }
+  @Test
+  public void checkCatalogIncorrect() {
+    ServerLogic serverLogic = Mockito.spy(ServerLogic.class);
+    Lobby lobby = new Lobby("TestLobby", 1, "l");
+    ServerPlayer player = new ServerPlayer("Peter", 1);
+    lobby.addPlayer(player);
+    ServerLogic.getLobbyList().addLobby(lobby);
+    PacketCurLobbyInfo p = new PacketCurLobbyInfo("OK║TestLobby║abs║TestPlayer║true");
+    p.processData();
+    Assert.assertEquals("ERRORS: Number incorrect.", p.createErrorMessage());
+  }
 }

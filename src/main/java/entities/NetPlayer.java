@@ -387,8 +387,8 @@ public class NetPlayer extends Entity {
 
   private Vector3f getHeadlightPosition() {
     try {
-    float rotCompX = ((getRotY()) / 90) * getBbox().getDimX() / 2 * .8f;
-    return new Vector3f(getPosition()).add(rotCompX, 4.2f, 0);
+      float rotCompX = ((getRotY()) / 90) * getBbox().getDimX() / 2 * .8f;
+      return new Vector3f(getPosition()).add(rotCompX, 4.2f, 0);
     } catch (NullPointerException e) {
       logger.error("Error with getting the headlight Position.");
       return null;
@@ -398,7 +398,7 @@ public class NetPlayer extends Entity {
   private void updateHeadlightPosition() {
     try {
       headLight.setPosition(getHeadlightPosition());
-    headLightGlow.setPosition(getHeadlightPosition().add(0, 0.5f, 6f));
+      headLightGlow.setPosition(getHeadlightPosition().add(0, 0.5f, 6f));
     } catch (NullPointerException e) {
       logger.error("Error with getting the headlight Position.");
     }

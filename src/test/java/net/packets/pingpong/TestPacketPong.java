@@ -30,7 +30,7 @@ public class TestPacketPong {
 
   @Test
   public void checkPongCalculateCorrectTimeServer() {
-      ServerLogic serverLogic = Mockito.spy(ServerLogic.class);
+    ServerLogic serverLogic = Mockito.spy(ServerLogic.class);
     PingManager pingManager = Mockito.spy(PingManager.class);
     PacketPong p = new PacketPong(1, "1");
     p.processData();

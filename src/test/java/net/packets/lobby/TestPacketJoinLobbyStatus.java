@@ -20,10 +20,10 @@ public class TestPacketJoinLobbyStatus {
   }
 
   @Test
-    public void checkGameNotRunning() {
-      Game game = Mockito.spy(Game.class);
-      PacketJoinLobbyStatus p = new PacketJoinLobbyStatus("OK");
-      p.processData();
-      Assert.assertEquals("ERRORS: Game is not running.", p.createErrorMessage());
+  public void checkGameNotRunning() {
+    Game game = Mockito.spy(Game.class);
+    PacketJoinLobbyStatus p = new PacketJoinLobbyStatus("OK");
+    p.processData();
+    Assert.assertEquals("ERRORS: Game is not running.", p.createErrorMessage());
   }
 }

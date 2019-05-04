@@ -18,7 +18,6 @@ public class PacketReady extends Packet {
 
   private static final Logger logger = LoggerFactory.getLogger(PacketReady.class);
 
-
   /**
    * Constructor that is used by the Server to build the Packet.
    *
@@ -51,7 +50,7 @@ public class PacketReady extends Packet {
    */
   @Override
   public void processData() {
-    if(!isLoggedIn()) {
+    if (!isLoggedIn()) {
       return;
     }
     if (isLoggedIn() && isInALobby()) {

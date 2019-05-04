@@ -288,12 +288,7 @@ public class ServerPlayer {
       if (damage > maxDmg * 1.2f) {
         logger.warn("Too much dig damage for one packet. 1 violation.");
         logger.debug(
-            "allowed: "
-                + maxDmg
-                + " factor: "
-                + getFreezeFactor()
-                + " current: "
-                + damage);
+            "allowed: " + maxDmg + " factor: " + getFreezeFactor() + " current: " + damage);
         addDamageViolations(1);
         return false;
       }

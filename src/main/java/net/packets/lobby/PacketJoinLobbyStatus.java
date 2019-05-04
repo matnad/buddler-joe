@@ -71,12 +71,12 @@ public class PacketJoinLobbyStatus extends Packet {
     if (hasErrors()) { // Errors on Client
     } else if (status.startsWith("OK")) {
       try {
-      // System.out.println("Successfully joined lobby");
-      Game.getChat().setLobbyChatSettings();
-      ChooseLobby.setRemoveAtEndOfFrame(true);
-      InLobby.setRemoveAtEndOfFrame(true);
-      Game.addActiveStage(Game.Stage.INLOBBBY);
-      Game.removeActiveStage(Game.Stage.CHOOSELOBBY);
+        // System.out.println("Successfully joined lobby");
+        Game.getChat().setLobbyChatSettings();
+        ChooseLobby.setRemoveAtEndOfFrame(true);
+        InLobby.setRemoveAtEndOfFrame(true);
+        Game.addActiveStage(Game.Stage.INLOBBBY);
+        Game.removeActiveStage(Game.Stage.CHOOSELOBBY);
       } catch (NullPointerException e) {
         addError("Game is not running.");
       }

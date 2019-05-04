@@ -164,11 +164,11 @@ public class NetPlayerMaster {
    */
   public static NetPlayer getNetPlayerById(int clientId) {
     try {
-    if (clientId == Game.getActivePlayer().getClientId()) {
-      return Game.getActivePlayer();
-    } else {
-      return netPlayers.get(clientId);
-    }
+      if (clientId == Game.getActivePlayer().getClientId()) {
+        return Game.getActivePlayer();
+      } else {
+        return netPlayers.get(clientId);
+      }
     } catch (NullPointerException e) {
       logger.error("Player not existing");
       return null;

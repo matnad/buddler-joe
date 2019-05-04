@@ -77,19 +77,19 @@ public class PacketPong extends Packet {
       if (getClientId() == 0) {
         PingManager pingManager = ClientLogic.getPingManager();
         try {
-        pingManager.delete(getData());
-        pingManager.updatePing(diffTime);
+          pingManager.delete(getData());
+          pingManager.updatePing(diffTime);
         } catch (NullPointerException e) {
           addError("Pong manager had an error.");
         }
       } else { // when server gets answer/pong
         try {
           PingManager pingManager = ServerLogic.getThreadByClientId(getClientId()).getPingManager();
-        pingManager.delete(getData());
-        pingManager.updatePing(diffTime);
+          pingManager.delete(getData());
+          pingManager.updatePing(diffTime);
         } catch (NullPointerException e) {
-        addError("Pong manager had an error.");
-      }
+          addError("Pong manager had an error.");
+        }
       }
     }
   }

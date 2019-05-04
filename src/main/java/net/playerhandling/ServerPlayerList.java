@@ -65,7 +65,7 @@ public class ServerPlayerList {
    */
   public String getUsername(int clientId) {
     try {
-    return players.get(clientId).getUsername();
+      return players.get(clientId).getUsername();
     } catch (NullPointerException e) {
       return null;
     }
