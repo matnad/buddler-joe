@@ -56,6 +56,7 @@ public class Playing {
   private static GuiTexture iceGradient;
   private static GuiTexture iceTotal;
   private static boolean freezeShow = false;
+  private static MenuButton resetWhisperAll;
 
   /**
    * * Initialize Game Menu. Will load the texture files and other GUI elements needed for this
@@ -97,6 +98,15 @@ public class Playing {
             new Vector2f(-0.747917f, -0.322296f),
             new Vector2f(.026799f, .025f));
     all.setActivationMinAlpha(0.8f);
+
+    resetWhisperAll =
+        new MenuButton(
+            loader,
+            "changeAR_norm",
+            "changeAR_hover",
+            new Vector2f(-0.701042f, -0.322296f),
+            new Vector2f(.012169f, 0.01875f));
+    resetWhisperAll.setActivationMinAlpha(0.8f);
   }
 
   /**
@@ -123,6 +133,12 @@ public class Playing {
     guis.add(whisper.getHoverTexture(x, y));
     all.setAlpha(Game.getChat().getAlpha());
     guis.add(all.getHoverTexture(x, y));
+    resetWhisperAll.setAlpha(Game.getChat().getAlpha());
+    if (!Game.getChat().getWisperName().equals("")) {
+      guis.add(resetWhisperAll.getHoverTexture(x, y));
+    } else {
+      resetWhisperAll.setAlpha(0);
+    }
 
     // ESC = Game Menu
     if (InputHandler.isKeyPressed(GLFW_KEY_ESCAPE)
@@ -160,7 +176,12 @@ public class Playing {
       Game.getChat().setWisperName("all");
     }
 
-    // TODO: Add Button for Whisper and all
+    if (resetWhisperAll.isHover(x, y)
+        && InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1)
+        && !Game.getActiveStages().contains(Game.Stage.GAMEMENU)
+        && !Game.getActiveStages().contains(Game.Stage.PLAYERLIST)) {
+      Game.getChat().deleteWisperName();
+    }
 
     // Update positions of camera, player and 3D Mouse Pointer
     Game.getActiveCamera().move();
@@ -222,9 +243,7 @@ public class Playing {
     floatingGoldStrings.addString("+ " + goldValue);
   }
 
-  /**
-   * Prepares variables, so that the DamageTakenOverlay can be displayed.
-   * */
+  /** Prepares variables, so that the DamageTakenOverlay can be displayed. */
   public static void showDamageTakenOverlay() {
     damageTakenScreenRemaining = damageTakenScreenTotalDuration;
     damageOverlay.setAlpha(1f);
@@ -234,9 +253,7 @@ public class Playing {
     fase = 1;
   }
 
-  /**
-   * Prepares variables, so that the FreezeOverlay can be displayed.
-   * */
+  /** Prepares variables, so that the FreezeOverlay can be displayed. */
   public static void showFreezeOverlay() {
     freezeShow = true;
     freezeRemaining = Star.getFreezeTime();
