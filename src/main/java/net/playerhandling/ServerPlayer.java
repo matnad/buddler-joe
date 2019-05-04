@@ -29,6 +29,7 @@ public class ServerPlayer {
   private long lastDig;
 
   private boolean defeated;
+  private long timeStampOfGain;
   private boolean frozen;
   private long frozenAt;
 
@@ -120,10 +121,11 @@ public class ServerPlayer {
    */
   public void increaseCurrentGold(int goldValue) {
     currentGold += goldValue;
+    Lobby lobby = ServerLogic.getLobbyList().getLobby(curLobbyId);
+    timeStampOfGain = System.currentTimeMillis() - lobby.getCreatedAt();
     if (currentGold >= 750) { // TODO: set to 3000
-      Lobby lobby = ServerLogic.getLobbyList().getLobby(curLobbyId);
       System.out.println("Game Over");
-      lobby.gameOver(clientId);
+      lobby.gameOver(this);
     }
   }
 
@@ -384,6 +386,10 @@ public class ServerPlayer {
             .sendToLobby(getCurLobbyId());
       }
     }
+  }
+
+  public long getTimeStampOfGain() {
+    return timeStampOfGain;
   }
 
   public ClientThread getClientThread() {
