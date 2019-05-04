@@ -432,7 +432,6 @@ public class Chat {
   public void deleteWisperName() {
     wisperName = "";
     TextMaster.removeText(wisperAddress);
-    updateGuiWisperName();
   }
 
   public void setBackToChat(boolean backToChat) {
@@ -441,6 +440,9 @@ public class Chat {
 
   /** changes the wisperaddress, which tells the player to whom he will write the next message. */
   public void updateGuiWisperName() {
+    if (wisperAddress != null){
+      TextMaster.removeText(wisperAddress);
+    }
     wisperAddress =
         new ChatText(
             wisperName,
