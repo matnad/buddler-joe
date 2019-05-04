@@ -64,7 +64,11 @@ public class ServerPlayerList {
    * @return either the correct name or null
    */
   public String getUsername(int clientId) {
+    try {
     return players.get(clientId).getUsername();
+    } catch (NullPointerException e) {
+      return null;
+    }
   }
 
   /**

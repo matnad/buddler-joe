@@ -26,7 +26,7 @@ public class TestPacketLogin {
   @Test
   public void checkEveryThingWorksWithLogin() {
     ServerLogic serverLogic = Mockito.spy(ServerLogic.class);
-    PacketLogin p = new PacketLogin("PeteGryFFin");
+    PacketLogin p = new PacketLogin("Peter Gryffin");
     p.sendToServer();
     Assert.assertEquals("PeteGryFFin", p.getData());
   }

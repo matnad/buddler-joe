@@ -1,3 +1,8 @@
 package net.packets.playerprop;
 
-public class TestPacketDefeated {}
+import org.junit.Test;
+
+public class TestPacketDefeated {
+    @Test
+    public void
+}
