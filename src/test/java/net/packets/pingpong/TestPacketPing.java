@@ -17,7 +17,7 @@ public class TestPacketPing {
   public void checkDataNoDigit() {
     PacketPing p = new PacketPing(1, "TEST");
     p.processData();
-    Assert.assertEquals("ERRORS: Not an Integer.", p.createErrorMessage());
+    Assert.assertEquals("ERRORS: ", p.createErrorMessage());
   }
 
   @Test

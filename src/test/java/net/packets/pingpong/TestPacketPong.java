@@ -17,7 +17,7 @@ public class TestPacketPong {
   public void checkPongNotInt() {
     PacketPong p = new PacketPong(1, "Test");
     p.processData();
-    Assert.assertEquals("ERRORS: Not an Integer.", p.createErrorMessage());
+    Assert.assertEquals("ERRORS: ", p.createErrorMessage());
   }
 
   @Test

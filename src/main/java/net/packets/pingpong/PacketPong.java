@@ -49,8 +49,13 @@ public class PacketPong extends Packet {
     if (getData() == null) {
       addError("Empty message");
     } else {
-      isInt(getData());
-    }
+      char[] temp = getData().toCharArray();
+      for (int i = 0; i < getData().length(); i++) {
+        if ( 48 > temp[i] && temp[i] > 57) {
+          addError("Not a digit.");
+          return;
+        }
+      }    }
   }
 
   /**
