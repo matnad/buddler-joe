@@ -14,6 +14,6 @@ public class TestPacketGetHistory {
   public void checkNotCorrectlyLoggedIn() {
     PacketGetHistory p = new PacketGetHistory();
     p.processData();
-    Assert.assertEquals("ERRORS: Not loggedin yet.", p.createErrorMessage());
+    Assert.assertEquals("ERRORS: Not logged in yet.", p.createErrorMessage());
   }
 }

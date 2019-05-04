@@ -5,6 +5,8 @@ import net.lobbyhandling.Lobby;
 import net.packets.Packet;
 import net.packets.lobby.PacketCurLobbyInfo;
 import net.playerhandling.ServerPlayer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * A packed that is send from the client to the server, to inform him that the client is ready to
@@ -13,6 +15,8 @@ import net.playerhandling.ServerPlayer;
  * @author Sebastian Schlachter
  */
 public class PacketReady extends Packet {
+
+  private static final Logger logger = LoggerFactory.getLogger(PacketReady.class);
 
   /**
    * Constructor that is used by the Server to build the Packet.
@@ -46,6 +50,9 @@ public class PacketReady extends Packet {
    */
   @Override
   public void processData() {
+    if (!isLoggedIn()) {
+      return;
+    }
     if (isLoggedIn() && isInALobby()) {
       ServerPlayer player = ServerLogic.getPlayerList().getPlayer(getClientId());
       int lobbyId = player.getCurLobbyId();
@@ -61,6 +68,7 @@ public class PacketReady extends Packet {
       }
     } else {
       addError("Not Connected.");
+      return;
     }
   }
 }

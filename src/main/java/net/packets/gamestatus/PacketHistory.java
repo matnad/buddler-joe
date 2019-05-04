@@ -3,6 +3,8 @@ package net.packets.gamestatus;
 import game.Game;
 import java.util.concurrent.CopyOnWriteArrayList;
 import net.packets.Packet;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * A packed that is send from the server to the client, which contains the "History". Packet-Code:
@@ -12,6 +14,7 @@ import net.packets.Packet;
  */
 public class PacketHistory extends Packet {
 
+  private static final Logger logger = LoggerFactory.getLogger(PacketHistory.class);
   private String[] in;
   CopyOnWriteArrayList<String> catalog = new CopyOnWriteArrayList<>();
 

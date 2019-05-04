@@ -131,7 +131,7 @@ public class Game extends Thread {
       new CopyOnWriteArrayList<>();
   public String username;
   // Set to true to create and join a lobby. For quicker testing.
-  private boolean autoJoin = true;
+  private boolean autoJoin = false;
 
   /**
    * The constructor for the game to be called from the main class.
@@ -144,6 +144,14 @@ public class Game extends Thread {
     serverIp = ipAddress;
     serverPort = port;
     this.username = username;
+  }
+
+  /** Constructor only to be used by Mockito to create test instances of game. */
+  public Game() {
+    logger.info("Not a real game, only a Unit Test game.");
+    serverIp = "TestServer.ch";
+    serverPort = 666;
+    this.username = "TestPlayer";
   }
 
   public static double dt() {

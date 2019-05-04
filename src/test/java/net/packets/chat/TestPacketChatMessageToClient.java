@@ -1,7 +1,9 @@
 package net.packets.chat;
 
+import game.Game;
 import org.junit.Assert;
 import org.junit.Test;
+import org.mockito.Mockito;
 
 public class TestPacketChatMessageToClient {
 
@@ -57,4 +59,13 @@ public class TestPacketChatMessageToClient {
     Assert.assertEquals(
         "ERRORS: Message to long. Maximum is 100 Characters.", packet.createErrorMessage());
   }
+
+  @Test
+  public void checkEverythingWorksFine() {
+    Game game = Mockito.spy(Game.class);
+    PacketChatMessageToClient packet = new PacketChatMessageToClient(1, "Perfect");
+    packet.processData();
+    Assert.assertEquals("ERRORS: ", packet.createErrorMessage());
+  }
+
 }

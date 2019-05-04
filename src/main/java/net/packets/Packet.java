@@ -164,7 +164,7 @@ public abstract class Packet {
    */
   protected void addError(String error) {
     errors.add(error);
-    logger.info(error);
+    logger.info("/" + getPacketType() + "/ " + error);
   }
 
   /**
@@ -254,12 +254,13 @@ public abstract class Packet {
   protected boolean isLoggedIn() {
     try {
       if (!ServerLogic.getPlayerList().getPlayers().containsKey(getClientId())) {
-        addError("Not loggedin yet.");
+        addError("Not logged in yet.");
         return false;
       } else {
         return true;
       }
     } catch (NullPointerException e) {
+      addError("Not logged in yet.");
       return false;
     }
   }

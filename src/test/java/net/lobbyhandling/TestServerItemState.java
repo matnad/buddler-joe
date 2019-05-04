@@ -19,7 +19,7 @@ public class TestServerItemState {
     serverItemsList.add(testItem2);
     itemState.addItem(testItem1);
     itemState.addItem(testItem2);
-    Assert.assertTrue(itemState.getServerItemsList().equals(serverItemsList));
+    Assert.assertEquals(itemState.getServerItemsList(),(serverItemsList));
   }
 
   @Test
@@ -31,7 +31,7 @@ public class TestServerItemState {
     serverItemsList.add(testItem1);
     serverItemsList.add(testItem2);
     itemState.addItem(testItem1);
-    Assert.assertFalse(itemState.getServerItemsList().equals(serverItemsList));
+    Assert.assertNotEquals(itemState.getServerItemsList(),(serverItemsList));
   }
 
   @Test
@@ -42,7 +42,7 @@ public class TestServerItemState {
     serverItemsList.add(testItem1);
     itemState.addItem(testItem1);
     itemState.addItem(testItem1);
-    Assert.assertTrue(itemState.getServerItemsList().equals(serverItemsList));
+    Assert.assertEquals(itemState.getServerItemsList(),(serverItemsList));
   }
 
   @Test
@@ -55,7 +55,7 @@ public class TestServerItemState {
     itemState.addItem(testItem1);
     itemState.addItem(testItem2);
     itemState.removeItemByItemId(testItem1.getItemId());
-    Assert.assertTrue(itemState.getServerItemsList().equals(serverItemsList));
+    Assert.assertEquals(itemState.getServerItemsList(),(serverItemsList));
   }
 
   @Test
@@ -67,6 +67,6 @@ public class TestServerItemState {
     serverItemsList.add(testItem2);
     itemState.addItem(testItem2);
     itemState.removeItemByItemId(testItem1.getItemId());
-    Assert.assertTrue(itemState.getServerItemsList().equals(serverItemsList));
+    Assert.assertEquals(itemState.getServerItemsList(),(serverItemsList));
   }
 }

@@ -8,8 +8,7 @@ import org.slf4j.LoggerFactory;
 
 public class PacketUpdateClientId extends Packet {
 
-  private static final Logger logger = LoggerFactory.getLogger(PacketCurLobbyInfo.class);
-
+  private static final Logger logger = LoggerFactory.getLogger(PacketUpdateClientId.class);
   private String clientIdString;
   private int clientId;
 

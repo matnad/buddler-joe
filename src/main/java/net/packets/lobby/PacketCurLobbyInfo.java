@@ -4,7 +4,6 @@ import game.Game;
 import game.LobbyPlayerEntry;
 import game.NetPlayerMaster;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.concurrent.CopyOnWriteArrayList;
 import net.ServerLogic;
 import net.lobbyhandling.Lobby;
@@ -23,6 +22,7 @@ public class PacketCurLobbyInfo extends Packet {
   private static final Logger logger = LoggerFactory.getLogger(PacketCurLobbyInfo.class);
   private String info;
   private String[] infoArray;
+  CopyOnWriteArrayList<LobbyPlayerEntry> catalog = new CopyOnWriteArrayList<>();
 
   /**
    * Constructor that is used by the Server to build the Packet with a lobby id.
@@ -48,24 +48,6 @@ public class PacketCurLobbyInfo extends Packet {
   }
 
   /**
-   * Constructor that is used by the Server to build the Packet with an error string.
-   *
-   * @param clientId clientId of the the receiver.
-   * @param data A single String that is an errormessage and does not begin with "OK║". {@link
-   *     PacketCurLobbyInfo#info} gets set to equal data.
-   */
-  public PacketCurLobbyInfo(int clientId, String data) {
-    // server builds
-    super(PacketTypes.CUR_LOBBY_INFO);
-    setClientId(clientId);
-    setData(data);
-    info = getData();
-    infoArray = new String[0]; // necessary since infoArray is not really used on the Server side,
-    // but needed in validate
-    validate();
-  }
-
-  /**
    * Constructor that is used by the Client to build the Packet, after receiving the Command LOBCI.
    *
    * @param data A single String that begins with "OK║" and contains the names of all clients that
@@ -79,7 +61,10 @@ public class PacketCurLobbyInfo extends Packet {
     super(PacketTypes.CUR_LOBBY_INFO);
     setData(data);
     info = getData();
-    // System.out.println(info);
+    if (data == null) {
+      addError("Invalid Data.");
+      return;
+    }
     infoArray = data.split("║");
     validate();
   }
@@ -94,14 +79,13 @@ public class PacketCurLobbyInfo extends Packet {
   public void validate() {
     if (info != null) {
       for (String s : infoArray) {
-        isExtendedAscii(s);
+        if (!isExtendedAscii(s)) {
+          return;
+        }
       }
-    } else {
-      addError("No Status found.");
     }
     if ((infoArray.length - 2) % 3 != 0) {
       addError("Invalid number of arguments.");
-      System.out.println("CurLobbyError--------------------------------");
     }
   }
 
@@ -114,22 +98,13 @@ public class PacketCurLobbyInfo extends Packet {
   public void processData() {
     if (hasErrors()) { // Errors ClientSide
       String s = createErrorMessage();
-      System.out.println(s);
-      System.out.println(getData());
+      logger.error(s);
     } else if (infoArray[0].equals("OK")) { // No Errors ServerSide
-      System.out.println("-------------------------------------");
-      System.out.println("Players in Lobby \"" + infoArray[1] + "\":");
-      CopyOnWriteArrayList<LobbyPlayerEntry> catalog = new CopyOnWriteArrayList<>();
       for (int i = 2; i < infoArray.length; i += 3) {
         boolean isReady = infoArray[i + 2].equals("true");
-        System.out.println(infoArray[i] + " - " + infoArray[i + 1] + " - " + isReady);
         catalog.add(new LobbyPlayerEntry(infoArray[i + 1], isReady));
       }
       Game.setLobbyPlayerCatalog(catalog);
-      System.out.println("-------------------------------------");
-      // System.out.println("To chat with players in this lobby, type: C <message>");
-      // System.out.println("To leave this lobby, type: leave");
-
       // Game Logic updates
 
       // Add missing players and create list of present players
@@ -149,6 +124,7 @@ public class PacketCurLobbyInfo extends Packet {
                   + infoArray[i]
                   + ", Username: "
                   + infoArray[i + 1]);
+          addError("Number incorrect.");
         } catch (NullPointerException ignored) {
           // This is a network only client and no game is running, or the game has not loaded yet
         }
@@ -159,7 +135,7 @@ public class PacketCurLobbyInfo extends Packet {
       }
 
     } else { // Errors ServerSide
-      // System.out.println(infoArray[0]);
+      logger.error(infoArray[0]);
     }
   }
 }

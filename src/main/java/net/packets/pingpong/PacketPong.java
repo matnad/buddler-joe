@@ -49,9 +49,11 @@ public class PacketPong extends Packet {
     if (getData() == null) {
       addError("Empty message");
     } else {
+      char[] temp = getData().toCharArray();
       for (int i = 0; i < getData().length(); i++) {
-        if (!Character.isDigit(getData().charAt(i))) {
-          addError("Invalid ping number");
+        if (48 > temp[i] && temp[i] > 57) {
+          addError("Not a digit.");
+          return;
         }
       }
     }
@@ -80,14 +82,20 @@ public class PacketPong extends Packet {
       long diffTime = currTime - timeAtSending;
       if (getClientId() == 0) {
         PingManager pingManager = ClientLogic.getPingManager();
-        pingManager.delete(getData());
-        pingManager.updatePing(diffTime);
-        // System.out.println("PING " + diffTime);
+        try {
+          pingManager.delete(getData());
+          pingManager.updatePing(diffTime);
+        } catch (NullPointerException e) {
+          addError("Pong manager had an error.");
+        }
       } else { // when server gets answer/pong
-        PingManager pingManager = ServerLogic.getThreadByClientId(getClientId()).getPingManager();
-        pingManager.delete(getData());
-        pingManager.updatePing(diffTime);
-        // System.out.println("PING " + diffTime);
+        try {
+          PingManager pingManager = ServerLogic.getThreadByClientId(getClientId()).getPingManager();
+          pingManager.delete(getData());
+          pingManager.updatePing(diffTime);
+        } catch (NullPointerException e) {
+          addError("Pong manager had an error.");
+        }
       }
     }
   }
