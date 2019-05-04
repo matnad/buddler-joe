@@ -75,7 +75,12 @@ public class PacketLobbyOverview extends Packet {
         // No need to validate anything else
         return;
       }
+      if (in.length == 2 && in[1].equals("No Lobbies online")) {
+        // No need to validate anything else
+        return;
+      }
       if (in.length > 1 && isInt(in[1])) {
+
         for (int i = 2; i < in.length; i = i + 3) {
           try {
             if (!isInt(in[i + 1])) {
@@ -93,6 +98,7 @@ public class PacketLobbyOverview extends Packet {
           }
         }
       }
+
     }
   }
 
