@@ -176,7 +176,6 @@ public class Lobby implements Runnable {
       return "Already joined this lobby.";
     }
     lobbyPlayers.add(player);
-    archiveLobbyPlayers.add(player);
     return "OK";
   }
 
@@ -405,6 +404,9 @@ public class Lobby implements Runnable {
 
   /** Starts the Round for this Lobby. */
   public void startRound() {
+    for (ServerPlayer player : lobbyPlayers) {
+        archiveLobbyPlayers.add(player);
+    }
     setStatus("running");
     History.openRemove(lobbyId);
     History.runningAdd(lobbyId, lobbyName);
