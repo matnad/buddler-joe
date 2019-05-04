@@ -91,10 +91,10 @@ public class NetPlayerMaster {
     System.out.println(NetPlayerMaster.staticToString());
   }
 
-  //public static void removePlayer(int clientId) {
+  // public static void removePlayer(int clientId) {
   //  netPlayers.remove(clientId);
   //  System.out.println(NetPlayerMaster.staticToString());
-  //}
+  // }
 
   public static Set<Integer> getIds() {
     return netPlayers.keySet();
@@ -174,9 +174,10 @@ public class NetPlayerMaster {
     return netPlayers;
   }
 
+  /** Reset NetPlayerMaster before a new game. This will also reset the static part of NetPlayer. */
   public static void reset() {
     lobbyname = "";
     netPlayers.clear();
+    NetPlayer.reset();
   }
-
 }

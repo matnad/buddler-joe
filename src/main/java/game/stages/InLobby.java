@@ -48,6 +48,7 @@ public class InLobby {
   private static CopyOnWriteArrayList<LobbyPlayerEntry> playerCatalog;
   private static ChangableGuiText lobbyname;
   private static Vector3f black = new Vector3f(0, 0, 0);
+  private static boolean removeAtEndOfFrame = false;
 
   /**
    * Initialisation of the textures for this GUI-menu.
@@ -100,7 +101,6 @@ public class InLobby {
       //      Game.getChat().setLobbyMaxLineLength();
       //      Game.getChat().setLobbyMessagePosition();
       //      Game.getChat().setAlpha();
-      Game.getChat().setLobbyChatSettings();
       initializedText = true;
     }
 
@@ -151,6 +151,10 @@ public class InLobby {
 
     Game.getGuiRenderer().render(guis);
     TextMaster.render();
+    if (removeAtEndOfFrame) {
+      done();
+      removeAtEndOfFrame = false;
+    }
   }
 
   /**
@@ -184,4 +188,9 @@ public class InLobby {
     initializedText = false;
     TextMaster.removeAll();
   }
+
+  public static void setRemoveAtEndOfFrame(boolean removeAtEndOfFrame) {
+    InLobby.removeAtEndOfFrame = removeAtEndOfFrame;
+  }
+
 }

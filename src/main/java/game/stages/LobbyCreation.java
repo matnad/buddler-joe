@@ -54,6 +54,7 @@ public class LobbyCreation {
   private static FontType font;
   private static Vector3f textColour;
   private static GuiText guiText;
+  private static boolean removeAtEndOfFrame = false;
 
   /**
    * Initializes the textures for this GUI-menu.
@@ -234,6 +235,10 @@ public class LobbyCreation {
 
     Game.getGuiRenderer().render(guis);
     TextMaster.render();
+    if (removeAtEndOfFrame) {
+      done();
+      removeAtEndOfFrame = false;
+    }
   }
 
   /**
@@ -278,4 +283,10 @@ public class LobbyCreation {
         new GuiText(
             output, 1.5f, font, new Vector3f(0f, 0f, 0f), 1f, new Vector2f(.30f, .465f), 1f, false);
   }
+
+
+  public static void setRemoveAtEndOfFrame(boolean removeAtEndOfFrame) {
+    LobbyCreation.removeAtEndOfFrame = removeAtEndOfFrame;
+  }
+
 }

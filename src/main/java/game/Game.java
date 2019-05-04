@@ -388,7 +388,6 @@ public class Game extends Thread {
       e.printStackTrace();
     }
 
-    chat = new Chat(loader, 12, 0.34f);
     lifeStatus = new LifeStatus(loader);
     Fps fpsCounter = new Fps();
 
@@ -401,17 +400,7 @@ public class Game extends Thread {
     // Initialize debris
     DebrisMaster.init();
 
-    // Lights ("Suns")
-    LightMaster.generateLight(
-            LightMaster.LightTypes.SUN,
-            new Vector3f(0, 400, 200),
-            new Vector3f(1, 1, 1).normalize())
-        .setBrightness(2f);
-    LightMaster.generateLight(
-            LightMaster.LightTypes.SUN,
-            new Vector3f(300, 400, 200),
-            new Vector3f(1, 1, 1).normalize())
-        .setBrightness(2f);
+    LightMaster.reset();
 
     // Debug
 
@@ -564,11 +553,17 @@ public class Game extends Thread {
   public static void restart() {
     TextMaster.removeAll();
     activeStages.clear();
+    Playing.done();
 
+    terrainChunks = null;
     entities.clear();
+
+    // Reset Masters
     BlockMaster.clear();
     NetPlayerMaster.reset();
-    terrainChunks = null;
+    ItemMaster.reset();
+    LightMaster.reset();
+    ParticleMaster.reset();
 
     int clientId = player.getClientId();
     player = new Player(getUsername(), new Vector3f(12, 10, 3), 0, 0, 0);
@@ -625,6 +620,9 @@ public class Game extends Thread {
 
     // Generate dummy map
     map = new ClientMap("s", System.currentTimeMillis());
+
+    // Generate Chat
+    chat = new Chat(loader, 12, 0.34f);
 
     // Connecting to Server
     LoadingScreen.updateLoadingMessage("connecting to server");

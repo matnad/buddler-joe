@@ -75,11 +75,11 @@ public class PacketCreateLobbyStatus extends Packet {
     } else if (status.startsWith("OK")) {
       // System.out.println("Lobby-Creation Successful");
       if (Game.getActiveStages().contains(Game.Stage.LOBBYCREATION)) {
-        LobbyCreation.done();
+        LobbyCreation.setRemoveAtEndOfFrame(true);
         Game.addActiveStage(Game.Stage.CHOOSELOBBY);
         Game.removeActiveStage(Game.Stage.LOBBYCREATION);
       }
-      LobbyCreation.done();
+      LobbyCreation.setRemoveAtEndOfFrame(true);
     } else {
       LobbyCreation.setMsg(status);
     }

@@ -72,7 +72,7 @@ public class PacketLeaveLobbyStatus extends Packet {
     if (hasErrors()) { // Errors on Client
     } else if (status.startsWith("OK")) {
       if (Game.getActiveStages().contains(Game.Stage.INLOBBBY)) {
-        InLobby.done();
+        InLobby.setRemoveAtEndOfFrame(true);
         Game.addActiveStage(Game.Stage.CHOOSELOBBY);
         Game.removeActiveStage(Game.Stage.INLOBBBY);
       }

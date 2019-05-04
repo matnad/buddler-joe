@@ -68,7 +68,9 @@ public class PacketJoinLobbyStatus extends Packet {
   public synchronized void processData() {
     if (hasErrors()) { // Errors on Client
     } else if (status.startsWith("OK")) {
-      ChooseLobby.done();
+      // System.out.println("Successfully joined lobby");
+      Game.getChat().setLobbyChatSettings();
+      ChooseLobby.setRemoveAtEndOfFrame(true);
       Game.addActiveStage(Game.Stage.INLOBBBY);
       Game.removeActiveStage(Game.Stage.CHOOSELOBBY);
     } else { // Errors on Server

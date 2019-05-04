@@ -41,6 +41,8 @@ public class Chat {
   private FontType font;
   private ChatText guiText;
   private ChatText wisperAddress;
+  private static float whisperAdressX = 0.159f;
+  private static float whisperAdressY = 0.649f;
   private Vector3f textColour;
   private Vector2f chatPosition;
   private Vector2f messagePosition;
@@ -424,6 +426,15 @@ public class Chat {
     updateGuiWisperName();
   }
 
+  /**
+   * Delets the wispername, so you are writing not to a specific target.
+   * */
+  public void deleteWisperName() {
+    wisperName = "";
+    TextMaster.removeText(wisperAddress);
+    updateGuiWisperName();
+  }
+
   public void setBackToChat(boolean backToChat) {
     this.backToChat = backToChat;
   }
@@ -437,9 +448,13 @@ public class Chat {
             textColour,
             alpha,
             font,
-            new Vector2f(0.145f, 0.65f),
+            new Vector2f(whisperAdressX, whisperAdressY),
             1f,
             false,
             false);
+  }
+
+  public String getWisperName() {
+    return wisperName;
   }
 }

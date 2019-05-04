@@ -98,12 +98,12 @@ public class NetPlayer extends Entity {
 
   /**
    * Test Constructor for unit Tests.
+   *
    * @param position A test position
    * @param rotX A test RotationX
    * @param rotY A test RotationY
    * @param rotZ A test RotationZ
    */
-
   public NetPlayer(Vector3f position, float rotX, float rotY, float rotZ) {
     super(position, rotX, rotY, rotZ);
   }
@@ -335,6 +335,11 @@ public class NetPlayer extends Entity {
     } else if (getPosition().x > Game.getMap().getWidth() * GameMap.getDim() - offset) {
       setPositionX(Game.getMap().getWidth() * GameMap.getDim() - offset);
     }
+  }
+
+  /** Reset the static components before a new Game. */
+  public static void reset() {
+    counter = 0;
   }
 
   public void removeNameplate() {
