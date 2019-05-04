@@ -356,7 +356,7 @@ public class ClientMap extends GameMap<Block> {
     TerrainTexture dirt = new TerrainTexture(loader.loadTexture("Erde512x512"));
     TerrainTexture stone = new TerrainTexture(loader.loadTexture("Stein512x512"));
     TerrainTexture gold = new TerrainTexture(loader.loadTexture("GoldBraun512x512"));
-    TerrainTexture obsidian = new TerrainTexture(loader.loadTexture("red"));
+    TerrainTexture obsidian = new TerrainTexture(loader.loadTexture("Obsidian"));
 
     TerrainTexturePack texturePack = new TerrainTexturePack(dirt, stone, gold, obsidian);
 

@@ -2,15 +2,9 @@ package net.lobbyhandling;
 
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import net.ServerLogic;
 import net.playerhandling.ServerPlayer;
 import org.junit.Assert;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.Spy;
-import org.mockito.junit.MockitoJUnitRunner;
 
 public class TestLobby {
 
@@ -46,16 +40,6 @@ public class TestLobby {
     testLobbby.addPlayer(testPlayer);
     Assert.assertNotEquals(lobbyPlayer, testLobbby.getLobbyPlayers());
   }
-
-  //@Test
-  //public void checkRemovePlayer() {
-  //  CopyOnWriteArrayList<ServerPlayer> lobbyPlayer2 = new CopyOnWriteArrayList<>();
-  //  Lobby testLobbby = new Lobby("TestLobby", 1, "small");
-  //  ServerPlayer testPlayer = new ServerPlayer("TestPlayer", 1);
-  //  testLobbby.addPlayer(testPlayer);
-  //  testLobbby.removePlayer(testPlayer.getClientId());
-  //  Assert.assertEquals(lobbyPlayer2, testLobbby.getLobbyPlayers());
-  //}
 
   @Test
   public void checkGetPlayerNames() {

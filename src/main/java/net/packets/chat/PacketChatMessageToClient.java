@@ -2,6 +2,8 @@ package net.packets.chat;
 
 import game.Game;
 import net.packets.Packet;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * * Packet that gets send a chat message from the Server to the Client. * Packet-Code: CHATC
@@ -9,6 +11,7 @@ import net.packets.Packet;
  */
 public class PacketChatMessageToClient extends Packet {
 
+  private static final Logger logger = LoggerFactory.getLogger(PacketChatMessageToClient.class);
   private String chatmsg;
 
   /**
@@ -72,7 +75,11 @@ public class PacketChatMessageToClient extends Packet {
     if (hasErrors()) {
       status = createErrorMessage();
     } else {
-      Game.getChat().addText(chatmsg);
+      try {
+        Game.getChat().addText(chatmsg);
+      } catch (NullPointerException e) {
+        logger.error("No game available.");
+      }
     }
   }
 }

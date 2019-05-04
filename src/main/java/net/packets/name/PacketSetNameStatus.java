@@ -3,10 +3,13 @@ package net.packets.name;
 import game.Game;
 import game.stages.ChangeName;
 import net.packets.Packet;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class PacketSetNameStatus extends Packet {
 
-  private String status;
+  private String[] status;
+  private static final Logger logger = LoggerFactory.getLogger(PacketSetNameStatus.class);
 
   /**
    * Constructor to be called by the server in the PacketSetName class to be sent to the client.
@@ -19,7 +22,6 @@ public class PacketSetNameStatus extends Packet {
     super(PacketTypes.SET_NAME_STATUS);
     setData(status);
     setClientId(clientId);
-    this.status = status;
     validate();
   }
 
@@ -31,7 +33,6 @@ public class PacketSetNameStatus extends Packet {
   public PacketSetNameStatus(String data) {
     super(PacketTypes.SET_NAME_STATUS);
     setData(data);
-    this.status = data;
     validate();
   }
 
@@ -42,8 +43,13 @@ public class PacketSetNameStatus extends Packet {
    */
   @Override
   public void validate() {
-    if (status != null) {
-      isExtendedAscii(status);
+    if (getData() != null) {
+      status = getData().split("║");
+      for (int i = 0; i < status.length; i++) {
+        if (!isExtendedAscii(status[i])) {
+          return;
+        }
+      }
     } else {
       addError("No Status found.");
     }
@@ -58,31 +64,34 @@ public class PacketSetNameStatus extends Packet {
    */
   @Override
   public void processData() {
-    if (status.startsWith("Successfully")) {
-      String[] username = getData().split("Successfully changed the name to: ");
-      if (username.length == 2) {
-        Game.getActivePlayer().setUsername(username[1]);
-        Game.getSettings().setUsername(username[1]);
-        ChangeName.setMsg("");
-      }
-      System.out.println(status);
-    } else if (status.startsWith("Changed")) {
-      String[] usernameA = getData().split(". Because your chosen name is already in use.");
-      if (usernameA.length >= 1) {
-        Game.getActivePlayer().setUsername(usernameA[0].substring(12));
-        Game.getSettings().setUsername(usernameA[0].substring(12));
-        ChangeName.setMsg("");
-      }
-      System.out.println(status);
-      ChangeName.setMsg(status);
-    } else {
-      if (hasErrors()) {
-        System.out.println(createErrorMessage());
-
-      } else {
-        System.out.println(status);
-      }
-      ChangeName.setMsg(status);
+    if (hasErrors()) {
+      logger.info(createErrorMessage());
+      return;
     }
+    if (status[0].equals("CHANGED")) {
+      if (status.length == 2) {
+        try {
+          Game.getActivePlayer().setUsername(status[1]);
+          Game.getSettings().setUsername(status[1]);
+          //ChangeName.setMsg("");
+        } catch (NullPointerException e) {
+          addError("Not a real game!");
+        }
+      }
+    } else if (status[0].equals("OK")) {
+      if (status.length == 2) {
+        try {
+          Game.getActivePlayer().setUsername(status[1]);
+          Game.getSettings().setUsername(status[1]);
+          ChangeName.setMsg(status[1]);
+        } catch (NullPointerException e) {
+          addError("No game started.");
+        }
+      }
+    } else {
+      addError(status[1]);
+      logger.info(status[1]);
+    }
+    ChangeName.setMsg(status[1]);
   }
 }

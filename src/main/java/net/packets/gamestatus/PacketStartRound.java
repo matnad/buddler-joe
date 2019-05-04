@@ -8,6 +8,8 @@ import game.Game;
 import game.map.ClientMap;
 import net.packets.Packet;
 import net.packets.playerprop.PacketPos;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * A packed that is send from the server to the client, to inform the client that the GameRound of
@@ -16,6 +18,9 @@ import net.packets.playerprop.PacketPos;
  * @author Sebastian Schlachter
  */
 public class PacketStartRound extends Packet {
+
+  private static final Logger logger = LoggerFactory.getLogger(PacketStartRound.class);
+
 
   /**
    * Constructor that is used by the Server to build the Packet.

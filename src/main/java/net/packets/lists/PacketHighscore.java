@@ -62,6 +62,10 @@ public class PacketHighscore extends Packet {
     if (hasErrors()) {
       return;
     }
+    if (highscore.length < 2) {
+      addError("No Highscore available.");
+      return;
+    }
     for (int i = 1; i < highscore.length; i += 2) {
       if (!isExtendedAscii(highscore[i]) || !isExtendedAscii(highscore[i + 1])) {
         break;

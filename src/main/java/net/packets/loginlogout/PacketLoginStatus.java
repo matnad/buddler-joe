@@ -3,9 +3,12 @@ package net.packets.loginlogout;
 import game.Game;
 import net.packets.Packet;
 import net.packets.lobby.PacketGetLobbies;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class PacketLoginStatus extends Packet {
 
+  private static final Logger logger = LoggerFactory.getLogger(PacketLoginStatus.class);
   private String status;
   private String username;
 

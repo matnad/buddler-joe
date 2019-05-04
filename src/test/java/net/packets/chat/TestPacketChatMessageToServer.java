@@ -28,6 +28,7 @@ public class TestPacketChatMessageToServer {
   @Test
   public void checkStatusIsNotAsciiClient() {
     PacketChatMessageToServer packet = new PacketChatMessageToServer("ඥ");
+    packet.processData();
     Assert.assertEquals(
         "ERRORS: Invalid characters, only extended ASCII.", packet.createErrorMessage());
   }

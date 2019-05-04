@@ -2,9 +2,12 @@ package net.packets.name;
 
 import net.ServerLogic;
 import net.packets.Packet;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class PacketSetName extends Packet {
 
+  private static final Logger logger = LoggerFactory.getLogger(PacketSetName.class);
   private String username;
 
   /**
@@ -17,8 +20,11 @@ public class PacketSetName extends Packet {
     super(PacketTypes.SET_NAME);
     setData(data);
     setClientId(clientId);
-    username = getData().trim();
     validate();
+    if (hasErrors()) {
+      return;
+    }
+    username = getData().trim();
   }
 
   /**
@@ -30,8 +36,11 @@ public class PacketSetName extends Packet {
   public PacketSetName(String username) {
     super(PacketTypes.SET_NAME);
     setData(username);
-    this.username = getData().trim();
     validate();
+    if (hasErrors()) {
+      return;
+    }
+    this.username = getData().trim();
   }
 
   /**
@@ -41,7 +50,7 @@ public class PacketSetName extends Packet {
    */
   @Override
   public void validate() {
-    checkUsername(username);
+    checkUsername(getData());
   }
 
   /**
@@ -58,7 +67,7 @@ public class PacketSetName extends Packet {
   public void processData() {
     String status;
     if (hasErrors()) {
-      status = createErrorMessage();
+      status = "ERROR║" + createErrorMessage();
     } else {
       try {
         if (ServerLogic.getPlayerList().isUsernameInList(username)) {
@@ -68,14 +77,15 @@ public class PacketSetName extends Packet {
             name = username + "_" + counter;
             counter++;
           }
-          ServerLogic.getPlayerList().getPlayer(getClientId()).setUsername(name);
-          status = "Changed to: " + name + ". Because your chosen name is already in use.";
+          username = name;
+          ServerLogic.getPlayerList().getPlayer(getClientId()).setUsername(username);
+          status = "CHANGED║" + username;
         } else {
           ServerLogic.getPlayerList().getPlayer(getClientId()).setUsername(username);
-          status = "Successfully changed the name to: " + username;
+          status = "OK║" + username;
         }
       } catch (NullPointerException e) {
-        status = "ServerPlayer not logged in";
+        status = "ERROR║ServerPlayer not logged in";
       }
     }
     PacketSetNameStatus p = new PacketSetNameStatus(getClientId(), status);

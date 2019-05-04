@@ -54,6 +54,6 @@ public class TestPacketCreateLobby {
   public void checkNotLoggedIntoLobby() {
     PacketCreateLobby p = new PacketCreateLobby("TestLobby║l");
     p.processData();
-    Assert.assertEquals("ERRORS: Not loggedin yet. Not logged in yet.", p.createErrorMessage());
+    Assert.assertEquals("ERRORS: Not logged in yet. Not logged in yet.", p.createErrorMessage());
   }
 }

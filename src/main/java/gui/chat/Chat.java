@@ -426,13 +426,10 @@ public class Chat {
     updateGuiWisperName();
   }
 
-  /**
-   * Delets the wispername, so you are writing not to a specific target.
-   * */
+  /** Delets the wispername, so you are writing not to a specific target. */
   public void deleteWisperName() {
     wisperName = "";
     TextMaster.removeText(wisperAddress);
-    updateGuiWisperName();
   }
 
   public void setBackToChat(boolean backToChat) {
@@ -441,6 +438,9 @@ public class Chat {
 
   /** changes the wisperaddress, which tells the player to whom he will write the next message. */
   public void updateGuiWisperName() {
+    if (wisperAddress != null) {
+      TextMaster.removeText(wisperAddress);
+    }
     wisperAddress =
         new ChatText(
             wisperName,

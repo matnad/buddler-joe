@@ -21,7 +21,7 @@ public class TestServerLobbyList {
     lobbies.put(testLobby2.getLobbyId(), testLobby2);
     lobbyList.addLobby(testLobby1);
     lobbyList.addLobby(testLobby2);
-    Assert.assertTrue(lobbies.equals(lobbyList.getLobbies()));
+    Assert.assertEquals(lobbies, (lobbyList.getLobbies()));
   }
 
   @Test
@@ -32,7 +32,7 @@ public class TestServerLobbyList {
     lobbies.put(testLobby1.getLobbyId(), testLobby1);
     lobbyList.addLobby(testLobby1);
     lobbyList.addLobby(testLobby1);
-    Assert.assertTrue(lobbies.equals(lobbyList.getLobbies()));
+    Assert.assertEquals(lobbies, (lobbyList.getLobbies()));
   }
 
   @Test
@@ -44,7 +44,7 @@ public class TestServerLobbyList {
     lobbies.put(testLobby1.getLobbyId(), testLobby1);
     lobbyList.addLobby(testLobby1);
     lobbyList.addLobby(testLobby2);
-    Assert.assertFalse(lobbies.equals(lobbyList.getLobbies()));
+    Assert.assertNotEquals(lobbies, (lobbyList.getLobbies()));
   }
 
   @Test
@@ -56,7 +56,7 @@ public class TestServerLobbyList {
     lobbies.put(testLobby1.getLobbyId(), testLobby1);
     lobbyList.addLobby(testLobby1);
     lobbyList.addLobby(testLobby2);
-    Assert.assertTrue(lobbies.equals(lobbyList.getLobbies()));
+    Assert.assertEquals(lobbies, (lobbyList.getLobbies()));
   }
 
   @Test
@@ -69,7 +69,7 @@ public class TestServerLobbyList {
     lobbyList.addLobby(testLobby1);
     lobbyList.addLobby(testLobby2);
     lobbyList.removeLobby(testLobby1.getLobbyId());
-    Assert.assertTrue(lobbies.equals(lobbyList.getLobbies()));
+    Assert.assertEquals(lobbies, (lobbyList.getLobbies()));
   }
 
   @Test
@@ -84,7 +84,7 @@ public class TestServerLobbyList {
     lobbyList.addLobby(testLobby2);
     Lobby testLobby3 = new Lobby("test3", 2, "large");
     lobbyList.removeLobby(testLobby3.getLobbyId());
-    Assert.assertTrue(lobbies.equals(lobbyList.getLobbies()));
+    Assert.assertEquals(lobbies, (lobbyList.getLobbies()));
   }
 
   @Test
@@ -92,7 +92,7 @@ public class TestServerLobbyList {
     ServerLobbyList lobbyList = new ServerLobbyList();
     Lobby testLobby1 = new Lobby("test1", 1, "mid");
     lobbyList.addLobby(testLobby1);
-    Assert.assertTrue(testLobby1.getLobbyName().equals(lobbyList.getName(testLobby1.getLobbyId())));
+    Assert.assertEquals(testLobby1.getLobbyName(), (lobbyList.getName(testLobby1.getLobbyId())));
   }
 
   @Test
@@ -100,7 +100,7 @@ public class TestServerLobbyList {
     ServerLobbyList lobbyList = new ServerLobbyList();
     Lobby testLobby1 = new Lobby("test1", 1, "mid");
     lobbyList.addLobby(testLobby1);
-    Assert.assertTrue(testLobby1.equals(lobbyList.getLobby(testLobby1.getLobbyId())));
+    Assert.assertEquals(testLobby1, (lobbyList.getLobby(testLobby1.getLobbyId())));
   }
 
   @Test
@@ -110,7 +110,7 @@ public class TestServerLobbyList {
     Lobby testLobby1 = new Lobby("test1", 1, "mid");
     lobbies.put(testLobby1.getLobbyId(), testLobby1);
     lobbyList.addLobby(testLobby1);
-    Assert.assertTrue(testLobby1.getLobbyId() == lobbyList.getLobbyId(testLobby1.getLobbyName()));
+    Assert.assertEquals(testLobby1.getLobbyId(), lobbyList.getLobbyId(testLobby1.getLobbyName()));
   }
 
   // This test depends on the linenumber of this
@@ -145,6 +145,6 @@ public class TestServerLobbyList {
     lobbyList.addLobby(testLobby1);
     StringBuilder s = new StringBuilder();
     s.append(testLobby1.toString()).append("║");
-    Assert.assertTrue(s.toString().equals(lobbyList.getLobbiesInGame()));
+    Assert.assertEquals(s.toString(),(lobbyList.getLobbiesInGame()));
   }
 }

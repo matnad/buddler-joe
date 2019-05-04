@@ -131,7 +131,7 @@ public class Game extends Thread {
       new CopyOnWriteArrayList<>();
   public String username;
   // Set to true to create and join a lobby. For quicker testing.
-  private boolean autoJoin = true;
+  private boolean autoJoin = false;
 
   /**
    * The constructor for the game to be called from the main class.
@@ -144,6 +144,14 @@ public class Game extends Thread {
     serverIp = ipAddress;
     serverPort = port;
     this.username = username;
+  }
+
+  /** Constructor only to be used by Mockito to create test instances of game. */
+  public Game() {
+    logger.info("Not a real game, only a Unit Test game.");
+    serverIp = "TestServer.ch";
+    serverPort = 666;
+    this.username = "TestPlayer";
   }
 
   public static double dt() {
@@ -373,6 +381,9 @@ public class Game extends Thread {
     activeStages.add(LOADINGSCREEN);
     LoadingScreen.updateLoadingMessage("starting game");
 
+    // Load basic lights
+    LightMaster.reset();
+
     // Connect to server and load level in an extra thread
     try {
       loadGame(loader);
@@ -384,17 +395,21 @@ public class Game extends Thread {
     Fps fpsCounter = new Fps();
 
     // Initialize Particle Master
+    LoadingScreen.updateLoadingMessage("loading effects");
+    LoadingScreen.progess();
     ParticleMaster.init(loader, MasterRenderer.getProjectionMatrix());
 
     // Initialize items
+    LoadingScreen.updateLoadingMessage("loading items");
+    LoadingScreen.progess();
     ItemMaster.init(loader);
 
     // Initialize debris
     DebrisMaster.init();
 
-    LightMaster.reset();
-
-    // Debug
+    // Loading complete
+    LoadingScreen.updateLoadingMessage("Ready!");
+    LoadingScreen.done();
 
     /*
     **************************************************************
@@ -632,24 +647,19 @@ public class Game extends Thread {
     System.out.println("logged in");
 
     // Creating and joining Lobby
-    // if (autoJoin) {
-    String lobname = String.valueOf(new Random().nextInt((int) 10e15));
-    LoadingScreen.updateLoadingMessage("joining lobby");
-    new PacketCreateLobby(lobname + "║s").sendToServer();
-    while (!lobbyCreated) {
-      Thread.sleep(50);
-    }
-    // }
-
     if (autoJoin) {
+      String lobname = String.valueOf(new Random().nextInt((int) 10e15));
+      LoadingScreen.updateLoadingMessage("joining lobby");
+      new PacketCreateLobby(lobname + "║s").sendToServer();
+      while (!lobbyCreated) {
+        Thread.sleep(150);
+        LoadingScreen.progess();
+      }
 
       new PacketJoinLobby(lobname).sendToServer();
       while (!NetPlayerMaster.getLobbyname().equals(lobname)) {
-        Thread.sleep(50);
-      }
-      LoadingScreen.updateLoadingMessage("generating map");
-      while (map.isLocal()) {
-        Thread.sleep(50);
+        Thread.sleep(150);
+        LoadingScreen.progess();
       }
     }
 
@@ -661,11 +671,11 @@ public class Game extends Thread {
     goldGuiText = new CurrentGold();
     // livesGuiText = new CurrentLives();
     // lifestatus = new LifeStatus(loader);
+
+    LoadingScreen.updateLoadingMessage("loading textures");
+    LoadingScreen.progess();
     Playing.init(loader);
 
-    LoadingScreen.updateLoadingMessage("Ready!");
-    Thread.sleep(500);
-    LoadingScreen.done();
     if (autoJoin) {
       // new PacketReady().sendToServer();
       addActiveStage(INLOBBBY);

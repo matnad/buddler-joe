@@ -2,6 +2,10 @@ package net.lobbyhandling;
 
 import game.History;
 import game.map.ServerMap;
+
+import java.util.Collections;
+import java.util.NoSuchElementException;
+import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import net.ServerLogic;
@@ -29,6 +33,7 @@ public class Lobby implements Runnable {
   private String lobbyName;
   private CopyOnWriteArrayList<ServerPlayer> lobbyPlayers;
   private CopyOnWriteArrayList<ServerPlayer> aliveLobbyPlayers;
+  private CopyOnWriteArrayList<ServerPlayer> archiveLobbyPlayers;
   private ServerMap map;
   private int createrPlayerId;
   private String mapSize;
@@ -36,7 +41,7 @@ public class Lobby implements Runnable {
   private long createdAt;
   private ServerItemState serverItemState;
   private boolean checked;
-  private ConcurrentHashMap<Integer, Referee> refereesForClients; // Integer = clientId
+  private ConcurrentHashMap<Integer, Referee> refereesForClients;
   private Thread gameLoop;
 
   /**
@@ -56,6 +61,7 @@ public class Lobby implements Runnable {
     this.inGame = false;
     this.lobbyPlayers = new CopyOnWriteArrayList<>();
     this.aliveLobbyPlayers = new CopyOnWriteArrayList<>();
+    this.archiveLobbyPlayers = new CopyOnWriteArrayList<>();
     this.lobbyId = lobbyCounter;
     this.serverItemState = new ServerItemState();
     this.refereesForClients = new ConcurrentHashMap<>();
@@ -83,10 +89,9 @@ public class Lobby implements Runnable {
 
       try {
         if (aliveLobbyPlayers.size() == 0 && !checked) {
-          // System.out.println("here");
           Thread.sleep(2500);
           if (getCurrentWinner() != null) {
-            gameOver(getCurrentWinner().getClientId());
+            gameOver(getCurrentWinner());
           }
         } else {
           // Wait for the rest of the second
@@ -108,21 +113,46 @@ public class Lobby implements Runnable {
   }
 
   /**
-   * checks the player who collected the largest amount of gold.
+   * checks the player who collected the largest amount of gold, if all players are defeated. The
+   * time is also taken into account.
    *
    * @return the winner
    */
   public ServerPlayer getCurrentWinner() {
     checked = !checked;
-    int gold = -1;
-    ServerPlayer winner = null;
-    for (ServerPlayer player : lobbyPlayers) {
-      if (gold < player.getCurrentGold()) {
-        gold = player.getCurrentGold();
-        winner = player;
+    int highestGoldValue = -1;
+
+    for (ServerPlayer player : archiveLobbyPlayers) {
+      if (highestGoldValue < player.getCurrentGold()) {
+        highestGoldValue = player.getCurrentGold();
       }
     }
-    return winner;
+
+    if (highestGoldValue != 0) {
+      ConcurrentHashMap<ServerPlayer, Long> winningPlayers = new ConcurrentHashMap<>();
+      for (ServerPlayer player : archiveLobbyPlayers) {
+        if (highestGoldValue == player.getCurrentGold()) {
+          winningPlayers.put(player, player.getTimeStampOfGain());
+        }
+      }
+
+      long min = 0;
+      try {
+        min = Collections.min(winningPlayers.values());
+      } catch (NoSuchElementException e) {
+        logger.warn("No proper winner determination");
+      }
+
+      for (ServerPlayer player : winningPlayers.keySet()) {
+        if (min == winningPlayers.get(player)) {
+          return player;
+        }
+      }
+    }
+
+    Random rnd = new Random(System.currentTimeMillis());
+    int r = rnd.nextInt(archiveLobbyPlayers.size());
+    return archiveLobbyPlayers.get(r);
   }
 
   /**
@@ -232,19 +262,19 @@ public class Lobby implements Runnable {
    * ServerPlayer states, informs all clients about the end of the round. Archives the round in the
    * History.
    *
-   * @param clientId id of the winning player
+   * @param player the winning player
    */
-  public void gameOver(int clientId) {
+  public void gameOver(ServerPlayer player) {
     // setStatus("open");
+    setStatus("finished");
     History.runningRemove(lobbyId);
     // History.openAdd(lobbyId, lobbyName);
-    String userName = ServerLogic.getPlayerList().getUsername(clientId);
+    String userName = player.getUsername();
     History.archive("Lobbyname: " + lobbyName + "       Winner: " + userName);
     long time = System.currentTimeMillis() - getCreatedAt();
 
-    // BEACHTEN
     // Update highscore
-    if (!ServerLogic.getPlayerList().getPlayer(clientId).isDefeated()) {
+    if (!player.isDefeated()) {
       ServerLogic.getServerHighscore().addPlayer(time, userName);
       ServerHighscoreSerialiser.serialiseServerHighscore(ServerLogic.getServerHighscore());
     }
@@ -367,6 +397,9 @@ public class Lobby implements Runnable {
 
   /** Starts the Round for this Lobby. */
   public void startRound() {
+    for (ServerPlayer player : lobbyPlayers) {
+      archiveLobbyPlayers.add(player);
+    }
     setStatus("running");
     History.openRemove(lobbyId);
     History.runningAdd(lobbyId, lobbyName);

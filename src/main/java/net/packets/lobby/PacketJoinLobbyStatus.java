@@ -2,6 +2,7 @@ package net.packets.lobby;
 
 import game.Game;
 import game.stages.ChooseLobby;
+import game.stages.InLobby;
 import net.packets.Packet;
 
 /**
@@ -25,6 +26,7 @@ public class PacketJoinLobbyStatus extends Packet {
     // server builds
     super(Packet.PacketTypes.JOIN_LOBBY_STATUS);
     setData(data);
+    status = getData();
     setClientId(clientId);
     validate();
   }
@@ -67,15 +69,18 @@ public class PacketJoinLobbyStatus extends Packet {
   @Override
   public synchronized void processData() {
     if (hasErrors()) { // Errors on Client
-      // System.out.println(createErrorMessage());
     } else if (status.startsWith("OK")) {
-      // System.out.println("Successfully joined lobby");
-      Game.getChat().setLobbyChatSettings();
-      ChooseLobby.setRemoveAtEndOfFrame(true);
-      Game.addActiveStage(Game.Stage.INLOBBBY);
-      Game.removeActiveStage(Game.Stage.CHOOSELOBBY);
+      try {
+        // System.out.println("Successfully joined lobby");
+        Game.getChat().setLobbyChatSettings();
+        ChooseLobby.setRemoveAtEndOfFrame(true);
+        InLobby.setRemoveAtEndOfFrame(true);
+        Game.addActiveStage(Game.Stage.INLOBBBY);
+        Game.removeActiveStage(Game.Stage.CHOOSELOBBY);
+      } catch (NullPointerException e) {
+        addError("Game is not running.");
+      }
     } else { // Errors on Server
-      // System.out.println(status);
     }
   }
 }

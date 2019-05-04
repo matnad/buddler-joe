@@ -21,7 +21,6 @@ public class PacketPing extends Packet {
     super(Packet.PacketTypes.PING);
     setClientId(clientId);
     setData(data);
-    // System.out.println("PING " + getData());
     validate();
   }
 
@@ -33,7 +32,6 @@ public class PacketPing extends Packet {
   public PacketPing(String data) {
     super(Packet.PacketTypes.PING);
     setData(data);
-    // System.out.println("PING " + getData());
     validate();
   }
 
@@ -46,9 +44,11 @@ public class PacketPing extends Packet {
     if (getData() == null) {
       addError("Empty message");
     } else {
+      char[] temp = getData().toCharArray();
       for (int i = 0; i < getData().length(); i++) {
-        if (!Character.isDigit(getData().charAt(i))) {
-          addError("Invalid ping number");
+        if (48 > temp[i] && temp[i] > 57) {
+          addError("Not a digit.");
+          return;
         }
       }
     }
