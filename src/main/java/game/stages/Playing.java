@@ -260,9 +260,9 @@ public class Playing {
     freezeRemaining = Star.getFreezeTime();
     freezeFramesRemaining = (int) freezeRemaining * 60;
     freezeFramesTotal = freezeFramesRemaining;
-    iceTotal.setAlpha(1);
-    iceCracks.setAlpha(1);
-    iceGradient.setAlpha(1);
+    iceTotal.setAlpha(0.75f);
+    iceCracks.setAlpha(0.75f);
+    iceGradient.setAlpha(0.75f);
   }
 
   /**
@@ -276,18 +276,18 @@ public class Playing {
       freezeRemaining -= Game.dt();
 
       if (freezeFramesRemaining > (int) (0.75f * freezeFramesTotal)) {
-        float stepsize = 1 / (0.25f * (float) freezeFramesTotal);
+        float stepsize = 0.75f / (0.25f * (float) freezeFramesTotal);
         if (iceTotal.getAlpha() - stepsize > 0) {
           iceTotal.setAlpha(iceTotal.getAlpha() - stepsize);
         }
       } else if (freezeFramesRemaining <= (int) (0.75f * freezeFramesTotal)
           && freezeFramesRemaining > (int) (0.5 * freezeFramesTotal)) {
-        float stepsize = 1 / (0.5f * (float) freezeFramesTotal);
+        float stepsize = 0.75f / (0.5f * (float) freezeFramesTotal);
         if (iceGradient.getAlpha() - stepsize > 0) {
           iceGradient.setAlpha(iceGradient.getAlpha() - stepsize);
         }
       } else if (freezeFramesRemaining <= (int) (0.5f * freezeFramesTotal)) {
-        float stepsize = 1 / (0.5f * (float) freezeFramesTotal);
+        float stepsize = 0.75f / (0.5f * (float) freezeFramesTotal);
         if (iceGradient.getAlpha() - stepsize > 0) {
           iceGradient.setAlpha(iceGradient.getAlpha() - stepsize);
         }
@@ -295,9 +295,9 @@ public class Playing {
           iceCracks.setAlpha(iceCracks.getAlpha() - stepsize);
         }
       }
-      //guis.add(iceTotal);
-      //guis.add(iceGradient);
-      //guis.add(iceCracks);
+      guis.add(iceTotal);
+      guis.add(iceGradient);
+      guis.add(iceCracks);
       freezeFramesRemaining--;
     } else {
       iceTotal.setAlpha(0);
