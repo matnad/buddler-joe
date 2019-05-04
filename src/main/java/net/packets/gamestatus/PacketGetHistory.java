@@ -2,6 +2,8 @@ package net.packets.gamestatus;
 
 import game.History;
 import net.packets.Packet;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * A Packet that gets sent from the Client to the Server, to get the History(a conclusion of current
@@ -10,6 +12,9 @@ import net.packets.Packet;
  * @author Sebastian Schlachter
  */
 public class PacketGetHistory extends Packet {
+
+  private static final Logger logger = LoggerFactory.getLogger(PacketGetHistory.class);
+
 
   /**
    * Constructor that is used by the Server to build the Packet, after receiving the Command

@@ -9,7 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class PacketVelocity extends Packet {
-  private static final Logger logger = LoggerFactory.getLogger(PacketPos.class);
+  private static final Logger logger = LoggerFactory.getLogger(PacketVelocity.class);
 
   private int playerId;
   private float curvX;

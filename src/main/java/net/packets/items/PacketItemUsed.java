@@ -2,6 +2,8 @@ package net.packets.items;
 
 import net.ServerLogic;
 import net.packets.Packet;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Packet that gets send from the Client to the Server, to inform the Server that an Item has been
@@ -10,6 +12,9 @@ import net.packets.Packet;
  * @author Joe's Buddler corp.
  */
 public class PacketItemUsed extends Packet {
+
+  private static final Logger logger = LoggerFactory.getLogger(PacketItemUsed.class);
+
 
   private int itemId;
 
@@ -55,7 +60,7 @@ public class PacketItemUsed extends Packet {
   @Override
   public void processData() {
     if (hasErrors()) {
-      System.out.println(createErrorMessage());
+      //System.out.println(createErrorMessage());
     } else {
       ServerLogic.getLobbyForClient(getClientId()).getServerItemState().removeItemByItemId(itemId);
     }

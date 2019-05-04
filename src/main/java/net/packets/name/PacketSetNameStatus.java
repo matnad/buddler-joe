@@ -3,10 +3,14 @@ package net.packets.name;
 import game.Game;
 import game.stages.ChangeName;
 import net.packets.Packet;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class PacketSetNameStatus extends Packet {
 
   private String status;
+  private static final Logger logger = LoggerFactory.getLogger(PacketSetNameStatus.class);
+
 
   /**
    * Constructor to be called by the server in the PacketSetName class to be sent to the client.

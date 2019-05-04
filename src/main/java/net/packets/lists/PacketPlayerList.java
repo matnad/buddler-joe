@@ -4,10 +4,13 @@ import game.Game;
 import java.util.concurrent.CopyOnWriteArrayList;
 import net.ServerLogic;
 import net.packets.Packet;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class PacketPlayerList extends Packet {
 
   private String[] playerList;
+  private static final Logger logger = LoggerFactory.getLogger(PacketPlayerList.class);
   CopyOnWriteArrayList<String> catalog = new CopyOnWriteArrayList<>();
 
   /**

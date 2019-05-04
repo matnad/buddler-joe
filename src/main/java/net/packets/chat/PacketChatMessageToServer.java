@@ -5,6 +5,8 @@ import java.util.Date;
 import net.ServerLogic;
 import net.packets.Packet;
 import net.playerhandling.ServerPlayer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Packet that gets send from the Client to the Server, to send chat message from Client to a other
@@ -13,6 +15,8 @@ import net.playerhandling.ServerPlayer;
  * @author Moritz Würth
  */
 public class PacketChatMessageToServer extends Packet {
+
+  private static final Logger logger = LoggerFactory.getLogger(PacketChatMessageToServer.class);
 
   private String chatmsg;
   private String timestamp;
