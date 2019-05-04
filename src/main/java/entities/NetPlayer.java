@@ -288,14 +288,15 @@ public class NetPlayer extends Entity {
 
   float getCurrentTurnSpeed() {
     float currentTurnSpeed;
-    if (goalVelocity.x == -runSpeed) {
-      currentTurnSpeed = -turnSpeed;
+    float factor = Math.abs(goalVelocity.x / runSpeed);
+    if (goalVelocity.x < 0) {
+      currentTurnSpeed = -turnSpeed * factor;
       if (getRotY() <= -90) {
         currentTurnSpeed = 0;
         setRotY(-90);
       }
-    } else if (goalVelocity.x == runSpeed) {
-      currentTurnSpeed = turnSpeed;
+    } else if (goalVelocity.x > 0) {
+      currentTurnSpeed = turnSpeed * factor;
       if (getRotY() >= 90) {
         currentTurnSpeed = 0;
         setRotY(90);
