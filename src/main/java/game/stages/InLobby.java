@@ -101,7 +101,6 @@ public class InLobby {
       //      Game.getChat().setLobbyMaxLineLength();
       //      Game.getChat().setLobbyMessagePosition();
       //      Game.getChat().setAlpha();
-      Game.getChat().setLobbyChatSettings();
       initializedText = true;
     }
 

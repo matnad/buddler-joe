@@ -149,6 +149,27 @@ public class LightMaster {
     // Adding to render-list will be done in update
   }
 
+  /**
+   * Will reset the LightMaster before a new Game. Adds the global Light Sources (2 Suns ) and
+   * removes everything else.
+   */
+  public static void reset() {
+    lightLists.clear();
+    allLights.clear();
+
+    // Lights ("Suns")
+    generateLight(
+            LightMaster.LightTypes.SUN,
+            new Vector3f(0, 400, 200),
+            new Vector3f(1, 1, 1).normalize())
+        .setBrightness(2f);
+    generateLight(
+            LightMaster.LightTypes.SUN,
+            new Vector3f(300, 400, 200),
+            new Vector3f(1, 1, 1).normalize())
+        .setBrightness(2f);
+  }
+
   public static int getMaxLights() {
     return maxLights;
   }
