@@ -68,6 +68,9 @@ public class Lobby implements Runnable {
     lobbyCounter++;
     checked = false;
     map = new ServerMap(mapSize, System.currentTimeMillis());
+    createdAt = System.currentTimeMillis();
+    gameLoop = new Thread(this);
+    gameLoop.start();
   }
 
   @Override
@@ -76,29 +79,38 @@ public class Lobby implements Runnable {
     while (!status.equals("finished")) {
       long startOfLoop = System.currentTimeMillis();
 
-      // Do stuff
-      for (ServerPlayer player : aliveLobbyPlayers) {
-        if (player.isKicked()) {
-          logger.info("Kicking " + player.getUsername() + ".");
-          ServerLogic.removePlayer(player.getClientId());
-        }
-        if (player.isDefeated()) {
-          aliveLobbyPlayers.remove(player);
-        }
-      }
-
-      try {
-        if (aliveLobbyPlayers.size() == 0 && !checked) {
-          Thread.sleep(2500);
-          if (getCurrentWinner() != null) {
-            gameOver(getCurrentWinner());
+      if (status.equals("running")) {
+        // Do stuff
+        for (ServerPlayer player : aliveLobbyPlayers) {
+          if (player.isKicked()) {
+            logger.info("Kicking " + player.getUsername() + ".");
+            ServerLogic.removePlayer(player.getClientId());
           }
-        } else {
-          // Wait for the rest of the second
-          Thread.sleep(1000 - System.currentTimeMillis() + startOfLoop);
+          if (player.isDefeated()) {
+            aliveLobbyPlayers.remove(player);
+          }
         }
-      } catch (InterruptedException e) {
-        e.printStackTrace();
+
+        try {
+          if (aliveLobbyPlayers.size() == 0 && !checked) {
+            Thread.sleep(2500);
+            if (getCurrentWinner() != null) {
+              gameOver(getCurrentWinner());
+            }
+          } else {
+            // Wait for the rest of the second
+            Thread.sleep(1000 - System.currentTimeMillis() + startOfLoop);
+          }
+        } catch (InterruptedException e) {
+          e.printStackTrace();
+        }
+      } else if (status.equals("open")) {
+        
+        //die schleife wird wärend status = open die ganze zeit wiederholt
+        //zeit immer wieder abchecken von lastentry bis jt
+        //falls > 5min dann status = finished setzen
+        //aus serverlobbyliste löschen
+        //allen packet verschicken; lobbyoverview
       }
     }
   }
@@ -364,9 +376,6 @@ public class Lobby implements Runnable {
         for (ServerPlayer player : lobbyPlayers) {
           aliveLobbyPlayers.add(player);
         }
-        createdAt = System.currentTimeMillis();
-        gameLoop = new Thread(this);
-        gameLoop.start();
       } else {
         inGame = false;
       }
