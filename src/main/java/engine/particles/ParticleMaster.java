@@ -87,4 +87,8 @@ public class ParticleMaster {
     List<Particle> list = particles.computeIfAbsent(particle.getTexture(), k -> new ArrayList<>());
     list.add(particle);
   }
+
+  public static void reset() {
+    particles.clear();
+  }
 }

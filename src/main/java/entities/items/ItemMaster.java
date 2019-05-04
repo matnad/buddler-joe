@@ -126,6 +126,11 @@ public class ItemMaster {
     }
   }
 
+  public static void reset() {
+    itemLists.clear();
+    items.clear();
+  }
+
   public enum ItemTypes {
     DYNAMITE("DYNM"),
     TORCH("TRCH"),
