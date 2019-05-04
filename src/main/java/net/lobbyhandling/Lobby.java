@@ -146,7 +146,7 @@ public class Lobby implements Runnable {
       } catch (NoSuchElementException e) {
         // dont know
       }
-      
+
       // suche den spieler mit dieser zeitdifferenz
       for (ServerPlayer player : winningPlayers.keySet()) {
         if (min == winningPlayers.get(player)) {
@@ -273,6 +273,7 @@ public class Lobby implements Runnable {
    */
   public void gameOver(ServerPlayer player) {
     // setStatus("open");
+    setStatus("finished");
     History.runningRemove(lobbyId);
     // History.openAdd(lobbyId, lobbyName);
     String userName = player.getUsername();
