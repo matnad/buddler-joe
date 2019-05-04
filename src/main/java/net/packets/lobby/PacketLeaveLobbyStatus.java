@@ -74,7 +74,7 @@ public class PacketLeaveLobbyStatus extends Packet {
     } else if (status.startsWith("OK")) {
       // System.out.println("Successfully left lobby");
       if (Game.getActiveStages().contains(Game.Stage.INLOBBBY)) {
-        InLobby.done();
+        InLobby.setRemoveAtEndOfFrame(true);
         Game.addActiveStage(Game.Stage.CHOOSELOBBY);
         Game.removeActiveStage(Game.Stage.INLOBBBY);
       }

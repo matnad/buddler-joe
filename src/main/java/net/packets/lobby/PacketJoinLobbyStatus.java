@@ -70,7 +70,7 @@ public class PacketJoinLobbyStatus extends Packet {
       // System.out.println(createErrorMessage());
     } else if (status.startsWith("OK")) {
       // System.out.println("Successfully joined lobby");
-      ChooseLobby.done();
+      ChooseLobby.setRemoveAtEndOfFrame(true);
       Game.addActiveStage(Game.Stage.INLOBBBY);
       Game.removeActiveStage(Game.Stage.CHOOSELOBBY);
     } else { // Errors on Server
