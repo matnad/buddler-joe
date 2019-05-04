@@ -65,4 +65,17 @@ public class TestBlockDamage {
     PacketBlockDamage p = new PacketBlockDamage("1║12║12║test");
     Assert.assertTrue(p.hasErrors());
   }
+
+  @Test
+  public void checkCorrectDataClient() {
+    PacketBlockDamage p = new PacketBlockDamage(2,3,1f);
+    Assert.assertEquals("2║3║1.0", p.getData());
+  }
+
+  @Test
+  public void checkCorrectDataServer() {
+    PacketBlockDamage p = new PacketBlockDamage(1,1,2,1f);
+    p.processData();
+    Assert.assertEquals("1║1║2║1.0", p.getData());
+  }
 }

@@ -1,7 +1,9 @@
 package net.packets.lobby;
 
+import game.Game;
 import org.junit.Assert;
 import org.junit.Test;
+import org.mockito.Mockito;
 
 public class TestPacketLobbyOverview {
   @Test
@@ -25,6 +27,14 @@ public class TestPacketLobbyOverview {
   @Test
   public void checkDataFormatError() {
     PacketLobbyOverview p = new PacketLobbyOverview("Test║No open Lobbies");
+    Assert.assertEquals("ERRORS: ", p.createErrorMessage());
+  }
+
+  @Test
+  public void checkEverythingIsFine() {
+    Game game = Mockito.spy(Game.class);
+    PacketLobbyOverview p = new PacketLobbyOverview("OK║No open Lobbies");
+    p.processData();
     Assert.assertEquals("ERRORS: ", p.createErrorMessage());
   }
 }

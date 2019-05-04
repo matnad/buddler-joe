@@ -80,7 +80,7 @@ public class PacketLobbyOverview extends Packet {
           try {
             if (!isInt(in[i + 1])) {
               addError("Data Format error");
-              break;
+              return;
             }
             if (isExtendedAscii(in[i + 2])) {
               if (!in[i + 2].equals("s") && !in[i + 2].equals("m") && !in[i + 2].equals("l")) {
@@ -89,12 +89,10 @@ public class PacketLobbyOverview extends Packet {
             }
           } catch (ArrayIndexOutOfBoundsException e) {
             addError("Data Format error");
-            break;
+            return;
           }
         }
       }
-    } else {
-      addError("No data has been found");
     }
   }
 

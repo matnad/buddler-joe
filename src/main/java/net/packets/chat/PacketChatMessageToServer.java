@@ -91,6 +91,10 @@ public class PacketChatMessageToServer extends Packet {
    */
   @Override
   public void processData() {
+    if (hasErrors()) {
+      logger.error(createErrorMessage());
+      return;
+    }
     String status;
     String starter =
         "["

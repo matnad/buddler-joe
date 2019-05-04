@@ -100,6 +100,10 @@ public class PacketBlockDamage extends Packet {
    */
   @Override
   public void processData() {
+    if (hasErrors()) {
+      logger.error(createErrorMessage());
+      return;
+    }
     if (getClientId() > 0) {
       // Server side
       Lobby lobby = ServerLogic.getLobbyForClient(getClientId());
