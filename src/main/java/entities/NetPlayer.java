@@ -216,10 +216,10 @@ public class NetPlayer extends Entity {
   public void informServerOfLifeChange(int val) {
     PacketLifeStatus informServer;
     if (val == -1) {
-      informServer = new PacketLifeStatus((currentLives - 1) + "client" + clientId);
+      informServer = new PacketLifeStatus(currentLives - 1, clientId);
       informServer.sendToServer();
     } else if (val == 1) {
-      informServer = new PacketLifeStatus((currentLives + 1) + "client" + clientId);
+      informServer = new PacketLifeStatus(currentLives + 1, clientId);
       informServer.sendToServer();
     }
   }

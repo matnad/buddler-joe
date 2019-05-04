@@ -9,12 +9,11 @@ import org.slf4j.LoggerFactory;
 
 public class PacketLifeStatus extends Packet {
   private int currentLives;
-  private String sender;
-  private int playerId;
+  private int effectedPlayer;
   public static final Logger logger = LoggerFactory.getLogger(PacketLifeStatus.class);
 
   /**
-   * Client creates packet (and sends to server if sender equals client), if he saw a crush. Data
+   * Client creates packet, if he saw a crush. Data
    * contains the life status from the sender's perspective, sender specification(server/client) and
    * the playerId of the crushed player.
    *
@@ -24,12 +23,13 @@ public class PacketLifeStatus extends Packet {
    * be the final decision of server. This packet will be sent to lobby, so that every client can
    * update the life status of the respective player.
    *
-   * @param data is currentLives+sender+playerId; example: 2server4
+   * @param currentLives actual life status of effected player
+   * @param effectedPlayer the effected player
+   *
    */
-  public PacketLifeStatus(String data) {
+  public PacketLifeStatus(int currentLives, int effectedPlayer) {
     super(PacketTypes.LIFE_STATUS);
-    setData(data);
-    validate();
+    setData(currentLives + "║" + effectedPlayer);
   }
 
   /**
@@ -47,14 +47,42 @@ public class PacketLifeStatus extends Packet {
     validate();
   }
 
+  public PacketLifeStatus(String data) {
+    super(PacketTypes.LIFE_STATUS);
+    setData(data);
+    validate();
+  }
+
   /**
    * Checks whether the data is in the correct format and everything is in order with the validation
    * requirements.
    */
   @Override
   public void validate() {
+    if (getData() == null) {
+      addError("Data is null.");
+      return;
+    }
+    String[] informations = getData().split("║");
+    if (informations.length != 2) {
+      addError("Invalid number of arguments");
+      return;
+    }
+    try {
+      this.currentLives = Integer.parseInt(informations[0]);
+      this.effectedPlayer = Integer.parseInt(informations[1]);
+    } catch (NumberFormatException e) {
+      addError("Invalid life status odr invalid playerId");
+    }
+
+
+
+
+
+
+
+
     String currentLives = getData().substring(0, 1);
-    String sender = getData().substring(1, 7);
     String playerId = getData().substring(7);
     try {
       this.playerId = Integer.parseInt(playerId);
@@ -70,11 +98,7 @@ public class PacketLifeStatus extends Packet {
       } else {
         this.currentLives = test;
       }
-      if (!(sender.equals("server") || sender.equals("client"))) {
-        throw new IllegalArgumentException();
-      } else {
-        this.sender = sender;
-      }
+
       if (getClientId() != 0) {
         Lobby lobby = ServerLogic.getLobbyForClient(getClientId());
         if (lobby != null) {
@@ -106,7 +130,7 @@ public class PacketLifeStatus extends Packet {
         Lobby lobby = ServerLogic.getLobbyForClient(playerId);
         lobby.addPerspective(getClientId(), playerId, currentLives);
       }
-      if (getClientId() == 0 && sender.equals("server")) {
+      if (getClientId() == 0) {
         NetPlayerMaster.getNetPlayerById(playerId).updateLives(currentLives);
       }
     } else {
