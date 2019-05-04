@@ -18,7 +18,7 @@ public class TestPacketGetLobbies {
     public void checkEverythingWorksFine() {
         ServerLogic serverLogic = Mockito.spy(ServerLogic.class);
         ServerPlayer serverPlayer = new ServerPlayer("TestUser", 1);
-        serverLogic.getPlayerList().addPlayer(serverPlayer);
+        ServerLogic.getPlayerList().addPlayer(serverPlayer);
         PacketGetLobbies p = new PacketGetLobbies(1);
         p.processData();
         Assert.assertEquals("OK║No Lobbies online", p.getData());

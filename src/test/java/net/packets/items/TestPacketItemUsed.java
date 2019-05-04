@@ -1,8 +1,6 @@
 package net.packets.items;
 
 import net.ServerLogic;
-import net.lobbyhandling.Lobby;
-import net.playerhandling.ServerPlayer;
 import org.junit.Assert;
 import org.junit.Test;
 import org.mockito.Mock;

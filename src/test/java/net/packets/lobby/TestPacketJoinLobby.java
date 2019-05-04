@@ -27,7 +27,7 @@ public class TestPacketJoinLobby {
   public void checkNotLoggedIn() {
     ServerLogic serverLogic = Mockito.spy(ServerLogic.class);
     Lobby lobby = new Lobby("TestLobby", 1, "l");
-    serverLogic.getLobbyList().addLobby(lobby);
+    ServerLogic.getLobbyList().addLobby(lobby);
     PacketJoinLobby p = new PacketJoinLobby(1, "TestLobby");
     p.processData();
     Assert.assertEquals("ERRORS: Not logged in yet.", p.createErrorMessage());
@@ -37,10 +37,10 @@ public class TestPacketJoinLobby {
   public void checkAlreadyInALobby() {
     ServerLogic serverLogic = Mockito.spy(ServerLogic.class);
     Lobby lobby = new Lobby("TestLobby", 1, "l");
-    serverLogic.getLobbyList().addLobby(lobby);
+    ServerLogic.getLobbyList().addLobby(lobby);
     ServerPlayer player = new ServerPlayer("TestPlayer", 1);
     player.setCurLobbyId(1);
-    serverLogic.getPlayerList().addPlayer(player);
+    ServerLogic.getPlayerList().addPlayer(player);
     PacketJoinLobby p = new PacketJoinLobby(1, "TestLobby");
     p.processData();
     Assert.assertEquals(

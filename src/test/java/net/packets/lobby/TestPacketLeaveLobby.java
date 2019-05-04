@@ -19,7 +19,7 @@ public class TestPacketLeaveLobby {
   public void checkNotInALobby() {
     ServerLogic serverLogic = Mockito.spy(ServerLogic.class);
     ServerPlayer testPlayer = new ServerPlayer("TestPlayer", 1);
-    serverLogic.getPlayerList().addPlayer(testPlayer);
+    ServerLogic.getPlayerList().addPlayer(testPlayer);
     PacketLeaveLobby p = new PacketLeaveLobby(1);
     p.processData();
     Assert.assertEquals("ERRORS: You are not in a lobby.", p.createErrorMessage());
@@ -32,11 +32,11 @@ public class TestPacketLeaveLobby {
     ServerPlayer testPlayer = new ServerPlayer("TestPlayer", 1);
     testPlayer.setCurLobbyId(testLobby.getLobbyId());
     testLobby.addPlayer(testPlayer);
-    serverLogic.getLobbyList().addLobby(testLobby);
-    serverLogic.getPlayerList().addPlayer(testPlayer);
+    ServerLogic.getLobbyList().addLobby(testLobby);
+    ServerLogic.getPlayerList().addPlayer(testPlayer);
     PacketLeaveLobby p = new PacketLeaveLobby(1);
     p.processData();
     Assert.assertEquals(
-        "", serverLogic.getLobbyList().getLobby(testLobby.getLobbyId()).getPlayerNames());
+        "", ServerLogic.getLobbyList().getLobby(testLobby.getLobbyId()).getPlayerNames());
   }
 }

@@ -163,10 +163,15 @@ public class NetPlayerMaster {
    * @return The NetPlayer object related to the clientId
    */
   public static NetPlayer getNetPlayerById(int clientId) {
+    try {
     if (clientId == Game.getActivePlayer().getClientId()) {
       return Game.getActivePlayer();
     } else {
       return netPlayers.get(clientId);
+    }
+    } catch (NullPointerException e) {
+      logger.error("Player not existing");
+      return null;
     }
   }
 

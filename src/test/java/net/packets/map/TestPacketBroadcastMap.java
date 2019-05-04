@@ -27,7 +27,7 @@ public class TestPacketBroadcastMap {
         ServerMap serverMap = new ServerMap("l", 1);
         PacketBroadcastMap p = new PacketBroadcastMap("1║" + serverMap.toPacketString());
         p.processData();
-        Assert.assertEquals(new ClientMap("l",1).toString(), game.getMap().toString());
+        Assert.assertEquals(new ClientMap("l",1).toString(), Game.getMap().toString());
     }
 
 }

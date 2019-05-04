@@ -22,7 +22,7 @@ public class TestPacketLeaveLobbyStatus {
     @Test
     public void checkStatusOkInLobby() {
         Game game = Mockito.spy(Game.class);
-        game.addActiveStage(Game.Stage.INLOBBBY);
+        Game.addActiveStage(Game.Stage.INLOBBBY);
         PacketLeaveLobbyStatus p = new PacketLeaveLobbyStatus("OK");
         p.processData();
         Assert.assertEquals("ERRORS: ", p.createErrorMessage());
@@ -31,7 +31,7 @@ public class TestPacketLeaveLobbyStatus {
     @Test
     public void checkStatusOkInGame() {
         Game game = Mockito.spy(Game.class);
-        game.addActiveStage(Game.Stage.PLAYING);
+        Game.addActiveStage(Game.Stage.PLAYING);
         PacketLeaveLobbyStatus p = new PacketLeaveLobbyStatus("OK");
         p.processData();
         Assert.assertEquals("ERRORS: ", p.createErrorMessage());

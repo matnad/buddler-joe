@@ -31,7 +31,7 @@ public class TestPacketSetNameStatus {
     public void checkChangedChangedUsername() {
         Game game = Mockito.spy(Game.class);
         game.loadSettings();
-        game.getSettings().setUsername("Test");
+        Game.getSettings().setUsername("Test");
         PacketSetNameStatus p = new PacketSetNameStatus("CHANGED║Peter");
         p.processData();
         Assert.assertEquals("ERRORS: Not a real game!", p.createErrorMessage());

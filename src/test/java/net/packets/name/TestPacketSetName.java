@@ -30,21 +30,21 @@ public class TestPacketSetName {
     public void checkUsernameIsInList() {
         ServerLogic serverLogic = Mockito.spy(ServerLogic.class);
         ServerPlayer player = new ServerPlayer("Peter", 1);
-        serverLogic.getPlayerList().addPlayer(player);
+        ServerLogic.getPlayerList().addPlayer(player);
         ServerPlayer player2 = new ServerPlayer("Peter2", 2);
-        serverLogic.getPlayerList().addPlayer(player2);
+        ServerLogic.getPlayerList().addPlayer(player2);
         PacketSetName p = new PacketSetName(2, "Peter");
         p.processData();
-        Assert.assertEquals("Peter_1", serverLogic.getPlayerList().getUsername(2));
+        Assert.assertEquals("Peter_1", ServerLogic.getPlayerList().getUsername(2));
     }
 
     @Test
     public void checkUsernameIsNotInList() {
         ServerLogic serverLogic = Mockito.spy(ServerLogic.class);
         ServerPlayer player = new ServerPlayer("Hans", 2);
-        serverLogic.getPlayerList().addPlayer(player);
+        ServerLogic.getPlayerList().addPlayer(player);
         PacketSetName p = new PacketSetName(2, "Peter");
         p.processData();
-        Assert.assertEquals("Peter", serverLogic.getPlayerList().getUsername(2));
+        Assert.assertEquals("Peter", ServerLogic.getPlayerList().getUsername(2));
     }
 }
