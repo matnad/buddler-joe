@@ -2,11 +2,16 @@ package entities.items;
 
 import engine.models.RawModel;
 import engine.models.TexturedModel;
+import engine.particles.systems.Frozen;
+import engine.particles.systems.Snow;
 import engine.render.Loader;
 import engine.render.objconverter.ObjFileLoader;
 import engine.textures.ModelTexture;
+import entities.NetPlayer;
 import game.Game;
+import game.NetPlayerMaster;
 import net.packets.items.PacketItemUsed;
+import org.joml.Random;
 import org.joml.Vector3f;
 
 public class Ice extends Item {
@@ -16,10 +21,25 @@ public class Ice extends Item {
   private float time;
   private int itemId;
   private boolean freezeTriggered = false;
+  
+  private Frozen frozenExplosion;
+  private Snow snowEffect;
 
   /** Extended Constructor for Ice. Don't use directly. Use the Item Master to create items. */
   private Ice(Vector3f position, float rotX, float rotY, float rotZ, float scale) {
-    super(ItemMaster.ItemTypes.ICE, getPreloadedModel(), position, rotX, rotY, rotZ, scale);
+    super(ItemMaster.ItemTypes.ICE, getPreloadedModel(), position, rotX, rotY, rotZ, 0);
+
+    // Generate Explosion Effect
+    frozenExplosion = new Frozen(200, 11, 0, .8f, 15);
+    frozenExplosion.setScaleError(.4f);
+    frozenExplosion.setSpeedError(.3f);
+    frozenExplosion.setLifeError(.2f);
+
+    // Generate Player Effect
+    snowEffect = new Snow(2, 0, .1f, 1.5f, .4f);
+    snowEffect.setScaleError(.2f);
+    snowEffect.setLifeError(.6f);
+    snowEffect.setSpeedError(.3f);
   }
 
   /**
@@ -73,7 +93,17 @@ public class Ice extends Item {
         setDestroyed(true);
       }
     }
+
+    if (time < .5f) {
+      frozenExplosion.generateParticles(getPosition());
+    }
+
+    NetPlayer owner = NetPlayerMaster.getNetPlayerById(getOwner());
+    if (owner != null) {
+      snowEffect.makeItSnow(owner, 20);
+    }
   }
+
 
   /**
    * Method to set the ice as destroyed and to delete it from the ServerItemState.
