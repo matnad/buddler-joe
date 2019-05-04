@@ -39,6 +39,7 @@ public class Lobby implements Runnable {
   private String mapSize;
   private String status;
   private long createdAt;
+  private long lastEntry;
   private ServerItemState serverItemState;
   private boolean checked;
   private ConcurrentHashMap<Integer, Referee> refereesForClients;
@@ -58,6 +59,7 @@ public class Lobby implements Runnable {
     this.createrPlayerId = createrPlayerId;
     this.mapSize = mapSize;
     this.status = "open";
+    this.lastEntry = System.currentTimeMillis();
     this.inGame = false;
     this.lobbyPlayers = new CopyOnWriteArrayList<>();
     this.aliveLobbyPlayers = new CopyOnWriteArrayList<>();
@@ -105,12 +107,12 @@ public class Lobby implements Runnable {
           e.printStackTrace();
         }
       } else if (status.equals("open")) {
-        
-        //die schleife wird wärend status = open die ganze zeit wiederholt
-        //zeit immer wieder abchecken von lastentry bis jt
-        //falls > 5min dann status = finished setzen
-        //aus serverlobbyliste löschen
-        //allen packet verschicken; lobbyoverview
+        if (getPlayerAmount() == 0 && System.currentTimeMillis() - this.lastEntry > 20000) {
+          //TESTZWECKE 20sek, ----> 5min, 300'000 ms
+          ServerLogic.getLobbyList().removeLobby(this.lobbyId);
+          this.status = "finished";
+          History.openRemove(lobbyId);
+        }
       }
     }
   }
@@ -182,6 +184,7 @@ public class Lobby implements Runnable {
       return "Already joined this lobby.";
     }
     lobbyPlayers.add(player);
+    this.lastEntry = System.currentTimeMillis();
     return "OK";
   }
 

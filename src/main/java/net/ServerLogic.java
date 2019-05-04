@@ -74,6 +74,7 @@ public class ServerLogic {
 
     serverHighscore = ServerHighscoreSerialiser.readServerHighscore();
   }
+
   /**
    * Players are managed with their own handler class: {@link ServerPlayerList}.
    *
@@ -81,7 +82,6 @@ public class ServerLogic {
    *     them
    * @see ServerPlayerList
    */
-
   public static ServerPlayerList getPlayerList() {
     return playerList;
   }
