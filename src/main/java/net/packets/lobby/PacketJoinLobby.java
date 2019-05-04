@@ -72,11 +72,8 @@ public class PacketJoinLobby extends Packet {
     String status;
     if (ServerLogic.getLobbyList().getLobbyId(lobbyname) == -1) {
       addError("Chosen lobby does not exist.");
-    }
-    if (!isLoggedIn()) {
-      addError("Not loggedin yet.");
-    }
-    if (isInALobby()) {
+    } else if (!isLoggedIn()) {
+    } else if (isInALobby()) {
       addError("Already in a lobby, leave current lobby first.");
     }
     if (hasErrors()) {
@@ -94,20 +91,16 @@ public class PacketJoinLobby extends Packet {
     if (!hasErrors() && status.equals("OK")) {
       // CurrentLobbyInfo Update jor clients in this lobby
       int lobbyId = ServerLogic.getLobbyList().getLobbyId(lobbyname);
-      String info = "OK║" + ServerLogic.getLobbyList().getLobby(lobbyId).getPlayerNames();
       PacketCurLobbyInfo pcli = new PacketCurLobbyInfo(getClientId(), lobbyId);
       pcli.sendToLobby(lobbyId);
       // LobbyOverview update for clients currently not in a Lobby
-      info = "OK║" + ServerLogic.getLobbyList().getTopTen();
+      String info = "OK║" + ServerLogic.getLobbyList().getTopTen();
       PacketLobbyOverview packetLobbyOverview = new PacketLobbyOverview(getClientId(), info);
       packetLobbyOverview.sendToClientsNotInALobby();
 
       // Broadcast Map
       ServerMap map = ServerLogic.getLobbyList().getLobby(lobbyId).getMap();
       new PacketBroadcastMap(map).sendToClient(getClientId());
-      // for (PacketBlockDamage damagePacket : map.getDamagePackets()) {
-      //  damagePacket.sendToClient(getClientId());
-      // }
     }
   }
 }

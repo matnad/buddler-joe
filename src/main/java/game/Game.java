@@ -146,6 +146,14 @@ public class Game extends Thread {
     this.username = username;
   }
 
+  /** Constructor only to be used by Mockito to create test instances of game. */
+  public Game() {
+    logger.info("Not a real game, only a Unit Test game.");
+    serverIp = "TestServer.ch";
+    serverPort = 666;
+    this.username = "TestPlayer";
+  }
+
   public static double dt() {
     return dt;
   }

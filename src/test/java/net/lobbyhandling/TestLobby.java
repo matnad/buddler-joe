@@ -47,16 +47,6 @@ public class TestLobby {
     Assert.assertNotEquals(lobbyPlayer, testLobbby.getLobbyPlayers());
   }
 
-  //@Test
-  //public void checkRemovePlayer() {
-  //  CopyOnWriteArrayList<ServerPlayer> lobbyPlayer2 = new CopyOnWriteArrayList<>();
-  //  Lobby testLobbby = new Lobby("TestLobby", 1, "small");
-  //  ServerPlayer testPlayer = new ServerPlayer("TestPlayer", 1);
-  //  testLobbby.addPlayer(testPlayer);
-  //  testLobbby.removePlayer(testPlayer.getClientId());
-  //  Assert.assertEquals(lobbyPlayer2, testLobbby.getLobbyPlayers());
-  //}
-
   @Test
   public void checkGetPlayerNames() {
     Lobby testLobbby = new Lobby("TestLobby", 1, "small");

@@ -70,9 +70,7 @@ public class PacketLeaveLobbyStatus extends Packet {
   @Override
   public synchronized void processData() {
     if (hasErrors()) { // Errors on Client
-      // System.out.println(createErrorMessage());
     } else if (status.startsWith("OK")) {
-      // System.out.println("Successfully left lobby");
       if (Game.getActiveStages().contains(Game.Stage.INLOBBBY)) {
         InLobby.done();
         Game.addActiveStage(Game.Stage.CHOOSELOBBY);
@@ -86,7 +84,6 @@ public class PacketLeaveLobbyStatus extends Packet {
         // TODO:Trigger to reset everything here.
       }
     } else { // Errors on Server
-      System.out.println(status);
     }
   }
 }

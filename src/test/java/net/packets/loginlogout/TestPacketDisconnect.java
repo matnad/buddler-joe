@@ -10,9 +10,9 @@ public class TestPacketDisconnect {
   @Test
   public void checkCorrectDisconnectPacketServerNotConnected() {
     ServerLogic serverLogic = Mockito.mock(ServerLogic.class);
-    PacketDisconnect p = new PacketDisconnect(1);
+    PacketDisconnect p = new PacketDisconnect(10);
     p.processData();
-    Assert.assertEquals("ERRORS: Not Connected to the Server.", p.createErrorMessage());
+    Assert.assertEquals("ERRORS: ", p.createErrorMessage());
   }
 
   @Test

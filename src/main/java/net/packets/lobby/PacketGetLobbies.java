@@ -31,6 +31,7 @@ public class PacketGetLobbies extends Packet {
   public PacketGetLobbies() {
     // client builds
     super(PacketTypes.GET_LOBBIES);
+    validate();
   }
 
   /** Dummy method. Since there is no content to validate. */
@@ -51,13 +52,13 @@ public class PacketGetLobbies extends Packet {
   public void processData() {
     String info;
     if (!isLoggedIn()) {
-      addError("Not loggedin yet");
     }
     if (hasErrors()) {
       info = createErrorMessage();
     } else {
       info = "OK║" + ServerLogic.getLobbyList().getTopTen();
     }
+    setData(info);
     PacketLobbyOverview p = new PacketLobbyOverview(getClientId(), info);
     p.sendToClient(getClientId());
   }

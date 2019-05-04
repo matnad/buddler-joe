@@ -2,7 +2,6 @@ package net.packets.lobby;
 
 import game.Game;
 import game.LobbyEntry;
-import java.util.Arrays;
 import java.util.concurrent.CopyOnWriteArrayList;
 import net.packets.Packet;
 
@@ -29,6 +28,10 @@ public class PacketLobbyOverview extends Packet {
     // Client receives
     super(PacketTypes.LOBBY_OVERVIEW);
     setData(data);
+    if(data == null) {
+      addError("No Data available.");
+      return;
+    }
     in = getData().split("║");
     validate();
   }
@@ -48,6 +51,10 @@ public class PacketLobbyOverview extends Packet {
     super(PacketTypes.LOBBY_OVERVIEW);
     setClientId(clientId);
     setData(data);
+    if(data == null) {
+      addError("No Data available.");
+      return;
+    }
     in = getData().split("║");
     validate();
   }
@@ -99,17 +106,7 @@ public class PacketLobbyOverview extends Packet {
   @Override
   public void processData() {
     if (hasErrors()) {
-      // System.out.println(createErrorMessage());
     } else if (in[0].equals("OK")) { // the "OK" gets added in PacketCreatLobby.processData and
-      // System.out.println("-------------------------------------");
-      // System.out.println("Available Lobbies:");
-      // for (int i = 2; i < in.length - 1; i = i + 2) {
-      //  System.out.println("Name: " + in[i] + " Players: " + in[i + 1]);
-      // }
-      // System.out.println("-------------------------------------");
-      // System.out.println("To join a lobby, type: join <lobby name>");
-      // System.out.println("To create a new lobby, type: create <lobby name>");
-
       CopyOnWriteArrayList<LobbyEntry> catalog = new CopyOnWriteArrayList<LobbyEntry>();
       if (in.length > 2) {
         for (int i = 2; i < in.length; i = i + 3) {
@@ -118,7 +115,6 @@ public class PacketLobbyOverview extends Packet {
       }
       Game.setLobbyCatalog(catalog);
     } else {
-      // System.out.println(in[0]);
     }
   }
 }
