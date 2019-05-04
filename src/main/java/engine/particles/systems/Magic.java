@@ -9,7 +9,8 @@ public class Magic extends ParticleSystem {
   private static ParticleTexture particleTexture;
 
   /**
-   * ParticleSystem with texture for purple Magic pre-loaded. See ParticleSystem.java for more details.
+   * ParticleSystem with texture for purple Magic pre-loaded. See ParticleSystem.java for more
+   * details.
    *
    * @param pps Particles per second. Will be probabilistically rounded each frame.
    * @param speed Distance travelled per second.

@@ -31,6 +31,11 @@ public class Snow extends ParticleSystem {
     particleTexture = new ParticleTexture(loader.loadTexture("snowflake"), 1, true);
   }
 
+  /** Create a snowing effect above target player using the settings in this instance.
+   *
+   * @param owner player to create the snow effect for
+   * @param count number of snowflakes per frame, a good value is around 20
+   */
   public void makeItSnow(NetPlayer owner, int count) {
     Vector3f pos = new Vector3f(owner.getPosition());
     Random rng = new Random(System.currentTimeMillis());
