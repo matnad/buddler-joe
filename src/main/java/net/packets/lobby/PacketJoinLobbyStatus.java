@@ -25,6 +25,7 @@ public class PacketJoinLobbyStatus extends Packet {
     // server builds
     super(Packet.PacketTypes.JOIN_LOBBY_STATUS);
     setData(data);
+    status = getData();
     setClientId(clientId);
     validate();
   }
