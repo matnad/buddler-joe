@@ -28,7 +28,7 @@ public class PacketLobbyOverview extends Packet {
     // Client receives
     super(PacketTypes.LOBBY_OVERVIEW);
     setData(data);
-    if(data == null) {
+    if (data == null) {
       addError("No Data available.");
       return;
     }
@@ -51,7 +51,7 @@ public class PacketLobbyOverview extends Packet {
     super(PacketTypes.LOBBY_OVERVIEW);
     setClientId(clientId);
     setData(data);
-    if(data == null) {
+    if (data == null) {
       addError("No Data available.");
       return;
     }
@@ -75,7 +75,12 @@ public class PacketLobbyOverview extends Packet {
         // No need to validate anything else
         return;
       }
+      if (in.length == 2 && in[1].equals("No Lobbies online")) {
+        // No need to validate anything else
+        return;
+      }
       if (in.length > 1 && isInt(in[1])) {
+
         for (int i = 2; i < in.length; i = i + 3) {
           try {
             if (!isInt(in[i + 1])) {
@@ -104,6 +109,7 @@ public class PacketLobbyOverview extends Packet {
   @Override
   public void processData() {
     if (hasErrors()) {
+      /*Do we still need this if statement?*/
     } else if (in[0].equals("OK")) { // the "OK" gets added in PacketCreatLobby.processData and
       CopyOnWriteArrayList<LobbyEntry> catalog = new CopyOnWriteArrayList<LobbyEntry>();
       if (in.length > 2) {
@@ -113,6 +119,7 @@ public class PacketLobbyOverview extends Packet {
       }
       Game.setLobbyCatalog(catalog);
     } else {
+      /*Do we still need this else statement?*/
     }
   }
 }

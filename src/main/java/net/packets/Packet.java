@@ -164,7 +164,7 @@ public abstract class Packet {
    */
   protected void addError(String error) {
     errors.add(error);
-    logger.info(error);
+    logger.info("/" + getPacketType() + "/ " + error);
   }
 
   /**

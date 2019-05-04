@@ -131,7 +131,7 @@ public class Game extends Thread {
       new CopyOnWriteArrayList<>();
   public String username;
   // Set to true to create and join a lobby. For quicker testing.
-  private boolean autoJoin = true;
+  private boolean autoJoin = false;
 
   /**
    * The constructor for the game to be called from the main class.
@@ -640,19 +640,16 @@ public class Game extends Thread {
     System.out.println("logged in");
 
     // Creating and joining Lobby
-    // if (autoJoin) {
     String lobname = String.valueOf(new Random().nextInt((int) 10e15));
-    LoadingScreen.updateLoadingMessage("joining lobby");
-    new PacketCreateLobby(lobname + "║s").sendToServer();
-    while (!lobbyCreated) {
-      Thread.sleep(50);
-    }
-    // }
-
     if (autoJoin) {
+      LoadingScreen.updateLoadingMessage("joining lobby");
+      new PacketCreateLobby(lobname + "║s").sendToServer();
+      while (!lobbyCreated) {
+        Thread.sleep(50);
+      }
 
       new PacketJoinLobby(lobname).sendToServer();
-      while (!NetPlayerMaster.getLobbyname().equals(lobname)) {
+      while (NetPlayerMaster.getLobbyname().equals("")) {
         Thread.sleep(50);
       }
       LoadingScreen.updateLoadingMessage("generating map");

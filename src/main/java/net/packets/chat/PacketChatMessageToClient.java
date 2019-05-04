@@ -76,7 +76,7 @@ public class PacketChatMessageToClient extends Packet {
       status = createErrorMessage();
     } else {
       try {
-      Game.getChat().addText(chatmsg);
+        Game.getChat().addText(chatmsg);
       } catch (NullPointerException e) {
         logger.error("No game available.");
       }

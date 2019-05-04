@@ -57,6 +57,7 @@ public class PacketLeaveLobby extends Packet {
     String status;
     int lobbyId = -1;
     if (!isLoggedIn()) {
+      /*Do we still need this if statement?*/
     } else if (!isInALobby()) {
       addError("You are not in a lobby.");
     }

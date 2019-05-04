@@ -73,6 +73,7 @@ public class PacketJoinLobby extends Packet {
     if (ServerLogic.getLobbyList().getLobbyId(lobbyname) == -1) {
       addError("Chosen lobby does not exist.");
     } else if (!isLoggedIn()) {
+      /*Do we still need this if statement?*/
     } else if (isInALobby()) {
       addError("Already in a lobby, leave current lobby first.");
     }
