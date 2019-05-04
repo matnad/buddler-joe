@@ -33,7 +33,7 @@ public class Lobby implements Runnable {
   private String lobbyName;
   private CopyOnWriteArrayList<ServerPlayer> lobbyPlayers;
   private CopyOnWriteArrayList<ServerPlayer> aliveLobbyPlayers;
-  private CopyOnWriteArrayList<ServerPlayer> archiveLobbyPlayers; // bleibt unberührt
+  private CopyOnWriteArrayList<ServerPlayer> archiveLobbyPlayers;
   private ServerMap map;
   private int createrPlayerId;
   private String mapSize;
@@ -41,7 +41,7 @@ public class Lobby implements Runnable {
   private long createdAt;
   private ServerItemState serverItemState;
   private boolean checked;
-  private ConcurrentHashMap<Integer, Referee> refereesForClients; // Integer = clientId
+  private ConcurrentHashMap<Integer, Referee> refereesForClients;
   private Thread gameLoop;
 
   /**
@@ -113,7 +113,8 @@ public class Lobby implements Runnable {
   }
 
   /**
-   * checks the player who collected the largest amount of gold.
+   * checks the player who collected the largest amount of gold, if all players are defeated. The
+   * time is also taken into account.
    *
    * @return the winner
    */
@@ -121,7 +122,6 @@ public class Lobby implements Runnable {
     checked = !checked;
     int highestGoldValue = -1;
 
-    // grössten goldwert bestimmen
     for (ServerPlayer player : archiveLobbyPlayers) {
       if (highestGoldValue < player.getCurrentGold()) {
         highestGoldValue = player.getCurrentGold();
@@ -129,25 +129,20 @@ public class Lobby implements Runnable {
     }
 
     if (highestGoldValue != 0) {
-
-      // alle spieler mit gleichen goldmenge(=highestGoldValue) in map
-      ConcurrentHashMap<ServerPlayer, Long> winningPlayers =
-          new ConcurrentHashMap<>(); // spieler, zeitdiff.
+      ConcurrentHashMap<ServerPlayer, Long> winningPlayers = new ConcurrentHashMap<>();
       for (ServerPlayer player : archiveLobbyPlayers) {
         if (highestGoldValue == player.getCurrentGold()) {
           winningPlayers.put(player, player.getTimeStampOfGain());
         }
       }
 
-      // kleinste zeitdifferenz
       long min = 0;
       try {
         min = Collections.min(winningPlayers.values());
       } catch (NoSuchElementException e) {
-        // dont know
+        logger.warn("No proper winner determination");
       }
 
-      // suche den spieler mit dieser zeitdifferenz
       for (ServerPlayer player : winningPlayers.keySet()) {
         if (min == winningPlayers.get(player)) {
           return player;
@@ -155,7 +150,6 @@ public class Lobby implements Runnable {
       }
     }
 
-    // falls highestGoldValue == 0, random
     Random rnd = new Random(System.currentTimeMillis());
     int r = rnd.nextInt(archiveLobbyPlayers.size());
     return archiveLobbyPlayers.get(r);
@@ -192,7 +186,7 @@ public class Lobby implements Runnable {
         ServerPlayer player = ServerLogic.getPlayerList().getPlayer(clientId);
         ServerLogic.getPlayerList().resetPlayer(player);
         player.setReady(false);
-        lobbyPlayers.remove(player); // nullpointerproblem
+        lobbyPlayers.remove(player);
         aliveLobbyPlayers.remove(player);
         if (status.equals("open") && allPlayersReady() && !isEmpty()) {
           startRound();
@@ -279,7 +273,6 @@ public class Lobby implements Runnable {
     History.archive("Lobbyname: " + lobbyName + "       Winner: " + userName);
     long time = System.currentTimeMillis() - getCreatedAt();
 
-    // BEACHTEN
     // Update highscore
     if (!player.isDefeated()) {
       ServerLogic.getServerHighscore().addPlayer(time, userName);
@@ -405,7 +398,7 @@ public class Lobby implements Runnable {
   /** Starts the Round for this Lobby. */
   public void startRound() {
     for (ServerPlayer player : lobbyPlayers) {
-        archiveLobbyPlayers.add(player);
+      archiveLobbyPlayers.add(player);
     }
     setStatus("running");
     History.openRemove(lobbyId);
