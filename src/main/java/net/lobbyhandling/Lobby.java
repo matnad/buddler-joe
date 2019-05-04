@@ -157,7 +157,7 @@ public class Lobby implements Runnable {
 
     // falls highestGoldValue == 0, random
     Random rnd = new Random(System.currentTimeMillis());
-    int r = rnd.nextInt(archiveLobbyPlayers.size() + 1);
+    int r = rnd.nextInt(archiveLobbyPlayers.size());
     return archiveLobbyPlayers.get(r);
   }
 
