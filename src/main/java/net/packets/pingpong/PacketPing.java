@@ -46,7 +46,7 @@ public class PacketPing extends Packet {
     } else {
       char[] temp = getData().toCharArray();
       for (int i = 0; i < getData().length(); i++) {
-        if ( 48 > temp[i] && temp[i] > 57) {
+        if (48 > temp[i] && temp[i] > 57) {
           addError("Not a digit.");
           return;
         }

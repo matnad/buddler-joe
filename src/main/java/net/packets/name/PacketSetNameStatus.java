@@ -73,7 +73,7 @@ public class PacketSetNameStatus extends Packet {
         try {
           Game.getActivePlayer().setUsername(status[1]);
           Game.getSettings().setUsername(status[1]);
-          ChangeName.setMsg("");
+          //ChangeName.setMsg("");
         } catch (NullPointerException e) {
           addError("Not a real game!");
         }
