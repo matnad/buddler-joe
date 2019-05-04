@@ -55,7 +55,6 @@ public class Playing {
   private static GuiTexture iceCracks;
   private static GuiTexture iceGradient;
   private static GuiTexture iceTotal;
-  private static boolean freezeShow = false;
   private static MenuButton resetWhisperAll;
 
   /**
@@ -65,22 +64,25 @@ public class Playing {
    * @param loader main loader
    */
   public static void init(Loader loader) {
+    LoadingScreen.progess();
     damageOverlay =
         new GuiTexture(loader.loadTexture("HurtRed"), new Vector2f(0, 0), new Vector2f(1, 1), 1);
+    LoadingScreen.progess();
     damageCorner =
         new GuiTexture(loader.loadTexture("RedGrad4K"), new Vector2f(0, 0), new Vector2f(1, 1), 1);
-
+    LoadingScreen.progess();
     iceCracks =
         new GuiTexture(loader.loadTexture("EisRisse"), new Vector2f(0, 0), new Vector2f(1, 1), 1);
+    LoadingScreen.progess();
     iceGradient =
         new GuiTexture(
             loader.loadTexture("whitegradient"), new Vector2f(0, 0), new Vector2f(1, 1), 1);
-
+    LoadingScreen.progess();
     iceTotal =
         new GuiTexture(loader.loadTexture("whiteOut"), new Vector2f(0, 0), new Vector2f(1, 1), 1);
-
+    LoadingScreen.progess();
     floatingGoldStrings = new FloatingStrings(Game.getActivePlayer().getBbox(), 3f);
-
+    LoadingScreen.progess();
     whisper =
         new MenuButton(
             loader,
@@ -89,7 +91,7 @@ public class Playing {
             new Vector2f(-0.836458f, -0.322296f),
             new Vector2f(.057691f, .025f));
     whisper.setActivationMinAlpha(0.8f);
-
+    LoadingScreen.progess();
     all =
         new MenuButton(
             loader,
@@ -255,7 +257,6 @@ public class Playing {
 
   /** Prepares variables, so that the FreezeOverlay can be displayed. */
   public static void showFreezeOverlay() {
-    freezeShow = true;
     freezeRemaining = Star.getFreezeTime();
     freezeFramesRemaining = (int) freezeRemaining * 60;
     freezeFramesTotal = freezeFramesRemaining;
@@ -294,12 +295,11 @@ public class Playing {
           iceCracks.setAlpha(iceCracks.getAlpha() - stepsize);
         }
       }
-      guis.add(iceTotal);
-      guis.add(iceGradient);
-      guis.add(iceCracks);
+      //guis.add(iceTotal);
+      //guis.add(iceGradient);
+      //guis.add(iceCracks);
       freezeFramesRemaining--;
     } else {
-      freezeShow = false;
       iceTotal.setAlpha(0);
       iceCracks.setAlpha(0);
       iceGradient.setAlpha(0);

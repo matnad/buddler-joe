@@ -10,6 +10,7 @@ import static org.lwjgl.glfw.GLFW.GLFW_KEY_S;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_SPACE;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_T;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_W;
+import static org.lwjgl.glfw.GLFW.glfwSetCursorEnterCallback;
 
 import engine.io.InputHandler;
 import entities.blocks.AirBlock;
@@ -17,6 +18,7 @@ import entities.blocks.Block;
 import entities.blocks.BlockMaster;
 import entities.collision.BoundingBox;
 import entities.items.ItemMaster;
+import entities.items.Star;
 import game.Game;
 import game.stages.Playing;
 import net.packets.block.PacketBlockDamage;
@@ -58,7 +60,11 @@ public class Player extends NetPlayer {
   private boolean sendVelocityToServer = false; // If we need to update velocity this frame
   // Other
   private boolean controlsDisabled;
-  private boolean frozen = false;
+
+  private float currentRunSpeed;
+  private float currentDigDamage;
+  private float currentJumpPower;
+  private float freezeDuration;
   private float torchTimeout = torchPlaceDelay;
 
   /**
@@ -101,7 +107,27 @@ public class Player extends NetPlayer {
     }
 
     // Check if player can move
-    controlsDisabled = isDefeated() || frozen || Game.getChat().isEnabled();
+    controlsDisabled = isDefeated() || Game.getChat().isEnabled();
+
+    // Apply freeze
+    currentRunSpeed = runSpeed;
+    currentDigDamage = digDamage;
+    currentJumpPower = jumpPower;
+    if (frozen) {
+      // Calculate freeze factor
+      freezeDuration += Game.dt();
+      float freezeFactor;
+      if (freezeDuration > 2) {
+        freezeFactor = Math.max((freezeDuration - 2) / Star.getFreezeTime() * .4f, 0);
+      } else {
+        freezeFactor = 0;
+      }
+
+      // Slow all actions by freeze factor
+      currentRunSpeed = runSpeed * freezeFactor;
+      currentDigDamage = digDamage * freezeFactor;
+      currentJumpPower = jumpPower * freezeFactor;
+    }
 
     sendVelocityToServer = false;
     collideWithBlockAbove = null;
@@ -113,11 +139,10 @@ public class Player extends NetPlayer {
     if (Game.getActiveStages().size() == 1 && Game.getActiveStages().get(0) == PLAYING) {
       // Only check inputs if no other stage is active (stages are menu screens)
       checkInputs(); // See which relevant keys are pressed
-      digDamage = 1;
     } else {
       stopVelocityX();
       stopVelocityY();
-      digDamage = 0;
+      currentDigDamage = 0;
     }
 
     // Update position by distance travelled
@@ -294,13 +319,13 @@ public class Player extends NetPlayer {
     }
     // Update damage and time, save locally
     digIntervallTimer += Game.dt();
-    lastDiggedBlockDamage += (float) (digDamage * Game.dt());
+    lastDiggedBlockDamage += (float) (currentDigDamage * Game.dt());
 
     // Check if we hit time threshold to send update to the server
     if (digIntervallTimer >= digInterval) {
       // Make sure we don't send invalid packets. If framerate is below 5, the player will dig
       // slower but not violate any rules
-      lastDiggedBlockDamage = Math.min(lastDiggedBlockDamage, digDamage * digIntervallTimer);
+      lastDiggedBlockDamage = Math.min(lastDiggedBlockDamage, currentDigDamage * digIntervallTimer);
       new PacketBlockDamage(block.getGridX(), block.getGridY(), lastDiggedBlockDamage)
           .sendToServer();
       // Reset timer without losing overflow
@@ -311,12 +336,8 @@ public class Player extends NetPlayer {
 
   /** VERY simple jump. */
   private void jump() {
-    // if (!isJumping) {
-    //  this.upwardsSpeed = jumpPower;
-    //  isJumping = true;
-    // }
     if (!isJumping) {
-      setGoalVelocityY(jumpPower);
+      setGoalVelocityY(currentJumpPower);
       isJumping = true;
     }
   }
@@ -353,15 +374,15 @@ public class Player extends NetPlayer {
       return;
     }
 
-    if (InputHandler.isKeyDown(GLFW_KEY_A) && goalVelocity.x != -runSpeed) {
+    if (InputHandler.isKeyDown(GLFW_KEY_A) && goalVelocity.x != -currentRunSpeed) {
       // Set goal velocity
-      setGoalVelocityX(-runSpeed);
+      setGoalVelocityX(-currentRunSpeed);
     } else if (InputHandler.isKeyReleased(GLFW_KEY_A) && goalVelocity.x != 0) {
       setGoalVelocityX(0);
     }
-    if (InputHandler.isKeyDown(GLFW_KEY_D) && goalVelocity.x != runSpeed) {
+    if (InputHandler.isKeyDown(GLFW_KEY_D) && goalVelocity.x != currentRunSpeed) {
       // Set goal velocity
-      setGoalVelocityX(runSpeed);
+      setGoalVelocityX(currentRunSpeed);
     } else if (InputHandler.isKeyReleased(GLFW_KEY_D) && goalVelocity.x != 0) {
       setGoalVelocityX(0);
     }
@@ -411,6 +432,7 @@ public class Player extends NetPlayer {
     frozen = true;
     if (initial) {
       showFreezeOverlay();
+      freezeDuration = 0;
     }
   }
 

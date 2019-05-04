@@ -2,6 +2,7 @@ package net.packets.lobby;
 
 import game.Game;
 import game.stages.ChooseLobby;
+import game.stages.InLobby;
 import net.packets.Packet;
 
 /**
@@ -73,6 +74,7 @@ public class PacketJoinLobbyStatus extends Packet {
       // System.out.println("Successfully joined lobby");
       Game.getChat().setLobbyChatSettings();
       ChooseLobby.setRemoveAtEndOfFrame(true);
+      InLobby.setRemoveAtEndOfFrame(true);
       Game.addActiveStage(Game.Stage.INLOBBBY);
       Game.removeActiveStage(Game.Stage.CHOOSELOBBY);
       } catch (NullPointerException e) {

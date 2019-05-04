@@ -46,6 +46,7 @@ public class NetPlayer extends Entity {
   private static TexturedModel joeModel;
   private static TexturedModel ripModel;
   private static int counter;
+  protected boolean frozen = false;
   Block collideWithBlockAbove;
   Block collideWithBlockBelow;
   Vector3f currentVelocity = new Vector3f();
@@ -286,16 +287,22 @@ public class NetPlayer extends Entity {
     }
   }
 
+  /**
+   * Calculate current turn speed based on run speed.
+   *
+   * @return current turn speed in degrees per second
+   */
   float getCurrentTurnSpeed() {
     float currentTurnSpeed;
-    if (goalVelocity.x == -runSpeed) {
-      currentTurnSpeed = -turnSpeed;
+    float factor = Math.abs(goalVelocity.x / runSpeed);
+    if (goalVelocity.x < 0) {
+      currentTurnSpeed = -turnSpeed * factor;
       if (getRotY() <= -90) {
         currentTurnSpeed = 0;
         setRotY(-90);
       }
-    } else if (goalVelocity.x == runSpeed) {
-      currentTurnSpeed = turnSpeed;
+    } else if (goalVelocity.x > 0) {
+      currentTurnSpeed = turnSpeed * factor;
       if (getRotY() >= 90) {
         currentTurnSpeed = 0;
         setRotY(90);
@@ -328,6 +335,7 @@ public class NetPlayer extends Entity {
     }
   }
 
+  /** Stop the player from walking off the map horizontally. */
   protected void enforceMapBounds() {
     float offset = 1;
     if (getPosition().x < offset) {
@@ -335,6 +343,11 @@ public class NetPlayer extends Entity {
     } else if (getPosition().x > Game.getMap().getWidth() * GameMap.getDim() - offset) {
       setPositionX(Game.getMap().getWidth() * GameMap.getDim() - offset);
     }
+  }
+
+  // Only use this for NetPlayers, this is just for the effect. For the player us Player.freeze()
+  public void setFrozen(boolean frozen) {
+    this.frozen = frozen;
   }
 
   /** Reset the static components before a new Game. */
