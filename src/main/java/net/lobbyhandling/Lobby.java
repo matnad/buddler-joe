@@ -39,6 +39,7 @@ public class Lobby implements Runnable {
   private String mapSize;
   private String status;
   private long createdAt;
+  private long lastEntry;
   private ServerItemState serverItemState;
   private boolean checked;
   private ConcurrentHashMap<Integer, Referee> refereesForClients;
@@ -58,6 +59,7 @@ public class Lobby implements Runnable {
     this.createrPlayerId = createrPlayerId;
     this.mapSize = mapSize;
     this.status = "open";
+    this.lastEntry = System.currentTimeMillis();
     this.inGame = false;
     this.lobbyPlayers = new CopyOnWriteArrayList<>();
     this.aliveLobbyPlayers = new CopyOnWriteArrayList<>();
@@ -68,6 +70,9 @@ public class Lobby implements Runnable {
     lobbyCounter++;
     checked = false;
     map = new ServerMap(mapSize, System.currentTimeMillis());
+    createdAt = System.currentTimeMillis();
+    gameLoop = new Thread(this);
+    gameLoop.start();
   }
 
   @Override
@@ -76,29 +81,38 @@ public class Lobby implements Runnable {
     while (!status.equals("finished")) {
       long startOfLoop = System.currentTimeMillis();
 
-      // Do stuff
-      for (ServerPlayer player : aliveLobbyPlayers) {
-        if (player.isKicked()) {
-          logger.info("Kicking " + player.getUsername() + ".");
-          ServerLogic.removePlayer(player.getClientId());
-        }
-        if (player.isDefeated()) {
-          aliveLobbyPlayers.remove(player);
-        }
-      }
-
-      try {
-        if (aliveLobbyPlayers.size() == 0 && !checked) {
-          Thread.sleep(2500);
-          if (getCurrentWinner() != null) {
-            gameOver(getCurrentWinner());
+      if (status.equals("running")) {
+        // Do stuff
+        for (ServerPlayer player : aliveLobbyPlayers) {
+          if (player.isKicked()) {
+            logger.info("Kicking " + player.getUsername() + ".");
+            ServerLogic.removePlayer(player.getClientId());
           }
-        } else {
-          // Wait for the rest of the second
-          Thread.sleep(1000 - System.currentTimeMillis() + startOfLoop);
+          if (player.isDefeated()) {
+            aliveLobbyPlayers.remove(player);
+          }
         }
-      } catch (InterruptedException e) {
-        e.printStackTrace();
+
+        try {
+          if (aliveLobbyPlayers.size() == 0 && !checked) {
+            Thread.sleep(2500);
+            if (getCurrentWinner() != null) {
+              gameOver(getCurrentWinner());
+            }
+          } else {
+            // Wait for the rest of the second
+            Thread.sleep(1000 - System.currentTimeMillis() + startOfLoop);
+          }
+        } catch (InterruptedException e) {
+          e.printStackTrace();
+        }
+      } else if (status.equals("open")) {
+        if (getPlayerAmount() == 0 && System.currentTimeMillis() - this.lastEntry > 120000) {
+          //TESTZWECKE 20sek, ----> 5min, 300'000 ms
+          ServerLogic.getLobbyList().removeLobby(this.lobbyId);
+          this.status = "finished";
+          History.openRemove(lobbyId);
+        }
       }
     }
   }
@@ -170,6 +184,7 @@ public class Lobby implements Runnable {
       return "Already joined this lobby.";
     }
     lobbyPlayers.add(player);
+    this.lastEntry = System.currentTimeMillis();
     return "OK";
   }
 
@@ -364,9 +379,6 @@ public class Lobby implements Runnable {
         for (ServerPlayer player : lobbyPlayers) {
           aliveLobbyPlayers.add(player);
         }
-        createdAt = System.currentTimeMillis();
-        gameLoop = new Thread(this);
-        gameLoop.start();
       } else {
         inGame = false;
       }

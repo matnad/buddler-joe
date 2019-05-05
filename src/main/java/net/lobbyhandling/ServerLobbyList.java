@@ -1,6 +1,8 @@
 package net.lobbyhandling;
 
 import java.util.concurrent.ConcurrentHashMap;
+import net.packets.lobby.PacketLobbyOverview;
+
 
 /**
  * This class acts as a list. It is used by the Server to handle the current lobbies.
@@ -49,6 +51,9 @@ public class ServerLobbyList {
   public int removeLobby(int lobbyId) {
     if (lobbies.containsKey(lobbyId)) {
       lobbies.remove(lobbyId);
+      String info = "OK║" + getTopTen();
+      PacketLobbyOverview overview = new PacketLobbyOverview(1, info);
+      overview.sendToClientsNotInALobby();
       return 1;
     } else {
       return -1;
