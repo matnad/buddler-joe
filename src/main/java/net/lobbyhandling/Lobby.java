@@ -38,6 +38,7 @@ public class Lobby implements Runnable {
   private String mapSize;
   private String status;
   private long createdAt;
+  private long startedAt;
   private long lastEntry;
   private ServerItemState serverItemState;
   private boolean checked;
@@ -114,7 +115,9 @@ public class Lobby implements Runnable {
         }
       }
       try {
-        Thread.sleep(1000 - System.currentTimeMillis() + startOfLoop);
+        if (System.currentTimeMillis() + startOfLoop < 1000) {
+          Thread.sleep(1000 - System.currentTimeMillis() + startOfLoop);
+        }
       } catch (InterruptedException e) {
         e.printStackTrace();
       }
@@ -290,7 +293,7 @@ public class Lobby implements Runnable {
     // History.openAdd(lobbyId, lobbyName);
     String userName = player.getUsername();
     History.archive("Lobbyname: " + lobbyName + "       Winner: " + userName);
-    long time = System.currentTimeMillis() - getCreatedAt();
+    long time = System.currentTimeMillis() - this.startedAt;
 
     // Update highscore
     if (!player.isDefeated()) {
@@ -389,8 +392,8 @@ public class Lobby implements Runnable {
     }
   }
 
-  public long getCreatedAt() {
-    return createdAt;
+  public long getStartedAt() {
+    return startedAt;
   }
 
   public ServerItemState getServerItemState() {
@@ -419,7 +422,7 @@ public class Lobby implements Runnable {
     setStatus("running");
     History.openRemove(lobbyId);
     History.runningAdd(lobbyId, lobbyName);
-
+    this.startedAt = System.currentTimeMillis();
     new PacketStartRound().sendToLobby(lobbyId);
   }
 
