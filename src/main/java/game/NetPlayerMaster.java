@@ -64,7 +64,7 @@ public class NetPlayerMaster {
    * @param username username of the player
    */
   public static void addPlayer(int clientId, String username) {
-    System.out.println("adding " + username);
+    logger.info("adding " + username);
     if (!netPlayers.containsKey(clientId)) {
       NetPlayer newPlayer = new NetPlayer(clientId, username, new Vector3f(1000, 1000, 3), 0, 0, 0);
       netPlayers.put(clientId, newPlayer);
