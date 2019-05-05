@@ -241,11 +241,10 @@ public class ServerPlayer {
     // Check moved distance with some margin
     // System.out.println("moved: " + Math.abs(pos2dOld.x - pos2d.x));
     if (Math.abs(pos2dOld.x - pos2d.x) > allowedRunSpeed + 5) {
-      if (movementViolations >= 0) {
+      addMovementViolations(1);
+      if (movementViolations > 0) {
         // The first "violation" is for placing the player and will be ignored
         logger.warn(getUsername() + " is moving too fast. 1 violation.");
-        addMovementViolations(1);
-
         // If the moved distance is more than twice the allowed, add another 4 violations
         if (Math.abs(pos2dOld.x - pos2d.x) > allowedRunSpeed * 2) {
           logger.warn(getUsername() + " is teleporting. 4 violations.");

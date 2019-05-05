@@ -39,7 +39,7 @@ import util.MousePlacer;
 public class Playing {
 
   private static final float damageTakenScreenTotalDuration = 2f;
-  private static FloatingStrings floatingGoldStrings;
+  //private static FloatingStrings floatingGoldStrings;
   private static GuiTexture damageOverlay;
   private static float damageTakenScreenRemaining = 0f;
   private static int redDown = 0;
@@ -81,7 +81,7 @@ public class Playing {
     iceTotal =
         new GuiTexture(loader.loadTexture("whiteOut"), new Vector2f(0, 0), new Vector2f(1, 1), 1);
     LoadingScreen.progess();
-    floatingGoldStrings = new FloatingStrings(Game.getActivePlayer().getBbox(), 3f);
+    // floatingGoldStrings = new FloatingStrings(Game.getActivePlayer().getBbox(), 3f);
     LoadingScreen.progess();
     whisper =
         new MenuButton(
@@ -231,7 +231,7 @@ public class Playing {
       }
     }
 
-    floatingGoldStrings.update();
+    //floatingGoldStrings.update();
     ParticleMaster.renderParticles(Game.getActiveCamera());
 
     guis = applyDamage(guis);
@@ -241,9 +241,9 @@ public class Playing {
     TextMaster.render();
   }
 
-  public static void addFloatingGoldText(int goldValue) {
-    floatingGoldStrings.addString("+ " + goldValue);
-  }
+  //public static void addFloatingGoldText(int goldValue) {
+  //  floatingGoldStrings.addString("+ " + goldValue);
+  //}
 
   /** Prepares variables, so that the DamageTakenOverlay can be displayed. */
   public static void showDamageTakenOverlay() {
@@ -351,7 +351,7 @@ public class Playing {
   /** Delete all text objects from this stage. */
   public static void done() {
     firstloop = true;
-    floatingGoldStrings.done();
+    //floatingGoldStrings.done();
     Game.getGoldGuiText().done();
   }
 }
