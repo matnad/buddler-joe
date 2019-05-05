@@ -13,18 +13,17 @@ public class PacketLifeStatus extends Packet {
   public static final Logger logger = LoggerFactory.getLogger(PacketLifeStatus.class);
 
   /**
-   * Client creates packet, if he saw a crush. Data contains the new life status from the sender's
-   * perspective and the playerId of the crushed player.
+   * Client creates this packet, if he saw a crush. Data contains the new life status from the
+   * sender's perspective and the playerId of the crushed player. The Server creates this packet
+   * when he made the final decision and sends it to the lobby.
    *
    * @param newLives life status of effected player
    * @param effectedPlayerId the effected player
    */
   public PacketLifeStatus(int newLives, int effectedPlayerId) {
     super(PacketTypes.LIFE_STATUS);
-    this.newLives = newLives;
-    this.effectedPlayerId = effectedPlayerId;
-    setData(this.newLives + "║" + this.effectedPlayerId);
-    // no validation like PacketVelocity
+    setData(newLives + "║" + effectedPlayerId);
+    validate();
   }
 
   /**
@@ -42,11 +41,8 @@ public class PacketLifeStatus extends Packet {
   }
 
   /**
-   * Server creates this packet to inform all players about the decision. It will be sent to the
-   * lobby.
-   *
-   * <p>The client also creates this packet after receiving it from server. All clients will update
-   * the life status of their NetPlayer (effected player).
+   * The client also creates this packet after receiving it from server. All clients will update the
+   * life status of their NetPlayer (effected player).
    *
    * @param data contains the final life status and the effected player
    */
