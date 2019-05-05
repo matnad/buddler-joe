@@ -365,6 +365,11 @@ public class Lobby implements Runnable {
       logger.error("tried to set unknown lobbystatus.");
       return;
     }
+    if (status.equals("running")) {
+      for (ServerPlayer player : lobbyPlayers) {
+        aliveLobbyPlayers.add(player);
+      }
+    }
     this.status = status;
     if (!old.equals(this.status)) {
       try {
@@ -381,11 +386,9 @@ public class Lobby implements Runnable {
         logger.error("Not connected to a server.");
         return;
       }
+
       if (status.equals("running")) {
         inGame = true;
-        for (ServerPlayer player : lobbyPlayers) {
-          aliveLobbyPlayers.add(player);
-        }
       } else {
         inGame = false;
       }
