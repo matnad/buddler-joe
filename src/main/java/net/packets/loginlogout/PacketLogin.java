@@ -36,6 +36,7 @@ public class PacketLogin extends Packet {
     validate();
     if (!hasErrors()) {
       this.username = getData().trim();
+      setData(username);
       Game.getSettings().setUsername(username);
     }
   }
@@ -46,7 +47,7 @@ public class PacketLogin extends Packet {
    * short or not extended ASCII. If an error is detected, the errors will be added to the errorList
    */
   public void validate() {
-    checkUsername(username);
+    checkUsername(getData());
   }
 
   /**

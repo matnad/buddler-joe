@@ -39,6 +39,7 @@ public class PacketSetName extends Packet {
     validate();
     if (!hasErrors()) {
       this.username = getData().trim();
+      setData(username);
       Game.getSettings().setUsername(username);
     }
   }
