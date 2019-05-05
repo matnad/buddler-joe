@@ -5,13 +5,7 @@ import org.junit.Test;
 import org.mockito.Mockito;
 
 public class TestSettings {
-
-  @Test
-  public void checkIsFullscreenTrue() {
-    Settings settings = new Settings();
-    Assert.assertFalse(settings.isFullscreen());
-  }
-
+  
   @Test
   public void checkChangeFullscreen() {
     Mockito.mock(Game.class);
@@ -22,10 +16,4 @@ public class TestSettings {
     // Revert Settings
     settings.setFullscreen(orig);
   }
-
-  //    @Test
-  //    public void checkIsFullscreenTrue() {
-  //        Settings settings = new Settings();
-  //        Assert.assertFalse(settings.isFullscreen());
-  //    }
 }

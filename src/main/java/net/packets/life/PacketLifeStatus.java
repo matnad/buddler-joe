@@ -110,7 +110,11 @@ public class PacketLifeStatus extends Packet {
         Lobby lobby = ServerLogic.getLobbyForClient(effectedPlayerId);
         lobby.addPerspective(getClientId(), effectedPlayerId, newLives);
       } else {
-        NetPlayerMaster.getNetPlayerById(effectedPlayerId).updateLives(newLives);
+        try {
+          NetPlayerMaster.getNetPlayerById(effectedPlayerId).updateLives(newLives);
+        } catch (NullPointerException e) {
+          logger.error("NetPlayerMaster not set up correctly.");
+        }
       }
     } else {
       logger.error("Errors processing life status packet: " + createErrorMessage());
