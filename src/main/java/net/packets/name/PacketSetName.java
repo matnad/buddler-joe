@@ -1,5 +1,6 @@
 package net.packets.name;
 
+import game.Game;
 import net.ServerLogic;
 import net.packets.Packet;
 import org.slf4j.Logger;
@@ -31,16 +32,18 @@ public class PacketSetName extends Packet {
    * Constructor to be called by the client to create a setName packet and then pass it to the
    * server.
    *
-   * @param username The username the player would like to set for himself
+   * @param usernameIn The username the player would like to set for himself
    */
-  public PacketSetName(String username) {
+  public PacketSetName(String usernameIn) {
     super(PacketTypes.SET_NAME);
-    setData(username);
+    setData(usernameIn);
     validate();
     if (hasErrors()) {
       return;
+    } else {
+      this.username = getData().trim();
+      Game.getSettings().setUsername(username);
     }
-    this.username = getData().trim();
   }
 
   /**

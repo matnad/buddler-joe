@@ -79,7 +79,6 @@ public class PacketLoginStatus extends Packet {
       Game.setLoggedIn(true);
     } else if (status.startsWith("CHANGE") && !hasErrors() && status.length() > 6) {
       Game.getActivePlayer().setUsername(username);
-      Game.getSettings().setUsername(username);
       PacketGetLobbies p = new PacketGetLobbies();
       p.sendToServer();
       Game.setLoggedIn(true);
