@@ -325,7 +325,7 @@ public class Player extends NetPlayer {
     if (digIntervallTimer >= digInterval) {
       // Make sure we don't send invalid packets. If framerate is below 5, the player will dig
       // slower but not violate any rules
-      lastDiggedBlockDamage = Math.min(lastDiggedBlockDamage, currentDigDamage * digIntervallTimer);
+      lastDiggedBlockDamage = Math.min(lastDiggedBlockDamage, currentDigDamage * digInterval);
       new PacketBlockDamage(block.getGridX(), block.getGridY(), lastDiggedBlockDamage)
           .sendToServer();
       // Reset timer without losing overflow
