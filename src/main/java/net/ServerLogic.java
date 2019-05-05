@@ -134,10 +134,14 @@ public class ServerLogic {
    * @param packet packet to distribute
    */
   public static void sendToClientsNotInALobby(Packet packet) {
-    for (ServerPlayer player : getPlayerList().getPlayers().values()) {
-      if (player.getCurLobbyId() == 0) {
-        sendPacketToClient(player.getClientId(), packet);
+    try {
+      for (ServerPlayer player : getPlayerList().getPlayers().values()) {
+        if (player.getCurLobbyId() == 0) {
+          sendPacketToClient(player.getClientId(), packet);
+        }
       }
+    } catch (NullPointerException e) {
+      logger.error("Not Connected to a Server.");
     }
   }
 

@@ -11,7 +11,7 @@ public class TestPacketLogin {
     ServerLogic serverLogic = Mockito.spy(ServerLogic.class);
     PacketLogin p = new PacketLogin(null);
     p.processData();
-    Assert.assertEquals("ERRORS: There is no username. No username found.", p.createErrorMessage());
+    Assert.assertEquals("ERRORS: No username found.", p.createErrorMessage());
   }
 
   @Test

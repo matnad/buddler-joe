@@ -1,5 +1,6 @@
 package net.packets.loginlogout;
 
+import game.Game;
 import net.ServerLogic;
 import net.packets.Packet;
 import net.playerhandling.ServerPlayer;
@@ -18,28 +19,26 @@ public class PacketLogin extends Packet {
     super(PacketTypes.LOGIN);
     setData(data);
     setClientId(clientId);
-    try {
-      this.username = getData().trim();
-    } catch (NullPointerException e) {
-      addError("There is no username.");
-    }
     validate();
+    if (!hasErrors()) {
+      this.username = getData().trim();
+    }
   }
 
   /**
    * Constructor to create a package from the client side to be sent to the server.
    *
-   * @param username The username the player wants to give himself
+   * @param usernameIn The username the player wants to give himself
    */
-  public PacketLogin(String username) {
+  public PacketLogin(String usernameIn) {
     super(PacketTypes.LOGIN);
-    setData(username);
-    try {
-      this.username = username.trim();
-    } catch (NullPointerException e) {
-      addError("There is no username.");
-    }
+    setData(usernameIn);
     validate();
+    if (!hasErrors()) {
+      this.username = getData().trim();
+      setData(username);
+      Game.getSettings().setUsername(username);
+    }
   }
 
   /**
@@ -48,7 +47,7 @@ public class PacketLogin extends Packet {
    * short or not extended ASCII. If an error is detected, the errors will be added to the errorList
    */
   public void validate() {
-    checkUsername(username);
+    checkUsername(getData());
   }
 
   /**

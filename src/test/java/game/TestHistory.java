@@ -14,6 +14,7 @@ public class TestHistory {
     History.openAdd(1, "TestLobby");
     open.put(1, "TestLobby");
     Assert.assertEquals(open, History.getOpen());
+    History.clearArchive();
   }
 
   @Test
@@ -23,6 +24,7 @@ public class TestHistory {
     History.runningAdd(1, "TestLobby");
     open.put(1, "TestLobby");
     Assert.assertEquals(open, History.getRunning());
+    History.clearArchive();
   }
 
   @Test
@@ -32,6 +34,7 @@ public class TestHistory {
     History.archive("TestLobby");
     finished.add("TestLobby");
     Assert.assertEquals(finished, History.getFinished());
+    History.clearArchive();
   }
 
   @Test
@@ -41,6 +44,7 @@ public class TestHistory {
     History.openAdd(1, "TestLobby");
     History.openRemove(1);
     Assert.assertEquals(open, History.getOpen());
+    History.clearArchive();
   }
 
   @Test
@@ -50,6 +54,7 @@ public class TestHistory {
     History.runningAdd(1, "TestLobby");
     History.runningRemove(1);
     Assert.assertEquals(open, History.getRunning());
+    History.clearArchive();
   }
 
   @Test
@@ -75,5 +80,6 @@ public class TestHistory {
             + "Lobbies Of Running Games:║TestLobby2║TestLobby3║Old Games:"
             + "║TestLobby6║TestLobby3║TestLobby2║",
         History.getStory());
+    History.clearArchive();
   }
 }

@@ -7,9 +7,6 @@ import org.slf4j.LoggerFactory;
 
 public class TestBlockDamage {
 
-  // private TestClient client = new TestClient();
-  // private TestServer server = new TestServer();
-
   public static final Logger logger = LoggerFactory.getLogger(TestBlockDamage.class);
 
   @Test
