@@ -13,9 +13,8 @@ public class PacketLifeStatus extends Packet {
   public static final Logger logger = LoggerFactory.getLogger(PacketLifeStatus.class);
 
   /**
-   * Client creates this packet, if he saw a crush. Data contains the new life status from the
-   * sender's perspective and the playerId of the crushed player. The Server creates this packet
-   * when he made the final decision and sends it to the lobby.
+   * Client creates this packet, if he saw a crush. The Server creates this packet when he made the
+   * final decision and sends it to the lobby.
    *
    * @param newLives life status of effected player
    * @param effectedPlayerId the effected player
@@ -100,8 +99,9 @@ public class PacketLifeStatus extends Packet {
   }
 
   /**
-   * If the clientId is 0, then the packet will be sent to server, else the server updates the life
-   * status of the respective client.
+   * If the clientId is 0, the client will update life status of respective player, else the server
+   * takes the client's opinion and adds it to the other opinions of the life status of the effected
+   * client.
    */
   @Override
   public void processData() {
