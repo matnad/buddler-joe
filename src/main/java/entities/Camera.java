@@ -106,7 +106,7 @@ public class Camera {
    * pan never goes above the maximum distance from the character
    */
   private void calculatePan() {
-    float speed = (float) (panSpeed * window.getFrameTimeSeconds()); // panSpeed is in seconds, so
+    float speed = (float) (panSpeed * Game.dt()); // panSpeed is in seconds, so
     // we multiply by frame delta
     if (InputHandler.isKeyDown(GLFW_KEY_LEFT)) {
       offsetX -= speed;
