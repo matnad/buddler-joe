@@ -333,7 +333,7 @@ public class Playing {
         if (alpha - 0.022222f > 0) {
           damageOverlay.setAlpha(alpha - 0.022222f);
         }
-        if (damageCorner.getAlpha() - 0.011111f > 0) {
+        if (damageCorner.getAlpha() - 0.033333f > 0) {
           damageCorner.setAlpha(damageCorner.getAlpha() - 0.022222f - 0.011111f);
         }
       }
