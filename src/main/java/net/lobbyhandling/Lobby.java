@@ -360,10 +360,16 @@ public class Lobby implements Runnable {
    * @param status the new status. Should be in ["open", "running", "finished"]
    */
   public void setStatus(String status) {
-    String old = this.status;
+    String old;
+    old = this.status;
     if (!status.equals("open") && !status.equals("running") && !status.equals("finished")) {
       logger.error("tried to set unknown lobbystatus.");
       return;
+    }
+    if (status.equals("running")) {
+      for (ServerPlayer player : lobbyPlayers) {
+        aliveLobbyPlayers.add(player);
+      }
     }
     this.status = status;
     if (!old.equals(this.status)) {
@@ -381,11 +387,9 @@ public class Lobby implements Runnable {
         logger.error("Not connected to a server.");
         return;
       }
+
       if (status.equals("running")) {
         inGame = true;
-        for (ServerPlayer player : lobbyPlayers) {
-          aliveLobbyPlayers.add(player);
-        }
       } else {
         inGame = false;
       }
