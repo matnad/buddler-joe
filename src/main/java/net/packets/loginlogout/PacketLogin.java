@@ -19,12 +19,10 @@ public class PacketLogin extends Packet {
     super(PacketTypes.LOGIN);
     setData(data);
     setClientId(clientId);
-    try {
-      this.username = getData().trim();
-    } catch (NullPointerException e) {
-      addError("There is no username.");
-    }
     validate();
+    if (!hasErrors()) {
+      this.username = getData().trim();
+    }
   }
 
   /**
@@ -34,14 +32,10 @@ public class PacketLogin extends Packet {
    */
   public PacketLogin(String usernameIn) {
     super(PacketTypes.LOGIN);
-    setData(username);
-    try {
-      this.username = usernameIn.trim();
-    } catch (NullPointerException e) {
-      addError("There is no username.");
-    }
+    setData(usernameIn);
     validate();
     if (!hasErrors()) {
+      this.username = getData().trim();
       Game.getSettings().setUsername(username);
     }
   }

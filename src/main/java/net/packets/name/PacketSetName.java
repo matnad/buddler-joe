@@ -22,10 +22,9 @@ public class PacketSetName extends Packet {
     setData(data);
     setClientId(clientId);
     validate();
-    if (hasErrors()) {
-      return;
+    if (!hasErrors()) {
+      this.username = getData().trim();
     }
-    username = getData().trim();
   }
 
   /**
@@ -38,9 +37,7 @@ public class PacketSetName extends Packet {
     super(PacketTypes.SET_NAME);
     setData(usernameIn);
     validate();
-    if (hasErrors()) {
-      return;
-    } else {
+    if (!hasErrors()) {
       this.username = getData().trim();
       Game.getSettings().setUsername(username);
     }
