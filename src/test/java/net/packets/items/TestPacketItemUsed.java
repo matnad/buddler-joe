@@ -30,17 +30,4 @@ public class TestPacketItemUsed {
     PacketItemUsed packetItemUsed = new PacketItemUsed(1, "12");
     Assert.assertEquals("ERRORS: Client is not in a lobby.", packetItemUsed.createErrorMessage());
   }
-
-  //  @Test
-  //  public void checkItemIdEverythingOk() {
-  //    ServerLogic serverLogic = Mockito.spy(ServerLogic.class);
-  //    ServerPlayer testPlayer = new ServerPlayer("TestPlayer", 1);
-  //    serverLogic.getPlayerList().addPlayer(testPlayer);
-  //    Lobby testLobby = new Lobby("TestLobby", 1, "small");
-  //    testLobby.addPlayer(testPlayer);
-  //    testPlayer.setCurLobbyId(1);
-  //    serverLogic.getLobbyList().addLobby(testLobby);
-  //    PacketItemUsed packetItemUsed = new PacketItemUsed(1, "12");
-  //    Assert.assertEquals("ERRORS: ", packetItemUsed.createErrorMessage());
-  //  }
 }
