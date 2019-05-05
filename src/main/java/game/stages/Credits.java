@@ -54,7 +54,7 @@ public class Credits {
 
     Credits =
         new GuiTexture(
-            loader.loadTexture("black"),
+            loader.loadTexture("credits_2"),
             new Vector2f(0, 0),
             new Vector2f(0.5f, 0.5f),
             1);
