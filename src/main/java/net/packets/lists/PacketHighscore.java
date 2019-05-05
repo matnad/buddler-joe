@@ -62,7 +62,7 @@ public class PacketHighscore extends Packet {
     if (hasErrors()) {
       return;
     }
-    if (highscore.length < 2) {
+    if (highscore.length < 3) {
       addError("No Highscore available.");
       return;
     }
