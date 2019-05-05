@@ -115,7 +115,9 @@ public class Lobby implements Runnable {
         }
       }
       try {
-        Thread.sleep(1000 - System.currentTimeMillis() + startOfLoop);
+        if (System.currentTimeMillis() + startOfLoop < 1000) {
+          Thread.sleep(1000 - System.currentTimeMillis() + startOfLoop);
+        }
       } catch (InterruptedException e) {
         e.printStackTrace();
       }
