@@ -107,7 +107,7 @@ public class Lobby implements Runnable {
           e.printStackTrace();
         }
       } else if (status.equals("open")) {
-        if (getPlayerAmount() == 0 && System.currentTimeMillis() - this.lastEntry > 20000) {
+        if (getPlayerAmount() == 0 && System.currentTimeMillis() - this.lastEntry > 120000) {
           //TESTZWECKE 20sek, ----> 5min, 300'000 ms
           ServerLogic.getLobbyList().removeLobby(this.lobbyId);
           this.status = "finished";
