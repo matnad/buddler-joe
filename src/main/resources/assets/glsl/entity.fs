@@ -2,17 +2,17 @@
 
 in vec2 pass_textureCoordinates;
 in vec3 surfaceNormal;
-in vec3 toLightVector[24];
+in vec3 toLightVector[8];
 in vec3 toCameraVector;
 in float visibility;
 
 out vec4 out_Colour;
 
 uniform sampler2D modelTexture;
-uniform vec3 lightColour[24];
-uniform vec3 attenuation[24];
-uniform vec3 lightDirection[24];
-uniform float lightCutoff[24];
+uniform vec3 lightColour[8];
+uniform vec3 attenuation[8];
+uniform vec3 lightDirection[8];
+uniform float lightCutoff[8];
 uniform float shineDamper;
 uniform float reflectivity;
 uniform vec3 skyColour;
@@ -27,7 +27,7 @@ void main(void) {
 
     float lightMul = 100;
 
-    for(int i=0; i<24; i++) {
+    for(int i=0; i<8; i++) {
       float theta = dot(normalize(toLightVector[i]), normalize(-lightDirection[i]));
       float epsilon = lightCutoff[i] - lightCutoff[i]+0.15;
       float intensity = clamp((theta - lightCutoff[i]+0.15) / epsilon, 0.0, 1.0);

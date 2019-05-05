@@ -6,14 +6,14 @@ in vec3 normal;
 
 out vec2 pass_textureCoordinates;
 out vec3 surfaceNormal;
-out vec3 toLightVector[24];
+out vec3 toLightVector[8];
 out vec3 toCameraVector;
 out float visibility;
 
 uniform mat4 transformationMatrix;
 uniform mat4 projectionMatrix;
 uniform mat4 viewMatrix;
-uniform vec3 lightPosition[24];
+uniform vec3 lightPosition[8];
 
 const float density = 0.01;
 const float gradient = 5;
@@ -26,7 +26,7 @@ void main(void) {
     pass_textureCoordinates = textureCoordinates;
 
     surfaceNormal = (transformationMatrix * vec4(normal, 0.0)).xyz;
-    for(int i=0; i<24; i++) {
+    for(int i=0; i<8; i++) {
         toLightVector[i] = lightPosition[i] - worldPosition.xyz;
     }
     toCameraVector = (inverse(viewMatrix) * vec4(0.0, 0.0, 0.0, 1.0)).xyz - worldPosition.xyz;
