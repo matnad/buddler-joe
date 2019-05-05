@@ -192,13 +192,27 @@ public class ChangeName {
     cooldown = 300;
   }
 
+  /** cuts the username to the correct length for the window. */
   private static void updateGuiText() {
 
     output = name;
-    TextMaster.removeAll();
+    do {
+      TextMaster.removeAll();
 
-    guiText =
-        new GuiText(
-            output, 1.5f, font, new Vector3f(0f, 0f, 0f), 1f, new Vector2f(.30f, .62f), 1f, false);
+      guiText =
+          new GuiText(
+              output,
+              1.5f,
+              font,
+              new Vector3f(0f, 0f, 0f),
+              1f,
+              new Vector2f(.30f, .62f),
+              1f,
+              false);
+
+      if (output.length() > 0) {
+        output = output.substring(1);
+      }
+    } while (guiText.getLengthOfLines().get(guiText.getLengthOfLines().size() - 1) > 0.41f);
   }
 }

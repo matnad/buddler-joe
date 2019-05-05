@@ -22,6 +22,7 @@ import org.joml.Vector2f;
 import org.joml.Vector3f;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.w3c.dom.Text;
 
 /**
  * InLobby Menu specification and rendering. Must be initialized. Specifies all the elements in the
@@ -52,9 +53,14 @@ public class InLobby {
   private static CopyOnWriteArrayList<LobbyPlayerEntry> playerCatalog;
 
   private static ChangableGuiText lobbyname;
+  private static ChangableGuiText newlobbyname;
+  private static ChangableGuiText testlobbyname;
+
   private static Vector3f black = new Vector3f(0, 0, 0);
   private static boolean removeAtEndOfFrame = false;
   private static FontType font;
+  private static String newLobby;
+  private static String testLobby;
 
   /**
    * Initialisation of the textures for this GUI-menu.
@@ -64,6 +70,7 @@ public class InLobby {
   @SuppressWarnings("Duplicates")
   public static void init(Loader loader) {
     font = new FontType(loader, "verdanaAsciiEx");
+    testLobby = "";
     currentAlpha = 1;
 
     // Background
@@ -109,14 +116,12 @@ public class InLobby {
       //      Game.getChat().setAlpha();
       initializedText = true;
     }
-    //    newplayerCatalog = Game.getLobbyPlayerCatalog();
 
     playerCatalog = Game.getLobbyPlayerCatalog();
-    lobbyname.changeText(NetPlayerMaster.getLobbyname());
+    if (lobbyname.getGuiText() == null) {
 
-    //    if (testplayerCatalog != newplayerCatalog){
-    //      updatename();
-    //    }
+      updateLobbyName();
+    }
 
     List<GuiTexture> guis = new ArrayList<>();
     guis.add(Game.getChat().getChatGui());
@@ -132,7 +137,6 @@ public class InLobby {
     // add buttons here
     guis.add(leave.getHoverTexture(x, y));
     guis.add(ready.getHoverTexture(x, y));
-    //    if (playerCatalog != newplayerCatalog) {
     for (int i = 0; i < names.length; i++) {
       try {
         if (i < playerCatalog.size()) {
@@ -197,7 +201,6 @@ public class InLobby {
       status[i].setPosition(new Vector2f(-0.059896f, statusY[i]));
       status[i].setFontSize(1);
       status[i].setTextColour(black);
-      names[i].setCentered(false);
     }
   }
 
@@ -212,8 +215,10 @@ public class InLobby {
     InLobby.removeAtEndOfFrame = removeAtEndOfFrame;
   }
 
+  /** cuts the names to the correct length for the window. */
   public static void updatename() {
     for (int i = 0; i < names.length; i++) {
+      boolean changed = false;
       testnames[i] = names[i];
 
       if (names[i].getText().length() > 0) {
@@ -222,7 +227,7 @@ public class InLobby {
                 .getGuiText()
                 .getLengthOfLines()
                 .get(names[i].getGuiText().getLengthOfLines().size() - 1)
-            > 0.11f) {
+            > 0.105f) {
 
           if (names[i].getGuiText() != null) {
             TextMaster.removeText(names[i].getGuiText());
@@ -231,18 +236,55 @@ public class InLobby {
           if (names[i].getText().length() > 0) {
             names[i].setText(names[i].getText().substring(0, names[i].getText().length() - 1));
           }
-          names[i].setGuiText(
-              new GuiText(
-                  names[i].getText(), 1f, font, new Vector2f(0.286719f, namesY[i]), 1f, false));
+          changed = true;
+
+          names[i].updateString();
         }
       }
 
       if (names[i].getGuiText() != null) {
         TextMaster.removeText(names[i].getGuiText());
       }
-
-      names[i].changeText(names[i].getText());
+      if (names[i].getText().length() > 0 && changed) {
+        names[i].changeText(names[i].getText() + "...");
+      }
       names[i].updateString();
     }
+  }
+
+  /** cuts the lobbyname to the correct length for the window. */
+  public static void updateLobbyName() {
+    boolean changed = false;
+    newLobby = NetPlayerMaster.getLobbyname();
+    lobbyname.changeText(newLobby);
+    testLobby = newLobby;
+    if (lobbyname.getText().length() > 0) {
+
+      while (lobbyname
+              .getGuiText()
+              .getLengthOfLines()
+              .get(lobbyname.getGuiText().getLengthOfLines().size() - 1)
+          > 0.18f) {
+
+        if (lobbyname.getGuiText() != null) {
+          TextMaster.removeText(lobbyname.getGuiText());
+        }
+
+        if (lobbyname.getText().length() > 0) {
+          lobbyname.setText(lobbyname.getText().substring(0, lobbyname.getText().length() - 1));
+        }
+        changed = true;
+
+        lobbyname.updateString();
+      }
+    }
+
+    if (lobbyname.getGuiText() != null) {
+      TextMaster.removeText(lobbyname.getGuiText());
+    }
+    if (lobbyname.getText().length() > 0 && changed) {
+      lobbyname.changeText(lobbyname.getText() + "...");
+    }
+    lobbyname.updateString();
   }
 }

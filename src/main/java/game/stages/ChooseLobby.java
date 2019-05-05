@@ -49,6 +49,8 @@ public class ChooseLobby {
   private static float[] sizesY = {0.330864f, 0.4f, 0.469136f, 0.538272f, 0.607407f, 0.676534f};
   private static CopyOnWriteArrayList<LobbyEntry> catalog;
   private static ChangableGuiText[] names = new ChangableGuiText[6];
+  private static ChangableGuiText[] testnames = new ChangableGuiText[6];
+
   private static ChangableGuiText[] count = new ChangableGuiText[6];
   private static ChangableGuiText[] sizes = new ChangableGuiText[6];
   private static int startInd = 0;
@@ -180,7 +182,9 @@ public class ChooseLobby {
         if (i + startInd < catalog.size()) {
           // System.out.print(catalog.get(i+startInd).getPlayers()+" ");
           // System.out.println(i);
-          names[i].changeText("Name: " + catalog.get(i + startInd).getName());
+          if (!testnames[i].equals(catalog.get(i).getName())) {
+            names[i].changeText("Name: " + catalog.get(i + startInd).getName());
+          }
           count[i].changeText(
               "Players: " + catalog.get(i + startInd).getPlayers() + "/" + Lobby.getMaxPlayers());
           // System.out.println(i);
@@ -195,6 +199,7 @@ public class ChooseLobby {
         logger.error(e.getMessage());
       }
     }
+    updateLobbyName();
 
     // Place Create----------------------------------------------------------------------
     if (n < create.length) {
@@ -291,6 +296,11 @@ public class ChooseLobby {
       names[i].setFontSize(1);
       names[i].setTextColour(black);
       names[i].setCentered(false);
+      testnames[i] = new ChangableGuiText();
+      testnames[i].setPosition(new Vector2f(0.286719f, namesY[i]));
+      testnames[i].setFontSize(1);
+      testnames[i].setTextColour(black);
+      testnames[i].setCentered(false);
       count[i] = new ChangableGuiText();
       count[i].setPosition(new Vector2f(0, countY[i]));
       count[i].setFontSize(1);
@@ -326,9 +336,44 @@ public class ChooseLobby {
     ChooseLobby.n = n;
   }
 
-
   public static void setRemoveAtEndOfFrame(boolean removeAtEndOfFrame) {
     ChooseLobby.removeAtEndOfFrame = removeAtEndOfFrame;
   }
 
+  /** cuts the lobbyname to the correct length for the window. */
+  public static void updateLobbyName() {
+    for (int i = 0; i < names.length; i++) {
+      testnames[i] = names[i];
+      boolean changed = false;
+
+      if (names[i].getText().length() > 0) {
+
+        while (names[i]
+                .getGuiText()
+                .getLengthOfLines()
+                .get(names[i].getGuiText().getLengthOfLines().size() - 1)
+            > 0.152f) {
+
+          if (names[i].getGuiText() != null) {
+            TextMaster.removeText(names[i].getGuiText());
+          }
+
+          if (names[i].getText().length() > 0) {
+            names[i].setText(names[i].getText().substring(0, names[i].getText().length() - 1));
+          }
+          changed = true;
+          names[i].updateString();
+        }
+      }
+
+      if (names[i].getGuiText() != null) {
+        TextMaster.removeText(names[i].getGuiText());
+      }
+      if (names[i].getText().length() > 0 && changed) {
+        names[i].changeText(names[i].getText() + "...");
+      }
+      names[i].updateString();
+      changed = false;
+    }
+  }
 }
