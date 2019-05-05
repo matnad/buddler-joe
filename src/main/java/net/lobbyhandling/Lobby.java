@@ -2,7 +2,6 @@ package net.lobbyhandling;
 
 import game.History;
 import game.map.ServerMap;
-
 import java.util.Collections;
 import java.util.NoSuchElementException;
 import java.util.Random;
@@ -89,30 +88,35 @@ public class Lobby implements Runnable {
             ServerLogic.removePlayer(player.getClientId());
           }
           if (player.isDefeated()) {
+            logger.debug("removing " + player.getUsername() + " from alive players.");
             aliveLobbyPlayers.remove(player);
           }
         }
 
         try {
           if (aliveLobbyPlayers.size() == 0 && !checked) {
+            logger.debug("Alive players == 0.");
             Thread.sleep(2500);
             if (getCurrentWinner() != null) {
               gameOver(getCurrentWinner());
             }
-          } else {
-            // Wait for the rest of the second
-            Thread.sleep(1000 - System.currentTimeMillis() + startOfLoop);
           }
         } catch (InterruptedException e) {
           e.printStackTrace();
         }
       } else if (status.equals("open")) {
         if (getPlayerAmount() == 0 && System.currentTimeMillis() - this.lastEntry > 120000) {
-          //TESTZWECKE 20sek, ----> 5min, 300'000 ms
+          // TESTZWECKE 20sek, ----> 5min, 300'000 ms
           ServerLogic.getLobbyList().removeLobby(this.lobbyId);
           this.status = "finished";
           History.openRemove(lobbyId);
+          logger.debug("deleting lobby " + lobbyName);
         }
+      }
+      try {
+        Thread.sleep(1000 - System.currentTimeMillis() + startOfLoop);
+      } catch (InterruptedException e) {
+        e.printStackTrace();
       }
     }
   }
