@@ -168,10 +168,12 @@ public class ServerPlayer {
     this.pos2dOld = this.pos2d;
     this.pos2d = pos2d;
     // Cap current velocity
-    if (currentVelocity2d.x < 0 && currentVelocity2d.x < goalVelocity2d.x || (currentVelocity2d.x > 0 && currentVelocity2d.x > goalVelocity2d.x)) {
+    if (currentVelocity2d.x < 0 && currentVelocity2d.x < goalVelocity2d.x
+        || (currentVelocity2d.x > 0 && currentVelocity2d.x > goalVelocity2d.x)) {
       currentVelocity2d.x = goalVelocity2d.x;
     }
-    if (currentVelocity2d.y < 0 && currentVelocity2d.y < goalVelocity2d.y || (currentVelocity2d.y > 0 && currentVelocity2d.y > goalVelocity2d.y)) {
+    if (currentVelocity2d.y < 0 && currentVelocity2d.y < goalVelocity2d.y
+        || (currentVelocity2d.y > 0 && currentVelocity2d.y > goalVelocity2d.y)) {
       currentVelocity2d.y = goalVelocity2d.y;
     }
     if (!validatePos2d(1f) && movementViolations > 0) {
