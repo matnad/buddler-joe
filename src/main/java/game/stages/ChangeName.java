@@ -222,6 +222,7 @@ public class ChangeName {
     } while (guiText.getLengthOfLines().get(guiText.getLengthOfLines().size() - 1) > 0.41f);
   }
 
+  /** cut the changed username to the correct length for the window. */
   public static void updateName() {
     boolean changed = false;
     testCurName = newCurName;
