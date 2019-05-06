@@ -575,6 +575,7 @@ public class Game extends Thread {
     int clientId = player.getClientId();
     player = new Player(getUsername(), new Vector3f(12, 10, 3), 0, 0, 0);
     player.setClientId(clientId);
+    Playing.resetFloatingStrings();
 
     camera = new Camera(player, window);
     map = new ClientMap("s", System.currentTimeMillis());
