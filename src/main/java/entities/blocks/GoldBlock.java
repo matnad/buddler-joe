@@ -39,7 +39,7 @@ public class GoldBlock extends Block {
         gridY);
     setModel(blockModel);
     setTextureIndex(0);
-    value = 50 + gridY * 5;
+    value = 135 + gridY * 5;
   }
 
   /** Shortened constructor with just position. Dont call directly. */

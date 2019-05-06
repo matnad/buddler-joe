@@ -40,16 +40,16 @@ public abstract class GameMap<T> {
   public GameMap(String mapSize, long seed) {
     if (mapSize.equals("s")) {
       this.width = 16;
-      this.height = 64;
+      this.height = 72;
     } else if (mapSize.equals("m")) {
       this.width = 32;
-      this.height = 56;
+      this.height = 64;
     } else if (mapSize.equals("l")) {
       this.width = 64;
-      this.height = 40;
+      this.height = 48;
     } else {
       this.width = 32;
-      this.height = 40;
+      this.height = 48;
     }
     this.seed = (long) (seed % 1e6);
   }

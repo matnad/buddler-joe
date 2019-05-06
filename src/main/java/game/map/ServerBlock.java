@@ -125,21 +125,20 @@ public class ServerBlock {
       default:
         heartOrStar = 76;
     }
-    r = 30;
     if (0 <= r && r <= 25) {
       logger.debug("Spawning dynamite.");
       PacketSpawnItem packetSpawnItem =
           new PacketSpawnItem(
               ItemMaster.ItemTypes.DYNAMITE, new Vector3f(gridX, gridY, gridZ), clientId);
       packetSpawnItem.sendToLobby(lobby.getLobbyId());
-    } else if (25 < r && r <= 40) {
+    } else if (25 < r && r <= 45) {
       logger.debug("Spawning Steroids.");
       PacketSpawnItem packetSpawnItem =
           new PacketSpawnItem(
               ItemMaster.ItemTypes.STEROIDS, new Vector3f(gridX, gridY, gridZ), clientId);
       packetSpawnItem.sendToLobby(lobby.getLobbyId());
       itemOwner.ampUp();
-    } else  if (40 < r && r <= heartOrStar) {
+    } else  if (45 < r && r <= heartOrStar) {
       logger.debug("Spawning heart.");
       PacketSpawnItem packetSpawnItem =
           new PacketSpawnItem(

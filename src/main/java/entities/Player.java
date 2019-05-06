@@ -442,6 +442,7 @@ public class Player extends NetPlayer {
    */
   public void freeze(boolean initial) {
     frozen = true;
+    stopVelocityX();
     if (initial) {
       showFreezeOverlay();
       freezeDuration = 0;

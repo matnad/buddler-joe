@@ -128,7 +128,7 @@ public class ServerPlayer {
     currentGold += goldValue;
     Lobby lobby = ServerLogic.getLobbyList().getLobby(curLobbyId);
     timeStampOfGain = System.currentTimeMillis() - lobby.getStartedAt();
-    if (currentGold >= 2000) { // TODO: set to 3000
+    if (currentGold >= 3000) {
       System.out.println("Game Over");
       lobby.gameOver(this);
     }
@@ -167,6 +167,13 @@ public class ServerPlayer {
   public void setPos2d(Vector2f pos2d) {
     this.pos2dOld = this.pos2d;
     this.pos2d = pos2d;
+    // Cap current velocity
+    if (currentVelocity2d.x < 0 && currentVelocity2d.x < goalVelocity2d.x || (currentVelocity2d.x > 0 && currentVelocity2d.x > goalVelocity2d.x)) {
+      currentVelocity2d.x = goalVelocity2d.x;
+    }
+    if (currentVelocity2d.y < 0 && currentVelocity2d.y < goalVelocity2d.y || (currentVelocity2d.y > 0 && currentVelocity2d.y > goalVelocity2d.y)) {
+      currentVelocity2d.y = goalVelocity2d.y;
+    }
     if (!validatePos2d(1f) && movementViolations > 0) {
       logger.warn(
           getUsername()
@@ -227,8 +234,8 @@ public class ServerPlayer {
     }
 
     // Sanity check for current velocity
-    if (currentVelocity2d.x > allowedRunSpeed
-        || currentVelocity2d.x < -allowedRunSpeed
+    if (currentVelocity2d.x > allowedRunSpeed + 1
+        || currentVelocity2d.x < -allowedRunSpeed - 1
         || currentVelocity2d.y > allowedJumpPower + 1) {
       logger.warn(getUsername() + ": Current velocity exceeds allowed limits. 1 violation.");
       logger.debug(
