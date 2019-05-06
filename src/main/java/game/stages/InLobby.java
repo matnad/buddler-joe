@@ -4,6 +4,8 @@ import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_1;
 
 import engine.io.InputHandler;
 import engine.render.Loader;
+import engine.render.fontmeshcreator.FontType;
+import engine.render.fontmeshcreator.GuiText;
 import engine.render.fontrendering.TextMaster;
 import game.Game;
 import game.LobbyPlayerEntry;
@@ -20,6 +22,7 @@ import org.joml.Vector2f;
 import org.joml.Vector3f;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.w3c.dom.Text;
 
 /**
  * InLobby Menu specification and rendering. Must be initialized. Specifies all the elements in the
@@ -37,6 +40,8 @@ public class InLobby {
   private static MenuButton leave;
   private static MenuButton ready;
   private static ChangableGuiText[] names = new ChangableGuiText[7];
+  private static ChangableGuiText[] testnames = new ChangableGuiText[7];
+
   private static ChangableGuiText[] status = new ChangableGuiText[7];
   private static boolean initializedText = false;
   private static float[] namesY = {
@@ -46,9 +51,16 @@ public class InLobby {
     0.330864f, 0.4f, 0.469136f, 0.538272f, 0.607407f, 0.676534f, 0.745669f
   };
   private static CopyOnWriteArrayList<LobbyPlayerEntry> playerCatalog;
+
   private static ChangableGuiText lobbyname;
+  private static ChangableGuiText newlobbyname;
+  private static ChangableGuiText testlobbyname;
+
   private static Vector3f black = new Vector3f(0, 0, 0);
   private static boolean removeAtEndOfFrame = false;
+  private static FontType font;
+  private static String newLobby;
+  private static String testLobby;
 
   /**
    * Initialisation of the textures for this GUI-menu.
@@ -57,7 +69,8 @@ public class InLobby {
    */
   @SuppressWarnings("Duplicates")
   public static void init(Loader loader) {
-
+    font = new FontType(loader, "verdanaAsciiEx");
+    testLobby = "";
     currentAlpha = 1;
 
     // Background
@@ -105,7 +118,10 @@ public class InLobby {
     }
 
     playerCatalog = Game.getLobbyPlayerCatalog();
-    lobbyname.changeText(NetPlayerMaster.getLobbyname());
+    if (lobbyname.getGuiText() == null) {
+
+      updateLobbyName();
+    }
 
     List<GuiTexture> guis = new ArrayList<>();
     guis.add(Game.getChat().getChatGui());
@@ -121,13 +137,14 @@ public class InLobby {
     // add buttons here
     guis.add(leave.getHoverTexture(x, y));
     guis.add(ready.getHoverTexture(x, y));
-
     for (int i = 0; i < names.length; i++) {
       try {
         if (i < playerCatalog.size()) {
           // System.out.print(catalog.get(i+startInd).getPlayers()+" ");
           // System.out.println(i);
-          names[i].changeText(playerCatalog.get(i).getName());
+          if (!testnames[i].equals(playerCatalog.get(i).getName())) {
+            names[i].changeText(playerCatalog.get(i).getName());
+          }
           if (playerCatalog.get(i).isReady()) {
             status[i].changeText("ready");
           } else {
@@ -141,6 +158,7 @@ public class InLobby {
         System.out.println("error in choose lobby");
         logger.error(e.getMessage());
       }
+      updatename();
     }
 
     if (InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1) && leave.isHover(x, y)) {
@@ -174,11 +192,15 @@ public class InLobby {
       names[i].setFontSize(1);
       names[i].setTextColour(black);
       names[i].setCentered(false);
+      testnames[i] = new ChangableGuiText();
+      testnames[i].setPosition(new Vector2f(0.286719f, namesY[i]));
+      testnames[i].setFontSize(1);
+      testnames[i].setTextColour(black);
+      testnames[i].setCentered(false);
       status[i] = new ChangableGuiText();
       status[i].setPosition(new Vector2f(-0.059896f, statusY[i]));
       status[i].setFontSize(1);
       status[i].setTextColour(black);
-      names[i].setCentered(false);
     }
   }
 
@@ -193,4 +215,76 @@ public class InLobby {
     InLobby.removeAtEndOfFrame = removeAtEndOfFrame;
   }
 
+  /** cuts the names to the correct length for the window. */
+  public static void updatename() {
+    for (int i = 0; i < names.length; i++) {
+      boolean changed = false;
+      testnames[i] = names[i];
+
+      if (names[i].getText().length() > 0) {
+
+        while (names[i]
+                .getGuiText()
+                .getLengthOfLines()
+                .get(names[i].getGuiText().getLengthOfLines().size() - 1)
+            > 0.105f) {
+
+          if (names[i].getGuiText() != null) {
+            TextMaster.removeText(names[i].getGuiText());
+          }
+
+          if (names[i].getText().length() > 0) {
+            names[i].setText(names[i].getText().substring(0, names[i].getText().length() - 1));
+          }
+          changed = true;
+
+          names[i].updateString();
+        }
+      }
+
+      if (names[i].getGuiText() != null) {
+        TextMaster.removeText(names[i].getGuiText());
+      }
+      if (names[i].getText().length() > 0 && changed) {
+        names[i].changeText(names[i].getText() + "...");
+      }
+      names[i].updateString();
+    }
+  }
+
+  /** cuts the lobbyname to the correct length for the window. */
+  public static void updateLobbyName() {
+    boolean changed = false;
+    newLobby = NetPlayerMaster.getLobbyname();
+    lobbyname.changeText(newLobby);
+    testLobby = newLobby;
+    if (lobbyname.getText().length() > 0) {
+
+      while (lobbyname
+              .getGuiText()
+              .getLengthOfLines()
+              .get(lobbyname.getGuiText().getLengthOfLines().size() - 1)
+          > 0.18f) {
+
+        if (lobbyname.getGuiText() != null) {
+          TextMaster.removeText(lobbyname.getGuiText());
+        }
+
+        if (lobbyname.getText().length() > 0) {
+          lobbyname.setText(lobbyname.getText().substring(0, lobbyname.getText().length() - 1));
+        }
+        changed = true;
+
+        lobbyname.updateString();
+      }
+    }
+
+    if (lobbyname.getGuiText() != null) {
+      TextMaster.removeText(lobbyname.getGuiText());
+    }
+    if (lobbyname.getText().length() > 0 && changed) {
+      lobbyname.changeText(lobbyname.getText() + "...");
+    }
+    lobbyname.updateString();
+  }
 }
