@@ -117,27 +117,34 @@ public class ServerBlock {
     float heartOrStar;
     switch (lobby.getPlayerAmount()) {
       case 1: case 2:
-        heartOrStar = 60;
+        heartOrStar = 70;
         break;
       case 3: case 4:
-        heartOrStar = 64;
+        heartOrStar = 73;
         break;
       default:
-        heartOrStar = 68;
+        heartOrStar = 76;
     }
-    if (0 <= r && r <= 30) {
+    if (0 <= r && r <= 25) {
       logger.debug("Spawning dynamite.");
       PacketSpawnItem packetSpawnItem =
           new PacketSpawnItem(
               ItemMaster.ItemTypes.DYNAMITE, new Vector3f(gridX, gridY, gridZ), clientId);
       packetSpawnItem.sendToLobby(lobby.getLobbyId());
-    } else if (30 < r && r <= heartOrStar) {
+    } else if (25 < r && r <= 45) {
+      logger.debug("Spawning Steroids.");
+      PacketSpawnItem packetSpawnItem =
+          new PacketSpawnItem(
+              ItemMaster.ItemTypes.STEROIDS, new Vector3f(gridX, gridY, gridZ), clientId);
+      packetSpawnItem.sendToLobby(lobby.getLobbyId());
+      itemOwner.ampUp();
+    } else  if (45 < r && r <= heartOrStar) {
       logger.debug("Spawning heart.");
       PacketSpawnItem packetSpawnItem =
           new PacketSpawnItem(
               ItemMaster.ItemTypes.HEART, new Vector3f(gridX, gridY, gridZ), clientId);
       packetSpawnItem.sendToLobby(lobby.getLobbyId());
-    } else if (heartOrStar < r && r <= 80) {
+    } else if (heartOrStar < r && r <= 85) {
       logger.debug("Spawning star.");
       for (ServerPlayer lobbyPlayer : lobby.getLobbyPlayers()) {
         if (lobbyPlayer != itemOwner) {
@@ -148,7 +155,7 @@ public class ServerBlock {
           new PacketSpawnItem(
               ItemMaster.ItemTypes.STAR, new Vector3f(gridX, gridY, gridZ), clientId);
       packetSpawnItem.sendToLobby(lobby.getLobbyId());
-    } else if (80 < r && r <= 100) {
+    } else if (85 < r && r <= 100) {
       logger.debug("Spawning ice.");
       itemOwner.freeze();
       PacketSpawnItem packetSpawnItem =

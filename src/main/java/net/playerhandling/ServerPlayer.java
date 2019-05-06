@@ -3,6 +3,7 @@ package net.playerhandling;
 import entities.NetPlayer;
 import entities.Player;
 import entities.items.Star;
+import entities.items.Steroids;
 import net.ServerLogic;
 import net.lobbyhandling.Lobby;
 import net.packets.chat.PacketChatMessageToClient;
@@ -30,8 +31,12 @@ public class ServerPlayer {
 
   private boolean defeated;
   private long timeStampOfGain;
+
   private boolean frozen;
   private long frozenAt;
+
+  private boolean amped;
+  private long ampedAt;
 
   private Vector2f pos2d = new Vector2f();
   private Vector2f pos2dOld = new Vector2f();
@@ -123,7 +128,7 @@ public class ServerPlayer {
     currentGold += goldValue;
     Lobby lobby = ServerLogic.getLobbyList().getLobby(curLobbyId);
     timeStampOfGain = System.currentTimeMillis() - lobby.getStartedAt();
-    if (currentGold >= 2000) { // TODO: set to 3000
+    if (currentGold >= 3000) {
       System.out.println("Game Over");
       lobby.gameOver(this);
     }
@@ -162,6 +167,15 @@ public class ServerPlayer {
   public void setPos2d(Vector2f pos2d) {
     this.pos2dOld = this.pos2d;
     this.pos2d = pos2d;
+    // Cap current velocity
+    if (currentVelocity2d.x < 0 && currentVelocity2d.x < goalVelocity2d.x
+        || (currentVelocity2d.x > 0 && currentVelocity2d.x > goalVelocity2d.x)) {
+      currentVelocity2d.x = goalVelocity2d.x;
+    }
+    if (currentVelocity2d.y < 0 && currentVelocity2d.y < goalVelocity2d.y
+        || (currentVelocity2d.y > 0 && currentVelocity2d.y > goalVelocity2d.y)) {
+      currentVelocity2d.y = goalVelocity2d.y;
+    }
     if (!validatePos2d(1f) && movementViolations > 0) {
       logger.warn(
           getUsername()
@@ -185,15 +199,22 @@ public class ServerPlayer {
   public boolean validatePos2d(float intervall) {
 
     float allowedRunSpeed = NetPlayer.getRunSpeed();
+    float allowedJumpPower = NetPlayer.getJumpPower();
 
-    if (frozen) {
+    if (amped) {
+      allowedRunSpeed *= Steroids.getMovementMultiplier();
+      allowedJumpPower *= Steroids.getJumpPowerMultiplier();
+      if ((System.currentTimeMillis() - ampedAt) / 1000 > Steroids.getSteroidsTime() + 1) {
+        amped = false;
+      }
+    } else if (frozen) {
       allowedRunSpeed *= getFreezeFactor();
     }
 
     // Sanity check for goal velocity
     if (goalVelocity2d.x > allowedRunSpeed + 1
         || goalVelocity2d.x < -allowedRunSpeed - 1
-        || goalVelocity2d.y > NetPlayer.getJumpPower() + 1) {
+        || goalVelocity2d.y > allowedJumpPower + 1) {
       logger.warn(getUsername() + ": Goal velocity exceeds allowed limits. 1 violation.");
       logger.debug(
           "allowed: "
@@ -207,7 +228,7 @@ public class ServerPlayer {
       // If the velocity is far too high, add another 4 violations
       if (goalVelocity2d.x > allowedRunSpeed * 2
           || goalVelocity2d.x < -allowedRunSpeed * 2
-          || goalVelocity2d.y > NetPlayer.getJumpPower() * 2) {
+          || goalVelocity2d.y > allowedJumpPower * 2) {
         logger.warn(getUsername() + ": Goal velocity is off the charts! 4 violations.");
         addMovementViolations(4);
       }
@@ -215,9 +236,9 @@ public class ServerPlayer {
     }
 
     // Sanity check for current velocity
-    if (currentVelocity2d.x > NetPlayer.getRunSpeed()
-        || currentVelocity2d.x < -NetPlayer.getRunSpeed()
-        || currentVelocity2d.y > NetPlayer.getJumpPower() + 1) {
+    if (currentVelocity2d.x > allowedRunSpeed + 1
+        || currentVelocity2d.x < -allowedRunSpeed - 1
+        || currentVelocity2d.y > allowedJumpPower + 1) {
       logger.warn(getUsername() + ": Current velocity exceeds allowed limits. 1 violation.");
       logger.debug(
           "allowed: "
@@ -229,9 +250,9 @@ public class ServerPlayer {
       addMovementViolations(1);
 
       // If the velocity is far too high, add another 4 violations
-      if (currentVelocity2d.x > NetPlayer.getRunSpeed() * 2
-          || currentVelocity2d.x < -NetPlayer.getRunSpeed() * 2
-          || currentVelocity2d.y > NetPlayer.getJumpPower() * 2) {
+      if (currentVelocity2d.x > allowedRunSpeed * 2
+          || currentVelocity2d.x < -allowedRunSpeed * 2
+          || currentVelocity2d.y > allowedJumpPower * 2) {
         logger.warn(getUsername() + ": Current velocity is off the charts! 4 violations.");
         addMovementViolations(4);
       }
@@ -280,8 +301,15 @@ public class ServerPlayer {
     if (!getLobby().getServerItemState().hasDynamiteOwnedBy(clientId)) {
 
       float maxDmg = Player.getDigInterval() * digDamage;
+      float allowedRunSpeed = NetPlayer.getRunSpeed();
 
-      if (frozen) {
+      if (amped) {
+        maxDmg *= Steroids.getDigDamageMultiplier();
+        allowedRunSpeed *= Steroids.getMovementMultiplier();
+        if ((System.currentTimeMillis() - ampedAt) / 1000 > Steroids.getSteroidsTime() + 1) {
+          amped = false;
+        }
+      } else if (frozen) {
         maxDmg *= getFreezeFactor();
       }
 
@@ -303,12 +331,12 @@ public class ServerPlayer {
       // Check if player is too far away from block. This is fairly generous since we only update
       // positions once per second
       Vector3f blockPos = getLobby().getMap().gridToWorld(new Vector2i(posX, posY));
-      if (new Vector2f(blockPos.x, blockPos.y).distance(getPos2d()) > Player.getRunSpeed() * 2) {
+      if (new Vector2f(blockPos.x, blockPos.y).distance(getPos2d()) > allowedRunSpeed * 2) {
         logger.warn(getUsername() + ": Trying to dig a block too far away. 1 violation.");
         addDamageViolations(1);
 
         // Another 4 violations if the block is way too far away
-        if (new Vector2f(blockPos.x, blockPos.y).distance(getPos2d()) > Player.getRunSpeed() * 4) {
+        if (new Vector2f(blockPos.x, blockPos.y).distance(getPos2d()) > allowedRunSpeed * 4) {
           logger.warn(getUsername() + ": Trying to dig a block accross the map... 4 violations.");
           addDamageViolations(4);
         }
@@ -395,9 +423,24 @@ public class ServerPlayer {
     return ServerLogic.getThreadByClientId(getClientId());
   }
 
+  /** Freeze the player and remove steroids if present. */
   public void freeze() {
     frozen = true;
     frozenAt = System.currentTimeMillis();
+    if (amped) {
+      amped = false;
+      ampedAt = 0;
+    }
+  }
+
+  /** Amp the player up and remove frozen if present. */
+  public void ampUp() {
+    amped = true;
+    ampedAt = System.currentTimeMillis();
+    if (frozen) {
+      frozen = false;
+      frozenAt = 0;
+    }
   }
 
   private float getFreezeFactor() {

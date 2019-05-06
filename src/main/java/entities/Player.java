@@ -19,6 +19,7 @@ import entities.blocks.BlockMaster;
 import entities.collision.BoundingBox;
 import entities.items.ItemMaster;
 import entities.items.Star;
+import entities.items.Steroids;
 import game.Game;
 import game.stages.Playing;
 import net.packets.block.PacketBlockDamage;
@@ -65,6 +66,7 @@ public class Player extends NetPlayer {
   private float currentDigDamage;
   private float currentJumpPower;
   private float freezeDuration;
+  private float ampedDuration;
   private float torchTimeout = torchPlaceDelay;
 
   /**
@@ -127,6 +129,16 @@ public class Player extends NetPlayer {
       currentRunSpeed = runSpeed * freezeFactor;
       currentDigDamage = digDamage * freezeFactor;
       currentJumpPower = jumpPower * freezeFactor;
+    } else if (amped) {
+      // Apply steroids
+      currentRunSpeed *= Steroids.getMovementMultiplier();
+      currentJumpPower *= Steroids.getJumpPowerMultiplier();
+      currentDigDamage *= Steroids.getDigDamageMultiplier();
+
+      ampedDuration += Game.dt();
+      if (ampedDuration > Steroids.getSteroidsTime()) {
+        deAmp();
+      }
     }
 
     sendVelocityToServer = false;
@@ -424,15 +436,19 @@ public class Player extends NetPlayer {
   }
 
   /**
-   * Triggers FreezeOverlay. And sets Player as frozen.
+   * Triggers FreezeOverlay. And sets Player as frozen and removes Steroids if present.
    *
    * @param initial the current freeze status.
    */
   public void freeze(boolean initial) {
     frozen = true;
+    stopVelocityX();
     if (initial) {
       showFreezeOverlay();
       freezeDuration = 0;
+    }
+    if (amped) {
+      deAmp();
     }
   }
 
@@ -440,8 +456,17 @@ public class Player extends NetPlayer {
     this.frozen = false;
   }
 
-  public boolean isFrozen() {
-    return frozen;
+  /** Apply Steroids and remove freeze. */
+  public void ampUp() {
+    amped = true;
+    ampedDuration = 0;
+    if (frozen) {
+      defreeze();
+    }
+  }
+
+  public void deAmp() {
+    amped = false;
   }
 
   private void setGoalVelocityX(float x) {

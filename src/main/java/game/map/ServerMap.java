@@ -40,13 +40,18 @@ public class ServerMap extends GameMap<ServerBlock> {
      */
     for (int y = 0; y < height; y++) {
       for (int x = 0; x < width; x++) {
-        if (noiseMap[x][y] < thresholds[0]) {
+        if ((x == 0 || x == width - 1) || y == height - 1) {
+          blocks[x][y] = new ServerBlock(BlockMaster.BlockTypes.OBSIDIAN, x, y);
+        } else if (y == height - 2) {
+          blocks[x][y] = new ServerBlock(BlockMaster.BlockTypes.GOLD, x, y);
+          blocks[x][y].setGoldValue(135 + y * 5);
+        } else if (noiseMap[x][y] < thresholds[0]) {
           blocks[x][y] = new ServerBlock(BlockMaster.BlockTypes.STONE, x, y); // Air
         } else {
           if (rng.nextFloat() < .07f) {
             blocks[x][y] =
                 new ServerBlock(BlockMaster.BlockTypes.GOLD, x, y); // Gold: 1 in 40 chance
-            blocks[x][y].setGoldValue(50 + y * 5);
+            blocks[x][y].setGoldValue(135 + y * 5);
           } else if (rng.nextFloat() < .05f) {
             blocks[x][y] =
                 new ServerBlock(BlockMaster.BlockTypes.QMARK, x, y); // Item Block: 1 in 50 chance
@@ -55,9 +60,6 @@ public class ServerMap extends GameMap<ServerBlock> {
           } else {
             blocks[x][y] = new ServerBlock(BlockMaster.BlockTypes.AIR, x, y); // Stone
           }
-        }
-        if ((x == 0 || x == width - 1) || y == height - 1) {
-          blocks[x][y] = new ServerBlock(BlockMaster.BlockTypes.OBSIDIAN, x, y);
         }
       }
     }

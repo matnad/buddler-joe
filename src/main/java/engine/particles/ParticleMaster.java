@@ -1,5 +1,6 @@
 package engine.particles;
 
+import engine.particles.systems.Amped;
 import engine.particles.systems.Cosmic;
 import engine.particles.systems.Explosion;
 import engine.particles.systems.Fire;
@@ -47,6 +48,7 @@ public class ParticleMaster {
     Frozen.init(loader);
     Snow.init(loader);
     Magic.init(loader);
+    Amped.init(loader);
   }
 
   /**
