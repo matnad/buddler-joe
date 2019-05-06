@@ -47,6 +47,7 @@ public class NetPlayer extends Entity {
   private static TexturedModel ripModel;
   private static int counter;
   protected boolean frozen = false;
+  protected boolean amped = false;
   Block collideWithBlockAbove;
   Block collideWithBlockBelow;
   Vector3f currentVelocity = new Vector3f();
@@ -345,10 +346,14 @@ public class NetPlayer extends Entity {
     }
   }
 
-  // Only use this for NetPlayers, this is just for the effect. For the player us Player.freeze()
-  public void setFrozen(boolean frozen) {
-    this.frozen = frozen;
-  }
+  //// Only use this for NetPlayers, this is just for the effect. For the player us Player.freeze()
+  //public void setFrozen(boolean frozen) {
+  //  this.frozen = frozen;
+  //}
+  //
+  //public void setAmpedUp(boolean amped) {
+  //  this.amped = amped;
+  //}
 
   /** Reset the static components before a new Game. */
   public static void reset() {

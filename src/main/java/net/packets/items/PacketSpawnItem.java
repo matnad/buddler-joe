@@ -7,6 +7,7 @@ import entities.items.Item;
 import entities.items.ItemMaster;
 import entities.items.ServerItem;
 import entities.items.Star;
+import entities.items.Steroids;
 import entities.items.Torch;
 import game.Game;
 import game.map.GameMap;
@@ -213,6 +214,11 @@ public class PacketSpawnItem extends Packet {
             item.setOwned(true);
           }
           ((Dynamite) item).setActive(true); // Start ticking
+        } else if (item instanceof Steroids) {
+          if (owner == Game.getActivePlayer().getClientId()) {
+            item.setOwned(true);
+            Game.getActivePlayer().ampUp();
+          }
         } else if (item instanceof Heart) {
           if (owner == Game.getActivePlayer().getClientId()) {
             item.setOwned(true);

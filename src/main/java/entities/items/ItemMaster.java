@@ -31,6 +31,7 @@ public class ItemMaster {
     Heart.init(loader);
     Ice.init(loader);
     Star.init(loader);
+    Steroids.init(loader);
   }
 
   /**
@@ -60,6 +61,9 @@ public class ItemMaster {
         break;
       case ICE:
         item = new Ice(position);
+        break;
+      case STEROIDS:
+        item = new Steroids(position);
         break;
       default:
         item = null;
@@ -136,7 +140,8 @@ public class ItemMaster {
     TORCH("TRCH"),
     HEART("HART"),
     ICE("ICEE"),
-    STAR("STAR");
+    STAR("STAR"),
+    STEROIDS("STRD");
 
     private final String itemId;
 
