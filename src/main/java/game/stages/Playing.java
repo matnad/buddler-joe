@@ -1,7 +1,6 @@
 package game.stages;
 
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_ESCAPE;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_F;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_H;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_P;
 import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_1;
@@ -22,10 +21,8 @@ import game.NetPlayerMaster;
 import gui.GuiTexture;
 import gui.MenuButton;
 import gui.text.FloatingStrings;
-import java.lang.management.MemoryUsage;
 import java.util.ArrayList;
 import java.util.List;
-
 import net.packets.lists.PacketHighscore;
 import net.packets.lists.PacketPlayerList;
 import org.joml.Vector2f;
@@ -39,7 +36,7 @@ import util.MousePlacer;
 public class Playing {
 
   private static final float damageTakenScreenTotalDuration = 2f;
-  //private static FloatingStrings floatingGoldStrings;
+  private static FloatingStrings floatingGoldStrings;
   private static GuiTexture damageOverlay;
   private static float damageTakenScreenRemaining = 0f;
   private static int redDown = 0;
@@ -81,7 +78,9 @@ public class Playing {
     iceTotal =
         new GuiTexture(loader.loadTexture("whiteOut"), new Vector2f(0, 0), new Vector2f(1, 1), 1);
     LoadingScreen.progess();
-    // floatingGoldStrings = new FloatingStrings(Game.getActivePlayer().getBbox(), 3f);
+
+    resetFloatingStrings();
+
     LoadingScreen.progess();
     whisper =
         new MenuButton(
@@ -206,8 +205,6 @@ public class Playing {
       }
     }
 
-    // renderer.processTerrain(Game.getTerrainChunks()[0][0]);
-
     // Prepare and Render the entities
     renderer.processEntity(Game.getActivePlayer());
     NetPlayerMaster.update(renderer);
@@ -231,7 +228,7 @@ public class Playing {
       }
     }
 
-    //floatingGoldStrings.update();
+    floatingGoldStrings.update();
     ParticleMaster.renderParticles(Game.getActiveCamera());
 
     guis = applyDamage(guis);
@@ -241,9 +238,9 @@ public class Playing {
     TextMaster.render();
   }
 
-  //public static void addFloatingGoldText(int goldValue) {
-  //  floatingGoldStrings.addString("+ " + goldValue);
-  //}
+  public static void addFloatingGoldText(int goldValue) {
+    floatingGoldStrings.addString("+ " + goldValue);
+  }
 
   /** Prepares variables, so that the DamageTakenOverlay can be displayed. */
   public static void showDamageTakenOverlay() {
@@ -351,7 +348,12 @@ public class Playing {
   /** Delete all text objects from this stage. */
   public static void done() {
     firstloop = true;
-    //floatingGoldStrings.done();
+    floatingGoldStrings.done();
     Game.getGoldGuiText().done();
+  }
+
+  /** Reset floating strings for a new Game. Call this when the Player object changes. */
+  public static void resetFloatingStrings() {
+    floatingGoldStrings = new FloatingStrings(Game.getActivePlayer().getBbox(), 3f);
   }
 }

@@ -78,7 +78,7 @@ public class GoldBlock extends Block {
       //          },
       //          1100);
       ((Player) getDestroyedBy()).increaseCurrentGold(value);
-      //Playing.addFloatingGoldText(value);
+      Playing.addFloatingGoldText(value);
     }
   }
 

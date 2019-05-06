@@ -66,8 +66,7 @@ public class FloatingStrings {
   private Vector2f getPos2D(float offsetX, float offsetY) {
     Vector3f pos3D =
         new Vector3f(bbox.getMaxX() - bbox.getDimX() / 2 + offsetX, bbox.getMaxY() + offsetY, 3);
-    Vector2f pos2D = Maths.worldToScreen(pos3D, Game.getActiveCamera());
-    return pos2D;
+    return Maths.worldToScreen(pos3D, Game.getActiveCamera());
   }
 
   /**
