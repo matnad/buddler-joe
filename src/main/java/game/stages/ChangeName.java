@@ -43,6 +43,7 @@ public class ChangeName {
   private static String output;
   private static String testCurName;
   private static String newCurName;
+  private static String dispName;
   private static GuiText guiText;
   private static FontType font;
   private static Vector3f textColour;
@@ -122,11 +123,10 @@ public class ChangeName {
     }
 
     newCurName = Game.getSettings().getUsername();
-
-    if (!newCurName.equals(testCurName)){
+    if (!newCurName.equals(testCurName)) {
       updateName();
     }
-
+    curName.changeText(dispName);
     List<GuiTexture> guis = new ArrayList<>();
     // add textures here
     guis.add(background);
@@ -222,9 +222,7 @@ public class ChangeName {
     } while (guiText.getLengthOfLines().get(guiText.getLengthOfLines().size() - 1) > 0.41f);
   }
 
-
-
-  public static void updateName(){
+  public static void updateName() {
     boolean changed = false;
     testCurName = newCurName;
     curName.changeText(newCurName);
@@ -235,7 +233,7 @@ public class ChangeName {
               .getGuiText()
               .getLengthOfLines()
               .get(curName.getGuiText().getLengthOfLines().size() - 1)
-              > 0.25f) {
+          > 0.25f) {
 
         if (curName.getGuiText() != null) {
           TextMaster.removeText(curName.getGuiText());
@@ -256,6 +254,6 @@ public class ChangeName {
     if (curName.getText().length() > 0 && changed) {
       curName.changeText(curName.getText() + "...");
     }
-    curName.updateString();
-    }
+    dispName = curName.getText();
+  }
 }

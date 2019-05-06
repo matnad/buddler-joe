@@ -193,6 +193,7 @@ public class Chat {
       updateGuiText();
     }
     arrangeMessages();
+    //    updateGuiText();
   }
 
   /**
@@ -269,6 +270,7 @@ public class Chat {
       // }
       backToChat = false;
       msgSize = messages.size(); // Update size so we can detect further changes
+      updateGuiText();
     }
   }
 
