@@ -8,6 +8,7 @@ import static org.lwjgl.openal.AL10.alDeleteSources;
 import static org.lwjgl.openal.AL10.alGenSources;
 import static org.lwjgl.openal.AL10.alGetSourcei;
 import static org.lwjgl.openal.AL10.alSourcePlay;
+import static org.lwjgl.openal.AL10.alSourceStop;
 import static org.lwjgl.openal.AL10.alSourcef;
 import static org.lwjgl.openal.AL10.alSourcei;
 
@@ -81,6 +82,10 @@ public class Source {
 
   public boolean isPlaying() {
     return alGetSourcei(sourceId, AL_SOURCE_STATE) == AL_PLAYING;
+  }
+
+  public void stop() {
+    alSourceStop(sourceId);
   }
 
   public void delete() {
