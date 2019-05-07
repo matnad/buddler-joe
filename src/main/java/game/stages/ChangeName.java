@@ -41,6 +41,9 @@ public class ChangeName {
   private static String name = "";
   private static String newname = "";
   private static String output;
+  private static String testCurName;
+  private static String newCurName;
+  private static String dispName;
   private static GuiText guiText;
   private static FontType font;
   private static Vector3f textColour;
@@ -119,8 +122,11 @@ public class ChangeName {
       updateGuiText();
     }
 
-    curName.changeText(Game.getSettings().getUsername());
-
+    newCurName = Game.getSettings().getUsername();
+    if (!newCurName.equals(testCurName)) {
+      updateName();
+    }
+    curName.changeText(dispName);
     List<GuiTexture> guis = new ArrayList<>();
     // add textures here
     guis.add(background);
@@ -214,5 +220,41 @@ public class ChangeName {
         output = output.substring(1);
       }
     } while (guiText.getLengthOfLines().get(guiText.getLengthOfLines().size() - 1) > 0.41f);
+  }
+
+  /** cut the changed username to the correct length for the window. */
+  public static void updateName() {
+    boolean changed = false;
+    testCurName = newCurName;
+    curName.changeText(newCurName);
+
+    if (curName.getText().length() > 0) {
+
+      while (curName
+              .getGuiText()
+              .getLengthOfLines()
+              .get(curName.getGuiText().getLengthOfLines().size() - 1)
+          > 0.25f) {
+
+        if (curName.getGuiText() != null) {
+          TextMaster.removeText(curName.getGuiText());
+        }
+
+        if (curName.getText().length() > 0) {
+          curName.setText(curName.getText().substring(0, curName.getText().length() - 1));
+        }
+        changed = true;
+
+        curName.updateString();
+      }
+    }
+
+    if (curName.getGuiText() != null) {
+      TextMaster.removeText(curName.getGuiText());
+    }
+    if (curName.getText().length() > 0 && changed) {
+      curName.changeText(curName.getText() + "...");
+    }
+    dispName = curName.getText();
   }
 }
