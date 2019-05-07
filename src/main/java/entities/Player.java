@@ -10,8 +10,9 @@ import static org.lwjgl.glfw.GLFW.GLFW_KEY_S;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_SPACE;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_T;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_W;
-import static org.lwjgl.glfw.GLFW.glfwSetCursorEnterCallback;
 
+import audio.AudioMaster;
+import audio.Source;
 import engine.io.InputHandler;
 import entities.blocks.AirBlock;
 import entities.blocks.Block;
@@ -68,6 +69,9 @@ public class Player extends NetPlayer {
   private float freezeDuration;
   private float ampedDuration;
   private float torchTimeout = torchPlaceDelay;
+
+  private Source digSoundDirt = new Source(AudioMaster.SoundCategory.DIG);
+  private boolean playDigSoundDirt;
 
   /**
    * Spawn the ServerPlayer. This will be handled differently in the future when we rework the
@@ -183,6 +187,7 @@ public class Player extends NetPlayer {
     // Handle character rotation (check run direction see if we need to rotate more)
     this.increaseRotation(0, (float) (getCurrentTurnSpeed() * Game.dt()), 0);
 
+    playDigSoundDirt = false; // Will be set to true if we dig this frame
     // Handle collisions, we only check close blocks to optimize performance
     // Distance is much cheaper to check than overlap
     for (Block closeBlock : closeBlocks) {
@@ -202,11 +207,10 @@ public class Player extends NetPlayer {
       turnHeadlightOn();
     }
 
-    //// Send server update with update
-    // if (Game.isConnectedToServer()
-    //    && (!currentVelocity.equals(new Vector3f()) || currentTurnSpeed != 0)) {
-    //  new PacketPos(getPositionXy().x, getPositionXy().y, getRotY()).sendToServer();
-    // }
+    // Play a random dig sound
+    if (playDigSoundDirt && !digSoundDirt.isPlaying()) {
+      digSoundDirt.playRandom();
+    }
 
     if (sendVelocityToServer) {
       new PacketVelocity(currentVelocity.x, currentVelocity.y, goalVelocity.x, goalVelocity.y)
@@ -323,11 +327,23 @@ public class Player extends NetPlayer {
    * @param block block to dig
    */
   private void digBlock(Block block) {
+
     // Check if we dig the same block as last time, otherwise throw progress away
     if (lastDiggedBlock != block) {
       lastDiggedBlock = block;
       lastDiggedBlockDamage = 0;
       digIntervallTimer = 0;
+    } else if (lastDiggedBlockDamage > 0.1f) {
+      // Queue sound
+      switch (block.getType()) {
+        case DIRT:
+        case GOLD:
+        case QMARK:
+          playDigSoundDirt = true;
+          break;
+        default:
+          break;
+      }
     }
     // Update damage and time, save locally
     digIntervallTimer += Game.dt();
