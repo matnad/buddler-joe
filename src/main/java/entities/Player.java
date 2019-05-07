@@ -71,7 +71,12 @@ public class Player extends NetPlayer {
   private float torchTimeout = torchPlaceDelay;
 
   private Source digSoundDirt = new Source(AudioMaster.SoundCategory.DIG);
-  private boolean playDigSoundDirt;
+  private Source explosionSound = new Source(AudioMaster.SoundCategory.EXPLOSION);
+  private Source heartSound = new Source(AudioMaster.SoundCategory.HEART);
+  private Source freezeSound = new Source(AudioMaster.SoundCategory.FREEZE);
+  private Source damageSound = new Source(AudioMaster.SoundCategory.DAMAGE);
+  private boolean playDigSoundDirt = false;
+  private boolean playFreezeSound = false;
 
   /**
    * Spawn the ServerPlayer. This will be handled differently in the future when we rework the
@@ -120,6 +125,9 @@ public class Player extends NetPlayer {
     currentDigDamage = digDamage;
     currentJumpPower = jumpPower;
     if (frozen) {
+      if (!freezeSound.isPlaying()) {
+        freezeSound.playIndex(1);
+      }
       // Calculate freeze factor
       freezeDuration += Game.dt();
       float freezeFactor;
@@ -463,6 +471,7 @@ public class Player extends NetPlayer {
       showFreezeOverlay();
       freezeDuration = 0;
     }
+    freezeSound.playIndex(0);
     if (amped) {
       deAmp();
     }

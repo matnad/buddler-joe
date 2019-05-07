@@ -94,7 +94,13 @@ public class AudioMaster {
     // Load sounds
     loadSound(SoundCategory.DIG, "dig1");
     loadSound(SoundCategory.DIG, "dig2");
-
+    loadSound(SoundCategory.EXPLOSION, "Explosion");
+    loadSound(SoundCategory.HEART, "Heart");
+    loadSound(SoundCategory.HEART, "take Heart");
+    loadSound(SoundCategory.FREEZE,"Freeze1");
+    loadSound(SoundCategory.FREEZE,"Freeze2");
+    loadSound(SoundCategory.DAMAGE, "Autsch");
+    loadSound(SoundCategory.DAMAGE, "Game Over");
   }
 
   private static int loadSound(SoundCategory category, String file) {
@@ -186,6 +192,10 @@ public class AudioMaster {
   }
 
   public enum SoundCategory {
-    DIG
+    DIG,
+    EXPLOSION,
+    HEART,
+    FREEZE,
+    DAMAGE
   }
 }
