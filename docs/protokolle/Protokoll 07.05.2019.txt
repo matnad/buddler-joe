@@ -1,0 +1,68 @@
+HIGH PRIO:
+- Netzwerkprotokoll Dokument -> 14.05.2019
+- QA Dokument -> 14.05.2019
+- Twitchy Video am Sonntag
+- Connection Lost am Sonntag -> Alle
+- Archidekturdokument: -> 14.05.2019
+  > Engine -> Matthias
+  > Game -> Stages (Sebastian)
+         -> Map und Validierung (Sanja)
+  > GUI -> Chat und Lobbies (Moritz)
+  > Net -> Viktor
+- Logo -> Sebastian
+- Mouse Icon -> Sebastian
+- Manual -> Viktor und Matthias 14.05.2019
+- Sounds einfügen -> Moritz
+- SCREENSHOT!
+
+MID PRIO:
+- Webseite -> Matthias
+- License file -> Matthias
+
+LOW PRIO:
+- Intro -> Matthias
+- Tutorial ingame -> Matthias
+- "Animationen" für Joe -> Matthias
+
+Sounds to implement:
+- 4-5 Sounds für das Graben (Unterschiedlich für Stein/Obsidian/Dirt)
+- Explosion
+- Schaden bekommen (http://www.orangefreesounds.com/minecraft-death-sound/)
+- Eis Einfrieren
+- Stern aufgemacht sound
+- Neues Item (Power Up)
+- Herz (spawnen/aufnehmen)
+- Sterben
+
+Präsentation Aufteilung:
+- About a game -> Moritz (Video?)
+- QA -> Sanja
+- Technology -> Matthias
+- Lessons Learned -> Viktor
+- Ludic History -> Sebastian
+- Demo (Link)
+
+Bis 14.05.2019 Erste Fassung
+
+Fragen nächste Übung:
+- Spectator Mode
+- Unit Tests ausreichend?
+
+DONE:
+- Mehr Lichtquellen Rendern
+- Nullpointer wenn Spieler auf einem Computer das Spiel verlässt
+- Login Packete mit Trennzeichen aktualisieren
+- Neue Screen-Overlays für Freeze und Damage
+- Unit Tests Net
+- Lobby Status Änderungen erkennen
+    > Lobby löschen, wenn zulange niemand drin
+- Optisches Feedback beim Whispern/All
+- Eigener Name nicht anzeigen bei den Buttons
+- Mapgrösse mit Mapcreation
+- Nach Game Ende ins Hauptmenü und "alles resetten"
+- Chat in Lobby Menü
+- CI / CD (Automatisierte Tests)
+- Strafpunkte und Enforcement
+- Spieler der aus der Karte fällt
+- Partikel Effekte für Items
+- Sounds aufnehmen
