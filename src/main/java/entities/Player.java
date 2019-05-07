@@ -470,8 +470,8 @@ public class Player extends NetPlayer {
     if (initial) {
       showFreezeOverlay();
       freezeDuration = 0;
+      freezeSound.playIndex(2);
     }
-    freezeSound.playIndex(0);
     if (amped) {
       deAmp();
     }

@@ -99,6 +99,7 @@ public class AudioMaster {
     loadSound(SoundCategory.HEART, "take Heart");
     loadSound(SoundCategory.FREEZE,"Freeze1");
     loadSound(SoundCategory.FREEZE,"Freeze2");
+    loadSound(SoundCategory.FREEZE,"Freeze3");
     loadSound(SoundCategory.DAMAGE, "Autsch");
     loadSound(SoundCategory.DAMAGE, "Game Over");
   }
