@@ -478,6 +478,7 @@ public class Player extends NetPlayer {
   }
 
   public void defreeze() {
+      freezeSound.stop();
     this.frozen = false;
   }
 
@@ -520,5 +521,8 @@ public class Player extends NetPlayer {
       currentVelocity.y = 0;
       sendVelocityToServer = true;
     }
+  }
+  public void playFreezeSound(){
+      freezeSound.playIndex(0);
   }
 }
