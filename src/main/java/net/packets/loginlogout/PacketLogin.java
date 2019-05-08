@@ -37,7 +37,11 @@ public class PacketLogin extends Packet {
     if (!hasErrors()) {
       this.username = getData().trim();
       setData(username);
-      Game.getSettings().setUsername(username);
+      try {
+        Game.getSettings().setUsername(username);
+      } catch (NullPointerException e) {
+        addError("No Game is existing.");
+      }
     }
   }
 
