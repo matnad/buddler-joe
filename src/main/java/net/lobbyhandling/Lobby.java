@@ -304,9 +304,54 @@ public class Lobby implements Runnable {
     // Inform all clients
     new PacketGameEnd(userName, time).sendToLobby(lobbyId);
     // Reset Server Players
+    CopyOnWriteArrayList<ServerPlayer> oldLobbyPlayers = new CopyOnWriteArrayList<>();
     for (ServerPlayer lobbyPlayer : lobbyPlayers) {
+      oldLobbyPlayers.add(lobbyPlayer);
       removePlayer(lobbyPlayer.getClientId());
     }
+    transplant(oldLobbyPlayers);
+  }
+
+  private void transplant(CopyOnWriteArrayList<ServerPlayer> oldLobbyPlayers) {
+    Lobby lobby = new Lobby(getFreshName(), createrPlayerId, mapSize);
+  }
+
+  public String getFreshName() {
+    StringBuilder oldName = new StringBuilder(lobbyName);
+    StringBuilder number = new StringBuilder();
+    int digits = 0;
+    while (oldName.length() > 0 && Character.isDigit(oldName.charAt(oldName.length() - 1))) {
+      digits++;
+      number.insert(0, oldName.charAt(oldName.length() - 1));
+      oldName.deleteCharAt(oldName.length() - 1);
+    }
+    long numLong;
+    if (number.length() > 0) {
+      numLong = Long.parseLong(number.toString());
+    } else {
+      numLong = 0;
+    }
+    numLong++;
+    number = new StringBuilder(Long.toString(numLong));
+
+    if (number.length() > 16) {
+      logger.info("getFreshName(), had to use generic name.");
+      number = new StringBuilder(Long.toString(System.currentTimeMillis()));
+      while (number.length() > 16) {
+        number.deleteCharAt(number.length() - 1);
+      }
+    } // number is shorter or equal to 16 after this if
+
+    while (oldName.length() > 0 && number.length() + oldName.length() > 16) {
+      oldName.deleteCharAt(oldName.length() - 1);
+    }
+
+    while (number.length() + oldName.length() < 4) {
+      number.append(0);
+    }
+
+    oldName.append(number.toString());
+    return oldName.toString();
   }
 
   @Override

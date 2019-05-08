@@ -57,6 +57,7 @@ import net.ClientLogic;
 import net.StartNetworkOnlyClient;
 import net.packets.lobby.PacketCreateLobby;
 import net.packets.lobby.PacketJoinLobby;
+import net.packets.lobby.PacketLeaveLobby;
 import net.packets.loginlogout.PacketLogin;
 import org.joml.Vector3f;
 import org.slf4j.Logger;
@@ -132,7 +133,7 @@ public class Game extends Thread {
   public String username;
   // Set to true to create and join a lobby. For quicker testing.
   private boolean autoJoin = false;
-
+  private static boolean afterMatchLobbyReady;
   /**
    * The constructor for the game to be called from the main class.
    *
@@ -580,7 +581,16 @@ public class Game extends Thread {
     camera = new Camera(player, window);
     map = new ClientMap("s", System.currentTimeMillis());
 
-    Game.addActiveStage(Game.Stage.MAINMENU);
+    if (afterMatchLobbyReady) {
+      Game.getChat().setLobbyChatSettings();
+      ChooseLobby.setRemoveAtEndOfFrame(true);//TODO: do we need this? <---
+      InLobby.setRemoveAtEndOfFrame(true);
+      Game.addActiveStage(Game.Stage.INLOBBBY);
+    } else {
+      logger.info("Game restart on  ClientSide before new Lobby was ready.");
+      Game.addActiveStage(Game.Stage.MAINMENU);
+      new PacketLeaveLobby().sendToServer();
+    }
   }
 
   private void cleanUp() {
@@ -731,6 +741,14 @@ public class Game extends Thread {
 
   public static void setStartedAt(long startedAt) {
     Game.startedAt = startedAt;
+  }
+
+  public static boolean isAfterMatchLobbyReady() {
+    return afterMatchLobbyReady;
+  }
+
+  public static void setAfterMatchLobbyReady(boolean afterMatchLobbyReady) {
+    Game.afterMatchLobbyReady = afterMatchLobbyReady;
   }
 
   // Valid Stages

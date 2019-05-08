@@ -76,6 +76,7 @@ public class GameOver {
 
     if ((InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1) && exitGame.isHover(x, y))) {
       Game.restart();
+
     }
 
     if (gameOver == null || winnerMsg == null) {

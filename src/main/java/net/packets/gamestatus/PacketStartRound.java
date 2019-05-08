@@ -57,6 +57,7 @@ public class PacketStartRound extends Packet {
     Game.removeActiveStage(INLOBBBY);
     Game.clearAllTextAtEndOfCurrentFrame();
     ClientMap map = Game.getMap();
+    Game.setAfterMatchLobbyReady(false);
     try {
       map.reloadMap();
       Player player = Game.getActivePlayer();
