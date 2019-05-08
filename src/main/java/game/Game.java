@@ -74,7 +74,7 @@ public class Game extends Thread {
   private static final Logger logger = LoggerFactory.getLogger(Game.class);
 
   // Set up list of stages, stages will be updated at the end of every frame
-  private static final List<Stage> activeStages = new CopyOnWriteArrayList<>();
+  private static List<Stage> activeStages = new CopyOnWriteArrayList<>();
   private static final List<Stage> stagesToBeAdded = new CopyOnWriteArrayList<>();
   /*
    * All entities that need to be rendered.
@@ -134,6 +134,7 @@ public class Game extends Thread {
   // Set to true to create and join a lobby. For quicker testing.
   private boolean autoJoin = false;
   private static boolean afterMatchLobbyReady;
+
   /**
    * The constructor for the game to be called from the main class.
    *
@@ -583,7 +584,7 @@ public class Game extends Thread {
 
     if (afterMatchLobbyReady) {
       Game.getChat().setLobbyChatSettings();
-      ChooseLobby.setRemoveAtEndOfFrame(true);//TODO: do we need this? <---
+      ChooseLobby.setRemoveAtEndOfFrame(true); // TODO: do we need this? <---
       InLobby.setRemoveAtEndOfFrame(true);
       Game.addActiveStage(Game.Stage.INLOBBBY);
     } else {
@@ -750,6 +751,11 @@ public class Game extends Thread {
   public static void setAfterMatchLobbyReady(boolean afterMatchLobbyReady) {
     Game.afterMatchLobbyReady = afterMatchLobbyReady;
   }
+
+  public static void setActiveStages(List<Stage> activeStages) {
+    Game.activeStages = activeStages;
+  }
+
 
   // Valid Stages
   public enum Stage {

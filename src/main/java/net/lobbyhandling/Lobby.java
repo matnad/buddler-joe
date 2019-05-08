@@ -312,10 +312,18 @@ public class Lobby implements Runnable {
     transplant(oldLobbyPlayers);
   }
 
+  /**
+   * Creates a new Lobby and transfers all players of this lobby to the new one.
+   * */
   private void transplant(CopyOnWriteArrayList<ServerPlayer> oldLobbyPlayers) {
     Lobby lobby = new Lobby(getFreshName(), createrPlayerId, mapSize);
   }
 
+  /**
+   * Creates a new lobbyname consisting of the old lobbyname and a increasing number.
+   *
+   * @return a valid lobbyname.
+   * */
   public String getFreshName() {
     StringBuilder oldName = new StringBuilder(lobbyName);
     StringBuilder number = new StringBuilder();
