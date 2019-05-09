@@ -15,6 +15,7 @@ import static game.Game.Stage.OPTIONS;
 import static game.Game.Stage.PLAYERLIST;
 import static game.Game.Stage.PLAYING;
 
+import audio.AudioMaster;
 import engine.io.InputHandler;
 import engine.io.Window;
 import engine.particles.ParticleMaster;
@@ -591,6 +592,7 @@ public class Game extends Thread {
     renderer.cleanUp();
     loader.cleanUp();
     ParticleMaster.cleanUp();
+    AudioMaster.cleanUp();
   }
 
   public static void clearAllTextAtEndOfCurrentFrame() {
@@ -622,6 +624,11 @@ public class Game extends Thread {
     ChangeName.init(loader);
     LoadingScreen.progess();
     HistoryMenu.init(loader);
+    LoadingScreen.progess();
+
+    LoadingScreen.updateLoadingMessage("loading sounds");
+    AudioMaster.init();
+    LoadingScreen.progess();
 
     // Generate ServerPlayer
     NetPlayer.init(loader);
