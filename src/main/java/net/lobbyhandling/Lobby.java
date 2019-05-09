@@ -320,7 +320,10 @@ public class Lobby implements Runnable {
   private void transfer(CopyOnWriteArrayList<ServerPlayer> oldLobbyPlayers) {
     try {
       Lobby freshLobby = new Lobby(getFreshName(), createrPlayerId, mapSize);
-      ServerLogic.getLobbyList().addLobby(freshLobby);
+      String lobbyAddstatus = ServerLogic.getLobbyList().addLobby(freshLobby);
+      if (lobbyAddstatus.startsWith("OK")) {
+        History.openAdd(freshLobby.getLobbyId(), freshLobby.getLobbyName());
+      }
       for (ServerPlayer oldLobbyPlayer : oldLobbyPlayers) {
         // add old players to new Lobby and inform them.
         ServerPlayer serverPlayer =
