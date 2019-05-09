@@ -45,6 +45,7 @@ import game.stages.MainMenu;
 import game.stages.Options;
 import game.stages.PlayerList;
 import game.stages.Playing;
+import gui.MouseIcon;
 import gui.chat.Chat;
 import gui.lifestatus.LifeStatus;
 import gui.text.CurrentGold;
@@ -360,6 +361,7 @@ public class Game extends Thread {
     window.setFullscreen(settings.isFullscreen());
     window.create();
 
+    MouseIcon.setMouseIcon(window, "back_norm");
     // Initiate the master renderer class
     renderer = new MasterRenderer();
 
