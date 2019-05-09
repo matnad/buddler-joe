@@ -67,6 +67,7 @@ public class PacketStartRound extends Packet {
       Game.addActiveStage(PLAYING);
       // InLobby.done();
     } catch (NullPointerException e) {
+      e.printStackTrace();
       addError("No map available.");
     }
   }

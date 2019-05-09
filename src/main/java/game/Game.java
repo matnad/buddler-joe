@@ -134,6 +134,7 @@ public class Game extends Thread {
   // Set to true to create and join a lobby. For quicker testing.
   private boolean autoJoin = false;
   private static boolean afterMatchLobbyReady;
+  private static String[] cachedMap;
 
   /**
    * The constructor for the game to be called from the main class.
@@ -581,6 +582,7 @@ public class Game extends Thread {
 
     camera = new Camera(player, window);
     map = new ClientMap("s", System.currentTimeMillis());
+    map.setLobbyMap(Game.getCachedMap());
 
     if (afterMatchLobbyReady) {
       Game.getChat().setLobbyChatSettings();
@@ -754,6 +756,15 @@ public class Game extends Thread {
 
   public static void setActiveStages(List<Stage> activeStages) {
     Game.activeStages = activeStages;
+  }
+
+
+  public static String[] getCachedMap() {
+    return cachedMap;
+  }
+
+  public static void setCachedMap(String[] cachedMap) {
+    Game.cachedMap = cachedMap;
   }
 
 

@@ -2,6 +2,7 @@ package net.packets.lobby;
 
 import game.Game;
 import game.stages.ChooseLobby;
+import game.stages.GameOver;
 import game.stages.InLobby;
 import net.packets.Packet;
 
@@ -77,9 +78,10 @@ public class PacketJoinLobbyStatus extends Packet {
           InLobby.setRemoveAtEndOfFrame(true);
           Game.addActiveStage(Game.Stage.INLOBBBY);
           Game.removeActiveStage(Game.Stage.CHOOSELOBBY);
-        } else if (Game.getActiveStages().contains(Game.Stage.GAMEOVER)) {
+        } else if (GameOver.isActiv()) {
           Game.setAfterMatchLobbyReady(true);
         } else {
+          // We actually dont want to be in a Lobby.
           new PacketLeaveLobby().sendToServer();
         }
       } catch (NullPointerException e) {

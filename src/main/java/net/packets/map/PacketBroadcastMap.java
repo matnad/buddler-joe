@@ -4,7 +4,9 @@ import entities.blocks.BlockMaster;
 import game.Game;
 import game.map.ClientMap;
 import game.map.ServerMap;
+import game.stages.GameOver;
 import java.util.Arrays;
+
 import net.packets.Packet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -94,8 +96,12 @@ public class PacketBroadcastMap extends Packet {
       Game.setMap(map);
     }
     if (!hasErrors()) {
-      map.setLobbyMap(mapArray);
-      map.setSeed(seed);
+      if (!GameOver.isActiv()) {
+        map.setLobbyMap(mapArray);
+        map.setSeed(seed);
+      } else {
+        Game.setCachedMap(mapArray);
+      }
     } else {
       logger.error(
           "Error trying to reload map: " + createErrorMessage() + "\n" + Arrays.toString(mapArray));

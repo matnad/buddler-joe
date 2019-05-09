@@ -11,9 +11,13 @@ import net.ServerLogic;
 import net.highscore.ServerHighscoreSerialiser;
 import net.packets.gamestatus.PacketGameEnd;
 import net.packets.gamestatus.PacketStartRound;
+import net.packets.lobby.PacketCurLobbyInfo;
+import net.packets.lobby.PacketJoinLobbyStatus;
 import net.packets.lobby.PacketLobbyOverview;
+import net.packets.map.PacketBroadcastMap;
 import net.playerhandling.Referee;
 import net.playerhandling.ServerPlayer;
+import net.playerhandling.ServerPlayerList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -309,21 +313,45 @@ public class Lobby implements Runnable {
       oldLobbyPlayers.add(lobbyPlayer);
       removePlayer(lobbyPlayer.getClientId());
     }
-    transplant(oldLobbyPlayers);
+    transfer(oldLobbyPlayers);
   }
 
-  /**
-   * Creates a new Lobby and transfers all players of this lobby to the new one.
-   * */
-  private void transplant(CopyOnWriteArrayList<ServerPlayer> oldLobbyPlayers) {
-    Lobby lobby = new Lobby(getFreshName(), createrPlayerId, mapSize);
+  /** Creates a new Lobby and transfers all players of this lobby to the new one. */
+  private void transfer(CopyOnWriteArrayList<ServerPlayer> oldLobbyPlayers) {
+    try {
+      Lobby freshLobby = new Lobby(getFreshName(), createrPlayerId, mapSize);
+      ServerLogic.getLobbyList().addLobby(freshLobby);
+      for (ServerPlayer oldLobbyPlayer : oldLobbyPlayers) {
+        // add old players to new Lobby and inform them.
+        ServerPlayer serverPlayer =
+            ServerLogic.getPlayerList().getPlayer(oldLobbyPlayer.getClientId());
+        String transferStatus = freshLobby.addPlayer(serverPlayer);
+        if (transferStatus.equals("OK")) {
+          serverPlayer.setCurLobbyId(freshLobby.getLobbyId());
+        }
+        new PacketJoinLobbyStatus(serverPlayer.getClientId(), transferStatus)
+            .sendToClient(serverPlayer.getClientId());
+      }
+      for (ServerPlayer lobbyPlayer : freshLobby.getLobbyPlayers()) {
+        PacketCurLobbyInfo pcli =
+            new PacketCurLobbyInfo(lobbyPlayer.getClientId(), freshLobby.getLobbyId());
+        pcli.sendToClient(lobbyPlayer.getClientId());
+        new PacketBroadcastMap(freshLobby.getMap()).sendToClient(lobbyPlayer.getClientId());
+      }
+      String info = "OK║" + ServerLogic.getLobbyList().getTopTen();
+      PacketLobbyOverview packetLobbyOverview =
+          new PacketLobbyOverview(1, info); // one is not important
+      packetLobbyOverview.sendToClientsNotInALobby();
+    } catch (Exception e) {
+      logger.error("Error while transferring players to new lobby.");
+    }
   }
 
   /**
    * Creates a new lobbyname consisting of the old lobbyname and a increasing number.
    *
    * @return a valid lobbyname.
-   * */
+   */
   public String getFreshName() {
     StringBuilder oldName = new StringBuilder(lobbyName);
     StringBuilder number = new StringBuilder();
