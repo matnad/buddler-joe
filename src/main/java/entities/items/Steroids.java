@@ -41,7 +41,6 @@ public class Steroids extends Item {
     Random rnd = new Random(); // Give the shockwave a slight random tilt
     ampedInitialEffect.setRotationAxis(
         new Vector3f(rnd.nextFloat() * .4f - .2f, 1, rnd.nextFloat() * .4f - .2f), 0);
-
   }
 
   /**
@@ -82,6 +81,13 @@ public class Steroids extends Item {
   public void update() {
     time += Game.dt();
     if (isOwned()) {
+      if (time + 9.9f < steroidsTime) {
+        if (Game.getActivePlayer().getSteroidIsPlaying()) {
+          Game.getActivePlayer().setSteroidSoundOff();
+        }
+        Game.getActivePlayer().playSteroidSound();
+      }
+
       if (time >= steroidsTime) {
         // DeAmp is done by the player. We can't control multiple steroids from here.
         setDestroyed(true);
@@ -94,7 +100,7 @@ public class Steroids extends Item {
 
     NetPlayer owner = NetPlayerMaster.getNetPlayerById(getOwner());
     if (owner != null) {
-      ampedPlayerEffect.generateParticles(owner.getBbox().getCenter().add(new Vector3f(0,1,0)));
+      ampedPlayerEffect.generateParticles(owner.getBbox().getCenter().add(new Vector3f(0, 1, 0)));
     }
   }
 
