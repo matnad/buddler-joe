@@ -13,6 +13,7 @@ import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_3;
 import engine.io.InputHandler;
 import engine.io.Window;
 import game.Game;
+import gui.tutorial.Tutorial;
 import org.joml.Vector3f;
 import util.Maths;
 
@@ -109,16 +110,21 @@ public class Camera {
     float speed = (float) (panSpeed * Game.dt()); // panSpeed is in seconds, so
     // we multiply by frame delta
     if (InputHandler.isKeyDown(GLFW_KEY_LEFT)) {
+      Tutorial.Topics.CAMERA.stopTopic();
       offsetX -= speed;
     } else if (InputHandler.isKeyDown(GLFW_KEY_RIGHT)) {
+      Tutorial.Topics.CAMERA.stopTopic();
       offsetX += speed;
     } else if (InputHandler.isKeyDown(GLFW_KEY_UP)) {
+      Tutorial.Topics.CAMERA.stopTopic();
       offsetY += speed;
     } else if (InputHandler.isKeyDown(GLFW_KEY_DOWN)) {
+      Tutorial.Topics.CAMERA.stopTopic();
       offsetY -= speed;
     }
 
     if (InputHandler.isMouseDown(GLFW_MOUSE_BUTTON_1)) {
+      Tutorial.Topics.CAMERA.stopTopic();
       offsetX += (float) (InputHandler.getCursorPosDx() * 0.1f);
       offsetY -= (float) (InputHandler.getCursorPosDy() * 0.1f);
     }

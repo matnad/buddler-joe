@@ -21,6 +21,7 @@ import game.NetPlayerMaster;
 import gui.GuiTexture;
 import gui.MenuButton;
 import gui.text.FloatingStrings;
+import gui.tutorial.Tutorial;
 import java.util.ArrayList;
 import java.util.List;
 import net.packets.lists.PacketHighscore;
@@ -53,6 +54,7 @@ public class Playing {
   private static GuiTexture iceGradient;
   private static GuiTexture iceTotal;
   private static MenuButton resetWhisperAll;
+  private static Tutorial tutorial;
 
   /**
    * * Initialize Game Menu. Will load the texture files and other GUI elements needed for this
@@ -108,6 +110,8 @@ public class Playing {
             new Vector2f(-0.701042f, -0.322296f),
             new Vector2f(.012169f, 0.01875f));
     resetWhisperAll.setActivationMinAlpha(0.8f);
+
+    tutorial = new Tutorial(loader);
   }
 
   /**
@@ -233,6 +237,8 @@ public class Playing {
 
     guis = applyDamage(guis);
     guis = applyFreeze(guis);
+
+    guis.addAll(tutorial.getGuis());
 
     Game.getGuiRenderer().render(guis);
     TextMaster.render();

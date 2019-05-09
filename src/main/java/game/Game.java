@@ -130,8 +130,9 @@ public class Game extends Thread {
   private static CopyOnWriteArrayList<LobbyPlayerEntry> lobbyPlayerCatalog =
       new CopyOnWriteArrayList<>();
   public String username;
+
   // Set to true to create and join a lobby. For quicker testing.
-  private boolean autoJoin = false;
+  private boolean autoJoin = true;
 
   /**
    * The constructor for the game to be called from the main class.
