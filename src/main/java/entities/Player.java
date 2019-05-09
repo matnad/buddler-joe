@@ -97,6 +97,7 @@ public class Player extends NetPlayer {
     digDamage = 1;
     currentGold = 0;
     controlsDisabled = false;
+    heartSound.setVolume(0.3f);
   }
 
   /** Testconstructor for Unit Tests to create a Test User with Mockito. */

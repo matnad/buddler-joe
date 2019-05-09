@@ -85,6 +85,7 @@ public class Camera {
               new Vector2f(.4f, .4f),
               1);
       introMusic = new Source(AudioMaster.SoundCategory.INTRO);
+      introMusic.setVolume(0.05f); // Adjust volume
     } else {
       intro = false;
     }
