@@ -121,6 +121,7 @@ public class AudioMaster {
     loadSound(SoundCategory.PICK, "pick8");
     loadSound(SoundCategory.STEROID, "steroid2");
     loadSound(SoundCategory.BACKGROUND, "mining");
+    loadSound(SoundCategory.INTRO, "intro");
   }
 
   private static int loadSound(SoundCategory category, String file) {
@@ -220,6 +221,7 @@ public class AudioMaster {
     PICK,
     FUSE,
     STEROID,
-    BACKGROUND
+    BACKGROUND,
+    INTRO
   }
 }

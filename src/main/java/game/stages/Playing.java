@@ -21,6 +21,7 @@ import game.NetPlayerMaster;
 import gui.GuiTexture;
 import gui.MenuButton;
 import gui.text.FloatingStrings;
+import gui.tutorial.Tutorial;
 import java.util.ArrayList;
 import java.util.List;
 import net.packets.lists.PacketHighscore;
@@ -53,6 +54,7 @@ public class Playing {
   private static GuiTexture iceGradient;
   private static GuiTexture iceTotal;
   private static MenuButton resetWhisperAll;
+  private static Tutorial tutorial;
 
   /**
    * * Initialize Game Menu. Will load the texture files and other GUI elements needed for this
@@ -108,6 +110,8 @@ public class Playing {
             new Vector2f(-0.701042f, -0.322296f),
             new Vector2f(.012169f, 0.01875f));
     resetWhisperAll.setActivationMinAlpha(0.8f);
+
+    tutorial = new Tutorial(loader);
   }
 
   /**
@@ -185,7 +189,6 @@ public class Playing {
     }
 
     // Update positions of camera, player and 3D Mouse Pointer
-    Game.getActiveCamera().move();
     Game.getActivePlayer().move();
     MousePlacer.update(Game.getActiveCamera());
 
@@ -218,7 +221,6 @@ public class Playing {
     renderer.render(LightMaster.getLightsToRender(), Game.getActiveCamera());
     Game.getChat().checkInputs();
     // GUI goes over everything else and then text on top of GUI
-    Game.getGoldGuiText().update();
 
     // Update Gui Life Status
     if (Game.getLifeStatus().checkLifeStatus() > 0) {
@@ -228,14 +230,21 @@ public class Playing {
       }
     }
 
-    floatingGoldStrings.update();
     ParticleMaster.renderParticles(Game.getActiveCamera());
 
     guis = applyDamage(guis);
     guis = applyFreeze(guis);
 
-    Game.getGuiRenderer().render(guis);
+    guis.addAll(tutorial.getGuis());
+
+    if (!Game.getActiveCamera().isIntro()) {
+      Game.getGoldGuiText().update();
+      floatingGoldStrings.update();
+      Game.getGuiRenderer().render(guis);
+    }
+
     TextMaster.render();
+    Game.getActiveCamera().move();
   }
 
   public static void addFloatingGoldText(int goldValue) {

@@ -36,6 +36,10 @@ public class Source {
     soundCat = category;
   }
 
+  public void setVolume(float volume) {
+    alSourcef(sourceId, AL_GAIN, volume);
+  }
+
   public void play(int buffer) {
     alSourcei(sourceId, AL_BUFFER, buffer);
     alSourcePlay(sourceId);
