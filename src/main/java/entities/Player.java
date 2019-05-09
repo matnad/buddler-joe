@@ -10,7 +10,6 @@ import static org.lwjgl.glfw.GLFW.GLFW_KEY_S;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_SPACE;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_T;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_W;
-import static org.lwjgl.glfw.GLFW.glfwSetCursorEnterCallback;
 
 import engine.io.InputHandler;
 import entities.blocks.AirBlock;
@@ -22,6 +21,7 @@ import entities.items.Star;
 import entities.items.Steroids;
 import game.Game;
 import game.stages.Playing;
+import gui.tutorial.Tutorial;
 import net.packets.block.PacketBlockDamage;
 import net.packets.playerprop.PacketPos;
 import net.packets.playerprop.PacketVelocity;
@@ -49,7 +49,7 @@ public class Player extends NetPlayer {
 
   public static final Logger logger = LoggerFactory.getLogger(Player.class);
   private static final float digInterval = 0.2f; // Number of dig updates per second
-  private final float torchPlaceDelay = 5f;
+  private static final float torchPlaceDelay = 5f;
   // Resources and Stats
   public int currentGold; // Current coins
   private float digDamage; // Damage per second when colliding with blocks
@@ -199,6 +199,9 @@ public class Player extends NetPlayer {
     if (pctBrightness > .7f) {
       turnHeadlightOff();
     } else {
+      if (Tutorial.Topics.TORCH.isEnabled() && !Tutorial.Topics.TORCH.isActive()) {
+        Tutorial.Topics.setActive(Tutorial.Topics.TORCH, true);
+      }
       turnHeadlightOn();
     }
 
@@ -230,6 +233,7 @@ public class Player extends NetPlayer {
     }
     // Effects when being crushed
     Playing.showDamageTakenOverlay();
+    Tutorial.Topics.setActive(Tutorial.Topics.CRUSHED, true);
 
     // decreaseCurrentLives();
 
@@ -323,12 +327,31 @@ public class Player extends NetPlayer {
    * @param block block to dig
    */
   private void digBlock(Block block) {
+
+    Tutorial.Topics.DIGGING.stopTopic();
+
+    // Show block type tutorials
+    if (Tutorial.Topics.STONE.isEnabled()
+        && !Tutorial.Topics.STONE.isActive()
+        && block.getType() == BlockMaster.BlockTypes.STONE) {
+      Tutorial.Topics.setActive(Tutorial.Topics.STONE, true);
+    } else if (Tutorial.Topics.GOLD.isEnabled()
+        && !Tutorial.Topics.GOLD.isActive()
+        && block.getType() == BlockMaster.BlockTypes.GOLD) {
+      Tutorial.Topics.setActive(Tutorial.Topics.GOLD, true);
+    } else if (Tutorial.Topics.OBSIDIAN.isEnabled()
+        && !Tutorial.Topics.OBSIDIAN.isActive()
+        && block.getType() == BlockMaster.BlockTypes.OBSIDIAN) {
+      Tutorial.Topics.setActive(Tutorial.Topics.OBSIDIAN, true);
+    }
+
     // Check if we dig the same block as last time, otherwise throw progress away
     if (lastDiggedBlock != block) {
       lastDiggedBlock = block;
       lastDiggedBlockDamage = 0;
       digIntervallTimer = 0;
     }
+
     // Update damage and time, save locally
     digIntervallTimer += Game.dt();
     lastDiggedBlockDamage += (float) (currentDigDamage * Game.dt());
@@ -374,12 +397,14 @@ public class Player extends NetPlayer {
         MousePlacer.cancelPlacing();
       } else if (torchTimeout >= torchPlaceDelay) {
         torchTimeout = 0;
+        Tutorial.Topics.TORCH.stopTopic();
         placeItem(TORCH);
       }
     }
 
     if (InputHandler.isKeyPressed(GLFW_KEY_W) || InputHandler.isKeyPressed(GLFW_KEY_SPACE)) {
       jump();
+      Tutorial.Topics.MOVEMENT.stopTopic();
     }
 
     if (InputHandler.isKeyDown(GLFW_KEY_A) && InputHandler.isKeyDown(GLFW_KEY_D)) {
@@ -388,12 +413,14 @@ public class Player extends NetPlayer {
 
     if (InputHandler.isKeyDown(GLFW_KEY_A) && goalVelocity.x != -currentRunSpeed) {
       // Set goal velocity
+      Tutorial.Topics.MOVEMENT.stopTopic();
       setGoalVelocityX(-currentRunSpeed);
     } else if (InputHandler.isKeyReleased(GLFW_KEY_A) && goalVelocity.x != 0) {
       setGoalVelocityX(0);
     }
     if (InputHandler.isKeyDown(GLFW_KEY_D) && goalVelocity.x != currentRunSpeed) {
       // Set goal velocity
+      Tutorial.Topics.MOVEMENT.stopTopic();
       setGoalVelocityX(currentRunSpeed);
     } else if (InputHandler.isKeyReleased(GLFW_KEY_D) && goalVelocity.x != 0) {
       setGoalVelocityX(0);
@@ -433,6 +460,10 @@ public class Player extends NetPlayer {
 
   public int getCurrentGold() {
     return currentGold;
+  }
+
+  public static float getTorchPlaceDelay() {
+    return torchPlaceDelay;
   }
 
   /**
