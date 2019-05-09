@@ -375,13 +375,14 @@ public class Player extends NetPlayer {
       // Queue sound
       switch (block.getType()) {
         case DIRT:
-        case GOLD:
         case QMARK:
           playDigSoundDirt = true;
           break;
+        case GOLD:
         case STONE:
         case OBSIDIAN:
           playPickSoundStone = true;
+          break;
         default:
           break;
       }

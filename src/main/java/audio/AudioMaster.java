@@ -120,6 +120,7 @@ public class AudioMaster {
     loadSound(SoundCategory.PICK, "pick6");
     loadSound(SoundCategory.PICK, "pick7");
     loadSound(SoundCategory.PICK, "pick8");
+    loadSound(SoundCategory.INTRO, "intro");
   }
 
   private static int loadSound(SoundCategory category, String file) {
@@ -217,6 +218,7 @@ public class AudioMaster {
     DAMAGE,
     GAMEOVER,
     PICK,
-    FUSE
+    FUSE,
+    INTRO
   }
 }

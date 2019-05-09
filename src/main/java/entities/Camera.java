@@ -9,6 +9,8 @@ import static org.lwjgl.glfw.GLFW.GLFW_KEY_UP;
 import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_1;
 import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_2;
 
+import audio.AudioMaster;
+import audio.Source;
 import engine.io.InputHandler;
 import engine.render.Loader;
 import game.Game;
@@ -52,16 +54,17 @@ public class Camera {
   protected float minPitch = -10;
   private float roll; // Not used right now, but we might
 
+  // INTRO
   protected boolean intro = true;
   private float introTimer;
-  private static final float INTRO_START = 4;
+  private static final float INTRO_START = 3.85f;
   private static final float INTRO_DURATION = 7;
   private Vector3f camIncrement = new Vector3f();
   private float pitchIncrement;
   private float yawIncrement;
-
   private GuiTexture blackscreen;
   private GuiTexture logo;
+  private Source introMusic;
 
   /**
    * Create a new Camera.
@@ -77,7 +80,11 @@ public class Camera {
           new GuiTexture(loader.loadTexture("black"), new Vector2f(0, 0), new Vector2f(1, 1), 1);
       logo =
           new GuiTexture(
-              loader.loadTexture("yellow"), new Vector2f(0, 0), new Vector2f(.3f, .3f), 1);
+              loader.loadTexture("logo_temp"),
+              new Vector2f(0, 0),
+              new Vector2f(.4f, .4f),
+              1);
+      introMusic = new Source(AudioMaster.SoundCategory.INTRO);
     } else {
       intro = false;
     }
@@ -105,6 +112,7 @@ public class Camera {
         Vector3f camDirection = new Vector3f();
         camTargetPos.sub(position, camDirection);
         camDirection.div(INTRO_DURATION, camIncrement);
+        introMusic.playIndex(0);
       }
       introTimer += Game.dt();
       if (introTimer <= INTRO_START) {
