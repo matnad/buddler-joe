@@ -189,7 +189,6 @@ public class Playing {
     }
 
     // Update positions of camera, player and 3D Mouse Pointer
-    Game.getActiveCamera().move();
     Game.getActivePlayer().move();
     MousePlacer.update(Game.getActiveCamera());
 
@@ -222,7 +221,6 @@ public class Playing {
     renderer.render(LightMaster.getLightsToRender(), Game.getActiveCamera());
     Game.getChat().checkInputs();
     // GUI goes over everything else and then text on top of GUI
-    Game.getGoldGuiText().update();
 
     // Update Gui Life Status
     if (Game.getLifeStatus().checkLifeStatus() > 0) {
@@ -232,7 +230,6 @@ public class Playing {
       }
     }
 
-    floatingGoldStrings.update();
     ParticleMaster.renderParticles(Game.getActiveCamera());
 
     guis = applyDamage(guis);
@@ -240,8 +237,14 @@ public class Playing {
 
     guis.addAll(tutorial.getGuis());
 
-    Game.getGuiRenderer().render(guis);
+    if (!Game.getActiveCamera().isIntro()) {
+      Game.getGoldGuiText().update();
+      floatingGoldStrings.update();
+      Game.getGuiRenderer().render(guis);
+    }
+
     TextMaster.render();
+    Game.getActiveCamera().move();
   }
 
   public static void addFloatingGoldText(int goldValue) {

@@ -104,7 +104,7 @@ public class Player extends NetPlayer {
   public void move() {
 
     // Dont update during the first second
-    if (Game.getStartedAt() + 1000 > System.currentTimeMillis()) {
+    if (Game.getActiveCamera().isIntro()) {
       return;
     }
 

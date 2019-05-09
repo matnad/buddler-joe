@@ -574,11 +574,11 @@ public class Game extends Thread {
     ParticleMaster.reset();
 
     int clientId = player.getClientId();
-    player = new Player(getUsername(), new Vector3f(12, 10, 3), 0, 0, 0);
+    player = new Player(getUsername(), new Vector3f(12, 40, 3), 0, 0, 0);
     player.setClientId(clientId);
     Playing.resetFloatingStrings();
 
-    camera = new Camera(player, window);
+    camera = new Camera(player, loader);
     map = new ClientMap("s", System.currentTimeMillis());
 
     Game.addActiveStage(Game.Stage.MAINMENU);
@@ -625,7 +625,7 @@ public class Game extends Thread {
 
     // Generate ServerPlayer
     NetPlayer.init(loader);
-    player = new Player(getUsername(), new Vector3f(12, 10, 3), 0, 0, 0);
+    player = new Player(getUsername(), new Vector3f(12, 40, 3), 0, 0, 0);
 
     // Generate dummy map
     map = new ClientMap("s", System.currentTimeMillis());
@@ -666,7 +666,7 @@ public class Game extends Thread {
     }
 
     // Camera
-    camera = new Camera(player, window);
+    camera = new Camera(player, loader);
     // camera = new SpectatorCamera(window);
 
     // GUI / Other

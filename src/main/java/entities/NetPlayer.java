@@ -157,6 +157,10 @@ public class NetPlayer extends Entity {
    */
   public void update() {
 
+    if (Game.getActiveCamera().isIntro()) {
+      return;
+    }
+
     collideWithBlockAbove = null;
     collideWithBlockBelow = null;
 
@@ -331,7 +335,7 @@ public class NetPlayer extends Entity {
       setScale(new Vector3f(ripModelSize, ripModelSize, ripModelSize));
       setRotY(0);
       if (getClientId() == Game.getActivePlayer().getClientId()) {
-        Game.setActiveCamera(new SpectatorCamera(Game.window, getPosition()));
+        Game.setActiveCamera(new SpectatorCamera(getPosition()));
       }
     }
   }
