@@ -96,6 +96,9 @@ public class Star extends Item {
     }
 
     if (time < .5f) {
+      if (!Game.getActivePlayer().getFreezeIsPlaying()) {
+        Game.getActivePlayer().playFreezeSound();
+      }
       starExplosion.generateParticles(getPosition());
     }
 

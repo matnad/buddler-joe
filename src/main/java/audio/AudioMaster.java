@@ -94,20 +94,37 @@ public class AudioMaster {
     // Load sounds
     loadSound(SoundCategory.DIG, "dig1");
     loadSound(SoundCategory.DIG, "dig2");
+    loadSound(SoundCategory.DIG, "dig3");
+    loadSound(SoundCategory.DIG, "dig4");
+    loadSound(SoundCategory.DIG, "dig5");
+    loadSound(SoundCategory.DIG, "dig6");
+    loadSound(SoundCategory.DIG, "dig7");
+    loadSound(SoundCategory.DIG, "dig8");
     loadSound(SoundCategory.EXPLOSION, "Explosion");
+    loadSound(SoundCategory.FUSE, "fuse");
     loadSound(SoundCategory.HEART, "Heart");
     loadSound(SoundCategory.HEART, "take Heart");
-    loadSound(SoundCategory.FREEZE,"Freeze1");
-    loadSound(SoundCategory.FREEZE,"Freeze2");
-    loadSound(SoundCategory.FREEZE,"Freeze3");
+    loadSound(SoundCategory.FREEZE, "Freeze1");
+    loadSound(SoundCategory.FREEZE, "Freeze2");
+    loadSound(SoundCategory.FREEZE, "Freeze3");
     loadSound(SoundCategory.DAMAGE, "Autsch");
     loadSound(SoundCategory.DAMAGE, "Game Over");
+    //    loadSound(SoundCategory.DAMAGE, "Game Over2");
+    loadSound(SoundCategory.GAMEOVER, "Game Over2");
+    loadSound(SoundCategory.GAMEOVER, "Game Over3");
+    loadSound(SoundCategory.PICK, "pick1");
+    loadSound(SoundCategory.PICK, "pick2");
+    loadSound(SoundCategory.PICK, "pick3");
+    loadSound(SoundCategory.PICK, "pick4");
+    loadSound(SoundCategory.PICK, "pick5");
+    loadSound(SoundCategory.PICK, "pick6");
+    loadSound(SoundCategory.PICK, "pick7");
+    loadSound(SoundCategory.PICK, "pick8");
   }
 
   private static int loadSound(SoundCategory category, String file) {
     // generate buffers and sources
     int buffer = alGenBuffers();
-
 
     ArrayList<Integer> catBuffers = buffers.computeIfAbsent(category, k -> new ArrayList<>());
     catBuffers.add(buffer);
@@ -197,6 +214,9 @@ public class AudioMaster {
     EXPLOSION,
     HEART,
     FREEZE,
-    DAMAGE
+    DAMAGE,
+    GAMEOVER,
+    PICK,
+    FUSE
   }
 }

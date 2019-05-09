@@ -113,7 +113,7 @@ public class ServerBlock {
     // Spawn Item
     Random random = new Random();
 //    int r = random.nextInt(100);
-    int r = 90;
+      int r = 20;
     // Less stars if there are more players
     float heartOrStar;
     switch (lobby.getPlayerAmount()) {

@@ -232,6 +232,7 @@ public class PacketSpawnItem extends Packet {
         } else if (item instanceof Star) {
           if (owner == Game.getActivePlayer().getClientId()) {
             item.setOwned(true);
+            Game.getActivePlayer().playFreezeSound();
           }
         }
       } else {

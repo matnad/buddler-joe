@@ -158,7 +158,9 @@ public class Dynamite extends Item {
 
       float offset = getBbox().getDimY() * 2 * (fuseTimer - time) / fuseTimer;
       particleFuse.generateParticles(new Vector3f(0, offset, 0).add(getPosition()));
-
+      if (!Game.getActivePlayer().getFuseIsPlaying()) {
+        Game.getActivePlayer().playFuseSound();
+      }
       /*
       Case 2: Explosion is finished, remove the object
        */
@@ -187,6 +189,12 @@ public class Dynamite extends Item {
   /** Damage the blocks in range of the explosion and hide the dynamite. */
   private void explode() {
     if (exploded) {
+      //      if (Game.getActivePlayer().getFuseIsPlaying()){
+      //        Game.getActivePlayer().setFuseSoundOff();
+      //      }
+      if (!Game.getActivePlayer().getExplosionIsPlaying()) {
+        Game.getActivePlayer().playExplosionSound(0);
+      }
       return;
     }
     exploded = true;

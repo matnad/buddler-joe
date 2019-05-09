@@ -26,7 +26,7 @@ public class Heart extends Item {
   /** Extended Constructor for Heart. Don't use directly. Use the Item Master to create items. */
   private Heart(Vector3f position, float rotX, float rotY, float rotZ, float scale) {
     super(ItemMaster.ItemTypes.HEART, getPreloadedModel(), position, rotX, rotY, rotZ, scale);
-
+    // Game.getActivePlayer().playHeartSound(0);
     // Generate Sparkle Effect
     sparkle = new Sparkle(30, 1, -.02f, 4f, .7f);
     sparkle.setScaleError(.2f);
@@ -78,6 +78,10 @@ public class Heart extends Item {
       if (Game.getActivePlayer().getCurrentLives() <= 1
           && Game.getActivePlayer().getCurrentLives() >= 0) {
         Game.getActivePlayer().informServerOfLifeChange(1);
+        if (Game.getActivePlayer().getHeartIsPlaying()) {
+          Game.getActivePlayer().setHeartSoundOff();
+        }
+        Game.getActivePlayer().playHeartSound(1);
         setPickedUpBy(Game.getActivePlayer());
       }
     }
@@ -86,6 +90,10 @@ public class Heart extends Item {
       if (collidesWith(netPlayer) && !pickedUp) {
         if (netPlayer.getCurrentLives() <= 1 && netPlayer.getCurrentLives() >= 0) {
           netPlayer.informServerOfLifeChange(1);
+          if (Game.getActivePlayer().getHeartIsPlaying()) {
+            Game.getActivePlayer().setHeartSoundOff();
+          }
+          Game.getActivePlayer().playHeartSound(1);
           setPickedUpBy(netPlayer);
         }
       }
@@ -100,6 +108,12 @@ public class Heart extends Item {
     time += Game.dt();
     if (time >= showTime) {
       setDestroyed(true);
+    }
+
+    if (time + 5.95f < showTime) {
+      if (!Game.getActivePlayer().getHeartIsPlaying()) {
+        Game.getActivePlayer().playHeartSound(0);
+      }
     }
 
     if (time + 1.5f < showTime) {

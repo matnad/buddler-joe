@@ -71,12 +71,15 @@ public class Player extends NetPlayer {
   private float torchTimeout = torchPlaceDelay;
 
   private Source digSoundDirt = new Source(AudioMaster.SoundCategory.DIG);
+  private Source pickSoundStone = new Source(AudioMaster.SoundCategory.PICK);
   private Source explosionSound = new Source(AudioMaster.SoundCategory.EXPLOSION);
+  private Source fuseSound = new Source(AudioMaster.SoundCategory.FUSE);
   private Source heartSound = new Source(AudioMaster.SoundCategory.HEART);
   private Source freezeSound = new Source(AudioMaster.SoundCategory.FREEZE);
   private Source damageSound = new Source(AudioMaster.SoundCategory.DAMAGE);
+  private Source gameOverSound = new Source(AudioMaster.SoundCategory.GAMEOVER);
   private boolean playDigSoundDirt = false;
-  private boolean playFreezeSound = false;
+  private boolean playPickSoundStone = false;
 
   /**
    * Spawn the ServerPlayer. This will be handled differently in the future when we rework the
@@ -198,6 +201,7 @@ public class Player extends NetPlayer {
     playDigSoundDirt = false; // Will be set to true if we dig this frame
     // Handle collisions, we only check close blocks to optimize performance
     // Distance is much cheaper to check than overlap
+    playPickSoundStone = false;
     for (Block closeBlock : closeBlocks) {
       handleCollision(closeBlock);
     }
@@ -218,6 +222,10 @@ public class Player extends NetPlayer {
     // Play a random dig sound
     if (playDigSoundDirt && !digSoundDirt.isPlaying()) {
       digSoundDirt.playRandom();
+    }
+
+    if (playPickSoundStone && !pickSoundStone.isPlaying()) {
+      pickSoundStone.playRandom();
     }
 
     if (sendVelocityToServer) {
@@ -349,6 +357,9 @@ public class Player extends NetPlayer {
         case QMARK:
           playDigSoundDirt = true;
           break;
+        case STONE:
+        case OBSIDIAN:
+          playPickSoundStone = true;
         default:
           break;
       }
@@ -478,7 +489,7 @@ public class Player extends NetPlayer {
   }
 
   public void defreeze() {
-      freezeSound.stop();
+    freezeSound.stop();
     this.frozen = false;
   }
 
@@ -522,7 +533,64 @@ public class Player extends NetPlayer {
       sendVelocityToServer = true;
     }
   }
-  public void playFreezeSound(){
-      freezeSound.playIndex(0);
+
+  public void playFreezeSound() {
+    freezeSound.playIndex(0);
+  }
+
+  public boolean getFreezeIsPlaying() {
+    return freezeSound.isPlaying();
+  }
+
+  public void playExplosionSound(int i) {
+    explosionSound.playIndex(i);
+    logger.debug("play sound" + "index" + i);
+  }
+
+  public boolean getExplosionIsPlaying() {
+    return explosionSound.isPlaying();
+  }
+
+  public void setExlosionSoundOff() {
+    if (explosionSound.isPlaying()) {
+      explosionSound.stop();
+    }
+  }
+
+  public void playFuseSound() {
+    fuseSound.playIndex(0);
+  }
+
+  public boolean getFuseIsPlaying() {
+    return fuseSound.isPlaying();
+  }
+
+  public void setFuseSoundOff() {
+    if (fuseSound.isPlaying()) {
+      fuseSound.stop();
+    }
+  }
+
+  public void playDamageSound(int i) {
+    damageSound.playIndex(i);
+    logger.debug("play sound" + "index" + i);
+  }
+
+  public void playHeartSound(int i) {
+    heartSound.playIndex(i);
+  }
+
+  public boolean getHeartIsPlaying() {
+    return heartSound.isPlaying();
+  }
+
+  public void setHeartSoundOff() {
+    if (heartSound.isPlaying()) {
+      heartSound.stop();
+    }
+  }
+
+  public void playGameOverSound() {
+    gameOverSound.playIndex(1);
   }
 }
