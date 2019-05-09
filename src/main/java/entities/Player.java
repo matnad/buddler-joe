@@ -49,7 +49,7 @@ public class Player extends NetPlayer {
 
   public static final Logger logger = LoggerFactory.getLogger(Player.class);
   private static final float digInterval = 0.2f; // Number of dig updates per second
-  private final float torchPlaceDelay = 5f;
+  private static final float torchPlaceDelay = 5f;
   // Resources and Stats
   public int currentGold; // Current coins
   private float digDamage; // Damage per second when colliding with blocks
@@ -199,6 +199,9 @@ public class Player extends NetPlayer {
     if (pctBrightness > .7f) {
       turnHeadlightOff();
     } else {
+      if (Tutorial.Topics.TORCH.isEnabled() && !Tutorial.Topics.TORCH.isActive()) {
+        Tutorial.Topics.setActive(Tutorial.Topics.TORCH, true);
+      }
       turnHeadlightOn();
     }
 
@@ -394,6 +397,7 @@ public class Player extends NetPlayer {
         MousePlacer.cancelPlacing();
       } else if (torchTimeout >= torchPlaceDelay) {
         torchTimeout = 0;
+        Tutorial.Topics.TORCH.stopTopic();
         placeItem(TORCH);
       }
     }
@@ -456,6 +460,10 @@ public class Player extends NetPlayer {
 
   public int getCurrentGold() {
     return currentGold;
+  }
+
+  public static float getTorchPlaceDelay() {
+    return torchPlaceDelay;
   }
 
   /**

@@ -1,16 +1,21 @@
 package gui.tutorial;
 
 import engine.render.Loader;
+import entities.Player;
 import entities.items.Star;
 import entities.items.Steroids;
 import game.Game;
+import game.Settings;
 import gui.GuiTexture;
 import gui.text.ChangableGuiText;
 import java.util.ArrayList;
 import java.util.List;
 import org.joml.Vector2f;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class Tutorial {
+  public static final Logger logger = LoggerFactory.getLogger(Tutorial.class);
 
   private GuiTexture box;
   private static ChangableGuiText guiText;
@@ -21,9 +26,12 @@ public class Tutorial {
 
   private Topics lastActiveTopic;
 
+  /**
+   * Create a new Tutorial Instance with its own Topic Enum. Usually we only need 1 instance.
+   *
+   * @param loader main loader
+   */
   public Tutorial(Loader loader) {
-
-    enabled = true;
 
     box =
         new GuiTexture(
@@ -34,11 +42,32 @@ public class Tutorial {
     guiText.setFontSize(.75f);
     guiText.setMaxLineLength(.28f);
 
+    Settings settings = Game.getSettings();
+    if (settings == null) {
+      logger.error("No settings found.");
+    } else {
+
+      if (settings.getCompletedTutorials().size() == Topics.values().length) {
+        // All tutorials done, turn it off for performance
+        enabled = false;
+      } else {
+        enabled = true;
+        for (Topics completedTutorial : settings.getCompletedTutorials()) {
+          completedTutorial.enabled = false;
+          //logger.debug("Tutorial already done: " + completedTutorial.text);
+        }
+      }
+    }
+
     Topics.setActive(Topics.MOVEMENT, true);
     Topics.setActive(Topics.DIGGING, true);
-
   }
 
+  /**
+   * Get all the Gui Elements for this frame for the Tutorial.
+   *
+   * @return List of GuiTextures for the Tutorial
+   */
   public List<GuiTexture> getGuis() {
     // Check if tutorial is enabled
     if (!enabled) {
@@ -56,6 +85,7 @@ public class Tutorial {
       Topics.pauseTimer += Game.dt();
     } else {
       if (topic != lastActiveTopic) {
+        // Store last topic so we can fade it out after it is active
         lastActiveTopic = topic;
       }
       boxGoalAlpha = .7f;
@@ -65,6 +95,7 @@ public class Tutorial {
       }
     }
 
+    // Fading
     if (boxAlpha < boxGoalAlpha) {
       boxAlpha = (float) Math.min(.7f, boxAlpha + Game.dt());
       box.setAlpha(boxAlpha);
@@ -90,6 +121,7 @@ public class Tutorial {
     }
   }
 
+  /** Tutorial Topics with their description and duration. */
   public enum Topics {
     MOVEMENT(true, "Press A and D to move left and right. Press W or Space to jump.", 30),
     DIGGING(true, "Dig blocks by moving into them.", 30),
@@ -97,7 +129,7 @@ public class Tutorial {
     STONE(
         true,
         "Stone is very hard... it takes a long time to break. Dirt is much easier to dig!",
-        5),
+        4),
     STAR(
         true,
         "Nice! You found a STAR. This item will freeze all other players for "
@@ -142,7 +174,13 @@ public class Tutorial {
         "Ouch! You got crushed by a falling stone block and lost a life. "
             + "A free standing stone block will fall after a short, random delay.",
         6),
-    OBSIDIAN(true, "Obisdian is indestructible.", 5);
+    OBSIDIAN(true, "Obisdian is indestructible.", 3),
+    TORCH(
+        true,
+        "The deeper you delve, the darker it gets. Press E to start placing a Torch every "
+            + (int) Player.getTorchPlaceDelay()
+            + " seconds.",
+        10);
 
     private static final float PAUSE_TIME = 2;
     private static float pauseTimer;
@@ -174,7 +212,14 @@ public class Tutorial {
       return enabled;
     }
 
-    public boolean addTimeShown(float time) {
+    /**
+     * Add time to the currently shown topic or tick up the pause timer. Returns true if time was
+     * added to a topic and false if time was added to the pause timer.
+     *
+     * @param time time to add
+     * @return true if time was added to a topic. false if time was added to the pause timer.
+     */
+    private boolean addTimeShown(float time) {
       if (pauseTimer < PAUSE_TIME) {
         pauseTimer += time;
         return false;
@@ -191,6 +236,7 @@ public class Tutorial {
       }
     }
 
+    /** Stop a topic from being displayed and prevent it from being displayed in the future. */
     public void stopTopic() {
       if (enabled) {
         enabled = false;
@@ -198,9 +244,11 @@ public class Tutorial {
         activeTopic = null;
         updateActiveTopic();
         pauseTimer = 0;
+        Game.getSettings().addCompletedTutorial(this);
       }
     }
 
+    /** Check if there is a new active topic and choose the first. */
     private static void updateActiveTopic() {
       if (activeTopic != null) {
         return;
@@ -214,6 +262,13 @@ public class Tutorial {
       activeTopic = null;
     }
 
+    /**
+     * Set the active status of a topic. This is used to trigger a Tutorial from somewhere in the
+     * game.
+     *
+     * @param topic The topic to set
+     * @param status The status of the topic (true means show the tutorial)
+     */
     public static void setActive(Topics topic, boolean status) {
       for (Topics t : values()) {
         if (t == topic) {

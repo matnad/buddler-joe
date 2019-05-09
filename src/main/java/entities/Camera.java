@@ -124,9 +124,11 @@ public class Camera {
     }
 
     if (InputHandler.isMouseDown(GLFW_MOUSE_BUTTON_1)) {
-      Tutorial.Topics.CAMERA.stopTopic();
       offsetX += (float) (InputHandler.getCursorPosDx() * 0.1f);
       offsetY -= (float) (InputHandler.getCursorPosDy() * 0.1f);
+      if (offsetX > 0.02) {
+        Tutorial.Topics.CAMERA.stopTopic();
+      }
     }
 
     if (offsetX > maxOffsetX) {
