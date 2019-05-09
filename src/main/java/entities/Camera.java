@@ -76,7 +76,8 @@ public class Camera {
       blackscreen =
           new GuiTexture(loader.loadTexture("black"), new Vector2f(0, 0), new Vector2f(1, 1), 1);
       logo =
-          new GuiTexture(loader.loadTexture("yellow"), new Vector2f(0, 0), new Vector2f(.3f, .3f), 1);
+          new GuiTexture(
+              loader.loadTexture("yellow"), new Vector2f(0, 0), new Vector2f(.3f, .3f), 1);
     } else {
       intro = false;
     }
@@ -84,7 +85,6 @@ public class Camera {
 
   /** Update function. Call this every frame to update position and transformation of camera. */
   public void move() {
-
     if (intro) {
       ArrayList<GuiTexture> guis = new ArrayList<>();
       if (introTimer <= 0) {
@@ -93,12 +93,12 @@ public class Camera {
         pitch = 0;
         pitchIncrement = 35 / INTRO_DURATION;
         // Setup
-        float mapWidth = Game.getMap().getWidth();
+        float mapWidth = Game.getMap().getWidth() * 6;
         if (Game.getActivePlayer().getPosition().x > (mapWidth / 2f)) {
-          position = new Vector3f(-30, -40, 150);
+          position = new Vector3f(-30, -20, 150);
           yaw = 45;
         } else {
-          position = new Vector3f(mapWidth + 30, -40, 150);
+          position = new Vector3f(mapWidth + 30, -20, 150);
           yaw = -45;
         }
         yawIncrement = -yaw / INTRO_DURATION;
