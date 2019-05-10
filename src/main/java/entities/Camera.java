@@ -8,12 +8,16 @@ import static org.lwjgl.glfw.GLFW.GLFW_KEY_RIGHT;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_UP;
 import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_1;
 import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_2;
-import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_3;
 
+import audio.AudioMaster;
+import audio.Source;
 import engine.io.InputHandler;
-import engine.io.Window;
+import engine.render.Loader;
 import game.Game;
+import gui.GuiTexture;
 import gui.tutorial.Tutorial;
+import java.util.ArrayList;
+import org.joml.Vector2f;
 import org.joml.Vector3f;
 import util.Maths;
 
@@ -34,10 +38,9 @@ import util.Maths;
  */
 public class Camera {
 
-  protected static final Vector3f position = new Vector3f(0, 0, 0);
+  protected static Vector3f position = new Vector3f(0, 0, 0);
   private static float pitch;
   private static float yaw;
-  private final Window window;
   private final Player player;
   protected float panSpeed = 20;
   protected float offsetX;
@@ -51,31 +54,93 @@ public class Camera {
   protected float minPitch = -10;
   private float roll; // Not used right now, but we might
 
+  // INTRO
+  protected boolean intro = true;
+  private float introTimer;
+  private static final float INTRO_START = 3.85f;
+  private static final float INTRO_DURATION = 7;
+  private Vector3f camIncrement = new Vector3f();
+  private float pitchIncrement;
+  private float yawIncrement;
+  private GuiTexture blackscreen;
+  private GuiTexture logo;
+  private Source introMusic;
+
   /**
    * Create a new Camera.
    *
    * @param player player to track
-   * @param window window where the camera is used in
+   * @param loader main loader or null (no intro)
    */
-  public Camera(Player player, Window window) {
-    this.window = window;
+  public Camera(Player player, Loader loader) {
     this.player = player;
     resetCam();
+
+    if (loader != null) {
+      blackscreen =
+          new GuiTexture(loader.loadTexture("black"), new Vector2f(0, 0), new Vector2f(1, 1), 1);
+      logo =
+          new GuiTexture(
+              loader.loadTexture("logo_temp"), new Vector2f(0, 0), new Vector2f(.4f, .4f), 1);
+      introMusic = new Source(AudioMaster.SoundCategory.INTRO);
+      introMusic.setVolume(0.05f); // Adjust volume
+    } else {
+      intro = false;
+    }
   }
 
   /** Update function. Call this every frame to update position and transformation of camera. */
   public void move() {
-
-    if (Game.getActiveStages().size() == 1 && Game.getActiveStages().get(0) == PLAYING) {
-
-      calculateZoom();
-      calculatePitch();
-      calculateYaw();
-      calculatePan();
-      isReset();
+    if (intro) {
+      ArrayList<GuiTexture> guis = new ArrayList<>();
+      if (introTimer <= 0) {
+        Vector3f camTargetPos = new Vector3f(Game.getActivePlayer().getPosition()).add(0, 35, 0);
+        camTargetPos.z = 65;
+        pitch = 0;
+        pitchIncrement = 35 / INTRO_DURATION;
+        // Setup
+        float mapWidth = Game.getMap().getWidth() * 6;
+        if (Game.getActivePlayer().getPosition().x > (mapWidth / 2f)) {
+          position = new Vector3f(-30, -20, 150);
+          yaw = 45;
+        } else {
+          position = new Vector3f(mapWidth + 30, -20, 150);
+          yaw = -45;
+        }
+        yawIncrement = -yaw / INTRO_DURATION;
+        Vector3f camDirection = new Vector3f();
+        camTargetPos.sub(position, camDirection);
+        camDirection.div(INTRO_DURATION, camIncrement);
+        introMusic.playIndex(0);
+      }
+      introTimer += Game.dt();
+      if (introTimer <= INTRO_START) {
+        guis.add(blackscreen);
+        float alpha = Math.min(1, (INTRO_START + 1.1f - introTimer) / 2);
+        blackscreen.setAlpha(alpha);
+        logo.setAlpha(alpha);
+      } else {
+        position.add(new Vector3f(camIncrement).mul((float) Game.dt()));
+        pitch += pitchIncrement * Game.dt();
+        yaw += yawIncrement * Game.dt();
+        if (introTimer >= INTRO_START + INTRO_DURATION) {
+          resetCam();
+          intro = false;
+        }
+      }
+      guis.add(logo);
+      logo.setAlpha(Math.min(1, (INTRO_START + 4 - introTimer) / 4));
+      Game.getGuiRenderer().render(guis);
+    } else {
+      if (Game.getActiveStages().size() == 1 && Game.getActiveStages().get(0) == PLAYING) {
+        calculateZoom();
+        calculatePitch();
+        calculateYaw();
+        calculatePan();
+        isReset();
+      }
+      correctCameraPos(); // Follow player for example
     }
-
-    correctCameraPos(); // Follow player for example
   }
 
   protected void correctCameraPos() {
@@ -216,5 +281,9 @@ public class Camera {
 
   public float getRoll() {
     return roll;
+  }
+
+  public boolean isIntro() {
+    return intro;
   }
 }

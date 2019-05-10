@@ -245,6 +245,7 @@ public class PacketSpawnItem extends Packet {
         } else if (item instanceof Star) {
           if (owner == Game.getActivePlayer().getClientId()) {
             item.setOwned(true);
+            Game.getActivePlayer().playFreezeSound();
             if (Tutorial.Topics.STAR.isEnabled() && !Tutorial.Topics.STAR.isActive()) {
               Tutorial.Topics.setActive(Tutorial.Topics.STAR, true);
             }

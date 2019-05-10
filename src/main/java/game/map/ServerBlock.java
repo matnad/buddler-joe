@@ -116,10 +116,12 @@ public class ServerBlock {
     // Less stars if there are more players
     float heartOrStar;
     switch (lobby.getPlayerAmount()) {
-      case 1: case 2:
+      case 1:
+      case 2:
         heartOrStar = 70;
         break;
-      case 3: case 4:
+      case 3:
+      case 4:
         heartOrStar = 73;
         break;
       default:
@@ -138,7 +140,7 @@ public class ServerBlock {
               ItemMaster.ItemTypes.STEROIDS, new Vector3f(gridX, gridY, gridZ), clientId);
       packetSpawnItem.sendToLobby(lobby.getLobbyId());
       itemOwner.ampUp();
-    } else  if (45 < r && r <= heartOrStar) {
+    } else if (45 < r && r <= heartOrStar) {
       logger.debug("Spawning heart.");
       PacketSpawnItem packetSpawnItem =
           new PacketSpawnItem(

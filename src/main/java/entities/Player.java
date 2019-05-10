@@ -11,6 +11,8 @@ import static org.lwjgl.glfw.GLFW.GLFW_KEY_SPACE;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_T;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_W;
 
+import audio.AudioMaster;
+import audio.Source;
 import engine.io.InputHandler;
 import entities.blocks.AirBlock;
 import entities.blocks.Block;
@@ -69,6 +71,18 @@ public class Player extends NetPlayer {
   private float ampedDuration;
   private float torchTimeout = torchPlaceDelay;
 
+  private Source digSoundDirt = new Source(AudioMaster.SoundCategory.DIG);
+  private Source pickSoundStone = new Source(AudioMaster.SoundCategory.PICK);
+  private Source explosionSound = new Source(AudioMaster.SoundCategory.EXPLOSION);
+  private Source fuseSound = new Source(AudioMaster.SoundCategory.FUSE);
+  private Source heartSound = new Source(AudioMaster.SoundCategory.HEART);
+  private Source freezeSound = new Source(AudioMaster.SoundCategory.FREEZE);
+  private Source damageSound = new Source(AudioMaster.SoundCategory.DAMAGE);
+  private Source gameOverSound = new Source(AudioMaster.SoundCategory.GAMEOVER);
+  private Source steroidSound = new Source(AudioMaster.SoundCategory.STEROID);
+  private boolean playDigSoundDirt = false;
+  private boolean playPickSoundStone = false;
+
   /**
    * Spawn the ServerPlayer. This will be handled differently in the future when we rework the
    * ServerPlayer class structure.
@@ -84,6 +98,7 @@ public class Player extends NetPlayer {
     digDamage = 1;
     currentGold = 0;
     controlsDisabled = false;
+    heartSound.setVolume(0.3f);
   }
 
   /** Testconstructor for Unit Tests to create a Test User with Mockito. */
@@ -104,7 +119,7 @@ public class Player extends NetPlayer {
   public void move() {
 
     // Dont update during the first second
-    if (Game.getStartedAt() + 1000 > System.currentTimeMillis()) {
+    if (Game.getActiveCamera().isIntro()) {
       return;
     }
 
@@ -116,6 +131,9 @@ public class Player extends NetPlayer {
     currentDigDamage = digDamage;
     currentJumpPower = jumpPower;
     if (frozen) {
+      if (!freezeSound.isPlaying()) {
+        freezeSound.playIndex(1);
+      }
       // Calculate freeze factor
       freezeDuration += Game.dt();
       float freezeFactor;
@@ -183,8 +201,10 @@ public class Player extends NetPlayer {
     // Handle character rotation (check run direction see if we need to rotate more)
     this.increaseRotation(0, (float) (getCurrentTurnSpeed() * Game.dt()), 0);
 
+    playDigSoundDirt = false; // Will be set to true if we dig this frame
     // Handle collisions, we only check close blocks to optimize performance
     // Distance is much cheaper to check than overlap
+    playPickSoundStone = false;
     for (Block closeBlock : closeBlocks) {
       handleCollision(closeBlock);
     }
@@ -205,11 +225,14 @@ public class Player extends NetPlayer {
       turnHeadlightOn();
     }
 
-    //// Send server update with update
-    // if (Game.isConnectedToServer()
-    //    && (!currentVelocity.equals(new Vector3f()) || currentTurnSpeed != 0)) {
-    //  new PacketPos(getPositionXy().x, getPositionXy().y, getRotY()).sendToServer();
-    // }
+    // Play a random dig sound
+    if (playDigSoundDirt && !digSoundDirt.isPlaying()) {
+      digSoundDirt.playRandom();
+    }
+
+    if (playPickSoundStone && !pickSoundStone.isPlaying()) {
+      pickSoundStone.playRandom();
+    }
 
     if (sendVelocityToServer) {
       new PacketVelocity(currentVelocity.x, currentVelocity.y, goalVelocity.x, goalVelocity.y)
@@ -350,6 +373,21 @@ public class Player extends NetPlayer {
       lastDiggedBlock = block;
       lastDiggedBlockDamage = 0;
       digIntervallTimer = 0;
+    } else if (lastDiggedBlockDamage > 0.1f) {
+      // Queue sound
+      switch (block.getType()) {
+        case DIRT:
+        case QMARK:
+          playDigSoundDirt = true;
+          break;
+        case GOLD:
+        case STONE:
+        case OBSIDIAN:
+          playPickSoundStone = true;
+          break;
+        default:
+          break;
+      }
     }
 
     // Update damage and time, save locally
@@ -477,6 +515,7 @@ public class Player extends NetPlayer {
     if (initial) {
       showFreezeOverlay();
       freezeDuration = 0;
+      freezeSound.playIndex(2);
     }
     if (amped) {
       deAmp();
@@ -484,6 +523,7 @@ public class Player extends NetPlayer {
   }
 
   public void defreeze() {
+    freezeSound.stop();
     this.frozen = false;
   }
 
@@ -526,5 +566,80 @@ public class Player extends NetPlayer {
       currentVelocity.y = 0;
       sendVelocityToServer = true;
     }
+  }
+
+  public void playFreezeSound() {
+    freezeSound.playIndex(0);
+  }
+
+  public boolean getFreezeIsPlaying() {
+    return freezeSound.isPlaying();
+  }
+
+  public void playExplosionSound(int i) {
+    explosionSound.playIndex(i);
+    logger.debug("play sound" + "index" + i);
+  }
+
+  public boolean getExplosionIsPlaying() {
+    return explosionSound.isPlaying();
+  }
+
+  /** Stop playing an explosion sound. */
+  public void setExlosionSoundOff() {
+    if (explosionSound.isPlaying()) {
+      explosionSound.stop();
+    }
+  }
+
+  public void playFuseSound() {
+    fuseSound.playIndex(0);
+  }
+
+  public boolean getFuseIsPlaying() {
+    return fuseSound.isPlaying();
+  }
+
+  /** Stop playing a fuse sound. */
+  public void setFuseSoundOff() {
+    if (fuseSound.isPlaying()) {
+      fuseSound.stop();
+    }
+  }
+
+  public void playDamageSound(int i) {
+    damageSound.playIndex(i);
+    logger.debug("play sound" + "index" + i);
+  }
+
+  public void playHeartSound(int i) {
+    heartSound.playIndex(i);
+  }
+
+  public boolean getHeartIsPlaying() {
+    return heartSound.isPlaying();
+  }
+
+  /** Stop playing a heart sound effect. */
+  public void setHeartSoundOff() {
+    if (heartSound.isPlaying()) {
+      heartSound.stop();
+    }
+  }
+
+  public void playGameOverSound() {
+    gameOverSound.playIndex(1);
+  }
+
+  public void playSteroidSound() {
+    steroidSound.playIndex(0);
+  }
+
+  public boolean getSteroidIsPlaying() {
+    return steroidSound.isPlaying();
+  }
+
+  public void setSteroidSoundOff() {
+    steroidSound.stop();
   }
 }

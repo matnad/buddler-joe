@@ -69,8 +69,8 @@ public class Tutorial {
    * @return List of GuiTextures for the Tutorial
    */
   public List<GuiTexture> getGuis() {
-    // Check if tutorial is enabled
-    if (!enabled) {
+    // Check if tutorial is enabled or intro is running
+    if (!enabled || Game.getActiveCamera().isIntro()) {
       return new ArrayList<>();
     }
 

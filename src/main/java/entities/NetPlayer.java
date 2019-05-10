@@ -157,6 +157,10 @@ public class NetPlayer extends Entity {
    */
   public void update() {
 
+    if (Game.getActiveCamera().isIntro()) {
+      return;
+    }
+
     collideWithBlockAbove = null;
     collideWithBlockBelow = null;
 
@@ -218,6 +222,10 @@ public class NetPlayer extends Entity {
   public void informServerOfLifeChange(int val) {
     PacketLifeStatus informServer;
     if (val == -1) {
+      Game.getActivePlayer().playDamageSound(0);
+      if (currentLives == 1) {
+        Game.getActivePlayer().playGameOverSound();
+      }
       informServer = new PacketLifeStatus(currentLives - 1, clientId);
       informServer.sendToServer();
     } else if (val == 1) {
@@ -331,7 +339,8 @@ public class NetPlayer extends Entity {
       setScale(new Vector3f(ripModelSize, ripModelSize, ripModelSize));
       setRotY(0);
       if (getClientId() == Game.getActivePlayer().getClientId()) {
-        Game.setActiveCamera(new SpectatorCamera(Game.window, getPosition()));
+        Game.setActiveCamera(new SpectatorCamera(getPosition()));
+        Game.getActivePlayer().playGameOverSound();
       }
     }
   }
@@ -347,13 +356,13 @@ public class NetPlayer extends Entity {
   }
 
   //// Only use this for NetPlayers, this is just for the effect. For the player us Player.freeze()
-  //public void setFrozen(boolean frozen) {
+  // public void setFrozen(boolean frozen) {
   //  this.frozen = frozen;
-  //}
+  // }
   //
-  //public void setAmpedUp(boolean amped) {
+  // public void setAmpedUp(boolean amped) {
   //  this.amped = amped;
-  //}
+  // }
 
   /** Reset the static components before a new Game. */
   public static void reset() {
