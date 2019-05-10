@@ -5,18 +5,9 @@ import static org.lwjgl.openal.AL10.AL_FORMAT_STEREO16;
 import static org.lwjgl.openal.AL10.alBufferData;
 import static org.lwjgl.openal.AL10.alGenBuffers;
 import static org.lwjgl.openal.ALC11.ALC_ALL_DEVICES_SPECIFIER;
-import static org.lwjgl.openal.ALC11.ALC_DEFAULT_DEVICE_SPECIFIER;
-import static org.lwjgl.openal.ALC11.ALC_FREQUENCY;
-import static org.lwjgl.openal.ALC11.ALC_MONO_SOURCES;
-import static org.lwjgl.openal.ALC11.ALC_REFRESH;
-import static org.lwjgl.openal.ALC11.ALC_STEREO_SOURCES;
-import static org.lwjgl.openal.ALC11.ALC_SYNC;
-import static org.lwjgl.openal.ALC11.ALC_TRUE;
 import static org.lwjgl.openal.ALC11.alcCloseDevice;
 import static org.lwjgl.openal.ALC11.alcCreateContext;
 import static org.lwjgl.openal.ALC11.alcDestroyContext;
-import static org.lwjgl.openal.ALC11.alcGetInteger;
-import static org.lwjgl.openal.ALC11.alcGetString;
 import static org.lwjgl.openal.ALC11.alcMakeContextCurrent;
 import static org.lwjgl.openal.ALC11.alcOpenDevice;
 import static org.lwjgl.openal.EXTThreadLocalContext.alcSetThreadContext;
@@ -35,7 +26,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.openal.AL;
 import org.lwjgl.openal.AL10;
@@ -43,13 +33,25 @@ import org.lwjgl.openal.ALC;
 import org.lwjgl.openal.ALCCapabilities;
 import org.lwjgl.openal.ALUtil;
 import org.lwjgl.stb.STBVorbisInfo;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+/**
+ * Derived from the official LWJGL 3 demo class to create audio capabilities via openAL. Heavily
+ * modified for our purposes.
+ */
 public class AudioMaster {
+
+  private static final Logger logger = LoggerFactory.getLogger(AudioMaster.class);
 
   private static Map<SoundCategory, ArrayList<Integer>> buffers = new HashMap<>();
   private static long context;
   private static long device;
 
+  /**
+   * Initialize the AudioMaster with its capabilities. Needs to be called before anything else can
+   * be done with audio. Must be called on the main thread!
+   */
   public static void init() {
     device = alcOpenDevice((ByteBuffer) null);
     if (device == NULL) {
@@ -62,34 +64,45 @@ public class AudioMaster {
       throw new IllegalStateException();
     }
 
+    /* print capabilities
     System.out.println("OpenALC10: " + deviceCaps.OpenALC10);
     System.out.println("OpenALC11: " + deviceCaps.OpenALC11);
     System.out.println("caps.ALC_EXT_EFX = " + deviceCaps.ALC_EXT_EFX);
+    */
 
     if (deviceCaps.OpenALC11) {
       List<String> devices = ALUtil.getStringList(NULL, ALC_ALL_DEVICES_SPECIFIER);
       if (devices == null) {
-        System.out.println("Error no device.");
+        logger.warn("Error no device.");
       } else {
+        if (devices.size() > 0) {
+          logger.info("Using audio device: " + devices.get(0));
+        }
+        /* Print all devices
         for (int i = 0; i < devices.size(); i++) {
           System.out.println(i + ": " + devices.get(i));
-        }
+        } */
       }
     }
 
+    /* print devault specifier
     String defaultDeviceSpecifier =
         Objects.requireNonNull(alcGetString(NULL, ALC_DEFAULT_DEVICE_SPECIFIER));
-    System.out.println("Default device: " + defaultDeviceSpecifier);
+     System.out.println("Default device: " + defaultDeviceSpecifier);
+     */
 
+    // Create context and capabilities (must be on game loop thread)
     context = alcCreateContext(device, (IntBuffer) null);
     alcSetThreadContext(context);
     AL.createCapabilities(deviceCaps);
 
+    /* Debug Messages
     System.out.println("ALC_FREQUENCY: " + alcGetInteger(device, ALC_FREQUENCY) + "Hz");
     System.out.println("ALC_REFRESH: " + alcGetInteger(device, ALC_REFRESH) + "Hz");
     System.out.println("ALC_SYNC: " + (alcGetInteger(device, ALC_SYNC) == ALC_TRUE));
     System.out.println("ALC_MONO_SOURCES: " + alcGetInteger(device, ALC_MONO_SOURCES));
     System.out.println("ALC_STEREO_SOURCES: " + alcGetInteger(device, ALC_STEREO_SOURCES));
+    */
 
     // Load sounds
     loadSound(SoundCategory.DIG, "dig1");
@@ -124,7 +137,15 @@ public class AudioMaster {
     loadSound(SoundCategory.INTRO, "intro");
   }
 
-  private static int loadSound(SoundCategory category, String file) {
+  /**
+   * Load a sound file into openAL and retrieve the buffer ID. Adds the bufferId to the respective
+   * category list.
+   *
+   * @param category Sound Category
+   * @param file file name without path or extension. Must be an .ogg file in /assets/audio/
+   * @return bufferId for the loaded sound file (usually not needed, as it is added to the category)
+   */
+  public static int loadSound(SoundCategory category, String file) {
     // generate buffers and sources
     int buffer = alGenBuffers();
 
@@ -145,7 +166,15 @@ public class AudioMaster {
     return buffer;
   }
 
-  static ShortBuffer readVorbis(String resource, int bufferSize, STBVorbisInfo info) {
+  /**
+   * Read a vorbis (ogg) file.
+   *
+   * @param resource path to resource ("/assets/audio/sound.ogg")
+   * @param bufferSize usually 32 * 1024
+   * @param info Vorbis Stream Info
+   * @return buffer of the file to be loaded into openAL
+   */
+  private static ShortBuffer readVorbis(String resource, int bufferSize, STBVorbisInfo info) {
     ByteBuffer vorbis;
 
     vorbis = ioResourceToByteBuffer(resource, bufferSize);
@@ -169,6 +198,7 @@ public class AudioMaster {
     return pcm;
   }
 
+  /** Destroy all context and delete buffers from openAL memory. */
   public static void cleanUp() {
     for (ArrayList<Integer> catBuffers : buffers.values()) {
       for (Integer catBuffer : catBuffers) {
@@ -181,10 +211,21 @@ public class AudioMaster {
     alcCloseDevice(device);
   }
 
-  public static ArrayList<Integer> getCategoryBuffers(SoundCategory category) {
+  /**
+   * Get all bufferIds in a Sound Category.
+   *
+   * @param category Category to get buffers for
+   * @return ArrayList with all bufferIds in that category
+   */
+  static ArrayList<Integer> getCategoryBuffers(SoundCategory category) {
     return buffers.get(category);
   }
 
+  /**
+   * Used to test sound capabilities.
+   *
+   * @param args -
+   */
   public static void main(String[] args) {
     init();
     Source source = new Source();
@@ -211,6 +252,10 @@ public class AudioMaster {
     System.exit(0);
   }
 
+  /**
+   * Sound Categories. Sounds are grouped so we can easily play random sounds from a category and to
+   * make the code more descriptive.
+   */
   public enum SoundCategory {
     DIG,
     EXPLOSION,

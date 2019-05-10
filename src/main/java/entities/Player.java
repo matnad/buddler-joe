@@ -585,6 +585,7 @@ public class Player extends NetPlayer {
     return explosionSound.isPlaying();
   }
 
+  /** Stop playing an explosion sound. */
   public void setExlosionSoundOff() {
     if (explosionSound.isPlaying()) {
       explosionSound.stop();
@@ -599,6 +600,7 @@ public class Player extends NetPlayer {
     return fuseSound.isPlaying();
   }
 
+  /** Stop playing a fuse sound. */
   public void setFuseSoundOff() {
     if (fuseSound.isPlaying()) {
       fuseSound.stop();
@@ -618,6 +620,7 @@ public class Player extends NetPlayer {
     return heartSound.isPlaying();
   }
 
+  /** Stop playing a heart sound effect. */
   public void setHeartSoundOff() {
     if (heartSound.isPlaying()) {
       heartSound.stop();
