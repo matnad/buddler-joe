@@ -11,6 +11,7 @@ import entities.items.Steroids;
 import entities.items.Torch;
 import game.Game;
 import game.map.GameMap;
+import gui.tutorial.Tutorial;
 import net.ServerLogic;
 import net.lobbyhandling.Lobby;
 import net.packets.Packet;
@@ -212,26 +213,42 @@ public class PacketSpawnItem extends Packet {
         } else if (item instanceof Dynamite) {
           if (owner == Game.getActivePlayer().getClientId()) {
             item.setOwned(true);
+            if (Tutorial.Topics.DYNAMITE.isEnabled() && !Tutorial.Topics.DYNAMITE.isActive()) {
+              Tutorial.Topics.setActive(Tutorial.Topics.DYNAMITE, true);
+            }
           }
           ((Dynamite) item).setActive(true); // Start ticking
         } else if (item instanceof Steroids) {
           if (owner == Game.getActivePlayer().getClientId()) {
             item.setOwned(true);
             Game.getActivePlayer().ampUp();
+            if (Tutorial.Topics.STEROIDS.isEnabled() && !Tutorial.Topics.STEROIDS.isActive()) {
+              Tutorial.Topics.setActive(Tutorial.Topics.STEROIDS, true);
+            }
           }
         } else if (item instanceof Heart) {
           if (owner == Game.getActivePlayer().getClientId()) {
             item.setOwned(true);
+            if (Tutorial.Topics.HEART.isEnabled() && !Tutorial.Topics.HEART.isActive()) {
+              Tutorial.Topics.setActive(Tutorial.Topics.HEART, true);
+            }
           }
           // Correct Heart position
           item.setPositionY(item.getPosition().y - 1.5f * item.getBbox().getDimY());
         } else if (item instanceof Ice) {
           if (owner == Game.getActivePlayer().getClientId()) {
             item.setOwned(true);
+            if (Tutorial.Topics.ICE.isEnabled() && !Tutorial.Topics.ICE.isActive()) {
+              Tutorial.Topics.setActive(Tutorial.Topics.ICE, true);
+            }
           }
         } else if (item instanceof Star) {
           if (owner == Game.getActivePlayer().getClientId()) {
             item.setOwned(true);
+            Game.getActivePlayer().playFreezeSound();
+            if (Tutorial.Topics.STAR.isEnabled() && !Tutorial.Topics.STAR.isActive()) {
+              Tutorial.Topics.setActive(Tutorial.Topics.STAR, true);
+            }
           }
         }
       } else {

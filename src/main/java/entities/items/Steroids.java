@@ -31,7 +31,7 @@ public class Steroids extends Item {
   private Steroids(Vector3f position, float rotX, float rotY, float rotZ, float scale) {
     super(ItemMaster.ItemTypes.STEROIDS, getPreloadedModel(), position, rotX, rotY, rotZ, 0);
 
-    ampedPlayerEffect = new Amped(15, 0, 0, 1f, 10);
+    ampedPlayerEffect = new Amped(40, 0, 0, 1f, 10);
     ampedPlayerEffect.setScaleError(.3f);
 
     ampedInitialEffect = new Explosion(1000, 40, 0f, .8f, 5f);
@@ -41,7 +41,6 @@ public class Steroids extends Item {
     Random rnd = new Random(); // Give the shockwave a slight random tilt
     ampedInitialEffect.setRotationAxis(
         new Vector3f(rnd.nextFloat() * .4f - .2f, 1, rnd.nextFloat() * .4f - .2f), 0);
-
   }
 
   /**
@@ -82,6 +81,13 @@ public class Steroids extends Item {
   public void update() {
     time += Game.dt();
     if (isOwned()) {
+      if (time + 9.9f < steroidsTime) {
+        if (Game.getActivePlayer().getSteroidIsPlaying()) {
+          Game.getActivePlayer().setSteroidSoundOff();
+        }
+        Game.getActivePlayer().playSteroidSound();
+      }
+
       if (time >= steroidsTime) {
         // DeAmp is done by the player. We can't control multiple steroids from here.
         setDestroyed(true);
@@ -94,7 +100,7 @@ public class Steroids extends Item {
 
     NetPlayer owner = NetPlayerMaster.getNetPlayerById(getOwner());
     if (owner != null) {
-      ampedPlayerEffect.generateParticles(owner.getBbox().getCenter().add(new Vector3f(0,1,0)));
+      ampedPlayerEffect.generateParticles(owner.getBbox().getCenter().add(new Vector3f(0, 1, 0)));
     }
   }
 
