@@ -4,6 +4,12 @@ plugins {
     id 'com.github.johnrengelman.shadow' version '5.0.0'
 }
 
+compileJava.options.encoding = 'UTF-8'
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
 sourceCompatibility = '1.11'
 targetCompatibility = '1.11'
 
