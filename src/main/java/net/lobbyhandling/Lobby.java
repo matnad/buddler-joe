@@ -313,16 +313,30 @@ public class Lobby implements Runnable {
       oldLobbyPlayers.add(lobbyPlayer);
       removePlayer(lobbyPlayer.getClientId());
     }
-    transfer(oldLobbyPlayers);
+    if (oldLobbyPlayers.size() > 0) {
+      transfer(oldLobbyPlayers);
+    }
   }
 
   /** Creates a new Lobby and transfers all players of this lobby to the new one. */
   private void transfer(CopyOnWriteArrayList<ServerPlayer> oldLobbyPlayers) {
     try {
-      Lobby freshLobby = new Lobby(getFreshName(), createrPlayerId, mapSize);
-      String lobbyAddstatus = ServerLogic.getLobbyList().addLobby(freshLobby);
+      Lobby freshLobby = new Lobby("placeholder", 1, "m");
+      String lobbyAddstatus = "";
+      String tmpName = getLobbyName();
+      int counter = 0;
+      while (!lobbyAddstatus.equals("OK")) {
+        if (counter > 9) {
+          throw new Exception("Unable to create  uniq lobbyname.");
+        }
+        tmpName = getFreshName(tmpName);
+        freshLobby = new Lobby(tmpName, createrPlayerId, mapSize);
+        lobbyAddstatus = ServerLogic.getLobbyList().addLobby(freshLobby);
+        counter++;
+      }
       if (lobbyAddstatus.startsWith("OK")) {
         History.openAdd(freshLobby.getLobbyId(), freshLobby.getLobbyName());
+        logger.info("Automatically created new Lobby " + freshLobby.getLobbyName());
       }
       for (ServerPlayer oldLobbyPlayer : oldLobbyPlayers) {
         // add old players to new Lobby and inform them.
@@ -355,7 +369,7 @@ public class Lobby implements Runnable {
    *
    * @return a valid lobbyname.
    */
-  public String getFreshName() {
+  public String getFreshName(String lobbyName) {
     StringBuilder oldName = new StringBuilder(lobbyName);
     StringBuilder number = new StringBuilder();
     int digits = 0;
