@@ -31,7 +31,7 @@ public class Steroids extends Item {
   private Steroids(Vector3f position, float rotX, float rotY, float rotZ, float scale) {
     super(ItemMaster.ItemTypes.STEROIDS, getPreloadedModel(), position, rotX, rotY, rotZ, 0);
 
-    ampedPlayerEffect = new Amped(15, 0, 0, 1f, 10);
+    ampedPlayerEffect = new Amped(40, 0, 0, 1f, 10);
     ampedPlayerEffect.setScaleError(.3f);
 
     ampedInitialEffect = new Explosion(1000, 40, 0f, .8f, 5f);
