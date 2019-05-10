@@ -361,7 +361,7 @@ public class Game extends Thread {
     window.setFullscreen(settings.isFullscreen());
     window.create();
 
-    MouseIcon.setMouseIcon(window, "back_norm");
+    MouseIcon.setMouseIcon(window, "cursorGrey");
     // Initiate the master renderer class
     renderer = new MasterRenderer();
 
