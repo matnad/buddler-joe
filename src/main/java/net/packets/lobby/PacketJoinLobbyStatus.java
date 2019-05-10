@@ -2,6 +2,7 @@ package net.packets.lobby;
 
 import game.Game;
 import game.stages.ChooseLobby;
+import game.stages.GameOver;
 import game.stages.InLobby;
 import net.packets.Packet;
 
@@ -71,12 +72,18 @@ public class PacketJoinLobbyStatus extends Packet {
     if (hasErrors()) { // Errors on Client
     } else if (status.startsWith("OK")) {
       try {
-        // System.out.println("Successfully joined lobby");
-        Game.getChat().setLobbyChatSettings();
-        ChooseLobby.setRemoveAtEndOfFrame(true);
-        InLobby.setRemoveAtEndOfFrame(true);
-        Game.addActiveStage(Game.Stage.INLOBBBY);
-        Game.removeActiveStage(Game.Stage.CHOOSELOBBY);
+        if (Game.getActiveStages().contains(Game.Stage.CHOOSELOBBY)) {
+          Game.getChat().setLobbyChatSettings();
+          ChooseLobby.setRemoveAtEndOfFrame(true);
+          InLobby.setRemoveAtEndOfFrame(true);
+          Game.addActiveStage(Game.Stage.INLOBBBY);
+          Game.removeActiveStage(Game.Stage.CHOOSELOBBY);
+        } else if (GameOver.isActiv()) {
+          Game.setAfterMatchLobbyReady(true);
+        } else {
+          // We actually dont want to be in a Lobby.
+          new PacketLeaveLobby().sendToServer();
+        }
       } catch (NullPointerException e) {
         addError("Game is not running.");
       }

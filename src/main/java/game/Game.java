@@ -60,6 +60,7 @@ import net.ClientLogic;
 import net.StartNetworkOnlyClient;
 import net.packets.lobby.PacketCreateLobby;
 import net.packets.lobby.PacketJoinLobby;
+import net.packets.lobby.PacketLeaveLobby;
 import net.packets.loginlogout.PacketLogin;
 import org.joml.Vector3f;
 import org.slf4j.Logger;
@@ -76,7 +77,7 @@ public class Game extends Thread {
   private static final Logger logger = LoggerFactory.getLogger(Game.class);
 
   // Set up list of stages, stages will be updated at the end of every frame
-  private static final List<Stage> activeStages = new CopyOnWriteArrayList<>();
+  private static List<Stage> activeStages = new CopyOnWriteArrayList<>();
   private static final List<Stage> stagesToBeAdded = new CopyOnWriteArrayList<>();
   /*
    * All entities that need to be rendered.
@@ -137,6 +138,8 @@ public class Game extends Thread {
   // Set to true to create and join a lobby. For quicker testing.
   private boolean autoJoin = false;
   private static Source backgroundSound;
+  private static boolean afterMatchLobbyReady;
+  private static String[] cachedMap;
 
   /**
    * The constructor for the game to be called from the main class.
@@ -594,8 +597,18 @@ public class Game extends Thread {
 
     camera = new Camera(player, loader);
     map = new ClientMap("s", System.currentTimeMillis());
+    map.setLobbyMap(Game.getCachedMap());
 
-    Game.addActiveStage(Game.Stage.MAINMENU);
+    if (afterMatchLobbyReady) {
+      Game.getChat().setLobbyChatSettings();
+      ChooseLobby.setRemoveAtEndOfFrame(true); // TODO: do we need this? <---
+      InLobby.setRemoveAtEndOfFrame(true);
+      Game.addActiveStage(Game.Stage.INLOBBBY);
+    } else {
+      logger.info("Game restart on  ClientSide before new Lobby was ready.");
+      Game.addActiveStage(Game.Stage.MAINMENU);
+      new PacketLeaveLobby().sendToServer();
+    }
   }
 
   private void cleanUp() {
@@ -756,6 +769,28 @@ public class Game extends Thread {
   public static void setStartedAt(long startedAt) {
     Game.startedAt = startedAt;
   }
+
+  public static boolean isAfterMatchLobbyReady() {
+    return afterMatchLobbyReady;
+  }
+
+  public static void setAfterMatchLobbyReady(boolean afterMatchLobbyReady) {
+    Game.afterMatchLobbyReady = afterMatchLobbyReady;
+  }
+
+  public static void setActiveStages(List<Stage> activeStages) {
+    Game.activeStages = activeStages;
+  }
+
+
+  public static String[] getCachedMap() {
+    return cachedMap;
+  }
+
+  public static void setCachedMap(String[] cachedMap) {
+    Game.cachedMap = cachedMap;
+  }
+
 
   // Valid Stages
   public enum Stage {

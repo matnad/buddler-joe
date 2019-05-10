@@ -72,6 +72,7 @@ public class PacketGameEnd extends Packet {
   @Override
   public void processData() {
     if (!hasErrors()) {
+      GameOver.setActiv(true);
       GameOver.setMsg(
           "Congratulations to the winner "
               + winner
