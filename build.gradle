@@ -9,7 +9,7 @@ targetCompatibility = '1.11'
 
 
 group 'gruppe-8'
-version 'buddlerjoe-0.4.9'
+version 'buddlerjoe-0.4.91'
 
 
 jar {
