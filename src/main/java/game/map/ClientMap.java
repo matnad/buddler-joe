@@ -464,7 +464,7 @@ public class ClientMap extends GameMap<Block> {
    */
   public Vector3f getSpawnPositionForPlayer(Player player) {
     int block = getSpawnBlockForPlayer(player);
-    return new Vector3f(dim * block + size, 1, 3);
+    return new Vector3f(dim * block + size, 6, 3);
   }
 
   public int getTerrainRows() {

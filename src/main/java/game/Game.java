@@ -15,6 +15,8 @@ import static game.Game.Stage.OPTIONS;
 import static game.Game.Stage.PLAYERLIST;
 import static game.Game.Stage.PLAYING;
 
+import audio.AudioMaster;
+import audio.Source;
 import engine.io.InputHandler;
 import engine.io.Window;
 import engine.particles.ParticleMaster;
@@ -131,8 +133,10 @@ public class Game extends Thread {
   private static CopyOnWriteArrayList<LobbyPlayerEntry> lobbyPlayerCatalog =
       new CopyOnWriteArrayList<>();
   public String username;
+
   // Set to true to create and join a lobby. For quicker testing.
   private boolean autoJoin = false;
+  private static Source backgroundSound;
 
   /**
    * The constructor for the game to be called from the main class.
@@ -393,6 +397,9 @@ public class Game extends Thread {
       e.printStackTrace();
     }
 
+    if (!backgroundSound.isPlaying()) {
+      backgroundSound.playIndex(0);
+    }
     lifeStatus = new LifeStatus(loader);
     Fps fpsCounter = new Fps();
 
@@ -452,10 +459,16 @@ public class Game extends Thread {
         Game.window.update();
 
         if (activeStages.contains(PLAYING)) {
+          if (backgroundSound.isPlaying()) {
+            backgroundSound.stop();
+          }
           Playing.update(renderer);
         }
 
         if (activeStages.contains(MAINMENU)) {
+          if (!backgroundSound.isPlaying()) {
+            backgroundSound.playIndex(0);
+          }
           MainMenu.update();
         }
 
@@ -575,11 +588,11 @@ public class Game extends Thread {
     ParticleMaster.reset();
 
     int clientId = player.getClientId();
-    player = new Player(getUsername(), new Vector3f(12, 10, 3), 0, 0, 0);
+    player = new Player(getUsername(), new Vector3f(12, 40, 3), 0, 0, 0);
     player.setClientId(clientId);
     Playing.resetFloatingStrings();
 
-    camera = new Camera(player, window);
+    camera = new Camera(player, loader);
     map = new ClientMap("s", System.currentTimeMillis());
 
     Game.addActiveStage(Game.Stage.MAINMENU);
@@ -592,6 +605,7 @@ public class Game extends Thread {
     renderer.cleanUp();
     loader.cleanUp();
     ParticleMaster.cleanUp();
+    AudioMaster.cleanUp();
   }
 
   public static void clearAllTextAtEndOfCurrentFrame() {
@@ -623,16 +637,24 @@ public class Game extends Thread {
     ChangeName.init(loader);
     LoadingScreen.progess();
     HistoryMenu.init(loader);
+    LoadingScreen.progess();
+
+    LoadingScreen.updateLoadingMessage("loading sounds");
+    AudioMaster.init();
+    LoadingScreen.progess();
 
     // Generate ServerPlayer
     NetPlayer.init(loader);
-    player = new Player(getUsername(), new Vector3f(12, 10, 3), 0, 0, 0);
+    player = new Player(getUsername(), new Vector3f(12, 40, 3), 0, 0, 0);
 
     // Generate dummy map
     map = new ClientMap("s", System.currentTimeMillis());
 
     // Generate Chat
     chat = new Chat(loader, 12, 0.34f);
+
+    backgroundSound = new Source(AudioMaster.SoundCategory.BACKGROUND);
+    backgroundSound.setVolume(0.1f);
 
     // Connecting to Server
     LoadingScreen.updateLoadingMessage("connecting to server");
@@ -667,7 +689,7 @@ public class Game extends Thread {
     }
 
     // Camera
-    camera = new Camera(player, window);
+    camera = new Camera(player, loader);
     // camera = new SpectatorCamera(window);
 
     // GUI / Other

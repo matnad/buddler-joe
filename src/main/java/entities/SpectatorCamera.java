@@ -1,6 +1,7 @@
 package entities;
 
 import engine.io.Window;
+import engine.render.Loader;
 import org.joml.Vector3f;
 
 public class SpectatorCamera extends Camera {
@@ -10,20 +11,19 @@ public class SpectatorCamera extends Camera {
   /**
    * Create a new Spectator Camera around (0,0,0).
    *
-   * @param window window where the camera is used in
    */
-  public SpectatorCamera(Window window) {
-    this(window, new Vector3f());
+  public SpectatorCamera() {
+    this(new Vector3f());
   }
 
   /**
    * Create a new Spectator Camera centered on an anchor.
    *
-   * @param window window where the camera is used in
    * @param anchor coordinates where the camera is anchored
    */
-  public SpectatorCamera(Window window, Vector3f anchor) {
-    super(null, window);
+  public SpectatorCamera(Vector3f anchor) {
+    super(null, null);
+    intro = false;
     this.anchor = anchor;
     // "Unlock" camera
     maxZoom = 150;

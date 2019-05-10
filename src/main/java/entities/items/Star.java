@@ -12,6 +12,7 @@ import engine.textures.ModelTexture;
 import entities.NetPlayer;
 import game.Game;
 import game.NetPlayerMaster;
+import gui.tutorial.Tutorial;
 import net.packets.items.PacketItemUsed;
 import org.joml.Vector3f;
 
@@ -86,6 +87,9 @@ public class Star extends Item {
         Game.getActivePlayer().defreeze();
         setDestroyed(true);
       } else if (time >= 0.2f) {
+        if (!freezeTriggered) {
+          Tutorial.Topics.setActive(Tutorial.Topics.STARRED, true);
+        }
         Game.getActivePlayer().freeze(!freezeTriggered);
         freezeTriggered = true;
       }
@@ -96,6 +100,9 @@ public class Star extends Item {
     }
 
     if (time < .5f) {
+      if (!Game.getActivePlayer().getFreezeIsPlaying()) {
+        Game.getActivePlayer().playFreezeSound();
+      }
       starExplosion.generateParticles(getPosition());
     }
 
