@@ -578,17 +578,10 @@ public class Player extends NetPlayer {
 
   public void playExplosionSound(int i) {
     explosionSound.playIndex(i);
-    logger.debug("play sound" + "index" + i);
   }
 
   public boolean getExplosionIsPlaying() {
     return explosionSound.isPlaying();
-  }
-
-  public void setExlosionSoundOff() {
-    if (explosionSound.isPlaying()) {
-      explosionSound.stop();
-    }
   }
 
   public void playFuseSound() {
@@ -599,15 +592,8 @@ public class Player extends NetPlayer {
     return fuseSound.isPlaying();
   }
 
-  public void setFuseSoundOff() {
-    if (fuseSound.isPlaying()) {
-      fuseSound.stop();
-    }
-  }
-
   public void playDamageSound(int i) {
     damageSound.playIndex(i);
-    logger.debug("play sound" + "index" + i);
   }
 
   public void playHeartSound(int i) {

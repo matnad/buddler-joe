@@ -108,6 +108,7 @@ public class InLobby {
     if (!initializedText) {
       done();
       initText();
+      updateLobbyName();
       //      Game.getChat().setLobbyChatPosition();
       //      Game.getChat().setLobbyMaxLines();
       //      Game.getChat().setLobbyColour();

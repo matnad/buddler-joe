@@ -652,6 +652,7 @@ public class Game extends Thread {
     chat = new Chat(loader, 12, 0.34f);
 
     backgroundSound = new Source(AudioMaster.SoundCategory.BACKGROUND);
+    backgroundSound.setVolume(0.1f);
 
     // Connecting to Server
     LoadingScreen.updateLoadingMessage("connecting to server");
