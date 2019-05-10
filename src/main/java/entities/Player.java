@@ -578,7 +578,6 @@ public class Player extends NetPlayer {
 
   public void playExplosionSound(int i) {
     explosionSound.playIndex(i);
-    logger.debug("play sound" + "index" + i);
   }
 
   public boolean getExplosionIsPlaying() {
@@ -609,7 +608,6 @@ public class Player extends NetPlayer {
 
   public void playDamageSound(int i) {
     damageSound.playIndex(i);
-    logger.debug("play sound" + "index" + i);
   }
 
   public void playHeartSound(int i) {
