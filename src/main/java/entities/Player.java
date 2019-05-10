@@ -79,6 +79,7 @@ public class Player extends NetPlayer {
   private Source freezeSound = new Source(AudioMaster.SoundCategory.FREEZE);
   private Source damageSound = new Source(AudioMaster.SoundCategory.DAMAGE);
   private Source gameOverSound = new Source(AudioMaster.SoundCategory.GAMEOVER);
+  private Source steroidSound = new Source(AudioMaster.SoundCategory.STEROID);
   private boolean playDigSoundDirt = false;
   private boolean playPickSoundStone = false;
 
@@ -625,5 +626,17 @@ public class Player extends NetPlayer {
 
   public void playGameOverSound() {
     gameOverSound.playIndex(1);
+  }
+
+  public void playSteroidSound() {
+    steroidSound.playIndex(0);
+  }
+
+  public boolean getSteroidIsPlaying() {
+    return steroidSound.isPlaying();
+  }
+
+  public void setSteroidSoundOff() {
+    steroidSound.stop();
   }
 }

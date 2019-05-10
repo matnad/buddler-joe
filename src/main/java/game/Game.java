@@ -16,6 +16,7 @@ import static game.Game.Stage.PLAYERLIST;
 import static game.Game.Stage.PLAYING;
 
 import audio.AudioMaster;
+import audio.Source;
 import engine.io.InputHandler;
 import engine.io.Window;
 import engine.particles.ParticleMaster;
@@ -133,7 +134,8 @@ public class Game extends Thread {
   public String username;
 
   // Set to true to create and join a lobby. For quicker testing.
-  private boolean autoJoin = true;
+  private boolean autoJoin = false;
+  private static Source backgroundSound;
 
   /**
    * The constructor for the game to be called from the main class.
@@ -393,6 +395,9 @@ public class Game extends Thread {
       e.printStackTrace();
     }
 
+    if (!backgroundSound.isPlaying()) {
+      backgroundSound.playIndex(0);
+    }
     lifeStatus = new LifeStatus(loader);
     Fps fpsCounter = new Fps();
 
@@ -452,10 +457,16 @@ public class Game extends Thread {
         Game.window.update();
 
         if (activeStages.contains(PLAYING)) {
+          if (backgroundSound.isPlaying()) {
+            backgroundSound.stop();
+          }
           Playing.update(renderer);
         }
 
         if (activeStages.contains(MAINMENU)) {
+          if (!backgroundSound.isPlaying()) {
+            backgroundSound.playIndex(0);
+          }
           MainMenu.update();
         }
 
@@ -639,6 +650,9 @@ public class Game extends Thread {
 
     // Generate Chat
     chat = new Chat(loader, 12, 0.34f);
+
+    backgroundSound = new Source(AudioMaster.SoundCategory.BACKGROUND);
+    backgroundSound.setVolume(0.1f);
 
     // Connecting to Server
     LoadingScreen.updateLoadingMessage("connecting to server");

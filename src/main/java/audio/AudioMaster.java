@@ -109,7 +109,6 @@ public class AudioMaster {
     loadSound(SoundCategory.FREEZE, "Freeze3");
     loadSound(SoundCategory.DAMAGE, "Autsch");
     loadSound(SoundCategory.DAMAGE, "Game Over");
-    //    loadSound(SoundCategory.DAMAGE, "Game Over2");
     loadSound(SoundCategory.GAMEOVER, "Game Over2");
     loadSound(SoundCategory.GAMEOVER, "Game Over3");
     loadSound(SoundCategory.PICK, "pick1");
@@ -120,6 +119,8 @@ public class AudioMaster {
     loadSound(SoundCategory.PICK, "pick6");
     loadSound(SoundCategory.PICK, "pick7");
     loadSound(SoundCategory.PICK, "pick8");
+    loadSound(SoundCategory.STEROID, "steroid2");
+    loadSound(SoundCategory.BACKGROUND, "mining");
     loadSound(SoundCategory.INTRO, "intro");
   }
 
@@ -219,6 +220,8 @@ public class AudioMaster {
     GAMEOVER,
     PICK,
     FUSE,
+    STEROID,
+    BACKGROUND,
     INTRO
   }
 }
