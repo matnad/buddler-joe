@@ -1,6 +1,7 @@
 package net.packets.lobby;
 
 import game.History;
+import game.stages.LobbyCreation;
 import net.ServerLogic;
 import net.lobbyhandling.Lobby;
 import net.packets.Packet;
@@ -31,6 +32,9 @@ public class PacketCreateLobby extends Packet {
         info[0] = info[0].trim();
       }
       validate();
+      if(hasErrors()){
+        LobbyCreation.setMsg(createErrorMessage());
+      }
     } catch (NullPointerException e) {
       addError("There is no String attached.");
     }
