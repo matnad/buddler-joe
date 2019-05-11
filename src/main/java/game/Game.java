@@ -598,6 +598,7 @@ public class Game extends Thread {
 
     // Reset Masters
     BlockMaster.clear();
+    String lobbynameTmp = NetPlayerMaster.getLobbyname();
     NetPlayerMaster.reset();
     ItemMaster.reset();
     LightMaster.reset();
@@ -613,6 +614,7 @@ public class Game extends Thread {
     map.setLobbyMap(Game.getCachedMap());
 
     if (afterMatchLobbyReady) {
+      NetPlayerMaster.setLobbyname(lobbynameTmp);
       Game.getChat().setLobbyChatSettings();
       ChooseLobby.setRemoveAtEndOfFrame(true); // TODO: do we need this? <---
       InLobby.setRemoveAtEndOfFrame(true);

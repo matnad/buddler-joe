@@ -27,6 +27,8 @@ import java.util.List;
 import net.packets.lists.PacketHighscore;
 import net.packets.lists.PacketPlayerList;
 import org.joml.Vector2f;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import terrains.TerrainFlat;
 import util.MousePlacer;
 
@@ -111,7 +113,8 @@ public class Playing {
             new Vector2f(.012169f, 0.01875f));
     resetWhisperAll.setActivationMinAlpha(0.8f);
 
-    tutorial = new Tutorial(loader);
+    Tutorial.init(loader);
+    tutorial = new Tutorial();
   }
 
   /**
@@ -359,10 +362,18 @@ public class Playing {
     firstloop = true;
     floatingGoldStrings.done();
     Game.getGoldGuiText().done();
+    tutorial = new Tutorial(); // Reset tutorial GUI
   }
 
   /** Reset floating strings for a new Game. Call this when the Player object changes. */
   public static void resetFloatingStrings() {
     floatingGoldStrings = new FloatingStrings(Game.getActivePlayer().getBbox(), 3f);
+  }
+
+  /**
+   * Resets the Tutorial.
+   * */
+  public static void resetTutorial() {
+    tutorial.reset();
   }
 }

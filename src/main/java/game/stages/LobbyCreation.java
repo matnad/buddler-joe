@@ -129,14 +129,14 @@ public class LobbyCreation {
     big =
         new MenuButton(
             loader,
-            "big_norm",
-            "big_hover",
+            "large_norm",
+            "large_hover",
             new Vector2f(0.309091f, -0.315f),
             new Vector2f(0.14018f, .082347f));
 
     bigSta =
         new GuiTexture(
-            loader.loadTexture("big_hover"),
+            loader.loadTexture("large_hover"),
             new Vector2f(0.309091f, -0.315f),
             new Vector2f(0.14018f, .082347f),
             1);
@@ -154,7 +154,7 @@ public class LobbyCreation {
   @SuppressWarnings("Duplicates")
   public static void update() {
     if (!initializedText) {
-      //done();
+      // done();
       initText();
       initializedText = true;
     }
@@ -284,9 +284,7 @@ public class LobbyCreation {
             output, 1.5f, font, new Vector3f(0f, 0f, 0f), 1f, new Vector2f(.30f, .465f), 1f, false);
   }
 
-
   public static void setRemoveAtEndOfFrame(boolean removeAtEndOfFrame) {
     LobbyCreation.removeAtEndOfFrame = removeAtEndOfFrame;
   }
-
 }

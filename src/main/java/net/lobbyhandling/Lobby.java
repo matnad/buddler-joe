@@ -367,6 +367,7 @@ public class Lobby implements Runnable {
   /**
    * Creates a new lobbyname consisting of the old lobbyname and a increasing number.
    *
+   * @param lobbyName a String on which the fresh name should be based on.
    * @return a valid lobbyname.
    */
   public String getFreshName(String lobbyName) {
