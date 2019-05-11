@@ -420,7 +420,20 @@ public class Game extends Thread {
     DebrisMaster.init();
 
     // Loading complete
-    LoadingScreen.updateLoadingMessage("Ready!");
+    if (!ClientLogic.isConnected()) {
+      LoadingScreen.setFontColour(new Vector3f(1, 0, 0));
+      LoadingScreen.setFontSize(1.8f);
+      LoadingScreen.updateLoadingMessage("Could not connect. Change IP and restart.", false);
+      try {
+        Thread.sleep(3000);
+      } catch (InterruptedException e) {
+        e.printStackTrace();
+      }
+      LoadingScreen.setFontColour();
+      LoadingScreen.setFontSize();
+    } else {
+      LoadingScreen.updateLoadingMessage("Ready!");
+    }
     LoadingScreen.done();
 
     /*
@@ -672,32 +685,58 @@ public class Game extends Thread {
     // Connecting to Server
     LoadingScreen.updateLoadingMessage("connecting to server");
     startNetworkThread();
+    long timeOut = 0;
     while (!ClientLogic.isConnected()) {
       Thread.sleep(50);
+      timeOut += 50;
+      if (timeOut % 350 == 0) {
+        LoadingScreen.progess();
+      }
+      if (timeOut > 3000) {
+        break;
+      }
     }
 
     // Logging in
-    LoadingScreen.updateLoadingMessage("logging in");
-    new PacketLogin(getUsername()).sendToServer();
-    while (!loggedIn) {
-      Thread.sleep(50);
-    }
-    System.out.println("logged in");
-
-    // Creating and joining Lobby
-    if (autoJoin) {
-      String lobname = String.valueOf(new Random().nextInt((int) 10e15));
-      LoadingScreen.updateLoadingMessage("joining lobby");
-      new PacketCreateLobby(lobname + "║s").sendToServer();
-      while (!lobbyCreated) {
-        Thread.sleep(150);
-        LoadingScreen.progess();
+    if (ClientLogic.isConnected()) {
+      LoadingScreen.updateLoadingMessage("logging in");
+      new PacketLogin(getUsername()).sendToServer();
+      timeOut = 0;
+      while (!loggedIn) {
+        Thread.sleep(50);
+        timeOut += 50;
+        if (timeOut % 350 == 0) {
+          LoadingScreen.progess();
+        }
+        if (timeOut > 3000) {
+          LoadingScreen.setFontColour(new Vector3f(1,0,0));
+          LoadingScreen.setFontSize(1.8f);
+          LoadingScreen.updateLoadingMessage("Failed to Log in. Closing game.", false);
+          Thread.sleep(2500);
+          System.err.println(
+              "Could not log in. Most likely this is due to your UTF-8 system configuration. "
+                  + "Closing Game.");
+          AudioMaster.cleanUp();
+          System.exit(-1);
+        }
       }
+      System.out.println("logged in");
 
-      new PacketJoinLobby(lobname).sendToServer();
-      while (!NetPlayerMaster.getLobbyname().equals(lobname)) {
-        Thread.sleep(150);
-        LoadingScreen.progess();
+      // Creating and joining Lobby
+      if (autoJoin) {
+        String lobname = String.valueOf(new Random().nextInt((int) 10e15));
+        LoadingScreen.updateLoadingMessage("joining lobby");
+        new PacketCreateLobby(lobname + "║s").sendToServer();
+        while (!lobbyCreated) {
+          Thread.sleep(150);
+          LoadingScreen.progess();
+        }
+
+        new PacketJoinLobby(lobname).sendToServer();
+        while (!NetPlayerMaster.getLobbyname().equals(lobname)) {
+          Thread.sleep(150);
+          LoadingScreen.progess();
+        }
       }
     }
 
@@ -717,6 +756,8 @@ public class Game extends Thread {
     if (autoJoin) {
       // new PacketReady().sendToServer();
       addActiveStage(INLOBBBY);
+    } else if (!ClientLogic.isConnected()) {
+      addActiveStage(OPTIONS);
     } else {
       addActiveStage(MAINMENU);
     }
@@ -782,7 +823,6 @@ public class Game extends Thread {
     Game.activeStages = activeStages;
   }
 
-
   public static String[] getCachedMap() {
     return cachedMap;
   }
@@ -790,7 +830,6 @@ public class Game extends Thread {
   public static void setCachedMap(String[] cachedMap) {
     Game.cachedMap = cachedMap;
   }
-
 
   // Valid Stages
   public enum Stage {

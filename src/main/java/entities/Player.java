@@ -606,8 +606,15 @@ public class Player extends NetPlayer {
     }
   }
 
+  /**
+   * Play specific damage taken sound if the player is alive.
+   *
+   * @param i index of the sound in the damage category
+   */
   public void playDamageSound(int i) {
-    damageSound.playIndex(i);
+    if (!isDefeated()) {
+      damageSound.playIndex(i);
+    }
   }
 
   public void playHeartSound(int i) {
