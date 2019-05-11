@@ -17,7 +17,7 @@ import org.slf4j.LoggerFactory;
 public class Tutorial {
   public static final Logger logger = LoggerFactory.getLogger(Tutorial.class);
 
-  private GuiTexture box;
+  private static GuiTexture box;
   private static ChangableGuiText guiText;
 
   private boolean enabled;
@@ -27,15 +27,23 @@ public class Tutorial {
   private Topics lastActiveTopic;
 
   /**
-   * Create a new Tutorial Instance with its own Topic Enum. Usually we only need 1 instance.
+   * Load textures for GUI
    *
-   * @param loader main loader
+   * @param loader main Loader
    */
-  public Tutorial(Loader loader) {
-
+  public static void init(Loader loader) {
     box =
         new GuiTexture(
             loader.loadTexture("menuStone"), new Vector2f(.5f, .6f), new Vector2f(.3f, .12f), 0);
+  }
+
+  /** Create a new Tutorial Instance with its own Topic Enum. Usually we only need 1 instance. */
+  public Tutorial() {
+    logger.debug("new Tutorial instance");
+    if (box == null) {
+      logger.error("Tutorial GUI not properly initialized! Missing Texture.");
+      return;
+    }
 
     guiText = new ChangableGuiText();
     guiText.setPosition(new Vector2f(.61f, .17f));
@@ -59,8 +67,16 @@ public class Tutorial {
       }
     }
 
+    Topics.activeTopic = null;
+    for (Topics topic : Topics.values()) {
+      topic.timeShown = 0;
+      topic.active = false;
+    }
+
     Topics.setActive(Topics.MOVEMENT, true);
     Topics.setActive(Topics.DIGGING, true);
+
+    box.setAlpha(0);
   }
 
   /** Reset / Restart the tutorial. */
