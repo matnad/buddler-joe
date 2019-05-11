@@ -54,7 +54,7 @@ public class Tutorial {
         enabled = true;
         for (Topics completedTutorial : settings.getCompletedTutorials()) {
           completedTutorial.enabled = false;
-          //logger.debug("Tutorial already done: " + completedTutorial.text);
+          // logger.debug("Tutorial already done: " + completedTutorial.text);
         }
       }
     }
@@ -279,6 +279,18 @@ public class Tutorial {
         }
       }
       updateActiveTopic();
+    }
+  }
+
+  /** Reset / Restart the tutorial. */
+  public void reset() {
+    Settings settings = Game.getSettings();
+    if (settings != null) {
+      settings.resetTutorial();
+    }
+    enabled = true;
+    for (Topics topic : Topics.values()) {
+      topic.enabled = true;
     }
   }
 }

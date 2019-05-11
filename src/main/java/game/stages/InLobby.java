@@ -5,7 +5,6 @@ import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_1;
 import engine.io.InputHandler;
 import engine.render.Loader;
 import engine.render.fontmeshcreator.FontType;
-import engine.render.fontmeshcreator.GuiText;
 import engine.render.fontrendering.TextMaster;
 import game.Game;
 import game.LobbyPlayerEntry;
@@ -16,13 +15,13 @@ import gui.text.ChangableGuiText;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
+
 import net.packets.gamestatus.PacketReady;
 import net.packets.lobby.PacketLeaveLobby;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.w3c.dom.Text;
 
 /**
  * InLobby Menu specification and rendering. Must be initialized. Specifies all the elements in the
@@ -61,6 +60,7 @@ public class InLobby {
   private static FontType font;
   private static String newLobby;
   private static String testLobby;
+  private static MenuButton resetTutorial;
 
   /**
    * Initialisation of the textures for this GUI-menu.
@@ -100,6 +100,14 @@ public class InLobby {
             "ready_hover",
             new Vector2f(0.107511f, -0.9f),
             new Vector2f(.097094f, .082347f));
+
+    resetTutorial =
+        new MenuButton(
+            loader,
+            "resetTuto_norm",
+            "resetTuto_hover",
+            new Vector2f(-0.865625f, -0.9f),
+            new Vector2f(.097094f, .031271f));
   }
 
   /** Updates the GUI every cycle. */
@@ -136,6 +144,7 @@ public class InLobby {
     double y = 1 - 2 * (InputHandler.getMouseY() / Game.window.getHeight());
 
     // add buttons here
+    guis.add(resetTutorial.getHoverTexture(x, y));
     guis.add(leave.getHoverTexture(x, y));
     guis.add(ready.getHoverTexture(x, y));
     for (int i = 0; i < names.length; i++) {
@@ -166,6 +175,13 @@ public class InLobby {
       new PacketLeaveLobby().sendToServer();
     } else if (InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1) && ready.isHover(x, y)) {
       new PacketReady().sendToServer();
+    } else if (InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1) && resetTutorial.isHover(x, y)) {
+      try {
+        Playing.resetTutorial();
+        logger.info("Tutorial has been reset.");
+      } catch (Exception e) {
+        logger.error("Error while resetting Tutorial.");
+      }
     }
 
     Game.getGuiRenderer().render(guis);
