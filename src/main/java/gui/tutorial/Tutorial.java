@@ -63,6 +63,23 @@ public class Tutorial {
     Topics.setActive(Topics.DIGGING, true);
   }
 
+  /** Reset / Restart the tutorial. */
+  public void reset() {
+    Settings settings = Game.getSettings();
+    if (settings != null) {
+      settings.resetTutorial();
+    }
+    enabled = true;
+    Topics.activeTopic = null;
+    for (Topics topic : Topics.values()) {
+      topic.enabled = true;
+      topic.active = false;
+      topic.timeShown = 0;
+    }
+    Topics.setActive(Topics.MOVEMENT, true);
+    Topics.setActive(Topics.DIGGING, true);
+  }
+
   /**
    * Get all the Gui Elements for this frame for the Tutorial.
    *
@@ -279,18 +296,6 @@ public class Tutorial {
         }
       }
       updateActiveTopic();
-    }
-  }
-
-  /** Reset / Restart the tutorial. */
-  public void reset() {
-    Settings settings = Game.getSettings();
-    if (settings != null) {
-      settings.resetTutorial();
-    }
-    enabled = true;
-    for (Topics topic : Topics.values()) {
-      topic.enabled = true;
     }
   }
 }
