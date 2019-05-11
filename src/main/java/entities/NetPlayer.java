@@ -389,6 +389,10 @@ public class NetPlayer extends Entity {
     this.clientId = clientId;
   }
 
+  public boolean isFrozen() {
+    return frozen;
+  }
+
   public void turnHeadlightOff() {
     headLight.setBrightness(0);
     headLightGlow.setBrightness(0);

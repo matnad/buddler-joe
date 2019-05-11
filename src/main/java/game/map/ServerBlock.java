@@ -127,6 +127,11 @@ public class ServerBlock {
       default:
         heartOrStar = 76;
     }
+    //if (random.nextInt(2) == 0) {
+    //  r = 30;
+    //} else {
+    //  r = 90;
+    //}
     if (0 <= r && r <= 25) {
       logger.debug("Spawning dynamite.");
       PacketSpawnItem packetSpawnItem =

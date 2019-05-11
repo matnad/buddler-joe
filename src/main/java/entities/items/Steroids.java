@@ -87,11 +87,16 @@ public class Steroids extends Item {
         }
         Game.getActivePlayer().playSteroidSound();
       }
-
-      if (time >= steroidsTime) {
-        // DeAmp is done by the player. We can't control multiple steroids from here.
-        setDestroyed(true);
+      // Stop sound when getting frozen
+      if (Game.getActivePlayer().isFrozen()) {
+        Game.getActivePlayer().setSteroidSoundOff();
+        Game.getActivePlayer().playSteamSound();
       }
+    }
+
+    if (time >= steroidsTime) {
+      // DeAmp is done by the player. We can't control multiple steroids from here.
+      setDestroyed(true);
     }
 
     if (time < .2f) {
@@ -100,7 +105,12 @@ public class Steroids extends Item {
 
     NetPlayer owner = NetPlayerMaster.getNetPlayerById(getOwner());
     if (owner != null) {
-      ampedPlayerEffect.generateParticles(owner.getBbox().getCenter().add(new Vector3f(0, 1, 0)));
+      // Destroy/End item when a player gets freezed
+      if (owner.isFrozen()) {
+        setDestroyed(true);
+      } else {
+        ampedPlayerEffect.generateParticles(owner.getBbox().getCenter().add(new Vector3f(0, 1, 0)));
+      }
     }
   }
 

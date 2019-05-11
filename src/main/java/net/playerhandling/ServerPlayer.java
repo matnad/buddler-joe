@@ -26,6 +26,7 @@ public class ServerPlayer {
 
   private int currentGold;
   private int currentLives;
+  private long lastLifeChangeAt;
   private float digDamage;
   private long lastDig;
 
@@ -128,7 +129,7 @@ public class ServerPlayer {
     currentGold += goldValue;
     Lobby lobby = ServerLogic.getLobbyList().getLobby(curLobbyId);
     timeStampOfGain = System.currentTimeMillis() - lobby.getStartedAt();
-    if (currentGold >= 300) {
+    if (currentGold >= 3000) {
       System.out.println("Game Over");
       lobby.gameOver(this);
     }
@@ -149,6 +150,7 @@ public class ServerPlayer {
    */
   public void setCurrentLives(int currentLives) {
     this.currentLives = currentLives;
+    lastLifeChangeAt = System.currentTimeMillis();
     if (currentLives <= 0) {
       setDefeated(true);
     }
@@ -445,11 +447,32 @@ public class ServerPlayer {
 
   private float getFreezeFactor() {
     // Allow up to 500ms delay
+
+    // Was the player amped?
+    boolean wasAmped = false;
+    if (System.currentTimeMillis() - ampedAt <= 10000) {
+      wasAmped = true;
+    }
+
+    // Was the player moved? Make sure the block crush during freeze doesnt trigger violation!
+    if (System.currentTimeMillis() - lastLifeChangeAt <= 2) {
+      if (wasAmped) {
+        return 2;
+      }
+      return 1;
+    }
+
     float freezeDuration = (System.currentTimeMillis() - frozenAt) / 1000f;
-    if (freezeDuration < .5f) {
+    if (freezeDuration < 1f) {
+      if (wasAmped) {
+        return 2;
+      }
       return 1;
     } else if (freezeDuration > Star.getFreezeTime() - 2f) {
       frozen = false;
+      if (wasAmped) {
+        return 2;
+      }
       return 1;
     }
 
