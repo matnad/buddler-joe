@@ -32,7 +32,7 @@ public class PacketCreateLobby extends Packet {
         info[0] = info[0].trim();
       }
       validate();
-      if(hasErrors()){
+      if (hasErrors()) {
         LobbyCreation.setMsg(createErrorMessage());
       }
     } catch (NullPointerException e) {

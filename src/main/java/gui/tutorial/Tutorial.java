@@ -27,7 +27,7 @@ public class Tutorial {
   private Topics lastActiveTopic;
 
   /**
-   * Load textures for GUI
+   * Load textures for GUI.
    *
    * @param loader main Loader
    */
