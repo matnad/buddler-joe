@@ -57,6 +57,7 @@ public class PacketStartRound extends Packet {
     Game.removeActiveStage(INLOBBBY);
     Game.clearAllTextAtEndOfCurrentFrame();
     ClientMap map = Game.getMap();
+    Game.setAfterMatchLobbyReady(false);
     try {
       map.reloadMap();
       Player player = Game.getActivePlayer();
@@ -66,6 +67,7 @@ public class PacketStartRound extends Packet {
       Game.addActiveStage(PLAYING);
       // InLobby.done();
     } catch (NullPointerException e) {
+      e.printStackTrace();
       addError("No map available.");
     }
   }

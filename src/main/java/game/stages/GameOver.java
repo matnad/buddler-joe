@@ -25,6 +25,7 @@ public class GameOver {
   private static GuiTexture buddlerJoe;
   private static MenuButton exitGame;
 
+  private static boolean activ;
   private static String winnerString;
 
   /**
@@ -75,6 +76,7 @@ public class GameOver {
     guis.add(exitGame.getHoverTexture(x, y));
 
     if ((InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1) && exitGame.isHover(x, y))) {
+      setActiv(false);
       Game.restart();
     }
 
@@ -118,4 +120,13 @@ public class GameOver {
   public static void done() {
     gameOver.delete();
   }
+
+  public static boolean isActiv() {
+    return activ;
+  }
+
+  public static void setActiv(boolean activ) {
+    GameOver.activ = activ;
+  }
+
 }

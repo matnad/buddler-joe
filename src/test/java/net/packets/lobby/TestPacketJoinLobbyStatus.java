@@ -1,6 +1,8 @@
 package net.packets.lobby;
 
 import game.Game;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 import org.junit.Assert;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -22,6 +24,9 @@ public class TestPacketJoinLobbyStatus {
   @Test
   public void checkGameNotRunning() {
     Game game = Mockito.spy(Game.class);
+    List<Game.Stage> activeStages = new CopyOnWriteArrayList<>();
+    activeStages.add(Game.Stage.CHOOSELOBBY);
+    game.setActiveStages(activeStages);
     PacketJoinLobbyStatus p = new PacketJoinLobbyStatus("OK");
     p.processData();
     Assert.assertEquals("ERRORS: Game is not running.", p.createErrorMessage());
