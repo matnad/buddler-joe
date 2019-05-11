@@ -21,9 +21,12 @@ public class LoadingScreen {
   private static boolean decreaseDots;
   private static float elapsedSinceChange;
 
+  private static boolean showDots;
+
   static {
     guis = new ArrayList<>();
     dots = 3;
+    showDots = true;
     decreaseDots = true;
     elapsedSinceChange = 0;
   }
@@ -51,9 +54,37 @@ public class LoadingScreen {
     message = "LOADING";
     text = new ChangableGuiText();
     text.setPosition(new Vector2f(0, 0.5f));
-    text.setFontSize(3);
-    text.setTextColour(new Vector3f(1, 1, 1));
+    setFontSize();
+    setFontColour();
     generateDottedText();
+  }
+
+  /**
+   * Change font size for loading screen.
+   *
+   * @param fontSize new font size
+   */
+  public static void setFontSize(float fontSize) {
+    text.setFontSize(fontSize);
+  }
+
+  /** Reset Font Size. */
+  public static void setFontSize() {
+    setFontSize(3);
+  }
+
+  /**
+   * Change font size for loading screen.
+   *
+   * @param colour new font colour
+   */
+  public static void setFontColour(Vector3f colour) {
+    text.setTextColour(colour);
+  }
+
+  /** Reset Font Colour. */
+  public static void setFontColour() {
+    setFontColour(new Vector3f(1, 1, 1));
   }
 
   /**
@@ -93,6 +124,16 @@ public class LoadingScreen {
    * @param loadingMessage new loading message
    */
   public static void updateLoadingMessage(String loadingMessage) {
+    updateLoadingMessage(loadingMessage, true);
+  }
+
+  /**
+   * Set a new message to display on the loading screen. And specify if you want dots.
+   *
+   * @param loadingMessage new loading message
+   */
+  public static void updateLoadingMessage(String loadingMessage, boolean showDots) {
+    LoadingScreen.showDots = showDots;
     message = loadingMessage;
     progess();
   }
@@ -105,8 +146,7 @@ public class LoadingScreen {
   }
 
   private static void generateDottedText() {
-
-    if (message.equals("Ready!")) {
+    if (message.equals("Ready!") || !showDots) {
       text.changeText(message);
     } else {
       StringBuilder sb = new StringBuilder();
