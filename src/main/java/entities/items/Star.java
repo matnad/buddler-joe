@@ -2,8 +2,6 @@ package entities.items;
 
 import engine.models.RawModel;
 import engine.models.TexturedModel;
-import engine.particles.systems.Explosion;
-import engine.particles.systems.Frozen;
 import engine.particles.systems.Magic;
 import engine.particles.systems.Snow;
 import engine.render.Loader;
@@ -94,15 +92,16 @@ public class Star extends Item {
         freezeTriggered = true;
       }
     } else {
+      if (!freezeTriggered) {
+        Game.getActivePlayer().playFreezeSound();
+        freezeTriggered = true;
+      }
       if (time >= freezeTime) {
         setDestroyed(true);
       }
     }
 
     if (time < .5f) {
-      if (!Game.getActivePlayer().getFreezeIsPlaying()) {
-        Game.getActivePlayer().playFreezeSound();
-      }
       starExplosion.generateParticles(getPosition());
     }
 
