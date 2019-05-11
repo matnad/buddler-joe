@@ -11,9 +11,13 @@ import net.ServerLogic;
 import net.highscore.ServerHighscoreSerialiser;
 import net.packets.gamestatus.PacketGameEnd;
 import net.packets.gamestatus.PacketStartRound;
+import net.packets.lobby.PacketCurLobbyInfo;
+import net.packets.lobby.PacketJoinLobbyStatus;
 import net.packets.lobby.PacketLobbyOverview;
+import net.packets.map.PacketBroadcastMap;
 import net.playerhandling.Referee;
 import net.playerhandling.ServerPlayer;
+import net.playerhandling.ServerPlayerList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -304,9 +308,103 @@ public class Lobby implements Runnable {
     // Inform all clients
     new PacketGameEnd(userName, time).sendToLobby(lobbyId);
     // Reset Server Players
+    CopyOnWriteArrayList<ServerPlayer> oldLobbyPlayers = new CopyOnWriteArrayList<>();
     for (ServerPlayer lobbyPlayer : lobbyPlayers) {
+      oldLobbyPlayers.add(lobbyPlayer);
       removePlayer(lobbyPlayer.getClientId());
     }
+    if (oldLobbyPlayers.size() > 0) {
+      transfer(oldLobbyPlayers);
+    }
+  }
+
+  /** Creates a new Lobby and transfers all players of this lobby to the new one. */
+  private void transfer(CopyOnWriteArrayList<ServerPlayer> oldLobbyPlayers) {
+    try {
+      Lobby freshLobby = new Lobby("placeholder", 1, "m");
+      String lobbyAddstatus = "";
+      String tmpName = getLobbyName();
+      int counter = 0;
+      while (!lobbyAddstatus.equals("OK")) {
+        if (counter > 9) {
+          throw new Exception("Unable to create  uniq lobbyname.");
+        }
+        tmpName = getFreshName(tmpName);
+        freshLobby = new Lobby(tmpName, createrPlayerId, mapSize);
+        lobbyAddstatus = ServerLogic.getLobbyList().addLobby(freshLobby);
+        counter++;
+      }
+      if (lobbyAddstatus.startsWith("OK")) {
+        History.openAdd(freshLobby.getLobbyId(), freshLobby.getLobbyName());
+        logger.info("Automatically created new Lobby " + freshLobby.getLobbyName());
+      }
+      for (ServerPlayer oldLobbyPlayer : oldLobbyPlayers) {
+        // add old players to new Lobby and inform them.
+        ServerPlayer serverPlayer =
+            ServerLogic.getPlayerList().getPlayer(oldLobbyPlayer.getClientId());
+        String transferStatus = freshLobby.addPlayer(serverPlayer);
+        if (transferStatus.equals("OK")) {
+          serverPlayer.setCurLobbyId(freshLobby.getLobbyId());
+        }
+        new PacketJoinLobbyStatus(serverPlayer.getClientId(), transferStatus)
+            .sendToClient(serverPlayer.getClientId());
+      }
+      for (ServerPlayer lobbyPlayer : freshLobby.getLobbyPlayers()) {
+        PacketCurLobbyInfo pcli =
+            new PacketCurLobbyInfo(lobbyPlayer.getClientId(), freshLobby.getLobbyId());
+        pcli.sendToClient(lobbyPlayer.getClientId());
+        new PacketBroadcastMap(freshLobby.getMap()).sendToClient(lobbyPlayer.getClientId());
+      }
+      String info = "OK║" + ServerLogic.getLobbyList().getTopTen();
+      PacketLobbyOverview packetLobbyOverview =
+          new PacketLobbyOverview(1, info); // one is not important
+      packetLobbyOverview.sendToClientsNotInALobby();
+    } catch (Exception e) {
+      logger.error("Error while transferring players to new lobby.");
+    }
+  }
+
+  /**
+   * Creates a new lobbyname consisting of the old lobbyname and a increasing number.
+   *
+   * @return a valid lobbyname.
+   */
+  public String getFreshName(String lobbyName) {
+    StringBuilder oldName = new StringBuilder(lobbyName);
+    StringBuilder number = new StringBuilder();
+    int digits = 0;
+    while (oldName.length() > 0 && Character.isDigit(oldName.charAt(oldName.length() - 1))) {
+      digits++;
+      number.insert(0, oldName.charAt(oldName.length() - 1));
+      oldName.deleteCharAt(oldName.length() - 1);
+    }
+    long numLong;
+    if (number.length() > 0) {
+      numLong = Long.parseLong(number.toString());
+    } else {
+      numLong = 0;
+    }
+    numLong++;
+    number = new StringBuilder(Long.toString(numLong));
+
+    if (number.length() > 16) {
+      logger.info("getFreshName(), had to use generic name.");
+      number = new StringBuilder(Long.toString(System.currentTimeMillis()));
+      while (number.length() > 16) {
+        number.deleteCharAt(number.length() - 1);
+      }
+    } // number is shorter or equal to 16 after this if
+
+    while (oldName.length() > 0 && number.length() + oldName.length() > 16) {
+      oldName.deleteCharAt(oldName.length() - 1);
+    }
+
+    while (number.length() + oldName.length() < 4) {
+      number.append(0);
+    }
+
+    oldName.append(number.toString());
+    return oldName.toString();
   }
 
   @Override

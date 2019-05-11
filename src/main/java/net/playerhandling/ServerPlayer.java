@@ -128,7 +128,7 @@ public class ServerPlayer {
     currentGold += goldValue;
     Lobby lobby = ServerLogic.getLobbyList().getLobby(curLobbyId);
     timeStampOfGain = System.currentTimeMillis() - lobby.getStartedAt();
-    if (currentGold >= 3000) {
+    if (currentGold >= 300) {
       System.out.println("Game Over");
       lobby.gameOver(this);
     }
