@@ -633,6 +633,10 @@ public class Player extends NetPlayer {
     steroidSound.playIndex(0);
   }
 
+  public void playSteamSound() {
+    steroidSound.playIndex(1);
+  }
+
   public boolean getSteroidIsPlaying() {
     return steroidSound.isPlaying();
   }

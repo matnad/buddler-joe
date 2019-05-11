@@ -133,6 +133,7 @@ public class AudioMaster {
     loadSound(SoundCategory.PICK, "pick7");
     loadSound(SoundCategory.PICK, "pick8");
     loadSound(SoundCategory.STEROID, "steroid2");
+    loadSound(SoundCategory.STEROID, "steam");
     loadSound(SoundCategory.BACKGROUND, "mining");
     loadSound(SoundCategory.INTRO, "intro");
   }
