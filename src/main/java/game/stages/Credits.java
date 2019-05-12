@@ -93,7 +93,7 @@ public class Credits {
     } else {
       tmpPos.set(tmpPos.x, tmpPos.y + 0.006214f);
     }
-    System.out.println(tmpPos.y);
+
     credits.setPosition(tmpPos);
 
     // OpenGL Coordinates (0/0 = center of screen, -1/1 = corners)
