@@ -13,8 +13,8 @@ import java.util.List;
 import org.joml.Vector2f;
 
 /**
- * Credits Menu specification and rendering. Must be initialized. Specifies all the elements in the
- * CreditsMenu . Contains and manages the Game Loop while the Credits Menu is active.
+ * credits Menu specification and rendering. Must be initialized. Specifies all the elements in the
+ * CreditsMenu . Contains and manages the Game Loop while the credits Menu is active.
  *
  * @author Sebastian Schlachter
  */
@@ -26,9 +26,11 @@ public class Credits {
   private static GuiTexture buddlerJoe;
 
   private static GuiTexture background;
-  private static GuiTexture Credits;
+  private static GuiTexture credits;
 
   private static MenuButton back;
+  private static float startY = -6.5f;
+  private static boolean firstloop = true;
 
   /**
    * Initializes the textures for this GUI-menu.
@@ -52,11 +54,11 @@ public class Credits {
             new Vector2f(0.181771f, 0.67963f),
             1);
 
-    Credits =
+    credits =
         new GuiTexture(
-            loader.loadTexture("credits_2"),
-            new Vector2f(0, 0),
-            new Vector2f(0.5f, 0.5f),
+            loader.loadTexture("creditsTotal"),
+            new Vector2f(0, startY),
+            new Vector2f(0.78125f, 5.09259f),
             1);
 
     // Back
@@ -72,11 +74,27 @@ public class Credits {
   /** Updates the GUI every cycle. */
   @SuppressWarnings("Duplicates")
   public static void update() {
+    if (firstloop) {
+      Vector2f tmp = new Vector2f();
+      tmp.set(tmp.x, startY);
+      credits.setPosition(tmp);
+      firstloop = false;
+    }
+
     List<GuiTexture> guis = new ArrayList<>();
     // add textures here
     guis.add(background);
-    guis.add(Credits);
+    guis.add(credits);
     guis.add(buddlerJoe);
+
+    Vector2f tmpPos = credits.getPosition();
+    if (tmpPos.y > -startY) {
+      tmpPos.set(tmpPos.x, startY);
+    } else {
+      tmpPos.set(tmpPos.x, tmpPos.y + 0.006214f);
+    }
+    System.out.println(tmpPos.y);
+    credits.setPosition(tmpPos);
 
     // OpenGL Coordinates (0/0 = center of screen, -1/1 = corners)
     double x = 2 * (InputHandler.getMouseX() / Game.window.getWidth()) - 1;
@@ -87,10 +105,16 @@ public class Credits {
 
     if (InputHandler.isKeyPressed(GLFW_KEY_ESCAPE)
         || InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1) && back.isHover(x, y)) {
+      done();
       Game.addActiveStage(Game.Stage.MAINMENU);
       Game.removeActiveStage(Game.Stage.CREDITS);
     }
 
     Game.getGuiRenderer().render(guis);
+  }
+
+  /** resets variables. */
+  public static void done() {
+    firstloop = true;
   }
 }

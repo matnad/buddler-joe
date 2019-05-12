@@ -44,4 +44,8 @@ public class GuiTexture {
   public void setAlpha(float alpha) {
     this.alpha = alpha;
   }
+
+  public void setPosition(Vector2f position) {
+    this.position = position;
+  }
 }
