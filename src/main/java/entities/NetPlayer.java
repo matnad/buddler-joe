@@ -222,7 +222,10 @@ public class NetPlayer extends Entity {
   public void informServerOfLifeChange(int val) {
     PacketLifeStatus informServer;
     if (val == -1) {
-      Game.getActivePlayer().playDamageSound(0);
+      if (Game.getActivePlayer().getClientId() == clientId) {
+        Game.getActivePlayer().playDamageSound(0);
+      }
+
       if (currentLives == 1) {
         Game.getActivePlayer().playGameOverSound();
       }

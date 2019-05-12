@@ -286,4 +286,8 @@ public class Camera {
   public boolean isIntro() {
     return intro;
   }
+
+  public Source getIntroMusic() {
+    return introMusic;
+  }
 }
