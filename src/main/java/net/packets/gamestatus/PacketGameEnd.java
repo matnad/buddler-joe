@@ -28,6 +28,7 @@ public class PacketGameEnd extends Packet {
    *
    * @param winner username of the winner
    * @param time number of milliseconds the game took
+   * @param goldAmount amount of gold the winner has
    */
   public PacketGameEnd(int winner, long time, int goldAmount) {
     // server builds
