@@ -662,10 +662,15 @@ public class Player extends NetPlayer {
   }
 
   public boolean getIntroIsPlaying() {
-    return Game.getActiveCamera().getIntroMusic().isPlaying();
+    if (Game.getActiveCamera().getIntroMusic() != null) {
+      return Game.getActiveCamera().getIntroMusic().isPlaying();
+    }
+    return false;
   }
 
   public void setIntroSoundOff() {
-    Game.getActiveCamera().getIntroMusic().stop();
+    if (Game.getActiveCamera().getIntroMusic() != null) {
+      Game.getActiveCamera().getIntroMusic().stop();
+    }
   }
 }
