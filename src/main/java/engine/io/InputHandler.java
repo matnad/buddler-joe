@@ -61,7 +61,9 @@ public class InputHandler {
         @Override
         public void invoke(long window, int key, int scancode, int action, int mods) {
           // save the state of the pressed key
-          keyState[key] = action;
+          if (key >= 0) {
+            keyState[key] = action;
+          }
         }
       };
   static GLFWMouseButtonCallback mouse =
@@ -69,7 +71,9 @@ public class InputHandler {
         @Override
         public void invoke(long window, int button, int action, int mods) {
           // save the state of the pressed button
-          mouseState[button] = action;
+          if (button >= 0) {
+            mouseState[button] = action;
+          }
         }
       };
   private static boolean readInput = false;
