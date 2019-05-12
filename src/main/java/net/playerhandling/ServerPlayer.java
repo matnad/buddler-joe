@@ -500,4 +500,6 @@ public class ServerPlayer {
   public boolean isKicked() {
     return kicked;
   }
+
+
 }

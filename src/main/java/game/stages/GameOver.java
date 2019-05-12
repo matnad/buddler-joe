@@ -27,6 +27,7 @@ public class GameOver {
 
   private static boolean activ;
   private static String winnerString;
+  private static String titleString;
 
   /**
    * Preload background and font with settings.
@@ -92,7 +93,7 @@ public class GameOver {
     if (gameOver != null) {
       gameOver.delete();
     }
-    gameOver = new ChangableGuiText("GAME OVER", new Vector2f(0, 0.4f));
+    gameOver = new ChangableGuiText(titleString, new Vector2f(0, 0.4f));
     gameOver.setFontSize(3);
     gameOver.setTextColour(new Vector3f(1, 1, 1));
     gameOver.createGuiText();
@@ -102,7 +103,8 @@ public class GameOver {
     }
     winnerMsg = new ChangableGuiText(winnerString, new Vector2f(0, 0.55f));
     winnerMsg.setTextColour(new Vector3f(1, 1, 1));
-    winnerMsg.setFontSize(1);
+    winnerMsg.setFontSize(.9f);
+    //winnerMsg.setMaxLineLength(.5f);
     winnerMsg.createGuiText();
   }
 
@@ -111,9 +113,10 @@ public class GameOver {
    *
    * @param msg message to display on the game over screen
    */
-  public static void setMsg(String msg) {
+  public static void setMsg(String msg, String title) {
     gameOver = null;
     winnerString = msg;
+    titleString = title;
   }
 
   /** Delete the gui elements that no longer need to be rendered when the loading screen is over. */
