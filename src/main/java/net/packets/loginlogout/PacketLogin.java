@@ -17,6 +17,7 @@ public class PacketLogin extends Packet {
    */
   public PacketLogin(int clientId, String data) {
     super(PacketTypes.LOGIN);
+    logger.debug(data);
     setData(data);
     setClientId(clientId);
     validate();
