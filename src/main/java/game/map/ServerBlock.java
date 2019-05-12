@@ -112,7 +112,8 @@ public class ServerBlock {
 
     // Spawn Item
     Random random = new Random();
-    int r = random.nextInt(100);
+    //    int r = random.nextInt(100);
+    int r = 10;
     // Less stars if there are more players
     float heartOrStar;
     switch (lobby.getPlayerAmount()) {
@@ -127,11 +128,11 @@ public class ServerBlock {
       default:
         heartOrStar = 76;
     }
-    //if (random.nextInt(2) == 0) {
+    // if (random.nextInt(2) == 0) {
     //  r = 30;
-    //} else {
+    // } else {
     //  r = 90;
-    //}
+    // }
     if (0 <= r && r <= 25) {
       logger.debug("Spawning dynamite.");
       PacketSpawnItem packetSpawnItem =
