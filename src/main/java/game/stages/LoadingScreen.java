@@ -131,6 +131,7 @@ public class LoadingScreen {
    * Set a new message to display on the loading screen. And specify if you want dots.
    *
    * @param loadingMessage new loading message
+   * @param showDots is true if a point should be showed
    */
   public static void updateLoadingMessage(String loadingMessage, boolean showDots) {
     LoadingScreen.showDots = showDots;
