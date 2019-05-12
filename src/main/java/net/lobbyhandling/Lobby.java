@@ -300,7 +300,7 @@ public class Lobby implements Runnable {
     long time = System.currentTimeMillis() - this.startedAt;
 
     // Update highscore
-    if (!player.isDefeated()) {
+    if (player.getCurrentGold() >= 3000) {
       ServerLogic.getServerHighscore().addPlayer(time, userName);
       ServerHighscoreSerialiser.serialiseServerHighscore(ServerLogic.getServerHighscore());
     }

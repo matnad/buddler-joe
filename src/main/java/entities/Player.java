@@ -651,4 +651,12 @@ public class Player extends NetPlayer {
   public void setSteroidSoundOff() {
     steroidSound.stop();
   }
+
+  public boolean getIntroIsPlaying() {
+    return Game.getActiveCamera().getIntroMusic().isPlaying();
+  }
+
+  public void setIntroSoundOff() {
+    Game.getActiveCamera().getIntroMusic().stop();
+  }
 }
