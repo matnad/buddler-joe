@@ -3,13 +3,10 @@ package net;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashMap;
 import net.highscore.ServerHighscore;
 import net.highscore.ServerHighscoreSerialiser;
 import net.lobbyhandling.Lobby;
-import net.lobbyhandling.ServerItemState;
 import net.lobbyhandling.ServerLobbyList;
 import net.packets.Packet;
 import net.packets.chat.PacketChatMessageToClient;
@@ -182,7 +179,12 @@ public class ServerLogic {
    */
   public static void removePlayer(int clientId) {
 
-    logger.debug("Removing client no. " + clientId);
+    logger.debug(
+        "Removing client "
+            + ServerLogic.getPlayerList().getUsername(clientId)
+            + " (#"
+            + clientId
+            + ").");
 
     // check if the client exists
     ServerPlayer player = ServerLogic.getPlayerList().getPlayer(clientId);
