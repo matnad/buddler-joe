@@ -172,7 +172,6 @@ public class ClientLogic implements Runnable {
       String in;
       try {
         in = input.readLine();
-        logger.debug("RECEIVED: " + in);
 
       } catch (SocketException e) {
         System.out.println("\nThe connection to the server has been closed!");

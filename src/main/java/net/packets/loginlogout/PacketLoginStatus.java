@@ -19,7 +19,6 @@ public class PacketLoginStatus extends Packet {
    */
   public PacketLoginStatus(String data) {
     super(PacketTypes.LOGIN_STATUS);
-    logger.debug(data);
     setData(data);
     this.status = data;
     validate();
