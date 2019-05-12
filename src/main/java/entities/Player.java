@@ -582,8 +582,11 @@ public class Player extends NetPlayer {
     return freezeSound.isPlaying();
   }
 
-  public void playExplosionSound(int i) {
-    explosionSound.playIndex(i);
+  public void playExplosionSound() {
+    if (explosionSound.isPlaying()){
+      explosionSound.stop();
+    }
+    explosionSound.playRandom();
   }
 
   public boolean getExplosionIsPlaying() {

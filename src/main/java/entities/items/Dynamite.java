@@ -195,7 +195,7 @@ public class Dynamite extends Item {
       //        Game.getActivePlayer().setFuseSoundOff();
       //      }
       if (!Game.getActivePlayer().getExplosionIsPlaying()) {
-        Game.getActivePlayer().playExplosionSound(0);
+        Game.getActivePlayer().playExplosionSound();
       }
       return;
     }
