@@ -230,7 +230,7 @@ public class Options {
     InputHandler.readInputOn();
     newservername = InputHandler.getInputString();
 
-    if (newservername.length() > 16) {
+    if (newservername.length() > 30) {
       newservername = servername;
       StringBuilder temp = new StringBuilder(servername);
       InputHandler.setInputString(temp);
