@@ -1,6 +1,5 @@
 package entities.items;
 
-
 import audio.AudioMaster;
 import audio.Source;
 import engine.models.RawModel;
@@ -26,6 +25,7 @@ import net.packets.items.PacketItemUsed;
 import org.joml.Vector3f;
 
 import static audio.AudioMaster.SoundCategory.EXPLOSION;
+import static audio.AudioMaster.SoundCategory.FUSE;
 
 /** A bundle of dynamite that can damage blocks or the player. */
 @SuppressWarnings("FieldCanBeLocal") // We want settings on top even if it could be local
@@ -51,7 +51,7 @@ public class Dynamite extends Item {
   private boolean exploded;
   private Light flash;
   private int itemId;
-  private Source fuseSound = new Source(AudioMaster.SoundCategory.FUSE);
+  private Source fuseSound;
   /** Extended Constructor for Dynamite. Don't use directly. Use the Item Master to create items. */
   private Dynamite(Vector3f position, float rotX, float rotY, float rotZ, float scale) {
     super(ItemMaster.ItemTypes.DYNAMITE, getPreloadedModel(), position, rotX, rotY, rotZ, scale);
@@ -141,7 +141,6 @@ public class Dynamite extends Item {
       return;
     }
 
-
     // Update the fuse time
     time += Game.dt();
 
@@ -164,8 +163,12 @@ public class Dynamite extends Item {
 
       float offset = getBbox().getDimY() * 2 * (fuseTimer - time) / fuseTimer;
       particleFuse.generateParticles(new Vector3f(0, offset, 0).add(getPosition()));
-      if (!fuseSound.isPlaying()){
-          fuseSound.playIndex(0);
+      if (fuseSound == null) {
+        fuseSound = new Source(FUSE);
+      }
+
+      if (!fuseSound.isPlaying()) {
+        fuseSound.playIndex(0);
       }
       /*
       Case 2: Explosion is finished, remove the object
