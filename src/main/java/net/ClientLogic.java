@@ -4,9 +4,11 @@ import game.Game;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.SocketException;
+import java.nio.charset.StandardCharsets;
 import net.packets.Packet;
 import net.packets.block.PacketBlockDamage;
 import net.packets.chat.PacketChatMessageToClient;
@@ -32,6 +34,8 @@ import net.packets.playerprop.PacketDefeated;
 import net.packets.playerprop.PacketPos;
 import net.packets.playerprop.PacketVelocity;
 import net.playerhandling.PingManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Client side network logic
@@ -41,6 +45,8 @@ import net.playerhandling.PingManager;
  * a certain frequency.
  */
 public class ClientLogic implements Runnable {
+
+  private static final Logger logger = LoggerFactory.getLogger(PacketLoginStatus.class);
 
   private static volatile boolean disconnectFromServer;
   private static PrintWriter output;
@@ -62,8 +68,10 @@ public class ClientLogic implements Runnable {
   ClientLogic(String ip, int port) throws IOException {
     // Open socket and create buffers
     server = new Socket(ip, port);
-    output = new PrintWriter(server.getOutputStream(), false);
-    input = new BufferedReader(new InputStreamReader(server.getInputStream()));
+    output =
+        new PrintWriter(new OutputStreamWriter(server.getOutputStream(), StandardCharsets.UTF_8));
+    input =
+        new BufferedReader(new InputStreamReader(server.getInputStream(), StandardCharsets.UTF_8));
     disconnectFromServer = false;
 
     // Run thread
@@ -164,6 +172,7 @@ public class ClientLogic implements Runnable {
       String in;
       try {
         in = input.readLine();
+
       } catch (SocketException e) {
         System.out.println("\nThe connection to the server has been closed!");
         server.close();
@@ -172,7 +181,7 @@ public class ClientLogic implements Runnable {
 
       // Something went wrong on the server side
       if (in == null) {
-        continue;
+        break;
       }
 
       // Message too short

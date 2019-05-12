@@ -3,15 +3,7 @@ package net;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import net.packets.Packet;
-import net.packets.chat.PacketChatMessageToServer;
-import net.packets.gamestatus.PacketGetHistory;
-import net.packets.lists.PacketPlayerList;
-import net.packets.lobby.PacketCreateLobby;
-import net.packets.lobby.PacketLeaveLobby;
-import net.packets.loginlogout.PacketDisconnect;
-import net.packets.loginlogout.PacketLogin;
-import net.packets.name.PacketSetName;
+import java.nio.charset.StandardCharsets;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,7 +18,8 @@ import org.slf4j.LoggerFactory;
  */
 public class StartNetworkOnlyClient implements Runnable {
   public static final Logger logger = LoggerFactory.getLogger(StartNetworkOnlyClient.class);
-  private static final BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+  private static final BufferedReader br =
+      new BufferedReader(new InputStreamReader(System.in, StandardCharsets.UTF_8));
   private static String serverIp;
   private static int serverPort;
 
@@ -74,7 +67,7 @@ public class StartNetworkOnlyClient implements Runnable {
     // Start Interface
     new StartNetworkOnlyClient();
   }
-  
+
   @Override
   public void run() {}
 }
