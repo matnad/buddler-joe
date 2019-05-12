@@ -11,9 +11,10 @@ public class Fps extends GuiString {
   public Fps() {
     super();
 
-    setPosition(new Vector2f(.92f, .02f));
-    setTextColour(new Vector3f(0f, 1f, 0f));
-    setAlpha(1);
+    setPosition(new Vector2f(.98f, .05f));
+    setTextColour(new Vector3f(.5f, .5f, .5f));
+    setFontSize(.5f);
+    setAlpha(.5f);
     setText("0");
     createGuiText();
   }
