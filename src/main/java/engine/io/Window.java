@@ -1,6 +1,7 @@
 package engine.io;
 
 import static org.lwjgl.glfw.GLFW.GLFW_CONTEXT_VERSION_MAJOR;
+import static org.lwjgl.glfw.GLFW.GLFW_DECORATED;
 import static org.lwjgl.glfw.GLFW.GLFW_FALSE;
 import static org.lwjgl.glfw.GLFW.GLFW_OPENGL_CORE_PROFILE;
 import static org.lwjgl.glfw.GLFW.GLFW_OPENGL_FORWARD_COMPAT;
@@ -22,6 +23,7 @@ import static org.lwjgl.glfw.GLFW.glfwSetInputMode;
 import static org.lwjgl.glfw.GLFW.glfwSetKeyCallback;
 import static org.lwjgl.glfw.GLFW.glfwSetMouseButtonCallback;
 import static org.lwjgl.glfw.GLFW.glfwSetScrollCallback;
+import static org.lwjgl.glfw.GLFW.glfwSetWindowIcon;
 import static org.lwjgl.glfw.GLFW.glfwSetWindowPos;
 import static org.lwjgl.glfw.GLFW.glfwSetWindowShouldClose;
 import static org.lwjgl.glfw.GLFW.glfwShowWindow;
@@ -30,10 +32,17 @@ import static org.lwjgl.glfw.GLFW.glfwTerminate;
 import static org.lwjgl.glfw.GLFW.glfwWindowHint;
 import static org.lwjgl.glfw.GLFW.glfwWindowShouldClose;
 import static org.lwjgl.opengl.GL11.GL_TRUE;
+import static org.lwjgl.system.MemoryUtil.memAllocInt;
+import static org.lwjgl.system.MemoryUtil.memFree;
+import static util.IoUtil.ioResourceToByteBuffer;
 
+import java.nio.ByteBuffer;
+import java.nio.IntBuffer;
 import org.lwjgl.glfw.GLFW;
+import org.lwjgl.glfw.GLFWImage;
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.opengl.GL;
+import org.lwjgl.stb.STBImage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -81,11 +90,9 @@ public class Window {
     setFullscreen(false);
   }
 
-  /**
-   * Testconstructor for Unit Tests with testParameters to be called by Mockito.spy.
-   */
+  /** Testconstructor for Unit Tests with testParameters to be called by Mockito.spy. */
   public Window() {
-    setSize(600,500);
+    setSize(600, 500);
     this.title = "TestWindow";
     fpsCap = 60;
     timePerFrame = 1 / fpsCap;
@@ -107,6 +114,7 @@ public class Window {
     // Set openGL version to 4.00 core
     glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);
     glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
+    glfwWindowHint(GLFW_DECORATED, GLFW_FALSE);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
     glfwWindowHint(GLFW_VERSION_MINOR, 0);
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
@@ -143,6 +151,8 @@ public class Window {
       }
       glfwShowWindow(window);
     }
+
+    setIcon("logo32");
 
     time = getTime();
   }
@@ -231,6 +241,37 @@ public class Window {
   //  return update;
   // }
   //
+
+  /**
+   * Read and assign an image to the window and tool bar.
+   *
+   * @param filename filname of the icon
+   */
+  private void setIcon(String filename) {
+    String resPath = "/assets/textures/" + filename + ".png";
+
+    // Read image to Buffer
+    ByteBuffer buffer = ioResourceToByteBuffer(resPath, 8 * 1024);
+
+    // Create GLFW Image and set it as icon
+    try (GLFWImage.Buffer icons = GLFWImage.malloc(1)) {
+      IntBuffer w = memAllocInt(1);
+      IntBuffer h = memAllocInt(1);
+      IntBuffer comp = memAllocInt(1);
+
+      ByteBuffer pixels32 = STBImage.stbi_load_from_memory(buffer, w, h, comp, 4);
+      icons.position(0).width(w.get(0)).height(h.get(0)).pixels(pixels32);
+
+      icons.position(0);
+      glfwSetWindowIcon(window, icons);
+
+      STBImage.stbi_image_free(pixels32);
+
+      memFree(comp);
+      memFree(h);
+      memFree(w);
+    }
+  }
 
   // Getters
   public int getWidth() {
