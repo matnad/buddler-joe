@@ -201,7 +201,7 @@ public class Playing {
     BlockMaster.update();
     DebrisMaster.update();
     ParticleMaster.update(Game.getActiveCamera());
-    LightMaster.update(Game.getActiveCamera(), Game.getActivePlayer());
+    LightMaster.update(Game.getActivePlayer());
 
     // Prepare and render the terrains
     TerrainFlat[][] terrainChunks = Game.getTerrainChunks();

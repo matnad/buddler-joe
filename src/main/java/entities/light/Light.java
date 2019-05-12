@@ -1,6 +1,7 @@
 package entities.light;
 
 import entities.Camera;
+import entities.Entity;
 import org.joml.Vector3f;
 
 /**
@@ -57,14 +58,14 @@ public class Light {
   }
 
   /**
-   * Calculate distance squared from light to camera.
+   * Calculate distance squared from light to entity
    *
-   * @param camera active camera
+   * @param entity entity to calculate distance from
    */
-  public void update(Camera camera) {
+  public void update(Entity entity) {
     /*We use distance squared since it is faster and makes no difference. It is used to measure
-    which particle is closer to the camera.*/
-    distanceSq = position.distanceSquared(camera.getPosition());
+    which particle is closer to the entity.*/
+    distanceSq = position.distanceSquared(entity.getPosition());
   }
 
   public Vector3f getPosition() {

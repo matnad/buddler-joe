@@ -73,13 +73,12 @@ public class LightMaster {
    * Game loop update function. Called every frame to update lights. Will determine which lights are
    * rendered depending on their distance to the camera: The closest maxLights will be rendered.
    *
-   * @param camera active camera
    * @param player active player
    */
-  public static void update(Camera camera, Player player) {
+  public static void update(Player player) {
 
     for (Light light : allLights) {
-      light.update(camera);
+      light.update(player);
 
       if (light.getType() == LightTypes.SUN) {
         // Adjust sun strength according to depth
@@ -181,7 +180,7 @@ public class LightMaster {
   public enum LightTypes {
     SUN(0, new Vector3f(1, 0, 0)),
     FLASH(1, new Vector3f(1, .001f, .0005f)),
-    TORCH(3, new Vector3f(1, .0000f, .005f)),
+    TORCH(2, new Vector3f(1, .0000f, .005f)),
     SPOT(2, new Vector3f(1, .02f, .01f));
 
     private final int priority;
