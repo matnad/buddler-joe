@@ -1,6 +1,5 @@
 package entities.light;
 
-import entities.Camera;
 import entities.Entity;
 import org.joml.Vector3f;
 
@@ -58,7 +57,7 @@ public class Light {
   }
 
   /**
-   * Calculate distance squared from light to entity
+   * Calculate distance squared from light to entity.
    *
    * @param entity entity to calculate distance from
    */
