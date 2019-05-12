@@ -1,5 +1,9 @@
 package net.packets.gamestatus;
 
+import static org.lwjgl.glfw.GLFW.GLFW_CURSOR;
+import static org.lwjgl.glfw.GLFW.GLFW_CURSOR_NORMAL;
+import static org.lwjgl.glfw.GLFW.glfwSetInputMode;
+
 import engine.render.fontrendering.TextMaster;
 import game.Game;
 import game.NetPlayerMaster;
@@ -76,7 +80,6 @@ public class PacketGameEnd extends Packet {
   @Override
   public void processData() {
     if (!hasErrors()) {
-      System.out.println("winner. " + winner + " gold: " + goldAmount);
       GameOver.setActiv(true);
       String winnerName;
       if (NetPlayerMaster.getNetPlayerById(winner) != null) {
@@ -110,6 +113,10 @@ public class PacketGameEnd extends Packet {
                 + ".",
             "GAME OVER!");
       }
+
+      // Ensure cursor is visible
+      glfwSetInputMode(Game.window.getWindow(), GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+
       Playing.done();
 
       Game.removeActiveStage(Game.Stage.PLAYING);
