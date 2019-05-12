@@ -35,7 +35,7 @@ public class PacketDisconnect extends Packet {
   public void processData() {
     try {
       if (!ServerLogic.getPlayerList().isClientIdInList(getClientId())) {
-        addError("Not Connected to the Server.");
+        addError("Client not Found.");
         return;
       }
     } catch (NullPointerException e) {

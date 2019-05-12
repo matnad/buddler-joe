@@ -30,6 +30,8 @@ import net.packets.pingpong.PacketPing;
 import net.packets.pingpong.PacketPong;
 import net.packets.playerprop.PacketPos;
 import net.packets.playerprop.PacketVelocity;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * One thread for each client. This thread contains and manages the input and output streams to
@@ -40,6 +42,8 @@ import net.packets.playerprop.PacketVelocity;
 // Client and Server code can be similar, but we don't want shared classes
 @SuppressWarnings("Duplicates")
 public class ClientThread implements Runnable {
+
+  public static final Logger logger = LoggerFactory.getLogger(ClientThread.class);
 
   private final int clientId;
   private final Socket socket;
@@ -83,6 +87,17 @@ public class ClientThread implements Runnable {
       try {
 
         String in = input.readLine();
+
+        if (in == null) {
+          // Client disconnected
+          logger.info(
+              "Client "
+                  + ServerLogic.getPlayerList().getUsername(clientId)
+                  + "("
+                  + clientId
+                  + ") left. ");
+          break;
+        }
 
         // Message too short
         if (in.length() < 5) {
@@ -181,13 +196,20 @@ public class ClientThread implements Runnable {
         }
 
       } catch (IOException e) {
-        System.out.println("Client " + clientId + " left");
-        // Properly disconnect the user
+        logger.info(
+            "Client "
+                + ServerLogic.getPlayerList().getUsername(clientId)
+                + "("
+                + clientId
+                + ") left. ");
         break;
       } catch (NullPointerException e) {
         // They should not happen, but if they do, we don't care
+        logger.error("Nullpointer", e);
+        break;
       } catch (Exception e) {
         // We assume any other exception is fatal and properly disconnect the user
+        logger.error("Fatal", e);
         break;
       }
     }
