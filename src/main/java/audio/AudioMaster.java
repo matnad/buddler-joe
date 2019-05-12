@@ -114,6 +114,7 @@ public class AudioMaster {
     loadSound(SoundCategory.DIG, "dig7");
     loadSound(SoundCategory.DIG, "dig8");
     loadSound(SoundCategory.EXPLOSION, "Explosion");
+    loadSound(SoundCategory.EXPLOSION, "Explosion2");
     loadSound(SoundCategory.FUSE, "fuse");
     loadSound(SoundCategory.HEART, "Heart");
     loadSound(SoundCategory.HEART, "take Heart");

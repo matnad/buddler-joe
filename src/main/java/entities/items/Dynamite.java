@@ -1,5 +1,9 @@
 package entities.items;
 
+import static audio.AudioMaster.SoundCategory.EXPLOSION;
+import static audio.AudioMaster.SoundCategory.FUSE;
+
+import audio.Source;
 import engine.models.RawModel;
 import engine.models.TexturedModel;
 import engine.particles.systems.Explosion;
@@ -46,6 +50,7 @@ public class Dynamite extends Item {
   private boolean exploded;
   private Light flash;
   private int itemId;
+  private Source fuseSound;
 
   /** Extended Constructor for Dynamite. Don't use directly. Use the Item Master to create items. */
   private Dynamite(Vector3f position, float rotX, float rotY, float rotZ, float scale) {
@@ -158,8 +163,12 @@ public class Dynamite extends Item {
 
       float offset = getBbox().getDimY() * 2 * (fuseTimer - time) / fuseTimer;
       particleFuse.generateParticles(new Vector3f(0, offset, 0).add(getPosition()));
-      if (!Game.getActivePlayer().getFuseIsPlaying()) {
-        Game.getActivePlayer().playFuseSound();
+      if (fuseSound == null) {
+        fuseSound = new Source(FUSE);
+      }
+
+      if (!fuseSound.isPlaying()) {
+        fuseSound.playIndex(0);
       }
       /*
       Case 2: Explosion is finished, remove the object
@@ -194,12 +203,11 @@ public class Dynamite extends Item {
       //      if (Game.getActivePlayer().getFuseIsPlaying()){
       //        Game.getActivePlayer().setFuseSoundOff();
       //      }
-      if (!Game.getActivePlayer().getExplosionIsPlaying()) {
-        Game.getActivePlayer().playExplosionSound(0);
-      }
+
       return;
     }
     exploded = true;
+    new Source(EXPLOSION).playRandom();
     setScale(new Vector3f()); // Hide the model, but keep the object for the explosion effect to
     flash =
         LightMaster.generateLight(

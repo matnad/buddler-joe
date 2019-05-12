@@ -74,8 +74,6 @@ public class Player extends NetPlayer {
 
   private Source digSoundDirt = new Source(AudioMaster.SoundCategory.DIG);
   private Source pickSoundStone = new Source(AudioMaster.SoundCategory.PICK);
-  private Source explosionSound = new Source(AudioMaster.SoundCategory.EXPLOSION);
-  private Source fuseSound = new Source(AudioMaster.SoundCategory.FUSE);
   private Source heartSound = new Source(AudioMaster.SoundCategory.HEART);
   private Source freezeSound = new Source(AudioMaster.SoundCategory.FREEZE);
   private Source damageSound = new Source(AudioMaster.SoundCategory.DAMAGE);
@@ -582,36 +580,6 @@ public class Player extends NetPlayer {
     return freezeSound.isPlaying();
   }
 
-  public void playExplosionSound(int i) {
-    explosionSound.playIndex(i);
-  }
-
-  public boolean getExplosionIsPlaying() {
-    return explosionSound.isPlaying();
-  }
-
-  /** Stop playing an explosion sound. */
-  public void setExlosionSoundOff() {
-    if (explosionSound.isPlaying()) {
-      explosionSound.stop();
-    }
-  }
-
-  public void playFuseSound() {
-    fuseSound.playIndex(0);
-  }
-
-  public boolean getFuseIsPlaying() {
-    return fuseSound.isPlaying();
-  }
-
-  /** Stop playing a fuse sound. */
-  public void setFuseSoundOff() {
-    if (fuseSound.isPlaying()) {
-      fuseSound.stop();
-    }
-  }
-
   /**
    * Play specific damage taken sound if the player is alive.
    *
@@ -658,11 +626,22 @@ public class Player extends NetPlayer {
     steroidSound.stop();
   }
 
+  /**
+   * chack if the intro exist and check the intromusic.
+   *
+   * @return true if the source introMusic is playing. else it return false.
+   */
   public boolean getIntroIsPlaying() {
-    return Game.getActiveCamera().getIntroMusic().isPlaying();
+    if (Game.getActiveCamera().getIntroMusic() != null) {
+      return Game.getActiveCamera().getIntroMusic().isPlaying();
+    }
+    return false;
   }
 
+  /** stop the introMusic if it plays. */
   public void setIntroSoundOff() {
-    Game.getActiveCamera().getIntroMusic().stop();
+    if (Game.getActiveCamera().getIntroMusic() != null) {
+      Game.getActiveCamera().getIntroMusic().stop();
+    }
   }
 }
