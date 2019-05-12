@@ -112,6 +112,7 @@ public class GameOver {
    * Set the message on the game over screen.
    *
    * @param msg message to display on the game over screen
+   * @param title title to display above the message
    */
   public static void setMsg(String msg, String title) {
     gameOver = null;
