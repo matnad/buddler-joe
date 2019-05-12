@@ -626,6 +626,11 @@ public class Player extends NetPlayer {
     steroidSound.stop();
   }
 
+  /**
+   * chack if the intro exist and check the intromusic.
+   *
+   * @return true if the source introMusic is playing. else it return false.
+   */
   public boolean getIntroIsPlaying() {
     if (Game.getActiveCamera().getIntroMusic() != null) {
       return Game.getActiveCamera().getIntroMusic().isPlaying();
@@ -633,6 +638,7 @@ public class Player extends NetPlayer {
     return false;
   }
 
+  /** stop the introMusic if it plays. */
   public void setIntroSoundOff() {
     if (Game.getActiveCamera().getIntroMusic() != null) {
       Game.getActiveCamera().getIntroMusic().stop();

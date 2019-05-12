@@ -1,6 +1,8 @@
 package entities.items;
 
-import audio.AudioMaster;
+import static audio.AudioMaster.SoundCategory.EXPLOSION;
+import static audio.AudioMaster.SoundCategory.FUSE;
+
 import audio.Source;
 import engine.models.RawModel;
 import engine.models.TexturedModel;
@@ -23,9 +25,6 @@ import java.util.Random;
 import net.packets.block.PacketBlockDamage;
 import net.packets.items.PacketItemUsed;
 import org.joml.Vector3f;
-
-import static audio.AudioMaster.SoundCategory.EXPLOSION;
-import static audio.AudioMaster.SoundCategory.FUSE;
 
 /** A bundle of dynamite that can damage blocks or the player. */
 @SuppressWarnings("FieldCanBeLocal") // We want settings on top even if it could be local
@@ -52,6 +51,7 @@ public class Dynamite extends Item {
   private Light flash;
   private int itemId;
   private Source fuseSound;
+
   /** Extended Constructor for Dynamite. Don't use directly. Use the Item Master to create items. */
   private Dynamite(Vector3f position, float rotX, float rotY, float rotZ, float scale) {
     super(ItemMaster.ItemTypes.DYNAMITE, getPreloadedModel(), position, rotX, rotY, rotZ, scale);
