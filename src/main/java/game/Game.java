@@ -14,6 +14,9 @@ import static game.Game.Stage.MAINMENU;
 import static game.Game.Stage.OPTIONS;
 import static game.Game.Stage.PLAYERLIST;
 import static game.Game.Stage.PLAYING;
+import static org.lwjgl.glfw.GLFW.GLFW_CURSOR;
+import static org.lwjgl.glfw.GLFW.GLFW_CURSOR_NORMAL;
+import static org.lwjgl.glfw.GLFW.glfwSetInputMode;
 
 import audio.AudioMaster;
 import audio.Source;
@@ -589,6 +592,11 @@ public class Game extends Thread {
    * Reset everything, so that a new Game can be started. Unload all stages and go to the Main Menu.
    */
   public static void restart() {
+
+    // Ensure cursor is visible
+    glfwSetInputMode(window.getWindow(), GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+
+    // Clear Text and GUIs
     TextMaster.removeAll();
     activeStages.clear();
     Playing.done();

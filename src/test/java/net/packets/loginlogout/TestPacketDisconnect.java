@@ -9,7 +9,7 @@ public class TestPacketDisconnect {
   public void checkCorrectDisconnectPacketServerNotConnected() {
     PacketDisconnect p = new PacketDisconnect(11);
     p.processData();
-    Assert.assertEquals("ERRORS: Not Connected to the Server.", p.createErrorMessage());
+    Assert.assertEquals("ERRORS: Client not Found.", p.createErrorMessage());
   }
 
   @Test

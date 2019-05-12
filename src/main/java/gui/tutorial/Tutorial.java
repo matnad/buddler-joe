@@ -39,7 +39,7 @@ public class Tutorial {
 
   /** Create a new Tutorial Instance with its own Topic Enum. Usually we only need 1 instance. */
   public Tutorial() {
-    logger.debug("new Tutorial instance");
+    //logger.debug("new Tutorial instance");
     if (box == null) {
       logger.error("Tutorial GUI not properly initialized! Missing Texture.");
       return;
