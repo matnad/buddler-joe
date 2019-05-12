@@ -306,7 +306,7 @@ public class Lobby implements Runnable {
     }
     // TODO send EndGamepacket here i created a skeleton already.
     // Inform all clients
-    new PacketGameEnd(userName, time).sendToLobby(lobbyId);
+    new PacketGameEnd(player.getClientId(), time, player.getCurrentGold()).sendToLobby(lobbyId);
     // Reset Server Players
     CopyOnWriteArrayList<ServerPlayer> oldLobbyPlayers = new CopyOnWriteArrayList<>();
     for (ServerPlayer lobbyPlayer : lobbyPlayers) {

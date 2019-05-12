@@ -176,7 +176,9 @@ public class Dynamite extends Item {
 
     if (time >= fuseTimer + totalEffectsTime) {
       setDestroyed(true); // Remove Object
-      flash.setDestroyed(true);
+      if (flash != null) {
+        flash.setDestroyed(true);
+      }
     } else if (time >= fuseTimer + .3f) {
       float scaleBrightness = (float) (1 - Game.dt() * 5);
       flash.setBrightness(flash.getBrightness() * scaleBrightness);

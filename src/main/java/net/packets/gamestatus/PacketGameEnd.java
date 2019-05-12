@@ -2,6 +2,7 @@ package net.packets.gamestatus;
 
 import engine.render.fontrendering.TextMaster;
 import game.Game;
+import game.NetPlayerMaster;
 import game.stages.GameOver;
 import game.stages.Playing;
 import net.packets.Packet;
@@ -18,7 +19,8 @@ public class PacketGameEnd extends Packet {
 
   private static final Logger logger = LoggerFactory.getLogger(PacketGameEnd.class);
 
-  private String winner;
+  private long goldAmount;
+  private int winner;
   private long time;
 
   /**
@@ -27,10 +29,10 @@ public class PacketGameEnd extends Packet {
    * @param winner username of the winner
    * @param time number of milliseconds the game took
    */
-  public PacketGameEnd(String winner, long time) {
+  public PacketGameEnd(int winner, long time, int goldAmount) {
     // server builds
     super(PacketTypes.GAME_OVER);
-    setData(winner + "║" + time);
+    setData(winner + "║" + time + "║" + goldAmount);
   }
 
   /**
@@ -53,13 +55,14 @@ public class PacketGameEnd extends Packet {
   @Override
   public void validate() {
     String[] dataArray = getData().split("║");
-    if (dataArray.length != 2) {
+    if (dataArray.length != 3) {
       addError("Invalid Game Over Packet received.");
       return;
     }
     try {
-      winner = dataArray[0];
+      winner = Integer.parseInt(dataArray[0]);
       time = Long.parseLong(dataArray[1]);
+      goldAmount = Long.parseLong(dataArray[2]);
     } catch (NumberFormatException e) {
       addError("Invalid time format.");
     }
@@ -72,13 +75,40 @@ public class PacketGameEnd extends Packet {
   @Override
   public void processData() {
     if (!hasErrors()) {
+      System.out.println("winner. " + winner + " gold: " + goldAmount);
       GameOver.setActiv(true);
-      GameOver.setMsg(
-          "Congratulations to the winner "
-              + winner
-              + ". The time was: "
-              + util.Util.milisToString(time)
-              + ".");
+      String winnerName;
+      if (NetPlayerMaster.getNetPlayerById(winner) != null) {
+        winnerName = NetPlayerMaster.getNetPlayerById(winner).getUsername();
+      } else {
+        winnerName = "Joe Buddler";
+      }
+      if (winner == Game.getActivePlayer().getClientId()) {
+        if (goldAmount >= 3000) {
+          GameOver.setMsg(
+              "Congratulations, you won! The time was: " + util.Util.milisToString(time) + ".",
+              "VICTORY!");
+        } else {
+          GameOver.setMsg(
+              "You had the most Gold ("
+                  + goldAmount
+                  + "). The time was: "
+                  + util.Util.milisToString(time)
+                  + ".",
+              "GAME OVER!");
+        }
+      } else {
+        GameOver.setMsg(
+            winnerName
+                + " won with "
+                + goldAmount
+                + " Gold. You had "
+                + Game.getActivePlayer().getCurrentGold()
+                + " Gold. The time was: "
+                + util.Util.milisToString(time)
+                + ".",
+            "GAME OVER!");
+      }
       Playing.done();
 
       Game.removeActiveStage(Game.Stage.PLAYING);

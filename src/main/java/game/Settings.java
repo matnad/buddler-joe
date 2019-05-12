@@ -16,7 +16,7 @@ public class Settings implements Serializable {
   private int height = 1080 / 4 * 3;
   private boolean fullscreen = false;
   private String username = "Joe Buddler";
-  private String ip = "buddlerjoe.ch";
+  private String ip = "game.buddlerjoe.ch";
 
   private ArrayList<Tutorial.Topics> completedTutorials = new ArrayList<>();
 
