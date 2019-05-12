@@ -113,6 +113,9 @@ public class GameMenu {
       Game.addActiveStage(Game.Stage.PLAYING);
       Game.removeActiveStage(Game.Stage.GAMEMENU);
     } else if (InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1) && exit.isHover(x, y)) {
+      if (Game.getActivePlayer().getIntroIsPlaying()) {
+        Game.getActivePlayer().setIntroSoundOff();
+      }
       new PacketLeaveLobby().sendToServer();
       Game.restart();
     } else if (InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1) && desktop.isHover(x, y)) {

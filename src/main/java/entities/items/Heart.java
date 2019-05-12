@@ -93,7 +93,6 @@ public class Heart extends Item {
           if (Game.getActivePlayer().getHeartIsPlaying()) {
             Game.getActivePlayer().setHeartSoundOff();
           }
-          //Game.getActivePlayer().playHeartSound(1); // Play sound when other players pick up?
           setPickedUpBy(netPlayer);
         }
       }
@@ -112,7 +111,9 @@ public class Heart extends Item {
 
     if (time + 5.95f < showTime) {
       if (!Game.getActivePlayer().getHeartIsPlaying()) {
-        Game.getActivePlayer().playHeartSound(0);
+        if (isOwned()) {
+          Game.getActivePlayer().playHeartSound(0);
+        }
       }
     }
 
