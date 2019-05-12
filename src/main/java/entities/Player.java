@@ -6,6 +6,7 @@ import static game.stages.Playing.showFreezeOverlay;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_A;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_D;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_E;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_ESCAPE;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_S;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_SPACE;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_T;
@@ -438,6 +439,11 @@ public class Player extends NetPlayer {
         Tutorial.Topics.TORCH.stopTopic();
         placeItem(TORCH);
       }
+    }
+
+    // Cancel placing with ESC
+    if (InputHandler.isKeyPressed(GLFW_KEY_ESCAPE) && InputHandler.isPlacerMode()) {
+      MousePlacer.cancelPlacing();
     }
 
     if (InputHandler.isKeyPressed(GLFW_KEY_W) || InputHandler.isKeyPressed(GLFW_KEY_SPACE)) {
