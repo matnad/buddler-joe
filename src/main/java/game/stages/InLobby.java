@@ -131,6 +131,7 @@ public class InLobby {
 
       updateLobbyName();
     }
+    lobbyname.updateString();
 
     List<GuiTexture> guis = new ArrayList<>();
     guis.add(Game.getChat().getChatGui());

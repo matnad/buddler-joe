@@ -405,6 +405,7 @@ public class Chat {
     messagePosition.x = 0.525f;
     messagePosition.y = 0.785f;
     alpha = 1;
+    inLobby = true;
   }
 
   public float getAlpha() {
