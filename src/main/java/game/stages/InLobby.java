@@ -6,6 +6,7 @@ import engine.io.InputHandler;
 import engine.render.Loader;
 import engine.render.fontmeshcreator.FontType;
 import engine.render.fontrendering.TextMaster;
+import entities.NetPlayer;
 import game.Game;
 import game.LobbyPlayerEntry;
 import game.NetPlayerMaster;
@@ -116,7 +117,7 @@ public class InLobby {
     if (!initializedText) {
       done();
       initText();
-      updateLobbyName();
+
       //      Game.getChat().setLobbyChatPosition();
       //      Game.getChat().setLobbyMaxLines();
       //      Game.getChat().setLobbyColour();
@@ -131,7 +132,9 @@ public class InLobby {
 
       updateLobbyName();
     }
-    lobbyname.updateString();
+    if (!newLobby.equals(NetPlayerMaster.getLobbyname())) {
+      updateLobbyName();
+    }
 
     List<GuiTexture> guis = new ArrayList<>();
     guis.add(Game.getChat().getChatGui());
