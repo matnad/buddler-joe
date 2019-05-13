@@ -144,7 +144,7 @@ public class Highscore {
           times[i].changeText("");
         }
       } catch (IndexOutOfBoundsException e) {
-        System.out.println("error in highscore");
+        logger.error("array out of bound exception");
         logger.error(e.getMessage());
       }
     }

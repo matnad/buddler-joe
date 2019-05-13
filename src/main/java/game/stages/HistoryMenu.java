@@ -157,7 +157,7 @@ public class HistoryMenu {
           lines[i].changeText("");
         }
       } catch (IndexOutOfBoundsException e) {
-        System.out.println("error in choose lobby");
+        logger.error("array out of bounds");
         logger.error(e.getMessage());
       }
     }

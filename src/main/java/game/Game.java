@@ -112,6 +112,8 @@ public class Game extends Thread {
   private static boolean connectedToServer = false;
   private static boolean loggedIn = false;
   private static boolean lobbyCreated = false; // temporary
+  private static int reconnectStep = 0;
+  private static int reconnectTimeout = 0;
   // Variables to connect to the server
   private static String serverIp;
   private static int serverPort;
@@ -426,7 +428,7 @@ public class Game extends Thread {
     if (!ClientLogic.isConnected()) {
       LoadingScreen.setFontColour(new Vector3f(1, 0, 0));
       LoadingScreen.setFontSize(1.8f);
-      LoadingScreen.updateLoadingMessage("Could not connect. Change IP and restart.", false);
+      LoadingScreen.updateLoadingMessage("Could not connect to server.", false);
       try {
         Thread.sleep(3000);
       } catch (InterruptedException e) {
@@ -534,6 +536,11 @@ public class Game extends Thread {
       activeStages.addAll(stagesToBeAdded);
       stagesToBeAdded.clear();
 
+      // Attempt to reconnect if asked to
+      if (reconnectStep > 0) {
+        reconnect();
+      }
+
       // Clear text if requested
       if (clearAllTextOnFrameEnd) {
         TextMaster.removeAll();
@@ -588,6 +595,56 @@ public class Game extends Thread {
     // }
   }
 
+  private void reconnect() {
+    // logger.info("Reconnect Step: " + reconnectStep);
+    switch (reconnectStep) {
+      case 1:
+        // Establish Connection
+        if (startNetworkThread()) {
+          logger.info("Attempting to reconnect to " + serverIp + ":" + serverPort);
+          reconnectStep = 2;
+          loggedIn = false;
+        } else {
+          reconnectTimeout++;
+          ClientLogic.setDisconnectFromServer(true);
+        }
+        break;
+      case 2:
+        // Wait for connection
+        if (ClientLogic.isConnected()) {
+          logger.info("Successfully connected.");
+          reconnectStep = 3;
+        } else {
+          reconnectTimeout++;
+        }
+        break;
+      case 3:
+        // Send Login
+        new PacketLogin(getUsername()).sendToServer();
+        reconnectStep = 4;
+        break;
+      case 4:
+        // Wait for login confirm
+        if (loggedIn) {
+          logger.info("Successfully logged in.");
+          reconnectStep = 0;
+          Options.setStatusMsg("Successfully reconnected.");
+        } else {
+          reconnectTimeout++;
+        }
+        break;
+      default:
+        break;
+    }
+    if (reconnectTimeout > 300) {
+      // Abort after ~5 sec
+      logger.warn("Attempt to reconnect failed. Specify a valid Server and Username.");
+      reconnectTimeout = 0;
+      reconnectStep = 0;
+      ClientLogic.setDisconnectFromServer(true);
+    }
+  }
+
   /**
    * Reset everything, so that a new Game can be started. Unload all stages and go to the Main Menu.
    */
@@ -627,6 +684,9 @@ public class Game extends Thread {
       ChooseLobby.setRemoveAtEndOfFrame(true); // TODO: do we need this? <---
       InLobby.setRemoveAtEndOfFrame(true);
       Game.addActiveStage(Game.Stage.INLOBBBY);
+    } else if (!ClientLogic.isConnected()) {
+      Game.addActiveStage(OPTIONS);
+      reconnectStep = 1; // Auto reconnect when disconnected in a game
     } else {
       logger.info("Game restart on  ClientSide before new Lobby was ready.");
       Game.addActiveStage(Game.Stage.MAINMENU);
@@ -719,7 +779,7 @@ public class Game extends Thread {
           LoadingScreen.progess();
         }
         if (timeOut > 3000) {
-          LoadingScreen.setFontColour(new Vector3f(1,0,0));
+          LoadingScreen.setFontColour(new Vector3f(1, 0, 0));
           LoadingScreen.setFontSize(1.8f);
           LoadingScreen.updateLoadingMessage("Failed to Log in. Closing game.", false);
           Thread.sleep(2500);
@@ -730,7 +790,7 @@ public class Game extends Thread {
           System.exit(-1);
         }
       }
-      System.out.println("logged in");
+      logger.info("Successfully logged in.");
 
       // Creating and joining Lobby
       if (autoJoin) {
@@ -807,10 +867,25 @@ public class Game extends Thread {
   }
 
   /** Start the network thread. Can be used to start a new connection. */
-  public static void startNetworkThread() {
+  public static boolean startNetworkThread() {
+    if ((networkThread != null && networkThread.isAlive()) || ClientLogic.isConnected()) {
+      logger.info("There is currently a connection open.");
+      return false;
+    }
     networkThread = new Thread(() -> StartNetworkOnlyClient.startWith(serverIp, serverPort));
     networkThread.setName("Network Thread");
     networkThread.start();
+    loggedIn = false;
+    return true;
+  }
+
+  public static void tryToReconnect(String ip, int port) {
+    serverIp = ip;
+    if (port >= 0) {
+      serverPort = port;
+    }
+    reconnectStep = 1;
+    reconnectTimeout = 0;
   }
 
   public static long getStartedAt() {
@@ -839,6 +914,10 @@ public class Game extends Thread {
 
   public static void setCachedMap(String[] cachedMap) {
     Game.cachedMap = cachedMap;
+  }
+
+  public static int getReconnectStep() {
+    return reconnectStep;
   }
 
   // Valid Stages

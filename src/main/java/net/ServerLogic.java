@@ -52,7 +52,7 @@ public class ServerLogic {
     clientThreadMap = new HashMap<>();
     lobbyList = new ServerLobbyList();
     serverSocket = new ServerSocket(portValue);
-    System.out.println("Started Server on port " + portValue);
+    logger.info("Started Server on port " + portValue);
 
     serverHighscore = ServerHighscoreSerialiser.readServerHighscore();
   }
@@ -67,7 +67,7 @@ public class ServerLogic {
     } catch (IOException e) {
       logger.info("Not a real server due to a Unit Test.");
     }
-    System.out.println("Started Server on port " + 6666);
+    logger.info("Started Server on port " + 6666);
 
     serverHighscore = ServerHighscoreSerialiser.readServerHighscore();
   }
@@ -272,8 +272,8 @@ public class ServerLogic {
 
     while (true) {
       Socket clientSocket = serverSocket.accept();
-      System.out.println("Client Arrived");
-      System.out.println("Start Thread for " + clientId);
+      logger.info("Client Arrived");
+      logger.info("Start Thread for " + clientId);
       ClientThread thread = new ClientThread(clientSocket, clientId);
       clientThreadMap.put(clientId++, thread);
       new Thread(thread).start();
@@ -285,7 +285,7 @@ public class ServerLogic {
     try {
       serverSocket.close();
     } catch (IOException e) {
-      System.out.println("Could not close ServerSocket");
+      logger.warn("Could not close ServerSocket");
     }
   }
 }

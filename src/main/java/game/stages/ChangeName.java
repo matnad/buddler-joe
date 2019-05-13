@@ -1,5 +1,6 @@
 package game.stages;
 
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_ENTER;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_ESCAPE;
 import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_1;
 
@@ -145,14 +146,15 @@ public class ChangeName {
     } else {
       msg = "";
     }
-    msgDisplay.changeText(msg);
+    // msgDisplay.changeText(msg);
 
     if (InputHandler.isKeyPressed(GLFW_KEY_ESCAPE)
         || InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1) && back.isHover(x, y)) {
       done();
       Game.addActiveStage(Game.Stage.MAINMENU);
       Game.removeActiveStage(Game.Stage.CHANGENAME);
-    } else if (InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1) && change.isHover(x, y)) {
+    } else if (InputHandler.isKeyPressed(GLFW_KEY_ENTER)
+        || InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1) && change.isHover(x, y)) {
       new PacketSetName(newname).sendToServer();
       InputHandler.resetInputString();
       initializedText = false;

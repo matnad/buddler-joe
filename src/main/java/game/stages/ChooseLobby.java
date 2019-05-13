@@ -14,6 +14,7 @@ import gui.text.ChangableGuiText;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
+import net.ClientLogic;
 import net.lobbyhandling.Lobby;
 import net.packets.lobby.PacketJoinLobby;
 import org.joml.Vector2f;
@@ -158,6 +159,14 @@ public class ChooseLobby {
       initializedText = true;
     }
 
+
+    // Handle Disconnect
+    if (!ClientLogic.isConnected()) {
+      done();
+      Game.removeActiveStage(Game.Stage.CHOOSELOBBY);
+      Game.addActiveStage(Game.Stage.OPTIONS);
+    }
+
     catalog = Game.getLobbyCatalog();
     // System.out.println(catalog.toString());
 
@@ -195,7 +204,7 @@ public class ChooseLobby {
           sizes[i].changeText("");
         }
       } catch (IndexOutOfBoundsException e) {
-        System.out.println("error in choose lobby");
+        logger.error("error in choose lobby");
         logger.error(e.getMessage());
       }
     }

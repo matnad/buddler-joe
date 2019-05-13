@@ -68,7 +68,7 @@ public class NetPlayerMaster {
     if (!netPlayers.containsKey(clientId)) {
       NetPlayer newPlayer = new NetPlayer(clientId, username, new Vector3f(1000, 1000, 3), 0, 0, 0);
       netPlayers.put(clientId, newPlayer);
-      System.out.println(NetPlayerMaster.staticToString());
+      // logger.info(NetPlayerMaster.staticToString());
     }
   }
 
@@ -82,13 +82,13 @@ public class NetPlayerMaster {
     // getIds().removeIf(netId -> !presentIds.contains(netId));
     for (Map.Entry<Integer, NetPlayer> netPlayer : netPlayers.entrySet()) {
       if (!presentIds.contains(netPlayer.getKey())) {
-        logger.debug("Removing " + netPlayer.getValue().getUsername());
+        // logger.debug("Removing " + netPlayer.getValue().getUsername());
         netPlayer.getValue().removeNameplate();
         netPlayers.remove(netPlayer.getKey());
       }
     }
 
-    System.out.println(NetPlayerMaster.staticToString());
+    //logger.info(NetPlayerMaster.staticToString());
   }
 
   // public static void removePlayer(int clientId) {

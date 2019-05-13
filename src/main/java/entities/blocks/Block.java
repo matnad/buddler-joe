@@ -6,10 +6,13 @@ import entities.Entity;
 import entities.blocks.debris.DebrisMaster;
 import game.Game;
 import game.NetPlayerMaster;
+import game.SettingsSerialiser;
 import java.util.Random;
 import org.joml.Vector2f;
 import org.joml.Vector2i;
 import org.joml.Vector3f;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Abstract class for Blocks.
@@ -19,6 +22,8 @@ import org.joml.Vector3f;
  */
 @SuppressWarnings("unused") // TODO: Still have some unused methods
 public abstract class Block extends Entity {
+
+  public static final Logger logger = LoggerFactory.getLogger(Block.class);
 
   private final float hardness;
   private final float mass;
@@ -83,7 +88,7 @@ public abstract class Block extends Entity {
     if (blockModel == null) {
       // Maybe need more than a warning
       // This is loaded in the BlockMaster.init() function
-      System.out.println("WARNING! Load the block models first!");
+      logger.warn("WARNING! Load the block models first!");
     }
 
     setDestroyed(false);

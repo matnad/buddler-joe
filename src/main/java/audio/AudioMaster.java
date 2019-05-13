@@ -235,7 +235,7 @@ public class AudioMaster {
     // wait
     for (int i = 0; i < 5; i++) {
       source.playRandom(SoundCategory.DIG);
-      System.out.println("Waiting for sound to complete...");
+      logger.info("Waiting for sound to complete...");
       while (true) {
         try {
           Thread.sleep(1000);
@@ -245,7 +245,7 @@ public class AudioMaster {
         if (!source.isPlaying()) {
           break;
         }
-        System.out.println(".");
+        logger.info(".");
       }
     }
 

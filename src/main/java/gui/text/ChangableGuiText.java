@@ -49,6 +49,14 @@ public class ChangableGuiText extends GuiString {
    * @param text new string to display
    */
   public void changeText(String text) {
+    changeText(text, false);
+  }
+
+  public void changeText(String text, boolean onlyOnChange) {
+    if (onlyOnChange && text.equals(getText())) {
+      // No changes needed
+      return;
+    }
     if (getGuiText() != null) {
       TextMaster.removeText(getGuiText());
     }

@@ -6,7 +6,6 @@ import engine.io.InputHandler;
 import engine.render.Loader;
 import engine.render.fontmeshcreator.FontType;
 import engine.render.fontrendering.TextMaster;
-import entities.NetPlayer;
 import game.Game;
 import game.LobbyPlayerEntry;
 import game.NetPlayerMaster;
@@ -16,7 +15,7 @@ import gui.text.ChangableGuiText;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
-
+import net.ClientLogic;
 import net.packets.gamestatus.PacketReady;
 import net.packets.lobby.PacketLeaveLobby;
 import org.joml.Vector2f;
@@ -136,6 +135,13 @@ public class InLobby {
       updateLobbyName();
     }
 
+    // Handle Disconnect
+    if (!ClientLogic.isConnected()) {
+      done();
+      Game.removeActiveStage(Game.Stage.INLOBBBY);
+      Game.addActiveStage(Game.Stage.OPTIONS);
+    }
+
     List<GuiTexture> guis = new ArrayList<>();
     guis.add(Game.getChat().getChatGui());
     Game.getChat().checkInputs();
@@ -169,7 +175,7 @@ public class InLobby {
           status[i].changeText("");
         }
       } catch (IndexOutOfBoundsException e) {
-        System.out.println("error in choose lobby");
+        logger.error("error in choose lobby");
         logger.error(e.getMessage());
       }
       updatename();

@@ -2,6 +2,7 @@ package engine.shaders;
 
 import static org.lwjgl.opengl.GL20.glUniformMatrix4fv;
 
+import game.SettingsSerialiser;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -13,9 +14,13 @@ import org.joml.Vector3f;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /** Abstract shader class. Has the functions to actually load values into the shader. */
 public abstract class ShaderProgram {
+
+  public static final Logger logger = LoggerFactory.getLogger(ShaderProgram.class);
 
   private static final String PATH_TO_GLSL = "/assets/glsl/";
   private static final FloatBuffer matrixBuffer = BufferUtils.createFloatBuffer(16);
@@ -72,7 +77,7 @@ public abstract class ShaderProgram {
     GL20.glShaderSource(shaderId, shaderSource);
     GL20.glCompileShader(shaderId);
     if (GL20.glGetShaderi(shaderId, GL20.GL_COMPILE_STATUS) == GL11.GL_FALSE) {
-      System.out.println(GL20.glGetShaderInfoLog(shaderId, 500));
+      logger.info(GL20.glGetShaderInfoLog(shaderId, 500));
       System.err.println("Could not compile shader!");
       System.exit(-1);
     }
