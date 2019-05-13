@@ -52,6 +52,16 @@ public class ChangableGuiText extends GuiString {
     changeText(text, false);
   }
 
+  /**
+   * * Changes the displayed text of the object.
+   *
+   * <p>Only use this method to change the text. Will re-compose the glyphs and re-add the item to
+   * the render list. Optionally, check if the actual string text changed and only update if there
+   * was a change.
+   *
+   * @param text new string to display
+   * @param onlyOnChange if true, only update if the new text is not equal to the current text
+   */
   public void changeText(String text, boolean onlyOnChange) {
     if (onlyOnChange && text.equals(getText())) {
       // No changes needed

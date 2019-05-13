@@ -595,6 +595,11 @@ public class Game extends Thread {
     // }
   }
 
+  /**
+   * Attempt to reconnect to the server specified by serverIp and serverPort. Call this every frame
+   * where reconnectStep is > 0 until the reconnect is completed or failed. If you just want to
+   * reconnect, use {@link #tryToReconnect(String, int)}.
+   */
   private void reconnect() {
     // logger.info("Reconnect Step: " + reconnectStep);
     switch (reconnectStep) {
@@ -866,7 +871,11 @@ public class Game extends Thread {
     settingsSerialiser.serialiseSettings(settings);
   }
 
-  /** Start the network thread. Can be used to start a new connection. */
+  /**
+   * Start the network thread. Can be used to start a new connection.
+   *
+   * @return true if a new network thread was created and started
+   */
   public static boolean startNetworkThread() {
     if ((networkThread != null && networkThread.isAlive()) || ClientLogic.isConnected()) {
       logger.info("There is currently a connection open.");
@@ -879,6 +888,13 @@ public class Game extends Thread {
     return true;
   }
 
+  /**
+   * Attempt to reconnect to a specific IP and Port. Can be called from anywhere and will start
+   * executing next frame.
+   *
+   * @param ip ip to connect to
+   * @param port port to connec to, 0 means use current port
+   */
   public static void tryToReconnect(String ip, int port) {
     serverIp = ip;
     if (port >= 0) {
