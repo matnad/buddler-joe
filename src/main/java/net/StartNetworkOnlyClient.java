@@ -34,10 +34,10 @@ public class StartNetworkOnlyClient implements Runnable {
     try {
       new ClientLogic(serverIp, serverPort);
     } catch (IOException e) {
-      System.out.println(
+      logger.info(
           "Buffer Reader does not exist. Can't find a server at the specified location.");
     } catch (NumberFormatException e1) {
-      System.out.println("Port can only be a number");
+      logger.info("Port can only be a number");
     }
   }
 

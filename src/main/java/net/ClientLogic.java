@@ -120,23 +120,23 @@ public class ClientLogic implements Runnable {
     return connected;
   }
 
-  public static void disconnect() {
-    connected = false;
-  }
-
   /**
    * A method to disconnect from the server.
    *
    * @param disconnectFromServer The boolean if to be disconnected
    */
   public static void setDisconnectFromServer(boolean disconnectFromServer) {
-    pingManager.stop();
-    ClientLogic.disconnectFromServer = disconnectFromServer;
-    try {
-      server.close();
-    } catch (IOException e) {
-      System.out.println("Problem closing connection to server.");
+    if (pingManager != null) {
+      pingManager.stop();
     }
+    if (server != null) {
+      try {
+        server.close();
+      } catch (IOException e) {
+        logger.warn("Problem closing connection to server.");
+      }
+    }
+    ClientLogic.disconnectFromServer = disconnectFromServer;
   }
 
   /** Thread to run the ClientLogic on, calls the method waitforserver to start up. */
@@ -146,15 +146,17 @@ public class ClientLogic implements Runnable {
       waitForServer();
     } catch (IOException | RuntimeException e) {
       e.printStackTrace();
-      System.out.println("Connection lost to server");
+      logger.info("Connection lost to server");
       try {
         server.close();
       } catch (IOException e1) {
         e1.printStackTrace();
       }
     }
-    System.out.println(
-        "Connection to the server timed out or was interrupted. Socket has been closed.");
+    logger.info(
+        "Connection to the server timed out or was interrupted.");
+    connected = false;
+    pingManager.stop();
   }
 
   /**
@@ -174,8 +176,10 @@ public class ClientLogic implements Runnable {
         in = input.readLine();
 
       } catch (SocketException e) {
-        System.out.println("\nThe connection to the server has been closed!");
-        server.close();
+        logger.warn("The connection to the server has been closed!");
+        if (server != null) {
+          server.close();
+        }
         break;
       }
 
@@ -186,7 +190,7 @@ public class ClientLogic implements Runnable {
 
       // Message too short
       if (in.length() < 5) {
-        System.out.println(in + " is not a valid message from the server.");
+        logger.warn(in + " is not a valid message from the server.");
         continue;
       }
 
@@ -278,5 +282,6 @@ public class ClientLogic implements Runnable {
         p.processData();
       }
     }
+    connected = false;
   }
 }

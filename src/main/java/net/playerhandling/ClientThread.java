@@ -61,7 +61,7 @@ public class ClientThread implements Runnable {
   public ClientThread(Socket clientSocket, int clientId) {
     this.clientId = clientId;
     this.socket = clientSocket;
-    System.out.println("Client details: " + clientSocket.toString());
+    logger.info("Client details: " + clientSocket.toString());
     try {
       input =
           new BufferedReader(
@@ -101,7 +101,7 @@ public class ClientThread implements Runnable {
 
         // Message too short
         if (in.length() < 5) {
-          System.out.println(in + " is not a valid message from the client.");
+          // logger.info(in + " is not a valid message from the client.");
           continue;
         }
 
@@ -120,7 +120,7 @@ public class ClientThread implements Runnable {
             PacketLogin login = new PacketLogin(clientId, data);
             login.processData();
             if (!login.hasErrors()) {
-              System.out.println(
+              logger.info(
                   "ServerPlayer "
                       + ServerLogic.getPlayerList().getUsername(clientId)
                       + " has connected.");

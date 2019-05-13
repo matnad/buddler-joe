@@ -2,10 +2,15 @@ package entities.items;
 
 import engine.models.TexturedModel;
 import entities.Entity;
+import game.SettingsSerialiser;
 import org.joml.Vector3f;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /** Abstract Item Class. Provides getters and setters for mandatory properties. */
 public abstract class Item extends Entity {
+
+  public static final Logger logger = LoggerFactory.getLogger(Item.class);
 
   private final ItemMaster.ItemTypes type;
   private boolean owned;
@@ -33,7 +38,7 @@ public abstract class Item extends Entity {
       float scale) {
     super(model, position, rotX, rotY, rotZ, scale);
     if (model == null) {
-      System.out.println("WARNING! No model preloaded!");
+      logger.warn("WARNING! No model preloaded!");
     }
     this.type = type;
     this.key++;

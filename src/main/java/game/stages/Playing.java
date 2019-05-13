@@ -24,11 +24,10 @@ import gui.text.FloatingStrings;
 import gui.tutorial.Tutorial;
 import java.util.ArrayList;
 import java.util.List;
+import net.ClientLogic;
 import net.packets.lists.PacketHighscore;
 import net.packets.lists.PacketPlayerList;
 import org.joml.Vector2f;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import terrains.TerrainFlat;
 import util.MousePlacer;
 
@@ -125,7 +124,6 @@ public class Playing {
    */
   public static void update(MasterRenderer renderer) {
     if (firstloop) {
-
       Game.getChat().setGameChatSettings();
       TextMaster.removeAll();
       firstloop = false;
@@ -248,6 +246,11 @@ public class Playing {
 
     TextMaster.render();
     Game.getActiveCamera().move();
+
+    // Handle disconnect
+    if (!ClientLogic.isConnected()) {
+      Game.restart();
+    }
   }
 
   public static void addFloatingGoldText(int goldValue) {
@@ -370,9 +373,7 @@ public class Playing {
     floatingGoldStrings = new FloatingStrings(Game.getActivePlayer().getBbox(), 3f);
   }
 
-  /**
-   * Resets the Tutorial.
-   * */
+  /** Resets the Tutorial. */
   public static void resetTutorial() {
     tutorial.reset();
   }

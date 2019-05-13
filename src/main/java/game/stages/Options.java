@@ -1,5 +1,6 @@
 package game.stages;
 
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_ENTER;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_ESCAPE;
 import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_1;
 
@@ -15,6 +16,8 @@ import gui.MenuButton;
 import gui.text.ChangableGuiText;
 import java.util.ArrayList;
 import java.util.List;
+import net.ClientLogic;
+import net.packets.loginlogout.PacketDisconnect;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 
@@ -60,6 +63,7 @@ public class Options {
   private static String servername = "";
   private static String newservername = "";
   private static String output;
+  private static String statusMsg = "";
 
   /**
    * * Initialize Options-Menu. Will load the texture files and generate the basic menu parts. This
@@ -223,7 +227,19 @@ public class Options {
       height = Game.getSettings().getHeight();
       width = Game.getSettings().getWidth();
       fullScreen = Game.getSettings().isFullscreen();
+      statusMsg = "";
       firstLoop = false;
+    }
+
+    if (Game.getReconnectStep() > 0) {
+      msgDisplay.setTextColour(new Vector3f(0, 1, 0));
+      msgDisplay.changeText("Trying to reconnect...", true);
+    } else if (!ClientLogic.isConnected()) {
+      msgDisplay.setTextColour(new Vector3f(1, 0, 0));
+      msgDisplay.changeText("Not connected! Enter a valid IP and click apply.", true);
+    } else {
+      msgDisplay.setTextColour(new Vector3f(0, 1, 0));
+      msgDisplay.changeText(statusMsg, true);
     }
 
     newservername = servername;
@@ -304,18 +320,29 @@ public class Options {
       fullScreen = true;
     } else if (InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1) && fsOff.isHover(x, y)) {
       fullScreen = false;
-    } else if (InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1) && apply.isHover(x, y)) {
+    } else if (InputHandler.isKeyPressed(GLFW_KEY_ENTER)
+        || InputHandler.isMousePressed(GLFW_MOUSE_BUTTON_1) && apply.isHover(x, y)) {
       Settings settings = Game.getSettings();
-      settings.setFullscreen(fullScreen);
-      settings.setHeight(height);
-      settings.setWidth(width);
+      if (fullScreen != settings.isFullscreen()) {
+        settings.setFullscreen(fullScreen);
+        setStatusMsg("Settings changed. Please restart the game.");
+      }
+      if (height != settings.getHeight() || width != settings.getWidth()) {
+        settings.setHeight(height);
+        settings.setWidth(width);
+        setStatusMsg("Settings changed. Please restart the game.");
+      }
       if (output.length() > 0) { // TODO: check if Textbox is empty.
-        settings.setIp(output); // TODO: the entered IP should be set here.
+        if (!settings.getIp().equals(output) || !ClientLogic.isConnected()) {
+          // Ip changed, try to reconnect
+          new PacketDisconnect().sendToServer();
+          ClientLogic.setDisconnectFromServer(true);
+          Game.tryToReconnect(output, -1);
+        }
+        settings.setIp(output);
+
         InputHandler.setInputString(new StringBuilder(output));
       }
-      // TODO: remove console printing
-      System.out.println("Height: " + height + "p");
-      System.out.println("Fullscreen: " + fullScreen);
     }
 
     Game.getGuiRenderer().render(guis);
@@ -346,10 +373,16 @@ public class Options {
   private static void updateGuiText() {
 
     output = servername;
-    TextMaster.removeAll();
 
+    if (guiText != null) {
+      TextMaster.removeText(guiText);
+    }
     guiText =
         new GuiText(
             output, 1.5f, font, new Vector3f(0f, 0f, 0f), 1f, new Vector2f(.30f, .685f), 1f, false);
+  }
+
+  public static void setStatusMsg(String statusMsg) {
+    Options.statusMsg = statusMsg;
   }
 }

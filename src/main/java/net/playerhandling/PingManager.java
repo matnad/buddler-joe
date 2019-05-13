@@ -64,7 +64,7 @@ public class PingManager implements Runnable {
       try {
         sleep(freq);
       } catch (InterruptedException e) {
-        System.out.println("Sleep interrupted");
+        logger.warn("Sleep interrupted", e);
       }
       checkForDisconnect();
       long currTime;

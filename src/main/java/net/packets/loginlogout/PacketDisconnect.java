@@ -39,7 +39,7 @@ public class PacketDisconnect extends Packet {
         return;
       }
     } catch (NullPointerException e) {
-      addError("Not Connected to the Server.");
+      addError("Client not Found.");
       return;
     }
     try {
