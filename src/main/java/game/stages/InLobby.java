@@ -61,6 +61,7 @@ public class InLobby {
   private static String newLobby;
   private static String testLobby;
   private static MenuButton resetTutorial;
+  private static boolean nameChanged;
 
   /**
    * Initialisation of the textures for this GUI-menu.
@@ -72,6 +73,7 @@ public class InLobby {
     font = new FontType(loader, "verdanaAsciiEx");
     testLobby = "";
     currentAlpha = 1;
+    nameChanged = false;
 
     // Background
     background =
@@ -162,8 +164,9 @@ public class InLobby {
         if (i < playerCatalog.size()) {
           // System.out.print(catalog.get(i+startInd).getPlayers()+" ");
           // System.out.println(i);
-          if (!testnames[i].equals(playerCatalog.get(i).getName())) {
+          if (!testnames[i].getText().equals(playerCatalog.get(i).getName())) {
             names[i].changeText(playerCatalog.get(i).getName());
+            nameChanged = true;
           }
           if (playerCatalog.get(i).isReady()) {
             status[i].changeText("ready");
@@ -178,6 +181,8 @@ public class InLobby {
         logger.error("error in choose lobby");
         logger.error(e.getMessage());
       }
+    }
+    if (nameChanged) {
       updatename();
     }
 
@@ -277,6 +282,7 @@ public class InLobby {
       }
       names[i].updateString();
     }
+    nameChanged = false;
   }
 
   /** cuts the lobbyname to the correct length for the window. */
