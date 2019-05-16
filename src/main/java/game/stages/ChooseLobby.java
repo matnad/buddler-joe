@@ -61,6 +61,7 @@ public class ChooseLobby {
   private static boolean initializedPageIndex = false;
   private static Vector3f black = new Vector3f(0, 0, 0);
   private static boolean removeAtEndOfFrame = false;
+  private static boolean changeLobbyName = false;
 
   /**
    * * Initialize ChooseLobby Menu. Will load the texture files and generate the basic menu parts.
@@ -159,7 +160,6 @@ public class ChooseLobby {
       initializedText = true;
     }
 
-
     // Handle Disconnect
     if (!ClientLogic.isConnected()) {
       done();
@@ -191,25 +191,28 @@ public class ChooseLobby {
         if (i + startInd < catalog.size()) {
           // System.out.print(catalog.get(i+startInd).getPlayers()+" ");
           // System.out.println(i);
-          if (!testnames[i].equals(catalog.get(i).getName())) {
+          if (!testnames[i].getText().equals(catalog.get(i).getName())) {
+            testnames[i].setText(catalog.get(i).getName());
             names[i].changeText("Name: " + catalog.get(i + startInd).getName());
+            changeLobbyName = true;
           }
           count[i].changeText(
               "Players: " + catalog.get(i + startInd).getPlayers() + "/" + Lobby.getMaxPlayers());
           // System.out.println(i);
           sizes[i].changeText("Size: " + catalog.get(i + startInd).getSize().toUpperCase());
         } else {
-          names[i].changeText("");
-          count[i].changeText("");
-          sizes[i].changeText("");
+          names[i].changeText("", true);
+          count[i].changeText("", true);
+          sizes[i].changeText("", true);
         }
       } catch (IndexOutOfBoundsException e) {
         logger.error("error in choose lobby");
         logger.error(e.getMessage());
       }
     }
-    updateLobbyName();
-
+    if (changeLobbyName) {
+      updateLobbyName();
+    }
     // Place Create----------------------------------------------------------------------
     if (n < create.length) {
       guis.add(create[n].getHoverTexture(x, y));
@@ -352,7 +355,6 @@ public class ChooseLobby {
   /** cuts the lobbyname to the correct length for the window. */
   public static void updateLobbyName() {
     for (int i = 0; i < names.length; i++) {
-      testnames[i] = names[i];
       boolean changed = false;
 
       if (names[i].getText().length() > 0) {
@@ -384,5 +386,6 @@ public class ChooseLobby {
       names[i].updateString();
       changed = false;
     }
+    changeLobbyName = false;
   }
 }

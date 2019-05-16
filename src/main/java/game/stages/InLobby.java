@@ -61,6 +61,7 @@ public class InLobby {
   private static String newLobby;
   private static String testLobby;
   private static MenuButton resetTutorial;
+  private static boolean nameChanged;
 
   /**
    * Initialisation of the textures for this GUI-menu.
@@ -72,6 +73,7 @@ public class InLobby {
     font = new FontType(loader, "verdanaAsciiEx");
     testLobby = "";
     currentAlpha = 1;
+    nameChanged = false;
 
     // Background
     background =
@@ -162,22 +164,25 @@ public class InLobby {
         if (i < playerCatalog.size()) {
           // System.out.print(catalog.get(i+startInd).getPlayers()+" ");
           // System.out.println(i);
-          if (!testnames[i].equals(playerCatalog.get(i).getName())) {
-            names[i].changeText(playerCatalog.get(i).getName());
+          if (!testnames[i].getText().equals(playerCatalog.get(i).getName())) {
+            names[i].changeText(playerCatalog.get(i).getName(), true);
+            nameChanged = true;
           }
           if (playerCatalog.get(i).isReady()) {
-            status[i].changeText("ready");
+            status[i].changeText("ready", true);
           } else {
-            status[i].changeText("unready");
+            status[i].changeText("unready", true);
           }
         } else {
-          names[i].changeText("");
-          status[i].changeText("");
+          names[i].changeText("", true);
+          status[i].changeText("", true);
         }
       } catch (IndexOutOfBoundsException e) {
         logger.error("error in choose lobby");
         logger.error(e.getMessage());
       }
+    }
+    if (nameChanged) {
       updatename();
     }
 
@@ -273,17 +278,18 @@ public class InLobby {
         TextMaster.removeText(names[i].getGuiText());
       }
       if (names[i].getText().length() > 0 && changed) {
-        names[i].changeText(names[i].getText() + "...");
+        names[i].changeText(names[i].getText() + "...", true);
       }
       names[i].updateString();
     }
+    nameChanged = false;
   }
 
   /** cuts the lobbyname to the correct length for the window. */
   public static void updateLobbyName() {
     boolean changed = false;
     newLobby = NetPlayerMaster.getLobbyname();
-    lobbyname.changeText(newLobby);
+    lobbyname.changeText(newLobby, true);
     testLobby = newLobby;
     if (lobbyname.getText().length() > 0) {
 
@@ -310,7 +316,7 @@ public class InLobby {
       TextMaster.removeText(lobbyname.getGuiText());
     }
     if (lobbyname.getText().length() > 0 && changed) {
-      lobbyname.changeText(lobbyname.getText() + "...");
+      lobbyname.changeText(lobbyname.getText() + "...", true);
     }
     lobbyname.updateString();
   }
