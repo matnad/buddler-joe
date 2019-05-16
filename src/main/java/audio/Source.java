@@ -60,8 +60,10 @@ public class Source {
    * @param buffer bufferId to play
    */
   public void play(int buffer) {
-    alSourcei(sourceId, AL_BUFFER, buffer);
-    alSourcePlay(sourceId);
+    if (AudioMaster.isEnabled()) {
+      alSourcei(sourceId, AL_BUFFER, buffer);
+      alSourcePlay(sourceId);
+    }
   }
 
   /**
