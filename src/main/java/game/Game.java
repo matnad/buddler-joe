@@ -16,6 +16,7 @@ import static game.Game.Stage.PLAYERLIST;
 import static game.Game.Stage.PLAYING;
 import static org.lwjgl.glfw.GLFW.GLFW_CURSOR;
 import static org.lwjgl.glfw.GLFW.GLFW_CURSOR_NORMAL;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_M;
 import static org.lwjgl.glfw.GLFW.glfwSetInputMode;
 
 import audio.AudioMaster;
@@ -478,6 +479,11 @@ public class Game extends Thread {
         the events of last Frame. Everything else should be after polling.*/
         InputHandler.update();
         Game.window.update();
+
+        // Toggle mute sound
+        if (InputHandler.isKeyPressed(GLFW_KEY_M) && !InputHandler.isReadInputOn()) {
+          AudioMaster.setEnabled(!AudioMaster.isEnabled());
+        }
 
         if (activeStages.contains(PLAYING)) {
           if (backgroundSound.isPlaying()) {

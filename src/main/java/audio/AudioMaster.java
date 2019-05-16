@@ -2,8 +2,12 @@ package audio;
 
 import static org.lwjgl.openal.AL10.AL_FORMAT_MONO16;
 import static org.lwjgl.openal.AL10.AL_FORMAT_STEREO16;
+import static org.lwjgl.openal.AL10.AL_PLAYING;
+import static org.lwjgl.openal.AL10.AL_SOURCE_STATE;
 import static org.lwjgl.openal.AL10.alBufferData;
 import static org.lwjgl.openal.AL10.alGenBuffers;
+import static org.lwjgl.openal.AL10.alGetSourcei;
+import static org.lwjgl.openal.AL10.alSourceStop;
 import static org.lwjgl.openal.ALC11.ALC_ALL_DEVICES_SPECIFIER;
 import static org.lwjgl.openal.ALC11.alcCloseDevice;
 import static org.lwjgl.openal.ALC11.alcCreateContext;
@@ -47,6 +51,8 @@ public class AudioMaster {
   private static Map<SoundCategory, ArrayList<Integer>> buffers = new HashMap<>();
   private static long context;
   private static long device;
+
+  private static boolean enabled = true;
 
   /**
    * Initialize the AudioMaster with its capabilities. Needs to be called before anything else can
@@ -252,6 +258,37 @@ public class AudioMaster {
     source.delete();
     cleanUp();
     System.exit(0);
+  }
+
+  /**
+   * Check if the audio for the game is enabled.
+   *
+   * @return true if audio is enabled, false if the game is muted
+   */
+  public static boolean isEnabled() {
+    return enabled;
+  }
+
+  /**
+   * Enable or disable all audio.
+   *
+   * @param enabled true to enable audio, false to stop and disable audio
+   */
+  public static void setEnabled(boolean enabled) {
+    AudioMaster.enabled = enabled;
+    if (enabled) {
+      logger.info("Sound: ON");
+    } else {
+      logger.info("Sound: OFF");
+      // If mute, stop all sounds
+      for (ArrayList<Integer> category : buffers.values()) {
+        for (Integer bufferId : category) {
+          if (alGetSourcei(bufferId, AL_SOURCE_STATE) == AL_PLAYING) {
+            alSourceStop(bufferId);
+          }
+        }
+      }
+    }
   }
 
   /**
