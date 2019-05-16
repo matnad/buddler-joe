@@ -4,6 +4,7 @@ import engine.models.RawModel;
 import engine.models.TexturedModel;
 import engine.particles.systems.Amped;
 import engine.particles.systems.Explosion;
+import engine.particles.systems.Shockwave;
 import engine.render.Loader;
 import engine.render.objconverter.ObjFileLoader;
 import engine.textures.ModelTexture;
@@ -25,7 +26,7 @@ public class Steroids extends Item {
   private int itemId;
 
   private Amped ampedPlayerEffect;
-  private Explosion ampedInitialEffect;
+  private Shockwave ampedInitialEffect;
 
   /** Extended Constructor for Ice. Don't use directly. Use the Item Master to create items. */
   private Steroids(Vector3f position, float rotX, float rotY, float rotZ, float scale) {
@@ -34,7 +35,7 @@ public class Steroids extends Item {
     ampedPlayerEffect = new Amped(40, 0, 0, 1f, 10);
     ampedPlayerEffect.setScaleError(.3f);
 
-    ampedInitialEffect = new Explosion(1000, 40, 0f, .8f, 5f);
+    ampedInitialEffect = new Shockwave(1000, 15, 0f, 1.2f, 5f);
     ampedInitialEffect.setScaleError(.1f);
     ampedInitialEffect.setLifeError(.1f);
     ampedInitialEffect.setDirection(new Vector3f(1, 0, 0), 0);

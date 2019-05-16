@@ -6,6 +6,7 @@ import engine.particles.systems.Explosion;
 import engine.particles.systems.Fire;
 import engine.particles.systems.Frozen;
 import engine.particles.systems.Magic;
+import engine.particles.systems.Shockwave;
 import engine.particles.systems.Smoke;
 import engine.particles.systems.Snow;
 import engine.particles.systems.Sparkle;
@@ -49,6 +50,7 @@ public class ParticleMaster {
     Snow.init(loader);
     Magic.init(loader);
     Amped.init(loader);
+    Shockwave.init(loader);
   }
 
   /**

@@ -8,6 +8,7 @@ import engine.models.RawModel;
 import engine.models.TexturedModel;
 import engine.particles.systems.Explosion;
 import engine.particles.systems.Fire;
+import engine.particles.systems.Shockwave;
 import engine.particles.systems.Smoke;
 import engine.render.Loader;
 import engine.render.objconverter.ObjFileLoader;
@@ -44,7 +45,7 @@ public class Dynamite extends Item {
   private final Explosion particleExplosion;
   private final Explosion particleShrapnel;
   private final Smoke particleSmoke;
-  private final Explosion particleShockwave;
+  private final Shockwave particleShockwave;
   private float time;
   private boolean active;
   private boolean exploded;
@@ -70,13 +71,13 @@ public class Dynamite extends Item {
 
     /* Generate Fancy Particle Effects for an explosion */
     // Generate Explosion Effect
-    particleExplosion = new Explosion(200, 11, 0, .4f, 15);
+    particleExplosion = new Explosion(200, 5, 0, 1f, 10);
     particleExplosion.setScaleError(.4f);
     particleExplosion.setSpeedError(.3f);
     particleExplosion.setLifeError(.2f);
 
     // Generate Shrapnel Effect
-    particleShrapnel = new Explosion(1200, 70, 0, 1.5f, .85f);
+    particleShrapnel = new Explosion(1200, 70, 0, 1.5f, 1f);
     particleShrapnel.setScaleError(.2f);
     particleShrapnel.setLifeError(.5f);
     particleShrapnel.setSpeedError(.3f);
@@ -91,7 +92,7 @@ public class Dynamite extends Item {
     // Generate Shockwave effect
     // We can vary pps by graphic setting, but it looks very nice with a lot of particles!
 
-    particleShockwave = new Explosion(3000, 40, 0f, .8f, 5f);
+    particleShockwave = new Shockwave(2000, 30, 0f, .8f, 7f);
     particleShockwave.setScaleError(.1f);
     particleShockwave.setLifeError(.1f);
     particleShockwave.setDirection(new Vector3f(1, 0, 0), 0);
