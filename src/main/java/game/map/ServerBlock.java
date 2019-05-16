@@ -118,20 +118,16 @@ public class ServerBlock {
     switch (lobby.getPlayerAmount()) {
       case 1:
       case 2:
-        heartOrStar = 70;
+        heartOrStar = 72;
         break;
       case 3:
       case 4:
-        heartOrStar = 73;
+        heartOrStar = 75;
         break;
       default:
-        heartOrStar = 76;
+        heartOrStar = 78;
     }
-    // if (random.nextInt(2) == 0) {
-    //  r = 30;
-    // } else {
-    //  r = 90;
-    // }
+
     if (0 <= r && r <= 25) {
       logger.debug("Spawning dynamite.");
       PacketSpawnItem packetSpawnItem =

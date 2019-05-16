@@ -121,7 +121,7 @@ public class NetPlayer extends Entity {
 
     // To prevent some problems with normals and for a more comic style look
     joeModel.getTexture().setUseFakeLighting(true);
-    joeModel.getTexture().setShineDamper(.3f);
+    joeModel.getTexture().setShineDamper(.5f);
 
     RawModel rawTomb = loader.loadToVao(ObjFileLoader.loadObj("tomb"));
     ripModel = new TexturedModel(rawTomb, new ModelTexture(loader.loadTexture("tomb")));

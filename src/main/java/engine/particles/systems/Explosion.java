@@ -23,6 +23,6 @@ public class Explosion extends ParticleSystem {
   }
 
   public static void init(Loader loader) {
-    particleTexture = new ParticleTexture(loader.loadTexture("particleAtlas"), 4, true);
+    particleTexture = new ParticleTexture(loader.loadTexture("explosion_fire"), 6, true);
   }
 }

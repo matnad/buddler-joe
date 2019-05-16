@@ -83,7 +83,7 @@ public class Camera {
           new GuiTexture(
               loader.loadTexture("logo"), new Vector2f(0, 0), new Vector2f(.4f / 1.6f, .4f), 1);
       introMusic = new Source(AudioMaster.SoundCategory.INTRO);
-      introMusic.setVolume(0.05f); // Adjust volume
+      introMusic.setVolume(0.1f); // Adjust volume
     } else {
       intro = false;
     }
