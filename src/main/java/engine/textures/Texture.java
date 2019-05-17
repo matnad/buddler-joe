@@ -1,8 +1,7 @@
 package engine.textures;
 
 /**
- * The description of a texture. Used by the Texture loader. TODO: Evaluate if we really need the
- * interface
+ * The description of a texture. Used by the Texture loader.
  */
 public interface Texture {
 
