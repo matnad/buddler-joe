@@ -29,7 +29,7 @@ public class Credits {
   private static GuiTexture credits;
 
   private static MenuButton back;
-  private static float startY = -6.5f;
+  private static float startY = -10.5f;
   private static boolean firstloop = true;
 
   /**
@@ -56,9 +56,9 @@ public class Credits {
 
     credits =
         new GuiTexture(
-            loader.loadTexture("creditsTotal"),
+            loader.loadTexture("creditsTotal2"),
             new Vector2f(0, startY),
-            new Vector2f(0.78125f, 5.09259f),
+            new Vector2f(0.78125f, 9.25925f),
             1);
 
     // Back
