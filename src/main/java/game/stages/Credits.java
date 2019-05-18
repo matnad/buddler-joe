@@ -13,8 +13,8 @@ import java.util.List;
 import org.joml.Vector2f;
 
 /**
- * creditsOne Menu specification and rendering. Must be initialized. Specifies all the elements in
- * the CreditsMenu . Contains and manages the Game Loop while the creditsOne Menu is active.
+ * CreditsMenu specification and rendering. Must be initialized. Specifies all the elements in the
+ * CreditsMenu . Contains and manages the Game Loop while the creditsOne Menu is active.
  *
  * @author Sebastian Schlachter
  */
