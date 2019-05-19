@@ -37,6 +37,7 @@ Dokumente für Milestone 5:
 - Tagebuch (Diary): https://www.buddlerjoe.ch/entwickler-tagebuch
 - Netzwerkprotokolldokumentation: docs\milestone5\NetzwerkprotokollDokument\NetzwerkProtokollSpezifikation.pdf
 - Manual: docs\milestone5\manual\BuddlerJoeManual.pdf
+- QA Dokument: docs\milestone5\QualityAssuranceKonzeptl\QualityAssuranceKonzept.pdf
 
 ## DEPENDENCIES
 - **LWJGL**: LightWeight Java Game Library
