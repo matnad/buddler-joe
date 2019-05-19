@@ -1,0 +1,10 @@
+Ergänzende Code Standards und Richtlinien
+
+Information Hiding
+Wir legen sehr viel Wert auf das Prinzip des Information Hiding. Jede Klassenvariable ist entweder privat oder es liegt ausführliche Dokumentation mit guten Gründen vor falls die Variable nicht privat ist.
+
+APIs und Schnittstellen
+Wird ein Package mit mehren Klassen erstellt, sollte die API oder Schnittstelle dafür - falls benötigt - sich auf so wenig Klassen wie möglich beschränken. Wenn immer möglich sollte die API in einer "Master-Klasse" zusammengefasst sein.
+
+Zuständigkeiten
+Jede Klasse hat eine eigene Zuständigkeit und Rolle, welche sich nicht mit einer anderen Klasse überschneiden sollte. Die Logik einer Methode sollte immer in der Klasse geschrieben werden, bei welcher die Zuständigkeit am besten gegeben ist. Beispiel: Die methode sendToLobby() aus der abstrakten Packet Klasse fällt in den Zuständigkeitsbereich der ServerLogic. Folgich wird die Methode dort implementiert und aus der Packet Klasse nur aufgerufen.
