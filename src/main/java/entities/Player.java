@@ -468,9 +468,9 @@ public class Player extends NetPlayer {
       setGoalVelocityX(0);
     }
 
-    if (InputHandler.isKeyPressed(GLFW_KEY_T)) {
-      super.setPosition(new Vector3f(100, 0, getPosition().z));
-    }
+    //if (InputHandler.isKeyPressed(GLFW_KEY_T)) {
+    //  super.setPosition(new Vector3f(100, 0, getPosition().z));
+    //}
   }
 
   /**
