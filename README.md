@@ -38,6 +38,8 @@ Dokumente für Milestone 5:
 - Netzwerkprotokolldokumentation: docs\milestone5\NetzwerkprotokollDokument\NetzwerkProtokollSpezifikation.pdf
 - Manual: docs\milestone5\manual\BuddlerJoeManual.pdf
 - QA Dokument: docs\milestone5\QualityAssuranceKonzeptl\QualityAssuranceKonzept.pdf
+- Logo: docs\milestone5\Logo.png
+- Logo: docs\milestone5\ArchidekturDokument\Architektur.pdf
 
 ## DEPENDENCIES
 - **LWJGL**: LightWeight Java Game Library

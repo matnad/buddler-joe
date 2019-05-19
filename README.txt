@@ -1,6 +1,6 @@
 # Buddler Joe ReadMe
 
-## INFOS FÜR MILESTONE 3
+## INFOS FÜR MILESTONE 5
 
 Programm wird über /src/main/java/Main.java gestartet und unterstützt folgende Kommandozeilen Parameter:
 
@@ -32,6 +32,14 @@ Dokumente für Milestone 3:
 - Demo videos: docs\milestone3\demos\2019-04-07 20-23-46.mkv
 	       docs\milestone3\demos\2019-04-07 20-36-44.mkv
 - Teaser:      docs\milestone3\teaser\teaser.avi
+
+Dokumente für Milestone 5:
+- Tagebuch (Diary): https://www.buddlerjoe.ch/entwickler-tagebuch
+- Netzwerkprotokolldokumentation: docs\milestone5\NetzwerkprotokollDokument\NetzwerkProtokollSpezifikation.pdf
+- Manual: docs\milestone5\manual\BuddlerJoeManual.pdf
+- QA Dokument: docs\milestone5\QualityAssuranceKonzeptl\QualityAssuranceKonzept.pdf
+- Logo: docs\milestone5\Logo.png
+- Logo: docs\milestone5\ArchidekturDokument\Architektur.pdf
 
 ## DEPENDENCIES
 - **LWJGL**: LightWeight Java Game Library
