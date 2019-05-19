@@ -5,16 +5,16 @@
 Programm wird über /src/main/java/Main.java gestartet und unterstützt folgende Kommandozeilen Parameter:
 
 Client starten:
-[client] [<hostadress>[:<port>]] [<username>]
+`[client] [<hostadress>[:<port>]] [<username>]`
 
 Alle Parameter sind optional. Für fehlende Parameter werden die zuletzt verwendeten Werte genommen (ist in den Settings lokal gespeichert) oder, falls keine Settings gefunden wurden, die Default Werte (client buddlerjoe.ch:11337 "Joe Buddler"). Falls Parameter übergeben werden, so werden diese in den Settings gespeichert.
 
 Server starten:
-server [<port>]
+`server [<port>]`
 
 Um den Server zu starten muss das erste Argument "server" lauten. Der Port ist optional und wird auf 11337 gesetzt falls nicht angegeben.
 
-Es läuft ein Server mit der aktuellen master Version unter der hostaddresse "budlerjoe.ch" auf welchen man ohne Einschränkung verbinden kann.
+Es läuft ein Server mit der aktuellen master Version unter der hostaddresse "game.budlerjoe.ch" auf welchen man ohne Einschränkung verbinden kann.
 
 Sobald man zu server verbunden ist (sollte beim Spielstart automatisch passieren) kann in der Konsole "help" eingegeben werden für eine Liste mit allen Befehlen. Lobbies erstellen funktioniert im Moment zum Beispiel nur per Konsole.
 
@@ -34,14 +34,18 @@ Dokumente für Milestone 3:
 - Teaser:      docs\milestone3\teaser\teaser.avi
 
 Dokumente für Milestone 5:
+- Präsentation: docs\milestone5\Präsentation\Milestone5Präsentation.pdf
+- Webseite: https://www.buddlerjoe.ch (inkl. free to play download)
 - Tagebuch (Diary): https://www.buddlerjoe.ch/entwickler-tagebuch
 - Netzwerkprotokolldokumentation: docs\milestone5\NetzwerkprotokollDokument\NetzwerkProtokollSpezifikation.pdf
 - Manual: docs\milestone5\manual\BuddlerJoeManual.pdf
 - QA Dokument: docs\milestone5\QualityAssuranceKonzeptl\QualityAssuranceKonzept.pdf
 - Logo: docs\milestone5\Logo.png
 - Archidekturdokument: docs\milestone5\ArchidekturDokument\Architektur.pdf
-- Twitchy: docs\milestone5\Buddler Joe - 2 minutes of gameplay.mp4
-- Präsentation: docs\milestone5\Präsentation\Milestone5Präsentation.pdf
+- Twitchy: docs\milestone5\buddler_joe_gameplay_twitchy.avi
+- Screenshot: docs\milestone5\buddler_joe_screenshot.png
+- Trailers: docs\milestone5\trailer1.avi & docs\milestone5\trailer2.avi
+- Logo: docs\milestone5\buddler_joe_logo.png
 
 ## DEPENDENCIES
 - **LWJGL**: LightWeight Java Game Library

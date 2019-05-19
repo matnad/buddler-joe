@@ -34,14 +34,18 @@ Dokumente für Milestone 3:
 - Teaser:      docs\milestone3\teaser\teaser.avi
 
 Dokumente für Milestone 5:
+- Präsentation: docs\milestone5\Präsentation\Milestone5Präsentation.pdf
+- Webseite: https://www.buddlerjoe.ch (inkl. free to play download)
 - Tagebuch (Diary): https://www.buddlerjoe.ch/entwickler-tagebuch
 - Netzwerkprotokolldokumentation: docs\milestone5\NetzwerkprotokollDokument\NetzwerkProtokollSpezifikation.pdf
 - Manual: docs\milestone5\manual\BuddlerJoeManual.pdf
 - QA Dokument: docs\milestone5\QualityAssuranceKonzeptl\QualityAssuranceKonzept.pdf
 - Logo: docs\milestone5\Logo.png
 - Archidekturdokument: docs\milestone5\ArchidekturDokument\Architektur.pdf
-- Twitchy: docs\milestone5\Buddler Joe - 2 minutes of gameplay.mp4
-- Präsentation: docs\milestone5\Präsentation\Milestone5Präsentation.pdf
+- Twitchy: docs\milestone5\buddler_joe_gameplay_twitchy.avi
+- Screenshot: docs\milestone5\buddler_joe_screenshot.png
+- Trailer: docs\milestone5\trailer.avi
+- Logo: docs\milestone5\buddler_joe_logo.png
 
 ## DEPENDENCIES
 - **LWJGL**: LightWeight Java Game Library
