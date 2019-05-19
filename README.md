@@ -40,6 +40,7 @@ Dokumente für Milestone 5:
 - QA Dokument: docs\milestone5\QualityAssuranceKonzeptl\QualityAssuranceKonzept.pdf
 - Logo: docs\milestone5\Logo.png
 - Logo: docs\milestone5\ArchidekturDokument\Architektur.pdf
+- Twitchy: docs\milestone5\Buddler Joe - 2 minutes of gameplay.mp4
 
 ## DEPENDENCIES
 - **LWJGL**: LightWeight Java Game Library
