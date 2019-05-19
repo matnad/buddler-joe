@@ -1,6 +1,6 @@
 # Buddler Joe ReadMe
 
-## INFOS FÜR MILESTONE 3
+## INFOS FÜR MILESTONE 5
 
 Programm wird über /src/main/java/Main.java gestartet und unterstützt folgende Kommandozeilen Parameter:
 
@@ -14,7 +14,7 @@ Server starten:
 
 Um den Server zu starten muss das erste Argument "server" lauten. Der Port ist optional und wird auf 11337 gesetzt falls nicht angegeben.
 
-Es läuft ein Server mit der aktuellen master Version unter der hostaddresse "budlerjoe.ch" auf welchen man ohne Einschränkung verbinden kann.
+Es läuft ein Server mit der aktuellen master Version unter der hostaddresse "game.budlerjoe.ch" auf welchen man ohne Einschränkung verbinden kann.
 
 Sobald man zu server verbunden ist (sollte beim Spielstart automatisch passieren) kann in der Konsole "help" eingegeben werden für eine Liste mit allen Befehlen. Lobbies erstellen funktioniert im Moment zum Beispiel nur per Konsole.
 
@@ -32,6 +32,11 @@ Dokumente für Milestone 3:
 - Demo videos: docs\milestone3\demos\2019-04-07 20-23-46.mkv
 	       docs\milestone3\demos\2019-04-07 20-36-44.mkv
 - Teaser:      docs\milestone3\teaser\teaser.avi
+
+Dokumente für Milestone 5:
+- Tagebuch (Diary): https://www.buddlerjoe.ch/entwickler-tagebuch
+- Netzwerkprotokolldokumentation: docs\milestone5\NetzwerkprotokollDokument\NetzwerkProtokollSpezifikation.pdf
+- Manual: docs\milestone5\manual\BuddlerJoeManual.pdf
 
 ## DEPENDENCIES
 - **LWJGL**: LightWeight Java Game Library
