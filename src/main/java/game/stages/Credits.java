@@ -13,8 +13,8 @@ import java.util.List;
 import org.joml.Vector2f;
 
 /**
- * credits Menu specification and rendering. Must be initialized. Specifies all the elements in the
- * CreditsMenu . Contains and manages the Game Loop while the credits Menu is active.
+ * CreditsMenu specification and rendering. Must be initialized. Specifies all the elements in the
+ * CreditsMenu . Contains and manages the Game Loop while the creditsOne Menu is active.
  *
  * @author Sebastian Schlachter
  */
@@ -26,11 +26,14 @@ public class Credits {
   private static GuiTexture buddlerJoe;
 
   private static GuiTexture background;
-  private static GuiTexture credits;
+  private static GuiTexture creditsOne;
+  private static GuiTexture creditsTwo;
 
   private static MenuButton back;
   private static float startY = -6.5f;
+  private static float offsetY = -10.5f;
   private static boolean firstloop = true;
+  private static int delay = 180;
 
   /**
    * Initializes the textures for this GUI-menu.
@@ -54,10 +57,17 @@ public class Credits {
             new Vector2f(0.181771f, 0.67963f),
             1);
 
-    credits =
+    creditsOne =
         new GuiTexture(
-            loader.loadTexture("creditsTotal"),
+            loader.loadTexture("creditsPart1"),
             new Vector2f(0, startY),
+            new Vector2f(0.78125f, 5.09259f),
+            1);
+
+    creditsTwo =
+        new GuiTexture(
+            loader.loadTexture("creditsPart2"),
+            new Vector2f(0, startY + offsetY),
             new Vector2f(0.78125f, 5.09259f),
             1);
 
@@ -75,26 +85,35 @@ public class Credits {
   @SuppressWarnings("Duplicates")
   public static void update() {
     if (firstloop) {
-      Vector2f tmp = new Vector2f();
-      tmp.set(tmp.x, startY);
-      credits.setPosition(tmp);
+      rewind();
       firstloop = false;
     }
 
     List<GuiTexture> guis = new ArrayList<>();
     // add textures here
     guis.add(background);
-    guis.add(credits);
+    guis.add(creditsOne);
+    guis.add(creditsTwo);
     guis.add(buddlerJoe);
 
-    Vector2f tmpPos = credits.getPosition();
-    if (tmpPos.y > -startY) {
-      tmpPos.set(tmpPos.x, startY);
+    Vector2f tmpPosOne = creditsOne.getPosition();
+    Vector2f tmpPosTwo = creditsTwo.getPosition();
+    if (tmpPosTwo.y > -startY - 2.2f) {
+      if (delay >= 0) {
+        delay--;
+      } else {
+        if (creditsTwo.getAlpha() - 0.008333f > 0) {
+          creditsTwo.setAlpha(creditsTwo.getAlpha() - 0.008333f);
+        } else {
+          rewind();
+        }
+      }
     } else {
-      tmpPos.set(tmpPos.x, tmpPos.y + 0.006214f);
+      tmpPosOne.set(tmpPosOne.x, tmpPosOne.y + 0.006214f);
+      tmpPosTwo.set(tmpPosTwo.x, tmpPosTwo.y + 0.006214f);
+      creditsOne.setPosition(tmpPosOne);
+      creditsTwo.setPosition(tmpPosTwo);
     }
-
-    credits.setPosition(tmpPos);
 
     // OpenGL Coordinates (0/0 = center of screen, -1/1 = corners)
     double x = 2 * (InputHandler.getMouseX() / Game.window.getWidth()) - 1;
@@ -116,5 +135,17 @@ public class Credits {
   /** resets variables. */
   public static void done() {
     firstloop = true;
+  }
+
+  /** Rewinds the credits to there starting position. */
+  private static void rewind() {
+    Vector2f tmp1 = new Vector2f();
+    tmp1.set(tmp1.x, startY);
+    creditsOne.setPosition(tmp1);
+    Vector2f tmp2 = new Vector2f();
+    tmp2.set(tmp2.x, startY + offsetY);
+    creditsTwo.setPosition(tmp2);
+    creditsTwo.setAlpha(1);
+    delay = 180;
   }
 }
