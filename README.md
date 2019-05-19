@@ -41,6 +41,7 @@ Dokumente für Milestone 5:
 - Logo: docs\milestone5\Logo.png
 - Archidekturdokument: docs\milestone5\ArchidekturDokument\Architektur.pdf
 - Twitchy: docs\milestone5\Buddler Joe - 2 minutes of gameplay.mp4
+- Präsentation: docs\milestone5\Präsentation\Milestone5Präsentation.pdf
 
 ## DEPENDENCIES
 - **LWJGL**: LightWeight Java Game Library
